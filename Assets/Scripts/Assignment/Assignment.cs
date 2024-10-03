@@ -24,11 +24,13 @@ public interface IAssignment {
 
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
-  public abstract IEnumerable<AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<ThreatData> threatTable);
+  public abstract IEnumerable<AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
+                                                     in IReadOnlyList<ThreatData> threatTable);
 
   // Get the list of assignable interceptor indices.
   [Pure]
-  protected static List<Interceptor> GetAssignableInterceptors(in IReadOnlyList<Interceptor> interceptors) {
+  protected static List<Interceptor> GetAssignableInterceptors(
+      in IReadOnlyList<Interceptor> interceptors) {
     return interceptors.Where(interceptor => interceptor.IsAssignable()).ToList();
   }
 

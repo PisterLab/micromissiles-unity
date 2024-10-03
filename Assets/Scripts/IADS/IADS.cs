@@ -6,15 +6,11 @@ using System.Linq;
 
 // Integrated Air Defense System
 public class IADS : MonoBehaviour {
-
-  public enum ThreatAssignmentStyle {
-    ONE_TIME,
-    CONTINUOUS
-  }
+  public enum ThreatAssignmentStyle { ONE_TIME, CONTINUOUS }
 
   public static IADS Instance { get; private set; }
   private IAssignment _assignmentScheme;
-  
+
   [SerializeField]
   private List<ThreatData> _threatTable = new List<ThreatData>();
   private Dictionary<Threat, ThreatData> _threatDataMap = new Dictionary<Threat, ThreatData>();
@@ -27,7 +23,6 @@ public class IADS : MonoBehaviour {
     } else {
       Destroy(gameObject);
     }
-
   }
 
   private void Start() {
@@ -35,7 +30,6 @@ public class IADS : MonoBehaviour {
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
     _assignmentScheme = new ThreatAssignment();
-    
   }
 
   public void LateUpdate() {
@@ -53,7 +47,6 @@ public class IADS : MonoBehaviour {
     _assignmentQueue.Add(interceptor);
   }
 
-
   /// <summary>
   /// Assigns the specified list of missiles to available targets based on the assignment scheme.
   /// </summary>
@@ -65,26 +58,28 @@ public class IADS : MonoBehaviour {
 
     // Apply the assignments to the missiles
     foreach (var assignment in assignments) {
-        assignment.Interceptor.AssignTarget(assignment.Threat);
-        _threatDataMap[assignment.Threat].AssignInterceptor(assignment.Interceptor);
-        Debug.Log($"Interceptor {assignment.Interceptor.name} assigned to threat {assignment.Threat.name}");
+      assignment.Interceptor.AssignTarget(assignment.Threat);
+      _threatDataMap[assignment.Threat].AssignInterceptor(assignment.Interceptor);
+      Debug.Log(
+          $"Interceptor {assignment.Interceptor.name} assigned to threat {assignment.Threat.name}");
     }
 
     // Check if any interceptors were not assigned
-    List<Interceptor> unassignedInterceptors = missilesToAssign.Where(m => !m.HasAssignedTarget()).ToList();
-    
-    if (unassignedInterceptors.Count > 0)
-    {
-        string unassignedIds = string.Join(", ", unassignedInterceptors.Select(m => m.name));
-        int totalInterceptors = missilesToAssign.Count;
-        int assignedInterceptors = totalInterceptors - unassignedInterceptors.Count;
-        
-        Debug.LogWarning($"Warning: {unassignedInterceptors.Count} out of {totalInterceptors} interceptors were not assigned to any threat. " +
-                         $"Unassigned interceptor IDs: {unassignedIds}. " +
-                         $"Total interceptors: {totalInterceptors}, Assigned: {assignedInterceptors}, Unassigned: {unassignedInterceptors.Count}");
+    List<Interceptor> unassignedInterceptors =
+        missilesToAssign.Where(m => !m.HasAssignedTarget()).ToList();
 
-        // Log information about the assignment scheme
-        Debug.Log($"Current Assignment Scheme: {_assignmentScheme.GetType().Name}");
+    if (unassignedInterceptors.Count > 0) {
+      string unassignedIds = string.Join(", ", unassignedInterceptors.Select(m => m.name));
+      int totalInterceptors = missilesToAssign.Count;
+      int assignedInterceptors = totalInterceptors - unassignedInterceptors.Count;
+
+      Debug.LogWarning(
+          $"Warning: {unassignedInterceptors.Count} out of {totalInterceptors} interceptors were not assigned to any threat. " +
+          $"Unassigned interceptor IDs: {unassignedIds}. " +
+          $"Total interceptors: {totalInterceptors}, Assigned: {assignedInterceptors}, Unassigned: {unassignedInterceptors.Count}");
+
+      // Log information about the assignment scheme
+      Debug.Log($"Current Assignment Scheme: {_assignmentScheme.GetType().Name}");
     }
   }
 
@@ -94,7 +89,7 @@ public class IADS : MonoBehaviour {
     _threatDataMap.Add(threat, threatData);
 
     // Subscribe to the threat's events
-    // TODO: If we do not want omniscient IADS, we 
+    // TODO: If we do not want omniscient IADS, we
     // need to model the IADS's sensors here.
     threat.OnInterceptHit += RegisterThreatHit;
     threat.OnInterceptMiss += RegisterThreatMiss;
@@ -142,5 +137,4 @@ public class IADS : MonoBehaviour {
     _threatDataMap.Clear();
     _assignmentQueue.Clear();
   }
-
 }

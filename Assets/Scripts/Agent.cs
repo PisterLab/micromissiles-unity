@@ -22,8 +22,6 @@ public abstract class Agent : MonoBehaviour {
   protected bool _isHit = false;
   protected bool _isMiss = false;
 
-
-
   protected double _timeSinceLaunch = 0;
   protected double _timeInPhase = 0;
 
@@ -144,9 +142,7 @@ public abstract class Agent : MonoBehaviour {
   protected abstract void UpdateBoost(double deltaTime);
   protected abstract void UpdateMidCourse(double deltaTime);
 
-  protected virtual void Awake() {
-    
-  }
+  protected virtual void Awake() {}
 
   // Start is called before the first frame update
   protected virtual void Start() {

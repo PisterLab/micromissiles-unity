@@ -36,8 +36,8 @@ public class CarrierInterceptor : Interceptor {
   public void SpawnSubmunitions() {
     List<Interceptor> submunitions = new List<Interceptor>();
     for (int i = 0; i < _dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
-      DynamicAgentConfig convertedConfig =
-        DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(_dynamicAgentConfig.submunitions_config.dynamic_agent_config);
+      DynamicAgentConfig convertedConfig = DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(
+          _dynamicAgentConfig.submunitions_config.dynamic_agent_config);
       convertedConfig.initial_state.position = transform.position;
       convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
       Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);

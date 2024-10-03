@@ -101,7 +101,8 @@ public class Interceptor : Agent {
 
   protected float CalculateMaxAcceleration() {
     float maxReferenceAcceleration =
-        (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration * Constants.kGravity);
+        (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
+                Constants.kGravity);
     float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
            maxReferenceAcceleration;

@@ -9,7 +9,8 @@ using System.Diagnostics.Contracts;
 public class ThreatAssignment : IAssignment {
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
-  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<ThreatData> targets) {
+  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
+                                                        in IReadOnlyList<ThreatData> targets) {
     List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
 
     List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
@@ -25,20 +26,20 @@ public class ThreatAssignment : IAssignment {
     }
 
     Vector3 positionToDefend = Vector3.zero;
-    List<ThreatInfo> threatInfos =
-        CalculateThreatLevels(activeThreats, positionToDefend);
+    List<ThreatInfo> threatInfos = CalculateThreatLevels(activeThreats, positionToDefend);
 
     // Sort ThreatInfo first by ThreatData.Status (UNASSIGNED first, then ASSIGNED)
     // Within each group, order by ThreatLevel descending
     threatInfos = threatInfos.OrderByDescending(t => t.ThreatData.Status == ThreatStatus.UNASSIGNED)
-                             .ThenByDescending(t => t.ThreatLevel)
-                             .ToList();
-    
+                      .ThenByDescending(t => t.ThreatLevel)
+                      .ToList();
+
     var assignableInterceptorsEnumerator = assignableInterceptors.GetEnumerator();
-    if (assignableInterceptorsEnumerator.MoveNext()) // Move to the first element
+    if (assignableInterceptorsEnumerator.MoveNext())  // Move to the first element
     {
       foreach (ThreatInfo threatInfo in threatInfos) {
-        assignments.Add(new IAssignment.AssignmentItem(assignableInterceptorsEnumerator.Current, threatInfo.ThreatData.Threat));
+        assignments.Add(new IAssignment.AssignmentItem(assignableInterceptorsEnumerator.Current,
+                                                       threatInfo.ThreatData.Threat));
         if (!assignableInterceptorsEnumerator.MoveNext()) {
           break;
         }
@@ -46,7 +47,6 @@ public class ThreatAssignment : IAssignment {
     }
     return assignments;
   }
-
 
   private List<ThreatInfo> CalculateThreatLevels(List<ThreatData> threatTable,
                                                  Vector3 defensePosition) {

@@ -19,9 +19,7 @@ public class SimManager : MonoBehaviour {
   [SerializeField]
   public SimulationConfig simulationConfig;
 
-  
   private List<Interceptor> _activeInterceptors = new List<Interceptor>();
-
 
   private List<Interceptor> _interceptorObjects = new List<Interceptor>();
   private List<Threat> _threatObjects = new List<Threat>();
@@ -30,15 +28,12 @@ public class SimManager : MonoBehaviour {
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
 
-
-
   public delegate void SimulationEventHandler();
   public event SimulationEventHandler OnSimulationEnded;
   public event SimulationEventHandler OnSimulationStarted;
 
   public delegate void NewThreatEventHandler(Threat threat);
   public event NewThreatEventHandler OnNewThreat;
-
 
   public delegate void NewInterceptorEventHandler(Interceptor interceptor);
   public event NewInterceptorEventHandler OnNewInterceptor;
@@ -83,7 +78,6 @@ public class SimManager : MonoBehaviour {
       StartSimulation();
       ResumeSimulation();
     }
-
   }
 
   public void SetTimeScale(float timeScale) {
@@ -95,7 +89,6 @@ public class SimManager : MonoBehaviour {
   public void StartSimulation() {
     OnSimulationStarted?.Invoke();
     InitializeSimulation();
-    
   }
 
   public void PauseSimulation() {
@@ -131,7 +124,6 @@ public class SimManager : MonoBehaviour {
         CreateThreat(swarmConfig.dynamic_agent_config);
       }
     }
-
   }
 
   public void AssignInterceptorsToThreats() {
@@ -159,8 +151,6 @@ public class SimManager : MonoBehaviour {
     // Placeholder
   }
 
-  
-
   /// <summary>
   /// Creates a interceptor based on the provided configuration.
   /// </summary>
@@ -169,9 +159,10 @@ public class SimManager : MonoBehaviour {
   public Interceptor CreateInterceptor(DynamicAgentConfig config) {
     string interceptorModelFile = config.agent_model;
     interceptorModelFile = "Interceptors/" + interceptorModelFile;
-    StaticAgentConfig interceptorStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(interceptorModelFile);
+    StaticAgentConfig interceptorStaticAgentConfig =
+        ConfigLoader.LoadStaticAgentConfig(interceptorModelFile);
     string agentClass = interceptorStaticAgentConfig.agentClass;
-    // The interceptor class corresponds to the Prefab that must 
+    // The interceptor class corresponds to the Prefab that must
     // exist in the Resources/Prefabs folder
     GameObject interceptorObject = CreateAgent(config, agentClass);
 
@@ -194,7 +185,7 @@ public class SimManager : MonoBehaviour {
 
     // Set the static agent config
     interceptor.SetStaticAgentConfig(interceptorStaticAgentConfig);
-    
+
     // Subscribe events
     interceptor.OnInterceptHit += RegisterInterceptorHit;
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
@@ -219,7 +210,7 @@ public class SimManager : MonoBehaviour {
     threatModelFile = "Threats/" + threatModelFile;
     StaticAgentConfig threatStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(threatModelFile);
     string agentClass = threatStaticAgentConfig.agentClass;
-    // The threat class corresponds to the Prefab that must 
+    // The threat class corresponds to the Prefab that must
     // exist in the Resources/Prefabs folder
     GameObject threatObject = CreateAgent(config, agentClass);
 
@@ -271,7 +262,6 @@ public class SimManager : MonoBehaviour {
     agentRigidbody.linearVelocity = noisyVelocity;
 
     agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
-
 
     return agentObject;
   }
