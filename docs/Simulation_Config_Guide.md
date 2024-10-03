@@ -9,13 +9,13 @@ The main configuration files you will work with are located in the `Assets/Strea
 - **Simulation Configurations**:
   - **`1_salvo_1_hydra_7_drones.json`**: A simple, barebones example of a simulation configuration featuring a single salvo in a 7-on-7 scenario.
   - **`3_salvo_10_hydra_200_drones.json`**: A more complex example with three salvos, illustrating a 210-on-200 scenario. This demonstrates how to set up multiple salvos within the simulation.
-  - **C# Script**: [`SimulationConfig.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticConfig.cs)
+  - **C# Script**: [`SimulationConfig.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticAgentConfig.cs)
 
 - **Model Configurations** (found in `Assets/StreamingAssets/Configs/Models/`):
   - **`micromissile.json`**
   - **`hydra70.json`**
   - **`drone.json`**
-  - **C# Script**: [`StaticConfig.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticConfig.cs)
+  - **C# Script**: [`StaticAgentConfig.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticAgentConfig.cs)
 
 ### File Locations
 
@@ -43,7 +43,7 @@ This is a basic configuration featuring a single salvo with one interceptor type
   "interceptor_swarm_configs": [
     {
       "num_agents": 1,
-      "agent_config": {
+      "dynamic_agent_config": {
         "interceptor_type": "HYDRA_70",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
@@ -60,7 +60,7 @@ This is a basic configuration featuring a single salvo with one interceptor type
         "submunitions_config": {
           "num_submunitions": 7,
           "launch_config": { "launch_time": 4 },
-          "agent_config": {
+          "dynamic_agent_config": {
             "interceptor_type": "MICROMISSILE",
             // Submunition configuration...
           }
@@ -71,7 +71,7 @@ This is a basic configuration featuring a single salvo with one interceptor type
   "threat_swarm_configs": [
     {
       "num_agents": 7,
-      "agent_config": {
+      "dynamic_agent_config": {
         "threat_type": "DRONE",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
@@ -95,7 +95,7 @@ This configuration demonstrates a more complex scenario with three salvos, each 
   "interceptor_swarm_configs": [
     {
       "num_agents": 10,
-      "agent_config": {
+      "dynamic_agent_config": {
         "interceptor_type": "HYDRA_70",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
@@ -112,7 +112,7 @@ This configuration demonstrates a more complex scenario with three salvos, each 
         "submunitions_config": {
           "num_submunitions": 7,
           "launch_config": { "launch_time": 4 },
-          "agent_config": {
+          "dynamic_agent_config": {
             "interceptor_type": "MICROMISSILE",
             // Submunition configuration...
           }
@@ -124,7 +124,7 @@ This configuration demonstrates a more complex scenario with three salvos, each 
   "threat_swarm_configs": [
     {
       "num_agents": 200,
-      "agent_config": {
+      "dynamic_agent_config": {
         "threat_type": "DRONE",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
@@ -158,7 +158,7 @@ Multiple salvos are achieved by:
 #### Within Each Swarm Configuration
 
 - **`num_agents`**: Number of agents (missiles or targets) in the swarm.
-- **`agent_config`**: Settings for each agent, including:
+- **`dynamic_agent_config`**: Settings for each agent, including:
 
   - **`interceptor_type`** / **`threat_type`**: Defines the type of interceptor or threat.
   - **`initial_state`**: Sets the starting position, rotation, and velocity.
@@ -175,7 +175,7 @@ Multiple salvos are achieved by:
    ```json
    {
      "num_agents": 5,
-     "agent_config": {
+     "dynamic_agent_config": {
        "interceptor_type": "MICROMISSILE",
        // Additional configurations...
        "dynamic_config": {
@@ -271,22 +271,22 @@ This script defines the data structures used to interpret the JSON simulation co
 
 - `SimulationConfig`: Contains all simulation settings.
 - `SwarmConfig`: Represents a group of agents (missiles or targets).
-- `AgentConfig`: Configuration for individual agents.
+- `DynamicAgentConfig`: Configuration for individual agents.
 
 **Enums**:
 
 - `InterceptorType`, `ThreatType`, and `SensorType` define available types.
 
-### `StaticConfig.cs`
+### `StaticAgentConfig.cs`
 
 This script defines the classes corresponding to the model configuration JSON structure.
 
-[Assets/Scripts/Config/StaticConfig.cs](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticConfig.cs)
+[Assets/Scripts/Config/StaticAgentConfig.cs](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticAgentConfig.cs)
 
 For example:
 ```csharp
 [Serializable]
-public class StaticConfig {
+public class StaticAgentConfig {
   [Serializable]
   public class AccelerationConfig {
     public float maxReferenceAcceleration = 300f;
@@ -318,7 +318,7 @@ public class StaticConfig {
 
 **Updating Classes**:
 
-If you add new parameters to the JSON model files, ensure the corresponding classes in `StaticConfig.cs` are updated to include these new fields.
+If you add new parameters to the JSON model files, ensure the corresponding classes in `StaticAgentConfig.cs` are updated to include these new fields.
 
 ## Using the Deployment Build
 

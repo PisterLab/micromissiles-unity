@@ -58,6 +58,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -133,6 +136,9 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -284,7 +290,7 @@ GameObject:
   - component: {fileID: 4571646124809534626}
   - component: {fileID: 4451965530778273955}
   m_Layer: 0
-  m_Name: Drone
+  m_Name: FixedWingThreat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -325,7 +331,7 @@ MonoBehaviour:
   _acceleration: {x: 0, y: 0, z: 0}
   _dragAcceleration: {x: 0, y: 0, z: 0}
   _target: {fileID: 0}
-  staticConfigFile: drone.json
+  StaticAgentConfigFile: generic_static_config.json
 --- !u!54 &4451965530778273955
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@
   "timeScale": 1,
   "interceptor_swarm_configs": [
     {
-      "num_agents": 10,
+      "num_agents": 1,
       "dynamic_agent_config": {
         "agent_model": "hydra70.json",
         "initial_state": {
@@ -23,13 +23,13 @@
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "launch_config": { "launch_time": 4 },
+          "launch_config": { "launch_time": 2 },
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
-              "position": { "x": -171.3253, "y": 683.85236, "z": 846.74677 },
+              "position": { "x": 0, "y": 0, "z": 0 },
               "rotation": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": -45.325005, "y": 110.16025, "z": 216.10002 }
+              "velocity": { "x": 0, "y": 0, "z": 0 }
             },
             "standard_deviation": {
               "position": { "x": 5, "y": 5, "z": 5 },
@@ -47,20 +47,20 @@
       }
     },
     {
-      "num_agents": 10,
+      "num_agents": 1,
       "dynamic_agent_config": {
         "agent_model": "hydra70.json",
         "initial_state": {
-          "position": { "x": 200, "y": 20, "z": 0 },
-          "rotation": { "x": -60, "y": 0, "z": 0 },
-          "velocity": { "x": 0, "y": 10, "z": 12 }
+          "position": { "x": 0, "y": 20, "z": 0 },
+          "rotation": { "x": -45, "y": 0, "z": 0 },
+          "velocity": { "x": 0, "y": 10, "z": 10 }
         },
         "standard_deviation": {
           "position": { "x": 10, "y": 0, "z": 10 },
           "velocity": { "x": 5, "y": 0, "z": 1 }
         },
         "dynamic_config": {
-          "launch_config": { "launch_time": 10 },
+          "launch_config": { "launch_time": 2 },
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
@@ -68,58 +68,13 @@
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "launch_config": { "launch_time": 12 },
+          "launch_config": { "launch_time": 6 },
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
-              "position": { "x": -3.2042065, "y": 781.2401, "z": 1043.2384 },
+              "position": { "x": 0, "y": 0, "z": 0 },
               "rotation": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": -72.93396, "y": 249.48598, "z": 385.07947 }
-            },
-            "standard_deviation": {
-              "position": { "x": 5, "y": 5, "z": 5 },
               "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "dynamic_config": {
-              "launch_config": { "launch_time": 0 },
-              "sensor_config": {
-                "type": "IDEAL",
-                "frequency": 100
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "num_agents": 10,
-      "dynamic_agent_config": {
-        "agent_model": "hydra70.json",
-        "initial_state": {
-          "position": { "x": -100, "y": 20, "z": 0 },
-          "rotation": { "x": -45, "y": 0, "z": 0 },
-          "velocity": { "x": 0, "y": 10, "z": 10 }
-        },
-        "standard_deviation": {
-          "position": { "x": 10, "y": 0, "z": 10 },
-          "velocity": { "x": 5, "y": 0, "z": 3 }
-        },
-        "dynamic_config": {
-          "launch_config": { "launch_time": 20 },
-          "sensor_config": {
-            "type": "IDEAL",
-            "frequency": 100
-          }
-        },
-        "submunitions_config": {
-          "num_submunitions": 7,
-          "launch_config": { "launch_time": 23 },
-          "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
-            "initial_state": {
-              "position": { "x": -246.4463, "y": 976.02924, "z": 1081.1262 },
-              "rotation": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": -31.540234, "y": 178.44958, "z": 249.32939 }
             },
             "standard_deviation": {
               "position": { "x": 5, "y": 5, "z": 5 },
@@ -139,9 +94,9 @@
   ],
   "threat_swarm_configs": [
     {
-      "num_agents": 200,
+      "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "hydra70.json",
+        "agent_model": "quadcopter.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
@@ -150,6 +105,31 @@
         "standard_deviation": {
           "position": { "x": 1000, "y": 200, "z": 100 },
           "velocity": { "x": 0, "y": 0, "z": 25 }
+        },
+        "dynamic_config": {
+          "launch_config": { "launch_time": 0 },
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 0
+          }
+        },
+        "submunitions_config": {
+          "num_submunitions": 0
+        }
+      }
+    },
+    {
+      "num_agents": 3,
+      "dynamic_agent_config": {
+        "agent_model": "ucav.json",
+        "initial_state": {
+          "position": { "x": 2000, "y": 100, "z": 4000 },
+          "rotation": { "x": 90, "y": 0, "z": 0 },
+          "velocity": { "x": -50, "y": 0, "z": -100 }
+        },
+        "standard_deviation": {
+          "position": { "x": 400, "y": 30, "z": 400 },
+          "velocity": { "x": 0, "y": 0, "z": 15 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 0 },

@@ -3,23 +3,22 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class SanityTest
-{
-    [UnityTest]
-    public IEnumerator SanityCheck()
-    {
-        // Arrange
-        GameObject testObject = new GameObject("TestObject");
+public class SanityTest {
+  [UnityTest]
+  public IEnumerator SanityCheck() {
+    // Arrange
+    GameObject testObject = new GameObject("TestObject");
 
-        // Act
-        testObject.AddComponent<BoxCollider>();
+    // Act
+    testObject.AddComponent<BoxCollider>();
 
-        // Assert
-        Assert.IsTrue(testObject.GetComponent<BoxCollider>() != null, "BoxCollider should be added to the test object");
+    // Assert
+    Assert.IsTrue(testObject.GetComponent<BoxCollider>() != null,
+                  "BoxCollider should be added to the test object");
 
-        // Clean up
-        Object.Destroy(testObject);
+    // Clean up
+    Object.Destroy(testObject);
 
-        yield return null;
-    }
+    yield return null;
+  }
 }

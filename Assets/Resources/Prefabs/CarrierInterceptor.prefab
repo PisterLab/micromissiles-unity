@@ -284,7 +284,7 @@ GameObject:
   - component: {fileID: 8120612314902529408}
   - component: {fileID: 3328180170527195603}
   m_Layer: 0
-  m_Name: Hydra70
+  m_Name: CarrierInterceptor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

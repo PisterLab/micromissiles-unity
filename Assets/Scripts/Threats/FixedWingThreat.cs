@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DroneTarget : Threat {
+public class FixedWingThreat : Threat {
   // Start is called before the first frame update
   protected override void Start() {
     base.Start();

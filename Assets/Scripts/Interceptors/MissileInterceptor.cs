@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Micromissile : Interceptor {
+public class MissileInterceptor : Interceptor {
   [SerializeField]
   private float _navigationGain = 3f;  // Typically 3-5
 
@@ -17,7 +17,7 @@ public class Micromissile : Interceptor {
       // TODO: Implement threat model update logic
 
       // Correct the state of the threat model at the sensor frequency
-      float sensorUpdatePeriod = 1f / _agentConfig.dynamic_config.sensor_config.frequency;
+      float sensorUpdatePeriod = 1f / _dynamicAgentConfig.dynamic_config.sensor_config.frequency;
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate state from sensor output
         // For now, we'll use the threat's actual state

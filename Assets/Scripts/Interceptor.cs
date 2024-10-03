@@ -41,7 +41,7 @@ public class Interceptor : Agent {
 
     // Calculate boost acceleration
     float boostAcceleration =
-        (float)(_staticConfig.boostConfig.boostAcceleration * Constants.kGravity);
+        (float)(_staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
     Vector3 accelerationInput = boostAcceleration * rollAxis;
 
     // Calculate the total acceleration
@@ -80,7 +80,7 @@ public class Interceptor : Agent {
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
       // Check kill probability before marking as hit
-      float killProbability = _staticConfig.hitConfig.killProbability;
+      float killProbability = _staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {
@@ -101,8 +101,9 @@ public class Interceptor : Agent {
 
   protected float CalculateMaxAcceleration() {
     float maxReferenceAcceleration =
-        (float)(_staticConfig.accelerationConfig.maxReferenceAcceleration * Constants.kGravity);
-    float referenceSpeed = _staticConfig.accelerationConfig.referenceSpeed;
+        (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
+                Constants.kGravity);
+    float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
            maxReferenceAcceleration;
   }
@@ -121,9 +122,9 @@ public class Interceptor : Agent {
   }
 
   private float CalculateDrag() {
-    float dragCoefficient = _staticConfig.liftDragConfig.dragCoefficient;
-    float crossSectionalArea = _staticConfig.bodyConfig.crossSectionalArea;
-    float mass = _staticConfig.bodyConfig.mass;
+    float dragCoefficient = _staticAgentConfig.liftDragConfig.dragCoefficient;
+    float crossSectionalArea = _staticAgentConfig.bodyConfig.crossSectionalArea;
+    float mass = _staticAgentConfig.bodyConfig.mass;
     float dynamicPressure = (float)GetDynamicPressure();
     float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
     return dragForce / mass;
@@ -132,7 +133,7 @@ public class Interceptor : Agent {
   private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
     float liftAcceleration =
         (accelerationInput - Vector3.Dot(accelerationInput, transform.up) * transform.up).magnitude;
-    float liftDragRatio = _staticConfig.liftDragConfig.liftDragRatio;
+    float liftDragRatio = _staticAgentConfig.liftDragConfig.liftDragRatio;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }
 
