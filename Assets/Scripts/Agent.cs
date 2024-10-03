@@ -22,15 +22,13 @@ public abstract class Agent : MonoBehaviour {
   protected bool _isHit = false;
   protected bool _isMiss = false;
 
-  protected AgentConfig _agentConfig;
+
 
   protected double _timeSinceLaunch = 0;
   protected double _timeInPhase = 0;
 
-  [SerializeField]
-  public string staticConfigFile = "generic_static_config.json";
-
-  protected StaticConfig _staticConfig;
+  protected DynamicAgentConfig _dynamicAgentConfig;
+  protected StaticAgentConfig _staticAgentConfig;
 
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
@@ -59,8 +57,13 @@ public abstract class Agent : MonoBehaviour {
     return _flightPhase == FlightPhase.TERMINATED;
   }
 
-  public virtual void SetAgentConfig(AgentConfig config) {
-    _agentConfig = config;
+  public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
+    _dynamicAgentConfig = config;
+  }
+
+  public virtual void SetStaticAgentConfig(StaticAgentConfig config) {
+    _staticAgentConfig = config;
+    GetComponent<Rigidbody>().mass = _staticAgentConfig.bodyConfig.mass;
   }
 
   public virtual bool IsAssignable() {
@@ -142,8 +145,7 @@ public abstract class Agent : MonoBehaviour {
   protected abstract void UpdateMidCourse(double deltaTime);
 
   protected virtual void Awake() {
-    _staticConfig = ConfigLoader.LoadStaticConfig(staticConfigFile);
-    GetComponent<Rigidbody>().mass = _staticConfig.bodyConfig.mass;
+    
   }
 
   // Start is called before the first frame update
@@ -156,8 +158,8 @@ public abstract class Agent : MonoBehaviour {
     _timeSinceLaunch += Time.fixedDeltaTime;
     _timeInPhase += Time.fixedDeltaTime;
 
-    var launch_time = _agentConfig.dynamic_config.launch_config.launch_time;
-    var boost_time = launch_time + _staticConfig.boostConfig.boostTime;
+    var launch_time = _dynamicAgentConfig.dynamic_config.launch_config.launch_time;
+    var boost_time = launch_time + _staticAgentConfig.boostConfig.boostTime;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {

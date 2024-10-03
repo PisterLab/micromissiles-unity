@@ -1,4 +1,6 @@
 {
+  "name": "Micromissile",
+  "interceptorClass": "MissileInterceptor",
   "accelerationConfig": {
     "maxReferenceAcceleration": 300,
     "referenceSpeed": 1000

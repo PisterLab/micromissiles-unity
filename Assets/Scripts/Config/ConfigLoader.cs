@@ -51,18 +51,18 @@ public static class ConfigLoader {
         });
     }
 
-    public static StaticConfig LoadStaticConfig(string configFileName)
+    public static StaticAgentConfig LoadStaticAgentConfig(string configFileName)
     {
         string relativePath = Path.Combine("Configs/Models", configFileName);
         string fileContent = LoadFromStreamingAssets(relativePath);
 
         if (string.IsNullOrEmpty(fileContent))
         {
-            Debug.LogError($"Failed to load StaticConfig from {relativePath}");
+            Debug.LogError($"Failed to load StaticAgentConfig from {relativePath}");
             return null;
         }
 
-        return JsonConvert.DeserializeObject<StaticConfig>(fileContent, new JsonSerializerSettings
+        return JsonConvert.DeserializeObject<StaticAgentConfig>(fileContent, new JsonSerializerSettings
         {
             Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
         });
@@ -96,19 +96,19 @@ public static class ConfigLoader {
     {
         Debug.Log($"{swarmName}:");
         Debug.Log($"  Number of Agents: {swarmConfig.num_agents}");
-        PrintAgentConfig(swarmConfig.agent_config);
+        PrintDynamicAgentConfig(swarmConfig.dynamic_agent_config);
     }
 
-    private static void PrintAgentConfig(AgentConfig agentConfig)
+    private static void PrintDynamicAgentConfig(DynamicAgentConfig dynamicAgentConfig)
     {
         Debug.Log("  Agent Configuration:");
-        Debug.Log($"    Interceptor Type: {agentConfig.interceptor_type}");
-        Debug.Log($"    Threat Type: {agentConfig.threat_type}");
-        PrintInitialState(agentConfig.initial_state);
-        PrintStandardDeviation(agentConfig.standard_deviation);
-        PrintDynamicConfig(agentConfig.dynamic_config);
-        PrintPlottingConfig(agentConfig.plotting_config);
-        PrintSubmunitionsConfig(agentConfig.submunitions_config);
+        Debug.Log($"    Interceptor Model: {dynamicAgentConfig.interceptor_model}");
+        Debug.Log($"    Threat Model: {dynamicAgentConfig.threat_model}");
+        PrintInitialState(dynamicAgentConfig.initial_state);
+        PrintStandardDeviation(dynamicAgentConfig.standard_deviation);
+        PrintDynamicConfig(dynamicAgentConfig.dynamic_config);
+        PrintPlottingConfig(dynamicAgentConfig.plotting_config);
+        PrintSubmunitionsConfig(dynamicAgentConfig.submunitions_config);
     }
 
     private static void PrintInitialState(InitialState initialState)
@@ -153,13 +153,14 @@ public static class ConfigLoader {
         Debug.Log("    Submunitions Configuration:");
         Debug.Log($"      Number of Submunitions: {submunitionsConfig.num_submunitions}");
         Debug.Log($"      Launch Time: {submunitionsConfig.launch_config.launch_time}");
-        PrintSubmunitionAgentConfig(submunitionsConfig.agent_config);
+        PrintSubmunitionDynamicAgentConfig(submunitionsConfig.dynamic_agent_config);
     }
 
-    private static void PrintSubmunitionAgentConfig(SubmunitionAgentConfig agentConfig)
+    private static void PrintSubmunitionDynamicAgentConfig(SubmunitionDynamicAgentConfig agentConfig)
     {
         Debug.Log("      Submunition Agent Configuration:");
-        Debug.Log($"        Interceptor Type: {agentConfig.interceptor_type}");
+        Debug.Log($"        Interceptor Model: {agentConfig.interceptor_model}");
+        Debug.Log($"        Threat Model: {agentConfig.threat_model}");
         PrintInitialState(agentConfig.initial_state);
         PrintStandardDeviation(agentConfig.standard_deviation);
         PrintDynamicConfig(agentConfig.dynamic_config);

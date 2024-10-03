@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class Hydra70 : Interceptor {
+public class CarrierInterceptor : Interceptor {
   private bool _submunitionsLaunched = false;
 
   protected override void FixedUpdate() {
@@ -13,7 +13,7 @@ public class Hydra70 : Interceptor {
     if (!_submunitionsLaunched &&
         (GetFlightPhase() == FlightPhase.MIDCOURSE || GetFlightPhase() == FlightPhase.BOOST) &&
         SimManager.Instance.GetElapsedSimulationTime() >=
-            _agentConfig.submunitions_config.launch_config.launch_time) {
+            _dynamicAgentConfig.submunitions_config.launch_config.launch_time) {
       SpawnSubmunitions();
       _submunitionsLaunched = true;
     }
@@ -35,18 +35,13 @@ public class Hydra70 : Interceptor {
 
   public void SpawnSubmunitions() {
     List<Interceptor> submunitions = new List<Interceptor>();
-    switch (_agentConfig.submunitions_config.agent_config.interceptor_type) {
-      case InterceptorType.MICROMISSILE:
-        for (int i = 0; i < _agentConfig.submunitions_config.num_submunitions; i++) {
-          AgentConfig convertedConfig =
-              AgentConfig.FromSubmunitionAgentConfig(_agentConfig.submunitions_config.agent_config);
-
-          convertedConfig.initial_state.position = transform.position;
-          convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
-          Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
-          submunitions.Add(submunition);
-        }
-        break;
+    for (int i = 0; i < _dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
+      DynamicAgentConfig convertedConfig =
+        DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(_dynamicAgentConfig.submunitions_config.dynamic_agent_config);
+      convertedConfig.initial_state.position = transform.position;
+      convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
+      Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
+      submunitions.Add(submunition);
     }
     IADS.Instance.RequestThreatAssignment(submunitions);
   }

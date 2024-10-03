@@ -26,29 +26,30 @@ public class DynamicConfig {
  [Serializable]
 public class SwarmConfig {
     public int num_agents;
-    public AgentConfig agent_config;
+    public DynamicAgentConfig dynamic_agent_config;
 }
 
 [Serializable]
-public class AgentConfig {
-    public InterceptorType interceptor_type;
-    public ThreatType threat_type;
+public class DynamicAgentConfig {
+    public string name;
+    public string interceptor_model;
+    public string threat_model;
     public InitialState initial_state;
     public StandardDeviation standard_deviation;
     public DynamicConfig dynamic_config;
     public PlottingConfig plotting_config;
     public SubmunitionsConfig submunitions_config;
 
-    public static AgentConfig FromSubmunitionAgentConfig(SubmunitionAgentConfig submunitionConfig) {
-        return new AgentConfig {
-            interceptor_type = submunitionConfig.interceptor_type,
+    public static DynamicAgentConfig FromSubmunitionDynamicAgentConfig(SubmunitionDynamicAgentConfig submunitionConfig) {
+        return new DynamicAgentConfig {
+            interceptor_model = submunitionConfig.interceptor_model,
+            threat_model = submunitionConfig.threat_model,
             initial_state = submunitionConfig.initial_state,
             standard_deviation = submunitionConfig.standard_deviation,
             dynamic_config = submunitionConfig.dynamic_config,
             plotting_config = submunitionConfig.plotting_config,
-            // Set other fields as needed, using default values if not present in SubmunitionAgentConfig
-            threat_type = ThreatType.DRONE,  // Or another default value
-            submunitions_config = null       // Or a default value if needed
+            // Set other fields as needed, using default values if not present in SubmunitionDynamicAgentConfig
+            submunitions_config = null,       // Or a default value if needed
         };
     }
 }
@@ -82,12 +83,13 @@ public class PlottingConfig {
 public class SubmunitionsConfig {
     public int num_submunitions;
     public LaunchConfig launch_config;
-    public SubmunitionAgentConfig agent_config;
+    public SubmunitionDynamicAgentConfig dynamic_agent_config;
 }
 
 [Serializable]
-public class SubmunitionAgentConfig {
-    public InterceptorType interceptor_type;
+public class SubmunitionDynamicAgentConfig {
+    public string interceptor_model;
+    public string threat_model;
     public InitialState initial_state;
     public StandardDeviation standard_deviation;
     public DynamicConfig dynamic_config;
@@ -101,8 +103,8 @@ public class SensorConfig {
 }
 
 [Serializable]
-public class TargetConfig {
-    public ThreatType threat_type;
+public class ThreatConfig {
+    public ThreatClass threat_class;
     public InitialState initial_state;
     public PlottingConfig plotting_config;
     public string prefabName;
@@ -112,7 +114,7 @@ public class TargetConfig {
 [JsonConverter(typeof(StringEnumConverter))]
 public enum InterceptorType { HYDRA_70, MICROMISSILE }
 [JsonConverter(typeof(StringEnumConverter))]
-public enum ThreatType { DRONE, ANTISHIP_MISSILE }
+public enum ThreatClass { NONE, FIXEDWING, ROTARYWING, BALLISTIC}
 [JsonConverter(typeof(StringEnumConverter))]
 public enum ConfigColor { BLUE, GREEN, RED }
 [JsonConverter(typeof(StringEnumConverter))]

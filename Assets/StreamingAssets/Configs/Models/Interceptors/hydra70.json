@@ -1,4 +1,6 @@
 {
+    "name": "Hydra 70",
+    "interceptorClass": "CarrierInterceptor",
     "accelerationConfig": {
         "maxReferenceAcceleration": 300,
         "referenceSpeed": 1000

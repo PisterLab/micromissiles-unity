@@ -15,15 +15,15 @@ public class ThreatAssignmentTests
         // Create interceptors
         List<Interceptor> interceptors = new List<Interceptor>
         {
-            new GameObject("Interceptor 1").AddComponent<Micromissile>(),
-            new GameObject("Interceptor 2").AddComponent<Micromissile>(),
-            new GameObject("Interceptor 3").AddComponent<Micromissile>()
+            new GameObject("Interceptor 1").AddComponent<MissileInterceptor>(),
+            new GameObject("Interceptor 2").AddComponent<MissileInterceptor>(),
+            new GameObject("Interceptor 3").AddComponent<MissileInterceptor>()
         };
 
         // Create threats
-        Threat threat1 = new GameObject("Threat 1").AddComponent<DroneTarget>();
-        Threat threat2 = new GameObject("Threat 2").AddComponent<DroneTarget>();
-        Threat threat3 = new GameObject("Threat 3").AddComponent<DroneTarget>();
+        Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreat>();
+        Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreat>();
+        Threat threat3 = new GameObject("Threat 3").AddComponent<RotaryWingThreat>();
 
         // Add Rigidbody components to threats to set velocities
         Rigidbody rb1 = threat1.gameObject.AddComponent<Rigidbody>();
@@ -83,14 +83,14 @@ public class ThreatAssignmentTests
         // Create interceptors
         List<Interceptor> interceptors = new List<Interceptor>
         {
-            new GameObject("Interceptor 1").AddComponent<Micromissile>(),
-            new GameObject("Interceptor 2").AddComponent<Micromissile>(),
-            new GameObject("Interceptor 3").AddComponent<Micromissile>()
+            new GameObject("Interceptor 1").AddComponent<MissileInterceptor>(),
+            new GameObject("Interceptor 2").AddComponent<MissileInterceptor>(),
+            new GameObject("Interceptor 3").AddComponent<MissileInterceptor>()
         };
 
         // Create threats
-        Threat threat1 = new GameObject("Threat 1").AddComponent<DroneTarget>();
-        Threat threat2 = new GameObject("Threat 2").AddComponent<DroneTarget>();
+        Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreat>();
+        Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreat>();
 
         // Add Rigidbody components to threats to set velocities
         Rigidbody rb1 = threat1.gameObject.AddComponent<Rigidbody>();
