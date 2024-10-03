@@ -167,13 +167,13 @@ public class SimManager : MonoBehaviour {
   /// <param name="config">Configuration settings for the interceptor.</param>
   /// <returns>The created Interceptor instance, or null if creation failed.</returns>
   public Interceptor CreateInterceptor(DynamicAgentConfig config) {
-    string interceptorModelFile = config.interceptor_model;
+    string interceptorModelFile = config.agent_model;
     interceptorModelFile = "Interceptors/" + interceptorModelFile;
     StaticAgentConfig interceptorStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(interceptorModelFile);
-    string interceptorClass = interceptorStaticAgentConfig.interceptorClass;
+    string agentClass = interceptorStaticAgentConfig.agentClass;
     // The interceptor class corresponds to the Prefab that must 
     // exist in the Resources/Prefabs folder
-    GameObject interceptorObject = CreateAgent(config, interceptorClass);
+    GameObject interceptorObject = CreateAgent(config, agentClass);
 
     if (interceptorObject == null)
       return null;
@@ -215,13 +215,13 @@ public class SimManager : MonoBehaviour {
   /// <param name="config">Configuration settings for the threat.</param>
   /// <returns>The created Threat instance, or null if creation failed.</returns>
   private Threat CreateThreat(DynamicAgentConfig config) {
-    string threatModelFile = config.threat_model;
+    string threatModelFile = config.agent_model;
     threatModelFile = "Threats/" + threatModelFile;
     StaticAgentConfig threatStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(threatModelFile);
-    string threatClass = threatStaticAgentConfig.threatClass;
+    string agentClass = threatStaticAgentConfig.agentClass;
     // The threat class corresponds to the Prefab that must 
     // exist in the Resources/Prefabs folder
-    GameObject threatObject = CreateAgent(config, threatClass);
+    GameObject threatObject = CreateAgent(config, agentClass);
 
     if (threatObject == null)
       return null;

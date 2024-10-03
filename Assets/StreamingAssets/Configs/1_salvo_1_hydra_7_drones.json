@@ -4,7 +4,7 @@
     {
       "num_agents": 1,
       "dynamic_agent_config": {
-        "interceptor_model": "hydra70.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
           "rotation": { "x": -45, "y": 0, "z": 0 },
@@ -25,7 +25,7 @@
           "num_submunitions": 7,
           "launch_config": { "launch_time": 4 },
           "dynamic_agent_config": {
-            "interceptor_model": "micromissile.json",
+            "agent_model": "micromissile.json",
             "initial_state": {
               "position": { "x": 0, "y": 0, "z": 0 },
               "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -51,7 +51,7 @@
     {
       "num_agents": 7,
       "dynamic_agent_config": {
-        "threat_model": "quadcopter.json",
+        "agent_model": "quadcopter.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },

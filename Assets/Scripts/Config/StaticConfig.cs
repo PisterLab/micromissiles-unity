@@ -3,8 +3,7 @@ using System;
 [Serializable]
 public class StaticAgentConfig {
   public string name;
-  public string threatClass;
-  public string interceptorClass;
+  public string agentClass;
   [Serializable]
   public class AccelerationConfig {
     public float maxReferenceAcceleration = 300f;

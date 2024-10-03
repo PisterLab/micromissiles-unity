@@ -102,8 +102,8 @@ public static class ConfigLoader {
     private static void PrintDynamicAgentConfig(DynamicAgentConfig dynamicAgentConfig)
     {
         Debug.Log("  Agent Configuration:");
-        Debug.Log($"    Interceptor Model: {dynamicAgentConfig.interceptor_model}");
-        Debug.Log($"    Threat Model: {dynamicAgentConfig.threat_model}");
+        Debug.Log($"    Interceptor Model: {dynamicAgentConfig.agent_model}");
+        Debug.Log($"    Threat Model: {dynamicAgentConfig.agent_model}");
         PrintInitialState(dynamicAgentConfig.initial_state);
         PrintStandardDeviation(dynamicAgentConfig.standard_deviation);
         PrintDynamicConfig(dynamicAgentConfig.dynamic_config);
@@ -159,8 +159,8 @@ public static class ConfigLoader {
     private static void PrintSubmunitionDynamicAgentConfig(SubmunitionDynamicAgentConfig agentConfig)
     {
         Debug.Log("      Submunition Agent Configuration:");
-        Debug.Log($"        Interceptor Model: {agentConfig.interceptor_model}");
-        Debug.Log($"        Threat Model: {agentConfig.threat_model}");
+        Debug.Log($"        Interceptor Model: {agentConfig.agent_model}");
+        Debug.Log($"        Threat Model: {agentConfig.agent_model}");
         PrintInitialState(agentConfig.initial_state);
         PrintStandardDeviation(agentConfig.standard_deviation);
         PrintDynamicConfig(agentConfig.dynamic_config);

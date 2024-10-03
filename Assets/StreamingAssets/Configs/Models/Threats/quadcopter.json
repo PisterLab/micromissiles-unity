@@ -1,6 +1,6 @@
 {
     "name": "Quadcopter",
-    "threatClass": "RotaryWingThreat",
+    "agentClass": "RotaryWingThreat",
     "accelerationConfig": {
       "maxReferenceAcceleration": 300,
       "referenceSpeed": 1000

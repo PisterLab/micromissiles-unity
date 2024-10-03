@@ -32,8 +32,7 @@ public class SwarmConfig {
 [Serializable]
 public class DynamicAgentConfig {
     public string name;
-    public string interceptor_model;
-    public string threat_model;
+    public string agent_model;
     public InitialState initial_state;
     public StandardDeviation standard_deviation;
     public DynamicConfig dynamic_config;
@@ -42,8 +41,7 @@ public class DynamicAgentConfig {
 
     public static DynamicAgentConfig FromSubmunitionDynamicAgentConfig(SubmunitionDynamicAgentConfig submunitionConfig) {
         return new DynamicAgentConfig {
-            interceptor_model = submunitionConfig.interceptor_model,
-            threat_model = submunitionConfig.threat_model,
+            agent_model = submunitionConfig.agent_model,
             initial_state = submunitionConfig.initial_state,
             standard_deviation = submunitionConfig.standard_deviation,
             dynamic_config = submunitionConfig.dynamic_config,
@@ -88,8 +86,7 @@ public class SubmunitionsConfig {
 
 [Serializable]
 public class SubmunitionDynamicAgentConfig {
-    public string interceptor_model;
-    public string threat_model;
+    public string agent_model;
     public InitialState initial_state;
     public StandardDeviation standard_deviation;
     public DynamicConfig dynamic_config;
@@ -104,17 +101,16 @@ public class SensorConfig {
 
 [Serializable]
 public class ThreatConfig {
-    public ThreatClass threat_class;
+    public agentClass threat_class;
     public InitialState initial_state;
     public PlottingConfig plotting_config;
     public string prefabName;
 }
 
 // Enums
+
 [JsonConverter(typeof(StringEnumConverter))]
-public enum InterceptorType { HYDRA_70, MICROMISSILE }
-[JsonConverter(typeof(StringEnumConverter))]
-public enum ThreatClass { NONE, FIXEDWING, ROTARYWING, BALLISTIC}
+public enum agentClass { NONE, FIXEDWING, ROTARYWING, BALLISTIC}
 [JsonConverter(typeof(StringEnumConverter))]
 public enum ConfigColor { BLUE, GREEN, RED }
 [JsonConverter(typeof(StringEnumConverter))]

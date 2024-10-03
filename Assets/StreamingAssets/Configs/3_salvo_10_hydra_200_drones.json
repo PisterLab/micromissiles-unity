@@ -4,7 +4,7 @@
     {
       "num_agents": 10,
       "dynamic_agent_config": {
-        "interceptor_model": "hydra70.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
           "rotation": { "x": -45, "y": 0, "z": 0 },
@@ -25,7 +25,7 @@
           "num_submunitions": 7,
           "launch_config": { "launch_time": 4 },
           "dynamic_agent_config": {
-            "interceptor_model": "micromissile.json",
+            "agent_model": "micromissile.json",
             "initial_state": {
               "position": { "x": -171.3253, "y": 683.85236, "z": 846.74677 },
               "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -49,7 +49,7 @@
     {
       "num_agents": 10,
       "dynamic_agent_config": {
-        "interceptor_model": "hydra70.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 200, "y": 20, "z": 0 },
           "rotation": { "x": -60, "y": 0, "z": 0 },
@@ -70,7 +70,7 @@
           "num_submunitions": 7,
           "launch_config": { "launch_time": 12 },
           "dynamic_agent_config": {
-            "interceptor_model": "micromissile.json",
+            "agent_model": "micromissile.json",
             "initial_state": {
               "position": { "x": -3.2042065, "y": 781.2401, "z": 1043.2384 },
               "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -94,7 +94,7 @@
     {
       "num_agents": 10,
       "dynamic_agent_config": {
-        "interceptor_model": "hydra70.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": -100, "y": 20, "z": 0 },
           "rotation": { "x": -45, "y": 0, "z": 0 },
@@ -115,7 +115,7 @@
           "num_submunitions": 7,
           "launch_config": { "launch_time": 23 },
           "dynamic_agent_config": {
-            "interceptor_model": "micromissile.json",
+            "agent_model": "micromissile.json",
             "initial_state": {
               "position": { "x": -246.4463, "y": 976.02924, "z": 1081.1262 },
               "rotation": { "x": 0, "y": 0, "z": 0 },
@@ -141,8 +141,7 @@
     {
       "num_agents": 200,
       "dynamic_agent_config": {
-        "interceptor_model": "hydra70.json",
-        "threat_model": "quadcopter.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },

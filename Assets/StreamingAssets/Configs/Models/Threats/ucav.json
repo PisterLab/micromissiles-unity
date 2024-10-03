@@ -1,6 +1,6 @@
 {
     "name": "UCAV",
-    "threatClass": "FixedWingThreat",
+    "agentClass": "FixedWingThreat",
     "accelerationConfig": {
       "maxReferenceAcceleration": 300,
       "referenceSpeed": 1000
