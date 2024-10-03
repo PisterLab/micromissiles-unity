@@ -1,18 +1,23 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 public class DirectAttackBehavior : AttackBehavior
 {
-    public List<DTTWaypoint> waypoints;
+
+
+    public new DTTFlightPlan flightPlan;
 
     // Returns the next waypoint for the threat to navigate to
     // In addition, return the power setting to use toward the waypoint
-    public override (Vector3 waypointPosition, StaticAgentConfig.PowerSetting power) GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition)
+    public override (Vector3 waypointPosition, PowerSetting power) GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition)
     {
-        if (waypoints == null || waypoints.Count == 0)
+        if (flightPlan.waypoints == null || flightPlan.waypoints.Count == 0)
         {
             // If no waypoints are defined, directly target the target position
-            return (targetPosition, StaticAgentConfig.PowerSetting.MAX);
+            return (targetPosition, PowerSetting.MAX);
         }
 
         Vector3 directionToTarget = targetPosition - currentPosition;
@@ -20,9 +25,9 @@ public class DirectAttackBehavior : AttackBehavior
 
         // Find the current waypoint based on the distance to target
         int currentWaypointIndex = 0;
-        for (int i = 0; i < waypoints.Count; i++)
+        for (int i = 0; i < flightPlan.waypoints.Count; i++)
         {
-            if (distanceToTarget <= waypoints[i].distance)
+            if (distanceToTarget <= flightPlan.waypoints[i].distance)
             {
                 currentWaypointIndex = i;
                 break;
@@ -30,24 +35,44 @@ public class DirectAttackBehavior : AttackBehavior
         }
 
         Vector3 waypointPosition;
-        StaticAgentConfig.PowerSetting power;
+        PowerSetting power;
 
-        if (currentWaypointIndex < waypoints.Count - 1)
+        if (currentWaypointIndex < flightPlan.waypoints.Count - 1)
         {
             // There is a next waypoint
-            DTTWaypoint nextWaypoint = waypoints[currentWaypointIndex + 1];
+            DTTWaypoint nextWaypoint = flightPlan.waypoints[currentWaypointIndex + 1];
             waypointPosition = targetPosition + directionToTarget.normalized * nextWaypoint.distance;
-            waypointPosition.y = nextWaypoint.targetAltitude;
+            waypointPosition.y = nextWaypoint.altitude;
             power = nextWaypoint.power;
         }
         else
         {
             // This is the last waypoint, so target the final position
             waypointPosition = targetPosition;
-            power = waypoints[currentWaypointIndex].power;
+            power = flightPlan.waypoints[currentWaypointIndex].power;
         }
 
         return (waypointPosition, power);
     }
 
+    public new static DirectAttackBehavior FromJson(string json) {
+        string resolvedPath = ResolveBehaviorPath(json);
+        string fileContent = ConfigLoader.LoadFromStreamingAssets(resolvedPath);
+        return JsonConvert.DeserializeObject<DirectAttackBehavior>(fileContent, new JsonSerializerSettings {
+            Converters = { new StringEnumConverter() }
+        });
+    }
+}
+
+[System.Serializable]
+public class DTTWaypoint : Waypoint
+{
+    public float distance;
+    public float altitude;
+    public PowerSetting power;
+}
+
+public class DTTFlightPlan : FlightPlan
+{
+    public List<DTTWaypoint> waypoints;
 }

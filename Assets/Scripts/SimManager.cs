@@ -151,6 +151,26 @@ public class SimManager : MonoBehaviour {
     // Placeholder
   }
 
+  private AttackBehavior LoadAttackBehavior(DynamicAgentConfig config) {
+    string threatBehaviorFile = config.attack_behavior;
+    AttackBehavior attackBehavior = AttackBehavior.FromJson(threatBehaviorFile);
+    switch (attackBehavior.attackBehaviorType) {
+      case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK:
+        return DirectAttackBehavior.FromJson(threatBehaviorFile);
+      default:
+        Debug.LogError($"Attack behavior type '{attackBehavior.attackBehaviorType}' not found.");
+        return null;
+    }
+  }
+
+  public GameObject CreateDummyThreat(Vector3 position, Vector3 velocity) {
+    GameObject dummyThreatObject = Resources.Load<GameObject>($"Prefabs/DummyThreatObject");
+    dummyThreatObject.transform.position = position;
+    Rigidbody dummyRigidbody = dummyThreatObject.GetComponent<Rigidbody>();
+    dummyRigidbody.linearVelocity = velocity;
+    return dummyThreatObject;
+  }
+
   /// <summary>
   /// Creates a interceptor based on the provided configuration.
   /// </summary>
@@ -224,6 +244,8 @@ public class SimManager : MonoBehaviour {
     threat.SetStaticAgentConfig(threatStaticAgentConfig);
 
     // Set the attack behavior
+    AttackBehavior attackBehavior = LoadAttackBehavior(config);
+    threat.SetAttackBehavior(attackBehavior);
 
     // Subscribe events
     threat.OnInterceptHit += RegisterThreatHit;
@@ -232,6 +254,9 @@ public class SimManager : MonoBehaviour {
     // Assign a unique and simple ID
     int threatId = _threatObjects.Count;
     threatObject.name = $"{threatStaticAgentConfig.name}_Threat_{threatId}";
+
+    // Threats always start in midcourse
+    threat.SetFlightPhase(Agent.FlightPhase.MIDCOURSE);
 
     // Let listeners know a new threat has been created
     OnNewThreat?.Invoke(threat);

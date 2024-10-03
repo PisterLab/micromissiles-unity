@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 using Newtonsoft.Json;
 
 public static class ConfigLoader {
-  private static string LoadFromStreamingAssets(string relativePath) {
+  public static string LoadFromStreamingAssets(string relativePath) {
     string filePath = Path.Combine(Application.streamingAssetsPath, relativePath);
 
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_IOS

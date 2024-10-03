@@ -1,11 +1,20 @@
 {
-
     "name": "DefaultDirectAttack",
-    "type": "DirectAttack",
+    "attackBehaviorType": "DIRECT_ATTACK",
     "targetPosition": {
-        "x": 0.0,
+        "x": 0.01,
         "y": 0.0,
         "z": 0.0
+    },
+    "targetVelocity": {
+        "x": 0.0001,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "targetColliderSize": {
+        "x": 20.0,
+        "y": 20.0,
+        "z": 20.0
     },
     "flightPlan": {
         "type": "DistanceToTarget",

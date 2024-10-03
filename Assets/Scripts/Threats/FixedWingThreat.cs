@@ -46,7 +46,7 @@ public class FixedWingThreat : Threat {
 
   private void UpdateWaypointAndPower() {
     // Get the next waypoint and power setting from the attack behavior
-    (_currentWaypoint, _currentPowerSetting) = _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
+    (_currentWaypoint, _currentPowerSetting) = _attackBehavior.GetNextWaypoint(transform.position, _targetPosition);
   }
 
   private Vector3 CalculateAccelerationCommand() {

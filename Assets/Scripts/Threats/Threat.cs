@@ -8,20 +8,26 @@ public abstract class Threat : Agent {
   [SerializeField]
   protected Vector3 _currentWaypoint;
   [SerializeField]
-  protected StaticAgentConfig.PowerSetting _currentPowerSetting;
+  protected PowerSetting _currentPowerSetting;
 
-  protected float PowerTableLookup(StaticAgentConfig.PowerSetting powerSetting) {
+  protected Vector3 _targetPosition;
+
+  public void SetAttackBehavior(AttackBehavior attackBehavior) {
+    _attackBehavior = attackBehavior;
+  }
+
+  protected float PowerTableLookup(PowerSetting powerSetting) {
     switch (powerSetting)
     {
-        case StaticAgentConfig.PowerSetting.IDLE:
+        case PowerSetting.IDLE:
             return _staticAgentConfig.powerTable.IDLE;
-        case StaticAgentConfig.PowerSetting.LOW:
+        case PowerSetting.LOW:
             return _staticAgentConfig.powerTable.LOW;
-        case StaticAgentConfig.PowerSetting.CRUISE:
+        case PowerSetting.CRUISE:
             return _staticAgentConfig.powerTable.CRUISE;
-        case StaticAgentConfig.PowerSetting.MIL:
+        case PowerSetting.MIL:
             return _staticAgentConfig.powerTable.MIL;
-        case StaticAgentConfig.PowerSetting.MAX:
+        case PowerSetting.MAX:
             return _staticAgentConfig.powerTable.MAX;
         default:
             Debug.LogError("Invalid power setting");

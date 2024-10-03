@@ -34,4 +34,13 @@ public abstract class AgentTestBase : TestBase
     protected Interceptor CreateTestInterceptor(DynamicAgentConfig config) {
         return InvokePrivateMethod<Interceptor>(simManager, "CreateInterceptor", config);
     }
+
+    protected void SetVelocity(Agent agent, Vector3 velocity)
+    {
+        Rigidbody rb = agent.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = velocity;
+        }
+    }
 }

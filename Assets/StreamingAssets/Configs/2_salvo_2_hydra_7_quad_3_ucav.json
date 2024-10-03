@@ -97,6 +97,7 @@
       "num_agents": 7,
       "dynamic_agent_config": {
         "agent_model": "quadcopter.json",
+        "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
@@ -122,6 +123,7 @@
       "num_agents": 3,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
+        "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 2000, "y": 100, "z": 4000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
