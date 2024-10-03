@@ -20,13 +20,13 @@
               <Name>System.Boolean SanityTest/&lt;SanityCheck&gt;d__0::MoveNext()</Name>
               <FileRef uid="37" />
               <SequencePoints>
-                <SequencePoint vc="1" uspid="4222" ordinal="0" offset="31" sl="10" sc="5" el="10" ec="5" bec="0" bev="0" fileid="37" />
-                <SequencePoint vc="1" uspid="4223" ordinal="0" offset="32" sl="12" sc="9" el="12" ec="9" bec="0" bev="0" fileid="37" />
-                <SequencePoint vc="1" uspid="4224" ordinal="0" offset="48" sl="15" sc="9" el="15" ec="9" bec="0" bev="0" fileid="37" />
-                <SequencePoint vc="1" uspid="4225" ordinal="0" offset="60" sl="18" sc="9" el="18" ec="9" bec="0" bev="0" fileid="37" />
-                <SequencePoint vc="1" uspid="4226" ordinal="0" offset="93" sl="21" sc="9" el="21" ec="9" bec="0" bev="0" fileid="37" />
-                <SequencePoint vc="1" uspid="4227" ordinal="0" offset="105" sl="23" sc="9" el="23" ec="9" bec="0" bev="0" fileid="37" />
-                <SequencePoint vc="1" uspid="4228" ordinal="0" offset="128" sl="24" sc="5" el="24" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4222" ordinal="0" offset="31" sl="8" sc="36" el="8" ec="36" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4223" ordinal="0" offset="32" sl="10" sc="5" el="10" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4224" ordinal="0" offset="48" sl="13" sc="5" el="13" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4225" ordinal="0" offset="60" sl="16" sc="5" el="16" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4226" ordinal="0" offset="93" sl="20" sc="5" el="20" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4227" ordinal="0" offset="105" sl="22" sc="5" el="22" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4228" ordinal="0" offset="128" sl="23" sc="3" el="23" ec="3" bec="0" bev="0" fileid="37" />
               </SequencePoints>
               <BranchPoints />
             </Method>
