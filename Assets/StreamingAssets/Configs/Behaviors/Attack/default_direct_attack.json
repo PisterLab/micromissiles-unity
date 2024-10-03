@@ -1,0 +1,25 @@
+{
+
+    "name": "DefaultDirectAttack",
+    "type": "DirectAttack",
+    "targetPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "flightPlan": {
+        "type": "DistanceToTarget",
+        "waypoints": [
+            {
+                "distance": 10000.0,
+                "altitude": 500.0,
+                "power": "MIL"
+            },
+            {
+                "distance": 1000.0,
+                "altitude": 100.0,
+                "power": "MAX"
+            }
+        ]
+    }
+}

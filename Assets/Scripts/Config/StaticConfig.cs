@@ -37,6 +37,25 @@ public class StaticAgentConfig {
     public float killProbability = 0.9f;
   }
 
+  [Serializable]
+  public class PowerTable {
+    public float IDLE;
+    public float LOW;
+    public float CRUISE;
+    public float MIL;
+    public float MAX;
+  }
+
+  public enum PowerSetting {
+    IDLE,
+    LOW,
+    CRUISE,
+    MIL,
+    MAX
+  }
+
+  public PowerTable powerTable;
+
   public AccelerationConfig accelerationConfig;
   public BoostConfig boostConfig;
   public LiftDragConfig liftDragConfig;

@@ -11,7 +11,7 @@ public class SimManager : MonoBehaviour {
   /// <summary>
   /// Singleton instance of SimManager.
   /// </summary>
-  public static SimManager Instance { get; private set; }
+  public static SimManager Instance { get;  set; }
 
   /// <summary>
   /// Configuration settings for the simulation.
@@ -222,6 +222,8 @@ public class SimManager : MonoBehaviour {
 
     // Set the static agent config
     threat.SetStaticAgentConfig(threatStaticAgentConfig);
+
+    // Set the attack behavior
 
     // Subscribe events
     threat.OnInterceptHit += RegisterThreatHit;

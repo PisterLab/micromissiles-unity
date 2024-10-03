@@ -203,4 +203,60 @@ public abstract class Agent : MonoBehaviour {
           Quaternion.RotateTowards(transform.rotation, targetRotation, 1000f * Time.deltaTime);
     }
   }
+
+  protected Vector3 CalculateAcceleration(Vector3 accelerationInput,
+                                          bool compensateForGravity = false) {
+    Vector3 gravity = Physics.gravity;
+    if (compensateForGravity) {
+      Vector3 gravityProjection = CalculateGravityProjectionOnPitchAndYaw();
+      accelerationInput -= gravityProjection;
+    }
+
+    float airDrag = CalculateDrag();
+    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
+    float dragAcceleration = -(airDrag + liftInducedDrag);
+
+    // Project the drag acceleration onto the forward direction
+    Vector3 dragAccelerationAlongRoll = dragAcceleration * transform.forward;
+    _dragAcceleration = dragAccelerationAlongRoll;
+
+    return accelerationInput + gravity + dragAccelerationAlongRoll;
+  }
+    protected float CalculateMaxAcceleration() {
+    float maxReferenceAcceleration =
+        (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
+                Constants.kGravity);
+    float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
+    return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
+           maxReferenceAcceleration;
+  }
+  protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
+    Vector3 gravity = Physics.gravity;
+    Vector3 pitchAxis = transform.right;
+    Vector3 yawAxis = transform.up;
+
+    // Project the gravity onto the pitch and yaw axes
+    float gravityProjectionPitchCoefficient = Vector3.Dot(gravity, pitchAxis);
+    float gravityProjectionYawCoefficient = Vector3.Dot(gravity, yawAxis);
+
+    // Return the sum of the projections
+    return gravityProjectionPitchCoefficient * pitchAxis +
+           gravityProjectionYawCoefficient * yawAxis;
+  }
+
+  private float CalculateDrag() {
+    float dragCoefficient = _staticAgentConfig.liftDragConfig.dragCoefficient;
+    float crossSectionalArea = _staticAgentConfig.bodyConfig.crossSectionalArea;
+    float mass = _staticAgentConfig.bodyConfig.mass;
+    float dynamicPressure = (float)GetDynamicPressure();
+    float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
+    return dragForce / mass;
+  }
+
+  private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
+    float liftAcceleration =
+        (accelerationInput - Vector3.Dot(accelerationInput, transform.up) * transform.up).magnitude;
+    float liftDragRatio = _staticAgentConfig.liftDragConfig.liftDragRatio;
+    return Mathf.Abs(liftAcceleration / liftDragRatio);
+  }
 }

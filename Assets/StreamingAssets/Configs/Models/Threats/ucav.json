@@ -23,5 +23,12 @@
     "hitConfig": {
       "hitRadius": 1,
       "killProbability": 0.9
+    },
+    "powerTable": {
+        "IDLE": 0,
+        "LOW": 40,
+        "CRUISE": 80,
+        "MIL": 100,
+        "MAX": 120
     }
 }

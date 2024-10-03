@@ -58,6 +58,8 @@ public static class ConfigLoader {
         });
   }
 
+  
+
   public static void PrintSimulationConfig(SimulationConfig config) {
     if (config == null) {
       Debug.Log("SimulationConfig is null");
