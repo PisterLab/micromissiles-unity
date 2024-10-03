@@ -38,19 +38,20 @@ public class DirectAttackBehavior : AttackBehavior
         Vector3 waypointPosition;
         PowerSetting power;
 
-        if (currentWaypointIndex < flightPlan.waypoints.Count - 1)
+        if (currentWaypointIndex == flightPlan.waypoints.Count - 1 && distanceToTarget < flightPlan.waypoints[currentWaypointIndex].distance)
+        {
+            
+            // This is the last waypoint, so target the final position
+            waypointPosition = targetPosition;
+            power = flightPlan.waypoints[0].power;
+        }   
+        else
         {
             // There is a next waypoint
             DTTWaypoint nextWaypoint = flightPlan.waypoints[currentWaypointIndex + 1];
             waypointPosition = targetPosition + directionToTarget.normalized * nextWaypoint.distance;
             waypointPosition.y = nextWaypoint.altitude;
             power = nextWaypoint.power;
-        }
-        else
-        {
-            // This is the last waypoint, so target the final position
-            waypointPosition = targetPosition;
-            power = flightPlan.waypoints[currentWaypointIndex].power;
         }
 
         return (waypointPosition, power);

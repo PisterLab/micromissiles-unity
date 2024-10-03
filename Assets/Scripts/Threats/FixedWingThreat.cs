@@ -107,7 +107,7 @@ public class FixedWingThreat : Threat {
     float speedError = targetSpeed - currentSpeed;
 
     // Proportional gain for speed control
-    float speedControlGain = 1.0f; // Adjust this gain as necessary
+    float speedControlGain = 10.0f; // Adjust this gain as necessary
 
     // Desired acceleration to adjust speed
     float desiredAccelerationMagnitude = speedControlGain * speedError;
