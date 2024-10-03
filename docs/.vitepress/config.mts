@@ -20,7 +20,12 @@ export default defineConfig({
           { text: 'Keybinds and Controls', link: '/Keybinds_and_Controls' },
           { text: 'Simulation Configuration Guide', link: '/Simulation_Config_Guide' },
           { text: 'Simulation Logging', link: '/Simulation_Logging' },
-          { text: 'Coverage Reports', link: '/coverage/editmode/Report/' },
+          { text: 'Coverage Reports', 
+            items: [
+              { text: 'EditMode Tests', link: '/coverage/editmode/Report/index.html' },
+              { text: 'PlayMode Tests', link: '/coverage/playmode/Report/index.html' }
+            ]
+          },
           { text: 'Development Guide', link: '/Development_Guide' }
         ]
       }
