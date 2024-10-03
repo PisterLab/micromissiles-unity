@@ -10,10 +10,11 @@ public abstract class Threat : Agent {
   [SerializeField]
   protected PowerSetting _currentPowerSetting;
 
-  protected Vector3 _targetPosition;
+  protected SensorOutput _sensorOutput;
 
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
+    _target = SimManager.Instance.CreateDummyThreat(attackBehavior.targetPosition, attackBehavior.targetVelocity);
   }
 
   protected float PowerTableLookup(PowerSetting powerSetting) {

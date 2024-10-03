@@ -24,6 +24,9 @@ public class SimManager : MonoBehaviour {
   private List<Interceptor> _interceptorObjects = new List<Interceptor>();
   private List<Threat> _threatObjects = new List<Threat>();
 
+  private List<GameObject> _dummyThreatObjects = new List<GameObject>();
+  private Dictionary<(Vector3, Vector3), GameObject> _dummyThreatTable = new Dictionary<(Vector3, Vector3), GameObject>();
+
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
@@ -163,12 +166,19 @@ public class SimManager : MonoBehaviour {
     }
   }
 
-  public GameObject CreateDummyThreat(Vector3 position, Vector3 velocity) {
-    GameObject dummyThreatObject = Resources.Load<GameObject>($"Prefabs/DummyThreatObject");
-    dummyThreatObject.transform.position = position;
+  public Agent CreateDummyThreat(Vector3 position, Vector3 velocity) {
+    if (_dummyThreatTable.ContainsKey((position, velocity))) {
+      return _dummyThreatTable[(position, velocity)].GetComponent<Agent>();
+    }
+    GameObject dummyThreatPrefab = Resources.Load<GameObject>($"Prefabs/DummyThreatTarget");
+    GameObject dummyThreatObject = Instantiate(dummyThreatPrefab, position, Quaternion.identity);
+    if (!dummyThreatObject.TryGetComponent<Agent>(out _)) {
+      dummyThreatObject.AddComponent<DummyAgent>();
+    }
     Rigidbody dummyRigidbody = dummyThreatObject.GetComponent<Rigidbody>();
     dummyRigidbody.linearVelocity = velocity;
-    return dummyThreatObject;
+    _dummyThreatTable[(position, velocity)] = dummyThreatObject;
+    return dummyThreatObject.GetComponent<Agent>();
   }
 
   /// <summary>
@@ -326,7 +336,8 @@ public class SimManager : MonoBehaviour {
     _interceptorObjects.Clear();
     _activeInterceptors.Clear();
     _threatObjects.Clear();
-
+    _dummyThreatObjects.Clear();
+    _dummyThreatTable.Clear();
     StartSimulation();
   }
 

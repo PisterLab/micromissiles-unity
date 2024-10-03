@@ -23,15 +23,16 @@ public class DirectAttackBehavior : AttackBehavior
         Vector3 directionToTarget = targetPosition - currentPosition;
         float distanceToTarget = directionToTarget.magnitude;
 
+        
         // Find the current waypoint based on the distance to target
         int currentWaypointIndex = 0;
         for (int i = 0; i < flightPlan.waypoints.Count; i++)
         {
-            if (distanceToTarget <= flightPlan.waypoints[i].distance)
+            if (distanceToTarget > flightPlan.waypoints[i].distance)
             {
-                currentWaypointIndex = i;
                 break;
             }
+            currentWaypointIndex = i;
         }
 
         Vector3 waypointPosition;
@@ -58,9 +59,17 @@ public class DirectAttackBehavior : AttackBehavior
     public new static DirectAttackBehavior FromJson(string json) {
         string resolvedPath = ResolveBehaviorPath(json);
         string fileContent = ConfigLoader.LoadFromStreamingAssets(resolvedPath);
-        return JsonConvert.DeserializeObject<DirectAttackBehavior>(fileContent, new JsonSerializerSettings {
+        DirectAttackBehavior behavior = JsonConvert.DeserializeObject<DirectAttackBehavior>(fileContent, new JsonSerializerSettings {
             Converters = { new StringEnumConverter() }
         });
+
+        // Sort waypoints in ascending order based on distance
+        if (behavior.flightPlan != null && behavior.flightPlan.waypoints != null)
+        {
+            behavior.flightPlan.waypoints.Sort((a, b) => a.distance.CompareTo(b.distance));
+        }
+
+        return behavior;
     }
 }
 

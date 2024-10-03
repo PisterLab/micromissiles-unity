@@ -156,7 +156,7 @@
           "launch_config": { "launch_time": 0 },
           "sensor_config": {
             "type": "IDEAL",
-            "frequency": 0
+            "frequency": 100
           }
         },
         "submunitions_config": {

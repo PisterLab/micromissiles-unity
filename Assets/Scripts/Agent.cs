@@ -17,6 +17,12 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected Vector3 _dragAcceleration;
 
+  
+  [SerializeField]
+  // Only for debugging (viewing in editor)
+  // Don't bother setting this it won't be used
+  protected float _speed;
+
   [SerializeField]
   protected Agent _target;
   protected bool _isHit = false;
@@ -151,6 +157,7 @@ public abstract class Agent : MonoBehaviour {
 
   // Update is called once per frame
   protected virtual void FixedUpdate() {
+    _speed = (float)GetSpeed();
     _timeSinceLaunch += Time.fixedDeltaTime;
     _timeInPhase += Time.fixedDeltaTime;
 
@@ -260,3 +267,27 @@ public abstract class Agent : MonoBehaviour {
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }
 }
+
+
+public class DummyAgent : Agent {
+  protected override void Start() {
+    base.Start();
+  }
+
+  protected override void FixedUpdate() {
+    // Do nothing
+  }
+
+  protected override void UpdateReady(double deltaTime) {
+    // Do nothing
+  }
+
+  protected override void UpdateBoost(double deltaTime) {
+    // Do nothing
+  }
+
+  protected override void UpdateMidCourse(double deltaTime) {
+    // Do nothing
+  }
+}
+
