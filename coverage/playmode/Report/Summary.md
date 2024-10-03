@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/03/2024 - 04:01:27 |
+| Generated on: | 10/03/2024 - 04:55:41 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 3 |
 | Classes: | 38 |
@@ -9,7 +9,7 @@
 | Covered lines: | 7 |
 | Uncovered lines: | 1895 |
 | Coverable lines: | 1902 |
-| Total lines: | 3742 |
+| Total lines: | 3737 |
 | Line coverage: | 0.3% (7 of 1902) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -19,14 +19,14 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**0**|**1825**|**1825**|**3679**|**0%**|**0**|**0**|****|**0**|**283**|**0%**|
+|**bamlab.micromissiles**|**0**|**1825**|**1825**|**3670**|**0%**|**0**|**0**|****|**0**|**283**|**0%**|
 |Agent|0|125|125|210|0%|0|0||0|24|0%|
 |BotStatusDialog|0|16|16|36|0%|0|0||0|2|0%|
 |CameraController|0|217|217|490|0%|0|0||0|23|0%|
 |CarrierInterceptor|0|31|31|48|0%|0|0||0|5|0%|
 |ConfigLoader|0|110|110|169|0%|0|0||0|12|0%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
-|DynamicAgentConfig|0|3|3|125|0%|0|0||0|1|0%|
+|DynamicAgentConfig|0|3|3|121|0%|0|0||0|1|0%|
 |FixedWingThreat|0|9|9|21|0%|0|0||0|5|0%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|0|88|88|146|0%|0|0||0|17|0%|
@@ -41,8 +41,8 @@
 |Sensor|0|3|3|70|0%|0|0||0|1|0%|
 |SimManager|0|192|192|337|0%|0|0||0|26|0%|
 |SimMonitor|0|156|156|263|0%|0|0||0|19|0%|
-|SimulationConfig|0|3|3|125|0%|0|0||0|1|0%|
-|StaticAgentConfig|0|13|13|46|0%|0|0||0|5|0%|
+|SimulationConfig|0|3|3|121|0%|0|0||0|1|0%|
+|StaticAgentConfig|0|13|13|45|0%|0|0||0|5|0%|
 |Threat|0|9|9|17|0%|0|0||0|3|0%|
 |ThreatAssignment|0|42|42|79|0%|0|0||0|5|0%|
 |ThreatData|0|24|24|48|0%|0|0||0|5|0%|
