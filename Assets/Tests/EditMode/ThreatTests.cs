@@ -220,7 +220,8 @@ public class ThreatTests : AgentTestBase
     public void FixedWingThreat_CalculateAccelerationCommand_RespectsMaxAcceleration()
     {
         SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
-        Vector3 acceleration = InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationCommand");
+        SensorOutput sensorOutput = fixedWingThreat.GetComponent<Sensor>().SenseWaypoint(Vector3.one * 1000f);
+        Vector3 acceleration = InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationCommand", sensorOutput);
         float maxAcceleration = InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxAcceleration");
         Assert.LessOrEqual(acceleration.magnitude, maxAcceleration);
     }
