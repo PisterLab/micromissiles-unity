@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class Sensor : MonoBehaviour {
@@ -6,6 +7,8 @@ public abstract class Sensor : MonoBehaviour {
   protected virtual void Start() {
     _agent = GetComponent<Agent>();
   }
+
+  public abstract SensorOutput SenseWaypoint(Vector3 waypointPosition);
 
   /// <summary>
   /// Main sensing method to gather information about a target agent.
@@ -35,6 +38,24 @@ public abstract class Sensor : MonoBehaviour {
   /// </remarks>
   protected abstract PositionOutput SensePosition(Agent target);
 
+  protected virtual PositionOutput ComputePositionSensorOutput(Vector3 relativePosition) {
+    PositionOutput positionSensorOutput = new PositionOutput();
+
+    // Calculate the distance (range) to the target
+    positionSensorOutput.range = relativePosition.magnitude;
+
+    // Calculate azimuth (horizontal angle relative to forward)
+    positionSensorOutput.azimuth =
+        Vector3.SignedAngle(transform.forward, relativePosition, transform.up);
+
+    // Calculate elevation (vertical angle relative to forward)
+    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
+    positionSensorOutput.elevation =
+        Vector3.SignedAngle(flatRelativePosition, relativePosition, transform.right);
+
+    return positionSensorOutput;
+  }
+
   /// <summary>
   /// Calculates the relative velocity of the target agent.
   /// </summary>
@@ -50,6 +71,33 @@ public abstract class Sensor : MonoBehaviour {
   ///   Positive means the target is moving upwards.
   /// </remarks>
   protected abstract VelocityOutput SenseVelocity(Agent target);
+
+
+  protected virtual VelocityOutput ComputeVelocitySensorOutput(
+      Vector3 relativePosition, Vector3 relativeVelocity) {
+    VelocityOutput velocitySensorOutput = new VelocityOutput();
+
+    // Calculate range rate (radial velocity)
+    velocitySensorOutput.range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
+
+    // Project relative velocity onto a plane perpendicular to relative position
+    Vector3 tangentialVelocity =
+        Vector3.ProjectOnPlane(relativeVelocity, relativePosition.normalized);
+
+    // Calculate azimuth rate
+    Vector3 horizontalVelocity = Vector3.ProjectOnPlane(tangentialVelocity, transform.up);
+    velocitySensorOutput.azimuth =
+        Vector3.Dot(horizontalVelocity, transform.right) / relativePosition.magnitude;
+
+    // Calculate elevation rate
+    Vector3 verticalVelocity = Vector3.Project(tangentialVelocity, transform.up);
+    velocitySensorOutput.elevation = verticalVelocity.magnitude / relativePosition.magnitude;
+    if (Vector3.Dot(verticalVelocity, transform.up) < 0) {
+      velocitySensorOutput.elevation *= -1;
+    }
+ 
+    return velocitySensorOutput;
+  }
 }
 
 public struct SensorOutput {
