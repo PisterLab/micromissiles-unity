@@ -287,8 +287,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8462434346230391091}
-  - component: {fileID: 4571646124809534626}
   - component: {fileID: 4451965530778273955}
+  - component: {fileID: -2644446524513508257}
+  - component: {fileID: 1645065302290878449}
   m_Layer: 0
   m_Name: FixedWingThreat
   m_TagString: Untagged
@@ -314,24 +315,6 @@ Transform:
   - {fileID: 9192475791974545516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4571646124809534626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6438458936967544359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f532f6ee629e87643b7b75a50e83083f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _flightPhase: 0
-  _velocity: {x: 0, y: 0, z: 0}
-  _acceleration: {x: 0, y: 0, z: 0}
-  _dragAcceleration: {x: 0, y: 0, z: 0}
-  _target: {fileID: 0}
-  StaticAgentConfigFile: generic_static_config.json
 --- !u!54 &4451965530778273955
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -359,3 +342,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-2644446524513508257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6438458936967544359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16e40584b2154ef4a95c84e85a321999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flightPhase: 0
+  _velocity: {x: 0, y: 0, z: 0}
+  _acceleration: {x: 0, y: 0, z: 0}
+  _dragAcceleration: {x: 0, y: 0, z: 0}
+  _speed: 0
+  _target: {fileID: 0}
+  _currentWaypoint: {x: 0, y: 0, z: 0}
+  _currentPowerSetting: 0
+  _navigationGain: 50
+--- !u!114 &1645065302290878449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6438458936967544359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b285afc8c96ee4f9ca22836fd105d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -97,6 +97,7 @@
       "num_agents": 7,
       "dynamic_agent_config": {
         "agent_model": "quadcopter.json",
+        "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
@@ -110,7 +111,7 @@
           "launch_config": { "launch_time": 0 },
           "sensor_config": {
             "type": "IDEAL",
-            "frequency": 0
+            "frequency": 100
           }
         },
         "submunitions_config": {
@@ -119,9 +120,10 @@
       }
     },
     {
-      "num_agents": 3,
+      "num_agents": 15,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
+        "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 2000, "y": 100, "z": 4000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
@@ -129,13 +131,13 @@
         },
         "standard_deviation": {
           "position": { "x": 400, "y": 30, "z": 400 },
-          "velocity": { "x": 0, "y": 0, "z": 15 }
+          "velocity": { "x": 50, "y": 20, "z": 15 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 0 },
           "sensor_config": {
             "type": "IDEAL",
-            "frequency": 0
+            "frequency": 100
           }
         },
         "submunitions_config": {

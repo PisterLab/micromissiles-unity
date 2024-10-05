@@ -32,6 +32,7 @@ public class SwarmConfig {
 public class DynamicAgentConfig {
   public string name;
   public string agent_model;
+  public string attack_behavior;
   public InitialState initial_state;
   public StandardDeviation standard_deviation;
   public DynamicConfig dynamic_config;

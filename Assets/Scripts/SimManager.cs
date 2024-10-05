@@ -11,7 +11,7 @@ public class SimManager : MonoBehaviour {
   /// <summary>
   /// Singleton instance of SimManager.
   /// </summary>
-  public static SimManager Instance { get; private set; }
+  public static SimManager Instance { get;  set; }
 
   /// <summary>
   /// Configuration settings for the simulation.
@@ -23,6 +23,9 @@ public class SimManager : MonoBehaviour {
 
   private List<Interceptor> _interceptorObjects = new List<Interceptor>();
   private List<Threat> _threatObjects = new List<Threat>();
+
+  private List<GameObject> _dummyThreatObjects = new List<GameObject>();
+  private Dictionary<(Vector3, Vector3), GameObject> _dummyThreatTable = new Dictionary<(Vector3, Vector3), GameObject>();
 
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time
@@ -151,6 +154,33 @@ public class SimManager : MonoBehaviour {
     // Placeholder
   }
 
+  private AttackBehavior LoadAttackBehavior(DynamicAgentConfig config) {
+    string threatBehaviorFile = config.attack_behavior;
+    AttackBehavior attackBehavior = AttackBehavior.FromJson(threatBehaviorFile);
+    switch (attackBehavior.attackBehaviorType) {
+      case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK:
+        return DirectAttackBehavior.FromJson(threatBehaviorFile);
+      default:
+        Debug.LogError($"Attack behavior type '{attackBehavior.attackBehaviorType}' not found.");
+        return null;
+    }
+  }
+
+  public Agent CreateDummyThreat(Vector3 position, Vector3 velocity) {
+    if (_dummyThreatTable.ContainsKey((position, velocity))) {
+      return _dummyThreatTable[(position, velocity)].GetComponent<Agent>();
+    }
+    GameObject dummyThreatPrefab = Resources.Load<GameObject>($"Prefabs/DummyThreatTarget");
+    GameObject dummyThreatObject = Instantiate(dummyThreatPrefab, position, Quaternion.identity);
+    if (!dummyThreatObject.TryGetComponent<Agent>(out _)) {
+      dummyThreatObject.AddComponent<DummyAgent>();
+    }
+    Rigidbody dummyRigidbody = dummyThreatObject.GetComponent<Rigidbody>();
+    dummyRigidbody.linearVelocity = velocity;
+    _dummyThreatTable[(position, velocity)] = dummyThreatObject;
+    return dummyThreatObject.GetComponent<Agent>();
+  }
+
   /// <summary>
   /// Creates a interceptor based on the provided configuration.
   /// </summary>
@@ -223,6 +253,10 @@ public class SimManager : MonoBehaviour {
     // Set the static agent config
     threat.SetStaticAgentConfig(threatStaticAgentConfig);
 
+    // Set the attack behavior
+    AttackBehavior attackBehavior = LoadAttackBehavior(config);
+    threat.SetAttackBehavior(attackBehavior);
+
     // Subscribe events
     threat.OnInterceptHit += RegisterThreatHit;
     threat.OnInterceptMiss += RegisterThreatMiss;
@@ -230,6 +264,9 @@ public class SimManager : MonoBehaviour {
     // Assign a unique and simple ID
     int threatId = _threatObjects.Count;
     threatObject.name = $"{threatStaticAgentConfig.name}_Threat_{threatId}";
+
+    // Threats always start in midcourse
+    threat.SetFlightPhase(Agent.FlightPhase.MIDCOURSE);
 
     // Let listeners know a new threat has been created
     OnNewThreat?.Invoke(threat);
@@ -299,7 +336,8 @@ public class SimManager : MonoBehaviour {
     _interceptorObjects.Clear();
     _activeInterceptors.Clear();
     _threatObjects.Clear();
-
+    _dummyThreatObjects.Clear();
+    _dummyThreatTable.Clear();
     StartSimulation();
   }
 

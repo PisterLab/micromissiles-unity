@@ -1,4 +1,6 @@
 using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 [Serializable]
 public class StaticAgentConfig {
@@ -37,9 +39,29 @@ public class StaticAgentConfig {
     public float killProbability = 0.9f;
   }
 
+  [Serializable]
+  public class PowerTable {
+    public float IDLE;
+    public float LOW;
+    public float CRUISE;
+    public float MIL;
+    public float MAX;
+  }
+
+  public PowerTable powerTable;
+
   public AccelerationConfig accelerationConfig;
   public BoostConfig boostConfig;
   public LiftDragConfig liftDragConfig;
   public BodyConfig bodyConfig;
   public HitConfig hitConfig;
+}
+
+[JsonConverter(typeof(StringEnumConverter))]
+public enum PowerSetting {
+  IDLE,
+  LOW,
+  CRUISE,
+  MIL,
+  MAX
 }
