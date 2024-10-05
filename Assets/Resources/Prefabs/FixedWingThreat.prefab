@@ -362,7 +362,7 @@ MonoBehaviour:
   _target: {fileID: 0}
   _currentWaypoint: {x: 0, y: 0, z: 0}
   _currentPowerSetting: 0
-  _navigationGain: 3
+  _navigationGain: 50
 --- !u!114 &1645065302290878449
 MonoBehaviour:
   m_ObjectHideFlags: 0

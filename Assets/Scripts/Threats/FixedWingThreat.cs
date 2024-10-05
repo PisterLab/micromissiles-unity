@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FixedWingThreat : Threat {
   [SerializeField]
-  private float _navigationGain = 3f;
+  private float _navigationGain = 50f;
 
 
   private Vector3 _accelerationCommand;
@@ -36,7 +36,7 @@ public class FixedWingThreat : Threat {
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate state from sensor output
         // For now, we'll use the threat's actual state
-        _sensorOutput = GetComponent<Sensor>().Sense(_target);
+        _sensorOutput = GetComponent<Sensor>().SenseWaypoint(_currentWaypoint);
         _elapsedTime = 0;
       }
 
