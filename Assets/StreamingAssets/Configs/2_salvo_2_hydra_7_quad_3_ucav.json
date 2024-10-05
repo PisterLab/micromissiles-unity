@@ -131,7 +131,7 @@
         },
         "standard_deviation": {
           "position": { "x": 400, "y": 30, "z": 400 },
-          "velocity": { "x": 0, "y": 0, "z": 15 }
+          "velocity": { "x": 50, "y": 20, "z": 15 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 0 },
