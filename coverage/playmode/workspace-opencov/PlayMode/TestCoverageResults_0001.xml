@@ -1,72 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageSession xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="0.0.0.0">
-  <Summary numSequencePoints="19" visitedSequencePoints="7" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="36.84" branchCoverage="0.0" maxCyclomaticComplexity="3" minCyclomaticComplexity="1" maxCrapScore="3" minCrapScore="2" visitedClasses="1" numClasses="2" visitedMethods="1" numMethods="4" />
+  <Summary numSequencePoints="7" visitedSequencePoints="7" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="3" minCyclomaticComplexity="3" maxCrapScore="3" minCrapScore="3" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
   <Modules>
-    <Module>
-      <Summary numSequencePoints="12" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="3" />
-      <ModuleTime>0001-01-01T00:00:00</ModuleTime>
-      <ModuleName>bamlab.test.editmode</ModuleName>
-      <Files>
-        <File uid="37" fullPath="/github/workspace/Assets/Tests/EditMode/AgentTestBase.cs" />
-        <File uid="38" fullPath="/github/workspace/Assets/Tests/EditMode/SanityTest.cs" />
-        <File uid="39" fullPath="/github/workspace/Assets/Tests/EditMode/TestBase.cs" />
-        <File uid="40" fullPath="/github/workspace/Assets/Tests/EditMode/ThreatAssignmentTests.cs" />
-        <File uid="41" fullPath="/github/workspace/Assets/Tests/EditMode/ThreatTests.cs" />
-      </Files>
-      <Classes>
-        <Class>
-          <Summary numSequencePoints="12" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0.0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="1" visitedMethods="0" numMethods="3" />
-          <FullName>TestBase</FullName>
-          <Methods>
-            <Method visited="false" cyclomaticComplexity="1" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="2" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="4" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
-              <MetadataToken>100663306</MetadataToken>
-              <Name>System.Void TestBase::SetPrivateField[T](System.Object, System.String, T)</Name>
-              <FileRef uid="39" />
-              <SequencePoints>
-                <SequencePoint vc="0" uspid="4798" ordinal="0" offset="0" sl="9" sc="0" el="9" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4799" ordinal="0" offset="1" sl="10" sc="0" el="10" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4800" ordinal="0" offset="10" sl="11" sc="0" el="11" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4801" ordinal="0" offset="24" sl="12" sc="0" el="12" ec="0" bec="0" bev="0" fileid="39" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-            <Method visited="false" cyclomaticComplexity="1" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="2" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="4" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
-              <MetadataToken>100663307</MetadataToken>
-              <Name>T TestBase::GetPrivateField[T](System.Object, System.String)</Name>
-              <FileRef uid="39" />
-              <SequencePoints>
-                <SequencePoint vc="0" uspid="4802" ordinal="0" offset="0" sl="15" sc="0" el="15" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4803" ordinal="0" offset="1" sl="16" sc="0" el="16" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4804" ordinal="0" offset="10" sl="17" sc="0" el="17" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4805" ordinal="0" offset="25" sl="18" sc="0" el="18" ec="0" bec="0" bev="0" fileid="39" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-            <Method visited="false" cyclomaticComplexity="1" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="2" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
-              <Summary numSequencePoints="4" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
-              <MetadataToken>100663308</MetadataToken>
-              <Name>T TestBase::InvokePrivateMethod[T](System.Object, System.String, System.Object[])</Name>
-              <FileRef uid="39" />
-              <SequencePoints>
-                <SequencePoint vc="0" uspid="4806" ordinal="0" offset="0" sl="21" sc="0" el="21" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4807" ordinal="0" offset="1" sl="22" sc="0" el="22" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4808" ordinal="0" offset="10" sl="23" sc="0" el="23" ec="0" bec="0" bev="0" fileid="39" />
-                <SequencePoint vc="0" uspid="4809" ordinal="0" offset="26" sl="24" sc="0" el="24" ec="0" bec="0" bev="0" fileid="39" />
-              </SequencePoints>
-              <BranchPoints />
-            </Method>
-          </Methods>
-        </Class>
-      </Classes>
-    </Module>
     <Module>
       <Summary numSequencePoints="7" visitedSequencePoints="7" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0.0" maxCyclomaticComplexity="3" minCyclomaticComplexity="3" maxCrapScore="3" minCrapScore="3" visitedClasses="1" numClasses="1" visitedMethods="1" numMethods="1" />
       <ModuleTime>0001-01-01T00:00:00</ModuleTime>
       <ModuleName>bamlab.test.playmode</ModuleName>
       <Files>
-        <File uid="42" fullPath="/github/workspace/Assets/Tests/PlayMode/SanityTest.cs" />
+        <File uid="37" fullPath="/github/workspace/Assets/Tests/PlayMode/SanityTest.cs" />
       </Files>
       <Classes>
         <Class>
@@ -77,15 +18,15 @@
               <Summary numSequencePoints="7" visitedSequencePoints="7" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="100.0" branchCoverage="0" maxCyclomaticComplexity="3" minCyclomaticComplexity="3" maxCrapScore="3" minCrapScore="3" visitedClasses="0" numClasses="0" visitedMethods="1" numMethods="1" />
               <MetadataToken>100663303</MetadataToken>
               <Name>System.Boolean SanityTest/&lt;SanityCheck&gt;d__0::MoveNext()</Name>
-              <FileRef uid="42" />
+              <FileRef uid="37" />
               <SequencePoints>
-                <SequencePoint vc="1" uspid="5024" ordinal="0" offset="31" sl="8" sc="36" el="8" ec="36" bec="0" bev="0" fileid="42" />
-                <SequencePoint vc="1" uspid="5025" ordinal="0" offset="32" sl="10" sc="5" el="10" ec="5" bec="0" bev="0" fileid="42" />
-                <SequencePoint vc="1" uspid="5026" ordinal="0" offset="48" sl="13" sc="5" el="13" ec="5" bec="0" bev="0" fileid="42" />
-                <SequencePoint vc="1" uspid="5027" ordinal="0" offset="60" sl="16" sc="5" el="16" ec="5" bec="0" bev="0" fileid="42" />
-                <SequencePoint vc="1" uspid="5028" ordinal="0" offset="93" sl="20" sc="5" el="20" ec="5" bec="0" bev="0" fileid="42" />
-                <SequencePoint vc="1" uspid="5029" ordinal="0" offset="105" sl="22" sc="5" el="22" ec="5" bec="0" bev="0" fileid="42" />
-                <SequencePoint vc="1" uspid="5030" ordinal="0" offset="128" sl="23" sc="3" el="23" ec="3" bec="0" bev="0" fileid="42" />
+                <SequencePoint vc="1" uspid="4222" ordinal="0" offset="31" sl="8" sc="36" el="8" ec="36" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4223" ordinal="0" offset="32" sl="10" sc="5" el="10" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4224" ordinal="0" offset="48" sl="13" sc="5" el="13" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4225" ordinal="0" offset="60" sl="16" sc="5" el="16" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4226" ordinal="0" offset="93" sl="20" sc="5" el="20" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4227" ordinal="0" offset="105" sl="22" sc="5" el="22" ec="5" bec="0" bev="0" fileid="37" />
+                <SequencePoint vc="1" uspid="4228" ordinal="0" offset="128" sl="23" sc="3" el="23" ec="3" bec="0" bev="0" fileid="37" />
               </SequencePoints>
               <BranchPoints />
             </Method>
