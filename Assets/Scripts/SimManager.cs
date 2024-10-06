@@ -19,6 +19,8 @@ public class SimManager : MonoBehaviour {
   [SerializeField]
   public SimulationConfig simulationConfig;
 
+  public string defaultConfig = "1_salvo_1_hydra_7_drones.json";
+
   private List<Interceptor> _activeInterceptors = new List<Interceptor>();
 
   private List<Interceptor> _interceptorObjects = new List<Interceptor>();

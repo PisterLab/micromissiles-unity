@@ -1,11 +1,10 @@
 {
-    "name": "bamlab.test.editmode",
+    "name": "bamlab.test",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "bamlab.micromissiles",
-        "bamlab.test"
+        "bamlab.micromissiles"
     ],
     "includePlatforms": [
         "Editor"

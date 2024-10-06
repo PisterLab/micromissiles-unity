@@ -141,7 +141,7 @@
     {
       "num_agents": 200,
       "dynamic_agent_config": {
-        "agent_model": "hydra70.json",
+        "agent_model": "quadcopter.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
