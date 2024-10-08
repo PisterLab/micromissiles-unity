@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/08/2024 - 02:56:20</Generatedon>
+    <Generatedon>10/08/2024 - 05:27:01</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>45</Classes>
     <Files>43</Files>
     <Coveredlines>506</Coveredlines>
-    <Uncoveredlines>1748</Uncoveredlines>
-    <Coverablelines>2254</Coverablelines>
-    <Totallines>4412</Totallines>
+    <Uncoveredlines>1752</Uncoveredlines>
+    <Coverablelines>2258</Coverablelines>
+    <Totallines>4410</Totallines>
     <Linecoverage>22.4</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
@@ -18,16 +18,16 @@
     <Methodcoverage>20.8</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="38" coverage="14.3" coveredlines="285" coverablelines="1988" totallines="4215" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="50" totalmethods="309" methodcoverage="16.1">
-      <Class name="Agent" coverage="18.9" coveredlines="31" coverablelines="164" totallines="293" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="29" methodcoverage="27.5" />
+    <Assembly name="bamlab.micromissiles" classes="38" coverage="14.3" coveredlines="285" coverablelines="1992" totallines="4214" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="50" totalmethods="309" methodcoverage="16.1">
+      <Class name="Agent" coverage="18.6" coveredlines="31" coverablelines="166" totallines="294" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="29" methodcoverage="27.5" />
       <Class name="AttackBehavior" coverage="80" coveredlines="12" coverablelines="15" totallines="62" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="BotStatusDialog" coverage="0" coveredlines="0" coverablelines="15" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="CameraController" coverage="0" coveredlines="0" coverablelines="207" totallines="454" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="CarrierInterceptor" coverage="0" coveredlines="0" coverablelines="31" totallines="48" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
+      <Class name="CarrierInterceptor" coverage="0" coveredlines="0" coverablelines="32" totallines="49" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="ConfigLoader" coverage="17.8" coveredlines="18" coverablelines="101" totallines="149" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="12" methodcoverage="16.6" />
       <Class name="Constants" coverage="0" coveredlines="0" coverablelines="6" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="DirectAttackBehavior" coverage="27" coveredlines="10" coverablelines="37" totallines="88" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="2" methodcoverage="50" />
-      <Class name="DummyAgent" coverage="0" coveredlines="0" coverablelines="11" totallines="293" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
+      <Class name="DummyAgent" coverage="0" coveredlines="0" coverablelines="11" totallines="294" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="DynamicAgentConfig" coverage="0" coveredlines="0" coverablelines="3" totallines="122" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="FixedWingThreat" coverage="22.5" coveredlines="16" coverablelines="71" totallines="143" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="10" methodcoverage="20" />
       <Class name="GenerateCone" coverage="0" coveredlines="0" coverablelines="100" totallines="144" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
@@ -35,7 +35,7 @@
       <Class name="IAssignment" coverage="100" coveredlines="10" coverablelines="10" totallines="42" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="IdealSensor" coverage="33.3" coveredlines="10" coverablelines="30" totallines="55" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="5" methodcoverage="20" />
       <Class name="InputManager" coverage="0" coveredlines="0" coverablelines="96" totallines="142" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="11" methodcoverage="0" />
-      <Class name="Interceptor" coverage="8.9" coveredlines="5" coverablelines="56" totallines="105" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="10" methodcoverage="20" />
+      <Class name="Interceptor" coverage="8.7" coveredlines="5" coverablelines="57" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="10" methodcoverage="20" />
       <Class name="MissileInterceptor" coverage="5" coveredlines="2" coverablelines="40" totallines="78" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="4" methodcoverage="25" />
       <Class name="RectTransformExtensions" coverage="0" coveredlines="0" coverablelines="12" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
       <Class name="RotaryWingThreat" coverage="27.5" coveredlines="11" coverablelines="40" totallines="71" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="9" methodcoverage="11.1" />

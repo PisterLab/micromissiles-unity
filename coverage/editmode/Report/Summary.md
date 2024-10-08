@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/08/2024 - 02:56:20 |
+| Generated on: | 10/08/2024 - 05:27:01 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 45 |
 | Files: | 43 |
 | Covered lines: | 506 |
-| Uncovered lines: | 1748 |
-| Coverable lines: | 2254 |
-| Total lines: | 4412 |
-| Line coverage: | 22.4% (506 of 2254) |
+| Uncovered lines: | 1752 |
+| Coverable lines: | 2258 |
+| Total lines: | 4410 |
+| Line coverage: | 22.4% (506 of 2258) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 70 |
@@ -19,16 +19,16 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**285**|**1703**|**1988**|**4215**|**14.3%**|**0**|**0**|****|**50**|**309**|**16.1%**|
-|Agent|31|133|164|293|18.9%|0|0||8|29|27.5%|
+|**bamlab.micromissiles**|**285**|**1707**|**1992**|**4214**|**14.3%**|**0**|**0**|****|**50**|**309**|**16.1%**|
+|Agent|31|135|166|294|18.6%|0|0||8|29|27.5%|
 |AttackBehavior|12|3|15|62|80%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
 |CameraController|0|207|207|454|0%|0|0||0|23|0%|
-|CarrierInterceptor|0|31|31|48|0%|0|0||0|5|0%|
+|CarrierInterceptor|0|32|32|49|0%|0|0||0|5|0%|
 |ConfigLoader|18|83|101|149|17.8%|0|0||2|12|16.6%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
 |DirectAttackBehavior|10|27|37|88|27%|0|0||1|2|50%|
-|DummyAgent|0|11|11|293|0%|0|0||0|5|0%|
+|DummyAgent|0|11|11|294|0%|0|0||0|5|0%|
 |DynamicAgentConfig|0|3|3|122|0%|0|0||0|1|0%|
 |FixedWingThreat|16|55|71|143|22.5%|0|0||2|10|20%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
@@ -36,7 +36,7 @@
 |IAssignment|10|0|10|42|100%|0|0||3|3|100%|
 |IdealSensor|10|20|30|55|33.3%|0|0||1|5|20%|
 |InputManager|0|96|96|142|0%|0|0||0|11|0%|
-|Interceptor|5|51|56|105|8.9%|0|0||2|10|20%|
+|Interceptor|5|52|57|101|8.7%|0|0||2|10|20%|
 |MissileInterceptor|2|38|40|78|5%|0|0||1|4|25%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|11|29|40|71|27.5%|0|0||1|9|11.1%|
