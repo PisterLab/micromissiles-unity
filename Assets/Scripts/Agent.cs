@@ -237,18 +237,20 @@ public abstract class Agent : MonoBehaviour {
     return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
            maxReferenceAcceleration;
   }
+
+  protected float CalculateMaxForwardAcceleration() {
+    return _staticAgentConfig.accelerationConfig.maxForwardAcceleration;
+  }
+
   protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
     Vector3 gravity = Physics.gravity;
-    Vector3 pitchAxis = transform.right;
-    Vector3 yawAxis = transform.up;
 
     // Project the gravity onto the pitch and yaw axes
-    float gravityProjectionPitchCoefficient = Vector3.Dot(gravity, pitchAxis);
-    float gravityProjectionYawCoefficient = Vector3.Dot(gravity, yawAxis);
+    Vector3 gravityProjectedOnPitch = Vector3.Project(gravity, transform.right);
+    Vector3 gravityPRojectedOnYaw = Vector3.Project(gravity, transform.up);
 
     // Return the sum of the projections
-    return gravityProjectionPitchCoefficient * pitchAxis +
-           gravityProjectionYawCoefficient * yawAxis;
+    return gravityProjectedOnPitch + gravityProjectedOnYaw;
   }
 
   private float CalculateDrag() {

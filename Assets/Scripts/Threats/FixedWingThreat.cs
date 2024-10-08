@@ -6,7 +6,6 @@ public class FixedWingThreat : Threat {
   [SerializeField]
   private float _navigationGain = 50f;
 
-
   private Vector3 _accelerationCommand;
   private double _elapsedTime = 0;
 
@@ -48,22 +47,18 @@ public class FixedWingThreat : Threat {
 
       // Combine the accelerations
       accelerationInput = pnAcceleration + speedAdjustmentAcceleration;
-
-      // Clamp the total acceleration
-      float maxAcceleration = CalculateMaxAcceleration();
-      if (accelerationInput.magnitude > maxAcceleration) {
-        accelerationInput = accelerationInput.normalized * maxAcceleration;
-      }
     }
 
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: true);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
+
   private void UpdateWaypointAndPower() {
     // Get the next waypoint and power setting from the attack behavior
     // TODO: Implement support for SENSORS to update the track on the target position
-    (_currentWaypoint, _currentPowerSetting) = _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
+    (_currentWaypoint, _currentPowerSetting) =
+        _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
 
   private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
@@ -107,21 +102,22 @@ public class FixedWingThreat : Threat {
     float speedError = targetSpeed - currentSpeed;
 
     // Proportional gain for speed control
-    float speedControlGain = 10.0f; // Adjust this gain as necessary
+    float speedControlGain = 10.0f;  // Adjust this gain as necessary
 
     // Desired acceleration to adjust speed
     float desiredAccelerationMagnitude = speedControlGain * speedError;
 
     // Limit the desired acceleration
-    float maxAcceleration = CalculateMaxAcceleration();
-    desiredAccelerationMagnitude = Mathf.Clamp(desiredAccelerationMagnitude, -maxAcceleration, maxAcceleration);
+    float maxAcceleration = CalculateMaxForwardAcceleration();
+    desiredAccelerationMagnitude =
+        Mathf.Clamp(desiredAccelerationMagnitude, -maxAcceleration, maxAcceleration);
 
     // Acceleration direction (along current velocity direction)
     Vector3 accelerationDirection = GetVelocity().normalized;
 
     // Handle zero velocity case
     if (accelerationDirection.magnitude < 0.1f) {
-      accelerationDirection = transform.forward; // Default direction
+      accelerationDirection = transform.forward;  // Default direction
     }
 
     // Calculate acceleration vector

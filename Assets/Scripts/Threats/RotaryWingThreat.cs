@@ -31,7 +31,8 @@ public class RotaryWingThreat : Threat {
   }
 
   private void UpdateWaypointAndPower() {
-    (_currentWaypoint, _currentPowerSetting) = _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
+    (_currentWaypoint, _currentPowerSetting) =
+        _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
 
   private Vector3 CalculateAccelerationToWaypoint() {
@@ -44,12 +45,19 @@ public class RotaryWingThreat : Threat {
 
     // Calculate acceleration needed to reach desired velocity
     Vector3 accelerationCommand = (desiredVelocity - currentVelocity) / (float)Time.fixedDeltaTime;
+    Vector3 forwardAccelerationCommand = Vector3.Project(accelerationCommand, transform.forward);
+    Vector3 normalAccelerationCommand = accelerationCommand - forwardAccelerationCommand;
 
     // Limit acceleration magnitude
-    float maxAcceleration = CalculateMaxAcceleration();
-    accelerationCommand = Vector3.ClampMagnitude(accelerationCommand, maxAcceleration);
+    float maxForwardAcceleration = CalculateMaxForwardAcceleration();
+    forwardAccelerationCommand =
+        Vector3.ClampMagnitude(forwardAccelerationCommand, maxForwardAcceleration);
+    float maxNormalAcceleration = CalculateMaxAcceleration();
+    normalAccelerationCommand =
+        Vector3.ClampMagnitude(normalAccelerationCommand, maxNormalAcceleration);
+    accelerationCommand = forwardAccelerationCommand + normalAccelerationCommand;
 
-    _accelerationCommand = accelerationCommand; // Store for debugging
+    _accelerationCommand = accelerationCommand;  // Store for debugging
     return accelerationCommand;
   }
 

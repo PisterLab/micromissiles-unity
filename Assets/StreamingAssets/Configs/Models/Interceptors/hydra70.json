@@ -3,7 +3,8 @@
     "agentClass": "CarrierInterceptor",
     "accelerationConfig": {
         "maxReferenceAcceleration": 300,
-        "referenceSpeed": 1000
+        "referenceSpeed": 1000,
+        "maxForwardAcceleration": 0
     },
     "boostConfig": {
         "boostTime": 0.3,
