@@ -9,6 +9,9 @@
     "boostConfig": {
         "boostTime": 0
     },
+    "liftDragConfig": {
+      "dragCoefficient": 0
+    },
     "bodyConfig": {
         "mass": 1
     },
