@@ -11,7 +11,7 @@ public class SimManager : MonoBehaviour {
   /// <summary>
   /// Singleton instance of SimManager.
   /// </summary>
-  public static SimManager Instance { get;  set; }
+  public static SimManager Instance { get; set; }
 
   /// <summary>
   /// Configuration settings for the simulation.
@@ -27,7 +27,8 @@ public class SimManager : MonoBehaviour {
   private List<Threat> _threatObjects = new List<Threat>();
 
   private List<GameObject> _dummyThreatObjects = new List<GameObject>();
-  private Dictionary<(Vector3, Vector3), GameObject> _dummyThreatTable = new Dictionary<(Vector3, Vector3), GameObject>();
+  private Dictionary<(Vector3, Vector3), GameObject> _dummyThreatTable =
+      new Dictionary<(Vector3, Vector3), GameObject>();
 
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time

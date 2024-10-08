@@ -53,8 +53,6 @@ public class Interceptor : Agent {
 
   protected override void UpdateMidCourse(double deltaTime) {}
 
-
-
   private void OnTriggerEnter(Collider other) {
     if (other.gameObject.name == "Floor") {
       this.HandleInterceptMiss();
@@ -81,8 +79,6 @@ public class Interceptor : Agent {
       }
     }
   }
-
-
 
   protected virtual void DrawDebugVectors() {
     if (_target != null) {

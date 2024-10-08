@@ -58,10 +58,4 @@ public class StaticAgentConfig {
 }
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum PowerSetting {
-  IDLE,
-  LOW,
-  CRUISE,
-  MIL,
-  MAX
-}
+public enum PowerSetting { IDLE, LOW, CRUISE, MIL, MAX }
