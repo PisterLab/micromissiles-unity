@@ -1,34 +1,34 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/08/2024 - 02:57:05 |
+| Generated on: | 10/08/2024 - 05:28:01 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 45 |
 | Files: | 43 |
-| Covered lines: | 840 |
-| Uncovered lines: | 1414 |
-| Coverable lines: | 2254 |
-| Total lines: | 4412 |
-| Line coverage: | 37.2% (840 of 2254) |
+| Covered lines: | 837 |
+| Uncovered lines: | 1421 |
+| Coverable lines: | 2258 |
+| Total lines: | 4410 |
+| Line coverage: | 37% (837 of 2258) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 144 |
+| Covered methods: | 143 |
 | Total methods: | 336 |
-| Method coverage: | 42.8% (144 of 336) |
+| Method coverage: | 42.5% (143 of 336) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**820**|**1168**|**1988**|**4215**|**41.2%**|**0**|**0**|****|**141**|**309**|**45.6%**|
-|Agent|102|62|164|293|62.1%|0|0||18|29|62%|
+|**bamlab.micromissiles**|**817**|**1175**|**1992**|**4214**|**41%**|**0**|**0**|****|**140**|**309**|**45.3%**|
+|Agent|103|63|166|294|62%|0|0||18|29|62%|
 |AttackBehavior|12|3|15|62|80%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
 |CameraController|88|119|207|454|42.5%|0|0||11|23|47.8%|
-|CarrierInterceptor|16|15|31|48|51.6%|0|0||4|5|80%|
+|CarrierInterceptor|16|16|32|49|50%|0|0||4|5|80%|
 |ConfigLoader|24|77|101|149|23.7%|0|0||3|12|25%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |DirectAttackBehavior|29|8|37|88|78.3%|0|0||2|2|100%|
-|DummyAgent|5|6|11|293|45.4%|0|0||2|5|40%|
+|DummyAgent|5|6|11|294|45.4%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|122|0%|0|0||0|1|0%|
 |FixedWingThreat|9|62|71|143|12.6%|0|0||4|10|40%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
@@ -36,7 +36,7 @@
 |IAssignment|0|10|10|42|0%|0|0||0|3|0%|
 |IdealSensor|3|27|30|55|10%|0|0||1|5|20%|
 |InputManager|55|41|96|142|57.2%|0|0||11|11|100%|
-|Interceptor|26|30|56|105|46.4%|0|0||6|10|60%|
+|Interceptor|22|35|57|101|38.5%|0|0||5|10|50%|
 |MissileInterceptor|0|40|40|78|0%|0|0||0|4|0%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|31|9|40|71|77.5%|0|0||7|9|77.7%|
