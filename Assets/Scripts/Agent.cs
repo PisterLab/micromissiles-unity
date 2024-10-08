@@ -229,17 +229,17 @@ public abstract class Agent : MonoBehaviour {
     return accelerationInput + gravity + dragAccelerationAlongRoll;
   }
 
-  protected float CalculateMaxAcceleration() {
-    float maxReferenceAcceleration =
-        (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
+  protected float CalculateMaxForwardAcceleration() {
+    return _staticAgentConfig.accelerationConfig.maxForwardAcceleration;
+  }
+
+  protected float CalculateMaxNormalAcceleration() {
+    float maxReferenceNormalAcceleration =
+        (float)(_staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);
     float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
-           maxReferenceAcceleration;
-  }
-
-  protected float CalculateMaxForwardAcceleration() {
-    return _staticAgentConfig.accelerationConfig.maxForwardAcceleration;
+           maxReferenceNormalAcceleration;
   }
 
   protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
@@ -247,7 +247,7 @@ public abstract class Agent : MonoBehaviour {
 
     // Project the gravity onto the pitch and yaw axes
     Vector3 gravityProjectedOnPitch = Vector3.Project(gravity, transform.right);
-    Vector3 gravityPRojectedOnYaw = Vector3.Project(gravity, transform.up);
+    Vector3 gravityProjectedOnYaw = Vector3.Project(gravity, transform.up);
 
     // Return the sum of the projections
     return gravityProjectedOnPitch + gravityProjectedOnYaw;

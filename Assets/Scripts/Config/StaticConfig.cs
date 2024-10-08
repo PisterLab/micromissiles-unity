@@ -8,7 +8,7 @@ public class StaticAgentConfig {
   public string agentClass;
   [Serializable]
   public class AccelerationConfig {
-    public float maxReferenceAcceleration = 300f;
+    public float maxReferenceNormalAcceleration = 300f;
     public float referenceSpeed = 1000f;
     public float maxForwardAcceleration = 50f;
   }

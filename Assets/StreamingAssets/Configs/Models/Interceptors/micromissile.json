@@ -2,7 +2,7 @@
     "name": "Micromissile",
     "agentClass": "MissileInterceptor",
     "accelerationConfig": {
-        "maxReferenceAcceleration": 300,
+        "maxReferenceNormalAcceleration": 300,
         "referenceSpeed": 1000,
         "maxForwardAcceleration": 0
     },

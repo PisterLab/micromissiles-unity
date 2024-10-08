@@ -82,9 +82,9 @@ public class FixedWingThreat : Threat {
     // Convert acceleration commands to craft body frame
     accelerationCommand = transform.right * acc_az + transform.up * acc_el;
 
-    // Clamp the acceleration command to the maximum acceleration
-    float maxAcceleration = CalculateMaxAcceleration();
-    accelerationCommand = Vector3.ClampMagnitude(accelerationCommand, maxAcceleration);
+    // Clamp the normal acceleration command to the maximum normal acceleration
+    float maxNormalAcceleration = CalculateMaxNormalAcceleration();
+    accelerationCommand = Vector3.ClampMagnitude(accelerationCommand, maxNormalAcceleration);
 
     // Update the stored acceleration command for debugging
     _accelerationCommand = accelerationCommand;
@@ -108,9 +108,9 @@ public class FixedWingThreat : Threat {
     float desiredAccelerationMagnitude = speedControlGain * speedError;
 
     // Limit the desired acceleration
-    float maxAcceleration = CalculateMaxForwardAcceleration();
+    float maxForwardAcceleration = CalculateMaxForwardAcceleration();
     desiredAccelerationMagnitude =
-        Mathf.Clamp(desiredAccelerationMagnitude, -maxAcceleration, maxAcceleration);
+        Mathf.Clamp(desiredAccelerationMagnitude, -maxForwardAcceleration, maxForwardAcceleration);
 
     // Acceleration direction (along current velocity direction)
     Vector3 accelerationDirection = GetVelocity().normalized;

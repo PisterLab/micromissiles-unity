@@ -52,7 +52,7 @@ public class RotaryWingThreat : Threat {
     float maxForwardAcceleration = CalculateMaxForwardAcceleration();
     forwardAccelerationCommand =
         Vector3.ClampMagnitude(forwardAccelerationCommand, maxForwardAcceleration);
-    float maxNormalAcceleration = CalculateMaxAcceleration();
+    float maxNormalAcceleration = CalculateMaxNormalAcceleration();
     normalAccelerationCommand =
         Vector3.ClampMagnitude(normalAccelerationCommand, maxNormalAcceleration);
     accelerationCommand = forwardAccelerationCommand + normalAccelerationCommand;

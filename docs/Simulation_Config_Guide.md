@@ -215,8 +215,9 @@ This file defines parameters for the micromissile model.
 ```json:Assets/StreamingAssets/Configs/Models/micromissile.json
 {
   "accelerationConfig": {
-    "maxReferenceAcceleration": 300,
-    "referenceSpeed": 1000
+    "maxReferenceNormalAcceleration": 300,
+    "referenceSpeed": 1000,
+    "maxForwardAcceleration": 0
   },
   "boostConfig": {
     "boostTime": 0.3,
@@ -243,7 +244,7 @@ This file defines parameters for the micromissile model.
 
 You can tweak the parameters in these model files to adjust performance. For example:
 
-- **Increase Acceleration**: Modify `maxReferenceAcceleration` in `accelerationConfig`.
+- **Increase Normal Acceleration**: Modify `maxReferenceNormalAcceleration` in `accelerationConfig`.
 - **Change Mass**: Adjust the `mass` value in `bodyConfig`.
 - **Alter Aerodynamics**: Tweak `liftCoefficient` and `dragCoefficient` in `liftDragConfig`.
 
@@ -289,8 +290,9 @@ For example:
 public class StaticAgentConfig {
   [Serializable]
   public class AccelerationConfig {
-    public float maxReferenceAcceleration = 300f;
+    public float maxReferenceNormalAcceleration = 300f;
     public float referenceSpeed = 1000f;
+    public float maxForwardAcceleration = 50f;
   }
 
   [Serializable]
