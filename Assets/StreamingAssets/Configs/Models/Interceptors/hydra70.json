@@ -19,9 +19,5 @@
         "crossSectionalArea": 0.004,
         "finArea": 0.007,
         "bodyArea": 0.12
-    },
-    "hitConfig": {
-        "hitRadius": 1,
-        "killProbability": 0.9
     }
 }

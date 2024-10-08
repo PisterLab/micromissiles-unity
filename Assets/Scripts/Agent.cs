@@ -17,7 +17,6 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected Vector3 _dragAcceleration;
 
-  
   [SerializeField]
   // Only for debugging (viewing in editor)
   // Don't bother setting this it won't be used
@@ -31,8 +30,8 @@ public abstract class Agent : MonoBehaviour {
   protected double _timeSinceLaunch = 0;
   protected double _timeInPhase = 0;
 
-  protected DynamicAgentConfig _dynamicAgentConfig;
-  protected StaticAgentConfig _staticAgentConfig;
+  public DynamicAgentConfig _dynamicAgentConfig;
+  public StaticAgentConfig _staticAgentConfig;
 
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
@@ -229,7 +228,8 @@ public abstract class Agent : MonoBehaviour {
 
     return accelerationInput + gravity + dragAccelerationAlongRoll;
   }
-    protected float CalculateMaxAcceleration() {
+
+  protected float CalculateMaxAcceleration() {
     float maxReferenceAcceleration =
         (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
                 Constants.kGravity);
@@ -268,7 +268,6 @@ public abstract class Agent : MonoBehaviour {
   }
 }
 
-
 public class DummyAgent : Agent {
   protected override void Start() {
     base.Start();
@@ -290,4 +289,3 @@ public class DummyAgent : Agent {
     // Do nothing
   }
 }
-
