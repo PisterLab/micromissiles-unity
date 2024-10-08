@@ -8,8 +8,9 @@ public class StaticAgentConfig {
   public string agentClass;
   [Serializable]
   public class AccelerationConfig {
-    public float maxReferenceAcceleration = 300f;
+    public float maxReferenceNormalAcceleration = 300f;
     public float referenceSpeed = 1000f;
+    public float maxForwardAcceleration = 50f;
   }
 
   [Serializable]
@@ -58,10 +59,4 @@ public class StaticAgentConfig {
 }
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum PowerSetting {
-  IDLE,
-  LOW,
-  CRUISE,
-  MIL,
-  MAX
-}
+public enum PowerSetting { IDLE, LOW, CRUISE, MIL, MAX }

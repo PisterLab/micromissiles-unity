@@ -61,7 +61,7 @@ public class Interceptor : Agent {
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
       // Check kill probability before marking as hit
-      float killProbability = _staticAgentConfig.hitConfig.killProbability;
+      float killProbability = otherAgent._staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {

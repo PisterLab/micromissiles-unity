@@ -32,8 +32,8 @@ public abstract class Agent : MonoBehaviour {
   protected double _timeSinceLaunch = 0;
   protected double _timeInPhase = 0;
 
-  protected DynamicAgentConfig _dynamicAgentConfig;
-  protected StaticAgentConfig _staticAgentConfig;
+  public DynamicAgentConfig _dynamicAgentConfig;
+  public StaticAgentConfig _staticAgentConfig;
 
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
@@ -232,26 +232,29 @@ public abstract class Agent : MonoBehaviour {
 
     return accelerationInput + gravity + dragAccelerationAlongRoll;
   }
-  protected float CalculateMaxAcceleration() {
-    float maxReferenceAcceleration =
-        (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
+
+  protected float CalculateMaxForwardAcceleration() {
+    return _staticAgentConfig.accelerationConfig.maxForwardAcceleration;
+  }
+
+  protected float CalculateMaxNormalAcceleration() {
+    float maxReferenceNormalAcceleration =
+        (float)(_staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);
     float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
-           maxReferenceAcceleration;
+           maxReferenceNormalAcceleration;
   }
+
   protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
     Vector3 gravity = Physics.gravity;
-    Vector3 pitchAxis = transform.right;
-    Vector3 yawAxis = transform.up;
 
     // Project the gravity onto the pitch and yaw axes
-    float gravityProjectionPitchCoefficient = Vector3.Dot(gravity, pitchAxis);
-    float gravityProjectionYawCoefficient = Vector3.Dot(gravity, yawAxis);
+    Vector3 gravityProjectedOnPitch = Vector3.Project(gravity, transform.right);
+    Vector3 gravityProjectedOnYaw = Vector3.Project(gravity, transform.up);
 
     // Return the sum of the projections
-    return gravityProjectionPitchCoefficient * pitchAxis +
-           gravityProjectionYawCoefficient * yawAxis;
+    return gravityProjectedOnPitch + gravityProjectedOnYaw;
   }
 
   private float CalculateDrag() {
