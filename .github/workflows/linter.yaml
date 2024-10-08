@@ -1,0 +1,23 @@
+name: Run Linter
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  clang-format:
+    name: Run clang-format
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: jidicula/clang-format-action@v4.13.0
+      with:
+        clang-format-version: 19
+        check-path: '.'
+        fallback-style: 'Google'
+        include-regex: '^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cs|cu))$'
