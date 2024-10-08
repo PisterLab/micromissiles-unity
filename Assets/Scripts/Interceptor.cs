@@ -25,7 +25,7 @@ public class Interceptor : Agent {
   protected override void UpdateReady(double deltaTime) {
     Vector3 accelerationInput = Vector3.zero;
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
-    // GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
   protected override void FixedUpdate() {
