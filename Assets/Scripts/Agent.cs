@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Agent : MonoBehaviour {
+  // In the initialized phase, the agent is subject to no forces.
+  // In the ready phase, the agent is subject to gravity and drag with zero input acceleration.
   public enum FlightPhase { INITIALIZED, READY, BOOST, MIDCOURSE, TERMINAL, TERMINATED }
 
   [SerializeField]
@@ -17,7 +19,6 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected Vector3 _dragAcceleration;
 
-  
   [SerializeField]
   // Only for debugging (viewing in editor)
   // Don't bother setting this it won't be used
@@ -54,7 +55,7 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public bool HasLaunched() {
-    return (_flightPhase != FlightPhase.INITIALIZED) && (_flightPhase != FlightPhase.READY);
+    return _flightPhase != FlightPhase.INITIALIZED;
   }
 
   public bool HasTerminated() {
@@ -152,13 +153,15 @@ public abstract class Agent : MonoBehaviour {
 
   // Start is called before the first frame update
   protected virtual void Start() {
-    _flightPhase = FlightPhase.READY;
+    _flightPhase = FlightPhase.INITIALIZED;
   }
 
   // Update is called once per frame
   protected virtual void FixedUpdate() {
     _speed = (float)GetSpeed();
-    _timeSinceLaunch += Time.fixedDeltaTime;
+    if (_flightPhase != FlightPhase.INITIALIZED) {
+      _timeSinceLaunch += Time.fixedDeltaTime;
+    }
     _timeInPhase += Time.fixedDeltaTime;
 
     var launch_time = _dynamicAgentConfig.dynamic_config.launch_config.launch_time;
@@ -169,10 +172,10 @@ public abstract class Agent : MonoBehaviour {
       return;
     }
 
-    if (elapsedSimulationTime >= launch_time && _flightPhase == FlightPhase.READY) {
+    if (elapsedSimulationTime >= launch_time) {
       SetFlightPhase(FlightPhase.BOOST);
     }
-    if (_timeSinceLaunch > boost_time && _flightPhase == FlightPhase.BOOST) {
+    if (_timeSinceLaunch > boost_time) {
       SetFlightPhase(FlightPhase.MIDCOURSE);
     }
     AlignWithVelocity();
@@ -229,7 +232,7 @@ public abstract class Agent : MonoBehaviour {
 
     return accelerationInput + gravity + dragAccelerationAlongRoll;
   }
-    protected float CalculateMaxAcceleration() {
+  protected float CalculateMaxAcceleration() {
     float maxReferenceAcceleration =
         (float)(_staticAgentConfig.accelerationConfig.maxReferenceAcceleration *
                 Constants.kGravity);
@@ -268,7 +271,6 @@ public abstract class Agent : MonoBehaviour {
   }
 }
 
-
 public class DummyAgent : Agent {
   protected override void Start() {
     base.Start();
@@ -290,4 +292,3 @@ public class DummyAgent : Agent {
     // Do nothing
   }
 }
-
