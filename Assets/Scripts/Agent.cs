@@ -46,8 +46,9 @@ public abstract class Agent : MonoBehaviour {
   public event InterceptMissEventHandler OnInterceptMiss;
 
   public void SetFlightPhase(FlightPhase flightPhase) {
-    //Debug.Log(
-    //    $"Setting flight phase to {flightPhase} at time {SimManager.Instance.GetElapsedSimulationTime()}");
+    // Debug.Log(
+    //     $"Setting flight phase to {flightPhase} at time
+    //     {SimManager.Instance.GetElapsedSimulationTime()}");
     _timeInPhase = 0;
     _flightPhase = flightPhase;
   }

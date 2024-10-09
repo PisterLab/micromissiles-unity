@@ -26,8 +26,10 @@ public class ParticleManager : MonoBehaviour {
     _missileExplosionPool = new Queue<GameObject>();
 
     // Grab from Resources/Prefabs/Effects
-    GameObject missileTrailPrefab = Resources.Load<GameObject>("Prefabs/Effects/InterceptorSmokeEffect");
-    GameObject missileExplosionPrefab = Resources.Load<GameObject>("Prefabs/Effects/InterceptExplosionEffect");
+    GameObject missileTrailPrefab =
+        Resources.Load<GameObject>("Prefabs/Effects/InterceptorSmokeEffect");
+    GameObject missileExplosionPrefab =
+        Resources.Load<GameObject>("Prefabs/Effects/InterceptExplosionEffect");
 
     // Pre-instantiate 10 missile trail particles
     for (int i = 0; i < 10; i++) {
@@ -51,26 +53,25 @@ public class ParticleManager : MonoBehaviour {
   }
 
   /// <summary>
-  /// Returns a missile explosion particle prefab from the pool and plays it at the specified location.
-  /// If the pool is empty, it returns null.
+  /// Returns a missile explosion particle prefab from the pool and plays it at the specified
+  /// location. If the pool is empty, it returns null.
   /// </summary>
   public GameObject PlayMissileExplosion(Vector3 position) {
     if (_missileExplosionPool.Count > 0) {
       GameObject explosion = _missileExplosionPool.Dequeue();
       explosion.transform.position = position;
-      
+
       ParticleSystem particleSystem = explosion.GetComponent<ParticleSystem>();
       if (particleSystem != null) {
         particleSystem.Clear();
         particleSystem.Play();
         StartCoroutine(ReturnExplosionAfterDelay(explosion, particleSystem.main.duration));
-      }
-      else {
+      } else {
         Debug.LogError("Missile explosion particle has no ParticleSystem component");
         _missileExplosionPool.Enqueue(explosion);
         return null;
       }
-      
+
       return explosion;
     }
     return null;
@@ -93,14 +94,12 @@ public class ParticleManager : MonoBehaviour {
     if (particleSystem != null) {
       particleSystem.Stop();
       particleSystem.Clear();
-    }
-    else {
+    } else {
       Debug.LogError("Attempted to return a missile explosion particle with no particle system");
     }
-    
+
     _missileExplosionPool.Enqueue(explosion);
   }
-
 
   private GameObject InstantiateMissileTrail(GameObject prefab) {
     GameObject trail = Instantiate(prefab, transform);
@@ -116,7 +115,8 @@ public class ParticleManager : MonoBehaviour {
     return explosion;
   }
 
-  private IEnumerator InstantiateMissileTrailsOverTime(GameObject prefab, int count, float duration) {
+  private IEnumerator InstantiateMissileTrailsOverTime(GameObject prefab, int count,
+                                                       float duration) {
     float interval = duration / count;
     for (int i = 0; i < count; i++) {
       InstantiateMissileTrail(prefab);
@@ -124,7 +124,8 @@ public class ParticleManager : MonoBehaviour {
     }
   }
 
-  private IEnumerator InstantiateMissileExplosionsOverTime(GameObject prefab, int count, float duration) {
+  private IEnumerator InstantiateMissileExplosionsOverTime(GameObject prefab, int count,
+                                                           float duration) {
     float interval = duration / count;
     for (int i = 0; i < count; i++) {
       InstantiateMissileExplosion(prefab);
@@ -133,7 +134,7 @@ public class ParticleManager : MonoBehaviour {
   }
 
   /// <summary>
-  /// Returns a missile trail particle prefab from the pool. 
+  /// Returns a missile trail particle prefab from the pool.
   /// If the pool is empty, it returns null
   /// </summary>
   /// <returns></returns>
@@ -141,7 +142,6 @@ public class ParticleManager : MonoBehaviour {
     if (_missileTrailPool.Count > 0) {
       GameObject trail = _missileTrailPool.Dequeue();
 
-      
       return trail;
     }
     return null;
@@ -153,7 +153,6 @@ public class ParticleManager : MonoBehaviour {
       return;
     }
 
-
     trail.transform.parent = transform;
     trail.transform.localPosition = Vector3.zero;
     ParticleSystem particleSystem = trail.GetComponent<ParticleSystem>();
@@ -162,12 +161,10 @@ public class ParticleManager : MonoBehaviour {
       particleSystem.Clear();
       var emission = particleSystem.emission;
       emission.enabled = true;
-    }
-    else {
+    } else {
       Debug.LogError("Attempted to return a missile trail particle with no particle system");
     }
-    
+
     _missileTrailPool.Enqueue(trail);
   }
 }
-

@@ -357,8 +357,6 @@ public class SimManager : MonoBehaviour {
     if (allInterceptorsTerminated) {
       RestartSimulation();
     }
-
-    
   }
 
   void FixedUpdate() {

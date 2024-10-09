@@ -112,7 +112,7 @@ public class Interceptor : Agent {
         _missileTrailEffect.transform.parent = transform;
         _missileTrailEffect.transform.localPosition = Vector3.zero;
         _missileTrailEffectAttached = true;
-        
+
         float duration = _missileTrailEffect.GetComponent<ParticleSystem>().main.duration;
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));
         _missileTrailEffect.GetComponent<ParticleSystem>().Play();
@@ -152,8 +152,6 @@ public class Interceptor : Agent {
       particleSystem.Stop();
     }
   }
-
-
 
   protected virtual void DrawDebugVectors() {
     if (_target != null) {

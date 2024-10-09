@@ -10,7 +10,8 @@ public class CarrierInterceptor : Interceptor {
     base.FixedUpdate();
     float launchTimeVariance = 0.5f;
     float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
-    float launchTimeWithNoise = _dynamicAgentConfig.submunitions_config.launch_config.launch_time + launchTimeNoise;
+    float launchTimeWithNoise =
+        _dynamicAgentConfig.submunitions_config.launch_config.launch_time + launchTimeNoise;
     // Check if it's time to launch submunitions
     if (!_submunitionsLaunched &&
         (GetFlightPhase() == FlightPhase.MIDCOURSE || GetFlightPhase() == FlightPhase.BOOST) &&
