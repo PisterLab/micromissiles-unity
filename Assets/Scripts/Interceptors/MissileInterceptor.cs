@@ -13,15 +13,13 @@ public class MissileInterceptor : Interceptor {
     _elapsedTime += deltaTime;
     Vector3 accelerationInput = Vector3.zero;
     if (HasAssignedTarget()) {
-      // Update the threat model (assuming we have a threat model)
-      // TODO: Implement threat model update logic
-
       // Correct the state of the threat model at the sensor frequency
       float sensorUpdatePeriod = 1f / _dynamicAgentConfig.dynamic_config.sensor_config.frequency;
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate state from sensor output
         // For now, we'll use the threat's actual state
-        _sensorOutput = GetComponent<Sensor>().Sense(_target);
+        _targetModel.SetPosition(_target.GetPosition());
+        _targetModel.SetVelocity(_target.GetVelocity());
         _elapsedTime = 0;
       }
 
@@ -32,6 +30,7 @@ public class MissileInterceptor : Interceptor {
       }
 
       // Calculate the acceleration input
+      _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
       accelerationInput = CalculateAccelerationCommand(_sensorOutput);
     }
 

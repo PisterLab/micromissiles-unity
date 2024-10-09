@@ -26,8 +26,8 @@ public class SimManager : MonoBehaviour {
   private List<Interceptor> _interceptorObjects = new List<Interceptor>();
   private List<Threat> _threatObjects = new List<Threat>();
 
-  private List<GameObject> _dummyThreatObjects = new List<GameObject>();
-  private Dictionary<(Vector3, Vector3), GameObject> _dummyThreatTable =
+  private List<GameObject> _dummyAgentObjects = new List<GameObject>();
+  private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
   private float _elapsedSimulationTime = 0f;
@@ -169,19 +169,20 @@ public class SimManager : MonoBehaviour {
     }
   }
 
-  public Agent CreateDummyThreat(Vector3 position, Vector3 velocity) {
-    if (_dummyThreatTable.ContainsKey((position, velocity))) {
-      return _dummyThreatTable[(position, velocity)].GetComponent<Agent>();
+  public Agent CreateDummyAgent(Vector3 position, Vector3 velocity) {
+    if (_dummyAgentTable.ContainsKey((position, velocity))) {
+      return _dummyAgentTable[(position, velocity)].GetComponent<Agent>();
     }
-    GameObject dummyThreatPrefab = Resources.Load<GameObject>($"Prefabs/DummyThreatTarget");
-    GameObject dummyThreatObject = Instantiate(dummyThreatPrefab, position, Quaternion.identity);
-    if (!dummyThreatObject.TryGetComponent<Agent>(out _)) {
-      dummyThreatObject.AddComponent<DummyAgent>();
+    GameObject dummyAgentPrefab = Resources.Load<GameObject>($"Prefabs/DummyAgent");
+    GameObject dummyAgentObject = Instantiate(dummyAgentPrefab, position, Quaternion.identity);
+    if (!dummyAgentObject.TryGetComponent<Agent>(out _)) {
+      dummyAgentObject.AddComponent<DummyAgent>();
     }
-    Rigidbody dummyRigidbody = dummyThreatObject.GetComponent<Rigidbody>();
+    Rigidbody dummyRigidbody = dummyAgentObject.GetComponent<Rigidbody>();
     dummyRigidbody.linearVelocity = velocity;
-    _dummyThreatTable[(position, velocity)] = dummyThreatObject;
-    return dummyThreatObject.GetComponent<Agent>();
+    _dummyAgentObjects.Add(dummyAgentObject);
+    _dummyAgentTable[(position, velocity)] = dummyAgentObject;
+    return dummyAgentObject.GetComponent<Agent>();
   }
 
   /// <summary>
@@ -230,7 +231,7 @@ public class SimManager : MonoBehaviour {
     // Let listeners know a new interceptor has been created
     OnNewInterceptor?.Invoke(interceptor);
 
-    return interceptorObject.GetComponent<Interceptor>();
+    return interceptor;
   }
 
   /// <summary>
@@ -336,11 +337,17 @@ public class SimManager : MonoBehaviour {
       }
     }
 
+    foreach (var dummyAgent in _dummyAgentObjects) {
+      if (dummyAgent != null) {
+        Destroy(dummyAgent);
+      }
+    }
+
     _interceptorObjects.Clear();
     _activeInterceptors.Clear();
     _threatObjects.Clear();
-    _dummyThreatObjects.Clear();
-    _dummyThreatTable.Clear();
+    _dummyAgentObjects.Clear();
+    _dummyAgentTable.Clear();
     StartSimulation();
   }
 
