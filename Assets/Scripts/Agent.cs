@@ -26,6 +26,7 @@ public abstract class Agent : MonoBehaviour {
 
   [SerializeField]
   protected Agent _target;
+  protected Agent _targetModel;
   protected bool _isHit = false;
   protected bool _isMiss = false;
 
@@ -46,9 +47,6 @@ public abstract class Agent : MonoBehaviour {
   public event InterceptMissEventHandler OnInterceptMiss;
 
   public void SetFlightPhase(FlightPhase flightPhase) {
-    // Debug.Log(
-    //     $"Setting flight phase to {flightPhase} at time
-    //     {SimManager.Instance.GetElapsedSimulationTime()}");
     _timeInPhase = 0;
     _flightPhase = flightPhase;
   }
@@ -80,6 +78,7 @@ public abstract class Agent : MonoBehaviour {
 
   public virtual void AssignTarget(Agent target) {
     _target = target;
+    _targetModel = SimManager.Instance.CreateDummyAgent(target.GetPosition(), target.GetVelocity());
   }
 
   public Agent GetAssignedTarget() {
@@ -90,6 +89,10 @@ public abstract class Agent : MonoBehaviour {
     return _target != null;
   }
 
+  public Agent GetTargetModel() {
+    return _targetModel;
+  }
+
   public void CheckTargetHit() {
     if (HasAssignedTarget() && _target.IsHit()) {
       UnassignTarget();
@@ -98,6 +101,7 @@ public abstract class Agent : MonoBehaviour {
 
   public virtual void UnassignTarget() {
     _target = null;
+    _targetModel = null;
   }
 
   // Return whether the agent has hit or been hit.
@@ -107,7 +111,7 @@ public abstract class Agent : MonoBehaviour {
 
   public virtual void TerminateAgent() {
     _flightPhase = FlightPhase.TERMINATED;
-    transform.position = new Vector3(0, 0, 0);
+    SetPosition(new Vector3(0, 0, 0));
     gameObject.SetActive(false);
   }
 
@@ -134,12 +138,28 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
+  public Vector3 GetPosition() {
+    return transform.position;
+  }
+
+  public void SetPosition(Vector3 position) {
+    transform.position = position;
+  }
+
   public double GetSpeed() {
     return GetComponent<Rigidbody>().linearVelocity.magnitude;
   }
 
   public Vector3 GetVelocity() {
     return GetComponent<Rigidbody>().linearVelocity;
+  }
+
+  public void SetVelocity(Vector3 velocity) {
+    GetComponent<Rigidbody>().linearVelocity = velocity;
+  }
+
+  public Vector3 GetAcceleration() {
+    return GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
   }
 
   public double GetDynamicPressure() {
@@ -200,9 +220,8 @@ public abstract class Agent : MonoBehaviour {
         break;
     }
 
-    _velocity = GetComponent<Rigidbody>().linearVelocity;
-    _acceleration =
-        GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
+    _velocity = GetVelocity();
+    _acceleration = GetAcceleration();
   }
 
   protected virtual void AlignWithVelocity() {
@@ -246,8 +265,7 @@ public abstract class Agent : MonoBehaviour {
         (float)(_staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);
     float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
-    return Mathf.Pow(GetComponent<Rigidbody>().linearVelocity.magnitude / referenceSpeed, 2) *
-           maxReferenceNormalAcceleration;
+    return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
   protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {

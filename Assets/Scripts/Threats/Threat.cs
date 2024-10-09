@@ -13,8 +13,8 @@ public abstract class Threat : Agent {
 
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
-    _target = SimManager.Instance.CreateDummyThreat(attackBehavior.targetPosition,
-                                                    attackBehavior.targetVelocity);
+    _target = SimManager.Instance.CreateDummyAgent(attackBehavior.targetPosition,
+                                                   attackBehavior.targetVelocity);
   }
 
   protected float PowerTableLookup(PowerSetting powerSetting) {
