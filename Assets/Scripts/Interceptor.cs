@@ -77,15 +77,13 @@ public class Interceptor : Agent {
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {
-        // Set green for hit
-        markerObject.GetComponent<Renderer>().material.color = new Color(0, 1, 0, 0.15f);
+        markerObject.GetComponent<UIHitMarker>().SetHit();
         // Mark both this agent and the other agent as hit
         this.HandleInterceptHit(otherAgent);
         otherAgent.HandleInterceptHit(otherAgent);
 
       } else {
-        // Set red for miss
-        markerObject.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 0.15f);
+        markerObject.GetComponent<UIHitMarker>().SetMiss();
         this.HandleInterceptMiss();
         // otherAgent.MarkAsMiss();
       }
@@ -101,7 +99,7 @@ public class Interceptor : Agent {
     if (_returnParticleToManagerCoroutine != null) {
       StopCoroutine(_returnParticleToManagerCoroutine);
     }
-    if (_missileTrailEffect != null) {
+    if (_missileTrailEffect != null && ParticleManager.Instance != null) {
       ParticleManager.Instance.ReturnMissileTrailParticle(_missileTrailEffect);
       _missileTrailEffect = null;
     }

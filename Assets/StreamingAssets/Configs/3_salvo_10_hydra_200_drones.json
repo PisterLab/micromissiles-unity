@@ -149,7 +149,7 @@
           "velocity": { "x": 0, "y": 0, "z": -50 }
         },
         "standard_deviation": {
-          "position": { "x": 1000, "y": 200, "z": 100 },
+          "position": { "x": 3000, "y": 200, "z": 100 },
           "velocity": { "x": 0, "y": 0, "z": 25 }
         },
         "dynamic_config": {
