@@ -137,7 +137,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7332702951742698389
 GameObject:
@@ -332,6 +332,8 @@ MonoBehaviour:
   _dragAcceleration: {x: 0, y: 0, z: 0}
   _speed: 0
   _target: {fileID: 0}
+  _timeSinceBoost: 0
+  _timeInPhase: 0
   _dynamicAgentConfig:
     name: 
     agent_model: 
@@ -405,7 +407,7 @@ MonoBehaviour:
       hitRadius: 1
       killProbability: 0.9
   _showDebugVectors: 1
-  _navigationGain: 5
+  _navigationGain: 10
 --- !u!54 &8492474273001620913
 Rigidbody:
   m_ObjectHideFlags: 0
