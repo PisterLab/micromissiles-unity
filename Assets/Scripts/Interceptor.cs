@@ -25,7 +25,7 @@ public class Interceptor : Agent {
   protected override void UpdateReady(double deltaTime) {
     Vector3 accelerationInput = Vector3.zero;
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
-    // GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
   protected override void FixedUpdate() {
@@ -61,7 +61,7 @@ public class Interceptor : Agent {
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
       // Check kill probability before marking as hit
-      float killProbability = _staticAgentConfig.hitConfig.killProbability;
+      float killProbability = otherAgent._staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {
