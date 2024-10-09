@@ -72,9 +72,8 @@ public abstract class Sensor : MonoBehaviour {
   /// </remarks>
   protected abstract VelocityOutput SenseVelocity(Agent target);
 
-
-  protected virtual VelocityOutput ComputeVelocitySensorOutput(
-      Vector3 relativePosition, Vector3 relativeVelocity) {
+  protected virtual VelocityOutput ComputeVelocitySensorOutput(Vector3 relativePosition,
+                                                               Vector3 relativeVelocity) {
     VelocityOutput velocitySensorOutput = new VelocityOutput();
 
     // Calculate range rate (radial velocity)
@@ -95,7 +94,7 @@ public abstract class Sensor : MonoBehaviour {
     if (Vector3.Dot(verticalVelocity, transform.up) < 0) {
       velocitySensorOutput.elevation *= -1;
     }
- 
+
     return velocitySensorOutput;
   }
 }
