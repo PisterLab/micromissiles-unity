@@ -17,11 +17,11 @@
 <tr><th>Class:</th><td>Sensor</td></tr>
 <tr><th>Assembly:</th><td>bamlab.micromissiles</td></tr>
 <tr><th>File(s):</th><td><a href="#githubworkspaceAssetsScriptsSensorsSensorcs" class="navigatetohash">/github/workspace/Assets/Scripts/Sensors/Sensor.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>19</td></tr>
-<tr><th>Uncovered lines:</th><td>5</td></tr>
+<tr><th>Covered lines:</th><td>21</td></tr>
+<tr><th>Uncovered lines:</th><td>3</td></tr>
 <tr><th>Coverable lines:</th><td>24</td></tr>
 <tr><th>Total lines:</th><td>117</td></tr>
-<tr><th>Line coverage:</th><td>79.1% (19 of 24)</td></tr>
+<tr><th>Line coverage:</th><td>87.5% (21 of 24)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>0</td></tr>
 <tr><th>Covered methods:</th><td>2</td></tr>
@@ -35,7 +35,7 @@
 <tbody>
 <tr><td title="System.Void Sensor::Start()"><a href="#file0_line7" class="navigatetohash">Start()</a></td><td>0%</td><td>2</td><td>1</td><td>0</td><td>0%</td></tr>
 <tr><td title="PositionOutput Sensor::ComputePositionSensorOutput(UnityEngine.Vector3)"><a href="#file0_line41" class="navigatetohash">ComputePositionSensorOutput(...)</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
-<tr><td title="VelocityOutput Sensor::ComputeVelocitySensorOutput(UnityEngine.Vector3, UnityEngine.Vector3)"><a href="#file0_line76" class="navigatetohash">ComputeVelocitySensorOutput(...)</a></td><td>0%</td><td>2.04</td><td>2</td><td>0</td><td>78.57%</td></tr>
+<tr><td title="VelocityOutput Sensor::ComputeVelocitySensorOutput(UnityEngine.Vector3, UnityEngine.Vector3)"><a href="#file0_line76" class="navigatetohash">ComputeVelocitySensorOutput(...)</a></td><td>0%</td><td>2</td><td>2</td><td>0</td><td>100%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -136,9 +136,9 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line91"></a><code>91</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Calculate&nbsp;elevation&nbsp;rate</code></td></tr>
 <tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line92"></a><code>92</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Vector3&nbsp;verticalVelocity&nbsp;=&nbsp;Vector3.Project(tangentialVelocity,&nbsp;transform.up);</code></td></tr>
 <tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line93"></a><code>93</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;velocitySensorOutput.elevation&nbsp;=&nbsp;verticalVelocity.magnitude&nbsp;/&nbsp;relativePosition.magnitude;</code></td></tr>
-<tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line94"></a><code>94</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(Vector3.Dot(verticalVelocity,&nbsp;transform.up)&nbsp;&lt;&nbsp;0)&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line95"></a><code>95</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;velocitySensorOutput.elevation&nbsp;*=&nbsp;-1;</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line96"></a><code>96</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Covered (3 visits)" data-coverage="{'AllTestMethods': {'VC': '3', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">3</td><td class="rightmargin right"><a id="file0_line94"></a><code>94</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(Vector3.Dot(verticalVelocity,&nbsp;transform.up)&nbsp;&lt;&nbsp;0)&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line95"></a><code>95</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;velocitySensorOutput.elevation&nbsp;*=&nbsp;-1;</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line96"></a><code>96</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line97"></a><code>97</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line98"></a><code>98</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;velocitySensorOutput;</code></td></tr>
 <tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line99"></a><code>99</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;}</code></td></tr>
@@ -162,13 +162,13 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line117"></a><code>117</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />10/09/2024 - 00:07:35<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />10/09/2024 - 02:52:55<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
 <a href="#file0_line7" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - Start()"><i class="icon-cube"></i>Start()</a><br />
 <a href="#file0_line41" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - ComputePositionSensorOutput(UnityEngine.Vector3)"><i class="icon-cube"></i>ComputePositionSensorOutput(UnityEngine.Vector3)</a><br />
-<a href="#file0_line76" class="navigatetohash percentagebar percentagebar80" title="Line coverage: 84.6% - ComputeVelocitySensorOutput(UnityEngine.Vector3, UnityEngine.Vector3)"><i class="icon-cube"></i>ComputeVelocitySensorOutput(UnityEngine.Vector3, UnityEngine.Vector3)</a><br />
+<a href="#file0_line76" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - ComputeVelocitySensorOutput(UnityEngine.Vector3, UnityEngine.Vector3)"><i class="icon-cube"></i>ComputeVelocitySensorOutput(UnityEngine.Vector3, UnityEngine.Vector3)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">

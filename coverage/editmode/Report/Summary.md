@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/09/2024 - 00:07:35 |
+| Generated on: | 10/09/2024 - 02:52:55 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 45 |
 | Files: | 43 |
-| Covered lines: | 526 |
-| Uncovered lines: | 1736 |
+| Covered lines: | 528 |
+| Uncovered lines: | 1734 |
 | Coverable lines: | 2262 |
 | Total lines: | 4373 |
-| Line coverage: | 23.2% (526 of 2262) |
+| Line coverage: | 23.3% (528 of 2262) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 73 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**292**|**1697**|**1989**|**4190**|**14.6%**|**0**|**0**|****|**51**|**310**|**16.4%**|
+|**bamlab.micromissiles**|**294**|**1695**|**1989**|**4190**|**14.7%**|**0**|**0**|****|**51**|**310**|**16.4%**|
 |Agent|34|133|167|297|20.3%|0|0||9|30|30%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
@@ -41,7 +41,7 @@
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|16|29|45|79|35.5%|0|0||1|9|11.1%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
-|Sensor|19|5|24|117|79.1%|0|0||2|3|66.6%|
+|Sensor|21|3|24|117|87.5%|0|0||2|3|66.6%|
 |SimManager|65|156|221|368|29.4%|0|0||8|28|28.5%|
 |SimMonitor|0|147|147|233|0%|0|0||0|19|0%|
 |SimulationConfig|3|0|3|122|100%|0|0||1|1|100%|
