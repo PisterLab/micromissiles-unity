@@ -358,6 +358,10 @@ public class SimManager : MonoBehaviour {
       RestartSimulation();
     }
 
+    
+  }
+
+  void FixedUpdate() {
     if (simulationRunning && _elapsedSimulationTime < endTime) {
       _elapsedSimulationTime += Time.deltaTime;
     } else if (_elapsedSimulationTime >= endTime) {

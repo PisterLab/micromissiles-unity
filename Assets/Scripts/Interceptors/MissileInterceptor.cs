@@ -38,6 +38,7 @@ public class MissileInterceptor : Interceptor {
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: true);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    base.UpdateMidCourse(deltaTime);
   }
   private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
     // Implement Proportional Navigation guidance law

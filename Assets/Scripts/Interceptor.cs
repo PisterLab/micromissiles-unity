@@ -6,9 +6,14 @@ public class Interceptor : Agent {
   [SerializeField]
   protected bool _showDebugVectors = true;
 
+  private GameObject _missileTrailEffect;
+  private bool _missileTrailEffectAttached = false;
+
+  private Coroutine _returnParticleToManagerCoroutine;
+
   // Return whether a target can be assigned to the interceptor.
   public override bool IsAssignable() {
-    bool assignable = !HasLaunched() && !HasAssignedTarget();
+    bool assignable = !HasAssignedTarget();
     return assignable;
   }
 
@@ -36,6 +41,11 @@ public class Interceptor : Agent {
   }
 
   protected override void UpdateBoost(double deltaTime) {
+    if (_missileTrailEffect == null) {
+      AttachMissileTrailEffect();
+    }
+    UpdateMissileTrailEffect();
+
     // The interceptor only accelerates along its roll axis (forward in Unity)
     Vector3 rollAxis = transform.forward;
 
@@ -51,7 +61,9 @@ public class Interceptor : Agent {
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
-  protected override void UpdateMidCourse(double deltaTime) {}
+  protected override void UpdateMidCourse(double deltaTime) {
+    UpdateMissileTrailEffect();
+  }
 
   private void OnTriggerEnter(Collider other) {
     if (other.gameObject.name == "Floor") {
@@ -79,6 +91,71 @@ public class Interceptor : Agent {
       }
     }
   }
+
+  public override void TerminateAgent() {
+    DetatchMissileTrail();
+    base.TerminateAgent();
+  }
+
+  public void OnDestroy() {
+    if (_returnParticleToManagerCoroutine != null) {
+      StopCoroutine(_returnParticleToManagerCoroutine);
+    }
+    if (_missileTrailEffect != null) {
+      ParticleManager.Instance.ReturnMissileTrailParticle(_missileTrailEffect);
+      _missileTrailEffect = null;
+    }
+  }
+
+  private void AttachMissileTrailEffect() {
+    if (_missileTrailEffect == null) {
+      _missileTrailEffect = ParticleManager.Instance.RequestMissileTrailParticle();
+      if (_missileTrailEffect != null) {
+        _missileTrailEffect.transform.parent = transform;
+        _missileTrailEffect.transform.localPosition = Vector3.zero;
+        _missileTrailEffectAttached = true;
+        
+        float duration = _missileTrailEffect.GetComponent<ParticleSystem>().main.duration;
+        _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));
+        _missileTrailEffect.GetComponent<ParticleSystem>().Play();
+      }
+    }
+  }
+
+  private IEnumerator ReturnParticleToManager(float delay) {
+    yield return new WaitForSeconds(delay);
+    if (_missileTrailEffect != null) {
+      ParticleManager.Instance.ReturnMissileTrailParticle(_missileTrailEffect);
+      _missileTrailEffect = null;
+      _missileTrailEffectAttached = false;
+    }
+  }
+
+  private void UpdateMissileTrailEffect() {
+    if (_missileTrailEffect == null || !_missileTrailEffectAttached) {
+      return;
+    }
+
+    // Get the particle effect duration time
+    float duration = _missileTrailEffect.GetComponent<ParticleSystem>().main.duration;
+    if (_timeSinceBoost > duration) {
+      DetatchMissileTrail();
+    }
+  }
+
+  private void DetatchMissileTrail() {
+    if (_missileTrailEffect != null && _missileTrailEffectAttached) {
+      Vector3 currentPosition = _missileTrailEffect.transform.position;
+      _missileTrailEffect.transform.SetParent(null);
+      _missileTrailEffect.transform.position = currentPosition;
+      _missileTrailEffectAttached = false;
+      // Stop emitting particles
+      ParticleSystem particleSystem = _missileTrailEffect.GetComponent<ParticleSystem>();
+      particleSystem.Stop();
+    }
+  }
+
+
 
   protected virtual void DrawDebugVectors() {
     if (_target != null) {

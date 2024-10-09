@@ -8,12 +8,13 @@ public class CarrierInterceptor : Interceptor {
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
-
+    float launchTimeVariance = 0.5f;
+    float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
+    float launchTimeWithNoise = _dynamicAgentConfig.submunitions_config.launch_config.launch_time + launchTimeNoise;
     // Check if it's time to launch submunitions
     if (!_submunitionsLaunched &&
         (GetFlightPhase() == FlightPhase.MIDCOURSE || GetFlightPhase() == FlightPhase.BOOST) &&
-        SimManager.Instance.GetElapsedSimulationTime() >=
-            _dynamicAgentConfig.submunitions_config.launch_config.launch_time) {
+        SimManager.Instance.GetElapsedSimulationTime() >= launchTimeWithNoise) {
       SpawnSubmunitions();
       _submunitionsLaunched = true;
     }
@@ -24,6 +25,7 @@ public class CarrierInterceptor : Interceptor {
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    base.UpdateMidCourse(deltaTime);
   }
 
   protected override void DrawDebugVectors() {

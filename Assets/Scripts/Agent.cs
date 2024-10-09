@@ -29,7 +29,9 @@ public abstract class Agent : MonoBehaviour {
   protected bool _isHit = false;
   protected bool _isMiss = false;
 
-  protected double _timeSinceLaunch = 0;
+  [SerializeField]
+  protected double _timeSinceBoost = 0;
+  [SerializeField]
   protected double _timeInPhase = 0;
 
   public DynamicAgentConfig _dynamicAgentConfig;
@@ -44,8 +46,8 @@ public abstract class Agent : MonoBehaviour {
   public event InterceptMissEventHandler OnInterceptMiss;
 
   public void SetFlightPhase(FlightPhase flightPhase) {
-    Debug.Log(
-        $"Setting flight phase to {flightPhase} at time {SimManager.Instance.GetElapsedSimulationTime()}");
+    //Debug.Log(
+    //    $"Setting flight phase to {flightPhase} at time {SimManager.Instance.GetElapsedSimulationTime()}");
     _timeInPhase = 0;
     _flightPhase = flightPhase;
   }
@@ -102,7 +104,7 @@ public abstract class Agent : MonoBehaviour {
     return _isHit;
   }
 
-  public void TerminateAgent() {
+  public virtual void TerminateAgent() {
     _flightPhase = FlightPhase.TERMINATED;
     transform.position = new Vector3(0, 0, 0);
     gameObject.SetActive(false);
@@ -159,23 +161,24 @@ public abstract class Agent : MonoBehaviour {
   // Update is called once per frame
   protected virtual void FixedUpdate() {
     _speed = (float)GetSpeed();
-    if (_flightPhase != FlightPhase.INITIALIZED) {
-      _timeSinceLaunch += Time.fixedDeltaTime;
+    if (_flightPhase != FlightPhase.INITIALIZED && _flightPhase != FlightPhase.READY) {
+      _timeSinceBoost += Time.fixedDeltaTime;
     }
     _timeInPhase += Time.fixedDeltaTime;
 
     var launch_time = _dynamicAgentConfig.dynamic_config.launch_config.launch_time;
-    var boost_time = launch_time + _staticAgentConfig.boostConfig.boostTime;
+    var boost_time = _staticAgentConfig.boostConfig.boostTime;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {
       return;
     }
 
-    if (elapsedSimulationTime >= launch_time) {
+    if (elapsedSimulationTime >= launch_time &&
+        (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY)) {
       SetFlightPhase(FlightPhase.BOOST);
     }
-    if (_timeSinceLaunch > boost_time) {
+    if (_timeSinceBoost > boost_time && _flightPhase == FlightPhase.BOOST) {
       SetFlightPhase(FlightPhase.MIDCOURSE);
     }
     AlignWithVelocity();
@@ -210,7 +213,7 @@ public abstract class Agent : MonoBehaviour {
 
       // Smoothly rotate towards the target rotation
       transform.rotation =
-          Quaternion.RotateTowards(transform.rotation, targetRotation, 1000f * Time.deltaTime);
+          Quaternion.RotateTowards(transform.rotation, targetRotation, 1000f * Time.fixedDeltaTime);
     }
   }
 
