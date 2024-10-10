@@ -88,8 +88,8 @@ public class SimManager : MonoBehaviour {
 
   public void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
-    Time.fixedDeltaTime = Time.timeScale * 0.02f;
-    Time.maximumDeltaTime = Time.timeScale * 0.15f;
+    Time.fixedDeltaTime = Time.timeScale * 0.01f;
+    Time.maximumDeltaTime = Time.timeScale * 0.05f;
   }
 
   public void StartSimulation() {
