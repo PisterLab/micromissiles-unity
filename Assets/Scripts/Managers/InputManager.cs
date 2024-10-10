@@ -57,6 +57,7 @@ public class InputManager : MonoBehaviour {
   void HandleLockableInput() {
     if (mouseActive) {
       HandleMouseInput();
+      HandleScrollWheelInput();
     }
 
     if (Input.GetKey(KeyCode.LeftShift)) {
@@ -87,7 +88,7 @@ public class InputManager : MonoBehaviour {
   }
 
   void HandleNonLockableInput() {
-    HandleScrollWheelInput();
+    
 
     if (Input.GetKeyDown(KeyCode.Escape)) {
       Application.Quit();

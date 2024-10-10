@@ -1,14 +1,14 @@
 {
-    "name": "Hydra 70",
+    "name": "SFRJ",
     "agentClass": "CarrierInterceptor",
     "accelerationConfig": {
-        "maxReferenceNormalAcceleration": 300,
+        "maxReferenceNormalAcceleration": 50,
         "referenceSpeed": 1000,
         "maxForwardAcceleration": 0
     },
     "boostConfig": {
-        "boostTime": 1,
-        "boostAcceleration": 100
+        "boostTime": 200,
+        "boostAcceleration": 4
     },
     "liftDragConfig": {
         "liftCoefficient": 0.2,
@@ -16,9 +16,9 @@
         "liftDragRatio": 5
     },
     "bodyConfig": {
-        "mass": 15.8,
-        "crossSectionalArea": 0.004,
-        "finArea": 0.007,
-        "bodyArea": 0.12
+        "mass": 62.5,
+        "crossSectionalArea": 0.013,
+        "finArea": 0.1,
+        "bodyArea": 0.5
     }
 }

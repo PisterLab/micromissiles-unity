@@ -122,6 +122,7 @@ public class SimManager : MonoBehaviour {
         CreateInterceptor(swarmConfig.dynamic_agent_config);
       }
     }
+    IADS.Instance.RequestThreatAssignment(_interceptorObjects);
 
     List<Threat> targets = new List<Threat>();
     // Create targets based on config

@@ -6,6 +6,30 @@ using UnityEngine;
 public class CarrierInterceptor : Interceptor {
   private bool _submunitionsLaunched = false;
 
+  public override void SetDynamicAgentConfig(DynamicAgentConfig config) {
+    base.SetDynamicAgentConfig(config);
+    if (!HasAssignedTarget()) {
+      // Create a DummyTarget that is projected 100km out from the initialRotation
+      Vector3 initialPosition = config.initial_state.position;
+      Quaternion initialRotation = Quaternion.Euler(config.initial_state.rotation);
+      Vector3 forwardDirection = initialRotation * Vector3.forward;
+      Vector3 dummyTargetPosition = initialPosition + forwardDirection * 100000f; // 100km in meters
+
+      // Calculate a reasonable velocity for the dummy target
+      Vector3 dummyTargetVelocity = Vector3.zero; // Assuming 1000 m/s speed
+
+      // Create the dummy agent using SimManager
+      Agent dummyAgent = SimManager.Instance.CreateDummyAgent(dummyTargetPosition, dummyTargetVelocity);
+
+      // Assign the dummy agent as the target
+      AssignTarget(dummyAgent);
+    }
+  }
+
+  public override bool IsAssignable() {
+    return false;
+  }
+
   protected override void FixedUpdate() {
     base.FixedUpdate();
     float launchTimeVariance = 0.5f;
@@ -22,10 +46,7 @@ public class CarrierInterceptor : Interceptor {
   }
 
   protected override void UpdateMidCourse(double deltaTime) {
-    Vector3 accelerationInput = Vector3.zero;
-    // Calculate and set the total acceleration
-    Vector3 acceleration = CalculateAcceleration(accelerationInput);
-    GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    
     base.UpdateMidCourse(deltaTime);
   }
 
