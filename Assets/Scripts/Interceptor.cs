@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Interceptor : Agent {
-
   [SerializeField]
   private float _navigationGain = 3f;  // Typically 3-5
 
@@ -17,8 +16,6 @@ public class Interceptor : Agent {
 
   private SensorOutput _sensorOutput;
   private Vector3 _accelerationCommand;
-
-
 
   private double _elapsedTime = 0;
 
@@ -104,7 +101,7 @@ public class Interceptor : Agent {
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
-private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
+  private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
     // Implement Proportional Navigation guidance law
     Vector3 accelerationCommand = Vector3.zero;
 

@@ -13,13 +13,15 @@ public class CarrierInterceptor : Interceptor {
       Vector3 initialPosition = config.initial_state.position;
       Quaternion initialRotation = Quaternion.Euler(config.initial_state.rotation);
       Vector3 forwardDirection = initialRotation * Vector3.forward;
-      Vector3 dummyTargetPosition = initialPosition + forwardDirection * 100000f; // 100km in meters
+      Vector3 dummyTargetPosition =
+          initialPosition + forwardDirection * 100000f;  // 100km in meters
 
       // Calculate a reasonable velocity for the dummy target
-      Vector3 dummyTargetVelocity = Vector3.zero; // Assuming 1000 m/s speed
+      Vector3 dummyTargetVelocity = Vector3.zero;  // Assuming 1000 m/s speed
 
       // Create the dummy agent using SimManager
-      Agent dummyAgent = SimManager.Instance.CreateDummyAgent(dummyTargetPosition, dummyTargetVelocity);
+      Agent dummyAgent =
+          SimManager.Instance.CreateDummyAgent(dummyTargetPosition, dummyTargetVelocity);
 
       // Assign the dummy agent as the target
       AssignTarget(dummyAgent);
@@ -46,7 +48,6 @@ public class CarrierInterceptor : Interceptor {
   }
 
   protected override void UpdateMidCourse(double deltaTime) {
-    
     base.UpdateMidCourse(deltaTime);
   }
 

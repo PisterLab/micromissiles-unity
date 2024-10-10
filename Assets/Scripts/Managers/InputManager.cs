@@ -88,8 +88,6 @@ public class InputManager : MonoBehaviour {
   }
 
   void HandleNonLockableInput() {
-    
-
     if (Input.GetKeyDown(KeyCode.Escape)) {
       Application.Quit();
     }

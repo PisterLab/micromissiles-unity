@@ -232,8 +232,8 @@ public abstract class Agent : MonoBehaviour {
       Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
 
       // Smoothly rotate towards the target rotation
-      transform.rotation =
-          Quaternion.RotateTowards(transform.rotation, targetRotation, 10000f * Time.fixedDeltaTime);
+      transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation,
+                                                    10000f * Time.fixedDeltaTime);
     }
   }
 
