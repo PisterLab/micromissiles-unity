@@ -39,14 +39,14 @@ public class IdealSensor : Sensor {
 
   protected override PositionOutput SensePosition(Agent target) {
     // Calculate the relative position of the target
-    Vector3 relativePosition = target.transform.position - transform.position;
+    Vector3 relativePosition = target.GetPosition() - transform.position;
 
     return ComputePositionSensorOutput(relativePosition);
   }
 
   protected override VelocityOutput SenseVelocity(Agent target) {
     // Calculate relative position and velocity
-    Vector3 relativePosition = target.transform.position - transform.position;
+    Vector3 relativePosition = target.GetPosition() - transform.position;
     Vector3 relativeVelocity = target.GetVelocity() - GetComponent<Rigidbody>().linearVelocity;
 
     return ComputeVelocitySensorOutput(relativePosition, relativeVelocity);

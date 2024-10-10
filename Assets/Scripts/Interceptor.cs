@@ -17,9 +17,9 @@ public class Interceptor : Agent {
 
   private SensorOutput _sensorOutput;
   private Vector3 _accelerationCommand;
-  
 
-  
+
+
   private double _elapsedTime = 0;
 
   // Return whether a target can be assigned to the interceptor.
@@ -73,9 +73,7 @@ public class Interceptor : Agent {
   }
 
   protected override void UpdateMidCourse(double deltaTime) {
-
     UpdateMissileTrailEffect();
-
 
     _elapsedTime += deltaTime;
     Vector3 accelerationInput = Vector3.zero;
@@ -95,6 +93,7 @@ public class Interceptor : Agent {
       if (sensorOutput.velocity.range > 1000f) {
         this.HandleInterceptMiss();
       }
+
       // Calculate the acceleration input
       _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
       accelerationInput = CalculateAccelerationCommand(_sensorOutput);
@@ -103,11 +102,9 @@ public class Interceptor : Agent {
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: true);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
-
-
   }
 
-  private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
+private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
     // Implement Proportional Navigation guidance law
     Vector3 accelerationCommand = Vector3.zero;
 
@@ -136,7 +133,6 @@ public class Interceptor : Agent {
     _accelerationCommand = accelerationCommand;
     return accelerationCommand;
   }
-
 
   private void OnTriggerEnter(Collider other) {
     if (other.gameObject.name == "Floor") {

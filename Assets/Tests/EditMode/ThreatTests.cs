@@ -211,9 +211,7 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationCommand", sensorOutput);
     float maxNormalAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxNormalAcceleration");
-    Assert.LessOrEqual(
-        (acceleration - Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
-        maxNormalAcceleration);
+    Assert.LessOrEqual(acceleration.magnitude, maxNormalAcceleration);
   }
 
   [Test]
@@ -263,9 +261,9 @@ public class ThreatTests : AgentTestBase {
     Vector3 initialVelocity = new Vector3(0, 0, 0);
     float desiredSpeed = 50f;
 
-    rotaryWingThreat.transform.position = initialPosition;
+    rotaryWingThreat.SetPosition(initialPosition);
     SetPrivateField(rotaryWingThreat, "_currentWaypoint", waypoint);
-    SetVelocity(rotaryWingThreat, initialVelocity);
+    rotaryWingThreat.SetVelocity(initialVelocity);
     SetPrivateField(rotaryWingThreat, "_currentPowerSetting", PowerSetting.MIL);
 
     // Assume PowerTableLookup returns 50 for PowerSetting.MIL
