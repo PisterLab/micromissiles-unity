@@ -118,14 +118,14 @@ public class Interceptor : Agent {
     float acc_el = 0;
     // Handle negative closing velocity scenario
     if (closing_velocity < 0) {
-        // Target is moving away, apply stronger turn
-        float turnFactor = Mathf.Max(1f, Mathf.Abs(closing_velocity) * 100f);
-        acc_az = N * turnFactor * los_rate_az;
-        acc_el = N * turnFactor * los_rate_el;
+      // Target is moving away, apply stronger turn
+      float turnFactor = Mathf.Max(1f, Mathf.Abs(closing_velocity) * 100f);
+      acc_az = N * turnFactor * los_rate_az;
+      acc_el = N * turnFactor * los_rate_el;
     } else {
-        // Normal PN guidance for positive closing velocity
-        acc_az = N * closing_velocity * los_rate_az;
-        acc_el = N * closing_velocity * los_rate_el;
+      // Normal PN guidance for positive closing velocity
+      acc_az = N * closing_velocity * los_rate_az;
+      acc_el = N * closing_velocity * los_rate_el;
     }
     // Convert acceleration commands to craft body frame
     accelerationCommand = transform.right * acc_az + transform.up * acc_el;
