@@ -1,30 +1,30 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/09/2024 - 18:26:27 |
+| Generated on: | 10/10/2024 - 02:53:26 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 47 |
-| Files: | 45 |
+| Classes: | 46 |
+| Files: | 44 |
 | Covered lines: | 524 |
-| Uncovered lines: | 1958 |
-| Coverable lines: | 2482 |
-| Total lines: | 4684 |
-| Line coverage: | 21.1% (524 of 2482) |
+| Uncovered lines: | 1965 |
+| Coverable lines: | 2489 |
+| Total lines: | 4705 |
+| Line coverage: | 21% (524 of 2489) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 72 |
-| Total methods: | 370 |
-| Method coverage: | 19.4% (72 of 370) |
+| Covered methods: | 71 |
+| Total methods: | 369 |
+| Method coverage: | 19.2% (71 of 369) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**290**|**1919**|**2209**|**4523**|**13.1%**|**0**|**0**|****|**50**|**341**|**14.6%**|
+|**bamlab.micromissiles**|**290**|**1926**|**2216**|**4544**|**13%**|**0**|**0**|****|**49**|**340**|**14.4%**|
 |Agent|33|151|184|319|17.9%|0|0||9|35|25.7%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
 |CameraController|0|207|207|454|0%|0|0||0|23|0%|
-|CarrierInterceptor|0|36|36|52|0%|0|0||0|5|0%|
+|CarrierInterceptor|0|48|48|73|0%|0|0||0|7|0%|
 |ConfigLoader|18|83|101|147|17.8%|0|0||2|12|16.6%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
@@ -35,15 +35,14 @@
 |IADS|0|88|88|145|0%|0|0||0|17|0%|
 |IAssignment|10|0|10|42|100%|0|0||3|3|100%|
 |IdealSensor|10|20|30|54|33.3%|0|0||1|5|20%|
-|InputManager|0|96|96|142|0%|0|0||0|11|0%|
-|Interceptor|6|110|116|174|5.1%|0|0||2|16|12.5%|
-|MissileInterceptor|2|41|43|78|4.6%|0|0||1|4|25%|
-|ParticleManager|0|112|112|170|0%|0|0||0|15|0%|
+|InputManager|0|96|96|143|0%|0|0||0|11|0%|
+|Interceptor|8|145|153|251|5.2%|0|0||2|17|11.7%|
+|ParticleManager|0|112|112|169|0%|0|0||0|15|0%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|16|29|45|79|35.5%|0|0||1|9|11.1%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|19|5|24|117|79.1%|0|0||2|3|66.6%|
-|SimManager|63|166|229|377|27.5%|0|0||7|29|24.1%|
+|SimManager|63|167|230|378|27.3%|0|0||7|29|24.1%|
 |SimMonitor|0|147|147|233|0%|0|0||0|19|0%|
 |SimulationConfig|3|0|3|122|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|62|100%|0|0||5|5|100%|
