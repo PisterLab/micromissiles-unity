@@ -98,14 +98,20 @@ public abstract class Threat : Agent {
     return closestInterceptor;
   }
 
-  protected bool ShouldEvade(float rangeThreshold) {
+  protected bool ShouldEvade() {
+    if (!_dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
+      return false;
+    }
+
     Agent closestInterceptor = GetClosestInterceptor();
     if (closestInterceptor == null) {
       return false;
     }
 
+    float evasionRangeThreshold =
+        _dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(closestInterceptor);
-    return sensorOutput.position.range <= rangeThreshold && sensorOutput.velocity.range < 0;
+    return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }
 
   protected Vector3 EvadeInterceptor(Agent interceptor) {

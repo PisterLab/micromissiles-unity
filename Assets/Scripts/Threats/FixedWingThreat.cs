@@ -27,9 +27,7 @@ public class FixedWingThreat : Threat {
     _elapsedTime += deltaTime;
     Vector3 accelerationInput = Vector3.zero;
 
-    // Evasion range threshold (can be adjusted)
-    float evasionRangeThreshold = 1000f;
-    if (ShouldEvade(evasionRangeThreshold)) {
+    if (ShouldEvade()) {
       accelerationInput = EvadeInterceptor(GetClosestInterceptor());
     } else if (HasAssignedTarget()) {
       // Update waypoint and power setting

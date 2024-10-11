@@ -37,8 +37,8 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected double _timeInPhase = 0;
 
-  public DynamicAgentConfig _dynamicAgentConfig;
   public StaticAgentConfig _staticAgentConfig;
+  public DynamicAgentConfig _dynamicAgentConfig;
 
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
