@@ -1,26 +1,26 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/10/2024 - 07:01:33 |
+| Generated on: | 10/11/2024 - 02:54:00 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 1103 |
-| Uncovered lines: | 1460 |
-| Coverable lines: | 2563 |
-| Total lines: | 4833 |
-| Line coverage: | 43% (1103 of 2563) |
+| Covered lines: | 1108 |
+| Uncovered lines: | 1457 |
+| Coverable lines: | 2565 |
+| Total lines: | 4835 |
+| Line coverage: | 43.1% (1108 of 2565) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 175 |
-| Total methods: | 372 |
-| Method coverage: | 47% (175 of 372) |
+| Covered methods: | 177 |
+| Total methods: | 373 |
+| Method coverage: | 47.4% (177 of 373) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1084**|**1153**|**2237**|**4579**|**48.4%**|**0**|**0**|****|**172**|**339**|**50.7%**|
-|Agent|122|65|187|326|65.2%|0|0||22|36|61.1%|
+|**bamlab.micromissiles**|**1089**|**1150**|**2239**|**4574**|**48.6%**|**0**|**0**|****|**174**|**340**|**51.1%**|
+|Agent|125|59|184|319|67.9%|0|0||23|35|65.7%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
 |CameraController|88|119|207|454|42.5%|0|0||11|23|47.8%|
@@ -28,7 +28,7 @@
 |ConfigLoader|24|77|101|147|23.7%|0|0||3|12|25%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
-|DummyAgent|6|6|12|326|50%|0|0||2|5|40%|
+|DummyAgent|5|6|11|319|45.4%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|122|0%|0|0||0|1|0%|
 |FixedWingThreat|56|11|67|139|83.5%|0|0||8|10|80%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
@@ -36,7 +36,7 @@
 |IAssignment|3|7|10|42|30%|0|0||1|3|33.3%|
 |IdealSensor|13|17|30|54|43.3%|0|0||2|5|40%|
 |InputManager|55|41|96|141|57.2%|0|0||11|11|100%|
-|Interceptor|67|88|155|243|43.2%|0|0||9|15|60%|
+|Interceptor|70|91|161|252|43.4%|0|0||10|17|58.8%|
 |ParticleManager|65|47|112|169|58%|0|0||11|15|73.3%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|36|9|45|79|80%|0|0||7|9|77.7%|
