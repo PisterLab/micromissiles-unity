@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RotaryWingThreat : Threat {
-  private Vector3 _accelerationCommand;
+  private Vector3 _accelerationInput;
 
   // Start is called before the first frame update
   protected override void Start() {
@@ -20,14 +20,20 @@ public class RotaryWingThreat : Threat {
   protected override void UpdateBoost(double deltaTime) {}
 
   protected override void UpdateMidCourse(double deltaTime) {
-    if (HasAssignedTarget()) {
+    Vector3 accelerationInput = Vector3.zero;
+
+    if (ShouldEvade()) {
+      accelerationInput = EvadeInterceptor(GetClosestInterceptor());
+    } else if (HasAssignedTarget()) {
       // Update waypoint and power setting
       UpdateWaypointAndPower();
 
       // Calculate and apply acceleration
-      Vector3 accelerationInput = CalculateAccelerationToWaypoint();
-      ApplyAcceleration(accelerationInput);
+      accelerationInput = CalculateAccelerationToWaypoint();
     }
+
+    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag
+    GetComponent<Rigidbody>().AddForce(accelerationInput, ForceMode.Acceleration);
   }
 
   private void UpdateWaypointAndPower() {
@@ -44,26 +50,21 @@ public class RotaryWingThreat : Threat {
     Vector3 desiredVelocity = toWaypoint.normalized * desiredSpeed;
 
     // Calculate acceleration needed to reach desired velocity
-    Vector3 accelerationCommand = (desiredVelocity - currentVelocity) / (float)Time.fixedDeltaTime;
-    Vector3 forwardAccelerationCommand = Vector3.Project(accelerationCommand, transform.forward);
-    Vector3 normalAccelerationCommand = accelerationCommand - forwardAccelerationCommand;
+    Vector3 accelerationInput = (desiredVelocity - currentVelocity) / (float)Time.fixedDeltaTime;
+    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, transform.forward);
+    Vector3 normalAccelerationInput = accelerationInput - forwardAccelerationInput;
 
     // Limit acceleration magnitude
     float maxForwardAcceleration = CalculateMaxForwardAcceleration();
-    forwardAccelerationCommand =
-        Vector3.ClampMagnitude(forwardAccelerationCommand, maxForwardAcceleration);
+    forwardAccelerationInput =
+        Vector3.ClampMagnitude(forwardAccelerationInput, maxForwardAcceleration);
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
-    normalAccelerationCommand =
-        Vector3.ClampMagnitude(normalAccelerationCommand, maxNormalAcceleration);
-    accelerationCommand = forwardAccelerationCommand + normalAccelerationCommand;
+    normalAccelerationInput =
+        Vector3.ClampMagnitude(normalAccelerationInput, maxNormalAcceleration);
+    accelerationInput = forwardAccelerationInput + normalAccelerationInput;
 
-    _accelerationCommand = accelerationCommand;  // Store for debugging
-    return accelerationCommand;
-  }
-
-  private void ApplyAcceleration(Vector3 acceleration) {
-    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag
-    GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    _accelerationInput = accelerationInput;
+    return accelerationInput;
   }
 
   // Optional: Add this method to visualize debug information
@@ -73,7 +74,7 @@ public class RotaryWingThreat : Threat {
       Gizmos.DrawLine(transform.position, _currentWaypoint);
 
       Gizmos.color = Color.green;
-      Gizmos.DrawRay(transform.position, _accelerationCommand);
+      Gizmos.DrawRay(transform.position, _accelerationInput);
     }
   }
 }
