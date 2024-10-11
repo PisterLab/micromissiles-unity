@@ -6771,7 +6771,7 @@
             <Method visited="false" cyclomaticComplexity="1" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="2" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
               <Summary numSequencePoints="7" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
               <MetadataToken>100663311</MetadataToken>
-              <Name>System.Void ThreatTests::FixedWingThreat_CalculateAccelerationCommand_RespectsMaxForwardAcceleration()</Name>
+              <Name>System.Void ThreatTests::FixedWingThreat_CalculateAccelerationInput_RespectsMaxForwardAcceleration()</Name>
               <FileRef uid="44" />
               <SequencePoints>
                 <SequencePoint vc="0" uspid="2875" ordinal="0" offset="0" sl="193" sc="0" el="193" ec="0" bec="0" bev="0" fileid="44" />
@@ -6787,7 +6787,7 @@
             <Method visited="false" cyclomaticComplexity="1" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="2" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
               <Summary numSequencePoints="7" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="1" minCyclomaticComplexity="1" maxCrapScore="2" minCrapScore="2" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
               <MetadataToken>100663312</MetadataToken>
-              <Name>System.Void ThreatTests::FixedWingThreat_CalculateAccelerationCommand_RespectsMaxNormalAcceleration()</Name>
+              <Name>System.Void ThreatTests::FixedWingThreat_CalculateAccelerationInput_RespectsMaxNormalAcceleration()</Name>
               <FileRef uid="44" />
               <SequencePoints>
                 <SequencePoint vc="0" uspid="2882" ordinal="0" offset="0" sl="206" sc="0" el="206" ec="0" bec="0" bev="0" fileid="44" />

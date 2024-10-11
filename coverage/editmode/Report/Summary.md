@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/11/2024 - 22:51:29 |
+| Generated on: | 10/11/2024 - 23:23:20 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 602 |
-| Uncovered lines: | 2010 |
+| Covered lines: | 621 |
+| Uncovered lines: | 1991 |
 | Coverable lines: | 2612 |
 | Total lines: | 4909 |
-| Line coverage: | 23% (602 of 2612) |
+| Line coverage: | 23.7% (621 of 2612) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 80 |
+| Covered methods: | 81 |
 | Total methods: | 377 |
-| Method coverage: | 21.2% (80 of 377) |
+| Method coverage: | 21.4% (81 of 377) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**320**|**1966**|**2286**|**4667**|**13.9%**|**0**|**0**|****|**54**|**344**|**15.6%**|
+|**bamlab.micromissiles**|**334**|**1952**|**2286**|**4667**|**14.6%**|**0**|**0**|****|**55**|**344**|**15.9%**|
 |Agent|43|150|193|331|22.2%|0|0||12|37|32.4%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
@@ -30,7 +30,7 @@
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
 |DummyAgent|0|11|11|331|0%|0|0||0|5|0%|
 |DynamicAgentConfig|0|3|3|129|0%|0|0||0|1|0%|
-|FixedWingThreat|2|52|54|105|3.7%|0|0||1|9|11.1%|
+|FixedWingThreat|16|38|54|105|29.6%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|0|88|88|145|0%|0|0||0|17|0%|
 |IAssignment|10|0|10|42|100%|0|0||3|3|100%|
@@ -59,15 +59,15 @@
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
 |Utilities|3|0|3|9|100%|0|0||1|1|100%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
-|**bamlab.test**|**50**|**8**|**58**|**104**|**86.2%**|**0**|**0**|****|**10**|**12**|**83.3%**|
+|**bamlab.test**|**49**|**9**|**58**|**104**|**84.4%**|**0**|**0**|****|**10**|**12**|**83.3%**|
 |AgentTestBase|14|3|17|34|82.3%|0|0||3|4|75%|
 |SensorTestBase|11|0|11|26|100%|0|0||2|2|100%|
-|TestBase|25|5|30|44|83.3%|0|0||5|6|83.3%|
-|**bamlab.test.editmode**|**232**|**17**|**249**|**549**|**93.1%**|**0**|**0**|****|**16**|**18**|**88.8%**|
+|TestBase|24|6|30|44|80%|0|0||5|6|83.3%|
+|**bamlab.test.editmode**|**238**|**11**|**249**|**549**|**95.5%**|**0**|**0**|****|**16**|**18**|**88.8%**|
 |IdealSensorTests|48|0|48|82|100%|0|0||3|3|100%|
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|63|0|63|141|100%|0|0||2|2|100%|
-|ThreatTests|116|15|131|304|88.5%|0|0||9|11|81.8%|
+|ThreatTests|122|9|131|304|93.1%|0|0||9|11|81.8%|
 |**bamlab.test.playmode**|**0**|**19**|**19**|**49**|**0%**|**0**|**0**|****|**0**|**3**|**0%**|
 |ConfigTest|0|12|12|25|0%|0|0||0|2|0%|
 |SanityTest|0|7|7|24|0%|0|0||0|1|0%|
