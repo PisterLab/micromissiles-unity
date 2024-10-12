@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour {
   private TMP_Dropdown _configDropdown;
   public TextMeshProUGUI agentPanelText;
   public TextMeshProUGUI simTimeText;
+  public TextMeshProUGUI totalCostText;
 
   public TMP_FontAsset Font;
 
@@ -96,10 +97,16 @@ public class UIManager : MonoBehaviour {
     simTimeText.text =
         "Elapsed Sim Time: " + SimManager.Instance.GetElapsedSimulationTime().ToString("F2");
   }
+
+  private void UpdateTotalCostText() {
+    totalCostText.text = "Cost: $" + SimManager.Instance.GetTotalCost().ToString("F2");
+  }
+
   // Update is called once per frame
   void Update() {
     // UpdateAgentPanel();
     UpdateSimTimeText();
+    UpdateTotalCostText();
   }
 }
 

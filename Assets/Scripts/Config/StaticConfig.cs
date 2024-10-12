@@ -6,6 +6,8 @@ using Newtonsoft.Json.Converters;
 public class StaticAgentConfig {
   public string name;
   public string agentClass;
+  public float unitCost;
+
   [Serializable]
   public class AccelerationConfig {
     public float maxReferenceNormalAcceleration = 300f;
@@ -49,13 +51,12 @@ public class StaticAgentConfig {
     public float MAX;
   }
 
-  public PowerTable powerTable;
-
   public AccelerationConfig accelerationConfig;
   public BoostConfig boostConfig;
   public LiftDragConfig liftDragConfig;
   public BodyConfig bodyConfig;
   public HitConfig hitConfig;
+  public PowerTable powerTable;
 }
 
 [JsonConverter(typeof(StringEnumConverter))]
