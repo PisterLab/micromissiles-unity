@@ -249,14 +249,8 @@ public abstract class Agent : MonoBehaviour {
     }
   }
 
-  protected Vector3 CalculateAcceleration(Vector3 accelerationInput,
-                                          bool compensateForGravity = false) {
+  protected Vector3 CalculateAcceleration(Vector3 accelerationInput) {
     Vector3 gravity = Physics.gravity;
-    if (compensateForGravity) {
-      Vector3 gravityProjection = CalculateGravityProjectionOnPitchAndYaw();
-      accelerationInput -= gravityProjection;
-    }
-
     float airDrag = CalculateDrag();
     float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
     float dragAcceleration = -(airDrag + liftInducedDrag);
@@ -278,17 +272,6 @@ public abstract class Agent : MonoBehaviour {
                 Constants.kGravity);
     float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
-  }
-
-  protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
-    Vector3 gravity = Physics.gravity;
-
-    // Project the gravity onto the pitch and yaw axes
-    Vector3 gravityProjectedOnPitch = Vector3.Project(gravity, transform.right);
-    Vector3 gravityProjectedOnYaw = Vector3.Project(gravity, transform.up);
-
-    // Return the sum of the projections
-    return gravityProjectedOnPitch + gravityProjectedOnYaw;
   }
 
   private float CalculateDrag() {

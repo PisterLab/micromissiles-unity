@@ -63,7 +63,7 @@ public class Interceptor : Agent {
     Vector3 accelerationInput = boostAcceleration * rollAxis;
 
     // Calculate the total acceleration
-    Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: false);
+    Vector3 acceleration = CalculateAcceleration(accelerationInput);
 
     // Apply the acceleration force
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
@@ -97,7 +97,7 @@ public class Interceptor : Agent {
     }
 
     // Calculate and set the total acceleration
-    Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: true);
+    Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
