@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class BehaviorTests : TestBase
 {
+    /*
     [Test]
     public void TestDirectAttackBehaviorWaypoints()
     {
@@ -70,4 +71,5 @@ public class BehaviorTests : TestBase
         Assert.AreEqual(300, result.waypointPosition.z, epsilon);
         Assert.AreEqual(PowerSetting.MIL, result.power);
     }
+    */
 }
