@@ -67,6 +67,10 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 1000
           }
         },
         "submunitions_config": {
