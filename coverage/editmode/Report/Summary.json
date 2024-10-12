@@ -1,24 +1,24 @@
 {
   "summary": {
-    "generatedon": "2024-10-12T02:48:37Z",
+    "generatedon": "2024-10-12T03:03:57Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 48,
     "files": 46,
     "coveredlines": 621,
-    "uncoveredlines": 1981,
-    "coverablelines": 2602,
-    "totallines": 4892,
-    "linecoverage": 23.8,
+    "uncoveredlines": 1993,
+    "coverablelines": 2614,
+    "totallines": 4909,
+    "linecoverage": 23.7,
     "coveredbranches": 0,
     "totalbranches": 0,
     "coveredmethods": 81,
-    "totalmethods": 376,
-    "methodcoverage": 21.5
+    "totalmethods": 378,
+    "methodcoverage": 21.4
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 14.6, "coveredlines": 334, "coverablelines": 2276, "totallines": 4633, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 16, "coveredmethods": 55, "totalmethods": 343, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 14.5, "coveredlines": 334, "coverablelines": 2288, "totallines": 4650, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 15.9, "coveredmethods": 55, "totalmethods": 345, "classesinassembly": [
         { "name": "Agent", "coverage": 23.4, "coveredlines": 43, "coverablelines": 183, "totallines": 314, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 33.3, "coveredmethods": 12, "totalmethods": 36 },
         { "name": "AttackBehavior", "coverage": 78.5, "coveredlines": 11, "coverablelines": 14, "totallines": 51, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "BotStatusDialog", "coverage": 0, "coveredlines": 0, "coverablelines": 15, "totallines": 30, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -35,7 +35,7 @@
         { "name": "IAssignment", "coverage": 100, "coveredlines": 10, "coverablelines": 10, "totallines": 42, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3 },
         { "name": "IdealSensor", "coverage": 90, "coveredlines": 27, "coverablelines": 30, "totallines": 54, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 80, "coveredmethods": 4, "totalmethods": 5 },
         { "name": "InputManager", "coverage": 0, "coveredlines": 0, "coverablelines": 96, "totallines": 141, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 11 },
-        { "name": "Interceptor", "coverage": 4.9, "coveredlines": 8, "coverablelines": 161, "totallines": 252, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 11.7, "coveredmethods": 2, "totalmethods": 17 },
+        { "name": "Interceptor", "coverage": 4.6, "coveredlines": 8, "coverablelines": 173, "totallines": 269, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 10.5, "coveredmethods": 2, "totalmethods": 19 },
         { "name": "ParticleManager", "coverage": 0, "coveredlines": 0, "coverablelines": 112, "totallines": 169, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 15 },
         { "name": "RectTransformExtensions", "coverage": 0, "coveredlines": 0, "coverablelines": 12, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "RotaryWingThreat", "coverage": 35.5, "coveredlines": 16, "coverablelines": 45, "totallines": 80, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 12.5, "coveredmethods": 1, "totalmethods": 8 },

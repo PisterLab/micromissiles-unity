@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/12/2024 - 02:48:37 |
+| Generated on: | 10/12/2024 - 03:03:58 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
 | Covered lines: | 621 |
-| Uncovered lines: | 1981 |
-| Coverable lines: | 2602 |
-| Total lines: | 4892 |
-| Line coverage: | 23.8% (621 of 2602) |
+| Uncovered lines: | 1993 |
+| Coverable lines: | 2614 |
+| Total lines: | 4909 |
+| Line coverage: | 23.7% (621 of 2614) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 81 |
-| Total methods: | 376 |
-| Method coverage: | 21.5% (81 of 376) |
+| Total methods: | 378 |
+| Method coverage: | 21.4% (81 of 378) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**334**|**1942**|**2276**|**4633**|**14.6%**|**0**|**0**|****|**55**|**343**|**16%**|
+|**bamlab.micromissiles**|**334**|**1954**|**2288**|**4650**|**14.5%**|**0**|**0**|****|**55**|**345**|**15.9%**|
 |Agent|43|140|183|314|23.4%|0|0||12|36|33.3%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
@@ -36,7 +36,7 @@
 |IAssignment|10|0|10|42|100%|0|0||3|3|100%|
 |IdealSensor|27|3|30|54|90%|0|0||4|5|80%|
 |InputManager|0|96|96|141|0%|0|0||0|11|0%|
-|Interceptor|8|153|161|252|4.9%|0|0||2|17|11.7%|
+|Interceptor|8|165|173|269|4.6%|0|0||2|19|10.5%|
 |ParticleManager|0|112|112|169|0%|0|0||0|15|0%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|16|29|45|80|35.5%|0|0||1|8|12.5%|
