@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/12/2024 - 03:04:47 |
+| Generated on: | 10/12/2024 - 03:21:22 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 1177 |
-| Uncovered lines: | 1437 |
+| Covered lines: | 1178 |
+| Uncovered lines: | 1436 |
 | Coverable lines: | 2614 |
 | Total lines: | 4909 |
-| Line coverage: | 45% (1177 of 2614) |
+| Line coverage: | 45% (1178 of 2614) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 186 |
@@ -68,6 +68,6 @@
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|63|63|141|0%|0|0||0|2|0%|
 |ThreatTests|0|131|131|304|0%|0|0||0|11|0%|
-|**bamlab.test.playmode**|**18**|**1**|**19**|**49**|**94.7%**|**0**|**0**|****|**3**|**3**|**100%**|
-|ConfigTest|11|1|12|25|91.6%|0|0||2|2|100%|
+|**bamlab.test.playmode**|**19**|**0**|**19**|**49**|**100%**|**0**|**0**|****|**3**|**3**|**100%**|
+|ConfigTest|12|0|12|25|100%|0|0||2|2|100%|
 |SanityTest|7|0|7|24|100%|0|0||1|1|100%|

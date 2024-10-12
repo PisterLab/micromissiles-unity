@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/12/2024 - 03:04:47</Generatedon>
+    <Generatedon>10/12/2024 - 03:21:22</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>48</Classes>
     <Files>46</Files>
-    <Coveredlines>1177</Coveredlines>
-    <Uncoveredlines>1437</Uncoveredlines>
+    <Coveredlines>1178</Coveredlines>
+    <Uncoveredlines>1436</Uncoveredlines>
     <Coverablelines>2614</Coverablelines>
     <Totallines>4909</Totallines>
     <Linecoverage>45</Linecoverage>
@@ -70,8 +70,8 @@
       <Class name="ThreatAssignmentTests" coverage="0" coveredlines="0" coverablelines="63" totallines="141" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="ThreatTests" coverage="0" coveredlines="0" coverablelines="131" totallines="304" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="11" methodcoverage="0" />
     </Assembly>
-    <Assembly name="bamlab.test.playmode" classes="2" coverage="94.7" coveredlines="18" coverablelines="19" totallines="49" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100">
-      <Class name="ConfigTest" coverage="91.6" coveredlines="11" coverablelines="12" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+    <Assembly name="bamlab.test.playmode" classes="2" coverage="100" coveredlines="19" coverablelines="19" totallines="49" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100">
+      <Class name="ConfigTest" coverage="100" coveredlines="12" coverablelines="12" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="SanityTest" coverage="100" coveredlines="7" coverablelines="7" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
     </Assembly>
   </Coverage>

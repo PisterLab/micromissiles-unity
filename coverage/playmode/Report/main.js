@@ -282,7 +282,7 @@ var assemblies = [
   {
     "name": "bamlab.test.playmode",
     "classes": [
-      { "name": "ConfigTest", "rp": "bamlab.test.playmode_ConfigTest.html", "cl": 11, "ucl": 1, "cal": 12, "tl": 25, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ConfigTest", "rp": "bamlab.test.playmode_ConfigTest.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 25, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SanityTest", "rp": "bamlab.test.playmode_SanityTest.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
