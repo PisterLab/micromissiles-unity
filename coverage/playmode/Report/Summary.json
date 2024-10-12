@@ -1,25 +1,25 @@
 {
   "summary": {
-    "generatedon": "2024-10-12T02:49:17Z",
+    "generatedon": "2024-10-12T03:04:47Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 48,
     "files": 46,
-    "coveredlines": 1113,
-    "uncoveredlines": 1489,
-    "coverablelines": 2602,
-    "totallines": 4892,
-    "linecoverage": 42.7,
+    "coveredlines": 1177,
+    "uncoveredlines": 1437,
+    "coverablelines": 2614,
+    "totallines": 4909,
+    "linecoverage": 45,
     "coveredbranches": 0,
     "totalbranches": 0,
-    "coveredmethods": 178,
-    "totalmethods": 376,
-    "methodcoverage": 47.3
+    "coveredmethods": 186,
+    "totalmethods": 378,
+    "methodcoverage": 49.2
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 48, "coveredlines": 1094, "coverablelines": 2276, "totallines": 4633, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 51, "coveredmethods": 175, "totalmethods": 343, "classesinassembly": [
-        { "name": "Agent", "coverage": 65.5, "coveredlines": 120, "coverablelines": 183, "totallines": 314, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 63.8, "coveredmethods": 23, "totalmethods": 36 },
+      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 50.6, "coveredlines": 1159, "coverablelines": 2288, "totallines": 4650, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 53, "coveredmethods": 183, "totalmethods": 345, "classesinassembly": [
+        { "name": "Agent", "coverage": 68.8, "coveredlines": 126, "coverablelines": 183, "totallines": 314, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 69.4, "coveredmethods": 25, "totalmethods": 36 },
         { "name": "AttackBehavior", "coverage": 78.5, "coveredlines": 11, "coverablelines": 14, "totallines": 51, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "BotStatusDialog", "coverage": 0, "coveredlines": 0, "coverablelines": 15, "totallines": 30, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "CameraController", "coverage": 42.5, "coveredlines": 88, "coverablelines": 207, "totallines": 454, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 47.8, "coveredmethods": 11, "totalmethods": 23 },
@@ -33,9 +33,9 @@
         { "name": "GenerateCone", "coverage": 0, "coveredlines": 0, "coverablelines": 100, "totallines": 144, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 },
         { "name": "IADS", "coverage": 54.5, "coveredlines": 48, "coverablelines": 88, "totallines": 145, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 64.7, "coveredmethods": 11, "totalmethods": 17 },
         { "name": "IAssignment", "coverage": 30, "coveredlines": 3, "coverablelines": 10, "totallines": 42, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 33.3, "coveredmethods": 1, "totalmethods": 3 },
-        { "name": "IdealSensor", "coverage": 43.3, "coveredlines": 13, "coverablelines": 30, "totallines": 54, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 40, "coveredmethods": 2, "totalmethods": 5 },
+        { "name": "IdealSensor", "coverage": 100, "coveredlines": 30, "coverablelines": 30, "totallines": 54, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "InputManager", "coverage": 57.2, "coveredlines": 55, "coverablelines": 96, "totallines": 141, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 11, "totalmethods": 11 },
-        { "name": "Interceptor", "coverage": 43.4, "coveredlines": 70, "coverablelines": 161, "totallines": 252, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 58.8, "coveredmethods": 10, "totalmethods": 17 },
+        { "name": "Interceptor", "coverage": 64.7, "coveredlines": 112, "coverablelines": 173, "totallines": 269, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 68.4, "coveredmethods": 13, "totalmethods": 19 },
         { "name": "ParticleManager", "coverage": 58, "coveredlines": 65, "coverablelines": 112, "totallines": 169, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 73.3, "coveredmethods": 11, "totalmethods": 15 },
         { "name": "RectTransformExtensions", "coverage": 0, "coveredlines": 0, "coverablelines": 12, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "RotaryWingThreat", "coverage": 77.7, "coveredlines": 35, "coverablelines": 45, "totallines": 80, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 6, "totalmethods": 8 },
@@ -67,8 +67,8 @@
         { "name": "SanityTest", "coverage": 0, "coveredlines": 0, "coverablelines": 7, "totallines": 22, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "ThreatAssignmentTests", "coverage": 0, "coveredlines": 0, "coverablelines": 63, "totallines": 141, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "ThreatTests", "coverage": 0, "coveredlines": 0, "coverablelines": 131, "totallines": 304, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 11 } ] },
-      { "name": "bamlab.test.playmode", "classes": 2, "coverage": 100, "coveredlines": 19, "coverablelines": 19, "totallines": 49, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3, "classesinassembly": [
-        { "name": "ConfigTest", "coverage": 100, "coveredlines": 12, "coverablelines": 12, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+      { "name": "bamlab.test.playmode", "classes": 2, "coverage": 94.7, "coveredlines": 18, "coverablelines": 19, "totallines": 49, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3, "classesinassembly": [
+        { "name": "ConfigTest", "coverage": 91.6, "coveredlines": 11, "coverablelines": 12, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "SanityTest", "coverage": 100, "coveredlines": 7, "coverablelines": 7, "totallines": 24, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 } ] } ]
   }
 }
