@@ -274,17 +274,6 @@ public abstract class Agent : MonoBehaviour {
     return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
-  protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
-    Vector3 gravity = Physics.gravity;
-
-    // Project the gravity onto the pitch and yaw axes
-    Vector3 gravityProjectedOnPitch = Vector3.Project(gravity, transform.right);
-    Vector3 gravityProjectedOnYaw = Vector3.Project(gravity, transform.up);
-
-    // Return the sum of the projections
-    return gravityProjectedOnPitch + gravityProjectedOnYaw;
-  }
-
   private float CalculateDrag() {
     float dragCoefficient = _staticAgentConfig.liftDragConfig.dragCoefficient;
     float crossSectionalArea = _staticAgentConfig.bodyConfig.crossSectionalArea;

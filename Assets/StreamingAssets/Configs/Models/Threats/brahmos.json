@@ -1,0 +1,34 @@
+{
+    "name": "BrahmosCruiseMissile",
+    "agentClass": "FixedWingThreat",
+    "accelerationConfig": {
+        "maxReferenceNormalAcceleration": 70,
+        "referenceSpeed": 960.4,
+        "maxForwardAcceleration": 30
+    },
+    "boostConfig": {
+        "boostTime": 0
+    },
+    "liftDragConfig": {
+        "liftCoefficient": 0.6,
+        "dragCoefficient": 0.3,
+        "liftDragRatio": 2
+    },
+    "bodyConfig": {
+        "mass": 3000,
+        "crossSectionalArea": 0.352,
+        "finArea": 1.2,
+        "bodyArea": 17.7
+    },
+    "hitConfig": {
+        "hitRadius": 4,
+        "killProbability": 0.9
+    },
+    "powerTable": {
+        "IDLE": 0,
+        "LOW": 480,
+        "CRUISE": 960.4,
+        "MIL": 990,
+        "MAX": 1029
+    }
+}

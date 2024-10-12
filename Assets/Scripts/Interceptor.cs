@@ -54,13 +54,14 @@ public class Interceptor : Agent {
     }
     UpdateMissileTrailEffect();
 
-    // The interceptor only accelerates along its roll axis (forward in Unity)
-    Vector3 rollAxis = transform.forward;
-
     // Calculate boost acceleration
     float boostAcceleration =
         (float)(_staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
-    Vector3 accelerationInput = boostAcceleration * rollAxis;
+    Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
+
+    // Add PN acceleration to boost acceleration
+    Vector3 pnAcceleration = CalculateProportionalNavigationAcceleration(deltaTime);
+    Vector3 accelerationInput = boostAccelerationVector + pnAcceleration;
 
     // Calculate the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
@@ -73,32 +74,41 @@ public class Interceptor : Agent {
     UpdateMissileTrailEffect();
 
     _elapsedTime += deltaTime;
-    Vector3 accelerationInput = Vector3.zero;
-    if (HasAssignedTarget()) {
-      // Correct the state of the threat model at the sensor frequency
-      float sensorUpdatePeriod = 1f / _dynamicAgentConfig.dynamic_config.sensor_config.frequency;
-      if (_elapsedTime >= sensorUpdatePeriod) {
-        // TODO: Implement guidance filter to estimate state from sensor output
-        // For now, we'll use the threat's actual state
-        _targetModel.SetPosition(_target.GetPosition());
-        _targetModel.SetVelocity(_target.GetVelocity());
-        _elapsedTime = 0;
-      }
-
-      // Check whether the threat should be considered a miss
-      SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
-      if (sensorOutput.velocity.range > 1000f) {
-        this.HandleInterceptMiss();
-      }
-
-      // Calculate the acceleration input
-      _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
-      accelerationInput = CalculateAccelerationCommand(_sensorOutput);
-    }
+    Vector3 accelerationInput = CalculateProportionalNavigationAcceleration(deltaTime);
 
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+  }
+
+  private Vector3 CalculateProportionalNavigationAcceleration(double deltaTime) {
+    if (!HasAssignedTarget()) {
+      return Vector3.zero;
+    }
+
+    UpdateTargetModel(deltaTime);
+
+    // Check whether the threat should be considered a miss
+    SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
+    if (sensorOutput.velocity.range > 1000f) {
+      this.HandleInterceptMiss();
+      return Vector3.zero;
+    }
+
+    _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
+    return CalculateAccelerationCommand(_sensorOutput);
+  }
+
+  private void UpdateTargetModel(double deltaTime) {
+    _elapsedTime += deltaTime;
+    float sensorUpdatePeriod = 1f / _dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+    if (_elapsedTime >= sensorUpdatePeriod) {
+      // TODO: Implement guidance filter to estimate state from sensor output
+      // For now, we'll use the threat's actual state
+      _targetModel.SetPosition(_target.GetPosition());
+      _targetModel.SetVelocity(_target.GetVelocity());
+      _elapsedTime = 0;
+    }
   }
 
   private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
@@ -186,10 +196,17 @@ public class Interceptor : Agent {
         _missileTrailEffect.transform.parent = transform;
         _missileTrailEffect.transform.localPosition = Vector3.zero;
         _missileTrailEffectAttached = true;
+        ParticleSystem particleSystem = _missileTrailEffect.GetComponent<ParticleSystem>();
+        float duration = particleSystem.main.duration;
 
-        float duration = _missileTrailEffect.GetComponent<ParticleSystem>().main.duration;
+        // Extend the duration of the missile trail effect to be the same as the boost time
+        if (duration < _staticAgentConfig.boostConfig.boostTime) {
+          ParticleSystem.MainModule mainModule = particleSystem.main;
+          mainModule.duration = _staticAgentConfig.boostConfig.boostTime;
+        }
+
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));
-        _missileTrailEffect.GetComponent<ParticleSystem>().Play();
+        particleSystem.Play();
       }
     }
   }
