@@ -249,14 +249,8 @@ public abstract class Agent : MonoBehaviour {
     }
   }
 
-  protected Vector3 CalculateAcceleration(Vector3 accelerationInput,
-                                          bool compensateForGravity = false) {
+  protected Vector3 CalculateAcceleration(Vector3 accelerationInput) {
     Vector3 gravity = Physics.gravity;
-    if (compensateForGravity) {
-      Vector3 gravityProjection = CalculateGravityProjectionOnPitchAndYaw();
-      accelerationInput -= gravityProjection;
-    }
-
     float airDrag = CalculateDrag();
     float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
     float dragAcceleration = -(airDrag + liftInducedDrag);
