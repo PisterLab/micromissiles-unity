@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/12/2024 - 02:12:29 |
+| Generated on: | 10/12/2024 - 02:48:37 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 622 |
-| Uncovered lines: | 1990 |
-| Coverable lines: | 2612 |
-| Total lines: | 4914 |
-| Line coverage: | 23.8% (622 of 2612) |
+| Covered lines: | 621 |
+| Uncovered lines: | 1981 |
+| Coverable lines: | 2602 |
+| Total lines: | 4892 |
+| Line coverage: | 23.8% (621 of 2602) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 81 |
-| Total methods: | 378 |
-| Method coverage: | 21.4% (81 of 378) |
+| Total methods: | 376 |
+| Method coverage: | 21.5% (81 of 376) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**335**|**1951**|**2286**|**4655**|**14.6%**|**0**|**0**|****|**55**|**345**|**15.9%**|
+|**bamlab.micromissiles**|**334**|**1942**|**2276**|**4633**|**14.6%**|**0**|**0**|****|**55**|**343**|**16%**|
 |Agent|43|140|183|314|23.4%|0|0||12|36|33.3%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
@@ -42,10 +42,10 @@
 |RotaryWingThreat|16|29|45|80|35.5%|0|0||1|8|12.5%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|36|3|39|147|92.3%|0|0||2|3|66.6%|
-|SimManager|64|172|236|392|27.1%|0|0||7|30|23.3%|
+|SimManager|63|167|230|378|27.3%|0|0||7|29|24.1%|
 |SimMonitor|0|147|147|233|0%|0|0||0|19|0%|
 |SimulationConfig|3|0|3|129|100%|0|0||1|1|100%|
-|StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
+|StaticAgentConfig|14|0|14|62|100%|0|0||5|5|100%|
 |Threat|12|62|74|137|16.2%|0|0||3|9|33.3%|
 |ThreatAssignment|38|4|42|79|90.4%|0|0||5|5|100%|
 |ThreatData|7|16|23|45|30.4%|0|0||2|5|40%|
@@ -54,7 +54,7 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|65|65|113|0%|0|0||0|17|0%|
+|UIManager|0|61|61|106|0%|0|0||0|16|0%|
 |UISelectableEntry|0|70|70|113|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
 |Utilities|3|0|3|9|100%|0|0||1|1|100%|
