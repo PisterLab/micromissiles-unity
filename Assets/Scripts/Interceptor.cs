@@ -64,7 +64,7 @@ public class Interceptor : Agent {
     Vector3 accelerationInput = boostAccelerationVector + pnAcceleration;
 
     // Calculate the total acceleration
-    Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: false);
+    Vector3 acceleration = CalculateAcceleration(accelerationInput);
 
     // Apply the acceleration force
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
@@ -77,7 +77,7 @@ public class Interceptor : Agent {
     Vector3 accelerationInput = CalculateProportionalNavigationAcceleration(deltaTime);
 
     // Calculate and set the total acceleration
-    Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: true);
+    Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
@@ -124,21 +124,21 @@ public class Interceptor : Agent {
 
     // Navigation gain (adjust as needed)
     float N = _navigationGain;
-    float acc_az = 0;
-    float acc_el = 0;
+    float accAz = 0;
+    float accEl = 0;
     // Handle negative closing velocity scenario
     if (closing_velocity < 0) {
       // Target is moving away, apply stronger turn
       float turnFactor = Mathf.Max(1f, Mathf.Abs(closing_velocity) * 100f);
-      acc_az = N * turnFactor * los_rate_az;
-      acc_el = N * turnFactor * los_rate_el;
+      accAz = N * turnFactor * los_rate_az;
+      accEl = N * turnFactor * los_rate_el;
     } else {
       // Normal PN guidance for positive closing velocity
-      acc_az = N * closing_velocity * los_rate_az;
-      acc_el = N * closing_velocity * los_rate_el;
+      accAz = N * closing_velocity * los_rate_az;
+      accEl = N * closing_velocity * los_rate_el;
     }
     // Convert acceleration commands to craft body frame
-    accelerationCommand = transform.right * acc_az + transform.up * acc_el;
+    accelerationCommand = transform.right * accAz + transform.up * accEl;
 
     // Clamp the normal acceleration command to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();

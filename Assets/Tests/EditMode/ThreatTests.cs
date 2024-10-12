@@ -190,12 +190,12 @@ public class ThreatTests : AgentTestBase {
   }
 
   [Test]
-  public void FixedWingThreat_CalculateAccelerationCommand_RespectsMaxForwardAcceleration() {
+  public void FixedWingThreat_CalculateAccelerationInput_RespectsMaxForwardAcceleration() {
     SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
     SensorOutput sensorOutput =
         fixedWingThreat.GetComponent<Sensor>().SenseWaypoint(Vector3.one * 1000f);
     Vector3 acceleration =
-        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationCommand", sensorOutput);
+        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput", sensorOutput);
     float maxForwardAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxForwardAcceleration");
     Assert.LessOrEqual((Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
@@ -203,12 +203,12 @@ public class ThreatTests : AgentTestBase {
   }
 
   [Test]
-  public void FixedWingThreat_CalculateAccelerationCommand_RespectsMaxNormalAcceleration() {
+  public void FixedWingThreat_CalculateAccelerationInput_RespectsMaxNormalAcceleration() {
     SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
     SensorOutput sensorOutput =
         fixedWingThreat.GetComponent<Sensor>().SenseWaypoint(Vector3.one * 1000f);
     Vector3 acceleration =
-        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationCommand", sensorOutput);
+        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput", sensorOutput);
     float maxNormalAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxNormalAcceleration");
     Assert.LessOrEqual(acceleration.magnitude, maxNormalAcceleration);
@@ -273,7 +273,7 @@ public class ThreatTests : AgentTestBase {
     Assert.AreEqual(desiredSpeed, powerSetting);
 
     // Act
-    Vector3 accelerationCommand =
+    Vector3 accelerationInput =
         InvokePrivateMethod<Vector3>(rotaryWingThreat, "CalculateAccelerationToWaypoint");
 
     // Assert
@@ -296,9 +296,9 @@ public class ThreatTests : AgentTestBase {
     normalAcceleration = Vector3.ClampMagnitude(normalAcceleration, maxNormalAcceleration);
     expectedAcceleration = forwardAcceleration + normalAcceleration;
 
-    Assert.AreEqual(expectedAcceleration.magnitude, accelerationCommand.magnitude, 0.1f,
+    Assert.AreEqual(expectedAcceleration.magnitude, accelerationInput.magnitude, 0.1f,
                     "Acceleration magnitude should match expected");
-    Assert.AreEqual(expectedAcceleration.normalized, accelerationCommand.normalized,
+    Assert.AreEqual(expectedAcceleration.normalized, accelerationInput.normalized,
                     "Acceleration direction should be towards waypoint");
   }
 }
