@@ -204,7 +204,7 @@ public class Interceptor : Agent {
           ParticleSystem.MainModule mainModule = particleSystem.main;
           mainModule.duration = _staticAgentConfig.boostConfig.boostTime;
         }
-        
+
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));
         particleSystem.Play();
       }

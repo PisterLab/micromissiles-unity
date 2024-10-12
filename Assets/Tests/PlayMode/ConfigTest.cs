@@ -22,6 +22,4 @@ public class ConfigTest : TestBase {
       SimManager.Instance.LoadNewConfig(jsonFile);
     }
   }
-
-  
 }
