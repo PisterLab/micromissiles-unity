@@ -258,7 +258,7 @@ var assemblies = [
       { "name": "UIElementDragger", "rp": "bamlab.micromissiles_UIElementDragger.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 12, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "UIElementMouseCapturer", "rp": "bamlab.micromissiles_UIElementMouseCapturer.html", "cl": 7, "ucl": 4, "cal": 11, "tl": 20, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "UIHitMarker", "rp": "bamlab.micromissiles_UIHitMarker.html", "cl": 0, "ucl": 17, "cal": 17, "tl": 29, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "UIManager", "rp": "bamlab.micromissiles_UIManager.html", "cl": 35, "ucl": 30, "cal": 65, "tl": 114, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "UIManager", "rp": "bamlab.micromissiles_UIManager.html", "cl": 35, "ucl": 30, "cal": 65, "tl": 113, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "UISelectableEntry", "rp": "bamlab.micromissiles_UISelectableEntry.html", "cl": 0, "ucl": 70, "cal": 70, "tl": 113, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "UIWindow", "rp": "bamlab.micromissiles_UIWindow.html", "cl": 0, "ucl": 58, "cal": 58, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Utilities", "rp": "bamlab.micromissiles_Utilities.html", "cl": 3, "ucl": 0, "cal": 3, "tl": 9, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },

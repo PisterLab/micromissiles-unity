@@ -5229,9 +5229,9 @@
               <Name>System.Void UIManager::ToggleConfigSelectorPanel()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2339" ordinal="0" offset="0" sl="41" sc="0" el="41" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2340" ordinal="0" offset="1" sl="42" sc="0" el="42" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2341" ordinal="0" offset="27" sl="43" sc="0" el="43" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2339" ordinal="0" offset="0" sl="40" sc="0" el="40" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2340" ordinal="0" offset="1" sl="41" sc="0" el="41" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2341" ordinal="0" offset="27" sl="42" sc="0" el="42" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5241,11 +5241,11 @@
               <Name>System.Void UIManager::SetupConfigSelectorPanel()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2342" ordinal="0" offset="0" sl="45" sc="0" el="45" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2343" ordinal="0" offset="1" sl="46" sc="0" el="46" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2344" ordinal="0" offset="35" sl="48" sc="0" el="48" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2345" ordinal="0" offset="52" sl="49" sc="0" el="49" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2346" ordinal="0" offset="59" sl="50" sc="0" el="50" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2342" ordinal="0" offset="0" sl="44" sc="0" el="44" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2343" ordinal="0" offset="1" sl="45" sc="0" el="45" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2344" ordinal="0" offset="35" sl="47" sc="0" el="47" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2345" ordinal="0" offset="52" sl="48" sc="0" el="48" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2346" ordinal="0" offset="59" sl="49" sc="0" el="49" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5255,20 +5255,20 @@
               <Name>System.Void UIManager::PopulateConfigDropdown()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2347" ordinal="0" offset="0" sl="52" sc="0" el="52" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2348" ordinal="0" offset="1" sl="53" sc="0" el="53" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2349" ordinal="0" offset="13" sl="54" sc="0" el="54" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2350" ordinal="0" offset="29" sl="55" sc="0" el="55" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2351" ordinal="0" offset="41" sl="57" sc="0" el="57" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2352" ordinal="0" offset="47" sl="58" sc="0" el="58" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2353" ordinal="0" offset="48" sl="58" sc="0" el="58" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2354" ordinal="0" offset="55" sl="58" sc="0" el="58" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2355" ordinal="0" offset="61" sl="58" sc="0" el="58" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2356" ordinal="0" offset="62" sl="59" sc="0" el="59" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2357" ordinal="0" offset="76" sl="60" sc="0" el="60" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2358" ordinal="0" offset="83" sl="58" sc="0" el="58" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2359" ordinal="0" offset="90" sl="61" sc="0" el="61" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2360" ordinal="0" offset="103" sl="62" sc="0" el="62" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2347" ordinal="0" offset="0" sl="51" sc="0" el="51" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2348" ordinal="0" offset="1" sl="52" sc="0" el="52" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2349" ordinal="0" offset="13" sl="53" sc="0" el="53" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2350" ordinal="0" offset="29" sl="54" sc="0" el="54" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2351" ordinal="0" offset="41" sl="56" sc="0" el="56" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2352" ordinal="0" offset="47" sl="57" sc="0" el="57" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2353" ordinal="0" offset="48" sl="57" sc="0" el="57" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2354" ordinal="0" offset="55" sl="57" sc="0" el="57" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2355" ordinal="0" offset="61" sl="57" sc="0" el="57" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2356" ordinal="0" offset="62" sl="58" sc="0" el="58" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2357" ordinal="0" offset="76" sl="59" sc="0" el="59" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2358" ordinal="0" offset="83" sl="57" sc="0" el="57" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2359" ordinal="0" offset="90" sl="60" sc="0" el="60" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2360" ordinal="0" offset="103" sl="61" sc="0" el="61" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5278,11 +5278,11 @@
               <Name>System.Void UIManager::LoadSelectedConfig()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2361" ordinal="0" offset="0" sl="63" sc="0" el="63" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2362" ordinal="0" offset="1" sl="64" sc="0" el="64" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2363" ordinal="0" offset="34" sl="65" sc="0" el="65" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2364" ordinal="0" offset="46" sl="66" sc="0" el="66" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2365" ordinal="0" offset="59" sl="70" sc="0" el="70" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2361" ordinal="0" offset="0" sl="62" sc="0" el="62" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2362" ordinal="0" offset="1" sl="63" sc="0" el="63" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2363" ordinal="0" offset="34" sl="64" sc="0" el="64" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2364" ordinal="0" offset="46" sl="65" sc="0" el="65" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2365" ordinal="0" offset="59" sl="69" sc="0" el="69" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5292,9 +5292,9 @@
               <Name>System.Void UIManager::SetUIMode(UIMode)</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2366" ordinal="0" offset="0" sl="72" sc="0" el="72" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2367" ordinal="0" offset="1" sl="73" sc="0" el="73" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2368" ordinal="0" offset="8" sl="74" sc="0" el="74" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2366" ordinal="0" offset="0" sl="71" sc="0" el="71" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2367" ordinal="0" offset="1" sl="72" sc="0" el="72" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2368" ordinal="0" offset="8" sl="73" sc="0" el="73" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5304,9 +5304,9 @@
               <Name>UIMode UIManager::GetUIMode()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2369" ordinal="0" offset="0" sl="76" sc="0" el="76" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2370" ordinal="0" offset="1" sl="77" sc="0" el="77" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2371" ordinal="0" offset="10" sl="78" sc="0" el="78" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2369" ordinal="0" offset="0" sl="75" sc="0" el="75" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2370" ordinal="0" offset="1" sl="76" sc="0" el="76" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2371" ordinal="0" offset="10" sl="77" sc="0" el="77" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5316,9 +5316,9 @@
               <Name>System.Void UIManager::SetAgentPanelText(System.String)</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2372" ordinal="0" offset="0" sl="80" sc="0" el="80" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2373" ordinal="0" offset="1" sl="81" sc="0" el="81" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2374" ordinal="0" offset="14" sl="82" sc="0" el="82" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2372" ordinal="0" offset="0" sl="79" sc="0" el="79" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2373" ordinal="0" offset="1" sl="80" sc="0" el="80" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2374" ordinal="0" offset="14" sl="81" sc="0" el="81" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5328,9 +5328,9 @@
               <Name>System.String UIManager::GetAgentPanelText()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2375" ordinal="0" offset="0" sl="84" sc="0" el="84" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2376" ordinal="0" offset="1" sl="85" sc="0" el="85" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2377" ordinal="0" offset="15" sl="86" sc="0" el="86" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2375" ordinal="0" offset="0" sl="83" sc="0" el="83" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2376" ordinal="0" offset="1" sl="84" sc="0" el="84" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2377" ordinal="0" offset="15" sl="85" sc="0" el="85" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5340,18 +5340,18 @@
               <Name>System.Void UIManager::UpdateAgentPanel()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2378" ordinal="0" offset="0" sl="88" sc="0" el="88" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2379" ordinal="0" offset="1" sl="89" sc="0" el="89" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2380" ordinal="0" offset="7" sl="90" sc="0" el="90" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2381" ordinal="0" offset="8" sl="90" sc="0" el="90" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2382" ordinal="0" offset="26" sl="90" sc="0" el="90" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2383" ordinal="0" offset="34" sl="90" sc="0" el="90" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2384" ordinal="0" offset="35" sl="91" sc="0" el="91" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2385" ordinal="0" offset="73" sl="92" sc="0" el="92" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2386" ordinal="0" offset="86" sl="93" sc="0" el="93" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2387" ordinal="0" offset="87" sl="90" sc="0" el="90" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2388" ordinal="0" offset="113" sl="94" sc="0" el="94" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2389" ordinal="0" offset="121" sl="95" sc="0" el="95" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2378" ordinal="0" offset="0" sl="87" sc="0" el="87" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2379" ordinal="0" offset="1" sl="88" sc="0" el="88" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2380" ordinal="0" offset="7" sl="89" sc="0" el="89" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2381" ordinal="0" offset="8" sl="89" sc="0" el="89" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2382" ordinal="0" offset="26" sl="89" sc="0" el="89" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2383" ordinal="0" offset="34" sl="89" sc="0" el="89" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2384" ordinal="0" offset="35" sl="90" sc="0" el="90" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2385" ordinal="0" offset="73" sl="91" sc="0" el="91" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2386" ordinal="0" offset="86" sl="92" sc="0" el="92" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2387" ordinal="0" offset="87" sl="89" sc="0" el="89" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2388" ordinal="0" offset="113" sl="93" sc="0" el="93" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2389" ordinal="0" offset="121" sl="94" sc="0" el="94" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5361,9 +5361,9 @@
               <Name>System.Void UIManager::UpdateSimTimeText()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2390" ordinal="0" offset="0" sl="97" sc="0" el="97" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2391" ordinal="0" offset="1" sl="98" sc="0" el="98" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2392" ordinal="0" offset="46" sl="100" sc="0" el="100" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2390" ordinal="0" offset="0" sl="96" sc="0" el="96" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2391" ordinal="0" offset="1" sl="97" sc="0" el="97" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2392" ordinal="0" offset="46" sl="99" sc="0" el="99" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5373,9 +5373,9 @@
               <Name>System.Void UIManager::UpdateTotalCostText()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2393" ordinal="0" offset="0" sl="102" sc="0" el="102" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2394" ordinal="0" offset="1" sl="103" sc="0" el="103" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2395" ordinal="0" offset="46" sl="104" sc="0" el="104" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2393" ordinal="0" offset="0" sl="101" sc="0" el="101" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2394" ordinal="0" offset="1" sl="102" sc="0" el="102" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2395" ordinal="0" offset="46" sl="103" sc="0" el="103" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5385,10 +5385,10 @@
               <Name>System.Void UIManager::Update()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2396" ordinal="0" offset="0" sl="107" sc="0" el="107" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2397" ordinal="0" offset="1" sl="109" sc="0" el="109" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2398" ordinal="0" offset="8" sl="110" sc="0" el="110" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2399" ordinal="0" offset="15" sl="111" sc="0" el="111" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2396" ordinal="0" offset="0" sl="106" sc="0" el="106" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2397" ordinal="0" offset="1" sl="108" sc="0" el="108" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2398" ordinal="0" offset="8" sl="109" sc="0" el="109" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2399" ordinal="0" offset="15" sl="110" sc="0" el="110" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -5398,9 +5398,9 @@
               <Name>System.Void UIManager::&lt;SetupConfigSelectorPanel&gt;b__15_0()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2400" ordinal="0" offset="0" sl="47" sc="0" el="47" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2401" ordinal="0" offset="1" sl="47" sc="0" el="47" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2402" ordinal="0" offset="8" sl="47" sc="0" el="47" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2400" ordinal="0" offset="0" sl="46" sc="0" el="46" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2401" ordinal="0" offset="1" sl="46" sc="0" el="46" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2402" ordinal="0" offset="8" sl="46" sc="0" el="46" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/13/2024 - 01:08:15</Generatedon>
+    <Generatedon>10/13/2024 - 01:15:51</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>48</Classes>
@@ -9,7 +9,7 @@
     <Coveredlines>1023</Coveredlines>
     <Uncoveredlines>1635</Uncoveredlines>
     <Coverablelines>2658</Coverablelines>
-    <Totallines>4984</Totallines>
+    <Totallines>4983</Totallines>
     <Linecoverage>38.4</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
@@ -18,7 +18,7 @@
     <Methodcoverage>44.9</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="39" coverage="43" coveredlines="1004" coverablelines="2332" totallines="4725" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="169" totalmethods="350" methodcoverage="48.2">
+    <Assembly name="bamlab.micromissiles" classes="39" coverage="43" coveredlines="1004" coverablelines="2332" totallines="4724" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="169" totalmethods="350" methodcoverage="48.2">
       <Class name="Agent" coverage="67.2" coveredlines="123" coverablelines="183" totallines="314" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="24" totalmethods="36" methodcoverage="66.6" />
       <Class name="AttackBehavior" coverage="78.5" coveredlines="11" coverablelines="14" totallines="51" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="BotStatusDialog" coverage="0" coveredlines="0" coverablelines="15" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -53,7 +53,7 @@
       <Class name="UIElementDragger" coverage="0" coveredlines="0" coverablelines="3" totallines="12" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="UIElementMouseCapturer" coverage="63.6" coveredlines="7" coverablelines="11" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="UIHitMarker" coverage="0" coveredlines="0" coverablelines="17" totallines="29" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="UIManager" coverage="53.8" coveredlines="35" coverablelines="65" totallines="114" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="10" totalmethods="17" methodcoverage="58.8" />
+      <Class name="UIManager" coverage="53.8" coveredlines="35" coverablelines="65" totallines="113" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="10" totalmethods="17" methodcoverage="58.8" />
       <Class name="UISelectableEntry" coverage="0" coveredlines="0" coverablelines="70" totallines="113" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
       <Class name="UIWindow" coverage="0" coveredlines="0" coverablelines="58" totallines="100" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
       <Class name="Utilities" coverage="100" coveredlines="3" coverablelines="3" totallines="9" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />

@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedon": "2024-10-13T01:08:15Z",
+    "generatedon": "2024-10-13T01:15:51Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 48,
@@ -8,7 +8,7 @@
     "coveredlines": 1023,
     "uncoveredlines": 1635,
     "coverablelines": 2658,
-    "totallines": 4984,
+    "totallines": 4983,
     "linecoverage": 38.4,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -18,7 +18,7 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 43, "coveredlines": 1004, "coverablelines": 2332, "totallines": 4725, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 48.2, "coveredmethods": 169, "totalmethods": 350, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 43, "coveredlines": 1004, "coverablelines": 2332, "totallines": 4724, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 48.2, "coveredmethods": 169, "totalmethods": 350, "classesinassembly": [
         { "name": "Agent", "coverage": 67.2, "coveredlines": 123, "coverablelines": 183, "totallines": 314, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 24, "totalmethods": 36 },
         { "name": "AttackBehavior", "coverage": 78.5, "coveredlines": 11, "coverablelines": 14, "totallines": 51, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "BotStatusDialog", "coverage": 0, "coveredlines": 0, "coverablelines": 15, "totallines": 30, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -53,7 +53,7 @@
         { "name": "UIElementDragger", "coverage": 0, "coveredlines": 0, "coverablelines": 3, "totallines": 12, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "UIElementMouseCapturer", "coverage": 63.6, "coveredlines": 7, "coverablelines": 11, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "UIHitMarker", "coverage": 0, "coveredlines": 0, "coverablelines": 17, "totallines": 29, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
-        { "name": "UIManager", "coverage": 53.8, "coveredlines": 35, "coverablelines": 65, "totallines": 114, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 58.8, "coveredmethods": 10, "totalmethods": 17 },
+        { "name": "UIManager", "coverage": 53.8, "coveredlines": 35, "coverablelines": 65, "totallines": 113, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 58.8, "coveredmethods": 10, "totalmethods": 17 },
         { "name": "UISelectableEntry", "coverage": 0, "coveredlines": 0, "coverablelines": 70, "totallines": 113, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 15 },
         { "name": "UIWindow", "coverage": 0, "coveredlines": 0, "coverablelines": 58, "totallines": 100, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 },
         { "name": "Utilities", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 9, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
