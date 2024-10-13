@@ -11,6 +11,7 @@ public class ParticleManager : MonoBehaviour {
   [SerializeField]
   private Queue<GameObject> _missileExplosionPool;
 
+
   private void Awake() {
     if (Instance == null) {
       Instance = this;
@@ -21,26 +22,42 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void Start() {
+
     _missileTrailPool = new Queue<GameObject>();
     _missileExplosionPool = new Queue<GameObject>();
 
-    // Grab from Resources/Prefabs/Effects
+    if (SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
+      InitializeMissileTrailParticlePool();
+    }
+    if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
+      InitializeMissileExplosionParticlePool();
+    }
+
+    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+  }
+
+  private void InitializeMissileTrailParticlePool() {
+     // Grab from Resources/Prefabs/Effects
     GameObject missileTrailPrefab =
         Resources.Load<GameObject>("Prefabs/Effects/InterceptorSmokeEffect");
-    GameObject missileExplosionPrefab =
-        Resources.Load<GameObject>("Prefabs/Effects/InterceptExplosionEffect");
-
+    
     // Pre-instantiate 10 missile trail particles
     for (int i = 0; i < 10; i++) {
       InstantiateMissileTrail(missileTrailPrefab);
-      InstantiateMissileExplosion(missileExplosionPrefab);
-    }
 
+    }
     // Instantiate over an interval
     StartCoroutine(InstantiateMissileTrailsOverTime(missileTrailPrefab, 200, 0.05f));
-    StartCoroutine(InstantiateMissileExplosionsOverTime(missileExplosionPrefab, 200, 0.05f));
+  }
 
-    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+  private void InitializeMissileExplosionParticlePool() {
+    GameObject missileExplosionPrefab =
+        Resources.Load<GameObject>("Prefabs/Effects/InterceptExplosionEffect");
+    // Pre-instantiate 10 missile trail particles
+    for (int i = 0; i < 10; i++) {
+      InstantiateMissileExplosion(missileExplosionPrefab);
+    }
+    StartCoroutine(InstantiateMissileExplosionsOverTime(missileExplosionPrefab, 200, 0.05f));
   }
 
   private void RegisterNewInterceptor(Interceptor interceptor) {
@@ -48,7 +65,9 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    PlayMissileExplosion(interceptor.transform.position);
+    if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
+      PlayMissileExplosion(interceptor.transform.position);
+    }
   }
 
   /// <summary>
@@ -138,7 +157,7 @@ public class ParticleManager : MonoBehaviour {
   /// </summary>
   /// <returns></returns>
   public GameObject RequestMissileTrailParticle() {
-    if (_missileTrailPool.Count > 0) {
+    if (_missileTrailPool.Count > 0 && SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
       GameObject trail = _missileTrailPool.Dequeue();
 
       return trail;

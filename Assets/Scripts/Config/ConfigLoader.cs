@@ -58,6 +58,12 @@ public static class ConfigLoader {
         });
   }
 
+  public static SimulatorConfig LoadSimulatorConfig() {
+    string relativePath = "simulator.json"; // Path relative to StreamingAssets
+    string fileContent = LoadFromStreamingAssets(relativePath);
+    return JsonConvert.DeserializeObject<SimulatorConfig>(fileContent);
+  }
+
   public static void PrintSimulationConfig(SimulationConfig config) {
     if (config == null) {
       Debug.Log("SimulationConfig is null");

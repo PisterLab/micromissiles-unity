@@ -8,6 +8,9 @@ using UnityEngine;
 /// Implements the Singleton pattern to ensure only one instance exists.
 /// </summary>
 public class SimManager : MonoBehaviour {
+
+  public SimulatorConfig simulatorConfig;
+
   /// <summary>
   /// Singleton instance of SimManager.
   /// </summary>
@@ -86,6 +89,10 @@ public class SimManager : MonoBehaviour {
     }
     simulationConfig = ConfigLoader.LoadSimulationConfig("1_salvo_1_hydra_7_drones.json");
     Debug.Log(simulationConfig);
+
+    // Load the simulator config
+    simulatorConfig = ConfigLoader.LoadSimulatorConfig();
+    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
   }
 
   void Start() {
@@ -98,8 +105,9 @@ public class SimManager : MonoBehaviour {
 
   public void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
-    Time.fixedDeltaTime = Time.timeScale * 0.01f;
     Time.maximumDeltaTime = Time.timeScale * 0.05f;
+
+    // Time.fixedDeltaTime is set in the simulator.json
   }
 
   public void StartSimulation() {
@@ -389,4 +397,13 @@ public class SimManager : MonoBehaviour {
       Debug.Log("Simulation completed.");
     }
   }
+}
+
+[System.Serializable]
+public class SimulatorConfig
+{
+    public bool enableLogging;
+    public bool enableMissileTrailEffect;
+    public bool enableExplosionEffect;
+    public int physicsUpdateRate;
 }

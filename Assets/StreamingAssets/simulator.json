@@ -1,0 +1,6 @@
+{
+    "enableLogging": false,
+    "enableMissileTrailEffect": false,
+    "enableExplosionEffect": false,
+    "physicsUpdateRate": 100
+}

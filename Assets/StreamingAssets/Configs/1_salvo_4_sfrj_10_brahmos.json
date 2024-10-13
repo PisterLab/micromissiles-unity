@@ -1,0 +1,82 @@
+{
+  "timeScale": 2,
+  "interceptor_swarm_configs": [
+    {
+      "num_agents": 4,
+      "dynamic_agent_config": {
+        "agent_model": "sfrj.json",
+        "initial_state": {
+          "position": { "x": 0, "y": 20, "z": 0 },
+          "rotation": { "x": -45, "y": 0, "z": 0 },
+          "velocity": { "x": 0, "y": 30, "z": 50 }
+        },
+        "standard_deviation": {
+          "position": { "x": 5, "y": 0, "z": 5 },
+          "velocity": { "x": 5, "y": 0, "z": 1 }
+        },
+        "dynamic_config": {
+          "launch_config": { "launch_time": 0 },
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 100
+          }
+        },
+        "submunitions_config": {
+          "num_submunitions": 7,
+          "launch_config": { "launch_time": 20 },
+          "dynamic_agent_config": {
+            "agent_model": "micromissile.json",
+            "initial_state": {
+              "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0 },
+              "velocity": { "x": 0, "y": 0, "z": 0 }
+            },
+            "standard_deviation": {
+              "position": { "x": 5, "y": 5, "z": 5 },
+              "velocity": { "x": 0, "y": 0, "z": 0 }
+            },
+            "dynamic_config": {
+              "launch_config": { "launch_time": 0 },
+              "sensor_config": {
+                "type": "IDEAL",
+                "frequency": 100
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "threat_swarm_configs": [
+    {
+      "num_agents": 10,
+      "dynamic_agent_config": {
+        "agent_model": "brahmos.json",
+        "attack_behavior": "brahmos_direct_attack.json",
+        "initial_state": {
+          "position": { "x": 0, "y": 50, "z": 50000 },
+          "rotation": { "x": 90, "y": 0, "z": 0 },
+          "velocity": { "x": 0, "y": 0, "z": -800 }
+        },
+        "standard_deviation": {
+          "position": { "x": 1000, "y": 200, "z": 100 },
+          "velocity": { "x": 0, "y": 0, "z": 25 }
+        },
+        "dynamic_config": {
+          "launch_config": { "launch_time": 0 },
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 1000
+          }
+        },
+        "submunitions_config": {
+          "num_submunitions": 0
+        }
+      }
+    }
+  ]
+}

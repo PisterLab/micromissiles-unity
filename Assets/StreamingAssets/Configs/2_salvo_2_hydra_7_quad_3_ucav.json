@@ -78,7 +78,7 @@
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "launch_config": { "launch_time": 6 },
+          "launch_config": { "launch_time": 4 },
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
