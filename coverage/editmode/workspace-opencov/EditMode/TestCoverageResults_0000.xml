@@ -5423,10 +5423,10 @@
               <Name>System.Void UIManager::Update()</Name>
               <FileRef uid="32" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="2416" ordinal="0" offset="0" sl="125" sc="0" el="125" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2417" ordinal="0" offset="1" sl="127" sc="0" el="127" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2418" ordinal="0" offset="8" sl="128" sc="0" el="128" ec="0" bec="0" bev="0" fileid="32" />
-                <SequencePoint vc="0" uspid="2419" ordinal="0" offset="15" sl="129" sc="0" el="129" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2416" ordinal="0" offset="0" sl="124" sc="0" el="124" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2417" ordinal="0" offset="1" sl="126" sc="0" el="126" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2418" ordinal="0" offset="8" sl="127" sc="0" el="127" ec="0" bec="0" bev="0" fileid="32" />
+                <SequencePoint vc="0" uspid="2419" ordinal="0" offset="15" sl="128" sc="0" el="128" ec="0" bec="0" bev="0" fileid="32" />
               </SequencePoints>
               <BranchPoints />
             </Method>

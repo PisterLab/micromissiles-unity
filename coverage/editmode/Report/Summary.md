@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/13/2024 - 01:47:05 |
+| Generated on: | 10/13/2024 - 02:06:06 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
@@ -9,7 +9,7 @@
 | Covered lines: | 623 |
 | Uncovered lines: | 2055 |
 | Coverable lines: | 2678 |
-| Total lines: | 5013 |
+| Total lines: | 5012 |
 | Line coverage: | 23.2% (623 of 2678) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**336**|**2016**|**2352**|**4754**|**14.2%**|**0**|**0**|****|**55**|**352**|**15.6%**|
+|**bamlab.micromissiles**|**336**|**2016**|**2352**|**4753**|**14.2%**|**0**|**0**|****|**55**|**352**|**15.6%**|
 |Agent|43|140|183|314|23.4%|0|0||12|36|33.3%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
@@ -54,7 +54,7 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|79|79|132|0%|0|0||0|18|0%|
+|UIManager|0|79|79|131|0%|0|0||0|18|0%|
 |UISelectableEntry|0|70|70|113|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
 |Utilities|3|0|3|9|100%|0|0||1|1|100%|
