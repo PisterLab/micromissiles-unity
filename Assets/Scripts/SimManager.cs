@@ -32,6 +32,9 @@ public class SimManager : MonoBehaviour {
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
+  private List<List<Agent>> _interceptorSwarms = new List<List<Agent>>();
+  private List<List<Agent>> _threatSwarms = new List<List<Agent>>();
+
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
@@ -144,19 +147,60 @@ public class SimManager : MonoBehaviour {
     List<Interceptor> missiles = new List<Interceptor>();
     // Create missiles based on config
     foreach (var swarmConfig in simulationConfig.interceptor_swarm_configs) {
+      List<Agent> swarm = new List<Agent>();
       for (int i = 0; i < swarmConfig.num_agents; i++) {
-        CreateInterceptor(swarmConfig.dynamic_agent_config);
+        Interceptor interceptor = CreateInterceptor(swarmConfig.dynamic_agent_config);
+        swarm.Add(interceptor);
       }
+      _interceptorSwarms.Add(swarm);
     }
     IADS.Instance.RequestThreatAssignment(_interceptorObjects);
 
-    List<Threat> targets = new List<Threat>();
+    List<Agent> targets = new List<Agent>();
     // Create targets based on config
     foreach (var swarmConfig in simulationConfig.threat_swarm_configs) {
+      List<Agent> swarm = new List<Agent>();
       for (int i = 0; i < swarmConfig.num_agents; i++) {
-        CreateThreat(swarmConfig.dynamic_agent_config);
+        Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
+        swarm.Add(threat);
+      }
+      _threatSwarms.Add(swarm);
+    }
+  }
+
+  public Vector3 GetAllAgentsCenter() {
+    List<Agent> allAgents = _interceptorObjects.ConvertAll(interceptor => interceptor as Agent)
+                                .Concat(_threatObjects.ConvertAll(threat => threat as Agent))
+                                .ToList();
+    return GetSwarmCenter(allAgents);
+  }
+
+  public Vector3 GetSwarmCenter(List<Agent> swarm) {
+    if (swarm.Count == 0) {
+      return Vector3.zero;
+    }
+
+    Vector3 sum = Vector3.zero;
+    int count = 0;
+    int swarmCount = swarm.Count;
+
+    for (int i = 0; i < swarmCount; i++) {
+      Agent agent = swarm[i];
+      if (!agent.IsHit()) {
+        sum += agent.transform.position;
+        count++;
       }
     }
+
+    return count > 0 ? sum / count : Vector3.zero;
+  }
+
+  public List<List<Agent>> GetInterceptorSwarms() {
+    return _interceptorSwarms;
+  }
+
+  public List<List<Agent>> GetThreatSwarms() {
+    return _threatSwarms;
   }
 
   public void AssignInterceptorsToThreats() {
@@ -384,6 +428,8 @@ public class SimManager : MonoBehaviour {
     _threatObjects.Clear();
     _dummyAgentObjects.Clear();
     _dummyAgentTable.Clear();
+    _interceptorSwarms.Clear();
+    _threatSwarms.Clear();
     StartSimulation();
   }
 

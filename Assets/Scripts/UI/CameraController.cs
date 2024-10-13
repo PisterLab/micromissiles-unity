@@ -235,6 +235,19 @@ public class CameraController : MonoBehaviour {
   /// </summary>
   public float forwardToCameraAngle;
 
+  public CameraMode cameraMode = CameraMode.FREE;
+
+  public int _selectedInterceptorSwarmIndex = -1;
+  public int _selectedThreatSwarmIndex = -1;
+
+  private Vector3 _currentCentroid;
+  private Vector3 _targetCentroid;
+
+  public float _centroidUpdateFrequency = 0.1f;
+  public float _interpolationSpeed = 10f;
+
+  private Coroutine _centroidUpdateCoroutine;
+
 #endregion
 
   void SetCameraRotation(Quaternion rotation) {
@@ -307,6 +320,93 @@ public class CameraController : MonoBehaviour {
 
     UpdateTargetAlpha();
     ResetCameraTarget();
+
+    SetCameraMode(CameraMode.FREE);
+  }
+
+  public void SnapToNextInterceptorSwarm() {
+    // Set pre-set view 1
+    _selectedInterceptorSwarmIndex += 1;
+    _selectedThreatSwarmIndex = -1;
+    if (_selectedInterceptorSwarmIndex >= SimManager.Instance.GetInterceptorSwarms().Count) {
+      _selectedInterceptorSwarmIndex = 0;
+    }
+    List<Agent> swarm = SimManager.Instance.GetInterceptorSwarms()[_selectedInterceptorSwarmIndex];
+    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(swarm);
+    CameraController.Instance.SetCameraTargetPosition(swarmCenter);
+  }
+
+  public void SnapToNextThreatSwarm() {
+    _selectedInterceptorSwarmIndex = -1;
+    _selectedThreatSwarmIndex += 1;
+    if (_selectedThreatSwarmIndex >= SimManager.Instance.GetThreatSwarms().Count) {
+      _selectedThreatSwarmIndex = 0;
+    }
+    List<Agent> swarm = SimManager.Instance.GetThreatSwarms()[_selectedThreatSwarmIndex];
+    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(swarm);
+    SetCameraTargetPosition(swarmCenter);
+  }
+
+  public void SnapToCenterAllAgents() {
+    Vector3 swarmCenter = SimManager.Instance.GetAllAgentsCenter();
+    SetCameraTargetPosition(swarmCenter);
+  }
+
+  private void SetCameraMode(CameraMode mode) {
+    if (cameraMode == CameraMode.FREE) {
+      if (_centroidUpdateCoroutine != null) {
+        StopCoroutine(_centroidUpdateCoroutine);
+        _centroidUpdateCoroutine = null;
+      }
+    }
+    cameraMode = mode;
+    if (mode != CameraMode.FREE) {
+      _currentCentroid = _targetCentroid = target.position;
+    }
+  }
+
+  private void StartCentroidUpdateCoroutine() {
+    if (_centroidUpdateCoroutine != null) {
+      StopCoroutine(_centroidUpdateCoroutine);
+    }
+    _centroidUpdateCoroutine = StartCoroutine(UpdateCentroidCoroutine());
+  }
+
+  public void FollowNextInterceptorSwarm() {
+    SnapToNextInterceptorSwarm();
+    StartCentroidUpdateCoroutine();
+    SetCameraMode(CameraMode.FOLLOW_INTERCEPTOR_SWARM);
+  }
+
+  public void FollowNextThreatSwarm() {
+    SnapToNextThreatSwarm();
+    StartCentroidUpdateCoroutine();
+    SetCameraMode(CameraMode.FOLLOW_THREAT_SWARM);
+  }
+
+  public void FollowCenterAllAgents() {
+    SnapToCenterAllAgents();
+    StartCentroidUpdateCoroutine();
+    SetCameraMode(CameraMode.FOLLOW_ALL_AGENTS);
+  }
+
+  private IEnumerator UpdateCentroidCoroutine() {
+    while (true) {
+      UpdateTargetCentroid();
+      yield return new WaitForSeconds(_centroidUpdateFrequency);
+    }
+  }
+
+  private void UpdateTargetCentroid() {
+    if (cameraMode == CameraMode.FOLLOW_INTERCEPTOR_SWARM) {
+      _targetCentroid = SimManager.Instance.GetSwarmCenter(
+          SimManager.Instance.GetInterceptorSwarms()[_selectedInterceptorSwarmIndex]);
+    } else if (cameraMode == CameraMode.FOLLOW_THREAT_SWARM) {
+      _targetCentroid = SimManager.Instance.GetSwarmCenter(
+          SimManager.Instance.GetThreatSwarms()[_selectedThreatSwarmIndex]);
+    } else if (cameraMode == CameraMode.FOLLOW_ALL_AGENTS) {
+      _targetCentroid = SimManager.Instance.GetAllAgentsCenter();
+    }
   }
 
   IEnumerator AutoPlayRoutine() {
@@ -342,6 +442,12 @@ public class CameraController : MonoBehaviour {
       yield return null;
     }
   }
+
+  public void SetCameraTargetPosition(Vector3 position) {
+    target.transform.position = position;
+    UpdateCamPosition(_orbitX, _orbitY);
+  }
+
   void ResetCameraTarget() {
     RaycastHit hit;
     if (Physics.Raycast(transform.position, transform.forward, out hit, float.MaxValue,
@@ -447,8 +553,19 @@ public class CameraController : MonoBehaviour {
   public enum TranslationInput { Forward, Left, Back, Right, Up, Down }
 
   public void TranslateCamera(TranslationInput input) {
+    cameraMode = CameraMode.FREE;
     UpdateDirectionVectors();
     target.Translate(_translationInputToVectorMap[input] * Time.unscaledDeltaTime * _cameraSpeed);
     UpdateCamPosition(_orbitX, _orbitY);
   }
+
+  protected void Update() {
+    if (cameraMode != CameraMode.FREE) {
+      _currentCentroid =
+          Vector3.Lerp(_currentCentroid, _targetCentroid, Time.deltaTime * _interpolationSpeed);
+      SetCameraTargetPosition(_currentCentroid);
+    }
+  }
 }
+
+public enum CameraMode { FREE, FOLLOW_INTERCEPTOR_SWARM, FOLLOW_THREAT_SWARM, FOLLOW_ALL_AGENTS }
