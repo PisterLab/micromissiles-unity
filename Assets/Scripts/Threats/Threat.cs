@@ -134,4 +134,15 @@ public abstract class Threat : Agent {
     Vector3 forwardAcceleration = CalculateForwardAcceleration();
     return normalAcceleration + forwardAcceleration;
   }
+
+  private void OnTriggerEnter(Collider other) {
+    if (other.gameObject.name == "Floor") {
+      this.HandleThreatMiss();
+    }
+    // Check if the collision is with another Agent
+    DummyAgent otherAgent = other.gameObject.GetComponentInParent<DummyAgent>();
+    if (otherAgent != null && _target == otherAgent) {
+      this.HandleThreatHit();
+    }
+  }
 }

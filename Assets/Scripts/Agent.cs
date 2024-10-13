@@ -44,10 +44,14 @@ public abstract class Agent : MonoBehaviour {
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
   public delegate void InterceptMissEventHandler(Interceptor interceptor, Threat target);
+  public delegate void ThreatHitEventHandler(Threat threat);
+  public delegate void ThreatMissEventHandler(Threat threat);
 
   // Define events
   public event InterceptHitEventHandler OnInterceptHit;
   public event InterceptMissEventHandler OnInterceptMiss;
+  public event ThreatHitEventHandler OnThreatHit;
+  public event ThreatMissEventHandler OnThreatMiss;
 
   public void SetFlightPhase(FlightPhase flightPhase) {
     _timeInPhase = 0;
@@ -147,6 +151,23 @@ public abstract class Agent : MonoBehaviour {
         OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
       }
       _target = null;
+    }
+    TerminateAgent();
+  }
+
+  // This happens if we, e.g., hit the carrier
+  public void HandleThreatHit() {
+    _isHit = true;
+    if (this is Threat threat) {
+      OnThreatHit?.Invoke(threat);
+    }
+    TerminateAgent();
+  }
+
+  // This happens if we, e.g., hit the floor
+  public void HandleThreatMiss() {
+    if (this is Threat threat) {
+      OnThreatMiss?.Invoke(threat);
     }
     TerminateAgent();
   }

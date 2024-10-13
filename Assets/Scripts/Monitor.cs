@@ -218,20 +218,20 @@ public class SimMonitor : MonoBehaviour {
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
     if (SimManager.Instance.simulatorConfig.enableLogging) {
-      RegisterInterceptEvent(interceptor, threat, true);
+      RegisterInterceptorEvent(interceptor, threat, true);
     }
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
     if (SimManager.Instance.simulatorConfig.enableLogging) {
-      RegisterInterceptEvent(interceptor, threat, false);
+      RegisterInterceptorEvent(interceptor, threat, false);
     }
   }
 
-  public void RegisterInterceptEvent(Interceptor interceptor, Threat threat, bool hit) {
+  public void RegisterInterceptorEvent(Interceptor interceptor, Threat threat, bool hit) {
     float time = (float)SimManager.Instance.GetElapsedSimulationTime();
     Vector3 pos = interceptor.transform.position;
-    string eventType = hit ? "HIT" : "MISS";
+    string eventType = hit ? "INTERCEPTOR_HIT" : "INTERCEPTOR_MISS";
     var record = new EventRecord {
       Time = time,       PositionX = pos.x,     PositionY = pos.y,
       PositionZ = pos.z, EventType = eventType, Details = $"{interceptor.name} and {threat.name}"

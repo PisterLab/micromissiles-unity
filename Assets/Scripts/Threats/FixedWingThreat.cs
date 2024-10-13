@@ -64,34 +64,40 @@ public class FixedWingThreat : Threat {
   }
 
   private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
-    // Implement Proportional Navigation guidance law
+    // TODO(titan): Refactor all controller-related code into a separate controller interface with
+    // subclasses. A controller factory will instantiate the correct controller for each dynamic
+    // configuration.
+
+    // Implement (Augmented) Proportional Navigation guidance law
     Vector3 accelerationInput = Vector3.zero;
 
     // Extract relevant information from sensor output
-    float los_rate_az = sensorOutput.velocity.azimuth;
-    float los_rate_el = sensorOutput.velocity.elevation;
-    float closing_velocity =
+    float losRateAz = sensorOutput.velocity.azimuth;
+    float losRateEl = sensorOutput.velocity.elevation;
+    float closingVelocity =
         -sensorOutput.velocity
              .range;  // Negative because closing velocity is opposite to range rate
 
     // Navigation gain (adjust as needed)
     float N = _navigationGain;
-
-    // Calculate acceleration inputs in azimuth and elevation planes
-    float accAz = N * closing_velocity * los_rate_az;
-    float accEl = N * closing_velocity * los_rate_el;
-
+    // Normal PN guidance for positive closing velocity
+    float turnFactor = closingVelocity;
+    // Handle negative closing velocity scenario
+    if (closingVelocity < 0) {
+      // Target is moving away, apply stronger turn
+      turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
+    }
+    float accAz = N * turnFactor * losRateAz;
+    float accEl = N * turnFactor * losRateEl;
     // Convert acceleration inputs to craft body frame
     accelerationInput = transform.right * accAz + transform.up * accEl;
 
     // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
     accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
-
     _accelerationInput = accelerationInput;
     return accelerationInput;
   }
-
   // Optional: Add this method to visualize debug information
   protected virtual void OnDrawGizmos() {
     if (Application.isPlaying) {

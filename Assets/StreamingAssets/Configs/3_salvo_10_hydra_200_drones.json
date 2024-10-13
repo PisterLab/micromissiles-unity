@@ -162,7 +162,7 @@
         "agent_model": "quadcopter.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 600, "z": 6000 },
+          "position": { "x": 0, "y": 200, "z": 6000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
           "velocity": { "x": 0, "y": 0, "z": -50 }
         },
