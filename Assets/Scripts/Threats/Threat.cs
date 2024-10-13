@@ -128,10 +128,33 @@ public abstract class Threat : Agent {
     if (Vector3.Dot(relativePosition, normalAccelerationDirection) > 0) {
       normalAccelerationDirection *= -1;
     }
+
+    // Avoid evading straight down when near the ground
+    float altitude = GetPosition().y;
+    float groundProximityThreshold = 200.0f;  // Adjust threshold as necessary
+    if (altitude < groundProximityThreshold) {
+      // Determine evasion direction based on angle to interceptor
+      Vector3 toInterceptor = interceptor.GetPosition() - GetPosition();
+      Vector3 rightDirection = Vector3.Cross(Vector3.up, transform.forward);
+      float angle = Vector3.SignedAngle(transform.forward, toInterceptor, Vector3.up);
+
+      // Choose the direction that leads away from the interceptor
+      Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
+
+      // Blend between horizontal evasion and slight upward movement
+      float blendFactor = 1 - (altitude / groundProximityThreshold);
+      normalAccelerationDirection =
+          Vector3
+              .Lerp(normalAccelerationDirection, bestHorizontalDirection + Vector3.up * 0.8f,
+                    blendFactor)
+              .normalized;
+    }
+
     Vector3 normalAcceleration = normalAccelerationDirection * CalculateMaxNormalAcceleration();
 
     // Adjust forward speed
     Vector3 forwardAcceleration = CalculateForwardAcceleration();
+
     return normalAcceleration + forwardAcceleration;
   }
 
