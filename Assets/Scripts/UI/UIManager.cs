@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
@@ -107,15 +108,21 @@ public class UIManager : MonoBehaviour {
 
     interceptorCostText.text = $"Interceptors (launched)\n${FormatCost(interceptorCost)}";
     threatCostText.text = $"Threats (destroyed)\n${FormatCost(threatCost)}";
-    netCostText.text = $"Net Cost\n${FormatCost(netCost)}";
+    netCostText.text = $"Cost difference\n${FormatCost(netCost)}";
+    if (netCost < 0) {
+      netCostText.color = Color.green;
+    } else {
+      netCostText.color = Color.red;
+    }
   }
 
   private string FormatCost(double cost) {
-    if (cost >= 1e9)
+    double absCost = Math.Abs(cost);
+    if (absCost >= 1e9)
       return $"{cost / 1e9:F2}B";
-    if (cost >= 1e6)
+    if (absCost >= 1e6)
       return $"{cost / 1e6:F2}M";
-    if (cost >= 1e3)
+    if (absCost >= 1e3)
       return $"{cost / 1e3:F2}k";
     return $"{cost:F2}";
   }
