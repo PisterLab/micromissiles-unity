@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/13/2024 - 01:07:36 |
+| Generated on: | 10/13/2024 - 01:15:19 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 621 |
-| Uncovered lines: | 2037 |
+| Covered lines: | 622 |
+| Uncovered lines: | 2036 |
 | Coverable lines: | 2658 |
-| Total lines: | 4984 |
-| Line coverage: | 23.3% (621 of 2658) |
+| Total lines: | 4983 |
+| Line coverage: | 23.4% (622 of 2658) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 81 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**335**|**1997**|**2332**|**4725**|**14.3%**|**0**|**0**|****|**55**|**350**|**15.7%**|
+|**bamlab.micromissiles**|**335**|**1997**|**2332**|**4724**|**14.3%**|**0**|**0**|****|**55**|**350**|**15.7%**|
 |Agent|43|140|183|314|23.4%|0|0||12|36|33.3%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
@@ -54,7 +54,7 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|65|65|114|0%|0|0||0|17|0%|
+|UIManager|0|65|65|113|0%|0|0||0|17|0%|
 |UISelectableEntry|0|70|70|113|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
 |Utilities|3|0|3|9|100%|0|0||1|1|100%|
@@ -63,11 +63,11 @@
 |AgentTestBase|14|3|17|34|82.3%|0|0||3|4|75%|
 |SensorTestBase|11|0|11|26|100%|0|0||2|2|100%|
 |TestBase|24|6|30|44|80%|0|0||5|6|83.3%|
-|**bamlab.test.editmode**|**237**|**12**|**249**|**549**|**95.1%**|**0**|**0**|****|**16**|**18**|**88.8%**|
+|**bamlab.test.editmode**|**238**|**11**|**249**|**549**|**95.5%**|**0**|**0**|****|**16**|**18**|**88.8%**|
 |IdealSensorTests|48|0|48|82|100%|0|0||3|3|100%|
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|63|0|63|141|100%|0|0||2|2|100%|
-|ThreatTests|121|10|131|304|92.3%|0|0||9|11|81.8%|
+|ThreatTests|122|9|131|304|93.1%|0|0||9|11|81.8%|
 |**bamlab.test.playmode**|**0**|**19**|**19**|**49**|**0%**|**0**|**0**|****|**0**|**3**|**0%**|
 |ConfigTest|0|12|12|25|0%|0|0||0|2|0%|
 |SanityTest|0|7|7|24|0%|0|0||0|1|0%|
