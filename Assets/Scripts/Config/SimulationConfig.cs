@@ -103,6 +103,7 @@ public class SensorConfig {
 
 [Serializable]
 public class FlightConfig {
+  public bool augmentedPnEnabled;
   public bool evasionEnabled;
   public float evasionRangeThreshold;
 }

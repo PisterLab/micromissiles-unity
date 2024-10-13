@@ -103,7 +103,11 @@ public class Interceptor : Agent {
   }
 
   private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
-    // Implement Augmented Proportional Navigation guidance law
+    // TODO(titan): Refactor all controller-related code into a separate controller interface with
+    // subclasses. A controller factory will instantiate the correct controller for each dynamic
+    // configuration.
+
+    // Implement (Augmented) Proportional Navigation guidance law
     Vector3 accelerationInput = Vector3.zero;
 
     // Extract relevant information from sensor output
@@ -128,10 +132,12 @@ public class Interceptor : Agent {
     accelerationInput = transform.right * accAz + transform.up * accEl;
 
     // For Augmented Proportional Navigation, add a feedforward term for the target acceleration
-    Vector3 targetAcceleration = _targetModel.GetAcceleration();
-    Vector3 normalTargetAcceleration =
-        Vector3.ProjectOnPlane(targetAcceleration, transform.forward);
-    accelerationInput += N / 2 * normalTargetAcceleration;
+    if (_dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
+      Vector3 targetAcceleration = _targetModel.GetAcceleration();
+      Vector3 normalTargetAcceleration =
+          Vector3.ProjectOnPlane(targetAcceleration, transform.forward);
+      accelerationInput += N / 2 * normalTargetAcceleration;
+    }
 
     // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();

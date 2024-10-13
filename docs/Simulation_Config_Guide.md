@@ -55,6 +55,9 @@ This is a basic configuration featuring a single salvo with one interceptor type
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -107,6 +110,9 @@ This configuration demonstrates a more complex scenario with three salvos, each 
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -147,7 +153,7 @@ The key difference between the examples is that the **Number of Salvos** in `3_s
 Multiple salvos are achieved by:
 
 - Adding multiple configurations in the `interceptor_swarm_configs` array.
-- Specifying different `launch_time` values in the `dynamic_config` for each salvo to control when they launch.
+- Specifying different `launch_time` values in the `launch_config` of the `dynamic_config` for each salvo to control when they launch.
 
 ### Key Configuration Parameters
 
@@ -163,7 +169,7 @@ Multiple salvos are achieved by:
   - **`interceptor_type`** / **`threat_type`**: Defines the type of interceptor or threat.
   - **`initial_state`**: Sets the starting position, rotation, and velocity.
   - **`standard_deviation`**: Adds random noise to initial states for variability.
-  - **`dynamic_config`**: Time-dependent settings like `launch_time` and sensor configurations.
+  - **`dynamic_config`**: Time-dependent settings like launch configurations, sensor configurations, and in-flight configurations.
   - **`submunitions_config`**: Details for any submunitions (e.g., micromissiles deployed by a larger interceptor).
 
 ### Adding or Modifying Agents
@@ -186,7 +192,7 @@ Multiple salvos are achieved by:
    }
    ```
 
-   - **`launch_time`** in `dynamic_config` controls when this swarm (or salvo) is deployed.
+   - **`launch_time`** in `launch_config` controls when this swarm (or salvo) is deployed.
 
 2. **Modify Existing Configurations**:
 
@@ -203,6 +209,7 @@ The `Models` directory contains the following default model configurations:
 - **`micromissile.json`**
 - **`hydra70.json`**
 - **`drone.json`**
+- **`srfj.json`**
 
 These JSON files serve as templates and can be tweaked to modify the behavior of the corresponding models.
 

@@ -21,7 +21,7 @@
             "frequency": 100
           },
           "flight_config": {
-            "evasionEnabled": false
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -45,8 +45,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "evasionEnabled": true,
-                "evasionRangeThreshold": 1000
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -73,7 +72,7 @@
             "frequency": 100
           },
           "flight_config": {
-            "evasionEnabled": false
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -97,8 +96,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "evasionEnabled": true,
-                "evasionRangeThreshold": 1000
+                "augmentedPnEnabled": false
               }
             }
           }

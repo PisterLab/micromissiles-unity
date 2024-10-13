@@ -19,6 +19,9 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -40,6 +43,9 @@
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
+              },
+              "flight_config": {
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -64,6 +70,9 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -85,6 +94,9 @@
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
+              },
+              "flight_config": {
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -109,6 +121,9 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
@@ -130,6 +145,9 @@
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
+              },
+              "flight_config": {
+                "augmentedPnEnabled": false
               }
             }
           }
