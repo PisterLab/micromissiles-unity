@@ -132,7 +132,7 @@ public class Interceptor : Agent {
     accelerationInput = transform.right * accAz + transform.up * accEl;
 
     // For Augmented Proportional Navigation, add a feedforward term for the target acceleration
-    if (_dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
+    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
       Vector3 targetAcceleration = _targetModel.GetAcceleration();
       Vector3 normalTargetAcceleration =
           Vector3.ProjectOnPlane(targetAcceleration, transform.forward);
