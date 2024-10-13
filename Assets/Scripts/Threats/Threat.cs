@@ -20,15 +20,15 @@ public abstract class Threat : Agent {
   protected float PowerTableLookup(PowerSetting powerSetting) {
     switch (powerSetting) {
       case PowerSetting.IDLE:
-        return _staticAgentConfig.powerTable.IDLE;
+        return staticAgentConfig.powerTable.IDLE;
       case PowerSetting.LOW:
-        return _staticAgentConfig.powerTable.LOW;
+        return staticAgentConfig.powerTable.LOW;
       case PowerSetting.CRUISE:
-        return _staticAgentConfig.powerTable.CRUISE;
+        return staticAgentConfig.powerTable.CRUISE;
       case PowerSetting.MIL:
-        return _staticAgentConfig.powerTable.MIL;
+        return staticAgentConfig.powerTable.MIL;
       case PowerSetting.MAX:
-        return _staticAgentConfig.powerTable.MAX;
+        return staticAgentConfig.powerTable.MAX;
       default:
         Debug.LogError("Invalid power setting");
         return 0f;
@@ -99,7 +99,7 @@ public abstract class Threat : Agent {
   }
 
   protected bool ShouldEvade() {
-    if (!_dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
+    if (!dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
       return false;
     }
 
@@ -109,7 +109,7 @@ public abstract class Threat : Agent {
     }
 
     float evasionRangeThreshold =
-        _dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
+        dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(closestInterceptor);
     return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }

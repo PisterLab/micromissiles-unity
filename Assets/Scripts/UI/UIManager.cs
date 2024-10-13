@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour {
   private TMP_Dropdown _configDropdown;
   public TextMeshProUGUI agentPanelText;
   public TextMeshProUGUI simTimeText;
+  public TextMeshProUGUI interceptorCostText;
+  public TextMeshProUGUI threatCostText;
+  public TextMeshProUGUI netCostText;
 
   public TMP_FontAsset Font;
 
@@ -96,10 +99,32 @@ public class UIManager : MonoBehaviour {
     simTimeText.text =
         "Elapsed Sim Time: " + SimManager.Instance.GetElapsedSimulationTime().ToString("F2");
   }
+
+  private void UpdateTotalCostText() {
+    double interceptorCost = SimManager.Instance.GetCostLaunchedInterceptors();
+    double threatCost = SimManager.Instance.GetCostDestroyedThreats();
+    double netCost = interceptorCost - threatCost;
+
+    interceptorCostText.text = $"Interceptors (launched)\n${FormatCost(interceptorCost)}";
+    threatCostText.text = $"Threats (destroyed)\n${FormatCost(threatCost)}";
+    netCostText.text = $"Net Cost\n${FormatCost(netCost)}";
+  }
+
+  private string FormatCost(double cost) {
+    if (cost >= 1e9)
+      return $"{cost / 1e9:F2}B";
+    if (cost >= 1e6)
+      return $"{cost / 1e6:F2}M";
+    if (cost >= 1e3)
+      return $"{cost / 1e3:F2}k";
+    return $"{cost:F2}";
+  }
+
   // Update is called once per frame
   void Update() {
     // UpdateAgentPanel();
     UpdateSimTimeText();
+    UpdateTotalCostText();
   }
 }
 

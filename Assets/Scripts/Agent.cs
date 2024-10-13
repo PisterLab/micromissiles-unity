@@ -37,8 +37,8 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected double _timeInPhase = 0;
 
-  public StaticAgentConfig _staticAgentConfig;
-  public DynamicAgentConfig _dynamicAgentConfig;
+  public StaticAgentConfig staticAgentConfig;
+  public DynamicAgentConfig dynamicAgentConfig;
 
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
@@ -66,12 +66,12 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    _dynamicAgentConfig = config;
+    dynamicAgentConfig = config;
   }
 
   public virtual void SetStaticAgentConfig(StaticAgentConfig config) {
-    _staticAgentConfig = config;
-    GetComponent<Rigidbody>().mass = _staticAgentConfig.bodyConfig.mass;
+    staticAgentConfig = config;
+    GetComponent<Rigidbody>().mass = staticAgentConfig.bodyConfig.mass;
   }
 
   public virtual bool IsAssignable() {
@@ -199,8 +199,8 @@ public abstract class Agent : MonoBehaviour {
     }
     _timeInPhase += Time.fixedDeltaTime;
 
-    var launch_time = _dynamicAgentConfig.dynamic_config.launch_config.launch_time;
-    var boost_time = _staticAgentConfig.boostConfig.boostTime;
+    var launch_time = dynamicAgentConfig.dynamic_config.launch_config.launch_time;
+    var boost_time = staticAgentConfig.boostConfig.boostTime;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {
@@ -263,21 +263,21 @@ public abstract class Agent : MonoBehaviour {
   }
 
   protected float CalculateMaxForwardAcceleration() {
-    return _staticAgentConfig.accelerationConfig.maxForwardAcceleration;
+    return staticAgentConfig.accelerationConfig.maxForwardAcceleration;
   }
 
   protected float CalculateMaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
-        (float)(_staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
+        (float)(staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);
-    float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
+    float referenceSpeed = staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
   private float CalculateDrag() {
-    float dragCoefficient = _staticAgentConfig.liftDragConfig.dragCoefficient;
-    float crossSectionalArea = _staticAgentConfig.bodyConfig.crossSectionalArea;
-    float mass = _staticAgentConfig.bodyConfig.mass;
+    float dragCoefficient = staticAgentConfig.liftDragConfig.dragCoefficient;
+    float crossSectionalArea = staticAgentConfig.bodyConfig.crossSectionalArea;
+    float mass = staticAgentConfig.bodyConfig.mass;
     float dynamicPressure = (float)GetDynamicPressure();
     float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
     return dragForce / mass;
@@ -286,7 +286,7 @@ public abstract class Agent : MonoBehaviour {
   private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
     float liftAcceleration =
         (accelerationInput - Vector3.Dot(accelerationInput, transform.up) * transform.up).magnitude;
-    float liftDragRatio = _staticAgentConfig.liftDragConfig.liftDragRatio;
+    float liftDragRatio = staticAgentConfig.liftDragConfig.liftDragRatio;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }
 }
