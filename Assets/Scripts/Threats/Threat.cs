@@ -145,7 +145,7 @@ public abstract class Threat : Agent {
       float blendFactor = 1 - (altitude / groundProximityThreshold);
       normalAccelerationDirection =
           Vector3
-              .Lerp(normalAccelerationDirection, bestHorizontalDirection + Vector3.up * 0.8f,
+              .Lerp(normalAccelerationDirection, bestHorizontalDirection + Vector3.up * 5f,
                     blendFactor)
               .normalized;
     }

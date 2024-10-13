@@ -4,11 +4,11 @@
     {
       "num_agents": 4,
       "dynamic_agent_config": {
-        "agent_model": "sfrj.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "rotation": { "x": -45, "y": 0, "z": 0 },
-          "velocity": { "x": 0, "y": 30, "z": 50 }
+          "rotation": { "x": -25, "y": 0, "z": 0 },
+          "velocity": { "x": 0, "y": 20, "z": 50 }
         },
         "standard_deviation": {
           "position": { "x": 5, "y": 0, "z": 5 },
@@ -45,7 +45,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "augmentedPnEnabled": false
+                "augmentedPnEnabled": true
               }
             }
           }
@@ -60,12 +60,12 @@
         "agent_model": "brahmos.json",
         "attack_behavior": "brahmos_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 50, "z": 50000 },
+          "position": { "x": 0, "y": 50, "z": 40000 },
           "rotation": { "x": 90, "y": 0, "z": 0 },
           "velocity": { "x": 0, "y": 0, "z": -800 }
         },
         "standard_deviation": {
-          "position": { "x": 1000, "y": 200, "z": 100 },
+          "position": { "x": 3000, "y": 10, "z": 100 },
           "velocity": { "x": 0, "y": 0, "z": 25 }
         },
         "dynamic_config": {

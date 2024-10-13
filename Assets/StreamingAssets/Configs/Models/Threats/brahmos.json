@@ -3,7 +3,7 @@
     "agentClass": "FixedWingThreat",
     "unitCost": 100000,
     "accelerationConfig": {
-        "maxReferenceNormalAcceleration": 70,
+        "maxReferenceNormalAcceleration": 15,
         "referenceSpeed": 960.4,
         "maxForwardAcceleration": 30
     },

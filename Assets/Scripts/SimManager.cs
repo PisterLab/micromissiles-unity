@@ -176,12 +176,11 @@ public class SimManager : MonoBehaviour {
     }
   }
 
-  public void RegisterThreatHit(Interceptor interceptor, Threat threat) {
+  public void RegisterThreatHit(Threat threat) {
     // Placeholder
   }
 
-  public void RegisterThreatMiss(Interceptor interceptor, Threat threat) {
-    Debug.Log($"RegisterThreatMiss: Interceptor {interceptor.name} missed threat {threat.name}");
+  public void RegisterThreatMiss(Threat threat) {
     // Placeholder
   }
 
@@ -293,8 +292,8 @@ public class SimManager : MonoBehaviour {
     threat.SetAttackBehavior(attackBehavior);
 
     // Subscribe events
-    threat.OnInterceptHit += RegisterThreatHit;
-    threat.OnInterceptMiss += RegisterThreatMiss;
+    threat.OnThreatHit += RegisterThreatHit;
+    threat.OnThreatMiss += RegisterThreatMiss;
 
     // Assign a unique and simple ID
     int threatId = _threatObjects.Count;
