@@ -35,6 +35,10 @@ public class SimManager : MonoBehaviour {
   private List<List<Agent>> _interceptorSwarms = new List<List<Agent>>();
   private List<List<Agent>> _threatSwarms = new List<List<Agent>>();
 
+  private Dictionary<Agent, List<Agent>> _interceptorSwarmMap =
+      new Dictionary<Agent, List<Agent>>();
+  private Dictionary<Agent, List<Agent>> _threatSwarmMap = new Dictionary<Agent, List<Agent>>();
+
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
@@ -152,7 +156,7 @@ public class SimManager : MonoBehaviour {
         Interceptor interceptor = CreateInterceptor(swarmConfig.dynamic_agent_config);
         swarm.Add(interceptor);
       }
-      _interceptorSwarms.Add(swarm);
+      AddInterceptorSwarm(swarm);
     }
     IADS.Instance.RequestThreatAssignment(_interceptorObjects);
 
@@ -164,7 +168,21 @@ public class SimManager : MonoBehaviour {
         Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
         swarm.Add(threat);
       }
-      _threatSwarms.Add(swarm);
+      AddThreatSwarm(swarm);
+    }
+  }
+
+  public void AddInterceptorSwarm(List<Agent> swarm) {
+    _interceptorSwarms.Add(swarm);
+    foreach (var interceptor in swarm) {
+      _interceptorSwarmMap[interceptor] = swarm;
+    }
+  }
+
+  public void AddThreatSwarm(List<Agent> swarm) {
+    _threatSwarms.Add(swarm);
+    foreach (var threat in swarm) {
+      _threatSwarmMap[threat] = swarm;
     }
   }
 
@@ -207,25 +225,50 @@ public class SimManager : MonoBehaviour {
     IADS.Instance.AssignInterceptorsToThreats(_interceptorObjects);
   }
 
+  public void RemoveInterceptorFromSwarm(Interceptor interceptor) {
+    _interceptorSwarmMap[interceptor].Remove(interceptor);
+    if (_interceptorSwarmMap[interceptor].Count == 0) {
+      _interceptorSwarms.Remove(_interceptorSwarmMap[interceptor]);
+      if (CameraController.Instance.cameraMode == CameraMode.FOLLOW_INTERCEPTOR_SWARM) {
+        CameraController.Instance.FollowNextInterceptorSwarm();
+      }
+    }
+    _interceptorSwarmMap.Remove(interceptor);
+  }
+
+  public void RemoveThreatFromSwarm(Threat threat) {
+    _threatSwarmMap[threat].Remove(threat);
+    if (_threatSwarmMap[threat].Count == 0) {
+      _threatSwarms.Remove(_threatSwarmMap[threat]);
+      if (CameraController.Instance.cameraMode == CameraMode.FOLLOW_THREAT_SWARM) {
+        CameraController.Instance.FollowNextThreatSwarm();
+      }
+    }
+    _threatSwarmMap.Remove(threat);
+  }
+
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
     _costDestroyedThreats += threat.staticAgentConfig.unitCost;
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
+    RemoveInterceptorFromSwarm(interceptor);
+    RemoveThreatFromSwarm(threat);
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
+    RemoveInterceptorFromSwarm(interceptor);
   }
 
   public void RegisterThreatHit(Threat threat) {
-    // Placeholder
+    RemoveThreatFromSwarm(threat);
   }
 
   public void RegisterThreatMiss(Threat threat) {
-    // Placeholder
+    RemoveThreatFromSwarm(threat);
   }
 
   private AttackBehavior LoadAttackBehavior(DynamicAgentConfig config) {

@@ -3349,7 +3349,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 200000
+  far clip plane: 300000
   field of view: 30
   orthographic: 0
   orthographic size: 5
@@ -3441,19 +3441,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseActive: 1
   lockUserInput: 0
-  _cameraSpeedNormal: 100
-  _cameraSpeedMax: 1000
+  _cameraSpeedNormal: 300
+  _cameraSpeedMax: 2000
   _speedH: 0.5
   _speedV: 0.5
   _autoRotate: 0
   target: {fileID: 1255004942}
   _orbitDistance: 5
-  _orbitXSpeed: 0.05
-  _orbitYSpeed: 0.05
+  _orbitXSpeed: 0.03
+  _orbitYSpeed: 0.03
   _zoomSpeed: 10
-  orbitYMinLimit: -20
+  orbitYMinLimit: -80
   orbitYMaxLimit: 120
-  _orbitDistanceMax: 10000
+  _orbitDistanceMax: 50000
   targetRenderer: {fileID: 1255004940}
   floorRenderer: {fileID: 320210796}
   matAlpha: 0
@@ -3461,6 +3461,13 @@ MonoBehaviour:
   xAutoRotateTime: 40
   yAutoRotateTime: 0
   forwardToCameraAngle: 0
+  cameraMode: 0
+  _selectedInterceptorSwarmIndex: -1
+  _selectedThreatSwarmIndex: -1
+  _centroidUpdateFrequency: 0.1
+  _defaultInterpolationSpeed: 20
+  _currentInterpolationSpeed: 0
+  _iirFilterCoefficient: 0.1
 --- !u!1 &981874228
 GameObject:
   m_ObjectHideFlags: 0

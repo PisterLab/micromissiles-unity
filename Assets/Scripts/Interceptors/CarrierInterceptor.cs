@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using System.Linq;
 
 public class CarrierInterceptor : Interceptor {
   private bool _submunitionsLaunched = false;
@@ -70,5 +71,7 @@ public class CarrierInterceptor : Interceptor {
       submunitions.Add(submunition);
     }
     IADS.Instance.RequestThreatAssignment(submunitions);
+    SimManager.Instance.AddInterceptorSwarm(
+        submunitions.ConvertAll(submunition => submunition as Agent));
   }
 }
