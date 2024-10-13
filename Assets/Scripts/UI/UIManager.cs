@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour {
     // worldManager = WorldManager.Instance;
   }
 
+
   public void ToggleConfigSelectorPanel() {
     _configSelectorPanel.SetActive(!_configSelectorPanel.activeSelf);
   }
