@@ -120,7 +120,6 @@ public class UIManager : MonoBehaviour {
     return $"{cost:F2}";
   }
 
-
   // Update is called once per frame
   void Update() {
     // UpdateAgentPanel();
