@@ -59,7 +59,7 @@ public static class ConfigLoader {
   }
 
   public static SimulatorConfig LoadSimulatorConfig() {
-    string relativePath = "simulator.json"; // Path relative to StreamingAssets
+    string relativePath = "simulator.json";  // Path relative to StreamingAssets
     string fileContent = LoadFromStreamingAssets(relativePath);
     return JsonConvert.DeserializeObject<SimulatorConfig>(fileContent);
   }

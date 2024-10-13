@@ -8,7 +8,6 @@ using UnityEngine;
 /// Implements the Singleton pattern to ensure only one instance exists.
 /// </summary>
 public class SimManager : MonoBehaviour {
-
   public SimulatorConfig simulatorConfig;
 
   /// <summary>
@@ -400,10 +399,9 @@ public class SimManager : MonoBehaviour {
 }
 
 [System.Serializable]
-public class SimulatorConfig
-{
-    public bool enableLogging;
-    public bool enableMissileTrailEffect;
-    public bool enableExplosionEffect;
-    public int physicsUpdateRate;
+public class SimulatorConfig {
+  public bool enableLogging;
+  public bool enableMissileTrailEffect;
+  public bool enableExplosionEffect;
+  public int physicsUpdateRate;
 }
