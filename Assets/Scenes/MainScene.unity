@@ -6794,6 +6794,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8453457817924536687, guid: aa7ae4d8098e76042adf44084e6d17b7, type: 3}
+      propertyPath: threatTrailMatFaded
+      value: 
+      objectReference: {fileID: 2100000, guid: 53fa63d934ec00746a0e8e0926461afd, type: 2}
+    - target: {fileID: 8453457817924536687, guid: aa7ae4d8098e76042adf44084e6d17b7, type: 3}
+      propertyPath: interceptorTrailMatFaded
+      value: 
+      objectReference: {fileID: 2100000, guid: 37be7f5b4882cc146afeec6c0247c1fb, type: 2}
     - target: {fileID: 8837696709373837493, guid: aa7ae4d8098e76042adf44084e6d17b7, type: 3}
       propertyPath: m_Name
       value: ParticleManager

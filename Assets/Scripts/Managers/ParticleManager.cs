@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Codice.Utils;
 
 public class ParticleManager : MonoBehaviour {
   public static ParticleManager Instance { get; private set; }
@@ -10,6 +11,13 @@ public class ParticleManager : MonoBehaviour {
   private Queue<GameObject> _missileTrailPool;
   [SerializeField]
   private Queue<GameObject> _missileExplosionPool;
+
+  private List<TrailRenderer> _agentTrailRenderers = new List<TrailRenderer>();
+
+  [SerializeField, Tooltip("The material to use for commandeered interceptor trail renderers")]
+  public Material interceptorTrailMatFaded;
+  [SerializeField, Tooltip("The material to use for commandeered threat trail renderers")]
+  public Material threatTrailMatFaded;
 
   private void Awake() {
     if (Instance == null) {
@@ -31,7 +39,11 @@ public class ParticleManager : MonoBehaviour {
       InitializeMissileExplosionParticlePool();
     }
 
+    // Subscribe to events!
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+    SimManager.Instance.OnNewThreat += RegisterNewThreat;
+
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
   }
 
   private void InitializeMissileTrailParticlePool() {
@@ -57,13 +69,62 @@ public class ParticleManager : MonoBehaviour {
     StartCoroutine(InstantiateMissileExplosionsOverTime(missileExplosionPrefab, 200, 0.05f));
   }
 
+  private void RegisterSimulationEnded() {
+    foreach (var trailRenderer in _agentTrailRenderers) {
+      Destroy(trailRenderer.gameObject);
+    }
+    _agentTrailRenderers.Clear();
+  }
+
   private void RegisterNewInterceptor(Interceptor interceptor) {
     interceptor.OnInterceptHit += RegisterInterceptorHit;
+    interceptor.OnInterceptMiss += RegisterInterceptorMiss;
+  }
+
+  private void RegisterNewThreat(Threat threat) {
+    threat.OnThreatHit += RegisterThreatHit;
+    threat.OnThreatMiss += RegisterThreatMiss;
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
     if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
       PlayMissileExplosion(interceptor.transform.position);
+    }
+    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
+      CommandeerAgentTrailRenderer(interceptor);
+      CommandeerAgentTrailRenderer(threat);
+    }
+  }
+
+  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
+    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
+      CommandeerAgentTrailRenderer(interceptor);
+    }
+  }
+
+  private void RegisterThreatHit(Threat threat) {
+    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
+      CommandeerAgentTrailRenderer(threat);
+    }
+  }
+
+  private void RegisterThreatMiss(Threat threat) {
+    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
+      CommandeerAgentTrailRenderer(threat);
+    }
+  }
+
+  private void CommandeerAgentTrailRenderer(Agent agent) {
+    // Take the TrailRenderer component off of the agent, onto us, and store it
+    // (so we can destroy it later on simulation end)
+    TrailRenderer trailRenderer = agent.GetComponentInChildren<TrailRenderer>();
+    if (trailRenderer != null) {
+      trailRenderer.transform.parent = transform;
+      _agentTrailRenderers.Add(trailRenderer);
+      trailRenderer.material = (agent is Threat) ? threatTrailMatFaded : interceptorTrailMatFaded;
+    }
+    else {
+      Debug.LogWarning("Agent has no TrailRenderer component");
     }
   }
 

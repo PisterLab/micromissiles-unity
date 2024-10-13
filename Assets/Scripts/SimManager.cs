@@ -415,4 +415,5 @@ public class SimulatorConfig {
   public bool enableMissileTrailEffect;
   public bool enableExplosionEffect;
   public int physicsUpdateRate;
+  public bool persistentFlightTrails;
 }

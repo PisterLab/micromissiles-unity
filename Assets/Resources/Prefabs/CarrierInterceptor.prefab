@@ -4996,7 +4996,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 10
+  m_Time: 1000
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -5165,10 +5165,41 @@ MonoBehaviour:
   _acceleration: {x: 0, y: 0, z: 0}
   _dragAcceleration: {x: 0, y: 0, z: 0}
   _speed: 0
+  _interceptors: []
   _target: {fileID: 0}
+  _targetModel: {fileID: 0}
   _timeSinceBoost: 0
   _timeInPhase: 0
-  _dynamicAgentConfig:
+  staticAgentConfig:
+    name: 
+    agentClass: 
+    unitCost: 0
+    accelerationConfig:
+      maxReferenceNormalAcceleration: 300
+      referenceSpeed: 1000
+      maxForwardAcceleration: 50
+    boostConfig:
+      boostTime: 0.3
+      boostAcceleration: 350
+    liftDragConfig:
+      liftCoefficient: 0.2
+      dragCoefficient: 0.7
+      liftDragRatio: 5
+    bodyConfig:
+      mass: 0.37
+      crossSectionalArea: 0.0003
+      finArea: 0.0006
+      bodyArea: 0.01
+    hitConfig:
+      hitRadius: 1
+      killProbability: 0.9
+    powerTable:
+      IDLE: 0
+      LOW: 0
+      CRUISE: 0
+      MIL: 0
+      MAX: 0
+  dynamicAgentConfig:
     name: 
     agent_model: 
     attack_behavior: 
@@ -5185,6 +5216,10 @@ MonoBehaviour:
       sensor_config:
         type: 0
         frequency: 0
+      flight_config:
+        augmentedPnEnabled: 0
+        evasionEnabled: 0
+        evasionRangeThreshold: 0
     plotting_config:
       color: 0
       linestyle: 0
@@ -5208,38 +5243,15 @@ MonoBehaviour:
           sensor_config:
             type: 0
             frequency: 0
+          flight_config:
+            augmentedPnEnabled: 0
+            evasionEnabled: 0
+            evasionRangeThreshold: 0
         plotting_config:
           color: 0
           linestyle: 0
           marker: 0
-  _staticAgentConfig:
-    name: 
-    agentClass: 
-    powerTable:
-      IDLE: 0
-      LOW: 0
-      CRUISE: 0
-      MIL: 0
-      MAX: 0
-    accelerationConfig:
-      maxReferenceNormalAcceleration: 300
-      referenceSpeed: 1000
-      maxForwardAcceleration: 50
-    boostConfig:
-      boostTime: 0.3
-      boostAcceleration: 350
-    liftDragConfig:
-      liftCoefficient: 0.2
-      dragCoefficient: 0.7
-      liftDragRatio: 5
-    bodyConfig:
-      mass: 0.37
-      crossSectionalArea: 0.0003
-      finArea: 0.0006
-      bodyArea: 0.01
-    hitConfig:
-      hitRadius: 1
-      killProbability: 0.9
+  _navigationGain: 3
   _showDebugVectors: 1
 --- !u!54 &3328180170527195603
 Rigidbody:

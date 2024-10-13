@@ -216,7 +216,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 1000
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
@@ -333,17 +333,13 @@ MonoBehaviour:
   _speed: 0
   _interceptors: []
   _target: {fileID: 0}
+  _targetModel: {fileID: 0}
   _timeSinceBoost: 0
   _timeInPhase: 0
-  _staticAgentConfig:
+  staticAgentConfig:
     name: 
     agentClass: 
-    powerTable:
-      IDLE: 0
-      LOW: 0
-      CRUISE: 0
-      MIL: 0
-      MAX: 0
+    unitCost: 0
     accelerationConfig:
       maxReferenceNormalAcceleration: 300
       referenceSpeed: 1000
@@ -363,7 +359,13 @@ MonoBehaviour:
     hitConfig:
       hitRadius: 1
       killProbability: 0.9
-  _dynamicAgentConfig:
+    powerTable:
+      IDLE: 0
+      LOW: 0
+      CRUISE: 0
+      MIL: 0
+      MAX: 0
+  dynamicAgentConfig:
     name: 
     agent_model: 
     attack_behavior: 
@@ -381,6 +383,7 @@ MonoBehaviour:
         type: 0
         frequency: 0
       flight_config:
+        augmentedPnEnabled: 0
         evasionEnabled: 0
         evasionRangeThreshold: 0
     plotting_config:
@@ -407,6 +410,7 @@ MonoBehaviour:
             type: 0
             frequency: 0
           flight_config:
+            augmentedPnEnabled: 0
             evasionEnabled: 0
             evasionRangeThreshold: 0
         plotting_config:
