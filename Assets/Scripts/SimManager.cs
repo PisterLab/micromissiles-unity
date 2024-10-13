@@ -36,6 +36,9 @@ public class SimManager : MonoBehaviour {
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
 
+  private float _costLaunchedInterceptors = 0f;
+  private float _costDestroyedThreats = 0f;
+
   public delegate void SimulationEventHandler();
   public event SimulationEventHandler OnSimulationEnded;
   public event SimulationEventHandler OnSimulationStarted;
@@ -52,6 +55,22 @@ public class SimManager : MonoBehaviour {
   /// <returns>The elapsed time in seconds.</returns>
   public double GetElapsedSimulationTime() {
     return _elapsedSimulationTime;
+  }
+
+  /// <summary>
+  /// Gets the total cost of launched interceptors.
+  /// </summary>
+  /// <returns>The total cost of launched interceptors.</returns>
+  public double GetCostLaunchedInterceptors() {
+    return _costLaunchedInterceptors;
+  }
+
+  /// <summary>
+  /// Gets the total cost of destroyed threats.
+  /// </summary>
+  /// <returns>The total cost of destroyed threats.</returns>
+  public double GetCostDestroyedThreats() {
+    return _costDestroyedThreats;
   }
 
   public List<Interceptor> GetActiveInterceptors() {
@@ -145,6 +164,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
+    _costDestroyedThreats += threat.staticAgentConfig.unitCost;
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
@@ -235,6 +255,9 @@ public class SimManager : MonoBehaviour {
     // Assign a unique and simple ID
     int interceptorId = _interceptorObjects.Count;
     interceptorObject.name = $"{interceptorStaticAgentConfig.name}_Interceptor_{interceptorId}";
+
+    // Add the interceptor's unit cost to the total cost
+    _costLaunchedInterceptors += interceptorStaticAgentConfig.unitCost;
 
     // Let listeners know a new interceptor has been created
     OnNewInterceptor?.Invoke(interceptor);
@@ -331,6 +354,8 @@ public class SimManager : MonoBehaviour {
     // Reset simulation time
     _elapsedSimulationTime = 0f;
     simulationRunning = IsSimulationRunning();
+    _costLaunchedInterceptors = 0f;
+    _costDestroyedThreats = 0f;
 
     // Clear existing interceptors and threats
     foreach (var interceptor in _interceptorObjects) {

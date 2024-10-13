@@ -46,7 +46,7 @@ public class Interceptor : Agent {
 
     // Calculate boost acceleration
     float boostAcceleration =
-        (float)(_staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
+        (float)(staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add PN acceleration to boost acceleration
@@ -91,7 +91,7 @@ public class Interceptor : Agent {
 
   private void UpdateTargetModel(double deltaTime) {
     _elapsedTime += deltaTime;
-    float sensorUpdatePeriod = 1f / _dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+    float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
     if (_elapsedTime >= sensorUpdatePeriod) {
       // TODO: Implement guidance filter to estimate state from sensor output
       // For now, we'll use the threat's actual state
@@ -154,7 +154,7 @@ public class Interceptor : Agent {
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
       // Check kill probability before marking as hit
-      float killProbability = otherAgent._staticAgentConfig.hitConfig.killProbability;
+      float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {
@@ -197,9 +197,9 @@ public class Interceptor : Agent {
         float duration = particleSystem.main.duration;
 
         // Extend the duration of the missile trail effect to be the same as the boost time
-        if (duration < _staticAgentConfig.boostConfig.boostTime) {
+        if (duration < staticAgentConfig.boostConfig.boostTime) {
           ParticleSystem.MainModule mainModule = particleSystem.main;
-          mainModule.duration = _staticAgentConfig.boostConfig.boostTime;
+          mainModule.duration = staticAgentConfig.boostConfig.boostTime;
         }
 
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));

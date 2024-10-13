@@ -1,6 +1,7 @@
 {
     "name": "BrahmosCruiseMissile",
     "agentClass": "FixedWingThreat",
+    "unitCost": 100000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 70,
         "referenceSpeed": 960.4,
