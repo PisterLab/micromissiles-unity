@@ -86,7 +86,7 @@ public class Interceptor : Agent {
     }
 
     _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
-    return CalculateAccelerationCommand(_sensorOutput);
+    return CalculateAccelerationInput(_sensorOutput);
   }
 
   private void UpdateTargetModel(double deltaTime) {
@@ -102,25 +102,25 @@ public class Interceptor : Agent {
     }
   }
 
-  private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
-    // Implement Proportional Navigation guidance law
-    Vector3 accelerationCommand = Vector3.zero;
+  private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
+    // Implement Augmented Proportional Navigation guidance law
+    Vector3 accelerationInput = Vector3.zero;
 
     // Extract relevant information from sensor output
     float losRateAz = sensorOutput.velocity.azimuth;
     float losRateEl = sensorOutput.velocity.elevation;
-    float closing_velocity =
+    float closingVelocity =
         -sensorOutput.velocity
              .range;  // Negative because closing velocity is opposite to range rate
 
     // Navigation gain (adjust as needed)
     float N = _navigationGain;
     // Normal PN guidance for positive closing velocity
-    float turnFactor = closing_velocity;
+    float turnFactor = closingVelocity;
     // Handle negative closing velocity scenario
-    if (closing_velocity < 0) {
+    if (closingVelocity < 0) {
       // Target is moving away, apply stronger turn
-      turnFactor = Mathf.Max(1f, Mathf.Abs(closing_velocity) * 100f);
+      turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
     }
     float accAz = N * turnFactor * losRateAz;
     float accEl = N * turnFactor * losRateEl;
@@ -136,6 +136,7 @@ public class Interceptor : Agent {
     // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
     accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
+    _accelerationInput = accelerationInput;
     return accelerationInput;
   }
 
