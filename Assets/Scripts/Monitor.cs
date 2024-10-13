@@ -184,7 +184,7 @@ public class SimMonitor : MonoBehaviour {
       CloseLogFiles();
       WriteEventsToFile();
       StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
-        _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
+          _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
     }
   }
 

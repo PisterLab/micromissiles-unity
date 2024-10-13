@@ -11,7 +11,6 @@ public class ParticleManager : MonoBehaviour {
   [SerializeField]
   private Queue<GameObject> _missileExplosionPool;
 
-
   private void Awake() {
     if (Instance == null) {
       Instance = this;
@@ -22,7 +21,6 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void Start() {
-
     _missileTrailPool = new Queue<GameObject>();
     _missileExplosionPool = new Queue<GameObject>();
 
@@ -37,14 +35,13 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void InitializeMissileTrailParticlePool() {
-     // Grab from Resources/Prefabs/Effects
+    // Grab from Resources/Prefabs/Effects
     GameObject missileTrailPrefab =
         Resources.Load<GameObject>("Prefabs/Effects/InterceptorSmokeEffect");
-    
+
     // Pre-instantiate 10 missile trail particles
     for (int i = 0; i < 10; i++) {
       InstantiateMissileTrail(missileTrailPrefab);
-
     }
     // Instantiate over an interval
     StartCoroutine(InstantiateMissileTrailsOverTime(missileTrailPrefab, 200, 0.05f));
@@ -157,7 +154,8 @@ public class ParticleManager : MonoBehaviour {
   /// </summary>
   /// <returns></returns>
   public GameObject RequestMissileTrailParticle() {
-    if (_missileTrailPool.Count > 0 && SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
+    if (_missileTrailPool.Count > 0 &&
+        SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
       GameObject trail = _missileTrailPool.Dequeue();
 
       return trail;
