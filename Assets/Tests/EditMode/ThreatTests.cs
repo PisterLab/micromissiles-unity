@@ -238,9 +238,14 @@ public class ThreatTests : AgentTestBase {
     float maxNormalAcceleration =
         InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxNormalAcceleration");
     const float epsilon = 1e-5f;
+    // Calculate the normal component of acceleration
+    Vector3 forwardComponent = Vector3.Project(acceleration, rotaryWingThreat.transform.forward);
+    Vector3 normalComponent = acceleration - forwardComponent;
+
     Assert.LessOrEqual(
-        (acceleration - Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
-        maxNormalAcceleration + epsilon);
+        normalComponent.magnitude,
+        maxNormalAcceleration + epsilon,
+        $"Normal acceleration magnitude {normalComponent.magnitude} should be less than or equal to max normal acceleration {maxNormalAcceleration}");
   }
 
   private class MockAttackBehavior : AttackBehavior {

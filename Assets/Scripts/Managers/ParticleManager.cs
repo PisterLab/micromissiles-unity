@@ -122,8 +122,7 @@ public class ParticleManager : MonoBehaviour {
       trailRenderer.transform.parent = transform;
       _agentTrailRenderers.Add(trailRenderer);
       trailRenderer.material = (agent is Threat) ? threatTrailMatFaded : interceptorTrailMatFaded;
-    }
-    else {
+    } else {
       Debug.LogWarning("Agent has no TrailRenderer component");
     }
   }

@@ -19,6 +19,11 @@ public class Interceptor : Agent {
 
   private double _elapsedTime = 0;
 
+  protected override void Awake() {
+    base.Awake();
+    SetFlightPhase(FlightPhase.INITIALIZED);
+  }
+
   // Return whether a target can be assigned to the interceptor.
   public override bool IsAssignable() {
     bool assignable = !HasAssignedTarget();
@@ -80,10 +85,11 @@ public class Interceptor : Agent {
 
     // Check whether the threat should be considered a miss
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
-    if (sensorOutput.velocity.range > 1000f) {
-      this.HandleInterceptMiss();
-      return Vector3.zero;
-    }
+    // DL: This causes trouble with Fateh110B (high-speed threats)
+    // if (sensorOutput.velocity.range > 1000f) {
+    //   this.HandleInterceptMiss();
+    //   return Vector3.zero;
+    // }
 
     _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
     return CalculateAccelerationInput(_sensorOutput);

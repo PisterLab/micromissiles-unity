@@ -1,5 +1,5 @@
 {
-    "name": "DefaultDirectAttack",
+    "name": "Fateh110BDirectAttack",
     "attackBehaviorType": "DIRECT_ATTACK",
     "targetPosition": {
         "x": 0.01,
@@ -20,18 +20,13 @@
         "type": "DistanceToTarget",
         "waypoints": [
             {
-                "distance": 10000.0,
-                "altitude": 500.0,
-                "power": "MIL"
+                "distance": 20.0,
+                "altitude": 0.0,
+                "power": "MAX"
             },
             {
-                "distance": 4000.0,
-                "altitude": 500.0,
-                "power": "MIL"
-            },
-            {
-                "distance": 2000.0,
-                "altitude": 100.0,
+                "distance": 10.0,
+                "altitude": 0.0,
                 "power": "MAX"
             }
         ]

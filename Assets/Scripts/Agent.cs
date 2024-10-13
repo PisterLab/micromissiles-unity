@@ -53,9 +53,19 @@ public abstract class Agent : MonoBehaviour {
   public event ThreatHitEventHandler OnThreatHit;
   public event ThreatMissEventHandler OnThreatMiss;
 
+  private Vector3 _initialVelocity;
+
   public void SetFlightPhase(FlightPhase flightPhase) {
     _timeInPhase = 0;
     _flightPhase = flightPhase;
+    if (flightPhase == FlightPhase.INITIALIZED || flightPhase == FlightPhase.TERMINATED) {
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    } else {
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+    }
+    if (flightPhase == FlightPhase.BOOST) {
+      SetVelocity(GetVelocity() + _initialVelocity);
+    }
   }
 
   public FlightPhase GetFlightPhase() {
@@ -172,6 +182,10 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
+  public void SetInitialVelocity(Vector3 velocity) {
+    _initialVelocity = velocity;
+  }
+
   public Vector3 GetPosition() {
     return transform.position;
   }
@@ -233,9 +247,14 @@ public abstract class Agent : MonoBehaviour {
       return;
     }
 
-    if (elapsedSimulationTime >= launch_time &&
-        (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY)) {
-      SetFlightPhase(FlightPhase.BOOST);
+    if (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY) {
+      float launchTimeVariance = 0.5f;
+      float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
+      launch_time += launchTimeNoise;
+
+      if (elapsedSimulationTime >= launch_time) {
+        SetFlightPhase(FlightPhase.BOOST);
+      }
     }
     if (_timeSinceBoost > boost_time && _flightPhase == FlightPhase.BOOST) {
       SetFlightPhase(FlightPhase.MIDCOURSE);

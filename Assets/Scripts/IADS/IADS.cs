@@ -80,8 +80,6 @@ public class IADS : MonoBehaviour {
       //     $"Interceptor {assignment.Interceptor.name} assigned to threat
       //     {assignment.Threat.name}");
     }
-
-
   }
 
   public void RegisterNewThreat(Threat threat) {
@@ -128,14 +126,13 @@ public class IADS : MonoBehaviour {
     }
   }
 
-
   private void RegisterThreatMiss(Threat threat) {
     // The threat missed (meaning it hit the floor, etc)
     ThreatData threatData = _threatDataMap[threat];
     if (threatData != null) {
       MarkThreatDestroyed(threatData);
     }
-    //threatData.RemoveInterceptor(null);
+    // threatData.RemoveInterceptor(null);
   }
 
   private void RegisterSimulationEnded() {

@@ -136,7 +136,7 @@ public static class ConfigLoader {
 
     Debug.Log("    Submunitions Configuration:");
     Debug.Log($"      Number of Submunitions: {submunitionsConfig.num_submunitions}");
-    Debug.Log($"      Launch Time: {submunitionsConfig.launch_config.launch_time}");
+    Debug.Log($"      Dispense Time: {submunitionsConfig.dispense_time}");
     PrintSubmunitionDynamicAgentConfig(submunitionsConfig.dynamic_agent_config);
   }
 

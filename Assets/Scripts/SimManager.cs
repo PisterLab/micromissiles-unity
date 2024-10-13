@@ -324,13 +324,17 @@ public class SimManager : MonoBehaviour {
     Vector3 noiseOffset = Utilities.GenerateRandomNoise(config.standard_deviation.position);
     Vector3 noisyPosition = config.initial_state.position + noiseOffset;
 
-    GameObject agentObject =
-        Instantiate(prefab, noisyPosition, Quaternion.Euler(config.initial_state.rotation));
+    GameObject agentObject = Instantiate(prefab, noisyPosition, Quaternion.identity);
 
     Rigidbody agentRigidbody = agentObject.GetComponent<Rigidbody>();
     Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.standard_deviation.velocity);
     Vector3 noisyVelocity = config.initial_state.velocity + velocityNoise;
     agentRigidbody.linearVelocity = noisyVelocity;
+    agentObject.GetComponent<Agent>().SetInitialVelocity(noisyVelocity);
+    // Set rotation to face the initial velocity with noise
+    Vector3 velocityDirection = noisyVelocity.normalized;
+    Quaternion targetRotation = Quaternion.LookRotation(velocityDirection, Vector3.up);
+    agentObject.transform.rotation = targetRotation;
 
     agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
 
@@ -403,6 +407,7 @@ public class SimManager : MonoBehaviour {
       _elapsedSimulationTime += Time.deltaTime;
     } else if (_elapsedSimulationTime >= endTime) {
       simulationRunning = false;
+      RestartSimulation();
       Debug.Log("Simulation completed.");
     }
   }
