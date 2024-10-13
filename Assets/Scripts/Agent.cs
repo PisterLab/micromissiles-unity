@@ -28,6 +28,7 @@ public abstract class Agent : MonoBehaviour {
   protected List<Agent> _interceptors = new List<Agent>();
   [SerializeField]
   protected Agent _target;
+  [SerializeField]
   protected Agent _targetModel;
   protected bool _isHit = false;
   protected bool _isMiss = false;
@@ -171,7 +172,11 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public Vector3 GetAcceleration() {
-    return GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
+    return _acceleration;
+  }
+
+  public void SetAcceleration(Vector3 acceleration) {
+    _acceleration = acceleration;
   }
 
   public double GetDynamicPressure() {
@@ -233,7 +238,9 @@ public abstract class Agent : MonoBehaviour {
     }
 
     _velocity = GetVelocity();
-    _acceleration = GetAcceleration();
+    // Store the acceleration because it is set to zero after each simulation step
+    _acceleration =
+        GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
   }
 
   protected virtual void AlignWithVelocity() {
@@ -297,7 +304,7 @@ public class DummyAgent : Agent {
   }
 
   protected override void FixedUpdate() {
-    // Do nothing
+    GetComponent<Rigidbody>().AddForce(_acceleration, ForceMode.Acceleration);
   }
 
   protected override void UpdateReady(double deltaTime) {

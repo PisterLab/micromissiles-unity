@@ -15,7 +15,7 @@ public class Interceptor : Agent {
   private Coroutine _returnParticleToManagerCoroutine;
 
   private SensorOutput _sensorOutput;
-  private Vector3 _accelerationCommand;
+  private Vector3 _accelerationInput;
 
   private double _elapsedTime = 0;
 
@@ -23,16 +23,6 @@ public class Interceptor : Agent {
   public override bool IsAssignable() {
     bool assignable = !HasAssignedTarget();
     return assignable;
-  }
-
-  // Assign the given target to the interceptor.
-  public override void AssignTarget(Agent target) {
-    base.AssignTarget(target);
-  }
-
-  // Unassign the target from the interceptor.
-  public override void UnassignTarget() {
-    base.UnassignTarget();
   }
 
   protected override void UpdateReady(double deltaTime) {
@@ -96,7 +86,7 @@ public class Interceptor : Agent {
     }
 
     _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
-    return CalculateAccelerationCommand(_sensorOutput);
+    return CalculateAccelerationInput(_sensorOutput);
   }
 
   private void UpdateTargetModel(double deltaTime) {
@@ -107,46 +97,53 @@ public class Interceptor : Agent {
       // For now, we'll use the threat's actual state
       _targetModel.SetPosition(_target.GetPosition());
       _targetModel.SetVelocity(_target.GetVelocity());
+      _targetModel.SetAcceleration(_target.GetAcceleration());
       _elapsedTime = 0;
     }
   }
 
-  private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
-    // Implement Proportional Navigation guidance law
-    Vector3 accelerationCommand = Vector3.zero;
+  private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
+    // TODO(titan): Refactor all controller-related code into a separate controller interface with
+    // subclasses. A controller factory will instantiate the correct controller for each dynamic
+    // configuration.
+
+    // Implement (Augmented) Proportional Navigation guidance law
+    Vector3 accelerationInput = Vector3.zero;
 
     // Extract relevant information from sensor output
-    float los_rate_az = sensorOutput.velocity.azimuth;
-    float los_rate_el = sensorOutput.velocity.elevation;
-    float closing_velocity =
+    float losRateAz = sensorOutput.velocity.azimuth;
+    float losRateEl = sensorOutput.velocity.elevation;
+    float closingVelocity =
         -sensorOutput.velocity
              .range;  // Negative because closing velocity is opposite to range rate
 
     // Navigation gain (adjust as needed)
     float N = _navigationGain;
-    float accAz = 0;
-    float accEl = 0;
+    // Normal PN guidance for positive closing velocity
+    float turnFactor = closingVelocity;
     // Handle negative closing velocity scenario
-    if (closing_velocity < 0) {
+    if (closingVelocity < 0) {
       // Target is moving away, apply stronger turn
-      float turnFactor = Mathf.Max(1f, Mathf.Abs(closing_velocity) * 100f);
-      accAz = N * turnFactor * los_rate_az;
-      accEl = N * turnFactor * los_rate_el;
-    } else {
-      // Normal PN guidance for positive closing velocity
-      accAz = N * closing_velocity * los_rate_az;
-      accEl = N * closing_velocity * los_rate_el;
+      turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
     }
-    // Convert acceleration commands to craft body frame
-    accelerationCommand = transform.right * accAz + transform.up * accEl;
+    float accAz = N * turnFactor * losRateAz;
+    float accEl = N * turnFactor * losRateEl;
+    // Convert acceleration inputs to craft body frame
+    accelerationInput = transform.right * accAz + transform.up * accEl;
 
-    // Clamp the normal acceleration command to the maximum normal acceleration
+    // For Augmented Proportional Navigation, add a feedforward term for the target acceleration
+    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
+      Vector3 targetAcceleration = _targetModel.GetAcceleration();
+      Vector3 normalTargetAcceleration =
+          Vector3.ProjectOnPlane(targetAcceleration, transform.forward);
+      accelerationInput += N / 2 * normalTargetAcceleration;
+    }
+
+    // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
-    accelerationCommand = Vector3.ClampMagnitude(accelerationCommand, maxNormalAcceleration);
-
-    // Update the stored acceleration command for debugging
-    _accelerationCommand = accelerationCommand;
-    return accelerationCommand;
+    accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
+    _accelerationInput = accelerationInput;
+    return accelerationInput;
   }
 
   private void OnTriggerEnter(Collider other) {
@@ -261,8 +258,8 @@ public class Interceptor : Agent {
       // Yaw axis (up)
       Debug.DrawRay(transform.position, transform.up * 5f, Color.magenta);
 
-      if (_accelerationCommand != null) {
-        Debug.DrawRay(transform.position, _accelerationCommand * 1f, Color.green);
+      if (_accelerationInput != null) {
+        Debug.DrawRay(transform.position, _accelerationInput * 1f, Color.green);
       }
     }
   }
