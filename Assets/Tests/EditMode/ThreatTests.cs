@@ -243,8 +243,7 @@ public class ThreatTests : AgentTestBase {
     Vector3 normalComponent = acceleration - forwardComponent;
 
     Assert.LessOrEqual(
-        normalComponent.magnitude,
-        maxNormalAcceleration + epsilon,
+        normalComponent.magnitude, maxNormalAcceleration + epsilon,
         $"Normal acceleration magnitude {normalComponent.magnitude} should be less than or equal to max normal acceleration {maxNormalAcceleration}");
   }
 

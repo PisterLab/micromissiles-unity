@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using Codice.Utils;
 
 public class ParticleManager : MonoBehaviour {
   public static ParticleManager Instance { get; private set; }
