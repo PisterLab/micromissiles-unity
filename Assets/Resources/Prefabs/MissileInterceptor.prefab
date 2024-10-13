@@ -331,53 +331,10 @@ MonoBehaviour:
   _acceleration: {x: 0, y: 0, z: 0}
   _dragAcceleration: {x: 0, y: 0, z: 0}
   _speed: 0
+  _interceptors: []
   _target: {fileID: 0}
   _timeSinceBoost: 0
   _timeInPhase: 0
-  _dynamicAgentConfig:
-    name: 
-    agent_model: 
-    attack_behavior: 
-    initial_state:
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
-    standard_deviation:
-      position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
-    dynamic_config:
-      launch_config:
-        launch_time: 0
-      sensor_config:
-        type: 0
-        frequency: 0
-    plotting_config:
-      color: 0
-      linestyle: 0
-      marker: 0
-    submunitions_config:
-      num_submunitions: 0
-      launch_config:
-        launch_time: 0
-      dynamic_agent_config:
-        agent_model: 
-        initial_state:
-          position: {x: 0, y: 0, z: 0}
-          rotation: {x: 0, y: 0, z: 0}
-          velocity: {x: 0, y: 0, z: 0}
-        standard_deviation:
-          position: {x: 0, y: 0, z: 0}
-          velocity: {x: 0, y: 0, z: 0}
-        dynamic_config:
-          launch_config:
-            launch_time: 0
-          sensor_config:
-            type: 0
-            frequency: 0
-        plotting_config:
-          color: 0
-          linestyle: 0
-          marker: 0
   _staticAgentConfig:
     name: 
     agentClass: 
@@ -406,8 +363,58 @@ MonoBehaviour:
     hitConfig:
       hitRadius: 1
       killProbability: 0.9
+  _dynamicAgentConfig:
+    name: 
+    agent_model: 
+    attack_behavior: 
+    initial_state:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      velocity: {x: 0, y: 0, z: 0}
+    standard_deviation:
+      position: {x: 0, y: 0, z: 0}
+      velocity: {x: 0, y: 0, z: 0}
+    dynamic_config:
+      launch_config:
+        launch_time: 0
+      sensor_config:
+        type: 0
+        frequency: 0
+      flight_config:
+        evasionEnabled: 0
+        evasionRangeThreshold: 0
+    plotting_config:
+      color: 0
+      linestyle: 0
+      marker: 0
+    submunitions_config:
+      num_submunitions: 0
+      launch_config:
+        launch_time: 0
+      dynamic_agent_config:
+        agent_model: 
+        initial_state:
+          position: {x: 0, y: 0, z: 0}
+          rotation: {x: 0, y: 0, z: 0}
+          velocity: {x: 0, y: 0, z: 0}
+        standard_deviation:
+          position: {x: 0, y: 0, z: 0}
+          velocity: {x: 0, y: 0, z: 0}
+        dynamic_config:
+          launch_config:
+            launch_time: 0
+          sensor_config:
+            type: 0
+            frequency: 0
+          flight_config:
+            evasionEnabled: 0
+            evasionRangeThreshold: 0
+        plotting_config:
+          color: 0
+          linestyle: 0
+          marker: 0
+  _navigationGain: 3
   _showDebugVectors: 1
-  _navigationGain: 10
 --- !u!54 &8492474273001620913
 Rigidbody:
   m_ObjectHideFlags: 0

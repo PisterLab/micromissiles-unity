@@ -6,7 +6,7 @@ public class FixedWingThreat : Threat {
   [SerializeField]
   private float _navigationGain = 50f;
 
-  private Vector3 _accelerationCommand;
+  private Vector3 _accelerationInput;
   private double _elapsedTime = 0;
 
   // Start is called before the first frame update
@@ -27,7 +27,9 @@ public class FixedWingThreat : Threat {
     _elapsedTime += deltaTime;
     Vector3 accelerationInput = Vector3.zero;
 
-    if (HasAssignedTarget()) {
+    if (ShouldEvade()) {
+      accelerationInput = EvadeInterceptor(GetClosestInterceptor());
+    } else if (HasAssignedTarget()) {
       // Update waypoint and power setting
       UpdateWaypointAndPower();
 
@@ -39,18 +41,18 @@ public class FixedWingThreat : Threat {
         _elapsedTime = 0;
       }
 
-      // Calculate the acceleration input using PN
-      Vector3 pnAcceleration = CalculateAccelerationCommand(_sensorOutput);
+      // Calculate the normal acceleration input using PN
+      Vector3 normalAcceleration = CalculateAccelerationInput(_sensorOutput);
 
-      // Adjust velocity based on power setting
-      Vector3 speedAdjustmentAcceleration = CalculateSpeedAdjustmentAcceleration();
+      // Adjust the speed based on power setting
+      Vector3 forwardAcceleration = CalculateForwardAcceleration();
 
       // Combine the accelerations
-      accelerationInput = pnAcceleration + speedAdjustmentAcceleration;
+      accelerationInput = normalAcceleration + forwardAcceleration;
     }
 
     // Calculate and set the total acceleration
-    Vector3 acceleration = CalculateAcceleration(accelerationInput, compensateForGravity: true);
+    Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
@@ -61,9 +63,9 @@ public class FixedWingThreat : Threat {
         _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
 
-  private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
+  private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
     // Implement Proportional Navigation guidance law
-    Vector3 accelerationCommand = Vector3.zero;
+    Vector3 accelerationInput = Vector3.zero;
 
     // Extract relevant information from sensor output
     float los_rate_az = sensorOutput.velocity.azimuth;
@@ -75,55 +77,19 @@ public class FixedWingThreat : Threat {
     // Navigation gain (adjust as needed)
     float N = _navigationGain;
 
-    // Calculate acceleration commands in azimuth and elevation planes
-    float acc_az = N * closing_velocity * los_rate_az;
-    float acc_el = N * closing_velocity * los_rate_el;
+    // Calculate acceleration inputs in azimuth and elevation planes
+    float accAz = N * closing_velocity * los_rate_az;
+    float accEl = N * closing_velocity * los_rate_el;
 
-    // Convert acceleration commands to craft body frame
-    accelerationCommand = transform.right * acc_az + transform.up * acc_el;
+    // Convert acceleration inputs to craft body frame
+    accelerationInput = transform.right * accAz + transform.up * accEl;
 
-    // Clamp the normal acceleration command to the maximum normal acceleration
+    // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
-    accelerationCommand = Vector3.ClampMagnitude(accelerationCommand, maxNormalAcceleration);
+    accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
 
-    // Update the stored acceleration command for debugging
-    _accelerationCommand = accelerationCommand;
-    return accelerationCommand;
-  }
-
-  private Vector3 CalculateSpeedAdjustmentAcceleration() {
-    // Get the target velocity for the current power setting
-    float targetSpeed = PowerTableLookup(_currentPowerSetting);
-
-    // Calculate the current speed
-    float currentSpeed = GetVelocity().magnitude;
-
-    // Speed error
-    float speedError = targetSpeed - currentSpeed;
-
-    // Proportional gain for speed control
-    float speedControlGain = 10.0f;  // Adjust this gain as necessary
-
-    // Desired acceleration to adjust speed
-    float desiredAccelerationMagnitude = speedControlGain * speedError;
-
-    // Limit the desired acceleration
-    float maxForwardAcceleration = CalculateMaxForwardAcceleration();
-    desiredAccelerationMagnitude =
-        Mathf.Clamp(desiredAccelerationMagnitude, -maxForwardAcceleration, maxForwardAcceleration);
-
-    // Acceleration direction (along current velocity direction)
-    Vector3 accelerationDirection = GetVelocity().normalized;
-
-    // Handle zero velocity case
-    if (accelerationDirection.magnitude < 0.1f) {
-      accelerationDirection = transform.forward;  // Default direction
-    }
-
-    // Calculate acceleration vector
-    Vector3 speedAdjustmentAcceleration = accelerationDirection * desiredAccelerationMagnitude;
-
-    return speedAdjustmentAcceleration;
+    _accelerationInput = accelerationInput;
+    return accelerationInput;
   }
 
   // Optional: Add this method to visualize debug information
@@ -133,7 +99,7 @@ public class FixedWingThreat : Threat {
       Gizmos.DrawLine(transform.position, _currentWaypoint);
 
       Gizmos.color = Color.green;
-      Gizmos.DrawRay(transform.position, _accelerationCommand);
+      Gizmos.DrawRay(transform.position, _accelerationInput);
     }
   }
 }

@@ -20,14 +20,20 @@ public class RotaryWingThreat : Threat {
   protected override void UpdateBoost(double deltaTime) {}
 
   protected override void UpdateMidCourse(double deltaTime) {
-    if (HasAssignedTarget()) {
+    Vector3 accelerationInput = Vector3.zero;
+
+    if (ShouldEvade()) {
+      accelerationInput = EvadeInterceptor(GetClosestInterceptor());
+    } else if (HasAssignedTarget()) {
       // Update waypoint and power setting
       UpdateWaypointAndPower();
 
       // Calculate and apply acceleration
-      Vector3 accelerationInput = CalculateAccelerationToWaypoint();
-      ApplyAcceleration(accelerationInput);
+      accelerationInput = CalculateAccelerationToWaypoint();
     }
+
+    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag
+    GetComponent<Rigidbody>().AddForce(accelerationInput, ForceMode.Acceleration);
   }
 
   private void UpdateWaypointAndPower() {
@@ -57,13 +63,8 @@ public class RotaryWingThreat : Threat {
         Vector3.ClampMagnitude(normalAccelerationInput, maxNormalAcceleration);
     accelerationInput = forwardAccelerationInput + normalAccelerationInput;
 
-    _accelerationInput = accelerationInput;  // Store for debugging
+    _accelerationInput = accelerationInput;
     return accelerationInput;
-  }
-
-  private void ApplyAcceleration(Vector3 acceleration) {
-    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag
-    GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
   // Optional: Add this method to visualize debug information

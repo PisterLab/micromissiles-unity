@@ -34,12 +34,14 @@ public class IADS : MonoBehaviour {
 
   public void LateUpdate() {
     if (_assignmentQueue.Count > 0) {
-      // Take up to 10 interceptors from the queue
-      List<Interceptor> interceptorsToAssign = _assignmentQueue.Take(10).ToList();
+      int popCount = 100;
+
+      // Take up to popCount interceptors from the queue
+      List<Interceptor> interceptorsToAssign = _assignmentQueue.Take(popCount).ToList();
       AssignInterceptorsToThreats(interceptorsToAssign);
 
       // Remove the processed interceptors from the queue
-      _assignmentQueue.RemoveRange(0, Math.Min(10, _assignmentQueue.Count));
+      _assignmentQueue.RemoveRange(0, Math.Min(popCount, _assignmentQueue.Count));
     }
   }
 

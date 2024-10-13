@@ -19,6 +19,9 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": false
           }
         },
         "submunitions_config": {
@@ -40,6 +43,10 @@
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
+              },
+              "flight_config": {
+                "evasionEnabled": true,
+                "evasionRangeThreshold": 1000
               }
             }
           }
@@ -64,11 +71,14 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": false
           }
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "launch_config": { "launch_time": 6 },
+          "launch_config": { "launch_time": 4 },
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
@@ -85,6 +95,10 @@
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
+              },
+              "flight_config": {
+                "evasionEnabled": true,
+                "evasionRangeThreshold": 1000
               }
             }
           }
@@ -112,6 +126,10 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 1000
           }
         },
         "submunitions_config": {
@@ -138,6 +156,10 @@
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 1000
           }
         },
         "submunitions_config": {

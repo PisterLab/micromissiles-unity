@@ -25,6 +25,8 @@ public abstract class Agent : MonoBehaviour {
   protected float _speed;
 
   [SerializeField]
+  protected List<Agent> _interceptors = new List<Agent>();
+  [SerializeField]
   protected Agent _target;
   [SerializeField]
   protected Agent _targetModel;
@@ -36,8 +38,8 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected double _timeInPhase = 0;
 
-  public DynamicAgentConfig _dynamicAgentConfig;
   public StaticAgentConfig _staticAgentConfig;
+  public DynamicAgentConfig _dynamicAgentConfig;
 
   // Define delegates
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
@@ -79,6 +81,7 @@ public abstract class Agent : MonoBehaviour {
 
   public virtual void AssignTarget(Agent target) {
     _target = target;
+    _target.AddInterceptor(this);
     _targetModel = SimManager.Instance.CreateDummyAgent(target.GetPosition(), target.GetVelocity());
   }
 
@@ -101,6 +104,7 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public virtual void UnassignTarget() {
+    _target.RemoveInterceptor(this);
     _target = null;
     _targetModel = null;
   }
@@ -108,6 +112,14 @@ public abstract class Agent : MonoBehaviour {
   // Return whether the agent has hit or been hit.
   public bool IsHit() {
     return _isHit;
+  }
+
+  public void AddInterceptor(Agent interceptor) {
+    _interceptors.Add(interceptor);
+  }
+
+  public void RemoveInterceptor(Agent interceptor) {
+    _interceptors.Remove(interceptor);
   }
 
   public virtual void TerminateAgent() {
@@ -244,14 +256,8 @@ public abstract class Agent : MonoBehaviour {
     }
   }
 
-  protected Vector3 CalculateAcceleration(Vector3 accelerationInput,
-                                          bool compensateForGravity = false) {
+  protected Vector3 CalculateAcceleration(Vector3 accelerationInput) {
     Vector3 gravity = Physics.gravity;
-    if (compensateForGravity) {
-      Vector3 gravityProjection = CalculateGravityProjectionOnPitchAndYaw();
-      accelerationInput -= gravityProjection;
-    }
-
     float airDrag = CalculateDrag();
     float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
     float dragAcceleration = -(airDrag + liftInducedDrag);
@@ -273,17 +279,6 @@ public abstract class Agent : MonoBehaviour {
                 Constants.kGravity);
     float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
-  }
-
-  protected Vector3 CalculateGravityProjectionOnPitchAndYaw() {
-    Vector3 gravity = Physics.gravity;
-
-    // Project the gravity onto the pitch and yaw axes
-    Vector3 gravityProjectedOnPitch = Vector3.Project(gravity, transform.right);
-    Vector3 gravityProjectedOnYaw = Vector3.Project(gravity, transform.up);
-
-    // Return the sum of the projections
-    return gravityProjectedOnPitch + gravityProjectedOnYaw;
   }
 
   private float CalculateDrag() {

@@ -20,6 +20,7 @@ public class SimulationConfig {
 public class DynamicConfig {
   public LaunchConfig launch_config;
   public SensorConfig sensor_config;
+  public FlightConfig flight_config;
 }
 
 [Serializable]
@@ -101,8 +102,14 @@ public class SensorConfig {
 }
 
 [Serializable]
+public class FlightConfig {
+  public bool evasionEnabled;
+  public float evasionRangeThreshold;
+}
+
+[Serializable]
 public class ThreatConfig {
-  public agentClass threat_class;
+  public AgentClass threat_class;
   public InitialState initial_state;
   public PlottingConfig plotting_config;
   public string prefabName;
@@ -111,7 +118,7 @@ public class ThreatConfig {
 // Enums
 
 [JsonConverter(typeof(StringEnumConverter))]
-public enum agentClass { NONE, FIXEDWING, ROTARYWING, BALLISTIC }
+public enum AgentClass { NONE, FIXEDWING, ROTARYWING, BALLISTIC }
 [JsonConverter(typeof(StringEnumConverter))]
 public enum ConfigColor { BLUE, GREEN, RED }
 [JsonConverter(typeof(StringEnumConverter))]
