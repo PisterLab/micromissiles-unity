@@ -30,6 +30,34 @@ public class SimManager : MonoBehaviour {
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
+<<<<<<< Updated upstream
+=======
+  // Inclusive of ALL, including SUBMUNITIONS SWARMS
+  // The bool indicates whether the agent is ACTIVE (true) or INACTIVE (false)
+  private List<List<(Agent, bool)>> _interceptorSwarms = new List<List<(Agent, bool)>>();
+  private List<List<(Agent, bool)>> _submunitionsSwarms = new List<List<(Agent, bool)>>();
+  private List<List<(Agent, bool)>> _threatSwarms = new List<List<(Agent, bool)>>();
+
+  private Dictionary<Agent, List<(Agent, bool)>> _interceptorSwarmMap =
+      new Dictionary<Agent, List<(Agent, bool)>>();
+
+  private Dictionary<Agent, List<(Agent, bool)>> _submunitionsSwarmMap =
+      new Dictionary<Agent, List<(Agent, bool)>>();
+  private Dictionary<Agent, List<(Agent, bool)>> _threatSwarmMap =
+      new Dictionary<Agent, List<(Agent, bool)>>();
+      
+  // Maps a submunition swarm to its corresponding interceptor swarm
+  private Dictionary<List<(Agent, bool)>, List<(Agent, bool)>> _submunitionInterceptorSwarmMap =
+      new Dictionary<List<(Agent, bool)>, List<(Agent, bool)>>();
+
+  // Events so people can subscribe to changes in each of the swarm tables
+  public delegate void SwarmEventHandler(List<List<(Agent, bool)>> swarm);
+  public event SwarmEventHandler OnInterceptorSwarmChanged;
+  public event SwarmEventHandler OnSubmunitionsSwarmChanged;
+  public event SwarmEventHandler OnThreatSwarmChanged;
+  //////////////////////////////////////////////////////////////////////
+
+>>>>>>> Stashed changes
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
@@ -64,6 +92,25 @@ public class SimManager : MonoBehaviour {
     return _activeInterceptors.ConvertAll(interceptor => interceptor as Agent)
         .Concat(GetActiveThreats().ConvertAll(threat => threat as Agent))
         .ToList();
+  }
+
+  public string GenerateSwarmTitle(List<(Agent, bool)> swarm, int index) {
+    string swarmTitle = swarm[0].Item1.name;
+    swarmTitle = swarmTitle.Split('_')[0];
+    swarmTitle += $"_{index}";
+    return swarmTitle;
+  }
+
+  public string GenerateInterceptorSwarmTitle(List<(Agent, bool)> swarm) {
+    return GenerateSwarmTitle(swarm, _interceptorSwarms.IndexOf(swarm));
+  }
+
+  public string GenerateSubmunitionsSwarmTitle(List<(Agent, bool)> swarm) {
+    return GenerateSwarmTitle(swarm, LookupSubmunitionSwarnIndexInInterceptorSwarm(swarm));
+  }
+
+  public string GenerateThreatSwarmTitle(List<(Agent, bool)> swarm) {
+    return GenerateSwarmTitle(swarm, _threatSwarms.IndexOf(swarm));
   }
 
   void Awake() {
@@ -128,25 +175,168 @@ public class SimManager : MonoBehaviour {
     // Create targets based on config
     foreach (var swarmConfig in simulationConfig.threat_swarm_configs) {
       for (int i = 0; i < swarmConfig.num_agents; i++) {
+<<<<<<< Updated upstream
         CreateThreat(swarmConfig.dynamic_agent_config);
       }
     }
+=======
+        Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
+        swarm.Add(threat);
+      }
+      AddThreatSwarm(swarm);
+    }
+  }
+
+  public void AddInterceptorSwarm(List<Agent> swarm) {
+    List<(Agent, bool)> swarmTuple = swarm.ConvertAll(agent => (agent, true));
+    _interceptorSwarms.Add(swarmTuple);
+    foreach (var interceptor in swarm) {
+      _interceptorSwarmMap[interceptor] = swarmTuple;
+    }
+    OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
+  }
+
+  public void AddSubmunitionsSwarm(List<Agent> swarm) {
+    List<(Agent, bool)> swarmTuple = swarm.ConvertAll(agent => (agent, true));
+    _submunitionsSwarms.Add(swarmTuple);
+    foreach (var submunition in swarm) {
+      _submunitionsSwarmMap[submunition] = swarmTuple;
+    }
+    AddInterceptorSwarm(swarm);
+    _submunitionInterceptorSwarmMap[swarmTuple] = _interceptorSwarms[_interceptorSwarms.Count - 1];
+    OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
+  }
+
+  public int LookupSubmunitionSwarnIndexInInterceptorSwarm(List<(Agent, bool)> swarm) {
+    if (_submunitionInterceptorSwarmMap.TryGetValue(swarm, out var interceptorSwarm))
+    {
+      return _interceptorSwarms.IndexOf(interceptorSwarm);
+    }
+    return -1; // Return -1 if the swarm is not found
+  }
+
+  public void AddThreatSwarm(List<Agent> swarm) {
+    List<(Agent, bool)> swarmTuple = swarm.ConvertAll(agent => (agent, true));
+    _threatSwarms.Add(swarmTuple);
+    foreach (var threat in swarm) {
+      _threatSwarmMap[threat] = swarmTuple;
+    }
+    OnThreatSwarmChanged?.Invoke(_threatSwarms);
+  }
+
+  public Vector3 GetAllAgentsCenter() {
+    List<Agent> allAgents = _interceptorObjects.ConvertAll(interceptor => interceptor as Agent)
+                                .Concat(_threatObjects.ConvertAll(threat => threat as Agent))
+                                .ToList();
+    return GetSwarmCenter(allAgents);
+  }
+
+  public Vector3 GetSwarmCenter(List<Agent> swarm) {
+    if (swarm.Count == 0) {
+      return Vector3.zero;
+    }
+
+    Vector3 sum = Vector3.zero;
+    int count = 0;
+    int swarmCount = swarm.Count;
+
+    for (int i = 0; i < swarmCount; i++) {
+      Agent agent = swarm[i];
+      if (!agent.IsHit()) {
+        sum += agent.transform.position;
+        count++;
+      }
+    }
+
+    return count > 0 ? sum / count : Vector3.zero;
+  }
+
+  public List<List<(Agent, bool)>> GetInterceptorSwarms() {
+    return _interceptorSwarms;
+  }
+
+  public List<List<(Agent, bool)>> GetSubmunitionsSwarms() {
+    return _submunitionsSwarms;
+  }
+
+  public List<List<(Agent, bool)>> GetThreatSwarms() {
+    return _threatSwarms;
+>>>>>>> Stashed changes
   }
 
   public void AssignInterceptorsToThreats() {
     IADS.Instance.AssignInterceptorsToThreats(_interceptorObjects);
   }
 
+<<<<<<< Updated upstream
+=======
+  public void DestroyInterceptorInSwarm(Interceptor interceptor) {
+    var swarm = _interceptorSwarmMap[interceptor];
+    int index = swarm.FindIndex(tuple => tuple.Item1 == interceptor);
+    if (index != -1) {
+      swarm[index] = (swarm[index].Item1, false);
+      OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
+    }
+    else {
+      Debug.LogError("Interceptor not found in swarm");
+    }
+    if (swarm.All(tuple => !tuple.Item2)) {
+      // Need to give the CameraController a way to update
+      // to the next swarm if it exists
+      if (CameraController.Instance.cameraMode == CameraMode.FOLLOW_INTERCEPTOR_SWARM) {
+        CameraController.Instance.FollowNextInterceptorSwarm();
+      }
+    }
+
+
+    // If this also happens to be a submunition, destroy it in the submunition swarm
+    if (_submunitionsSwarmMap.ContainsKey(interceptor))
+    {
+        DestroySubmunitionInSwarm(interceptor);
+    }
+  }
+
+  public void DestroySubmunitionInSwarm(Interceptor submunition) {
+    var swarm = _submunitionsSwarmMap[submunition];
+    int index = swarm.FindIndex(tuple => tuple.Item1 == submunition);
+    if (index != -1) {
+      swarm[index] = (swarm[index].Item1, false);
+      OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
+    }
+  }
+
+  public void DestroyThreatInSwarm(Threat threat) {
+    var swarm = _threatSwarmMap[threat];
+    int index = swarm.FindIndex(tuple => tuple.Item1 == threat);
+    if (index != -1) {
+      swarm[index] = (swarm[index].Item1, false);
+      OnThreatSwarmChanged?.Invoke(_threatSwarms);
+    }
+    if (swarm.All(tuple => !tuple.Item2)) {
+      _threatSwarms.Remove(swarm);
+      if (CameraController.Instance.cameraMode == CameraMode.FOLLOW_THREAT_SWARM) {
+        CameraController.Instance.FollowNextThreatSwarm();
+      }
+    }
+  }
+
+>>>>>>> Stashed changes
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
+<<<<<<< Updated upstream
+=======
+    DestroyInterceptorInSwarm(interceptor);
+    DestroyThreatInSwarm(threat);
+>>>>>>> Stashed changes
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
+<<<<<<< Updated upstream
   }
 
   public void RegisterThreatHit(Interceptor interceptor, Threat threat) {
@@ -156,6 +346,17 @@ public class SimManager : MonoBehaviour {
   public void RegisterThreatMiss(Interceptor interceptor, Threat threat) {
     Debug.Log($"RegisterThreatMiss: Interceptor {interceptor.name} missed threat {threat.name}");
     // Placeholder
+=======
+    DestroyInterceptorInSwarm(interceptor);
+  }
+
+  public void RegisterThreatHit(Threat threat) {
+    DestroyThreatInSwarm(threat);
+  }
+
+  public void RegisterThreatMiss(Threat threat) {
+    DestroyThreatInSwarm(threat);
+>>>>>>> Stashed changes
   }
 
   private AttackBehavior LoadAttackBehavior(DynamicAgentConfig config) {
@@ -321,6 +522,7 @@ public class SimManager : MonoBehaviour {
   public void RestartSimulation() {
     OnSimulationEnded?.Invoke();
     Debug.Log("Simulation ended");
+    UIManager.Instance.LogActionMessage("[SIM] Simulation restarted");
     // Reset simulation time
     _elapsedSimulationTime = 0f;
     simulationRunning = IsSimulationRunning();
@@ -349,6 +551,15 @@ public class SimManager : MonoBehaviour {
     _threatObjects.Clear();
     _dummyAgentObjects.Clear();
     _dummyAgentTable.Clear();
+<<<<<<< Updated upstream
+=======
+    _interceptorSwarms.Clear();
+    _submunitionsSwarms.Clear();
+    _threatSwarms.Clear();
+    OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
+    OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
+    OnThreatSwarmChanged?.Invoke(_threatSwarms);
+>>>>>>> Stashed changes
     StartSimulation();
   }
 
@@ -376,3 +587,16 @@ public class SimManager : MonoBehaviour {
     }
   }
 }
+<<<<<<< Updated upstream
+=======
+
+[System.Serializable]
+public class SimulatorConfig {
+  public bool enableTelemetryLogging;
+  public bool enableEventLogging;
+  public bool enableMissileTrailEffect;
+  public bool enableExplosionEffect;
+  public int physicsUpdateRate;
+  public bool persistentFlightTrails;
+}
+>>>>>>> Stashed changes

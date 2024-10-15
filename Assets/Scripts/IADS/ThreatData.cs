@@ -8,6 +8,8 @@ public class ThreatData {
   public Threat Threat;
   [SerializeField]
   private ThreatStatus _status;
+
+  public int assignedInterceptorCount = 0;
   public ThreatStatus Status {
     get { return _status; }
   }
@@ -23,6 +25,7 @@ public class ThreatData {
     }
     _status = ThreatStatus.ASSIGNED;
     _assignedInterceptors.Add(interceptor);
+    assignedInterceptorCount++;
   }
 
   public void RemoveInterceptor(Interceptor interceptor) {
@@ -30,6 +33,7 @@ public class ThreatData {
     if (_assignedInterceptors.Count == 0) {
       _status = ThreatStatus.UNASSIGNED;
     }
+    assignedInterceptorCount--;
   }
 
   public void MarkDestroyed() {

@@ -31,14 +31,14 @@ public class UISelectableEntry : EventTrigger {
     textHandle = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), rectTransform)
                      .AddComponent<TextMeshProUGUI>();
     textHandle.gameObject.name = "UISelectableEntry::Text";
-    textHandle.fontSize = 12;
+    textHandle.fontSize = 8;
     textHandle.font = UIManager.Instance.Font;
     textHandle.alignment = TextAlignmentOptions.MidlineLeft;
     textHandle.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0.5f);
     textHandle.GetComponent<RectTransform>().anchorMax = new Vector2(1, 0.5f);
     textHandle.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
     textHandle.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-    textHandle.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 20);
+    textHandle.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 0);
 
     image = gameObject.AddComponent<Image>();
     image.type = Image.Type.Sliced;
@@ -104,7 +104,7 @@ public class UISelectableEntry : EventTrigger {
 
   public void SetTextContent(List<string> textContent) {
     this.textContent = textContent;
-    textHandle.text = string.Join("\t", textContent);
+    textHandle.text = string.Join("\t\t\t", textContent);
   }
 
   public RectTransform GetTextTransform() {

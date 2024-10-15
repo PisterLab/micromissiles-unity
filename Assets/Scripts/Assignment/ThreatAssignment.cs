@@ -30,7 +30,7 @@ public class ThreatAssignment : IAssignment {
 
     // Sort ThreatInfo first by ThreatData.Status (UNASSIGNED first, then ASSIGNED)
     // Within each group, order by ThreatLevel descending
-    threatInfos = threatInfos.OrderByDescending(t => t.ThreatData.Status == ThreatStatus.UNASSIGNED)
+    threatInfos = threatInfos.OrderBy(t => t.ThreatData.assignedInterceptorCount)
                       .ThenByDescending(t => t.ThreatLevel)
                       .ToList();
 

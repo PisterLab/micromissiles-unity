@@ -16,17 +16,19 @@ public class UIDialog : MonoBehaviour {
 
   /// TABS
   [SerializeField]
-  private float tabWidth = 50f;
+  private float tabWidth = 15f;
   [SerializeField]
-  private float tabHeight = 16f;
+  private float tabHeight = 8f;
   // List of dialog tabs
   private List<GameObject> dialogTabs;
 
   /// ENTRIES
   private List<UISelectableEntry> entries;
 
-  private float entryHeight = 20f;
-  private float entryIndentWidth = 10f;
+  [SerializeField]
+  private float entryHeight = 8f;
+  [SerializeField]
+  private float entryIndentWidth = 4f;
 
   private List<UISelectableEntry> cleanupPool;
 
@@ -91,17 +93,18 @@ public class UIDialog : MonoBehaviour {
     rTransform.pivot = new Vector2(0, 1);
     rTransform.sizeDelta = new Vector2(tabWidth, tabHeight);
     // Count tabs * tabSize to get the position from the left
-    rTransform.anchoredPosition = new Vector2(tabWidth * dialogTabs.Count, -(GetTitleBarHeight()));
+    rTransform.anchoredPosition = new Vector2((tabWidth/2) * dialogTabs.Count, -(GetTitleBarHeight()));
 
     // Add the onClick callback to the button
     Button button = tabButton.AddComponent<Button>();
     button.onClick.AddListener(() => onClick());
     // Add the image to the button and link it to the tab
     button.targetGraphic = tabButton.AddComponent<Image>();
-
+    
     AddTabText(tabName, tabButton);
     return tabButton;
   }
+
 
   /// <summary>
   /// Add text as a child of the tab's button object
@@ -121,7 +124,7 @@ public class UIDialog : MonoBehaviour {
     TextMeshProUGUI buttonText = tabText.AddComponent<TextMeshProUGUI>();
     buttonText.text = tabName;
     buttonText.font = UIManager.Instance.Font;
-    buttonText.fontSize = 12;
+    buttonText.fontSize = 10;
     buttonText.color = Color.black;
     buttonText.alignment = TextAlignmentOptions.Center;
     buttonText.verticalAlignment = VerticalAlignmentOptions.Middle;

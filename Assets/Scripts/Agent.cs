@@ -41,6 +41,10 @@ public abstract class Agent : MonoBehaviour {
   public DynamicAgentConfig _dynamicAgentConfig;
 
   // Define delegates
+  // MarkDestroyed event handler
+  public delegate void TerminatedEventHandler(Agent agent);
+  public event TerminatedEventHandler OnTerminated;
+
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
   public delegate void InterceptMissEventHandler(Interceptor interceptor, Threat target);
 
@@ -122,6 +126,9 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public virtual void TerminateAgent() {
+    if (_flightPhase != FlightPhase.TERMINATED) {
+      OnTerminated?.Invoke(this);
+    }
     _flightPhase = FlightPhase.TERMINATED;
     SetPosition(new Vector3(0, 0, 0));
     gameObject.SetActive(false);

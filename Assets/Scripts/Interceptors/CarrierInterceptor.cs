@@ -70,5 +70,10 @@ public class CarrierInterceptor : Interceptor {
       submunitions.Add(submunition);
     }
     IADS.Instance.RequestThreatAssignment(submunitions);
+<<<<<<< Updated upstream
+=======
+    SimManager.Instance.AddSubmunitionsSwarm(
+        submunitions.ConvertAll(submunition => submunition as Agent));
+>>>>>>> Stashed changes
   }
 }
