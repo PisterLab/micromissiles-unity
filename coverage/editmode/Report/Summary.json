@@ -1,14 +1,14 @@
 {
   "summary": {
-    "generatedon": "2024-10-14T02:57:21Z",
+    "generatedon": "2024-10-15T02:55:26Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 48,
     "files": 46,
-    "coveredlines": 643,
-    "uncoveredlines": 2352,
-    "coverablelines": 2995,
-    "totallines": 5447,
+    "coveredlines": 644,
+    "uncoveredlines": 2363,
+    "coverablelines": 3007,
+    "totallines": 5464,
     "linecoverage": 21.4,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -18,7 +18,7 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 13.2, "coveredlines": 354, "coverablelines": 2667, "totallines": 5226, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 14.6, "coveredmethods": 56, "totalmethods": 383, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 39, "coverage": 13.2, "coveredlines": 355, "coverablelines": 2679, "totallines": 5243, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 14.6, "coveredmethods": 56, "totalmethods": 383, "classesinassembly": [
         { "name": "Agent", "coverage": 23.8, "coveredlines": 51, "coverablelines": 214, "totallines": 361, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 32.5, "coveredmethods": 13, "totalmethods": 40 },
         { "name": "AttackBehavior", "coverage": 78.5, "coveredlines": 11, "coverablelines": 14, "totallines": 51, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "BotStatusDialog", "coverage": 0, "coveredlines": 0, "coverablelines": 15, "totallines": 30, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -29,13 +29,13 @@
         { "name": "DirectAttackBehavior", "coverage": 28.1, "coveredlines": 9, "coverablelines": 32, "totallines": 74, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 50, "coveredmethods": 1, "totalmethods": 2 },
         { "name": "DummyAgent", "coverage": 0, "coveredlines": 0, "coverablelines": 12, "totallines": 361, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 5 },
         { "name": "DynamicAgentConfig", "coverage": 0, "coveredlines": 0, "coverablelines": 3, "totallines": 130, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
-        { "name": "FixedWingThreat", "coverage": 31, "coveredlines": 18, "coverablelines": 58, "totallines": 111, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 22.2, "coveredmethods": 2, "totalmethods": 9 },
+        { "name": "FixedWingThreat", "coverage": 30.1, "coveredlines": 19, "coverablelines": 63, "totallines": 119, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 22.2, "coveredmethods": 2, "totalmethods": 9 },
         { "name": "GenerateCone", "coverage": 0, "coveredlines": 0, "coverablelines": 100, "totallines": 144, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 },
         { "name": "IADS", "coverage": 0, "coveredlines": 0, "coverablelines": 87, "totallines": 143, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 17 },
         { "name": "IAssignment", "coverage": 100, "coveredlines": 10, "coverablelines": 10, "totallines": 42, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3 },
         { "name": "IdealSensor", "coverage": 90, "coveredlines": 27, "coverablelines": 30, "totallines": 54, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 80, "coveredmethods": 4, "totalmethods": 5 },
         { "name": "InputManager", "coverage": 0, "coveredlines": 0, "coverablelines": 113, "totallines": 156, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 11 },
-        { "name": "Interceptor", "coverage": 4.7, "coveredlines": 8, "coverablelines": 170, "totallines": 272, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 11.1, "coveredmethods": 2, "totalmethods": 18 },
+        { "name": "Interceptor", "coverage": 4.5, "coveredlines": 8, "coverablelines": 175, "totallines": 279, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 11.1, "coveredmethods": 2, "totalmethods": 18 },
         { "name": "ParticleManager", "coverage": 0, "coveredlines": 0, "coverablelines": 170, "totallines": 245, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 24 },
         { "name": "RectTransformExtensions", "coverage": 0, "coveredlines": 0, "coverablelines": 12, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "RotaryWingThreat", "coverage": 35.5, "coveredlines": 16, "coverablelines": 45, "totallines": 80, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 12.5, "coveredmethods": 1, "totalmethods": 8 },
@@ -45,7 +45,7 @@
         { "name": "SimMonitor", "coverage": 0, "coveredlines": 0, "coverablelines": 159, "totallines": 245, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 19 },
         { "name": "SimulationConfig", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 130, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
         { "name": "StaticAgentConfig", "coverage": 100, "coveredlines": 14, "coverablelines": 14, "totallines": 63, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
-        { "name": "Threat", "coverage": 12.9, "coveredlines": 12, "coverablelines": 93, "totallines": 171, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 30, "coveredmethods": 3, "totalmethods": 10 },
+        { "name": "Threat", "coverage": 12.6, "coveredlines": 12, "coverablelines": 95, "totallines": 173, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 30, "coveredmethods": 3, "totalmethods": 10 },
         { "name": "ThreatAssignment", "coverage": 90.4, "coveredlines": 38, "coverablelines": 42, "totallines": 79, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "ThreatData", "coverage": 30.4, "coveredlines": 7, "coverablelines": 23, "totallines": 45, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 40, "coveredmethods": 2, "totalmethods": 5 },
         { "name": "UIBuildButton", "coverage": 0, "coveredlines": 0, "coverablelines": 2, "totallines": 11, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
