@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/15/2024 - 04:59:11 |
+| Generated on: | 10/15/2024 - 05:01:39 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
 | Covered lines: | 648 |
-| Uncovered lines: | 2671 |
-| Coverable lines: | 3319 |
-| Total lines: | 5893 |
-| Line coverage: | 19.5% (648 of 3319) |
+| Uncovered lines: | 2667 |
+| Coverable lines: | 3315 |
+| Total lines: | 5882 |
+| Line coverage: | 19.5% (648 of 3315) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 82 |
@@ -19,11 +19,11 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**359**|**2632**|**2991**|**5679**|**12%**|**0**|**0**|****|**56**|**418**|**13.3%**|
+|**bamlab.micromissiles**|**359**|**2628**|**2987**|**5668**|**12%**|**0**|**0**|****|**56**|**418**|**13.3%**|
 |Agent|51|166|217|368|23.5%|0|0||13|40|32.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
-|CarrierInterceptor|0|50|50|79|0%|0|0||0|7|0%|
+|CarrierInterceptor|0|50|50|78|0%|0|0||0|7|0%|
 |ConfigLoader|18|88|106|153|16.9%|0|0||2|13|15.3%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
@@ -41,11 +41,11 @@
 |RotaryWingThreat|16|29|45|80|35.5%|0|0||1|8|12.5%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|36|3|39|147|92.3%|0|0||2|3|66.6%|
-|SimManager|76|314|390|610|19.4%|0|0||7|47|14.8%|
-|SimMonitor|0|169|169|256|0%|0|0||0|20|0%|
+|SimManager|76|311|387|606|19.6%|0|0||7|47|14.8%|
+|SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
 |SimulationConfig|3|0|3|130|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
-|SwarmStatusDialog|0|134|134|172|0%|0|0||0|16|0%|
+|SwarmStatusDialog|0|133|133|167|0%|0|0||0|16|0%|
 |Threat|12|83|95|173|12.6%|0|0||3|10|30%|
 |ThreatAssignment|38|4|42|79|90.4%|0|0||5|5|100%|
 |ThreatData|8|18|26|49|30.7%|0|0||2|5|40%|
@@ -54,8 +54,8 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|153|153|231|0%|0|0||0|29|0%|
-|UISelectableEntry|0|81|81|137|0%|0|0||0|15|0%|
+|UIManager|0|153|153|230|0%|0|0||0|29|0%|
+|UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
 |Utilities|3|0|3|9|100%|0|0||1|1|100%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
