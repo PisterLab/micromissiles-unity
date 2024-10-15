@@ -34,12 +34,24 @@ public class IADS : MonoBehaviour {
 
   public void LateUpdate() {
     if (_assignmentQueue.Count > 0) {
-      // Take up to 10 interceptors from the queue
-      List<Interceptor> interceptorsToAssign = _assignmentQueue.Take(10).ToList();
+      int popCount = 100;
+
+      // Take up to popCount interceptors from the queue
+      List<Interceptor> interceptorsToAssign = _assignmentQueue.Take(popCount).ToList();
       AssignInterceptorsToThreats(interceptorsToAssign);
 
       // Remove the processed interceptors from the queue
-      _assignmentQueue.RemoveRange(0, Math.Min(10, _assignmentQueue.Count));
+      _assignmentQueue.RemoveRange(0, Math.Min(popCount, _assignmentQueue.Count));
+
+      // Check if any interceptors were not assigned
+      List<Interceptor> assignedInterceptors =
+          interceptorsToAssign.Where(m => m.HasAssignedTarget()).ToList();
+
+      if (assignedInterceptors.Count < interceptorsToAssign.Count) {
+        // Back into the queue they go!
+        _assignmentQueue.AddRange(interceptorsToAssign.Except(assignedInterceptors));
+        Debug.Log($"Backing interceptors into the queue. Failed to assign.");
+      }
     }
   }
 
@@ -68,24 +80,6 @@ public class IADS : MonoBehaviour {
       //     $"Interceptor {assignment.Interceptor.name} assigned to threat
       //     {assignment.Threat.name}");
     }
-
-    // Check if any interceptors were not assigned
-    List<Interceptor> unassignedInterceptors =
-        missilesToAssign.Where(m => !m.HasAssignedTarget()).ToList();
-
-    if (unassignedInterceptors.Count > 0) {
-      string unassignedIds = string.Join(", ", unassignedInterceptors.Select(m => m.name));
-      int totalInterceptors = missilesToAssign.Count;
-      int assignedInterceptors = totalInterceptors - unassignedInterceptors.Count;
-
-      Debug.LogWarning(
-          $"Warning: {unassignedInterceptors.Count} out of {totalInterceptors} interceptors were not assigned to any threat. " +
-          $"Unassigned interceptor IDs: {unassignedIds}. " +
-          $"Total interceptors: {totalInterceptors}, Assigned: {assignedInterceptors}, Unassigned: {unassignedInterceptors.Count}");
-
-      // Log information about the assignment scheme
-      Debug.Log($"Current Assignment Scheme: {_assignmentScheme.GetType().Name}");
-    }
   }
 
   public void RegisterNewThreat(Threat threat) {
@@ -96,8 +90,8 @@ public class IADS : MonoBehaviour {
     // Subscribe to the threat's events
     // TODO: If we do not want omniscient IADS, we
     // need to model the IADS's sensors here.
-    threat.OnInterceptHit += RegisterThreatHit;
-    threat.OnInterceptMiss += RegisterThreatMiss;
+    threat.OnThreatHit += RegisterThreatHit;
+    threat.OnThreatMiss += RegisterThreatMiss;
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
@@ -118,13 +112,6 @@ public class IADS : MonoBehaviour {
     // Remove the interceptor from the threat's assigned interceptors
     _threatDataMap[threat].RemoveInterceptor(interceptor);
   }
-  private void RegisterThreatHit(Interceptor interceptor, Threat threat) {
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      threatData.RemoveInterceptor(interceptor);
-      MarkThreatDestroyed(threatData);
-    }
-  }
 
   private void MarkThreatDestroyed(ThreatData threatData) {
     if (threatData != null) {
@@ -132,9 +119,20 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  private void RegisterThreatMiss(Interceptor interceptor, Threat threat) {
+  private void RegisterThreatHit(Threat threat) {
     ThreatData threatData = _threatDataMap[threat];
-    threatData.RemoveInterceptor(interceptor);
+    if (threatData != null) {
+      MarkThreatDestroyed(threatData);
+    }
+  }
+
+  private void RegisterThreatMiss(Threat threat) {
+    // The threat missed (meaning it hit the floor, etc)
+    ThreatData threatData = _threatDataMap[threat];
+    if (threatData != null) {
+      MarkThreatDestroyed(threatData);
+    }
+    // threatData.RemoveInterceptor(null);
   }
 
   private void RegisterSimulationEnded() {

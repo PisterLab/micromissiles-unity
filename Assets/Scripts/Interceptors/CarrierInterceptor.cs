@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using System.Linq;
 
 public class CarrierInterceptor : Interceptor {
   private bool _submunitionsLaunched = false;
@@ -36,8 +37,8 @@ public class CarrierInterceptor : Interceptor {
     base.FixedUpdate();
     float launchTimeVariance = 0.5f;
     float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
-    float launchTimeWithNoise =
-        _dynamicAgentConfig.submunitions_config.launch_config.launch_time + launchTimeNoise;
+    double launchTimeWithNoise =
+        dynamicAgentConfig.submunitions_config.dispense_time + launchTimeNoise;
     // Check if it's time to launch submunitions
     if (!_submunitionsLaunched &&
         (GetFlightPhase() == FlightPhase.MIDCOURSE || GetFlightPhase() == FlightPhase.BOOST) &&
@@ -60,9 +61,9 @@ public class CarrierInterceptor : Interceptor {
 
   public void SpawnSubmunitions() {
     List<Interceptor> submunitions = new List<Interceptor>();
-    for (int i = 0; i < _dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
+    for (int i = 0; i < dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
       DynamicAgentConfig convertedConfig = DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(
-          _dynamicAgentConfig.submunitions_config.dynamic_agent_config);
+          dynamicAgentConfig.submunitions_config.dynamic_agent_config);
       convertedConfig.initial_state.position = transform.position;
       convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
       Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
@@ -70,10 +71,9 @@ public class CarrierInterceptor : Interceptor {
       submunitions.Add(submunition);
     }
     IADS.Instance.RequestThreatAssignment(submunitions);
-<<<<<<< Updated upstream
-=======
+
     SimManager.Instance.AddSubmunitionsSwarm(
         submunitions.ConvertAll(submunition => submunition as Agent));
->>>>>>> Stashed changes
+
   }
 }

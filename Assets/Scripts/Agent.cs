@@ -28,6 +28,7 @@ public abstract class Agent : MonoBehaviour {
   protected List<Agent> _interceptors = new List<Agent>();
   [SerializeField]
   protected Agent _target;
+  [SerializeField]
   protected Agent _targetModel;
   protected bool _isHit = false;
   protected bool _isMiss = false;
@@ -37,8 +38,8 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected double _timeInPhase = 0;
 
-  public StaticAgentConfig _staticAgentConfig;
-  public DynamicAgentConfig _dynamicAgentConfig;
+  public StaticAgentConfig staticAgentConfig;
+  public DynamicAgentConfig dynamicAgentConfig;
 
   // Define delegates
   // MarkDestroyed event handler
@@ -47,14 +48,28 @@ public abstract class Agent : MonoBehaviour {
 
   public delegate void InterceptHitEventHandler(Interceptor interceptor, Threat target);
   public delegate void InterceptMissEventHandler(Interceptor interceptor, Threat target);
+  public delegate void ThreatHitEventHandler(Threat threat);
+  public delegate void ThreatMissEventHandler(Threat threat);
 
   // Define events
   public event InterceptHitEventHandler OnInterceptHit;
   public event InterceptMissEventHandler OnInterceptMiss;
+  public event ThreatHitEventHandler OnThreatHit;
+  public event ThreatMissEventHandler OnThreatMiss;
+
+  private Vector3 _initialVelocity;
 
   public void SetFlightPhase(FlightPhase flightPhase) {
     _timeInPhase = 0;
     _flightPhase = flightPhase;
+    if (flightPhase == FlightPhase.INITIALIZED || flightPhase == FlightPhase.TERMINATED) {
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    } else {
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+    }
+    if (flightPhase == FlightPhase.BOOST) {
+      SetVelocity(GetVelocity() + _initialVelocity);
+    }
   }
 
   public FlightPhase GetFlightPhase() {
@@ -70,12 +85,12 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    _dynamicAgentConfig = config;
+    dynamicAgentConfig = config;
   }
 
   public virtual void SetStaticAgentConfig(StaticAgentConfig config) {
-    _staticAgentConfig = config;
-    GetComponent<Rigidbody>().mass = _staticAgentConfig.bodyConfig.mass;
+    staticAgentConfig = config;
+    GetComponent<Rigidbody>().mass = staticAgentConfig.bodyConfig.mass;
   }
 
   public virtual bool IsAssignable() {
@@ -152,9 +167,30 @@ public abstract class Agent : MonoBehaviour {
       } else if (this is Threat threatAgent && _target is Interceptor interceptorTarget) {
         OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
       }
-      _target = null;
+      UnassignTarget();
     }
     TerminateAgent();
+  }
+
+  // This happens if we, e.g., hit the carrier
+  public void HandleThreatHit() {
+    _isHit = true;
+    if (this is Threat threat) {
+      OnThreatHit?.Invoke(threat);
+    }
+    TerminateAgent();
+  }
+
+  // This happens if we, e.g., hit the floor
+  public void HandleThreatMiss() {
+    if (this is Threat threat) {
+      OnThreatMiss?.Invoke(threat);
+    }
+    TerminateAgent();
+  }
+
+  public void SetInitialVelocity(Vector3 velocity) {
+    _initialVelocity = velocity;
   }
 
   public Vector3 GetPosition() {
@@ -178,7 +214,11 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public Vector3 GetAcceleration() {
-    return GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
+    return _acceleration;
+  }
+
+  public void SetAcceleration(Vector3 acceleration) {
+    _acceleration = acceleration;
   }
 
   public double GetDynamicPressure() {
@@ -206,17 +246,22 @@ public abstract class Agent : MonoBehaviour {
     }
     _timeInPhase += Time.fixedDeltaTime;
 
-    var launch_time = _dynamicAgentConfig.dynamic_config.launch_config.launch_time;
-    var boost_time = _staticAgentConfig.boostConfig.boostTime;
+    var launch_time = dynamicAgentConfig.dynamic_config.launch_config.launch_time;
+    var boost_time = staticAgentConfig.boostConfig.boostTime;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {
       return;
     }
 
-    if (elapsedSimulationTime >= launch_time &&
-        (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY)) {
-      SetFlightPhase(FlightPhase.BOOST);
+    if (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY) {
+      float launchTimeVariance = 0.5f;
+      float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
+      launch_time += launchTimeNoise;
+
+      if (elapsedSimulationTime >= launch_time) {
+        SetFlightPhase(FlightPhase.BOOST);
+      }
     }
     if (_timeSinceBoost > boost_time && _flightPhase == FlightPhase.BOOST) {
       SetFlightPhase(FlightPhase.MIDCOURSE);
@@ -240,7 +285,9 @@ public abstract class Agent : MonoBehaviour {
     }
 
     _velocity = GetVelocity();
-    _acceleration = GetAcceleration();
+    // Store the acceleration because it is set to zero after each simulation step
+    _acceleration =
+        GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
   }
 
   protected virtual void AlignWithVelocity() {
@@ -270,21 +317,21 @@ public abstract class Agent : MonoBehaviour {
   }
 
   protected float CalculateMaxForwardAcceleration() {
-    return _staticAgentConfig.accelerationConfig.maxForwardAcceleration;
+    return staticAgentConfig.accelerationConfig.maxForwardAcceleration;
   }
 
   protected float CalculateMaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
-        (float)(_staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
+        (float)(staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);
-    float referenceSpeed = _staticAgentConfig.accelerationConfig.referenceSpeed;
+    float referenceSpeed = staticAgentConfig.accelerationConfig.referenceSpeed;
     return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
   private float CalculateDrag() {
-    float dragCoefficient = _staticAgentConfig.liftDragConfig.dragCoefficient;
-    float crossSectionalArea = _staticAgentConfig.bodyConfig.crossSectionalArea;
-    float mass = _staticAgentConfig.bodyConfig.mass;
+    float dragCoefficient = staticAgentConfig.liftDragConfig.dragCoefficient;
+    float crossSectionalArea = staticAgentConfig.bodyConfig.crossSectionalArea;
+    float mass = staticAgentConfig.bodyConfig.mass;
     float dynamicPressure = (float)GetDynamicPressure();
     float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
     return dragForce / mass;
@@ -293,7 +340,7 @@ public abstract class Agent : MonoBehaviour {
   private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
     float liftAcceleration =
         (accelerationInput - Vector3.Dot(accelerationInput, transform.up) * transform.up).magnitude;
-    float liftDragRatio = _staticAgentConfig.liftDragConfig.liftDragRatio;
+    float liftDragRatio = staticAgentConfig.liftDragConfig.liftDragRatio;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }
 }
@@ -304,7 +351,7 @@ public class DummyAgent : Agent {
   }
 
   protected override void FixedUpdate() {
-    // Do nothing
+    GetComponent<Rigidbody>().AddForce(_acceleration, ForceMode.Acceleration);
   }
 
   protected override void UpdateReady(double deltaTime) {

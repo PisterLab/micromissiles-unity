@@ -20,15 +20,15 @@ public abstract class Threat : Agent {
   protected float PowerTableLookup(PowerSetting powerSetting) {
     switch (powerSetting) {
       case PowerSetting.IDLE:
-        return _staticAgentConfig.powerTable.IDLE;
+        return staticAgentConfig.powerTable.IDLE;
       case PowerSetting.LOW:
-        return _staticAgentConfig.powerTable.LOW;
+        return staticAgentConfig.powerTable.LOW;
       case PowerSetting.CRUISE:
-        return _staticAgentConfig.powerTable.CRUISE;
+        return staticAgentConfig.powerTable.CRUISE;
       case PowerSetting.MIL:
-        return _staticAgentConfig.powerTable.MIL;
+        return staticAgentConfig.powerTable.MIL;
       case PowerSetting.MAX:
-        return _staticAgentConfig.powerTable.MAX;
+        return staticAgentConfig.powerTable.MAX;
       default:
         Debug.LogError("Invalid power setting");
         return 0f;
@@ -89,17 +89,19 @@ public abstract class Threat : Agent {
     Agent closestInterceptor = null;
     float minDistance = float.MaxValue;
     foreach (var interceptor in _interceptors) {
-      SensorOutput sensorOutput = GetComponent<Sensor>().Sense(interceptor);
-      if (sensorOutput.position.range < minDistance) {
-        closestInterceptor = interceptor;
-        minDistance = sensorOutput.position.range;
+      if (!interceptor.HasTerminated()) {
+        SensorOutput sensorOutput = GetComponent<Sensor>().Sense(interceptor);
+        if (sensorOutput.position.range < minDistance) {
+          closestInterceptor = interceptor;
+          minDistance = sensorOutput.position.range;
+        }
       }
     }
     return closestInterceptor;
   }
 
   protected bool ShouldEvade() {
-    if (!_dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
+    if (!dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
       return false;
     }
 
@@ -109,7 +111,7 @@ public abstract class Threat : Agent {
     }
 
     float evasionRangeThreshold =
-        _dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
+        dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(closestInterceptor);
     return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }
@@ -128,10 +130,44 @@ public abstract class Threat : Agent {
     if (Vector3.Dot(relativePosition, normalAccelerationDirection) > 0) {
       normalAccelerationDirection *= -1;
     }
+
+    // Avoid evading straight down when near the ground
+    float altitude = GetPosition().y;
+    float groundProximityThreshold =
+        Mathf.Abs(GetVelocity().y) * 5f;  // Adjust threshold as necessary
+    if (GetVelocity().y < 0 && altitude < groundProximityThreshold) {
+      // Determine evasion direction based on angle to interceptor
+      Vector3 toInterceptor = interceptor.GetPosition() - GetPosition();
+      Vector3 rightDirection = Vector3.Cross(Vector3.up, transform.forward);
+      float angle = Vector3.SignedAngle(transform.forward, toInterceptor, Vector3.up);
+
+      // Choose the direction that leads away from the interceptor
+      Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
+
+      // Blend between horizontal evasion and slight upward movement
+      float blendFactor = 1 - (altitude / groundProximityThreshold);
+      normalAccelerationDirection =
+          Vector3
+              .Lerp(normalAccelerationDirection, bestHorizontalDirection + transform.up * 5f,
+                    blendFactor)
+              .normalized;
+    }
     Vector3 normalAcceleration = normalAccelerationDirection * CalculateMaxNormalAcceleration();
 
     // Adjust forward speed
     Vector3 forwardAcceleration = CalculateForwardAcceleration();
+
     return normalAcceleration + forwardAcceleration;
+  }
+
+  private void OnTriggerEnter(Collider other) {
+    if (other.gameObject.name == "Floor") {
+      this.HandleThreatMiss();
+    }
+    // Check if the collision is with another Agent
+    DummyAgent otherAgent = other.gameObject.GetComponentInParent<DummyAgent>();
+    if (otherAgent != null && _target == otherAgent) {
+      this.HandleThreatHit();
+    }
   }
 }

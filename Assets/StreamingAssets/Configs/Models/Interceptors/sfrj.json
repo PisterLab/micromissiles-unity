@@ -1,6 +1,7 @@
 {
     "name": "SFRJ",
     "agentClass": "CarrierInterceptor",
+    "unitCost": 100000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 50,
         "referenceSpeed": 1000,

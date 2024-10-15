@@ -1,6 +1,7 @@
 {
     "name": "Hydra 70",
     "agentClass": "CarrierInterceptor",
+    "unitCost": 30000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,
         "referenceSpeed": 1000,

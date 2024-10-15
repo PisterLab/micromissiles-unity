@@ -8,6 +8,8 @@ using UnityEngine;
 /// Implements the Singleton pattern to ensure only one instance exists.
 /// </summary>
 public class SimManager : MonoBehaviour {
+  public SimulatorConfig simulatorConfig;
+
   /// <summary>
   /// Singleton instance of SimManager.
   /// </summary>
@@ -59,6 +61,9 @@ public class SimManager : MonoBehaviour {
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
 
+  private float _costLaunchedInterceptors = 0f;
+  private float _costDestroyedThreats = 0f;
+
   public delegate void SimulationEventHandler();
   public event SimulationEventHandler OnSimulationEnded;
   public event SimulationEventHandler OnSimulationStarted;
@@ -75,6 +80,22 @@ public class SimManager : MonoBehaviour {
   /// <returns>The elapsed time in seconds.</returns>
   public double GetElapsedSimulationTime() {
     return _elapsedSimulationTime;
+  }
+
+  /// <summary>
+  /// Gets the total cost of launched interceptors.
+  /// </summary>
+  /// <returns>The total cost of launched interceptors.</returns>
+  public double GetCostLaunchedInterceptors() {
+    return _costLaunchedInterceptors;
+  }
+
+  /// <summary>
+  /// Gets the total cost of destroyed threats.
+  /// </summary>
+  /// <returns>The total cost of destroyed threats.</returns>
+  public double GetCostDestroyedThreats() {
+    return _costDestroyedThreats;
   }
 
   public List<Interceptor> GetActiveInterceptors() {
@@ -120,6 +141,10 @@ public class SimManager : MonoBehaviour {
     }
     simulationConfig = ConfigLoader.LoadSimulationConfig("1_salvo_1_hydra_7_drones.json");
     Debug.Log(simulationConfig);
+
+    // Load the simulator config
+    simulatorConfig = ConfigLoader.LoadSimulatorConfig();
+    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
   }
 
   void Start() {
@@ -132,8 +157,9 @@ public class SimManager : MonoBehaviour {
 
   public void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
-    Time.fixedDeltaTime = Time.timeScale * 0.01f;
     Time.maximumDeltaTime = Time.timeScale * 0.05f;
+
+    // Time.fixedDeltaTime is set in the simulator.json
   }
 
   public void StartSimulation() {
@@ -162,15 +188,19 @@ public class SimManager : MonoBehaviour {
     List<Interceptor> missiles = new List<Interceptor>();
     // Create missiles based on config
     foreach (var swarmConfig in simulationConfig.interceptor_swarm_configs) {
+      List<Agent> swarm = new List<Agent>();
       for (int i = 0; i < swarmConfig.num_agents; i++) {
-        CreateInterceptor(swarmConfig.dynamic_agent_config);
+        Interceptor interceptor = CreateInterceptor(swarmConfig.dynamic_agent_config);
+        swarm.Add(interceptor);
       }
+      AddInterceptorSwarm(swarm);
     }
     IADS.Instance.RequestThreatAssignment(_interceptorObjects);
 
-    List<Threat> targets = new List<Threat>();
+    List<Agent> targets = new List<Agent>();
     // Create targets based on config
     foreach (var swarmConfig in simulationConfig.threat_swarm_configs) {
+      List<Agent> swarm = new List<Agent>();
       for (int i = 0; i < swarmConfig.num_agents; i++) {
         Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
         swarm.Add(threat);
@@ -310,6 +340,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
+    _costDestroyedThreats += threat.staticAgentConfig.unitCost;
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
@@ -403,6 +434,9 @@ public class SimManager : MonoBehaviour {
     int interceptorId = _interceptorObjects.Count;
     interceptorObject.name = $"{interceptorStaticAgentConfig.name}_Interceptor_{interceptorId}";
 
+    // Add the interceptor's unit cost to the total cost
+    _costLaunchedInterceptors += interceptorStaticAgentConfig.unitCost;
+
     // Let listeners know a new interceptor has been created
     OnNewInterceptor?.Invoke(interceptor);
 
@@ -437,8 +471,8 @@ public class SimManager : MonoBehaviour {
     threat.SetAttackBehavior(attackBehavior);
 
     // Subscribe events
-    threat.OnInterceptHit += RegisterThreatHit;
-    threat.OnInterceptMiss += RegisterThreatMiss;
+    threat.OnThreatHit += RegisterThreatHit;
+    threat.OnThreatMiss += RegisterThreatMiss;
 
     // Assign a unique and simple ID
     int threatId = _threatObjects.Count;
@@ -469,13 +503,17 @@ public class SimManager : MonoBehaviour {
     Vector3 noiseOffset = Utilities.GenerateRandomNoise(config.standard_deviation.position);
     Vector3 noisyPosition = config.initial_state.position + noiseOffset;
 
-    GameObject agentObject =
-        Instantiate(prefab, noisyPosition, Quaternion.Euler(config.initial_state.rotation));
+    GameObject agentObject = Instantiate(prefab, noisyPosition, Quaternion.identity);
 
     Rigidbody agentRigidbody = agentObject.GetComponent<Rigidbody>();
     Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.standard_deviation.velocity);
     Vector3 noisyVelocity = config.initial_state.velocity + velocityNoise;
     agentRigidbody.linearVelocity = noisyVelocity;
+    agentObject.GetComponent<Agent>().SetInitialVelocity(noisyVelocity);
+    // Set rotation to face the initial velocity with noise
+    Vector3 velocityDirection = noisyVelocity.normalized;
+    Quaternion targetRotation = Quaternion.LookRotation(velocityDirection, Vector3.up);
+    agentObject.transform.rotation = targetRotation;
 
     agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
 
@@ -499,6 +537,8 @@ public class SimManager : MonoBehaviour {
     // Reset simulation time
     _elapsedSimulationTime = 0f;
     simulationRunning = IsSimulationRunning();
+    _costLaunchedInterceptors = 0f;
+    _costDestroyedThreats = 0f;
 
     // Clear existing interceptors and threats
     foreach (var interceptor in _interceptorObjects) {
@@ -553,6 +593,7 @@ public class SimManager : MonoBehaviour {
       _elapsedSimulationTime += Time.deltaTime;
     } else if (_elapsedSimulationTime >= endTime) {
       simulationRunning = false;
+      RestartSimulation();
       Debug.Log("Simulation completed.");
     }
   }

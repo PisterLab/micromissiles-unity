@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
@@ -15,6 +16,9 @@ public class UIManager : MonoBehaviour {
   private TMP_Dropdown _configDropdown;
   public TextMeshProUGUI agentPanelText;
   public TextMeshProUGUI simTimeText;
+  public TextMeshProUGUI interceptorCostText;
+  public TextMeshProUGUI threatCostText;
+  public TextMeshProUGUI netCostText;
 
   public TextMeshProUGUI intrHitTextHandle;
   public TextMeshProUGUI intrMissTextHandle;
@@ -220,6 +224,7 @@ public class UIManager : MonoBehaviour {
   void Update() {
     //UpdateSwarmPanel();
     UpdateSimTimeText();
+    UpdateTotalCostText();
   }
 }
 

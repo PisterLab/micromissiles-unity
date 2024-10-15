@@ -118,12 +118,27 @@ public class InputManager : MonoBehaviour {
     }
 
     if (Input.GetKeyDown(KeyCode.Alpha1)) {
-      // ORIGIN
-      // Set pre-set view 1
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        CameraController.Instance.FollowNextInterceptorSwarm();
+      } else {
+        CameraController.Instance.SnapToNextInterceptorSwarm();
+      }
     }
 
     if (Input.GetKeyDown(KeyCode.Alpha2)) {
-      // Set pre-set view 2
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        CameraController.Instance.FollowNextThreatSwarm();
+      } else {
+        CameraController.Instance.SnapToNextThreatSwarm();
+      }
+    }
+
+    if (Input.GetKeyDown(KeyCode.Alpha3)) {
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        CameraController.Instance.FollowCenterAllAgents();
+      } else {
+        CameraController.Instance.SnapToCenterAllAgents();
+      }
     }
 
     if (Input.GetKeyDown(KeyCode.Alpha4)) {

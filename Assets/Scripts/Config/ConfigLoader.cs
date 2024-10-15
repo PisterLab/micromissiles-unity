@@ -58,6 +58,12 @@ public static class ConfigLoader {
         });
   }
 
+  public static SimulatorConfig LoadSimulatorConfig() {
+    string relativePath = "simulator.json";  // Path relative to StreamingAssets
+    string fileContent = LoadFromStreamingAssets(relativePath);
+    return JsonConvert.DeserializeObject<SimulatorConfig>(fileContent);
+  }
+
   public static void PrintSimulationConfig(SimulationConfig config) {
     if (config == null) {
       Debug.Log("SimulationConfig is null");
@@ -130,7 +136,7 @@ public static class ConfigLoader {
 
     Debug.Log("    Submunitions Configuration:");
     Debug.Log($"      Number of Submunitions: {submunitionsConfig.num_submunitions}");
-    Debug.Log($"      Launch Time: {submunitionsConfig.launch_config.launch_time}");
+    Debug.Log($"      Dispense Time: {submunitionsConfig.dispense_time}");
     PrintSubmunitionDynamicAgentConfig(submunitionsConfig.dynamic_agent_config);
   }
 

@@ -26,12 +26,12 @@
             },
             {
                 "distance": 4000.0,
-                "altitude": 50.0,
+                "altitude": 500.0,
                 "power": "MIL"
             },
             {
                 "distance": 2000.0,
-                "altitude": 0.0,
+                "altitude": 100.0,
                 "power": "MAX"
             }
         ]

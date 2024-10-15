@@ -15,24 +15,19 @@ public class Interceptor : Agent {
   private Coroutine _returnParticleToManagerCoroutine;
 
   private SensorOutput _sensorOutput;
-  private Vector3 _accelerationCommand;
+  private Vector3 _accelerationInput;
 
   private double _elapsedTime = 0;
+
+  protected override void Awake() {
+    base.Awake();
+    SetFlightPhase(FlightPhase.INITIALIZED);
+  }
 
   // Return whether a target can be assigned to the interceptor.
   public override bool IsAssignable() {
     bool assignable = !HasAssignedTarget();
     return assignable;
-  }
-
-  // Assign the given target to the interceptor.
-  public override void AssignTarget(Agent target) {
-    base.AssignTarget(target);
-  }
-
-  // Unassign the target from the interceptor.
-  public override void UnassignTarget() {
-    base.UnassignTarget();
   }
 
   protected override void UpdateReady(double deltaTime) {
@@ -56,7 +51,7 @@ public class Interceptor : Agent {
 
     // Calculate boost acceleration
     float boostAcceleration =
-        (float)(_staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
+        (float)(staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add PN acceleration to boost acceleration
@@ -90,63 +85,78 @@ public class Interceptor : Agent {
 
     // Check whether the threat should be considered a miss
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
-    if (sensorOutput.velocity.range > 1000f) {
-      this.HandleInterceptMiss();
-      return Vector3.zero;
-    }
+    // DL: This causes trouble with Fateh110B (high-speed threats)
+    // if (sensorOutput.velocity.range > 1000f) {
+    //   this.HandleInterceptMiss();
+    //   return Vector3.zero;
+    // }
 
     _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
-    return CalculateAccelerationCommand(_sensorOutput);
+    return CalculateAccelerationInput(_sensorOutput);
   }
 
   private void UpdateTargetModel(double deltaTime) {
     _elapsedTime += deltaTime;
-    float sensorUpdatePeriod = 1f / _dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+    float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
     if (_elapsedTime >= sensorUpdatePeriod) {
       // TODO: Implement guidance filter to estimate state from sensor output
       // For now, we'll use the threat's actual state
       _targetModel.SetPosition(_target.GetPosition());
       _targetModel.SetVelocity(_target.GetVelocity());
+      _targetModel.SetAcceleration(_target.GetAcceleration());
       _elapsedTime = 0;
     }
   }
 
-  private Vector3 CalculateAccelerationCommand(SensorOutput sensorOutput) {
-    // Implement Proportional Navigation guidance law
-    Vector3 accelerationCommand = Vector3.zero;
+  private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
+    // TODO(titan): Refactor all controller-related code into a separate controller interface with
+    // subclasses. A controller factory will instantiate the correct controller for each dynamic
+    // configuration.
+
+    // Implement (Augmented) Proportional Navigation guidance law
+    Vector3 accelerationInput = Vector3.zero;
 
     // Extract relevant information from sensor output
-    float los_rate_az = sensorOutput.velocity.azimuth;
-    float los_rate_el = sensorOutput.velocity.elevation;
-    float closing_velocity =
+    float losRateAz = sensorOutput.velocity.azimuth;
+    float losRateEl = sensorOutput.velocity.elevation;
+    float closingVelocity =
         -sensorOutput.velocity
              .range;  // Negative because closing velocity is opposite to range rate
 
     // Navigation gain (adjust as needed)
     float N = _navigationGain;
-    float accAz = 0;
-    float accEl = 0;
+    // Normal PN guidance for positive closing velocity
+    float turnFactor = closingVelocity;
     // Handle negative closing velocity scenario
-    if (closing_velocity < 0) {
+    if (closingVelocity < 0) {
       // Target is moving away, apply stronger turn
-      float turnFactor = Mathf.Max(1f, Mathf.Abs(closing_velocity) * 100f);
-      accAz = N * turnFactor * los_rate_az;
-      accEl = N * turnFactor * los_rate_el;
-    } else {
-      // Normal PN guidance for positive closing velocity
-      accAz = N * closing_velocity * los_rate_az;
-      accEl = N * closing_velocity * los_rate_el;
+      turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
     }
-    // Convert acceleration commands to craft body frame
-    accelerationCommand = transform.right * accAz + transform.up * accEl;
+    // Handle spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees
+    if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f) {
+      // Check that the agent is not moving in a spiral by clamping the LOS rate at 0.2 rad/s
+      float minLosRate = 0.2f;  // Adjust as necessary
+      losRateAz = Mathf.Sign(losRateAz) * Mathf.Max(Mathf.Abs(losRateAz), minLosRate);
+      losRateEl = Mathf.Sign(losRateEl) * Mathf.Max(Mathf.Abs(losRateEl), minLosRate);
+    }
+    float accAz = N * turnFactor * losRateAz;
+    float accEl = N * turnFactor * losRateEl;
+    // Convert acceleration inputs to craft body frame
+    accelerationInput = transform.right * accAz + transform.up * accEl;
 
-    // Clamp the normal acceleration command to the maximum normal acceleration
+    // For Augmented Proportional Navigation, add a feedforward term for the target acceleration
+    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
+      Vector3 targetAcceleration = _targetModel.GetAcceleration();
+      Vector3 normalTargetAcceleration =
+          Vector3.ProjectOnPlane(targetAcceleration, transform.forward);
+      accelerationInput += N / 2 * normalTargetAcceleration;
+    }
+
+    // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
-    accelerationCommand = Vector3.ClampMagnitude(accelerationCommand, maxNormalAcceleration);
-
-    // Update the stored acceleration command for debugging
-    _accelerationCommand = accelerationCommand;
-    return accelerationCommand;
+    accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
+    _accelerationInput = accelerationInput;
+    return accelerationInput;
   }
 
   private void OnTriggerEnter(Collider other) {
@@ -157,7 +167,7 @@ public class Interceptor : Agent {
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
       // Check kill probability before marking as hit
-      float killProbability = otherAgent._staticAgentConfig.hitConfig.killProbability;
+      float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {
@@ -200,9 +210,9 @@ public class Interceptor : Agent {
         float duration = particleSystem.main.duration;
 
         // Extend the duration of the missile trail effect to be the same as the boost time
-        if (duration < _staticAgentConfig.boostConfig.boostTime) {
+        if (duration < staticAgentConfig.boostConfig.boostTime) {
           ParticleSystem.MainModule mainModule = particleSystem.main;
-          mainModule.duration = _staticAgentConfig.boostConfig.boostTime;
+          mainModule.duration = staticAgentConfig.boostConfig.boostTime;
         }
 
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));
@@ -261,8 +271,8 @@ public class Interceptor : Agent {
       // Yaw axis (up)
       Debug.DrawRay(transform.position, transform.up * 5f, Color.magenta);
 
-      if (_accelerationCommand != null) {
-        Debug.DrawRay(transform.position, _accelerationCommand * 1f, Color.green);
+      if (_accelerationInput != null) {
+        Debug.DrawRay(transform.position, _accelerationInput * 1f, Color.green);
       }
     }
   }

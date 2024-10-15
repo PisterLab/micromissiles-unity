@@ -82,7 +82,7 @@ public class PlottingConfig {
 [Serializable]
 public class SubmunitionsConfig {
   public int num_submunitions;
-  public LaunchConfig launch_config;
+  public double dispense_time;
   public SubmunitionDynamicAgentConfig dynamic_agent_config;
 }
 
@@ -103,6 +103,7 @@ public class SensorConfig {
 
 [Serializable]
 public class FlightConfig {
+  public bool augmentedPnEnabled;
   public bool evasionEnabled;
   public float evasionRangeThreshold;
 }

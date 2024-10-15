@@ -1,10 +1,11 @@
 {
     "name": "UCAV",
     "agentClass": "FixedWingThreat",
+    "unitCost": 30000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,
         "referenceSpeed": 1000,
-        "maxForwardAcceleration": 50
+        "maxForwardAcceleration": 1
     },
     "boostConfig": {
         "boostTime": 0

@@ -198,8 +198,9 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput", sensorOutput);
     float maxForwardAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxForwardAcceleration");
+    const float epsilon = 1e-5f;
     Assert.LessOrEqual((Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
-                       maxForwardAcceleration);
+                       maxForwardAcceleration + epsilon);
   }
 
   [Test]
@@ -211,7 +212,10 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput", sensorOutput);
     float maxNormalAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxNormalAcceleration");
-    Assert.LessOrEqual(acceleration.magnitude, maxNormalAcceleration);
+    const float epsilon = 1e-5f;
+    Assert.LessOrEqual(
+        acceleration.magnitude, maxNormalAcceleration + epsilon,
+        $"Acceleration magnitude {acceleration.magnitude} should be less than or equal to max normal acceleration {maxNormalAcceleration}");
   }
 
   [Test]
@@ -221,8 +225,9 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(rotaryWingThreat, "CalculateAccelerationToWaypoint");
     float maxForwardAcceleration =
         InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxForwardAcceleration");
+    const float epsilon = 1e-5f;
     Assert.LessOrEqual((Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
-                       maxForwardAcceleration);
+                       maxForwardAcceleration + epsilon);
   }
 
   [Test]
@@ -232,9 +237,14 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(rotaryWingThreat, "CalculateAccelerationToWaypoint");
     float maxNormalAcceleration =
         InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxNormalAcceleration");
+    const float epsilon = 1e-5f;
+    // Calculate the normal component of acceleration
+    Vector3 forwardComponent = Vector3.Project(acceleration, rotaryWingThreat.transform.forward);
+    Vector3 normalComponent = acceleration - forwardComponent;
+
     Assert.LessOrEqual(
-        (acceleration - Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
-        maxNormalAcceleration);
+        normalComponent.magnitude, maxNormalAcceleration + epsilon,
+        $"Normal acceleration magnitude {normalComponent.magnitude} should be less than or equal to max normal acceleration {maxNormalAcceleration}");
   }
 
   private class MockAttackBehavior : AttackBehavior {

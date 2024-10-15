@@ -7,7 +7,6 @@
         "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "rotation": { "x": -45, "y": 0, "z": 0 },
           "velocity": { "x": 0, "y": 10, "z": 10 }
         },
         "standard_deviation": {
@@ -21,12 +20,12 @@
             "frequency": 100
           },
           "flight_config": {
-            "evasionEnabled": false
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "launch_config": { "launch_time": 2 },
+          "dispense_time": 2,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
@@ -45,8 +44,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "evasionEnabled": true,
-                "evasionRangeThreshold": 1000
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -59,7 +57,6 @@
         "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "rotation": { "x": -45, "y": 0, "z": 0 },
           "velocity": { "x": 0, "y": 10, "z": 10 }
         },
         "standard_deviation": {
@@ -73,17 +70,16 @@
             "frequency": 100
           },
           "flight_config": {
-            "evasionEnabled": false
+            "augmentedPnEnabled": false
           }
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "launch_config": { "launch_time": 6 },
+          "dispense_time": 4,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
               "position": { "x": 0, "y": 0, "z": 0 },
-              "rotation": { "x": 0, "y": 0, "z": 0 },
               "velocity": { "x": 0, "y": 0, "z": 0 }
             },
             "standard_deviation": {
@@ -97,8 +93,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "evasionEnabled": true,
-                "evasionRangeThreshold": 1000
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -114,7 +109,6 @@
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 6000 },
-          "rotation": { "x": 90, "y": 0, "z": 0 },
           "velocity": { "x": 0, "y": 0, "z": -50 }
         },
         "standard_deviation": {
@@ -144,7 +138,6 @@
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 2000, "y": 100, "z": 4000 },
-          "rotation": { "x": 90, "y": 0, "z": 0 },
           "velocity": { "x": -50, "y": 0, "z": -100 }
         },
         "standard_deviation": {

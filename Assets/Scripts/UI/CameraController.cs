@@ -236,6 +236,25 @@ public class CameraController : MonoBehaviour {
   /// </summary>
   public float forwardToCameraAngle;
 
+  public CameraMode cameraMode = CameraMode.FREE;
+
+  public int _selectedInterceptorSwarmIndex = -1;
+  public int _selectedThreatSwarmIndex = -1;
+
+  private Vector3 _lastCentroid;
+  private Vector3 _currentCentroid;
+  private Vector3 _targetCentroid;
+
+  public float _centroidUpdateFrequency = 0.1f;
+  public float _defaultInterpolationSpeed = 5f;
+  [SerializeField]
+  private float _currentInterpolationSpeed;
+
+  [SerializeField]
+  private float _iirFilterCoefficient = 0.9f;
+
+  private Coroutine _centroidUpdateCoroutine;
+
 #endregion
 
   void SetCameraRotation(Quaternion rotation) {
@@ -291,6 +310,7 @@ public class CameraController : MonoBehaviour {
       { TranslationInput.Back, sVector },    { TranslationInput.Right, dVector },
       { TranslationInput.Up, Vector3.up },   { TranslationInput.Down, Vector3.down }
     };
+    _currentInterpolationSpeed = _defaultInterpolationSpeed;
   }
 
   // Start is called before the first frame update
@@ -490,6 +510,12 @@ public class CameraController : MonoBehaviour {
       yield return null;
     }
   }
+
+  public void SetCameraTargetPosition(Vector3 position) {
+    target.transform.position = position;
+    UpdateCamPosition(_orbitX, _orbitY);
+  }
+
   void ResetCameraTarget() {
     RaycastHit hit;
     if (Physics.Raycast(transform.position, transform.forward, out hit, float.MaxValue,
@@ -544,6 +570,7 @@ public class CameraController : MonoBehaviour {
     }
     Vector3 negDistance = new Vector3(0.0f, 0.0f, -_orbitDistance);
     Vector3 position = rotation * negDistance + target.position;
+    _orbitDistance = Mathf.Clamp(_orbitDistance, _orbitDistanceMin, _orbitDistanceMax);
     UpdateTargetAlpha();
 
     SetCameraRotation(rotation);
@@ -595,8 +622,22 @@ public class CameraController : MonoBehaviour {
   public enum TranslationInput { Forward, Left, Back, Right, Up, Down }
 
   public void TranslateCamera(TranslationInput input) {
+    if (cameraMode != CameraMode.FREE) {
+      SetCameraMode(CameraMode.FREE);
+    }
     UpdateDirectionVectors();
     target.Translate(_translationInputToVectorMap[input] * Time.unscaledDeltaTime * _cameraSpeed);
     UpdateCamPosition(_orbitX, _orbitY);
   }
+
+  protected void Update() {
+    if (cameraMode != CameraMode.FREE) {
+      // Use MoveTowards for smoother and more predictable movement
+      _currentCentroid = Vector3.MoveTowards(_currentCentroid, _targetCentroid,
+                                             _currentInterpolationSpeed * Time.deltaTime);
+      SetCameraTargetPosition(_currentCentroid);
+    }
+  }
 }
+
+public enum CameraMode { FREE, FOLLOW_INTERCEPTOR_SWARM, FOLLOW_THREAT_SWARM, FOLLOW_ALL_AGENTS }

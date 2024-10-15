@@ -1,11 +1,11 @@
 {
-    "name": "BrahmosCruiseMissile",
+    "name": "Fateh110B",
     "agentClass": "FixedWingThreat",
-    "unitCost": 100000,
+    "unitCost": 200000,
     "accelerationConfig": {
-        "maxReferenceNormalAcceleration": 15,
-        "referenceSpeed": 960.4,
-        "maxForwardAcceleration": 30
+        "maxReferenceNormalAcceleration": 10,
+        "referenceSpeed": 2317,
+        "maxForwardAcceleration": 0
     },
     "boostConfig": {
         "boostTime": 0
@@ -16,7 +16,7 @@
         "liftDragRatio": 2
     },
     "bodyConfig": {
-        "mass": 3000,
+        "mass": 862,
         "crossSectionalArea": 0.352,
         "finArea": 1.2,
         "bodyArea": 17.7
@@ -27,9 +27,9 @@
     },
     "powerTable": {
         "IDLE": 0,
-        "LOW": 480,
-        "CRUISE": 960.4,
-        "MIL": 990,
-        "MAX": 1029
+        "LOW": 500,
+        "CRUISE": 1286,
+        "MIL": 1800,
+        "MAX": 2317
     }
 }
