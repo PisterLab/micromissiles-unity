@@ -1,26 +1,26 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/14/2024 - 02:58:41 |
+| Generated on: | 10/15/2024 - 02:56:37 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 1125 |
-| Uncovered lines: | 1870 |
-| Coverable lines: | 2995 |
-| Total lines: | 5447 |
-| Line coverage: | 37.5% (1125 of 2995) |
+| Covered lines: | 1182 |
+| Uncovered lines: | 1825 |
+| Coverable lines: | 3007 |
+| Total lines: | 5464 |
+| Line coverage: | 39.3% (1182 of 3007) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 183 |
+| Covered methods: | 193 |
 | Total methods: | 416 |
-| Method coverage: | 43.9% (183 of 416) |
+| Method coverage: | 46.3% (193 of 416) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1106**|**1561**|**2667**|**5226**|**41.4%**|**0**|**0**|****|**180**|**383**|**46.9%**|
-|Agent|141|73|214|361|65.8%|0|0||26|40|65%|
+|**bamlab.micromissiles**|**1163**|**1516**|**2679**|**5243**|**43.4%**|**0**|**0**|****|**190**|**383**|**49.6%**|
+|Agent|152|62|214|361|71%|0|0||28|40|70%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |BotStatusDialog|0|15|15|30|0%|0|0||0|2|0%|
 |CameraController|106|219|325|614|32.6%|0|0||13|35|37.1%|
@@ -30,25 +30,25 @@
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
 |DummyAgent|6|6|12|361|50%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|130|0%|0|0||0|1|0%|
-|FixedWingThreat|46|12|58|111|79.3%|0|0||7|9|77.7%|
+|FixedWingThreat|47|16|63|119|74.6%|0|0||7|9|77.7%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|49|38|87|143|56.3%|0|0||11|17|64.7%|
+|IADS|60|27|87|143|68.9%|0|0||13|17|76.4%|
 |IAssignment|3|7|10|42|30%|0|0||1|3|33.3%|
 |IdealSensor|30|0|30|54|100%|0|0||5|5|100%|
 |InputManager|56|57|113|156|49.5%|0|0||11|11|100%|
-|Interceptor|91|79|170|272|53.5%|0|0||12|18|66.6%|
-|ParticleManager|33|137|170|245|19.4%|0|0||9|24|37.5%|
+|Interceptor|92|83|175|279|52.5%|0|0||12|18|66.6%|
+|ParticleManager|48|122|170|245|28.2%|0|0||11|24|45.8%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|35|10|45|80|77.7%|0|0||6|8|75%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|35|4|39|147|89.7%|0|0||3|3|100%|
-|SimManager|220|102|322|512|68.3%|0|0||24|39|61.5%|
+|SimManager|228|94|322|512|70.8%|0|0||26|39|66.6%|
 |SimMonitor|27|132|159|245|16.9%|0|0||7|19|36.8%|
 |SimulationConfig|3|0|3|130|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
-|Threat|38|55|93|171|40.8%|0|0||7|10|70%|
+|Threat|45|50|95|173|47.3%|0|0||8|10|80%|
 |ThreatAssignment|7|35|42|79|16.6%|0|0||1|5|20%|
-|ThreatData|6|17|23|45|26%|0|0||1|5|20%|
+|ThreatData|9|14|23|45|39.1%|0|0||2|5|40%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|0|119|119|198|0%|0|0||0|18|0%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
