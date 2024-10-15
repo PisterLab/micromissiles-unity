@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CameraController : MonoBehaviour {
 #region Singleton
@@ -331,22 +332,39 @@ public class CameraController : MonoBehaviour {
     SetCameraMode(CameraMode.FREE);
   }
 
+  public void SnapToSwarm(List<Agent> swarm, bool forceFreeMode = true) {
+    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(swarm);
+    SetCameraTargetPosition(swarmCenter);
+    if (forceFreeMode) {
+      SetCameraMode(CameraMode.FREE);
+    }
+  }
+
   public void SnapToNextInterceptorSwarm(bool forceFreeMode = true) {
     if (SimManager.Instance.GetInterceptorSwarms().Count == 0) {
+      UIManager.Instance.LogActionWarning("[CAM] No interceptor swarms to follow");
       return;
     }
+
     // Set pre-set view 1
     _selectedInterceptorSwarmIndex += 1;
     _selectedThreatSwarmIndex = -1;
     if (_selectedInterceptorSwarmIndex >= SimManager.Instance.GetInterceptorSwarms().Count) {
       _selectedInterceptorSwarmIndex = 0;
     }
-    List<Agent> swarm = SimManager.Instance.GetInterceptorSwarms()[_selectedInterceptorSwarmIndex];
-    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(swarm);
+    List<(Agent, bool)> swarm =
+        SimManager.Instance.GetInterceptorSwarms()[_selectedInterceptorSwarmIndex];
+    string swarmTitle = SimManager.Instance.GenerateInterceptorSwarmTitle(swarm);
+
+    // Filter out inactive agents
+    List<(Agent, bool)> activeAgents = swarm.FindAll(tuple => tuple.Item2);
+    List<Agent> activeAgentsList = activeAgents.ConvertAll(tuple => tuple.Item1);
+    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(activeAgentsList);
     SetCameraTargetPosition(swarmCenter);
     if (forceFreeMode) {
       SetCameraMode(CameraMode.FREE);
     }
+    UIManager.Instance.LogActionMessage($"[CAM] Snap to interceptor swarm: {swarmTitle}");
   }
 
   public void SnapToNextThreatSwarm(bool forceFreeMode = true) {
@@ -358,12 +376,17 @@ public class CameraController : MonoBehaviour {
     if (_selectedThreatSwarmIndex >= SimManager.Instance.GetThreatSwarms().Count) {
       _selectedThreatSwarmIndex = 0;
     }
-    List<Agent> swarm = SimManager.Instance.GetThreatSwarms()[_selectedThreatSwarmIndex];
-    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(swarm);
+    List<(Agent, bool)> swarm = SimManager.Instance.GetThreatSwarms()[_selectedThreatSwarmIndex];
+    string swarmTitle = SimManager.Instance.GenerateThreatSwarmTitle(swarm);
+    // Filter out inactive agents
+    List<(Agent, bool)> activeAgents = swarm.FindAll(tuple => tuple.Item2);
+    List<Agent> activeAgentsList = activeAgents.ConvertAll(tuple => tuple.Item1);
+    Vector3 swarmCenter = SimManager.Instance.GetSwarmCenter(activeAgentsList);
     SetCameraTargetPosition(swarmCenter);
     if (forceFreeMode) {
       SetCameraMode(CameraMode.FREE);
     }
+    UIManager.Instance.LogActionMessage($"[CAM] Snap to threat swarm: {swarmTitle}");
   }
 
   public void SnapToCenterAllAgents(bool forceFreeMode = true) {
@@ -372,6 +395,7 @@ public class CameraController : MonoBehaviour {
     if (forceFreeMode) {
       SetCameraMode(CameraMode.FREE);
     }
+    UIManager.Instance.LogActionMessage("[CAM] Snap to center all agents");
   }
 
   public void SetCameraMode(CameraMode mode) {
@@ -396,18 +420,21 @@ public class CameraController : MonoBehaviour {
     SnapToNextInterceptorSwarm(false);
     StartCentroidUpdateCoroutine();
     SetCameraMode(CameraMode.FOLLOW_INTERCEPTOR_SWARM);
+    UIManager.Instance.LogActionMessage("[CAM] Follow next interceptor swarm");
   }
 
   public void FollowNextThreatSwarm() {
     SnapToNextThreatSwarm(false);
     SetCameraMode(CameraMode.FOLLOW_THREAT_SWARM);
     StartCentroidUpdateCoroutine();
+    UIManager.Instance.LogActionMessage("[CAM] Follow next threat swarm");
   }
 
   public void FollowCenterAllAgents() {
     SnapToCenterAllAgents(false);
     SetCameraMode(CameraMode.FOLLOW_ALL_AGENTS);
     StartCentroidUpdateCoroutine();
+    UIManager.Instance.LogActionMessage("[CAM] Follow center all agents");
   }
 
   private IEnumerator UpdateCentroidCoroutine() {
@@ -428,7 +455,8 @@ public class CameraController : MonoBehaviour {
         return;
       }
       _targetCentroid = SimManager.Instance.GetSwarmCenter(
-          SimManager.Instance.GetInterceptorSwarms()[_selectedInterceptorSwarmIndex]);
+          SimManager.Instance.GetInterceptorSwarms() [_selectedInterceptorSwarmIndex].ConvertAll(
+              tuple => tuple.Item1));
     } else if (cameraMode == CameraMode.FOLLOW_THREAT_SWARM) {
       if (_selectedThreatSwarmIndex == -1) {
         _selectedThreatSwarmIndex = 0;
@@ -437,7 +465,8 @@ public class CameraController : MonoBehaviour {
         return;
       }
       _targetCentroid = SimManager.Instance.GetSwarmCenter(
-          SimManager.Instance.GetThreatSwarms()[_selectedThreatSwarmIndex]);
+          SimManager.Instance.GetThreatSwarms() [_selectedThreatSwarmIndex].ConvertAll(
+              tuple => tuple.Item1));
     } else if (cameraMode == CameraMode.FOLLOW_ALL_AGENTS) {
       _targetCentroid = SimManager.Instance.GetAllAgentsCenter();
     }

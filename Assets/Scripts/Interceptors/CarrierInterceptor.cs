@@ -71,7 +71,8 @@ public class CarrierInterceptor : Interceptor {
       submunitions.Add(submunition);
     }
     IADS.Instance.RequestThreatAssignment(submunitions);
-    SimManager.Instance.AddInterceptorSwarm(
+
+    SimManager.Instance.AddSubmunitionsSwarm(
         submunitions.ConvertAll(submunition => submunition as Agent));
   }
 }

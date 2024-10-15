@@ -1,5 +1,6 @@
 {
-    "enableLogging": false,
+    "enableTelemetryLogging": false,
+    "enableEventLogging": true,
     "enableMissileTrailEffect": false,
     "enableExplosionEffect": false,
     "physicsUpdateRate": 100,

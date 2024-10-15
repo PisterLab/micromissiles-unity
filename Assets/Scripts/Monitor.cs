@@ -48,14 +48,8 @@ public class SimMonitor : MonoBehaviour {
     Debug.Log($"Monitoring simulation logs to {_sessionDirectory}");
   }
 
-  private void InitializeLogFiles() {
+  private void InitializeTelemetryLogFiles() {
     string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-
-    _eventLogPath = Path.Combine(_sessionDirectory, $"sim_events_{timestamp}.csv");
-
-    // Initialize the event log cache
-    _eventLogCache = new List<EventRecord>();
-
     _telemetryBinPath = Path.Combine(_sessionDirectory, $"sim_telemetry_{timestamp}.bin");
 
     // Open the file stream and binary writer for telemetry data
@@ -63,10 +57,20 @@ public class SimMonitor : MonoBehaviour {
         new FileStream(_telemetryBinPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
     _telemetryBinaryWriter = new BinaryWriter(_telemetryFileStream);
 
-    Debug.Log("Log files initialized successfully.");
+    Debug.Log("Telemetry log file initialized successfully.");
   }
 
-  private void CloseLogFiles() {
+  private void InitializeEventLogFiles() {
+    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+    _eventLogPath = Path.Combine(_sessionDirectory, $"sim_events_{timestamp}.csv");
+
+    // Initialize the event log cache
+    _eventLogCache = new List<EventRecord>();
+
+    Debug.Log("Event log file initialized successfully.");
+  }
+
+  private void CloseTelemetryLogFiles() {
     if (_telemetryBinaryWriter != null) {
       _telemetryBinaryWriter.Flush();
       _telemetryBinaryWriter.Close();
@@ -172,19 +176,24 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    if (SimManager.Instance.simulatorConfig.enableLogging) {
-      InitializeLogFiles();
+    if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
+      InitializeTelemetryLogFiles();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
+    }
+    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+      InitializeEventLogFiles();
     }
   }
 
   private void RegisterSimulationEnded() {
-    if (SimManager.Instance.simulatorConfig.enableLogging) {
+    if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);
-      CloseLogFiles();
-      WriteEventsToFile();
+      CloseTelemetryLogFiles();
       StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
           _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
+    }
+    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+      WriteEventsToFile();
     }
   }
 
@@ -195,13 +204,13 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterNewThreat(Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableLogging) {
+    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterNewAgent(threat, "NEW_THREAT");
     }
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
-    if (SimManager.Instance.simulatorConfig.enableLogging) {
+    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
       interceptor.OnInterceptMiss += RegisterInterceptorMiss;
       interceptor.OnInterceptHit += RegisterInterceptorHit;
@@ -217,13 +226,13 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableLogging) {
+    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, true);
     }
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableLogging) {
+    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, false);
     }
   }
@@ -240,6 +249,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void OnDestroy() {
-    CloseLogFiles();
+    CloseTelemetryLogFiles();
+    WriteEventsToFile();
   }
 }

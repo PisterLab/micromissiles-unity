@@ -20,6 +20,19 @@ public class UIManager : MonoBehaviour {
   public TextMeshProUGUI threatCostText;
   public TextMeshProUGUI netCostText;
 
+  public TextMeshProUGUI intrHitTextHandle;
+  public TextMeshProUGUI intrMissTextHandle;
+  public TextMeshProUGUI intrRemainTextHandle;
+  public TextMeshProUGUI thrtRemainTextHandle;
+
+  public TextMeshProUGUI actionMessageTextHandle;
+  public TextMeshProUGUI pActionMessageTextHandle;
+  public TextMeshProUGUI ppActionMessageTextHandle;
+
+  private int _intrHitCount = 0;
+  private int _intrMissCount = 0;
+  private int _intrRemainCount = 0;
+  private int _thrtRemainCount = 0;
   public TMP_FontAsset Font;
 
   private UIMode curMode = UIMode.NONE;
@@ -38,6 +51,37 @@ public class UIManager : MonoBehaviour {
     SetupConfigSelectorPanel();
     // inputManager = InputManager.Instance;
     // worldManager = WorldManager.Instance;
+    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+    SimManager.Instance.OnNewThreat += RegisterNewThreat;
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+    actionMessageTextHandle.text = "";
+    pActionMessageTextHandle.text = "";
+    ppActionMessageTextHandle.text = "";
+  }
+
+  public void LogAction(string message, Color color) {
+    // Shift existing messages to older slots with faded colors
+    ppActionMessageTextHandle.text = pActionMessageTextHandle.text;
+    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.5f;  // Fade color by 50%
+
+    pActionMessageTextHandle.text = actionMessageTextHandle.text;
+    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.75f;  // Fade color by 25%
+
+    // Set new message
+    actionMessageTextHandle.text = message;
+    actionMessageTextHandle.color = color;
+  }
+
+  public void LogActionMessage(string message) {
+    LogAction(message, Color.white);
+  }
+
+  public void LogActionWarning(string message) {
+    LogAction(message, Color.yellow);
+  }
+
+  public void LogActionError(string message) {
+    LogAction(message, Color.red);
   }
 
   public void ToggleConfigSelectorPanel() {
@@ -83,11 +127,11 @@ public class UIManager : MonoBehaviour {
     agentPanelText.text = text;
   }
 
-  public string GetAgentPanelText() {
+  public string GetSwarmPanelText() {
     return agentPanelText.text;
   }
 
-  private void UpdateAgentPanel() {
+  private void UpdateSwarmPanel() {
     string agentPanelText = "";
     foreach (Agent agent in SimManager.Instance.GetActiveAgents()) {
       string jobText = agent.name + "| Phase: " + agent.GetFlightPhase().ToString();
@@ -106,9 +150,9 @@ public class UIManager : MonoBehaviour {
     double threatCost = SimManager.Instance.GetCostDestroyedThreats();
     double netCost = interceptorCost - threatCost;
 
-    interceptorCostText.text = $"Interceptors (launched)\n${FormatCost(interceptorCost)}";
-    threatCostText.text = $"Threats (destroyed)\n${FormatCost(threatCost)}";
-    netCostText.text = $"Cost difference\n${FormatCost(netCost)}";
+    interceptorCostText.text = $"Interceptors\n(launched)\n${FormatCost(interceptorCost)}";
+    threatCostText.text = $"Threats\n(destroyed)\n${FormatCost(threatCost)}";
+    netCostText.text = $"Cost\ndifference\n${FormatCost(netCost)}";
     if (netCost < 0) {
       netCostText.color = Color.green;
     } else {
@@ -127,9 +171,57 @@ public class UIManager : MonoBehaviour {
     return $"{cost:F2}";
   }
 
+  private void RegisterSimulationEnded() {
+    _intrRemainCount = 0;
+    _thrtRemainCount = 0;
+    _intrHitCount = 0;
+    _intrMissCount = 0;
+    UpdateSummaryText();
+  }
+
+  private void UpdateSummaryText() {
+    intrRemainTextHandle.text = _intrRemainCount.ToString();
+    thrtRemainTextHandle.text = _thrtRemainCount.ToString();
+    intrHitTextHandle.text = _intrHitCount.ToString();
+    intrMissTextHandle.text = _intrMissCount.ToString();
+  }
+
+  private void RegisterNewInterceptor(Interceptor interceptor) {
+    _intrRemainCount++;
+    interceptor.OnInterceptHit += RegisterInterceptorHit;
+    interceptor.OnInterceptMiss += RegisterInterceptorMiss;
+    interceptor.OnTerminated += RegisterAgentTerminated;
+    UpdateSummaryText();
+  }
+
+  private void RegisterNewThreat(Threat threat) {
+    _thrtRemainCount++;
+    threat.OnTerminated += RegisterAgentTerminated;
+    UpdateSummaryText();
+  }
+
+  private void RegisterAgentTerminated(Agent agent) {
+    if (agent is Interceptor) {
+      _intrRemainCount--;
+    } else if (agent is Threat) {
+      _thrtRemainCount--;
+    }
+    UpdateSummaryText();
+  }
+
+  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
+    _intrHitCount++;
+    UpdateSummaryText();
+  }
+
+  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
+    _intrMissCount++;
+    UpdateSummaryText();
+  }
+
   // Update is called once per frame
   void Update() {
-    // UpdateAgentPanel();
+    // UpdateSwarmPanel();
     UpdateSimTimeText();
     UpdateTotalCostText();
   }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-
+using System.Linq;
 public class UISelectableEntry : EventTrigger {
   private List<UISelectableEntry> children;
   private List<string> textContent;
@@ -17,7 +17,8 @@ public class UISelectableEntry : EventTrigger {
 
   private Image image;
 
-  private TextMeshProUGUI textHandle;
+  // Replace the single TextMeshProUGUI with a list to hold multiple columns
+  private List<TextMeshProUGUI> textHandles;
 
   private bool isSelectable = true;
 
@@ -28,21 +29,13 @@ public class UISelectableEntry : EventTrigger {
 
   public void Awake() {
     rectTransform = gameObject.AddComponent<RectTransform>();
-    textHandle = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), rectTransform)
-                     .AddComponent<TextMeshProUGUI>();
-    textHandle.gameObject.name = "UISelectableEntry::Text";
-    textHandle.fontSize = 12;
-    textHandle.font = UIManager.Instance.Font;
-    textHandle.alignment = TextAlignmentOptions.MidlineLeft;
-    textHandle.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0.5f);
-    textHandle.GetComponent<RectTransform>().anchorMax = new Vector2(1, 0.5f);
-    textHandle.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0.5f);
-    textHandle.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-    textHandle.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 20);
 
     image = gameObject.AddComponent<Image>();
     image.type = Image.Type.Sliced;
     image.color = baseColor;
+
+    // Initialize the list for text handles
+    textHandles = new List<TextMeshProUGUI>();
   }
 
   public void SetClickCallback(Action<object> callback, object argument) {
@@ -71,10 +64,7 @@ public class UISelectableEntry : EventTrigger {
   }
 
   public void SetIsSelectable(bool isSelectable) {
-    if (isSelectable)
-      image.enabled = true;
-    else
-      image.enabled = false;
+    image.enabled = isSelectable;
     this.isSelectable = isSelectable;
   }
 
@@ -104,10 +94,45 @@ public class UISelectableEntry : EventTrigger {
 
   public void SetTextContent(List<string> textContent) {
     this.textContent = textContent;
-    textHandle.text = string.Join("\t", textContent);
+
+    // Clear existing text handles
+    foreach (var textHandle in textHandles) {
+      Destroy(textHandle.gameObject);
+    }
+    textHandles.Clear();
+
+    int columnCount = textContent.Count;
+    float totalWidth = rectTransform.rect.width;
+    float columnWidth = totalWidth / columnCount;
+
+    for (int i = 0; i < columnCount; i++) {
+      // Create a new TextMeshProUGUI for each column
+      var textHandle = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), rectTransform)
+                           .AddComponent<TextMeshProUGUI>();
+      textHandle.gameObject.name = $"UISelectableEntry::Text_{i}";
+      textHandle.fontSize = 8;
+      textHandle.font = UIManager.Instance.Font;
+      textHandle.alignment = TextAlignmentOptions.MidlineLeft;
+
+      // Set the RectTransform for proper alignment
+      var textRect = textHandle.GetComponent<RectTransform>();
+      textRect.anchorMin = new Vector2((float)i / columnCount, 0);
+      textRect.anchorMax = new Vector2((float)(i + 1) / columnCount, 1);
+      textRect.offsetMin = Vector2.zero;
+      textRect.offsetMax = Vector2.zero;
+
+      // Set the text content
+      textHandle.text = textContent[i];
+
+      // Add to the list of text handles
+      textHandles.Add(textHandle);
+    }
   }
 
-  public RectTransform GetTextTransform() {
-    return textHandle.GetComponent<RectTransform>();
+  public RectTransform GetTextTransform(int index) {
+    if (index >= 0 && index < textHandles.Count) {
+      return textHandles[index].GetComponent<RectTransform>();
+    }
+    return null;
   }
 }
