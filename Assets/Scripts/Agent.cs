@@ -160,7 +160,7 @@ public abstract class Agent : MonoBehaviour {
       } else if (this is Threat threatAgent && _target is Interceptor interceptorTarget) {
         OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
       }
-      _target = null;
+      UnassignTarget();
     }
     TerminateAgent();
   }

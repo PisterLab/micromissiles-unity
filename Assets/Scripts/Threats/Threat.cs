@@ -89,10 +89,12 @@ public abstract class Threat : Agent {
     Agent closestInterceptor = null;
     float minDistance = float.MaxValue;
     foreach (var interceptor in _interceptors) {
-      SensorOutput sensorOutput = GetComponent<Sensor>().Sense(interceptor);
-      if (sensorOutput.position.range < minDistance) {
-        closestInterceptor = interceptor;
-        minDistance = sensorOutput.position.range;
+      if (!interceptor.HasTerminated()) {
+        SensorOutput sensorOutput = GetComponent<Sensor>().Sense(interceptor);
+        if (sensorOutput.position.range < minDistance) {
+          closestInterceptor = interceptor;
+          minDistance = sensorOutput.position.range;
+        }
       }
     }
     return closestInterceptor;
@@ -131,8 +133,9 @@ public abstract class Threat : Agent {
 
     // Avoid evading straight down when near the ground
     float altitude = GetPosition().y;
-    float groundProximityThreshold = 200.0f;  // Adjust threshold as necessary
-    if (altitude < groundProximityThreshold) {
+    float groundProximityThreshold =
+        Mathf.Abs(GetVelocity().y) * 5f;  // Adjust threshold as necessary
+    if (GetVelocity().y < 0 && altitude < groundProximityThreshold) {
       // Determine evasion direction based on angle to interceptor
       Vector3 toInterceptor = interceptor.GetPosition() - GetPosition();
       Vector3 rightDirection = Vector3.Cross(Vector3.up, transform.forward);
@@ -145,11 +148,10 @@ public abstract class Threat : Agent {
       float blendFactor = 1 - (altitude / groundProximityThreshold);
       normalAccelerationDirection =
           Vector3
-              .Lerp(normalAccelerationDirection, bestHorizontalDirection + Vector3.up * 5f,
+              .Lerp(normalAccelerationDirection, bestHorizontalDirection + transform.up * 5f,
                     blendFactor)
               .normalized;
     }
-
     Vector3 normalAcceleration = normalAccelerationDirection * CalculateMaxNormalAcceleration();
 
     // Adjust forward speed
