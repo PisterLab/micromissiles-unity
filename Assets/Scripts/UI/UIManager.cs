@@ -62,10 +62,10 @@ public class UIManager : MonoBehaviour {
   public void LogAction(string message, Color color) {
     // Shift existing messages to older slots with faded colors
     ppActionMessageTextHandle.text = pActionMessageTextHandle.text;
-    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.5f; // Fade color by 50%
+    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.5f;  // Fade color by 50%
 
     pActionMessageTextHandle.text = actionMessageTextHandle.text;
-    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.75f; // Fade color by 25%
+    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.75f;  // Fade color by 25%
 
     // Set new message
     actionMessageTextHandle.text = message;
@@ -200,8 +200,7 @@ public class UIManager : MonoBehaviour {
     UpdateSummaryText();
   }
 
-  private void RegisterAgentTerminated(Agent agent) 
-  {
+  private void RegisterAgentTerminated(Agent agent) {
     if (agent is Interceptor) {
       _intrRemainCount--;
     } else if (agent is Threat) {
@@ -222,7 +221,7 @@ public class UIManager : MonoBehaviour {
 
   // Update is called once per frame
   void Update() {
-    //UpdateSwarmPanel();
+    // UpdateSwarmPanel();
     UpdateSimTimeText();
     UpdateTotalCostText();
   }

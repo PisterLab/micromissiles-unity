@@ -176,7 +176,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       InitializeTelemetryLogFiles();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
@@ -185,7 +184,7 @@ public class SimMonitor : MonoBehaviour {
       InitializeEventLogFiles();
     }
   }
-  
+
   private void RegisterSimulationEnded() {
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);

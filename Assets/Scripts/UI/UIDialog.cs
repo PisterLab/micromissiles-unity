@@ -39,13 +39,13 @@ public class UIDialog : MonoBehaviour {
     dialogTitleHandle.text = dialogTitle;
     dialogTitleHandle.font = UIManager.Instance.Font;
     isOpen = gameObject.activeSelf;
-    if(dialogTabs != null) {
-      foreach(GameObject tab in dialogTabs) {
+    if (dialogTabs != null) {
+      foreach (GameObject tab in dialogTabs) {
         Destroy(tab);
       }
     }
 
-    if(cleanupPool != null) {
+    if (cleanupPool != null) {
       ClearDialogEntries();
     }
     /*
@@ -109,18 +109,18 @@ public class UIDialog : MonoBehaviour {
     rTransform.pivot = new Vector2(0, 1);
     rTransform.sizeDelta = new Vector2(tabWidth, tabHeight);
     // Count tabs * tabSize to get the position from the left
-    rTransform.anchoredPosition = new Vector2((tabWidth/2) * dialogTabs.Count, -(GetTitleBarHeight()));
+    rTransform.anchoredPosition =
+        new Vector2((tabWidth / 2) * dialogTabs.Count, -(GetTitleBarHeight()));
 
     // Add the onClick callback to the button
     Button button = tabButton.AddComponent<Button>();
     button.onClick.AddListener(() => onClick());
     // Add the image to the button and link it to the tab
     button.targetGraphic = tabButton.AddComponent<Image>();
-    
+
     AddTabText(tabName, tabButton);
     return tabButton;
   }
-
 
   /// <summary>
   /// Add text as a child of the tab's button object

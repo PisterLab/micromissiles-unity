@@ -11,23 +11,16 @@ public class SwarmStatusDialog : UIDialog {
   private List<List<(Agent, bool)>> interceptorSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> submunitionsSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> threatsSwarms = new List<List<(Agent, bool)>>();
-  protected void Awake()
-  {
-    
-  }
+  protected void Awake() {}
 
   public override void Start() {
-    
-
     base.Start();
 
     InitDialog();
     wasStarted = true;
-
   }
 
-  public void InitDialog()
-  {
+  public void InitDialog() {
     SimManager.Instance.OnInterceptorSwarmChanged += RegisterInterceptorSwarmChanged;
     SimManager.Instance.OnSubmunitionsSwarmChanged += RegisterSubmunitionsSwarmChanged;
     SimManager.Instance.OnThreatSwarmChanged += RegisterThreatSwarmChanged;
@@ -42,9 +35,10 @@ public class SwarmStatusDialog : UIDialog {
 
   private void RedrawFullDialog() {
     ClearDialogEntries();
-    List<UISelectableEntry> parents = CreateParentEntries(); 
+    List<UISelectableEntry> parents = CreateParentEntries();
     List<UISelectableEntry> interceptorChildren = CreateInterceptorSwarmEntries(interceptorSwarms);
-    List<UISelectableEntry> submunitionsChildren = CreateSubmunitionsSwarmEntries(submunitionsSwarms);
+    List<UISelectableEntry> submunitionsChildren =
+        CreateSubmunitionsSwarmEntries(submunitionsSwarms);
     List<UISelectableEntry> threatsChildren = CreateThreatSwarmEntries(threatsSwarms);
     parents[1].SetChildEntries(interceptorChildren);
     parents[2].SetChildEntries(submunitionsChildren);
@@ -64,7 +58,8 @@ public class SwarmStatusDialog : UIDialog {
     interceptorParentEntry.SetIsSelectable(false);
 
     UISelectableEntry submunitionsParentEntry = CreateSelectableEntry();
-    submunitionsParentEntry.SetTextContent(new List<string>(new string[] { "Submunitions Swarms" }));
+    submunitionsParentEntry.SetTextContent(
+        new List<string>(new string[] { "Submunitions Swarms" }));
     submunitionsParentEntry.SetIsSelectable(false);
 
     UISelectableEntry threatsParentEntry = CreateSelectableEntry();
@@ -101,7 +96,8 @@ public class SwarmStatusDialog : UIDialog {
   private List<UISelectableEntry> CreateSubmunitionsSwarmEntries(List<List<(Agent, bool)>> swarms) {
     List<UISelectableEntry> children = new List<UISelectableEntry>();
     foreach (var swarm in swarms) {
-      int interceptorSwarmIndex = SimManager.Instance.LookupSubmunitionSwarnIndexInInterceptorSwarm(swarm);
+      int interceptorSwarmIndex =
+          SimManager.Instance.LookupSubmunitionSwarnIndexInInterceptorSwarm(swarm);
       string swarmTitle = SimManager.Instance.GenerateSubmunitionsSwarmTitle(swarm);
       int activeCount = swarm.Count(agent => agent.Item2);
       UISelectableEntry entry = CreateSelectableEntry();
@@ -127,37 +123,36 @@ public class SwarmStatusDialog : UIDialog {
     return children;
   }
 
-  private void RegisterInterceptorSwarmChanged(List<List<(Agent, bool)>> swarms) 
-  {
-    if(isActiveAndEnabled) {
+  private void RegisterInterceptorSwarmChanged(List<List<(Agent, bool)>> swarms) {
+    if (isActiveAndEnabled) {
       interceptorSwarms = swarms;
       RedrawFullDialog();
     }
   }
 
   private void RegisterSubmunitionsSwarmChanged(List<List<(Agent, bool)>> swarms) {
-    if(isActiveAndEnabled) {
+    if (isActiveAndEnabled) {
       submunitionsSwarms = swarms;
       RedrawFullDialog();
     }
   }
 
   private void RegisterThreatSwarmChanged(List<List<(Agent, bool)>> swarms) {
-    if(isActiveAndEnabled) {
+    if (isActiveAndEnabled) {
       threatsSwarms = swarms;
       RedrawFullDialog();
     }
   }
 
   private void RegisterSimulationEnded() {
-    if(isActiveAndEnabled) {
+    if (isActiveAndEnabled) {
       ClearDialogEntries();
     }
   }
 
   protected override void OnEnable() {
     base.OnEnable();
-    if(!wasStarted) {
+    if (!wasStarted) {
       base.Start();
       InitDialog();
       wasStarted = true;

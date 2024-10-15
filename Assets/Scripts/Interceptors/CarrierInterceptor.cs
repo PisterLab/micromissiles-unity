@@ -74,6 +74,5 @@ public class CarrierInterceptor : Interceptor {
 
     SimManager.Instance.AddSubmunitionsSwarm(
         submunitions.ConvertAll(submunition => submunition as Agent));
-
   }
 }

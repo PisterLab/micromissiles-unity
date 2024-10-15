@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-using System.Linq;public class UISelectableEntry : EventTrigger {
+using System.Linq;
+public class UISelectableEntry : EventTrigger {
   private List<UISelectableEntry> children;
   private List<string> textContent;
 
@@ -107,7 +108,7 @@ using System.Linq;public class UISelectableEntry : EventTrigger {
     for (int i = 0; i < columnCount; i++) {
       // Create a new TextMeshProUGUI for each column
       var textHandle = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), rectTransform)
-                         .AddComponent<TextMeshProUGUI>();
+                           .AddComponent<TextMeshProUGUI>();
       textHandle.gameObject.name = $"UISelectableEntry::Text_{i}";
       textHandle.fontSize = 8;
       textHandle.font = UIManager.Instance.Font;

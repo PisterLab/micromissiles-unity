@@ -45,7 +45,7 @@ public class SimManager : MonoBehaviour {
       new Dictionary<Agent, List<(Agent, bool)>>();
   private Dictionary<Agent, List<(Agent, bool)>> _threatSwarmMap =
       new Dictionary<Agent, List<(Agent, bool)>>();
-      
+
   // Maps a submunition swarm to its corresponding interceptor swarm
   private Dictionary<List<(Agent, bool)>, List<(Agent, bool)>> _submunitionInterceptorSwarmMap =
       new Dictionary<List<(Agent, bool)>, List<(Agent, bool)>>();
@@ -230,11 +230,10 @@ public class SimManager : MonoBehaviour {
   }
 
   public int LookupSubmunitionSwarnIndexInInterceptorSwarm(List<(Agent, bool)> swarm) {
-    if (_submunitionInterceptorSwarmMap.TryGetValue(swarm, out var interceptorSwarm))
-    {
+    if (_submunitionInterceptorSwarmMap.TryGetValue(swarm, out var interceptorSwarm)) {
       return _interceptorSwarms.IndexOf(interceptorSwarm);
     }
-    return -1; // Return -1 if the swarm is not found
+    return -1;  // Return -1 if the swarm is not found
   }
 
   public void AddThreatSwarm(List<Agent> swarm) {
@@ -295,8 +294,7 @@ public class SimManager : MonoBehaviour {
     if (index != -1) {
       swarm[index] = (swarm[index].Item1, false);
       OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
-    }
-    else {
+    } else {
       Debug.LogError("Interceptor not found in swarm");
     }
     if (swarm.All(tuple => !tuple.Item2)) {
@@ -307,11 +305,9 @@ public class SimManager : MonoBehaviour {
       }
     }
 
-
     // If this also happens to be a submunition, destroy it in the submunition swarm
-    if (_submunitionsSwarmMap.ContainsKey(interceptor))
-    {
-        DestroySubmunitionInSwarm(interceptor);
+    if (_submunitionsSwarmMap.ContainsKey(interceptor)) {
+      DestroySubmunitionInSwarm(interceptor);
     }
   }
 

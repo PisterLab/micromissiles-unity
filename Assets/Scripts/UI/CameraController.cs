@@ -345,7 +345,7 @@ public class CameraController : MonoBehaviour {
       UIManager.Instance.LogActionWarning("[CAM] No interceptor swarms to follow");
       return;
     }
-    
+
     // Set pre-set view 1
     _selectedInterceptorSwarmIndex += 1;
     _selectedThreatSwarmIndex = -1;
@@ -355,7 +355,7 @@ public class CameraController : MonoBehaviour {
     List<(Agent, bool)> swarm =
         SimManager.Instance.GetInterceptorSwarms()[_selectedInterceptorSwarmIndex];
     string swarmTitle = SimManager.Instance.GenerateInterceptorSwarmTitle(swarm);
-    
+
     // Filter out inactive agents
     List<(Agent, bool)> activeAgents = swarm.FindAll(tuple => tuple.Item2);
     List<Agent> activeAgentsList = activeAgents.ConvertAll(tuple => tuple.Item1);
