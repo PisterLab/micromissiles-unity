@@ -39,6 +39,22 @@ public class UIDialog : MonoBehaviour {
     dialogTitleHandle.text = dialogTitle;
     dialogTitleHandle.font = UIManager.Instance.Font;
     isOpen = gameObject.activeSelf;
+    if(dialogTabs != null) {
+      foreach(GameObject tab in dialogTabs) {
+        Destroy(tab);
+      }
+    }
+
+    if(cleanupPool != null) {
+      ClearDialogEntries();
+    }
+    /*
+    if(entries != null) {
+      foreach(UISelectableEntry entry in entries) {
+        Destroy(entry.gameObject);
+      }
+    }
+    */
     dialogTabs = new List<GameObject>();
     entries = new List<UISelectableEntry>();
     cleanupPool = new List<UISelectableEntry>();
@@ -184,7 +200,7 @@ public class UIDialog : MonoBehaviour {
     rTransform.SetRight(padding);
     rTransform.SetLeft(padding);
     // actually indent the text
-    entry.GetTextTransform().anchoredPosition = new Vector2(entryIndentWidth * depth, 0);
+    entry.GetTextTransform(0).anchoredPosition = new Vector2(entryIndentWidth * depth, 0);
     heightHead -= entryHeight;
     count++;
     // Print the children

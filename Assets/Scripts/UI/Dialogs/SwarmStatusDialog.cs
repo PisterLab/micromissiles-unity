@@ -31,6 +31,7 @@ public class SwarmStatusDialog : UIDialog {
     SimManager.Instance.OnInterceptorSwarmChanged += RegisterInterceptorSwarmChanged;
     SimManager.Instance.OnSubmunitionsSwarmChanged += RegisterSubmunitionsSwarmChanged;
     SimManager.Instance.OnThreatSwarmChanged += RegisterThreatSwarmChanged;
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     RedrawFullDialog();
 
     AddDialogTab("All", () => {});
@@ -148,12 +149,19 @@ public class SwarmStatusDialog : UIDialog {
     }
   }
 
+  private void RegisterSimulationEnded() {
+    if(isActiveAndEnabled) {
+      ClearDialogEntries();
+    }
+  }
+
   protected override void OnEnable() {
+    base.OnEnable();
     if(!wasStarted) {
       base.Start();
       InitDialog();
+      wasStarted = true;
     }
-    base.OnEnable();
     interceptorSwarms = SimManager.Instance.GetInterceptorSwarms();
     submunitionsSwarms = SimManager.Instance.GetSubmunitionsSwarms();
     threatsSwarms = SimManager.Instance.GetThreatSwarms();
