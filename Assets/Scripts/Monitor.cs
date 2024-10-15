@@ -176,10 +176,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-<<<<<<< Updated upstream
-    InitializeLogFiles();
-    _monitorRoutine = StartCoroutine(MonitorRoutine());
-=======
     
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       InitializeTelemetryLogFiles();
@@ -188,17 +184,9 @@ public class SimMonitor : MonoBehaviour {
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       InitializeEventLogFiles();
     }
->>>>>>> Stashed changes
   }
   
   private void RegisterSimulationEnded() {
-<<<<<<< Updated upstream
-    StopCoroutine(_monitorRoutine);
-    CloseLogFiles();
-    WriteEventsToFile();
-    StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
-        _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
-=======
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);
       CloseTelemetryLogFiles();
@@ -208,7 +196,6 @@ public class SimMonitor : MonoBehaviour {
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       WriteEventsToFile();
     }
->>>>>>> Stashed changes
   }
 
   private IEnumerator ConvertBinaryTelemetryToCsvCoroutine(string binaryFilePath,
@@ -218,15 +205,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterNewThreat(Threat threat) {
-<<<<<<< Updated upstream
-    RegisterNewAgent(threat, "NEW_THREAT");
-  }
-
-  public void RegisterNewInterceptor(Interceptor interceptor) {
-    RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
-    interceptor.OnInterceptMiss += RegisterInterceptorMiss;
-    interceptor.OnInterceptHit += RegisterInterceptorHit;
-=======
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterNewAgent(threat, "NEW_THREAT");
     }
@@ -238,7 +216,6 @@ public class SimMonitor : MonoBehaviour {
       interceptor.OnInterceptMiss += RegisterInterceptorMiss;
       interceptor.OnInterceptHit += RegisterInterceptorHit;
     }
->>>>>>> Stashed changes
   }
 
   private void RegisterNewAgent(Agent agent, string eventType) {
@@ -250,13 +227,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-<<<<<<< Updated upstream
-    RegisterInterceptEvent(interceptor, threat, true);
-  }
-
-  public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    RegisterInterceptEvent(interceptor, threat, false);
-=======
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, true);
     }
@@ -266,7 +236,6 @@ public class SimMonitor : MonoBehaviour {
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, false);
     }
->>>>>>> Stashed changes
   }
 
   public void RegisterInterceptEvent(Interceptor interceptor, Threat threat, bool hit) {

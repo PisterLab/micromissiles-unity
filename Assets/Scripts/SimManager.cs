@@ -30,8 +30,6 @@ public class SimManager : MonoBehaviour {
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
-<<<<<<< Updated upstream
-=======
   // Inclusive of ALL, including SUBMUNITIONS SWARMS
   // The bool indicates whether the agent is ACTIVE (true) or INACTIVE (false)
   private List<List<(Agent, bool)>> _interceptorSwarms = new List<List<(Agent, bool)>>();
@@ -57,7 +55,6 @@ public class SimManager : MonoBehaviour {
   public event SwarmEventHandler OnThreatSwarmChanged;
   //////////////////////////////////////////////////////////////////////
 
->>>>>>> Stashed changes
   private float _elapsedSimulationTime = 0f;
   private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
@@ -175,11 +172,6 @@ public class SimManager : MonoBehaviour {
     // Create targets based on config
     foreach (var swarmConfig in simulationConfig.threat_swarm_configs) {
       for (int i = 0; i < swarmConfig.num_agents; i++) {
-<<<<<<< Updated upstream
-        CreateThreat(swarmConfig.dynamic_agent_config);
-      }
-    }
-=======
         Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
         swarm.Add(threat);
       }
@@ -261,15 +253,12 @@ public class SimManager : MonoBehaviour {
 
   public List<List<(Agent, bool)>> GetThreatSwarms() {
     return _threatSwarms;
->>>>>>> Stashed changes
   }
 
   public void AssignInterceptorsToThreats() {
     IADS.Instance.AssignInterceptorsToThreats(_interceptorObjects);
   }
 
-<<<<<<< Updated upstream
-=======
   public void DestroyInterceptorInSwarm(Interceptor interceptor) {
     var swarm = _interceptorSwarmMap[interceptor];
     int index = swarm.FindIndex(tuple => tuple.Item1 == interceptor);
@@ -320,33 +309,18 @@ public class SimManager : MonoBehaviour {
     }
   }
 
->>>>>>> Stashed changes
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
-<<<<<<< Updated upstream
-=======
     DestroyInterceptorInSwarm(interceptor);
     DestroyThreatInSwarm(threat);
->>>>>>> Stashed changes
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
-<<<<<<< Updated upstream
-  }
-
-  public void RegisterThreatHit(Interceptor interceptor, Threat threat) {
-    // Placeholder
-  }
-
-  public void RegisterThreatMiss(Interceptor interceptor, Threat threat) {
-    Debug.Log($"RegisterThreatMiss: Interceptor {interceptor.name} missed threat {threat.name}");
-    // Placeholder
-=======
     DestroyInterceptorInSwarm(interceptor);
   }
 
@@ -356,7 +330,6 @@ public class SimManager : MonoBehaviour {
 
   public void RegisterThreatMiss(Threat threat) {
     DestroyThreatInSwarm(threat);
->>>>>>> Stashed changes
   }
 
   private AttackBehavior LoadAttackBehavior(DynamicAgentConfig config) {
@@ -551,15 +524,12 @@ public class SimManager : MonoBehaviour {
     _threatObjects.Clear();
     _dummyAgentObjects.Clear();
     _dummyAgentTable.Clear();
-<<<<<<< Updated upstream
-=======
     _interceptorSwarms.Clear();
     _submunitionsSwarms.Clear();
     _threatSwarms.Clear();
     OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
     OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
     OnThreatSwarmChanged?.Invoke(_threatSwarms);
->>>>>>> Stashed changes
     StartSimulation();
   }
 
@@ -587,8 +557,6 @@ public class SimManager : MonoBehaviour {
     }
   }
 }
-<<<<<<< Updated upstream
-=======
 
 [System.Serializable]
 public class SimulatorConfig {
@@ -599,4 +567,3 @@ public class SimulatorConfig {
   public int physicsUpdateRate;
   public bool persistentFlightTrails;
 }
->>>>>>> Stashed changes

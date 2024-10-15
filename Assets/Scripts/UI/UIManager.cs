@@ -140,8 +140,6 @@ public class UIManager : MonoBehaviour {
     simTimeText.text =
         "Elapsed Sim Time: " + SimManager.Instance.GetElapsedSimulationTime().ToString("F2");
   }
-<<<<<<< Updated upstream
-=======
 
   private void UpdateTotalCostText() {
     double interceptorCost = SimManager.Instance.GetCostLaunchedInterceptors();
@@ -218,7 +216,6 @@ public class UIManager : MonoBehaviour {
     UpdateSummaryText();
   }
 
->>>>>>> Stashed changes
   // Update is called once per frame
   void Update() {
     //UpdateSwarmPanel();

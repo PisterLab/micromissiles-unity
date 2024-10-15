@@ -308,8 +308,6 @@ public class CameraController : MonoBehaviour {
 
     UpdateTargetAlpha();
     ResetCameraTarget();
-<<<<<<< Updated upstream
-=======
 
     SetCameraMode(CameraMode.FREE);
   }
@@ -457,7 +455,6 @@ public class CameraController : MonoBehaviour {
     float targetSpeed = Mathf.Clamp(distance, 1f, 100000f);
     _currentInterpolationSpeed = _iirFilterCoefficient * _currentInterpolationSpeed +
                                  (1 - _iirFilterCoefficient) * targetSpeed;
->>>>>>> Stashed changes
   }
 
   IEnumerator AutoPlayRoutine() {
