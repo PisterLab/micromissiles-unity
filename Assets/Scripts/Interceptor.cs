@@ -133,11 +133,13 @@ public class Interceptor : Agent {
       turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
     }
     // Handle spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees
-    if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f) {
+    if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f ||
+        Mathf.Abs(Mathf.Abs(sensorOutput.position.elevation) - Mathf.PI / 2) < 0.2f) {
       // Check that the agent is not moving in a spiral by clamping the LOS rate at 0.2 rad/s
       float minLosRate = 0.2f;  // Adjust as necessary
       losRateAz = Mathf.Sign(losRateAz) * Mathf.Max(Mathf.Abs(losRateAz), minLosRate);
       losRateEl = Mathf.Sign(losRateEl) * Mathf.Max(Mathf.Abs(losRateEl), minLosRate);
+      turnFactor = Mathf.Abs(closingVelocity) * 100f;
     }
     float accAz = N * turnFactor * losRateAz;
     float accEl = N * turnFactor * losRateEl;
