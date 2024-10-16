@@ -115,14 +115,10 @@ public abstract class Agent : MonoBehaviour {
     return _targetModel;
   }
 
-  public void CheckTargetHit() {
-    if (HasAssignedTarget() && _target.IsHit()) {
-      UnassignTarget();
-    }
-  }
-
   public virtual void UnassignTarget() {
-    _target.RemoveInterceptor(this);
+    if (HasAssignedTarget()) {
+      _target.RemoveInterceptor(this);
+    }
     _target = null;
     _targetModel = null;
   }
@@ -140,12 +136,31 @@ public abstract class Agent : MonoBehaviour {
     _interceptors.Remove(interceptor);
   }
 
+  public List<Agent> GetInterceptors() {
+    return _interceptors;
+  }
+
   public virtual void TerminateAgent() {
     if (_flightPhase != FlightPhase.TERMINATED) {
       OnTerminated?.Invoke(this);
     }
     _flightPhase = FlightPhase.TERMINATED;
     SetPosition(new Vector3(0, 0, 0));
+
+    // Unassign targets and assign interceptors to existing threats
+    if (this is Interceptor interceptor) {
+      UnassignTarget();
+      IADS.Instance.RequestThreatAssignment(interceptor);
+    } else if (this is Threat threat) {
+      List<Agent> interceptors = GetInterceptors();
+      UnassignTarget();
+      foreach (var agent in interceptors) {
+        if (agent is Interceptor targetInterceptor) {
+          IADS.Instance.RequestThreatAssignment(targetInterceptor);
+          Debug.Log($"EEG time {targetInterceptor}");
+        }
+      }
+    }
     gameObject.SetActive(false);
   }
 
@@ -161,13 +176,12 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public void HandleInterceptMiss() {
-    if (_target != null) {
+    if (HasAssignedTarget()) {
       if (this is Interceptor interceptor && _target is Threat threat) {
         OnInterceptMiss?.Invoke(interceptor, threat);
       } else if (this is Threat threatAgent && _target is Interceptor interceptorTarget) {
         OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
       }
-      UnassignTarget();
     }
     TerminateAgent();
   }
