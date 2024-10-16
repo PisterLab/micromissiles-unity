@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/15/2024 - 05:07:10 |
+| Generated on: | 10/16/2024 - 01:52:17 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
 | Covered lines: | 648 |
-| Uncovered lines: | 2667 |
-| Coverable lines: | 3315 |
-| Total lines: | 5882 |
-| Line coverage: | 19.5% (648 of 3315) |
+| Uncovered lines: | 2679 |
+| Coverable lines: | 3327 |
+| Total lines: | 5895 |
+| Line coverage: | 19.4% (648 of 3327) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 82 |
@@ -19,15 +19,15 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**359**|**2628**|**2987**|**5668**|**12%**|**0**|**0**|****|**56**|**418**|**13.3%**|
-|Agent|51|166|217|368|23.5%|0|0||13|40|32.5%|
+|**bamlab.micromissiles**|**359**|**2640**|**2999**|**5694**|**11.9%**|**0**|**0**|****|**56**|**418**|**13.3%**|
+|Agent|51|178|229|381|22.2%|0|0||13|40|32.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
 |CarrierInterceptor|0|50|50|78|0%|0|0||0|7|0%|
 |ConfigLoader|18|88|106|153|16.9%|0|0||2|13|15.3%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
-|DummyAgent|0|12|12|368|0%|0|0||0|5|0%|
+|DummyAgent|0|12|12|381|0%|0|0||0|5|0%|
 |DynamicAgentConfig|0|3|3|130|0%|0|0||0|1|0%|
 |FixedWingThreat|19|44|63|119|30.1%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
