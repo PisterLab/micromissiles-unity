@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/16/2024 - 02:56:29 |
+| Generated on: | 10/17/2024 - 02:54:22 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 648 |
-| Uncovered lines: | 2667 |
-| Coverable lines: | 3315 |
-| Total lines: | 5881 |
-| Line coverage: | 19.5% (648 of 3315) |
+| Covered lines: | 654 |
+| Uncovered lines: | 2675 |
+| Coverable lines: | 3329 |
+| Total lines: | 5906 |
+| Line coverage: | 19.6% (654 of 3329) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 82 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**359**|**2628**|**2987**|**5666**|**12%**|**0**|**0**|****|**56**|**418**|**13.3%**|
+|**bamlab.micromissiles**|**365**|**2636**|**3001**|**5691**|**12.1%**|**0**|**0**|****|**56**|**418**|**13.3%**|
 |Agent|51|166|217|367|23.5%|0|0||13|40|32.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
@@ -29,13 +29,13 @@
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
 |DummyAgent|0|12|12|367|0%|0|0||0|5|0%|
 |DynamicAgentConfig|0|3|3|130|0%|0|0||0|1|0%|
-|FixedWingThreat|19|44|63|119|30.1%|0|0||2|9|22.2%|
+|FixedWingThreat|25|50|75|142|33.3%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|0|87|87|143|0%|0|0||0|17|0%|
 |IAssignment|10|0|10|42|100%|0|0||3|3|100%|
 |IdealSensor|27|3|30|54|90%|0|0||4|5|80%|
 |InputManager|0|113|113|156|0%|0|0||0|11|0%|
-|Interceptor|8|167|175|279|4.5%|0|0||2|18|11.1%|
+|Interceptor|8|169|177|281|4.5%|0|0||2|18|11.1%|
 |ParticleManager|0|170|170|245|0%|0|0||0|24|0%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|16|29|45|80|35.5%|0|0||1|8|12.5%|
