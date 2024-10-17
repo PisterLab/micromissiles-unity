@@ -82,4 +82,5 @@ crashlytics-build.properties
 # Telemetry Logs
 Telemetry/Logs/
 
+.DS_Store
 node_modules/
