@@ -104,6 +104,27 @@ public class FixedWingThreat : Threat {
     // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
     accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
+
+    // Avoid the ground when close to the surface and too low on the glideslope
+    float altitude = GetPosition().y;
+    float sinkRate = -GetVelocity().y;  // Sink rate is opposite to climb rate
+    float distanceToTarget = sensorOutput.position.range;
+    float groundProximityThreshold =
+        Mathf.Abs(GetVelocity().y) * 5f;  // Adjust threshold as necessary
+    if (sinkRate > 0 && altitude / sinkRate < distanceToTarget / GetSpeed()) {
+      // Evade upward normal to the velocity
+      Vector3 upwardsDirection = Vector3.Cross(transform.forward, transform.right);
+
+      // Blend between the calculated acceleration input and the upward acceleration
+      float blendFactor = 1 - (altitude / groundProximityThreshold);
+      accelerationInput.y =
+          Vector3
+              .Lerp(accelerationInput, upwardsDirection * CalculateMaxNormalAcceleration(),
+                    blendFactor)
+              .y;
+    }
+
+    accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
     _accelerationInput = accelerationInput;
     return accelerationInput;
   }
