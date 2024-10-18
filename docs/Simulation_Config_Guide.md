@@ -6,6 +6,10 @@ This guide provides instructions on how to configure the simulation by editing t
 
 The main configuration files you will work with are located in the `Assets/StreamingAssets/Configs/` directory. In a deployment context, these files are located in the `micromissiles_Data/StreamingAssets/Configs/` directory.
 
+This directory on Windows is co-located with the executable.
+
+However, on MacOS, you need to right click the `micromissiles-v*.*` Application > `Show Package Contents` > `Contents/Resources/Data/StreamingAssets/Configs/`.
+
 - **Simulation Configurations**:
   - **`1_salvo_1_hydra_7_drones.json`**: A simple, barebones example of a simulation configuration featuring a single salvo in a 7-on-7 scenario.
   - **`3_salvo_10_hydra_200_drones.json`**: A more complex example with three salvos, illustrating a 210-on-200 scenario. This demonstrates how to set up multiple salvos within the simulation.
