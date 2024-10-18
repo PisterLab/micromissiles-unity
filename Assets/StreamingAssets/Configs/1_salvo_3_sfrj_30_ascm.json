@@ -1,17 +1,17 @@
 {
   "endTime": 300,
-  "timeScale": 2,
+  "timeScale": 3,
   "interceptor_swarm_configs": [
     {
-      "num_agents": 4,
+      "num_agents": 3,
       "dynamic_agent_config": {
-        "agent_model": "hydra70.json",
+        "agent_model": "sfrj.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 20, "z": 50 }
+          "velocity": { "x": 0, "y": 800, "z": 600 }
         },
         "standard_deviation": {
-          "position": { "x": 5, "y": 0, "z": 5 },
+          "position": { "x": 10, "y": 0, "z": 10 },
           "velocity": { "x": 5, "y": 0, "z": 1 }
         },
         "dynamic_config": {
@@ -25,8 +25,8 @@
           }
         },
         "submunitions_config": {
-          "num_submunitions": 7,
-          "dispense_time": 20,
+          "num_submunitions": 12,
+          "dispense_time": 94,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
@@ -38,13 +38,13 @@
               "velocity": { "x": 0, "y": 0, "z": 0 }
             },
             "dynamic_config": {
-              "launch_config": { "launch_time": 0 },
+              "launch_config": { "launch_time": 95 },
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
               },
               "flight_config": {
-                "augmentedPnEnabled": true
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -54,17 +54,17 @@
   ],
   "threat_swarm_configs": [
     {
-      "num_agents": 10,
+      "num_agents": 30,
       "dynamic_agent_config": {
-        "agent_model": "brahmos.json",
-        "attack_behavior": "brahmos_direct_attack.json",
+        "agent_model": "ascm.json",
+        "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 50, "z": 40000 },
-          "velocity": { "x": 0, "y": 0, "z": -800 }
+          "position": { "x": 0, "y": 9000, "z": 120000 },
+          "velocity": { "x": 0, "y": 0, "z": -300 }
         },
         "standard_deviation": {
-          "position": { "x": 3000, "y": 10, "z": 100 },
-          "velocity": { "x": 0, "y": 0, "z": 25 }
+          "position": { "x": 1000, "y": 200, "z": 100 },
+          "velocity": { "x": 0, "y": 0, "z": 20 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 0 },

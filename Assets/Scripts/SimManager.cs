@@ -58,7 +58,6 @@ public class SimManager : MonoBehaviour {
   //////////////////////////////////////////////////////////////////////
 
   private float _elapsedSimulationTime = 0f;
-  private float endTime = 100f;  // Set an appropriate end time
   private bool simulationRunning = false;
 
   private float _costLaunchedInterceptors = 0f;
@@ -140,11 +139,8 @@ public class SimManager : MonoBehaviour {
       Destroy(gameObject);
     }
     simulationConfig = ConfigLoader.LoadSimulationConfig("1_salvo_1_hydra_7_drones.json");
-    Debug.Log(simulationConfig);
-
-    // Load the simulator config
     simulatorConfig = ConfigLoader.LoadSimulatorConfig();
-    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+    Debug.Log(simulationConfig);
   }
 
   void Start() {
@@ -182,6 +178,9 @@ public class SimManager : MonoBehaviour {
   }
 
   private void InitializeSimulation() {
+    SetTimeScale(simulationConfig.timeScale);
+    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+
     // Invoke the simulation started event to let listeners
     // know to invoke their own handler behavior
     OnSimulationStarted?.Invoke();
@@ -207,6 +206,7 @@ public class SimManager : MonoBehaviour {
       }
       AddThreatSwarm(swarm);
     }
+
   }
 
   public void AddInterceptorSwarm(List<Agent> swarm) {
@@ -518,6 +518,8 @@ public class SimManager : MonoBehaviour {
 
   public void LoadNewConfig(string configFileName) {
     simulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
+    // Reload the simulator config
+    simulatorConfig = ConfigLoader.LoadSimulatorConfig();
     if (simulationConfig != null) {
       Debug.Log($"Loaded new configuration: {configFileName}");
       RestartSimulation();
@@ -585,9 +587,9 @@ public class SimManager : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (simulationRunning && _elapsedSimulationTime < endTime) {
+    if (simulationRunning && _elapsedSimulationTime < simulationConfig.endTime) {
       _elapsedSimulationTime += Time.deltaTime;
-    } else if (_elapsedSimulationTime >= endTime) {
+    } else if (_elapsedSimulationTime >= simulationConfig.endTime) {
       simulationRunning = false;
       RestartSimulation();
       Debug.Log("Simulation completed.");

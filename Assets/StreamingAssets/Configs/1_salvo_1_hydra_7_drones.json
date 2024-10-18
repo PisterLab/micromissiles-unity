@@ -1,4 +1,5 @@
 {
+  "endTime": 300,
   "timeScale": 1,
   "interceptor_swarm_configs": [
     {

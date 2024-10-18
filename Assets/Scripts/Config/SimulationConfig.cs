@@ -9,6 +9,8 @@ public class SimulationConfig {
   [Header("Simulation Settings")]
   public float timeScale = 0.05f;
 
+  public float endTime = 300f; // 5 minutes by default
+
   [Header("Interceptor Swarm Configurations")]
   public List<SwarmConfig> interceptor_swarm_configs = new List<SwarmConfig>();
 
