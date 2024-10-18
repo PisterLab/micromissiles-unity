@@ -234,9 +234,7 @@ public abstract class Agent : MonoBehaviour {
   protected virtual void Awake() {}
 
   // Start is called before the first frame update
-  protected virtual void Start() {
-    _flightPhase = FlightPhase.INITIALIZED;
-  }
+  protected virtual void Start() {}
 
   // Update is called once per frame
   protected virtual void FixedUpdate() {

@@ -68,6 +68,8 @@ public class CarrierInterceptor : Interceptor {
       convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
       Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
       submunition.SetFlightPhase(FlightPhase.READY);
+      // Force the submunition to be launched with the same velocity as the carrier
+      submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);
       submunitions.Add(submunition);
     }
     IADS.Instance.RequestThreatAssignment(submunitions);
