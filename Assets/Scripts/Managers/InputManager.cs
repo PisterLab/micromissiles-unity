@@ -106,7 +106,7 @@ public class InputManager : MonoBehaviour {
 
     if (Input.GetKeyDown(KeyCode.Space)) {
       // Pause the time
-      if (SimManager.Instance.IsSimulationRunning()) {
+      if (!SimManager.Instance.IsSimulationPaused()) {
         SimManager.Instance.PauseSimulation();
       } else {
         SimManager.Instance.ResumeSimulation();
