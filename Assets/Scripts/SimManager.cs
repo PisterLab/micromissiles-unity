@@ -206,7 +206,6 @@ public class SimManager : MonoBehaviour {
       }
       AddThreatSwarm(swarm);
     }
-
   }
 
   public void AddInterceptorSwarm(List<Agent> swarm) {
