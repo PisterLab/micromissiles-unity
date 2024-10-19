@@ -58,7 +58,7 @@ public class SimManager : MonoBehaviour {
   //////////////////////////////////////////////////////////////////////
 
   private float _elapsedSimulationTime = 0f;
-  private bool simulationRunning = false;
+  private bool _isSimulationPaused = false;
 
   private float _costLaunchedInterceptors = 0f;
   private float _costDestroyedThreats = 0f;
@@ -146,6 +146,7 @@ public class SimManager : MonoBehaviour {
   void Start() {
     // Slow down time by simulationConfig.timeScale
     if (Instance == this) {
+      _isSimulationPaused = false;
       StartSimulation();
       ResumeSimulation();
     }
@@ -165,21 +166,28 @@ public class SimManager : MonoBehaviour {
 
   public void PauseSimulation() {
     SetTimeScale(0);
-    simulationRunning = false;
+    Time.fixedDeltaTime = 0;
+    _isSimulationPaused = true;
   }
 
   public void ResumeSimulation() {
     SetTimeScale(simulationConfig.timeScale);
-    simulationRunning = true;
+    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+    _isSimulationPaused = false;
   }
 
-  public bool IsSimulationRunning() {
-    return simulationRunning;
+  public bool IsSimulationPaused() {
+    return _isSimulationPaused;
   }
 
   private void InitializeSimulation() {
-    SetTimeScale(simulationConfig.timeScale);
-    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+    if (!IsSimulationPaused()) {
+      // If it wasn't paused, we need to update the time scales NOW
+      SetTimeScale(simulationConfig.timeScale);
+      Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+      // If the simulation WAS paused, then ResumeSimulation will handle
+      // updating the time scale and fixed delta time from the newly loaded config files
+    }
 
     // Invoke the simulation started event to let listeners
     // know to invoke their own handler behavior
@@ -516,9 +524,9 @@ public class SimManager : MonoBehaviour {
   }
 
   public void LoadNewConfig(string configFileName) {
-    simulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
+    this.simulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
     // Reload the simulator config
-    simulatorConfig = ConfigLoader.LoadSimulatorConfig();
+    this.simulatorConfig = ConfigLoader.LoadSimulatorConfig();
     if (simulationConfig != null) {
       Debug.Log($"Loaded new configuration: {configFileName}");
       RestartSimulation();
@@ -533,7 +541,7 @@ public class SimManager : MonoBehaviour {
     UIManager.Instance.LogActionMessage("[SIM] Simulation restarted");
     // Reset simulation time
     _elapsedSimulationTime = 0f;
-    simulationRunning = IsSimulationRunning();
+    _isSimulationPaused = IsSimulationPaused();
     _costLaunchedInterceptors = 0f;
     _costDestroyedThreats = 0f;
 
@@ -586,10 +594,9 @@ public class SimManager : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (simulationRunning && _elapsedSimulationTime < simulationConfig.endTime) {
+    if (!_isSimulationPaused && _elapsedSimulationTime < simulationConfig.endTime) {
       _elapsedSimulationTime += Time.deltaTime;
     } else if (_elapsedSimulationTime >= simulationConfig.endTime) {
-      simulationRunning = false;
       RestartSimulation();
       Debug.Log("Simulation completed.");
     }
