@@ -1,0 +1,30 @@
+{
+    "name": "UCAV",
+    "agentClass": "FixedWingThreat",
+    "unitCost": 30000,
+    "accelerationConfig": {
+        "maxReferenceNormalAcceleration": 300,
+        "referenceSpeed": 1000,
+        "maxForwardAcceleration": 1
+    },
+    "boostConfig": {
+        "boostTime": 0
+    },
+    "liftDragConfig": {
+      "dragCoefficient": 0
+    },
+    "bodyConfig": {
+        "mass": 10
+    },
+    "hitConfig": {
+        "hitRadius": 1,
+        "killProbability": 1.0
+    },
+    "powerTable": {
+            "IDLE": 0,
+            "LOW": 40,
+            "CRUISE": 80,
+            "MIL": 100,
+            "MAX": 120
+    }
+}
