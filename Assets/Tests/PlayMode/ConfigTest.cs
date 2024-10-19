@@ -38,7 +38,7 @@ public class ConfigTest : TestBase {
             Assert.AreEqual(
                 Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
                 "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused");
-            
+
           } else if (agent is Threat) {
             // All threats start in MIDCOURSE phase
             Assert.AreEqual(
