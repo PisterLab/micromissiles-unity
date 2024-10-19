@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/19/2024 - 00:09:02 |
+| Generated on: | 10/19/2024 - 01:44:27 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
 | Covered lines: | 654 |
-| Uncovered lines: | 2710 |
-| Coverable lines: | 3364 |
-| Total lines: | 5964 |
-| Line coverage: | 19.4% (654 of 3364) |
+| Uncovered lines: | 2770 |
+| Coverable lines: | 3424 |
+| Total lines: | 6140 |
+| Line coverage: | 19.1% (654 of 3424) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 82 |
-| Total methods: | 451 |
-| Method coverage: | 18.1% (82 of 451) |
+| Total methods: | 458 |
+| Method coverage: | 17.9% (82 of 458) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**365**|**2641**|**3006**|**5701**|**12.1%**|**0**|**0**|****|**56**|**418**|**13.3%**|
+|**bamlab.micromissiles**|**365**|**2640**|**3005**|**5700**|**12.1%**|**0**|**0**|****|**56**|**418**|**13.3%**|
 |Agent|51|164|215|365|23.7%|0|0||13|40|32.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
@@ -41,7 +41,7 @@
 |RotaryWingThreat|16|29|45|80|35.5%|0|0||1|8|12.5%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|36|3|39|147|92.3%|0|0||2|3|66.6%|
-|SimManager|75|317|392|614|19.1%|0|0||7|47|14.8%|
+|SimManager|75|316|391|613|19.1%|0|0||7|47|14.8%|
 |SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
@@ -68,6 +68,6 @@
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|63|0|63|141|100%|0|0||2|2|100%|
 |ThreatTests|124|9|133|314|93.2%|0|0||9|11|81.8%|
-|**bamlab.test.playmode**|**0**|**49**|**49**|**97**|**0%**|**0**|**0**|****|**0**|**3**|**0%**|
-|ConfigTest|0|42|42|73|0%|0|0||0|2|0%|
+|**bamlab.test.playmode**|**0**|**110**|**110**|**274**|**0%**|**0**|**0**|****|**0**|**10**|**0%**|
 |SanityTest|0|7|7|24|0%|0|0||0|1|0%|
+|SimIntegrationTests|0|103|103|250|0%|0|0||0|9|0%|
