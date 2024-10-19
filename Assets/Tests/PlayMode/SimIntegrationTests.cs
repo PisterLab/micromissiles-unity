@@ -198,27 +198,27 @@ public class SimIntegrationTests : TestBase {
     Time.fixedDeltaTime = 0.001f;  // Force 1000 Hz Physics update rate
     SimManager.Instance.LoadNewConfig(configPath);
 
-    double dispenseTime = SimManager.Instance.GetActiveAgents()[0].dynamicAgentConfig.submunitions_config.dispense_time;
+    double dispenseTime = SimManager.Instance.GetActiveAgents()[0]
+                              .dynamicAgentConfig.submunitions_config.dispense_time;
     for (int i = 0; i < 3; i++) {
-
       double elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
       // Wait for 10ms, micromissiles should not have been dispensed yet
-      yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >= elapsedTime + 0.01);
-      if(SimManager.Instance.GetElapsedSimulationTime() < dispenseTime) {
+      yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >=
+                                       elapsedTime + 0.01);
+      if (SimManager.Instance.GetElapsedSimulationTime() < dispenseTime) {
         Assert.AreEqual(
-          1, SimManager.Instance.GetActiveInterceptors().Count,
-          "Only one interceptor should be active, micromissiles should not have dispensed yet");
+            1, SimManager.Instance.GetActiveInterceptors().Count,
+            "Only one interceptor should be active, micromissiles should not have dispensed yet");
       }
       // Wait for 600ms, micromissiles should have been dispensed
       elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
-      yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >= elapsedTime + dispenseTime);
+      yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >=
+                                       elapsedTime + dispenseTime);
       List<Interceptor> interceptors = SimManager.Instance.GetActiveInterceptors();
-      Assert.AreEqual(
-          8, interceptors.Count,
-          "All micromissiles should have been dispensed");
+      Assert.AreEqual(8, interceptors.Count, "All micromissiles should have been dispensed");
 
       // All interceptors which are not CarrierInterceptor should have been
-      // assigned a target 
+      // assigned a target
       foreach (Interceptor interceptor in interceptors) {
         if (interceptor is CarrierInterceptor) {
           continue;
