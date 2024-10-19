@@ -205,11 +205,8 @@ public class SimIntegrationTests : TestBase {
       // Wait for 10ms, micromissiles should not have been dispensed yet
       yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >=
                                        elapsedTime + 0.01);
-      if (SimManager.Instance.GetElapsedSimulationTime() < dispenseTime) {
-        Assert.AreEqual(
-            1, SimManager.Instance.GetActiveInterceptors().Count,
-            "Only one interceptor should be active, micromissiles should not have dispensed yet");
-      }
+      // TODO: Here is a good opportunity to test things before dispense.
+      // BUT keep in mind, dispense time is noisy (1sd = 0.5s)
       // Wait for 600ms, micromissiles should have been dispensed
       elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
       yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >=
