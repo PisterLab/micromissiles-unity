@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/18/2024 - 02:55:31 |
+| Generated on: | 10/19/2024 - 00:08:24 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
 | Covered lines: | 654 |
-| Uncovered lines: | 2675 |
-| Coverable lines: | 3329 |
-| Total lines: | 5906 |
-| Line coverage: | 19.6% (654 of 3329) |
+| Uncovered lines: | 2710 |
+| Coverable lines: | 3364 |
+| Total lines: | 5964 |
+| Line coverage: | 19.4% (654 of 3364) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 82 |
@@ -19,16 +19,16 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**365**|**2636**|**3001**|**5691**|**12.1%**|**0**|**0**|****|**56**|**418**|**13.3%**|
-|Agent|51|166|217|367|23.5%|0|0||13|40|32.5%|
+|**bamlab.micromissiles**|**365**|**2641**|**3006**|**5701**|**12.1%**|**0**|**0**|****|**56**|**418**|**13.3%**|
+|Agent|51|164|215|365|23.7%|0|0||13|40|32.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
-|CarrierInterceptor|0|50|50|78|0%|0|0||0|7|0%|
+|CarrierInterceptor|0|51|51|80|0%|0|0||0|7|0%|
 |ConfigLoader|18|88|106|153|16.9%|0|0||2|13|15.3%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
-|DummyAgent|0|12|12|367|0%|0|0||0|5|0%|
-|DynamicAgentConfig|0|3|3|130|0%|0|0||0|1|0%|
+|DummyAgent|0|12|12|365|0%|0|0||0|5|0%|
+|DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|25|50|75|142|33.3%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|0|87|87|143|0%|0|0||0|17|0%|
@@ -41,9 +41,9 @@
 |RotaryWingThreat|16|29|45|80|35.5%|0|0||1|8|12.5%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|36|3|39|147|92.3%|0|0||2|3|66.6%|
-|SimManager|76|311|387|606|19.6%|0|0||7|47|14.8%|
+|SimManager|75|317|392|614|19.1%|0|0||7|47|14.8%|
 |SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
-|SimulationConfig|3|0|3|130|100%|0|0||1|1|100%|
+|SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
 |SwarmStatusDialog|0|133|133|167|0%|0|0||0|16|0%|
 |Threat|12|83|95|173|12.6%|0|0||3|10|30%|
@@ -68,6 +68,6 @@
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|63|0|63|141|100%|0|0||2|2|100%|
 |ThreatTests|124|9|133|314|93.2%|0|0||9|11|81.8%|
-|**bamlab.test.playmode**|**0**|**19**|**19**|**49**|**0%**|**0**|**0**|****|**0**|**3**|**0%**|
-|ConfigTest|0|12|12|25|0%|0|0||0|2|0%|
+|**bamlab.test.playmode**|**0**|**49**|**49**|**97**|**0%**|**0**|**0**|****|**0**|**3**|**0%**|
+|ConfigTest|0|42|42|73|0%|0|0||0|2|0%|
 |SanityTest|0|7|7|24|0%|0|0||0|1|0%|
