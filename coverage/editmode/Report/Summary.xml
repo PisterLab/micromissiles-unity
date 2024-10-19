@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/19/2024 - 01:46:40</Generatedon>
+    <Generatedon>10/19/2024 - 01:57:01</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>48</Classes>
     <Files>46</Files>
     <Coveredlines>654</Coveredlines>
-    <Uncoveredlines>2770</Uncoveredlines>
-    <Coverablelines>3424</Coverablelines>
-    <Totallines>6140</Totallines>
+    <Uncoveredlines>2767</Uncoveredlines>
+    <Coverablelines>3421</Coverablelines>
+    <Totallines>6137</Totallines>
     <Linecoverage>19.1</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
@@ -70,9 +70,9 @@
       <Class name="ThreatAssignmentTests" coverage="100" coveredlines="63" coverablelines="63" totallines="141" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="ThreatTests" coverage="93.2" coveredlines="124" coverablelines="133" totallines="314" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="11" methodcoverage="81.8" />
     </Assembly>
-    <Assembly name="bamlab.test.playmode" classes="2" coverage="0" coveredlines="0" coverablelines="110" totallines="274" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0">
+    <Assembly name="bamlab.test.playmode" classes="2" coverage="0" coveredlines="0" coverablelines="107" totallines="271" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0">
       <Class name="SanityTest" coverage="0" coveredlines="0" coverablelines="7" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
-      <Class name="SimIntegrationTests" coverage="0" coveredlines="0" coverablelines="103" totallines="250" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
+      <Class name="SimIntegrationTests" coverage="0" coveredlines="0" coverablelines="100" totallines="247" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
     </Assembly>
   </Coverage>
 </CoverageReport>

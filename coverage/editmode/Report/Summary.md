@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/19/2024 - 01:46:40 |
+| Generated on: | 10/19/2024 - 01:57:01 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
 | Covered lines: | 654 |
-| Uncovered lines: | 2770 |
-| Coverable lines: | 3424 |
-| Total lines: | 6140 |
-| Line coverage: | 19.1% (654 of 3424) |
+| Uncovered lines: | 2767 |
+| Coverable lines: | 3421 |
+| Total lines: | 6137 |
+| Line coverage: | 19.1% (654 of 3421) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 82 |
@@ -68,6 +68,6 @@
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|63|0|63|141|100%|0|0||2|2|100%|
 |ThreatTests|124|9|133|314|93.2%|0|0||9|11|81.8%|
-|**bamlab.test.playmode**|**0**|**110**|**110**|**274**|**0%**|**0**|**0**|****|**0**|**10**|**0%**|
+|**bamlab.test.playmode**|**0**|**107**|**107**|**271**|**0%**|**0**|**0**|****|**0**|**10**|**0%**|
 |SanityTest|0|7|7|24|0%|0|0||0|1|0%|
-|SimIntegrationTests|0|103|103|250|0%|0|0||0|9|0%|
+|SimIntegrationTests|0|100|100|247|0%|0|0||0|9|0%|

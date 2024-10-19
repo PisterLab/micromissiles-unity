@@ -283,7 +283,7 @@ var assemblies = [
     "name": "bamlab.test.playmode",
     "classes": [
       { "name": "SanityTest", "rp": "bamlab.test.playmode_SanityTest.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SimIntegrationTests", "rp": "bamlab.test.playmode_SimIntegrationTests.html", "cl": 0, "ucl": 103, "cal": 103, "tl": 250, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "SimIntegrationTests", "rp": "bamlab.test.playmode_SimIntegrationTests.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 247, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -346,13 +346,6 @@ var riskHotspots = [
       { "value": 110, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.test.playmode", "class": "SimIntegrationTests", "reportPath": "bamlab.test.playmode_SimIntegrationTests.html", "methodName": "TestBasicMicromissilePerformance()", "methodShortName": "TestBasicMicromissilePerformance()", "fileIndex": 0, "line": 188,
-    "metrics": [
-      { "value": 10, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 110, "exceeded": true },
-    ]},
-  {
     "assembly": "bamlab.micromissiles", "class": "CameraController", "reportPath": "bamlab.micromissiles_CameraController.html", "methodName": "System.Void CameraController::UpdateDirectionVectors()", "methodShortName": "UpdateDirectionVectors()", "fileIndex": 0, "line": 594,
     "metrics": [
       { "value": 9, "exceeded": false },
@@ -361,6 +354,13 @@ var riskHotspots = [
     ]},
   {
     "assembly": "bamlab.micromissiles", "class": "GenerateCone", "reportPath": "bamlab.micromissiles_GenerateCone.html", "methodName": "System.Void GenerateCone::ConstructCone(UnityEngine.Vector3[], System.Collections.Generic.List[Vector3], System.Collections.Generic.List[Int32])", "methodShortName": "ConstructCone(...)", "fileIndex": 0, "line": 77,
+    "metrics": [
+      { "value": 9, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 90, "exceeded": true },
+    ]},
+  {
+    "assembly": "bamlab.test.playmode", "class": "SimIntegrationTests", "reportPath": "bamlab.test.playmode_SimIntegrationTests.html", "methodName": "TestBasicMicromissilePerformance()", "methodShortName": "TestBasicMicromissilePerformance()", "fileIndex": 0, "line": 188,
     "metrics": [
       { "value": 9, "exceeded": false },
       { "value": 0, "exceeded": false },

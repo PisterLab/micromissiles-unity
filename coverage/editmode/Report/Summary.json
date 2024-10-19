@@ -1,14 +1,14 @@
 {
   "summary": {
-    "generatedon": "2024-10-19T01:46:40Z",
+    "generatedon": "2024-10-19T01:57:01Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 48,
     "files": 46,
     "coveredlines": 654,
-    "uncoveredlines": 2770,
-    "coverablelines": 3424,
-    "totallines": 6140,
+    "uncoveredlines": 2767,
+    "coverablelines": 3421,
+    "totallines": 6137,
     "linecoverage": 19.1,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -67,8 +67,8 @@
         { "name": "SanityTest", "coverage": 71.4, "coveredlines": 5, "coverablelines": 7, "totallines": 22, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "ThreatAssignmentTests", "coverage": 100, "coveredlines": 63, "coverablelines": 63, "totallines": 141, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "ThreatTests", "coverage": 93.2, "coveredlines": 124, "coverablelines": 133, "totallines": 314, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 81.8, "coveredmethods": 9, "totalmethods": 11 } ] },
-      { "name": "bamlab.test.playmode", "classes": 2, "coverage": 0, "coveredlines": 0, "coverablelines": 110, "totallines": 274, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 10, "classesinassembly": [
+      { "name": "bamlab.test.playmode", "classes": 2, "coverage": 0, "coveredlines": 0, "coverablelines": 107, "totallines": 271, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 10, "classesinassembly": [
         { "name": "SanityTest", "coverage": 0, "coveredlines": 0, "coverablelines": 7, "totallines": 24, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
-        { "name": "SimIntegrationTests", "coverage": 0, "coveredlines": 0, "coverablelines": 103, "totallines": 250, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 } ] } ]
+        { "name": "SimIntegrationTests", "coverage": 0, "coveredlines": 0, "coverablelines": 100, "totallines": 247, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 } ] } ]
   }
 }
