@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Documentation
-      link: /Keybinds_and_Controls
+      link: /Simulator_Overview
     - theme: alt
       text: Development Guide
       link: /Development_Guide
