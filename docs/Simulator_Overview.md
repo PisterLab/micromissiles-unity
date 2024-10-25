@@ -1,7 +1,5 @@
 # Simulator Overview
 
-Test
-
 ## Introduction
 
 
