@@ -5,7 +5,10 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "vue": "^3.x.x",
-    "vitepress": "^1.3.4"
+    "vitepress": "^1.3.4",
+    "vue": "^3.x.x"
+  },
+  "devDependencies": {
+    "markdown-it-mathjax3": "^4.3.2"
   }
 }
