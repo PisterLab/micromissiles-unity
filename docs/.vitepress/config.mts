@@ -18,6 +18,7 @@ export default defineConfig({
         text: 'Documentation',
         items: [
           { text: 'Keybinds and Controls', link: '/Keybinds_and_Controls' },
+          { text: 'Simulator Overview', link: '/Simulator_Overview' },
           { text: 'Simulation Configuration Guide', link: '/Simulation_Config_Guide' },
           { text: 'Simulation Logging', link: '/Simulation_Logging' },
           { text: 'Coverage Reports', 
