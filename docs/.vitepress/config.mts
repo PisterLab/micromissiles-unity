@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import DefaultTheme from './theme'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -16,7 +17,7 @@ export default defineConfig({
       { text: 'Development Guide', link: '/Development_Guide' }
     ],
 
-    sidebar: [
+    sidebar: [ 
       {
         text: 'Documentation',
         items: [

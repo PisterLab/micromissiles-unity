@@ -86,3 +86,39 @@ Augmented proportional navigation adds a feedthrough term proportional to the ag
 $$ \vec{a}_n = K \left( \dot{\lambda} v + \frac{1}{2} \vec{a}_T \right) $$
 where $\vec{a}_T$ is the target’s acceleration.  
 APN is equivalent to true PN if the target is not accelerating.
+
+
+### Interceptor Assignment
+
+**Threat-based assignment**
+
+![Threat-based assignment](./images/threat_based_assignment.png){width=40%}
+
+When submunitions are dispensed (e.g., Micromissiles from Hydra-70s), they are assigned a threat to intercept.
+
+Assignment by calculated threat value is done by:
+1. Sorting (descending) by # of assigned interceptors
+2. Sorting (ascending) by threat value
+
+The threat value is:
+$$
+V_{threat} = \frac{1}{d_{t\rightarrow p}} * \|v_t\|
+$$
+
+Where:
+- $\|v_t\|$ - Threat's velocity
+- $d_{t\rightarrow p}$ - Distance from threat to defense point
+
+### Intercept evasion tactics
+
+![Intercept evasion tactics](./images/intercept_evasion.png){width=60%}
+
+When interceptors get too close to their intended target, the threat performs an evasive maneuver to waste the interceptor's velocity and remaining energy:
+
+1. The threat accelerates to its maximum speed
+2. The threat turns at the maximum normal acceleration, so that its velocity is normal to the interceptor's velocity
+3. The interceptor must turn too and thus sacrifice speed
+
+If the threat is too close to the Y=0 floor, it will perform a linear combination of:
+1. Turning to evade the interceptor
+2. Turning parallel to the surface
