@@ -4,11 +4,14 @@ This guide provides instructions on how to configure the simulation by editing t
 
 ## Configuration Files
 
-The main configuration files you will work with are located in the `Assets/StreamingAssets/Configs/` directory. In a deployment context, these files are located in the `micromissiles_Data/StreamingAssets/Configs/` directory.
+The main configuration files you will work with are located in the `Assets/StreamingAssets/Configs/` directory. 
 
-This directory on Windows is co-located with the executable.
-
-However, on MacOS, you need to right click the `micromissiles-v*.*` Application > `Show Package Contents` > `Contents/Resources/Data/StreamingAssets/Configs/`.
+> [!NOTE]
+> In a deployment context (i.e. you downloaded the binary release from the [releases page](https://github.com/PisterLab/micromissiles-unity/releases)), these files are located in the `micromissiles_Data/StreamingAssets/Configs/` directory. 
+> 
+> On Windows, this directory is co-located with the executable. 
+> 
+> On MacOS, you need to right click the `micromissiles-v*.*` Application > `Show Package Contents` > `Contents/Resources/Data/StreamingAssets/Configs/`.
 
 - **Simulation Configurations**:
   - **`1_salvo_1_hydra_7_drones.json`**: A simple, barebones example of a simulation configuration featuring a single salvo in a 7-on-7 scenario.
