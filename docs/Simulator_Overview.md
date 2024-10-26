@@ -2,66 +2,84 @@
 
 ## Introduction
 
-Interceptors:
-- Carrier interceptors: interceptors that carry and dispense other interceptors (e.g., Hydra-70)
-- Missile interceptors: interceptors that pursue threats (e.g., micromissiles)
+The simulator performs a multi-agent simulation between two types of agents: interceptors and threats. The threats will target the static asset, located at the origin of the coordinate system, and the interceptors will defend the asset from the incoming threats.
 
-Threats:
-- Fixed-wing threats: Pursue their targets using proportional navigation (PN)
-- Rotary-wing threats: Pursue their targets using direct linear guidance
+There are two types of interceptors:
+- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra-70 rockets)
+- **Missile interceptors**: interceptors that pursue threats (e.g., micromissiles)
+
+There are also two types of threats:
+- **Fixed-wing threats**: Pursue their targets using proportional navigation (PN)
+- **Rotary-wing threats**: Pursue their targets using direct linear guidance
 
 ## Simulator Physics
 
-### Agent flight dynamics model
+### Agent System Model
 
-Agents are modeled as a point mass (3-DOF simulation that ignores rotations) with instantaneous acceleration (no sensing delay, no actuation delay, no airframe delay).
-- We do not model the aerodynamics of the agents (including the angle of attack).
-- The input to the system is the instantaneous acceleration.
+Each agent is modeled as a point mass, i.e., a 3-DOF body ignoring any rotations. It also has instantaneous acceleration in all directions, subject to constraints, because we do not model any sensing delay, actuation delay, or airframe delay. Finally, we abstract away the aerodynamics of the agents, so we do not model the angle of attack or stall.
 
-- **State vector**:
-  $$
-  \vec{x}(t) = \begin{bmatrix} \vec{p}(t) \\ \vec{v}(t) \end{bmatrix} \in \mathbb{R}^6,
-  $$
-  where $\vec{p}(t) \in \mathbb{R}^3$ denotes the agent's position and $\vec{v}(t) \in \mathbb{R}^3$ denotes the agent's velocity in the Cartesian coordinates.
+As a point mass, each agent is represented by a six-dimensional state vector consisting of the agent's three-dimensional position and three-dimensional velocity. The input to the system is a three-dimensional acceleration vector.
 
-- **State evolution equation**:
-  $$
-  \frac{d}{dt} \vec{x}(t) =
-  \begin{bmatrix}
-  \vec{v}(t) \\
-  \vec{a}(t) - \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix} - \left( \frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}(t) + \text{proj}_{\vec{v}(t)}\left(\begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}\right)\right\|}{(L/D)} \right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
-  \end{bmatrix}
-  $$
+The state vector is given by:
+$$
+\vec{x}(t) = \begin{bmatrix}
+  \vec{p}(t) \\
+  \vec{v}(t)
+\end{bmatrix} \in \mathbb{R}^6,
+$$
+where $\vec{p}(t) \in \mathbb{R}^3$ denotes the agent's position and $\vec{v}(t) \in \mathbb{R}^3$ denotes the agent's velocity in the Cartesian coordinates.
 
-  - **Acceleration input**: $\vec{a}(t)$
-  - **Gravity**: $\begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$
-  - **Air drag**: $\frac{F_D(\vec{v}(t))}{m}$
-  - **Lift-induced drag**: $\frac{\left\|\vec{a}(t) + \text{proj}_{\vec{v}(t)}\left(\begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}\right)\right\|}{(L/D)}$
+The input vector is given by:
+$$
+\vec{u}(t) = \vec{a}(t) \in \mathbb{R}^3,
+$$
+where $\vec{a}(t) \in \mathbb{R}^3$ denotes the agent's acceleration.
 
-### Agent Model Acceleration
-
-The state evolution equation is:
+The nonlinear state evolution equation is given by:
 $$
 \frac{d}{dt} \vec{x}(t) = \begin{bmatrix}
-\vec{v}(t) \\
-\vec{a}(t) - \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}(t) + \text{proj}_{\vec{v}(t)}\left(\begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}\right)\right\|}{(L/D)} \right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
-\end{bmatrix}
+  \vec{v}(t) \\
+  \vec{a}(t) - \vec{g} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
+\end{bmatrix},
+$$
+where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\vec{v}(t))}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}$ represents the deleceration along the agent's velocity vector due to lift-induced drag.
+
+Any acceleration normal to the agent's velocity vector, including the components of the acceleration vector $\vec{a}_\perp(t)$ and gravity vector $\vec{g}_\perp$ that are normal to the velocity vector, will induce some lift-induced drag.
+$$
+\vec{a}_\perp(t) = \vec{a}(t) - \text{proj}_{\vec{v}(t)}(\vec{a}(t))
+$$
+$$
+\vec{g}_\perp = \vec{g} - \text{proj}_{\vec{v}(t)}(\vec{g})
 $$
 
-Key constraints and properties:
+### Agent Acceleration
 
-- Interceptors can only accelerate normal to their velocity (no thrust during the midcourse phase): $\vec{a}(t) \cdot \vec{v}(t) = 0$; threats may have some forward acceleration.
+The agent acceleration is given by:
+$$
+\frac{d}{dt} \vec{v}(t) = \vec{a}(t) - \vec{g} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
+$$
 
-- The normal acceleration is constrained by the current velocity: $\|\vec{a}(t)\| \leq \left(\frac{\|\vec{v}(t)\|}{v_{ref}}\right)^2 a_{ref}$.
-  - Additionally for threats, there is a maximum forward acceleration depending on the threat type.
+The air drag is given by:
+$$
+F_D(\vec{v}(t)) = \frac{1}{2} \rho C_D A\|\vec{v}(t)\|^2,
+$$
+where $\rho$ is the air density that decays exponentially with altitude: $\rho = 1.204 \frac{\text{kg}}{\text{m}^3} \cdot e^{-\frac{\text{altitude}}{10.4\text{ km}}}$, $C_D$ is the airframe's coefficient of drag, and $A$ is the cross-sectional area.
+
+For all angles of attack, we specify a constant $(L/D)$ ratio.
+
+We do impose some constraints on the acceleration:
+- Interceptors can only accelerate normal to their velocity (no thrust during the midcourse phase), i.e., $\vec{a}(t) \cdot \vec{v}(t) = 0$. Therefore, $\vec{a}(t) = \vec{a}_\perp(t)$ for interceptors.
+- Threats may have some forward acceleration, which is bounded by the maximum forward acceleration specified for each threat type.
+- The normal acceleration is constrained by the maximum number of g's that the agent's airframe can pull:
+  $$
+  \|\vec{a}_\perp(t)\| \leq \left(\frac{\|\vec{v}(t)\|}{v_{ref}}\right)^2 a_{ref}
+  $$
+  $a_{ref}$ denotes the maximum normal acceleration that the airframe can pull at the reference speed $v_{ref}$.
 
 - Air drag: $F_D(\vec{v}(t)) = \frac{1}{2}\rho C_D A\|\vec{v}(t)\|^2$
   - The air density decays exponentially with altitude: $\rho = 1.204 \frac{\text{kg}}{\text{m}^3} \cdot e^{-\frac{\text{altitude}}{10.4\text{ km}}}$.
 
-- We assume a constant L/D ratio for all angles of attack.
-
 ## Simulator Behaviors
-
 
 ### Guidance & Navigation
 
@@ -69,20 +87,23 @@ Key constraints and properties:
 
 ![Proportional Navigation](./images/proportional_navigation.png){width=60%}
 
-Constant bearing decreasing range (CBDR) leads to a collision. Acceleration normal to the velocity vector is sufficient to correct for any bearing drift.
-Acceleration along the velocity vector is also difficult to realize physically.
-Proportional navigation follows the simple control law:
-$$ \vec{a}_n = K \dot{\lambda} v $$
+Using the fact that constant bearing decreasing range (CBDR) leads to a collision, we apply an acceleration normal to the velocity vector to correct for any bearing drift. In the simulator, proportional navigation follows the simple control law:
+$$
+\vec{a}_\perp = K \dot{\lambda} v,
+$$
 where $K$ is the navigation gain, $\dot{\lambda}$ is the rate of change of the bearing, and $v$ is the closing velocity.
-We choose $K = 3$ for interceptors.
-Proportional navigation is effective for non-accelerating targets.
+For interceptors, we choose $K = 3$.
 
+Proportional navigation is effective for non-accelerating targets and guarantees a collision.
 
 **Augmented Proportional Navigation**
 
 Augmented proportional navigation adds a feedthrough term proportional to the agent’s acceleration:
-$$ \vec{a}_n = K \left( \dot{\lambda} v + \frac{1}{2} \vec{a}_T \right) $$
-where $\vec{a}_T$ is the target’s acceleration.
+$$
+\vec{a}_\perp = K \left(\dot{\lambda} v + \frac{1}{2} \vec{a}_{T}\right),
+$$
+where $\vec{a}_T$ is the target’s acceleration that is normal to the agent's velocity vector.
+
 APN is equivalent to true PN if the target is not accelerating.
 
 ### Interceptor Assignment
@@ -91,31 +112,28 @@ APN is equivalent to true PN if the target is not accelerating.
 
 ![Threat-based assignment](./images/threat_based_assignment.png){width=40%}
 
-When submunitions are dispensed (e.g., Micromissiles from Hydra-70s), they are assigned a threat to intercept.
+When submunitions are dispensed (e.g., micromissiles from Hydra-70s), they are assigned a threat to intercept. The assignment algorithm prefers assigning an interceptor to each threat before doubling up on previously assigned threats.
 
-Assignment by calculated threat value is done by:
-1. Sorting (descending) by # of assigned interceptors
-2. Sorting (ascending) by threat value
+Given the list of threats, the simulator first sorts the threats as follows:
+1. Sorting (descending) by the number of already assigned interceptors
+2. Sorting (ascending) by threat value, where the threat value of a threat is given by:
+  $$
+  V_{threat} = \frac{1}{d_{t\rightarrow p}} \cdot \|\vec{v}(t)\|,
+  $$
+  where $\|v_t\|$ is the threat's speed and $d_{t\rightarrow p}$ is the threat's distance from the asset.
+After sorting the threats, we simply assign interceptors down the list.
 
-The threat value is:
-$$
-V_{threat} = \frac{1}{d_{t\rightarrow p}} * \|v_t\|
-$$
-
-Where:
-- $\|v_t\|$ - Threat's velocity
-- $d_{t\rightarrow p}$ - Distance from threat to defense point
+Note that this algorithm may not be optimal but is a good starting point.
 
 ### Intercept evasion tactics
 
 ![Intercept evasion tactics](./images/intercept_evasion.png){width=60%}
 
-When interceptors get too close to their intended target, the threat performs an evasive maneuver to waste the interceptor's velocity and remaining energy:
+When interceptors get too close to their intended target, the threat performs an evasive maneuver to expend the interceptor's speed and remaining energy. During the evasive maneuver, the threat performs the following:
+1. The threat accelerates to its maximum speed.
+2. The threat turns away from the incoming interceptor at its maximum normal acceleration and tries to align its velocity vector to be normal to the interceptor's velocity vector.
+Since the threat applies a normal acceleration, the interceptor must turn too and thus lose speed due to the lift-induced drag.
 
-1. The threat accelerates to its maximum speed
-2. The threat turns at the maximum normal acceleration, so that its velocity is normal to the interceptor's velocity
-3. The interceptor must turn too and thus sacrifice speed
-
-If the threat is too close to the Y=0 floor, it will perform a linear combination of:
-1. Turning to evade the interceptor
-2. Turning parallel to the surface
+If the threat is too close to the ground, however, it must ensure that it does not collide with the ground. Therefore, as it approaches the ground, the threat instead performs a linear combination of:
+1. turning to evade the interceptor, as described above, and
+2. turning parallel to the ground.
