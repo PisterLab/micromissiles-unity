@@ -396,7 +396,7 @@ data structures used to interpret the JSON simulation configuration files.
 The model configurations define the physical and performance characteristics of interceptor and threat models. The default models provided can be customized to suit your simulation goals.
 
 > [!IMPORTANT]
-> To understand the impact of aerodynamics/flight model parameters, refer to the [Simulator Physics section of the Simulator Overview](./Simulator_Overview/#simulator-physics).
+> To understand the impact of aerodynamics/flight model parameters, refer to the [Simulator Physics section of the Simulator Overview](Simulator_Overview.md#simulator-physics).
 
 ### Structure
 
