@@ -72,12 +72,9 @@ We do impose some constraints on the acceleration:
 - Threats may have some forward acceleration, which is bounded by the maximum forward acceleration specified for each threat type.
 - The normal acceleration is constrained by the maximum number of g's that the agent's airframe can pull:
   $$
-  \|\vec{a}_\perp(t)\| \leq \left(\frac{\|\vec{v}(t)\|}{v_{ref}}\right)^2 a_{ref}
+  \|\vec{a}_\perp(t)\| \leq \left(\frac{\|\vec{v}(t)\|}{v_{\text{ref}}}\right)^2 a_{\text{ref}}
   $$
-  $a_{ref}$ denotes the maximum normal acceleration that the airframe can pull at the reference speed $v_{ref}$.
-
-- Air drag: $F_D(\vec{v}(t)) = \frac{1}{2}\rho C_D A\|\vec{v}(t)\|^2$
-  - The air density decays exponentially with altitude: $\rho = 1.204 \frac{\text{kg}}{\text{m}^3} \cdot e^{-\frac{\text{altitude}}{10.4\text{ km}}}$.
+  $a_{\text{ref}}$ denotes the maximum normal acceleration that the airframe can pull at the reference speed $v_{\text{ref}}$.
 
 ## Simulator Behaviors
 
@@ -89,9 +86,9 @@ We do impose some constraints on the acceleration:
 
 Using the fact that constant bearing decreasing range (CBDR) leads to a collision, we apply an acceleration normal to the velocity vector to correct for any bearing drift. In the simulator, proportional navigation follows the simple control law:
 $$
-\vec{a}_\perp = K \dot{\lambda} v,
+\vec{a}_\perp = K \dot{\vec{\lambda}} v,
 $$
-where $K$ is the navigation gain, $\dot{\lambda}$ is the rate of change of the bearing, and $v$ is the closing velocity.
+where $K$ is the navigation gain, $\dot{\vec{\lambda}}$ is the rate of change of the bearing, and $v$ is the closing velocity.
 For interceptors, we choose $K = 3$.
 
 Proportional navigation is effective for non-accelerating targets and guarantees a collision.
@@ -100,7 +97,7 @@ Proportional navigation is effective for non-accelerating targets and guarantees
 
 Augmented proportional navigation adds a feedthrough term proportional to the agent’s acceleration:
 $$
-\vec{a}_\perp = K \left(\dot{\lambda} v + \frac{1}{2} \vec{a}_{T}\right),
+\vec{a}_\perp = K \left(\dot{\vec{\lambda}} v + \frac{1}{2} \vec{a}_{T}\right),
 $$
 where $\vec{a}_T$ is the target’s acceleration that is normal to the agent's velocity vector.
 
@@ -108,7 +105,7 @@ APN is equivalent to true PN if the target is not accelerating.
 
 ### Interceptor Assignment
 
-**Threat-based assignment**
+**Threat-Based Assignment**
 
 ![Threat-based assignment](./images/threat_based_assignment.png){width=40%}
 
@@ -118,14 +115,14 @@ Given the list of threats, the simulator first sorts the threats as follows:
 1. Sorting (descending) by the number of already assigned interceptors
 2. Sorting (ascending) by threat value, where the threat value of a threat is given by:
   $$
-  V_{threat} = \frac{1}{d_{t\rightarrow p}} \cdot \|\vec{v}(t)\|,
+  V_{threat} = \frac{1}{d(t)} \cdot \|\vec{v}(t)\|,
   $$
-  where $\|v_t\|$ is the threat's speed and $d_{t\rightarrow p}$ is the threat's distance from the asset.
+  where $\|v_t\|$ is the threat's speed and $d(t)$ is the threat's distance from the asset, assuming that the asset is at the origin.
 After sorting the threats, we simply assign interceptors down the list.
 
 Note that this algorithm may not be optimal but is a good starting point.
 
-### Intercept evasion tactics
+### Intercept Evasion
 
 ![Intercept evasion tactics](./images/intercept_evasion.png){width=60%}
 
