@@ -3,7 +3,7 @@
 This simulator is designed to allow us to explore strategies and tactics for swarm-on-swarm combat,
 particularly in the area of missile and UAV defense, and with a bias toward small smart munitions.
 Our aspirational goal is to develop a science of swarm-on-swarm combat.
-In phase 1 of the project we have implemented simple aerodynamic models that provide rough estimates of the capabilities of different weapons.
+In phase 1 of the project we have implemented a simple aerodynamic model that provides rough estimates of the capabilities of different weapons.
 Proportional navigation and augmented proportional navigation guide interceptors to threats.
 Threats have the ability to evade.
 Threats and interceptors have perfect position knowledge at a configurable sensor update rate.
@@ -28,7 +28,9 @@ There are also two types of threats:
 
 ### Agent System Model
 
-Each agent is modeled as a point mass, i.e., a 3-DOF body ignoring any rotations. It also has instantaneous acceleration in all directions, subject to constraints, because we do not model any sensing delay, actuation delay, or airframe delay. Finally, we abstract away the aerodynamics of the agents, so we do not model the angle of attack or stall.
+Each agent is modeled as a point mass, i.e., a 3-DOF body ignoring any rotations. 
+It also has instantaneous acceleration in all directions, subject to constraints, because we do not model any actuator or rotational dynamics. 
+Finally, we abstract away the aerodynamics of the agents, so we do not model the angle of attack or stall.
 
 As a point mass, each agent is represented by a six-dimensional state vector consisting of the agent's three-dimensional position and three-dimensional velocity. The input to the system is a three-dimensional acceleration vector.
 
