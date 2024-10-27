@@ -1,5 +1,17 @@
 # Simulator Overview
 
+This simulator is designed to allow us to explore strategies and tactics for swarm-on-swarm combat,
+particularly in the area of missile and UAV defense, and with a bias toward small smart munitions.
+Our aspirational goal is to develop a science of swarm-on-swarm combat.
+In phase 1 of the project we have implemented simple aerodynamic models that provide rough estimates of the capabilities of different weapons.
+Proportional navigation and augmented proportional navigation guide interceptors to threats.
+Threats have the ability to evade.
+Threats and interceptors have perfect position knowledge at a configurable sensor update rate.
+At this stage, interceptor launch and submunition dispense are hand coded.
+
+Moving forward we will add sensor range and resolution limits, and a realistic communication model.
+Future versions will explore optimal control and machine learning approaches to launch sequencing, target assignment, trajectory generation, and control.
+
 ## Introduction
 
 The simulator performs a multi-agent simulation between two types of agents: interceptors and threats. The threats will target the static asset, located at the origin of the coordinate system, and the interceptors will defend the asset from the incoming threats.
