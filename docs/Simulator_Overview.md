@@ -78,6 +78,32 @@ We do impose some constraints on the acceleration:
 
 ## Simulator Behaviors
 
+### Sensing
+
+Currently, all agents are equipped with an ideal sensor, one that can peek through the fog of war with no noise and no delay. Sensing is performed within the agent's frame of reference using spherical coordinates, so each sensor output $\vec{y}$ is a nine-dimensional vector.
+$$
+\vec{y} = \begin{bmatrix}
+  \vec{y}_p \\
+  \vec{y}_v \\
+  \vec{y}_a
+\end{bmatrix} \in \mathbb{R}^9,
+$$
+where $\vec{y}_p \in \mathbb{R}^3$ denotes the three-dimensional position difference between the agent and its sensing target, $\vec{y}_v$ denotes the three-dimensional velocity difference between the agent and its sensing target, and $\vec{y}_a$ denotes the three-dimensional acceleration of the sensing target. $\vec{y}_p$ and $\vec{y}_v$ are both given in spherical coordinates in the agent's frame of reference while $\vec{y}_a$ is in Cartesian coordinates.
+
+Interceptors are constrained in their sensor update frequency, which is configurable for each interceptor type. As a result, interceptors can change their actuation input at a rate faster than the sensor update frequency. The simulator currently uses a naive guidance filter simply performs a zero-hold interpolation on the latest sensor output and applies the latest acceleration to a model of the sensing target until the next sensor output arrives and resets the model's position, velocity, and acceleration. In other words, for $nT \leq t < (n + 1)T$, where $T$ is the sensor update period, the simple target model is as follows:
+$$
+\frac{d}{dt} \begin{bmatrix}
+  \vec{p}(t) \\
+  \vec{v}(t) \\
+\end{bmatrix} = \begin{bmatrix}
+  \vec{v}(t) \\
+  \vec{a}(t)|_{t = nT}
+\end{bmatrix},
+$$
+where the initial conditions $\vec{p}(t)|_{t = nT}$ and $\vec{v}(t)|_{t = nT}$ are set by the latest sensor output.
+
+Threats are assumed to be omniscient, so they have no frequency constraint on their sensor output and know the positions, velocities, and accelerations of all interceptors at all times.
+
 ### Guidance & Navigation
 
 **Proportional Navigation**
@@ -129,7 +155,7 @@ Note that this algorithm may not be optimal but is a good starting point.
 When interceptors get too close to their intended target, the threat performs an evasive maneuver to expend the interceptor's speed and remaining energy. During the evasive maneuver, the threat performs the following:
 1. The threat accelerates to its maximum speed.
 2. The threat turns away from the incoming interceptor at its maximum normal acceleration and tries to align its velocity vector to be normal to the interceptor's velocity vector.
-Since the threat applies a normal acceleration, the interceptor must turn too and thus lose speed due to the lift-induced drag.
+Since the threat applies a normal acceleration, the interceptor must turn too and thus sacrifice speed due to the lift-induced drag.
 
 If the threat is too close to the ground, however, it must ensure that it does not collide with the ground. Therefore, as it approaches the ground, the threat instead performs a linear combination of:
 1. turning to evade the interceptor, as described above, and
