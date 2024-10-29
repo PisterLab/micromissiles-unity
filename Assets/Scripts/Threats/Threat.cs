@@ -11,6 +11,8 @@ public abstract class Threat : Agent {
 
   protected SensorOutput _sensorOutput;
 
+  protected Sensor _sensor;
+
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
     _target = SimManager.Instance.CreateDummyAgent(attackBehavior.targetPosition,
@@ -41,6 +43,7 @@ public abstract class Threat : Agent {
 
   protected override void Start() {
     base.Start();
+    _sensor = GetComponent<Sensor>();
   }
 
   protected override void FixedUpdate() {
@@ -48,11 +51,13 @@ public abstract class Threat : Agent {
   }
 
   protected Vector3 CalculateForwardAcceleration() {
+    Vector3 transformVelocity = GetVelocity();
+
     // Get the target speed for the current power setting
     float targetSpeed = PowerTableLookup(_currentPowerSetting);
 
     // Calculate the current speed
-    float currentSpeed = GetVelocity().magnitude;
+    float currentSpeed = transformVelocity.magnitude;
 
     // Speed error
     float speedError = targetSpeed - currentSpeed;
@@ -69,7 +74,7 @@ public abstract class Threat : Agent {
         Mathf.Clamp(desiredAccelerationMagnitude, -maxForwardAcceleration, maxForwardAcceleration);
 
     // Acceleration direction (along current velocity direction)
-    Vector3 accelerationDirection = GetVelocity().normalized;
+    Vector3 accelerationDirection = transformVelocity.normalized;
 
     // Handle zero velocity case
     if (accelerationDirection.magnitude < 0.1f) {
@@ -90,7 +95,7 @@ public abstract class Threat : Agent {
     float minDistance = float.MaxValue;
     foreach (var interceptor in _interceptors) {
       if (!interceptor.HasTerminated()) {
-        SensorOutput sensorOutput = GetComponent<Sensor>().Sense(interceptor);
+        SensorOutput sensorOutput = _sensor.Sense(interceptor);
         if (sensorOutput.position.range < minDistance) {
           closestInterceptor = interceptor;
           minDistance = sensorOutput.position.range;
@@ -112,32 +117,37 @@ public abstract class Threat : Agent {
 
     float evasionRangeThreshold =
         dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
-    SensorOutput sensorOutput = GetComponent<Sensor>().Sense(closestInterceptor);
+    SensorOutput sensorOutput = _sensor.Sense(closestInterceptor);
     return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }
 
   protected Vector3 EvadeInterceptor(Agent interceptor) {
+    Vector3 transformVelocity = GetVelocity();
+    Vector3 interceptorVelocity = interceptor.GetVelocity();
+    Vector3 transformPosition = GetPosition();
+    Vector3 interceptorPosition = interceptor.GetPosition();
+
     // Set power setting to maximum
     _currentPowerSetting = PowerSetting.MAX;
 
     // Evade the interceptor by changing the velocity to be normal to the interceptor's velocity
-    Vector3 normalVelocity = Vector3.ProjectOnPlane(GetVelocity(), interceptor.GetVelocity());
+    Vector3 normalVelocity = Vector3.ProjectOnPlane(transformVelocity, interceptorVelocity);
     Vector3 normalAccelerationDirection =
-        Vector3.ProjectOnPlane(normalVelocity, GetVelocity()).normalized;
+        Vector3.ProjectOnPlane(normalVelocity, transformVelocity).normalized;
 
     // Turn away from the interceptor
-    Vector3 relativePosition = interceptor.GetPosition() - GetPosition();
+    Vector3 relativePosition = interceptorPosition - transformPosition;
     if (Vector3.Dot(relativePosition, normalAccelerationDirection) > 0) {
       normalAccelerationDirection *= -1;
     }
 
     // Avoid evading straight down when near the ground
-    float altitude = GetPosition().y;
+    float altitude = transformPosition.y;
     float groundProximityThreshold =
-        Mathf.Abs(GetVelocity().y) * 5f;  // Adjust threshold as necessary
-    if (GetVelocity().y < 0 && altitude < groundProximityThreshold) {
+        Mathf.Abs(transformVelocity.y) * 5f;  // Adjust threshold as necessary
+    if (transformVelocity.y < 0 && altitude < groundProximityThreshold) {
       // Determine evasion direction based on angle to interceptor
-      Vector3 toInterceptor = interceptor.GetPosition() - GetPosition();
+      Vector3 toInterceptor = interceptorPosition - transformPosition;
       Vector3 rightDirection = Vector3.Cross(Vector3.up, transform.forward);
       float angle = Vector3.SignedAngle(transform.forward, toInterceptor, Vector3.up);
 
