@@ -1,18 +1,18 @@
 {
   "endTime": 300,
-  "timeScale": 2,
+  "timeScale": 1,
   "interceptor_swarm_configs": [
     {
       "num_agents": 2,
       "dynamic_agent_config": {
-        "agent_model": "sfrj.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 300, "z": 200 }
+          "velocity": { "x": 0, "y": 10, "z": 10 }
         },
         "standard_deviation": {
-          "position": { "x": 5, "y": 0, "z": 5 },
-          "velocity": { "x": 5, "y": 20, "z": 20 }
+          "position": { "x": 10, "y": 0, "z": 10 },
+          "velocity": { "x": 5, "y": 0, "z": 1 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 0 },
@@ -26,11 +26,12 @@
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "dispense_time": 14,
+          "dispense_time": 2,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
               "position": { "x": 0, "y": 0, "z": 0 },
+              "rotation": { "x": 0, "y": 0, "z": 0 },
               "velocity": { "x": 0, "y": 0, "z": 0 }
             },
             "standard_deviation": {
@@ -44,7 +45,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "augmentedPnEnabled": true
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -54,63 +55,14 @@
     {
       "num_agents": 2,
       "dynamic_agent_config": {
-        "agent_model": "sfrj.json",
+        "agent_model": "hydra70.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 300, "z": 200 }
+          "velocity": { "x": 0, "y": 10, "z": 10 }
         },
         "standard_deviation": {
-          "position": { "x": 5, "y": 0, "z": 5 },
-          "velocity": { "x": 5, "y": 20, "z": 20 }
-        },
-        "dynamic_config": {
-          "launch_config": { "launch_time": 1 },
-          "sensor_config": {
-            "type": "IDEAL",
-            "frequency": 100
-          },
-          "flight_config": {
-            "augmentedPnEnabled": false
-          }
-        },
-        "submunitions_config": {
-          "num_submunitions": 7,
-          "dispense_time": 15,
-          "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
-            "initial_state": {
-              "position": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "standard_deviation": {
-              "position": { "x": 5, "y": 5, "z": 5 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "dynamic_config": {
-              "launch_config": { "launch_time": 0 },
-              "sensor_config": {
-                "type": "IDEAL",
-                "frequency": 100
-              },
-              "flight_config": {
-                "augmentedPnEnabled": true
-              }
-            }
-          }
-        }
-      }
-    },
-    {
-      "num_agents": 2,
-      "dynamic_agent_config": {
-        "agent_model": "sfrj.json",
-        "initial_state": {
-          "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 300, "z": 200 }
-        },
-        "standard_deviation": {
-          "position": { "x": 5, "y": 0, "z": 5 },
-          "velocity": { "x": 5, "y": 20, "z": 20 }
+          "position": { "x": 10, "y": 0, "z": 10 },
+          "velocity": { "x": 5, "y": 0, "z": 1 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 4 },
@@ -124,7 +76,7 @@
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "dispense_time": 16,
+          "dispense_time": 6,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
@@ -142,7 +94,7 @@
                 "frequency": 100
               },
               "flight_config": {
-                "augmentedPnEnabled": true
+                "augmentedPnEnabled": false
               }
             }
           }
@@ -152,17 +104,46 @@
   ],
   "threat_swarm_configs": [
     {
-      "num_agents": 5,
+      "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "fateh110b.json",
-        "attack_behavior": "fateh110b_direct_attack.json",
+        "agent_model": "quadcopter.json",
+        "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 80000, "z": 80000 },
-          "velocity": { "x": 0, "y": -2317, "z": -2317 }
+          "position": { "x": 0, "y": 600, "z": 6000 },
+          "velocity": { "x": 0, "y": 0, "z": -50 }
         },
         "standard_deviation": {
-          "position": { "x": 3000, "y": 10, "z": 100 },
+          "position": { "x": 1000, "y": 200, "z": 100 },
           "velocity": { "x": 0, "y": 0, "z": 25 }
+        },
+        "dynamic_config": {
+          "launch_config": { "launch_time": 0 },
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 1000
+          }
+        },
+        "submunitions_config": {
+          "num_submunitions": 0
+        }
+      }
+    },
+    {
+      "num_agents": 15,
+      "dynamic_agent_config": {
+        "agent_model": "ucav.json",
+        "attack_behavior": "default_direct_attack.json",
+        "initial_state": {
+          "position": { "x": 2000, "y": 100, "z": 4000 },
+          "velocity": { "x": -50, "y": 0, "z": -100 }
+        },
+        "standard_deviation": {
+          "position": { "x": 400, "y": 30, "z": 400 },
+          "velocity": { "x": 50, "y": 20, "z": 15 }
         },
         "dynamic_config": {
           "launch_config": { "launch_time": 0 },

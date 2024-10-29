@@ -8,10 +8,12 @@ public class FixedWingThreat : Threat {
 
   private Vector3 _accelerationInput;
   private double _elapsedTime = 0;
+  private Rigidbody _rigidbody;
 
   // Start is called before the first frame update
   protected override void Start() {
     base.Start();
+    _rigidbody = GetComponent<Rigidbody>();
   }
 
   // Update is called once per frame
@@ -37,7 +39,7 @@ public class FixedWingThreat : Threat {
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate state from sensor output
         // For now, we'll use the threat's actual state
-        _sensorOutput = GetComponent<Sensor>().SenseWaypoint(_currentWaypoint);
+        _sensorOutput = _sensor.SenseWaypoint(_currentWaypoint);
         _elapsedTime = 0;
       }
 
@@ -53,7 +55,7 @@ public class FixedWingThreat : Threat {
 
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
-    GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
+    _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
   }
 
   private void UpdateWaypointAndPower() {
@@ -70,7 +72,15 @@ public class FixedWingThreat : Threat {
 
     // Implement (Augmented) Proportional Navigation guidance law
     Vector3 accelerationInput = Vector3.zero;
-
+    // Cache the transform and velocity to avoid repeated calls to GetTransform
+    // which can be costly at these large scales
+    Transform currentTransform = transform;
+    Vector3 transformRight = currentTransform.right;
+    Vector3 transformUp = currentTransform.up;
+    Vector3 transformForward = currentTransform.forward;
+    Vector3 transformPosition = currentTransform.position;
+    Vector3 transformVelocity = GetVelocity();
+    float transformSpeed = transformVelocity.magnitude;
     // Extract relevant information from sensor output
     float losRateAz = sensorOutput.velocity.azimuth;
     float losRateEl = sensorOutput.velocity.elevation;
@@ -99,21 +109,21 @@ public class FixedWingThreat : Threat {
     float accAz = N * turnFactor * losRateAz;
     float accEl = N * turnFactor * losRateEl;
     // Convert acceleration inputs to craft body frame
-    accelerationInput = transform.right * accAz + transform.up * accEl;
+    accelerationInput = transformRight * accAz + transformUp * accEl;
 
     // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
     accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
 
     // Avoid the ground when close to the surface and too low on the glideslope
-    float altitude = GetPosition().y;
-    float sinkRate = -GetVelocity().y;  // Sink rate is opposite to climb rate
+    float altitude = transformPosition.y;
+    float sinkRate = -transformVelocity.y;  // Sink rate is opposite to climb rate
     float distanceToTarget = sensorOutput.position.range;
     float groundProximityThreshold =
-        Mathf.Abs(GetVelocity().y) * 5f;  // Adjust threshold as necessary
-    if (sinkRate > 0 && altitude / sinkRate < distanceToTarget / GetSpeed()) {
+        Mathf.Abs(transformVelocity.y) * 5f;  // Adjust threshold as necessary
+    if (sinkRate > 0 && altitude / sinkRate < distanceToTarget / transformSpeed) {
       // Evade upward normal to the velocity
-      Vector3 upwardsDirection = Vector3.Cross(transform.forward, transform.right);
+      Vector3 upwardsDirection = Vector3.Cross(transformForward, transformRight);
 
       // Blend between the calculated acceleration input and the upward acceleration
       float blendFactor = 1 - (altitude / groundProximityThreshold);

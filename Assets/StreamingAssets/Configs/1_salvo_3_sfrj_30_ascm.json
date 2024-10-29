@@ -26,7 +26,7 @@
         },
         "submunitions_config": {
           "num_submunitions": 12,
-          "dispense_time": 94,
+          "dispense_time": 101,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
             "initial_state": {
@@ -38,7 +38,7 @@
               "velocity": { "x": 0, "y": 0, "z": 0 }
             },
             "dynamic_config": {
-              "launch_config": { "launch_time": 95 },
+              "launch_config": { "launch_time": 101 },
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
@@ -59,7 +59,7 @@
         "agent_model": "ascm.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 9000, "z": 120000 },
+          "position": { "x": 0, "y": 9000, "z": 110000 },
           "velocity": { "x": 0, "y": 0, "z": -300 }
         },
         "standard_deviation": {
