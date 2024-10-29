@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/29/2024 - 00:30:38</Generatedon>
+    <Generatedon>10/29/2024 - 01:19:03</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>48</Classes>
     <Files>46</Files>
     <Coveredlines>661</Coveredlines>
-    <Uncoveredlines>2722</Uncoveredlines>
-    <Coverablelines>3383</Coverablelines>
-    <Totallines>5991</Totallines>
-    <Linecoverage>19.5</Linecoverage>
+    <Uncoveredlines>2779</Uncoveredlines>
+    <Coverablelines>3440</Coverablelines>
+    <Totallines>6164</Totallines>
+    <Linecoverage>19.2</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>82</Coveredmethods>
-    <Totalmethods>451</Totalmethods>
-    <Methodcoverage>18.1</Methodcoverage>
+    <Totalmethods>458</Totalmethods>
+    <Methodcoverage>17.9</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="39" coverage="12.2" coveredlines="372" coverablelines="3025" totallines="5728" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="56" totalmethods="418" methodcoverage="13.3">
+    <Assembly name="bamlab.micromissiles" classes="39" coverage="12.3" coveredlines="372" coverablelines="3024" totallines="5727" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="56" totalmethods="418" methodcoverage="13.3">
       <Class name="Agent" coverage="23.7" coveredlines="51" coverablelines="215" totallines="365" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="13" totalmethods="40" methodcoverage="32.5" />
       <Class name="AttackBehavior" coverage="78.5" coveredlines="11" coverablelines="14" totallines="51" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="CameraController" coverage="0" coveredlines="0" coverablelines="347" totallines="643" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="36" methodcoverage="0" />
@@ -40,7 +40,7 @@
       <Class name="RotaryWingThreat" coverage="35.5" coveredlines="16" coverablelines="45" totallines="80" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="8" methodcoverage="12.5" />
       <Class name="RoundRobinAssignment" coverage="0" coveredlines="0" coverablelines="17" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="Sensor" coverage="92.3" coveredlines="36" coverablelines="39" totallines="147" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
-      <Class name="SimManager" coverage="19.1" coveredlines="75" coverablelines="392" totallines="614" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="47" methodcoverage="14.8" />
+      <Class name="SimManager" coverage="19.1" coveredlines="75" coverablelines="391" totallines="613" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="47" methodcoverage="14.8" />
       <Class name="SimMonitor" coverage="0" coveredlines="0" coverablelines="169" totallines="255" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="20" methodcoverage="0" />
       <Class name="SimulationConfig" coverage="100" coveredlines="4" coverablelines="4" totallines="132" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="StaticAgentConfig" coverage="100" coveredlines="14" coverablelines="14" totallines="63" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
@@ -70,9 +70,9 @@
       <Class name="ThreatAssignmentTests" coverage="100" coveredlines="63" coverablelines="63" totallines="141" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="ThreatTests" coverage="93.2" coveredlines="124" coverablelines="133" totallines="314" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="11" methodcoverage="81.8" />
     </Assembly>
-    <Assembly name="bamlab.test.playmode" classes="2" coverage="0" coveredlines="0" coverablelines="49" totallines="97" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0">
-      <Class name="ConfigTest" coverage="0" coveredlines="0" coverablelines="42" totallines="73" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+    <Assembly name="bamlab.test.playmode" classes="2" coverage="0" coveredlines="0" coverablelines="107" totallines="271" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0">
       <Class name="SanityTest" coverage="0" coveredlines="0" coverablelines="7" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="SimIntegrationTests" coverage="0" coveredlines="0" coverablelines="100" totallines="247" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
     </Assembly>
   </Coverage>
 </CoverageReport>

@@ -245,7 +245,7 @@ var assemblies = [
       { "name": "RotaryWingThreat", "rp": "bamlab.micromissiles_RotaryWingThreat.html", "cl": 16, "ucl": 29, "cal": 45, "tl": 80, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "RoundRobinAssignment", "rp": "bamlab.micromissiles_RoundRobinAssignment.html", "cl": 0, "ucl": 17, "cal": 17, "tl": 44, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Sensor", "rp": "bamlab.micromissiles_Sensor.html", "cl": 36, "ucl": 3, "cal": 39, "tl": 147, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SimManager", "rp": "bamlab.micromissiles_SimManager.html", "cl": 75, "ucl": 317, "cal": 392, "tl": 614, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "SimManager", "rp": "bamlab.micromissiles_SimManager.html", "cl": 75, "ucl": 316, "cal": 391, "tl": 613, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimMonitor", "rp": "bamlab.micromissiles_SimMonitor.html", "cl": 0, "ucl": 169, "cal": 169, "tl": 255, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SimulationConfig", "rp": "bamlab.micromissiles_SimulationConfig.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 132, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "StaticAgentConfig", "rp": "bamlab.micromissiles_StaticAgentConfig.html", "cl": 14, "ucl": 0, "cal": 14, "tl": 63, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -282,8 +282,8 @@ var assemblies = [
   {
     "name": "bamlab.test.playmode",
     "classes": [
-      { "name": "ConfigTest", "rp": "bamlab.test.playmode_ConfigTest.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SanityTest", "rp": "bamlab.test.playmode_SanityTest.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "SimIntegrationTests", "rp": "bamlab.test.playmode_SimIntegrationTests.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 247, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -318,7 +318,7 @@ var riskHotspots = [
       { "value": 182, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.test.playmode", "class": "ConfigTest", "reportPath": "bamlab.test.playmode_ConfigTest.html", "methodName": "TestAllConfigFilesLoad()", "methodShortName": "TestAllConfigFilesLoad()", "fileIndex": 0, "line": 16,
+    "assembly": "bamlab.test.playmode", "class": "SimIntegrationTests", "reportPath": "bamlab.test.playmode_SimIntegrationTests.html", "methodName": "TestAllConfigFilesLoad()", "methodShortName": "TestAllConfigFilesLoad()", "fileIndex": 0, "line": 16,
     "metrics": [
       { "value": 13, "exceeded": false },
       { "value": 0, "exceeded": false },
@@ -332,7 +332,7 @@ var riskHotspots = [
       { "value": 156, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::RestartSimulation()", "methodShortName": "RestartSimulation()", "fileIndex": 0, "line": 538,
+    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::RestartSimulation()", "methodShortName": "RestartSimulation()", "fileIndex": 0, "line": 537,
     "metrics": [
       { "value": 11, "exceeded": false },
       { "value": 0, "exceeded": false },
@@ -360,6 +360,13 @@ var riskHotspots = [
       { "value": 90, "exceeded": true },
     ]},
   {
+    "assembly": "bamlab.test.playmode", "class": "SimIntegrationTests", "reportPath": "bamlab.test.playmode_SimIntegrationTests.html", "methodName": "TestBasicMicromissilePerformance()", "methodShortName": "TestBasicMicromissilePerformance()", "fileIndex": 0, "line": 188,
+    "metrics": [
+      { "value": 9, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 90, "exceeded": true },
+    ]},
+  {
     "assembly": "bamlab.micromissiles", "class": "Agent", "reportPath": "bamlab.micromissiles_Agent.html", "methodName": "System.Void Agent::HandleInterceptMiss()", "methodShortName": "HandleInterceptMiss()", "fileIndex": 0, "line": 163,
     "metrics": [
       { "value": 8, "exceeded": false },
@@ -381,14 +388,7 @@ var riskHotspots = [
       { "value": 56, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::InitializeSimulation()", "methodShortName": "InitializeSimulation()", "fileIndex": 0, "line": 183,
-    "metrics": [
-      { "value": 7, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 56, "exceeded": true },
-    ]},
-  {
-    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::DestroyInterceptorInSwarm(Interceptor)", "methodShortName": "DestroyInterceptorInSwarm(...)", "fileIndex": 0, "line": 298,
+    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::DestroyInterceptorInSwarm(Interceptor)", "methodShortName": "DestroyInterceptorInSwarm(...)", "fileIndex": 0, "line": 297,
     "metrics": [
       { "value": 7, "exceeded": false },
       { "value": 0, "exceeded": false },
@@ -430,7 +430,14 @@ var riskHotspots = [
       { "value": 42, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::DestroyThreatInSwarm(Threat)", "methodShortName": "DestroyThreatInSwarm(...)", "fileIndex": 0, "line": 330,
+    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::InitializeSimulation()", "methodShortName": "InitializeSimulation()", "fileIndex": 0, "line": 185,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "bamlab.micromissiles", "class": "SimManager", "reportPath": "bamlab.micromissiles_SimManager.html", "methodName": "System.Void SimManager::DestroyThreatInSwarm(Threat)", "methodShortName": "DestroyThreatInSwarm(...)", "fileIndex": 0, "line": 329,
     "metrics": [
       { "value": 6, "exceeded": false },
       { "value": 0, "exceeded": false },
