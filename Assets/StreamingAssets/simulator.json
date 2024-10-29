@@ -3,6 +3,6 @@
     "enableEventLogging": true,
     "enableMissileTrailEffect": false,
     "enableExplosionEffect": false,
-    "physicsUpdateRate": 400,
+    "physicsUpdateRate": 500,
     "persistentFlightTrails": true
 }
