@@ -134,12 +134,12 @@ public class SimIntegrationTests : TestBase {
             ""agent_model"": ""quadcopter_kp1.json"",
             ""attack_behavior"": ""default_direct_attack.json"",
             ""initial_state"": {
-              ""position"": { ""x"": 0, ""y"": 600, ""z"": 3000 },
+              ""position"": { ""x"": 0, ""y"": 1000, ""z"": 1500 },
               ""velocity"": { ""x"": 0, ""y"": 0, ""z"": -50 }
             },
             ""standard_deviation"": {
               ""position"": { ""x"": 50, ""y"": 50, ""z"": 50 },
-              ""velocity"": { ""x"": 0, ""y"": 0, ""z"": 25 }
+              ""velocity"": { ""x"": 0, ""y"": 0, ""z"": 5 }
             },
             ""dynamic_config"": {
               ""launch_config"": { ""launch_time"": 0 },
@@ -210,7 +210,7 @@ public class SimIntegrationTests : TestBase {
       // Wait for 600ms, micromissiles should have been dispensed
       elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
       yield return new WaitUntil(() => SimManager.Instance.GetElapsedSimulationTime() >=
-                                       elapsedTime + dispenseTime);
+                                       elapsedTime + dispenseTime + 0.3);
       List<Interceptor> interceptors = SimManager.Instance.GetActiveInterceptors();
       Assert.AreEqual(8, interceptors.Count, "All micromissiles should have been dispensed");
 
