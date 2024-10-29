@@ -2,6 +2,10 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  markdown: {
+    math: true
+  },
+
   title: "micromissiles-unity",
   description: "Swarm-on-swarm simulator using micromissiles for point defense",
   base: '/micromissiles-unity/',
@@ -9,16 +13,17 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Documentation', link: '/Keybinds_and_Controls' },
+      { text: 'Documentation', link: '/Simulator_Overview' },
       { text: 'Development Guide', link: '/Development_Guide' }
     ],
 
-    sidebar: [
+    sidebar: [ 
       {
         text: 'Documentation',
         items: [
+          { text: 'Simulator Overview', link: '/Simulator_Overview' },
           { text: 'Keybinds and Controls', link: '/Keybinds_and_Controls' },
-          { text: 'Simulation Configuration Guide', link: '/Simulation_Config_Guide' },
+          { text: 'Simulation Config Guide', link: '/Simulation_Config_Guide' },
           { text: 'Simulation Logging', link: '/Simulation_Logging' },
           { text: 'Coverage Reports', 
             items: [

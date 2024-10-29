@@ -154,7 +154,7 @@ public class SimManager : MonoBehaviour {
 
   public void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
-    Time.maximumDeltaTime = Time.timeScale * 0.05f;
+    Time.maximumDeltaTime = Time.fixedDeltaTime * 3;
 
     // Time.fixedDeltaTime is set in the simulator.json
   }
@@ -173,8 +173,8 @@ public class SimManager : MonoBehaviour {
   }
 
   public void ResumeSimulation() {
-    SetTimeScale(simulationConfig.timeScale);
     Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+    SetTimeScale(simulationConfig.timeScale);
     _isSimulationPaused = false;
   }
 
