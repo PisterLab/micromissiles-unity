@@ -14,21 +14,21 @@
 <col />
 </colgroup>
 <tbody>
-<tr><th>Generated on:</th><td>10/29/2024 - 01:42:22</td></tr>
+<tr><th>Generated on:</th><td>10/29/2024 - 02:56:17</td></tr>
 <tr><th>Parser:</th><td>MultiReportParser (2x OpenCoverParser)</td></tr>
 <tr><th>Assemblies:</th><td>4</td></tr>
 <tr><th>Classes:</th><td>48</td></tr>
 <tr><th>Files:</th><td>46</td></tr>
 <tr><th>Covered lines:</th><td>661</td></tr>
-<tr><th>Uncovered lines:</th><td>2779</td></tr>
-<tr><th>Coverable lines:</th><td>3440</td></tr>
-<tr><th>Total lines:</th><td>6164</td></tr>
-<tr><th>Line coverage:</th><td>19.2% (661 of 3440)</td></tr>
+<tr><th>Uncovered lines:</th><td>2722</td></tr>
+<tr><th>Coverable lines:</th><td>3383</td></tr>
+<tr><th>Total lines:</th><td>5991</td></tr>
+<tr><th>Line coverage:</th><td>19.5% (661 of 3383)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>0</td></tr>
 <tr><th>Covered methods:</th><td>82</td></tr>
-<tr><th>Total methods:</th><td>458</td></tr>
-<tr><th>Method coverage:</th><td>17.9% (82 of 458)</td></tr>
+<tr><th>Total methods:</th><td>451</td></tr>
+<tr><th>Method coverage:</th><td>18.1% (82 of 451)</td></tr>
 </tbody>
 </table>
 <h1>Risk Hotspots</h1>
@@ -73,8 +73,8 @@
 </tr>
 <tr>
 <td>bamlab.test.playmode</td>
-<td><a href="bamlab.test.playmode_SimIntegrationTests.html">SimIntegrationTests</a></td>
-<td title="TestAllConfigFilesLoad()"><a href="bamlab.test.playmode_SimIntegrationTests.html#file0_line16">TestAllConfigFilesLoad()</a></td><td class="lightgreen right">13</td>
+<td><a href="bamlab.test.playmode_ConfigTest.html">ConfigTest</a></td>
+<td title="TestAllConfigFilesLoad()"><a href="bamlab.test.playmode_ConfigTest.html#file0_line16">TestAllConfigFilesLoad()</a></td><td class="lightgreen right">13</td>
 <td class="lightgreen right">0</td>
 <td class="lightred right">182</td>
 </tr>
@@ -88,7 +88,7 @@
 <tr>
 <td>bamlab.micromissiles</td>
 <td><a href="bamlab.micromissiles_SimManager.html">SimManager</a></td>
-<td title="System.Void SimManager::RestartSimulation()"><a href="bamlab.micromissiles_SimManager.html#file0_line537">RestartSimulation()</a></td><td class="lightgreen right">11</td>
+<td title="System.Void SimManager::RestartSimulation()"><a href="bamlab.micromissiles_SimManager.html#file0_line538">RestartSimulation()</a></td><td class="lightgreen right">11</td>
 <td class="lightgreen right">0</td>
 <td class="lightred right">132</td>
 </tr>
@@ -110,13 +110,6 @@
 <td>bamlab.micromissiles</td>
 <td><a href="bamlab.micromissiles_GenerateCone.html">GenerateCone</a></td>
 <td title="System.Void GenerateCone::ConstructCone(UnityEngine.Vector3[], System.Collections.Generic.List[Vector3], System.Collections.Generic.List[Int32])"><a href="bamlab.micromissiles_GenerateCone.html#file0_line77">ConstructCone(...)</a></td><td class="lightgreen right">9</td>
-<td class="lightgreen right">0</td>
-<td class="lightred right">90</td>
-</tr>
-<tr>
-<td>bamlab.test.playmode</td>
-<td><a href="bamlab.test.playmode_SimIntegrationTests.html">SimIntegrationTests</a></td>
-<td title="TestBasicMicromissilePerformance()"><a href="bamlab.test.playmode_SimIntegrationTests.html#file0_line188">TestBasicMicromissilePerformance()</a></td><td class="lightgreen right">9</td>
 <td class="lightgreen right">0</td>
 <td class="lightred right">90</td>
 </tr>
@@ -144,7 +137,14 @@
 <tr>
 <td>bamlab.micromissiles</td>
 <td><a href="bamlab.micromissiles_SimManager.html">SimManager</a></td>
-<td title="System.Void SimManager::DestroyInterceptorInSwarm(Interceptor)"><a href="bamlab.micromissiles_SimManager.html#file0_line297">DestroyInterceptorInSwarm(...)</a></td><td class="lightgreen right">7</td>
+<td title="System.Void SimManager::InitializeSimulation()"><a href="bamlab.micromissiles_SimManager.html#file0_line183">InitializeSimulation()</a></td><td class="lightgreen right">7</td>
+<td class="lightgreen right">0</td>
+<td class="lightred right">56</td>
+</tr>
+<tr>
+<td>bamlab.micromissiles</td>
+<td><a href="bamlab.micromissiles_SimManager.html">SimManager</a></td>
+<td title="System.Void SimManager::DestroyInterceptorInSwarm(Interceptor)"><a href="bamlab.micromissiles_SimManager.html#file0_line298">DestroyInterceptorInSwarm(...)</a></td><td class="lightgreen right">7</td>
 <td class="lightgreen right">0</td>
 <td class="lightred right">56</td>
 </tr>
@@ -186,7 +186,7 @@
 <tr>
 <td>bamlab.micromissiles</td>
 <td><a href="bamlab.micromissiles_SimManager.html">SimManager</a></td>
-<td title="System.Void SimManager::InitializeSimulation()"><a href="bamlab.micromissiles_SimManager.html#file0_line185">InitializeSimulation()</a></td><td class="lightgreen right">6</td>
+<td title="System.Void SimManager::DestroyThreatInSwarm(Threat)"><a href="bamlab.micromissiles_SimManager.html#file0_line330">DestroyThreatInSwarm(...)</a></td><td class="lightgreen right">6</td>
 <td class="lightgreen right">0</td>
 <td class="lightred right">42</td>
 </tr>
@@ -211,7 +211,7 @@
 </colgroup>
 <thead><tr><th>Name</th><th class="right">Covered</th><th class="right">Uncovered</th><th class="right">Coverable</th><th class="right">Total</th><th class="center" colspan="2">Line coverage</th><th class="right">Covered</th><th class="right">Total</th><th class="center" colspan="2">Branch coverage</th></tr></thead>
 <tbody>
-<tr><th>bamlab.micromissiles</th><th class="right">372</th><th class="right">2652</th><th class="right">3024</th><th class="right">5727</th><th title="LineCoverage: 372/3024" class="right">12.3%</th><th><table class="coverage"><tr><td class="green covered12">&nbsp;</td><td class="red covered88">&nbsp;</td></tr></table></th><th class="right">0</th><th class="right">0</th><th class="right" title="-"></th><th><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></th></tr>
+<tr><th>bamlab.micromissiles</th><th class="right">372</th><th class="right">2653</th><th class="right">3025</th><th class="right">5728</th><th title="LineCoverage: 372/3025" class="right">12.2%</th><th><table class="coverage"><tr><td class="green covered12">&nbsp;</td><td class="red covered88">&nbsp;</td></tr></table></th><th class="right">0</th><th class="right">0</th><th class="right" title="-"></th><th><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></th></tr>
 <tr><td><a href="bamlab.micromissiles_Agent.html">Agent</a></td><td class="right">51</td><td class="right">164</td><td class="right">215</td><td class="right">365</td><td title="LineCoverage: 51/215" class="right">23.7%</td><td><table class="coverage"><tr><td class="green covered24">&nbsp;</td><td class="red covered76">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_AttackBehavior.html">AttackBehavior</a></td><td class="right">11</td><td class="right">3</td><td class="right">14</td><td class="right">51</td><td title="LineCoverage: 11/14" class="right">78.5%</td><td><table class="coverage"><tr><td class="green covered78">&nbsp;</td><td class="red covered22">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_CameraController.html">CameraController</a></td><td class="right">0</td><td class="right">347</td><td class="right">347</td><td class="right">643</td><td title="LineCoverage: 0/347" class="right">0%</td><td><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
@@ -233,7 +233,7 @@
 <tr><td><a href="bamlab.micromissiles_RotaryWingThreat.html">RotaryWingThreat</a></td><td class="right">16</td><td class="right">29</td><td class="right">45</td><td class="right">80</td><td title="LineCoverage: 16/45" class="right">35.5%</td><td><table class="coverage"><tr><td class="green covered36">&nbsp;</td><td class="red covered64">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_RoundRobinAssignment.html">RoundRobinAssignment</a></td><td class="right">0</td><td class="right">17</td><td class="right">17</td><td class="right">44</td><td title="LineCoverage: 0/17" class="right">0%</td><td><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_Sensor.html">Sensor</a></td><td class="right">36</td><td class="right">3</td><td class="right">39</td><td class="right">147</td><td title="LineCoverage: 36/39" class="right">92.3%</td><td><table class="coverage"><tr><td class="green covered92">&nbsp;</td><td class="red covered8">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
-<tr><td><a href="bamlab.micromissiles_SimManager.html">SimManager</a></td><td class="right">75</td><td class="right">316</td><td class="right">391</td><td class="right">613</td><td title="LineCoverage: 75/391" class="right">19.1%</td><td><table class="coverage"><tr><td class="green covered19">&nbsp;</td><td class="red covered81">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
+<tr><td><a href="bamlab.micromissiles_SimManager.html">SimManager</a></td><td class="right">75</td><td class="right">317</td><td class="right">392</td><td class="right">614</td><td title="LineCoverage: 75/392" class="right">19.1%</td><td><table class="coverage"><tr><td class="green covered19">&nbsp;</td><td class="red covered81">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_SimMonitor.html">SimMonitor</a></td><td class="right">0</td><td class="right">169</td><td class="right">169</td><td class="right">255</td><td title="LineCoverage: 0/169" class="right">0%</td><td><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_SimulationConfig.html">SimulationConfig</a></td><td class="right">4</td><td class="right">0</td><td class="right">4</td><td class="right">132</td><td title="LineCoverage: 4/4" class="right">100%</td><td><table class="coverage"><tr><td class="green covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.micromissiles_StaticAgentConfig.html">StaticAgentConfig</a></td><td class="right">14</td><td class="right">0</td><td class="right">14</td><td class="right">63</td><td title="LineCoverage: 14/14" class="right">100%</td><td><table class="coverage"><tr><td class="green covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
@@ -260,13 +260,13 @@
 <tr><td><a href="bamlab.test.editmode_SanityTest.html">SanityTest</a></td><td class="right">5</td><td class="right">2</td><td class="right">7</td><td class="right">22</td><td title="LineCoverage: 5/7" class="right">71.4%</td><td><table class="coverage"><tr><td class="green covered71">&nbsp;</td><td class="red covered29">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.test.editmode_ThreatAssignmentTests.html">ThreatAssignmentTests</a></td><td class="right">63</td><td class="right">0</td><td class="right">63</td><td class="right">141</td><td title="LineCoverage: 63/63" class="right">100%</td><td><table class="coverage"><tr><td class="green covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.test.editmode_ThreatTests.html">ThreatTests</a></td><td class="right">124</td><td class="right">9</td><td class="right">133</td><td class="right">314</td><td title="LineCoverage: 124/133" class="right">93.2%</td><td><table class="coverage"><tr><td class="green covered93">&nbsp;</td><td class="red covered7">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
-<tr><th>bamlab.test.playmode</th><th class="right">0</th><th class="right">107</th><th class="right">107</th><th class="right">271</th><th title="LineCoverage: 0/107" class="right">0%</th><th><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></th><th class="right">0</th><th class="right">0</th><th class="right" title="-"></th><th><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></th></tr>
+<tr><th>bamlab.test.playmode</th><th class="right">0</th><th class="right">49</th><th class="right">49</th><th class="right">97</th><th title="LineCoverage: 0/49" class="right">0%</th><th><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></th><th class="right">0</th><th class="right">0</th><th class="right" title="-"></th><th><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></th></tr>
+<tr><td><a href="bamlab.test.playmode_ConfigTest.html">ConfigTest</a></td><td class="right">0</td><td class="right">42</td><td class="right">42</td><td class="right">73</td><td title="LineCoverage: 0/42" class="right">0%</td><td><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 <tr><td><a href="bamlab.test.playmode_SanityTest.html">SanityTest</a></td><td class="right">0</td><td class="right">7</td><td class="right">7</td><td class="right">24</td><td title="LineCoverage: 0/7" class="right">0%</td><td><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
-<tr><td><a href="bamlab.test.playmode_SimIntegrationTests.html">SimIntegrationTests</a></td><td class="right">0</td><td class="right">100</td><td class="right">100</td><td class="right">247</td><td title="LineCoverage: 0/100" class="right">0%</td><td><table class="coverage"><tr><td class="red covered100">&nbsp;</td></tr></table></td><td class="right">0</td><td class="right">0</td><td class="right" title="-"></td><td><table class="coverage"><tr><td class="gray covered100">&nbsp;</td></tr></table></td></tr>
 </tbody>
 </table>
 </coverage-info>
-<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />10/29/2024 - 01:42:22<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></div>
+<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />10/29/2024 - 02:56:17<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div></div>
 <script type="text/javascript">
 /* <![CDATA[ */
 (function() {
