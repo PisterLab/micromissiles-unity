@@ -46,9 +46,9 @@ Configs/
 │   ├── 1_salvo_1_hydra_7_drones.json        # Simple 7v7 scenario
 │   ├── 1_salvo_3_sfrj_30_ascm.json          # Anti-ship missile defense
 │   ├── 1_salvo_4_hydra_10_brahmos.json      # Cruise missile defense
-│   ├── 2_salvo_2_hydra_7_quad_3_ucav.json   # Mixed threat scenario
-│   ├── 3_salvo_10_hydra_200_drones.json     # Large-scale scenario
-│   ├── 3_salvo_2_sfrj_5_fateh110b.json      # Ballistic missile defense
+│   ├── 2_salvo_4_hydra_7_quad_15_ucav.json  # Mixed threat scenario
+│   └── 3_salvo_10_hydra_200_drones.json     # Large-scale drone swarm
+│   └── 3_salvo_6_sfrj_50_fateh110b.json     # Large-scale ballistic missile defense
 │
 ├── Models/
 │   ├── Interceptors/
@@ -72,13 +72,13 @@ Configs/
 ```
 
 | **Scenario Type**          | **File Name**                        | **Description**                                      |
-|----------------------------|--------------------------------------|------------------------------------------------------|
-| **Basic Scenarios**        | `1_salvo_1_hydra_7_drones.json`      | Simple 7v7 scenario with one carrier rocket          |
-|                            | `2_salvo_2_hydra_7_quad_3_ucav.json` | Mixed threat scenario with drones and UCAVs          |
-| **Large-Scale Scenarios**  | `3_salvo_10_hydra_200_drones.json`   | Large-scale defense against drone swarm (210v200)    |
-| **Advanced Threat Scenarios** | `3_salvo_2_sfrj_5_fateh110b.json` | Defense against ballistic missiles                   |
-|                            | `1_salvo_3_sfrj_30_ascm.json`        | Anti-ship missile defense scenario                   |
-|                            | `1_salvo_4_hydra_10_brahmos.json`    | Defense against supersonic cruise missiles           |
+|---------------------------|--------------------------------------|------------------------------------------------------|
+| **Basic Scenarios**       | `1_salvo_1_hydra_7_drones.json`      | Simple 7v7 scenario with one carrier rocket          |
+|                          | `2_salvo_4_hydra_7_quad_15_ucav.json` | Mixed threat scenario with drones and UCAVs          |
+| **Large-Scale Scenarios** | `3_salvo_10_hydra_200_drones.json`   | Large-scale defense against drone swarm (210v200)    |
+|                          | `3_salvo_6_sfrj_50_fateh110b.json`    | Large-scale ballistic missile defense (72v50)        |
+| **Advanced Threats**     | `1_salvo_4_hydra_10_brahmos.json`     | Defense against supersonic cruise missiles           |
+|                          | `1_salvo_3_sfrj_30_ascm.json`         | Anti-ship missile defense scenario                   |
 
 ### File Locations
 
@@ -125,6 +125,12 @@ Each swarm configuration includes:
 ### Examples
 
 The simulation configurations are defined in JSON files that specify the initial setup for missiles and targets.
+
+When preparing your own simulation configuration, it is important to keep in mind that small missiles have limited
+range. In the video below, notice the difference in successful intercepts of an evading target when 
+the micromissiles are launched at 2 km vs 6 km from the incoming threats
+
+![Short range intercept ](./images/short_range_interceptors.gif)
 
 #### Example 1: `1_salvo_1_hydra_7_drones.json`
 
@@ -210,8 +216,9 @@ A simple simulation with one interceptor (`Hydra 70`) and seven threat drones.
 
 #### Example 2: `3_salvo_2_sfrj_5_fateh110b.json`
 
-A complex simulation that involves multiple solid fuel ramjet interceptor salvos
-launched at different times to engage ballistic missile threats.
+A complex simulation that involves multiple solid fuel ramjet interceptor salvos launched at different times to engage a large number of ballistic missile threats.
+This scenario demonstrates a layered defense approach against a large-scale ballistic missile attack. 
+The staggered launch times and varied dispense times help ensure continuous defensive coverage as the threats approach their targets.
 
 ```json
 {
@@ -224,23 +231,15 @@ launched at different times to engage ballistic missile threats.
         "agent_model": "sfrj.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 300, "z": 200 }
+          "velocity": { "x": 0, "y": 450, "z": 180 }
         },
-        "dynamic_config": {
-          "launch_config": { "launch_time": 0 }
-        },
+        // ... other config ...
         "submunitions_config": {
-          "num_submunitions": 7,
-          "dispense_time": 14,
+          "num_submunitions": 12,
+          "dispense_time": 34,
           "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
-            "initial_state": {
-              "position": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "dynamic_config": {
-              "launch_config": { "launch_time": 0 }
-            }
+            "agent_model": "micromissile.json"
+            // ... micromissile config ...
           }
         }
       }
@@ -251,23 +250,19 @@ launched at different times to engage ballistic missile threats.
         "agent_model": "sfrj.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 300, "z": 200 }
+          "velocity": { "x": 0, "y": 400, "z": 200 }
         },
+        // ... other config ...
         "dynamic_config": {
-          "launch_config": { "launch_time": 1 }
+          "launch_config": { "launch_time": 8 }
+          // ... other dynamic config ...
         },
         "submunitions_config": {
-          "num_submunitions": 7,
-          "dispense_time": 15,
+          "num_submunitions": 12,
+          "dispense_time": 36,
           "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
-            "initial_state": {
-              "position": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "dynamic_config": {
-              "launch_config": { "launch_time": 0 }
-            }
+            "agent_model": "micromissile.json"
+            // ... micromissile config ...
           }
         }
       }
@@ -278,23 +273,19 @@ launched at different times to engage ballistic missile threats.
         "agent_model": "sfrj.json",
         "initial_state": {
           "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 300, "z": 200 }
+          "velocity": { "x": 0, "y": 440, "z": 280 }
         },
+        // ... other config ...
         "dynamic_config": {
-          "launch_config": { "launch_time": 4 }
+          "launch_config": { "launch_time": 22 }
+          // ... other dynamic config ...
         },
         "submunitions_config": {
-          "num_submunitions": 7,
-          "dispense_time": 16,
+          "num_submunitions": 12,
+          "dispense_time": 40,
           "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
-            "initial_state": {
-              "position": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "dynamic_config": {
-              "launch_config": { "launch_time": 0 }
-            }
+            "agent_model": "micromissile.json"
+            // ... micromissile config ...
           }
         }
       }
@@ -302,15 +293,28 @@ launched at different times to engage ballistic missile threats.
   ],
   "threat_swarm_configs": [
     {
-      "num_agents": 5,
+      "num_agents": 50,
       "dynamic_agent_config": {
         "agent_model": "fateh110b.json",
+        "attack_behavior": "fateh110b_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 80000, "z": 80000 },
+          "position": { "x": 0, "y": 100000, "z": 100000 },
           "velocity": { "x": 0, "y": -2317, "z": -2317 }
         },
+        "standard_deviation": {
+          "position": { "x": 3000, "y": 1000, "z": 1000 },
+          "velocity": { "x": 0, "y": 0, "z": 25 }
+        },
         "dynamic_config": {
-          "launch_config": { "launch_time": 0 }
+          "launch_config": { "launch_time": 0 },
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 1000
+          }
         }
       }
     }
@@ -318,25 +322,25 @@ launched at different times to engage ballistic missile threats.
 }
 ```
 
-This simulation involves **three salvos** of SFRJ interceptors, each launched at different times to provide overlapping interception windows against ballistic missile threats.
+This simulation involves **three salvos** of SFRJ interceptors, each launched at different times to provide overlapping interception windows against a large number of ballistic missile threats.
 
   - **Salvo 1: Launch Time = 0 seconds**
     - **Number of Agents:** 2 SFRJs
-    - **Initial Velocity:** `{ "x": 0, "y": 300, "z": 200 }` meters/second
-    - **Dispense Time:** 14 seconds
-    - **Submunitions:** Each SFRJ releases 7 micromissiles (`micromissile.json`) at 14 seconds into flight.
+    - **Initial Velocity:** `{ "x": 0, "y": 450, "z": 180 }` meters/second
+    - **Dispense Time:** 34 seconds
+    - **Submunitions:** Each SFRJ releases 12 micromissiles with augmented proportional navigation enabled
 
-  - **Salvo 2: Launch Time = 1 second**
+  - **Salvo 2: Launch Time = 8 seconds**
     - **Number of Agents:** 2 SFRJs
-    - **Initial Velocity:** `{ "x": 0, "y": 300, "z": 200 }` meters/second
-    - **Dispense Time:** 15 seconds
-    - **Submunitions:** Each SFRJ releases 7 micromissiles at 15 seconds into flight.
+    - **Initial Velocity:** `{ "x": 0, "y": 400, "z": 200 }` meters/second
+    - **Dispense Time:** 36 seconds
+    - **Submunitions:** Each SFRJ releases 12 micromissiles
 
-  - **Salvo 3: Launch Time = 4 seconds**
+  - **Salvo 3: Launch Time = 22 seconds**
     - **Number of Agents:** 2 SFRJs
-    - **Initial Velocity:** `{ "x": 0, "y": 300, "z": 200 }` meters/second
-    - **Dispense Time:** 16 seconds
-    - **Submunitions:** Each SFRJ releases 7 micromissiles at 16 seconds into flight.
+    - **Initial Velocity:** `{ "x": 0, "y": 440, "z": 280 }` meters/second
+    - **Dispense Time:** 40 seconds
+    - **Submunitions:** Each SFRJ releases 12 micromissiles
 
 The SFRJs are initialized with substantial velocities (`y: 300`, `z: 200`) to compensate for their lower acceleration rates.
 Remember this also determines the initial orientation of the agent. It helps to set the initial velocity to point the agent 
@@ -346,8 +350,8 @@ towards the threat.
 > SFRJs have extended propulsion phases, this requires attention to the initial velocity settings to ensure they reach effective interception velocities and do not "topple over" during initial acceleration.
 
 **Ballistic Missile Threats (`fateh110b`):**
-  - **Number of Agents:** 5 ballistic missiles
-  - **Initial Position:** `{ "x": 0, "y": 80000, "z": 80000 }` meters (representing high-altitude, long-range)
+  - **Number of Agents:** 50 ballistic missiles
+  - **Initial Position:** `{ "x": 0, "y": 100000, "z": 100000 }` meters (high-altitude)
   - **Initial Velocity:** `{ "x": 0, "y": -2317, "z": -2317 }` meters/second
   - **Terminal Navigation & Guidance Phase:** These missiles are initialized assuming they've entered their terminal phase, characterized by high velocities and primarily influenced by gravity (`only gravity acceleration`).
   - Includes terminal evasive maneuvers within 1km of targets
@@ -460,6 +464,29 @@ These JSON files serve as templates of archetypes and can be tweaked to modify t
   }
 }
 ```
+`agentClass: "CarrierInterceptor"` - Identifies this as a carrier-type interceptor
+- **unitCost**: 30000 - Cost per unit for simulation analysis
+
+**Performance Characteristics:**
+
+- **Acceleration Settings:**
+  - High normal acceleration (300 m/s²) at reference speed
+  - No forward acceleration (`maxForwardAcceleration`: 0) - relies on initial boost
+  - Reference speed of 1000 m/s for scaling acceleration
+
+- **Boost Phase:**
+  - Short boost duration (1 second)
+  - Strong initial acceleration (100 m/s²)
+
+- **Aerodynamics:**
+  - Moderate lift coefficient (0.2)
+  - High drag coefficient (1.0)
+  - Lift-to-drag ratio of 5
+
+- **Physical Properties:**
+  - Mass: 15.8 kg
+  - Small cross-sectional area (0.004 m²)
+  - Larger body area (0.12 m²) for stability
 
 #### Example 2: `quadcopter.json` (RotaryWingThreat)
 
@@ -489,6 +516,33 @@ These JSON files serve as templates of archetypes and can be tweaked to modify t
   }
 }
 ```
+
+This configuration represents a small drone threat:
+
+**Core Parameters:**
+- `agentClass`: "RotaryWingThreat" - Identifies this as a rotary-wing aircraft
+
+**Performance Characteristics:**
+
+**Acceleration Settings:**
+- High maneuverability (300 m/s² normal acceleration)
+- Moderate forward acceleration (50 m/s²)
+- Reference speed of 1000 m/s
+
+**Simplified Physics:**
+- Quadcopters have no boost phase (`boostTime`: 0)
+- No drag coefficient (simplified aerodynamics)
+- Light mass (1 kg)
+
+**Combat Properties:**
+- 1-meter hit radius
+- 90% kill probability when hit
+
+> [!IMPORTANT]
+> **Kill Probability:** Ensure the `killProbability` is set as desired in the threat model.
+> This parameter is crucial as it defines the likelihood of the drone being destroyed when hit.
+
+The power settings for threats determine their speed and maneuverability at different flight phases. These correspond to the power settings used in their attack behavior configurations.
 
 
 ### Modifying Parameters
