@@ -146,17 +146,34 @@ However, simply using true proportional navigation as a guidance law leads to so
    The closing velocity may be negative, i.e., the distance between the agent and its target may actually be increasing.
    In this case, the agent should apply a maximum normal acceleration in any direction to turn around, but since $\|\dot{\vec{\lambda}}\| \approx 0$, the normal acceleration is minimal.
    To overcome this issue, the navigation gain is increased significantly if the closing velocity is negative.
+   ```csharp
+   // Handle the case where the closing velocity is negative.
+   if (closingVelocity < 0) {
+     navigationGain = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
+   }
+   ```
 2. **Spiral behavior**:
    If the target is at a near-constant ${90}^\circ$ bearing from the agent, the agent may end up in a spiral encircling the target because $\vec{\lambda}$ is roughly constant and so $\|\dot{\vec{\lambda}}\| \approx 0$.
    To overcome this limitation, the agent will apply a higher navigation gain if the target bearing is within $\pm {10}^\circ$ of ${90}^\circ$.
+   ```csharp
+   // Handle the case of the spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees.
+   if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f ||
+       Mathf.Abs(Mathf.Abs(sensorOutput.position.elevation) - Mathf.PI / 2) < 0.2f) {
+     // Clamp the line-of-sight rate at 0.2 rad/s.
+     float minLosRate = 0.2f;
+     losRateAz = Mathf.Sign(losRateAz) * Mathf.Max(Mathf.Abs(losRateAz), minLosRate);
+     losRateEl = Mathf.Sign(losRateEl) * Mathf.Max(Mathf.Abs(losRateEl), minLosRate);
+     navigationGain = Mathf.Abs(closingVelocity) * 100f;
+   }
+   ```
 
 **Augmented Proportional Navigation**
 
 Augmented proportional navigation adds a feedthrough term proportional to the agent’s acceleration:
 $$
-\vec{a}_\perp = K \left(\dot{\vec{\lambda}} v + \frac{1}{2} \vec{a}_{T}\right),
+\vec{a}_\perp = K \left(\dot{\vec{\lambda}} v + \frac{1}{2} \vec{a}_{\text{target}}\right),
 $$
-where $\vec{a}_T$ is the target’s acceleration that is normal to the agent's velocity vector.
+where $\vec{a}_{\text{target}}$ is the target’s acceleration that is normal to the agent's velocity vector.
 
 Augmented proportional navigation is equivalent to true proportional navigation if the target is not accelerating.
 
@@ -167,7 +184,28 @@ Currently, interceptors do not consider gravity when determining their accelerat
 As a result, gravity acts as a disturbance to each interceptor's dynamics system and may cause the interceptor to collide with the ground if not accounted for.
 
 Threats may also collide with the ground, especially after having performed an evasion maneuver from pursuing interceptors.
-The simulator implements a basic ground avoidance algorithm for the threats: If the threat's vertical speed will cause the threat to collide with the ground before the threat will hit the asset, the threat will perform a linear combination of navigating towards the asset and pulling up away from the ground.
+The simulator implements a basic ground avoidance algorithm for the threats: If the threat's vertical speed will cause the threat to collide with the ground before the threat will hit the asset, the threat will adjust its vertical velocity to be a linear combination of navigating towards the asset and pulling up away from the ground.
+
+```csharp
+// Calculate the time to ground.
+float altitude = transformPosition.y;
+float sinkRate = -transformVelocity.y;
+float timeToGround = altitude / sinkRate;
+
+// Calculate the time to target.
+float distanceToTarget = sensorOutput.position.range;
+float timeToTarget = distanceToTarget / transformSpeed;
+
+float groundProximityThreshold = Mathf.Abs(transformVelocity.y) * 5f;
+if (sinkRate > 0 && timeToGround < timeToTarget) {
+  // Evade upwards normal to the velocity.
+  Vector3 upwardsDirection = Vector3.Cross(transformForward, transformRight);
+
+  // For the y-component, interpolate between the calculated acceleration input and the upward acceleration.
+  float blendFactor = 1 - (altitude / groundProximityThreshold);
+  accelerationInput.y = Vector3.Lerp(accelerationInput, upwardsDirection * CalculateMaxNormalAcceleration(), blendFactor).y;
+}
+```
 
 ### Interceptor Assignment
 
@@ -182,9 +220,9 @@ Given the list of threats, the simulator first sorts the threats as follows:
 1. Sorting (descending) by the number of already assigned interceptors
 2. Sorting (ascending) by threat value, where the threat value of a threat is given by:
    $$
-   V_{threat} = \frac{1}{d(t)} \cdot \|\vec{v}(t)\|,
+   V_{threat} = \frac{\|\vec{v}(t)\|}{\|\vec{p}(t)\|},
    $$
-   where $\|v_t\|$ is the threat's speed and $d(t)$ is the threat's distance from the asset, assuming that the asset is at the origin.
+   where $\|v_t\|$ is the threat's speed and $\vec{p}(t)$ is the threat's position vector, assuming that the asset is at the origin.
 After sorting the threats, we simply assign interceptors down the list.
 
 Note that this algorithm may not be optimal but is a good starting point.
@@ -198,8 +236,38 @@ During the evasive maneuver, the threat performs the following:
 1. The threat accelerates to its maximum speed.
 2. The threat turns away from the incoming interceptor at its maximum normal acceleration and tries to align its velocity vector to be normal to the interceptor's velocity vector.
 Since the threat applies a normal acceleration, the interceptor must turn too and thus sacrifice speed due to the lift-induced drag.
+```csharp
+// Evade the interceptor by aligning the threat's velocity vector to be normal to the interceptor's velocity vector.
+Vector3 normalVelocity = Vector3.ProjectOnPlane(transformVelocity, interceptorVelocity);
+Vector3 normalAccelerationDirection = Vector3.ProjectOnPlane(normalVelocity, transformVelocity).normalized;
+
+// Turn away from the interceptor.
+Vector3 relativePosition = interceptorPosition - transformPosition;
+if (Vector3.Dot(relativePosition, normalAccelerationDirection) > 0) {
+  normalAccelerationDirection *= -1;
+}
+```
 
 If the threat is too close to the ground, however, it must ensure that it does not collide with the ground.
 Therefore, as it approaches the ground, the threat instead performs a linear combination of:
 1. turning to evade the interceptor, as described above, and
 2. turning parallel to the ground.
+```csharp
+// Avoid evading straight down when near the ground.
+float altitude = transformPosition.y;
+float sinkRate = -transformVelocity.y;
+float groundProximityThreshold = Mathf.Abs(transformVelocity.y) * 5f;
+if (sinkRate > 0 && altitude < groundProximityThreshold) {
+  // Determine evasion direction based on the bearing to the interceptor.
+  Vector3 toInterceptor = interceptorPosition - transformPosition;
+  Vector3 rightDirection = Vector3.Cross(Vector3.up, transform.forward);
+  float angle = Vector3.SignedAngle(transform.forward, toInterceptor, Vector3.up);
+
+  // Choose the direction that turns away from the interceptor.
+  Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
+
+  // Interpolate between horizontal evasion and upward ground avoidance.
+  float blendFactor = 1 - (altitude / groundProximityThreshold);
+  normalAccelerationDirection = Vector3.Lerp(normalAccelerationDirection, bestHorizontalDirection + transform.up * 5f, blendFactor).normalized;
+  }
+```
