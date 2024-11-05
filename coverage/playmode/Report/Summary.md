@@ -1,26 +1,26 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 11/04/2024 - 02:59:55 |
+| Generated on: | 11/05/2024 - 02:51:48 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 1359 |
-| Uncovered lines: | 2024 |
+| Covered lines: | 1295 |
+| Uncovered lines: | 2088 |
 | Coverable lines: | 3383 |
 | Total lines: | 5991 |
-| Line coverage: | 40.1% (1359 of 3383) |
+| Line coverage: | 38.2% (1295 of 3383) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 206 |
+| Covered methods: | 196 |
 | Total methods: | 451 |
-| Method coverage: | 45.6% (206 of 451) |
+| Method coverage: | 43.4% (196 of 451) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1310**|**1715**|**3025**|**5728**|**43.3%**|**0**|**0**|****|**203**|**418**|**48.5%**|
-|Agent|154|61|215|365|71.6%|0|0||29|40|72.5%|
+|**bamlab.micromissiles**|**1246**|**1779**|**3025**|**5728**|**41.1%**|**0**|**0**|****|**193**|**418**|**46.1%**|
+|Agent|140|75|215|365|65.1%|0|0||27|40|67.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
 |CarrierInterceptor|29|22|51|80|56.8%|0|0||5|7|71.4%|
@@ -31,30 +31,30 @@
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|64|19|83|152|77.1%|0|0||6|9|66.6%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|60|27|87|143|68.9%|0|0||13|17|76.4%|
+|IADS|49|38|87|143|56.3%|0|0||11|17|64.7%|
 |IAssignment|3|7|10|42|30%|0|0||1|3|33.3%|
 |IdealSensor|30|0|30|54|100%|0|0||5|5|100%|
 |InputManager|56|57|113|156|49.5%|0|0||11|11|100%|
 |Interceptor|92|85|177|281|51.9%|0|0||12|18|66.6%|
-|ParticleManager|48|122|170|245|28.2%|0|0||11|24|45.8%|
+|ParticleManager|33|137|170|245|19.4%|0|0||9|24|37.5%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|34|11|45|80|75.5%|0|0||5|8|62.5%|
 |RoundRobinAssignment|0|17|17|44|0%|0|0||0|2|0%|
 |Sensor|35|4|39|147|89.7%|0|0||3|3|100%|
-|SimManager|261|131|392|614|66.5%|0|0||29|47|61.7%|
+|SimManager|249|143|392|614|63.5%|0|0||27|47|57.4%|
 |SimMonitor|59|110|169|255|34.9%|0|0||10|20|50%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
 |SwarmStatusDialog|4|129|133|167|3%|0|0||1|16|6.2%|
-|Threat|47|54|101|183|46.5%|0|0||8|10|80%|
+|Threat|45|56|101|183|44.5%|0|0||8|10|80%|
 |ThreatAssignment|7|35|42|79|16.6%|0|0||1|5|20%|
-|ThreatData|10|16|26|49|38.4%|0|0||2|5|40%|
+|ThreatData|7|19|26|49|26.9%|0|0||1|5|20%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|4|123|127|217|3.1%|0|0||1|18|5.5%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|110|48|158|237|69.6%|0|0||18|29|62%|
+|UIManager|103|55|158|237|65.1%|0|0||17|29|58.6%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|1|57|58|100|1.7%|0|0||1|9|11.1%|
 |Utilities|3|0|3|9|100%|0|0||1|1|100%|
