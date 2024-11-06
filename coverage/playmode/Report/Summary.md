@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 11/05/2024 - 02:51:48 |
+| Generated on: | 11/06/2024 - 02:51:02 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 48 |
 | Files: | 46 |
-| Covered lines: | 1295 |
-| Uncovered lines: | 2088 |
+| Covered lines: | 1290 |
+| Uncovered lines: | 2093 |
 | Coverable lines: | 3383 |
 | Total lines: | 5991 |
-| Line coverage: | 38.2% (1295 of 3383) |
+| Line coverage: | 38.1% (1290 of 3383) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 196 |
+| Covered methods: | 195 |
 | Total methods: | 451 |
-| Method coverage: | 43.4% (196 of 451) |
+| Method coverage: | 43.2% (195 of 451) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1246**|**1779**|**3025**|**5728**|**41.1%**|**0**|**0**|****|**193**|**418**|**46.1%**|
+|**bamlab.micromissiles**|**1241**|**1784**|**3025**|**5728**|**41%**|**0**|**0**|****|**192**|**418**|**45.9%**|
 |Agent|140|75|215|365|65.1%|0|0||27|40|67.5%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
@@ -46,7 +46,7 @@
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
 |SwarmStatusDialog|4|129|133|167|3%|0|0||1|16|6.2%|
-|Threat|45|56|101|183|44.5%|0|0||8|10|80%|
+|Threat|40|61|101|183|39.6%|0|0||7|10|70%|
 |ThreatAssignment|7|35|42|79|16.6%|0|0||1|5|20%|
 |ThreatData|7|19|26|49|26.9%|0|0||1|5|20%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
