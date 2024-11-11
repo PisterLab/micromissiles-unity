@@ -41,6 +41,9 @@ public abstract class Sensor : MonoBehaviour {
   protected virtual PositionOutput ComputePositionSensorOutput(Vector3 relativePosition) {
     PositionOutput positionSensorOutput = new PositionOutput();
 
+    // Set the relative position in Cartesian coordinates
+    positionSensorOutput.cartesian = relativePosition;
+
     // Calculate the distance (range) to the target
     positionSensorOutput.range = relativePosition.magnitude;
 
@@ -82,6 +85,9 @@ public abstract class Sensor : MonoBehaviour {
   protected virtual VelocityOutput ComputeVelocitySensorOutput(Vector3 relativePosition,
                                                                Vector3 relativeVelocity) {
     VelocityOutput velocitySensorOutput = new VelocityOutput();
+
+    // Set the relative velocity in Cartesian coordinates
+    velocitySensorOutput.cartesian = relativeVelocity;
 
     // Calculate range rate (radial velocity)
     velocitySensorOutput.range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
@@ -135,12 +141,14 @@ public struct SensorOutput {
 }
 
 public struct PositionOutput {
+  public Vector3 cartesian;
   public float range;
   public float azimuth;
   public float elevation;
 }
 
 public struct VelocityOutput {
+  public Vector3 cartesian;
   public float range;
   public float azimuth;
   public float elevation;

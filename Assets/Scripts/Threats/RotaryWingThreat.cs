@@ -42,19 +42,16 @@ public class RotaryWingThreat : Threat {
   }
 
   private Vector3 CalculateAccelerationToWaypoint() {
-    Vector3 toWaypoint = _currentWaypoint - transform.position;
-    Vector3 currentVelocity = GetVelocity();
-
-    // Calculate desired velocity based on power setting
+    _sensorOutput = _sensor.SenseWaypoint(_currentWaypoint);
     float desiredSpeed = PowerTableLookup(_currentPowerSetting);
-    Vector3 desiredVelocity = toWaypoint.normalized * desiredSpeed;
 
-    // Calculate acceleration needed to reach desired velocity
-    Vector3 accelerationInput = (desiredVelocity - currentVelocity) / (float)Time.fixedDeltaTime;
+    IController controller = new WaypointController(this, desiredSpeed);
+    Vector3 accelerationInput = controller.Plan(_sensorOutput);
+
     Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, transform.forward);
     Vector3 normalAccelerationInput = accelerationInput - forwardAccelerationInput;
 
-    // Limit acceleration magnitude
+    // Limit the acceleration magnitude.
     float maxForwardAcceleration = CalculateMaxForwardAcceleration();
     forwardAccelerationInput =
         Vector3.ClampMagnitude(forwardAccelerationInput, maxForwardAcceleration);

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.Diagnostics.Contracts;
+
 // The round-robin assignment class assigns interceptors to the targets in a
 // round-robin order using the new paradigm.
 public class RoundRobinAssignment : IAssignment {

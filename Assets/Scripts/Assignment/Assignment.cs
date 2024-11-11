@@ -20,8 +20,6 @@ public interface IAssignment {
     }
   }
 
-  // A list containing the interceptor-target assignments.
-
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
   public abstract IEnumerable<AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,

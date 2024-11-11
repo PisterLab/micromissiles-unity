@@ -4,6 +4,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using System.Diagnostics.Contracts;
+
 // The threat assignment class assigns interceptors to the targets based
 // on the threat level of the targets.
 public class ThreatAssignment : IAssignment {

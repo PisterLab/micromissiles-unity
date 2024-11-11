@@ -22,9 +22,14 @@ public class IdealSensorTests : SensorTestBase {
     SensorOutput sensorOutput = sensor.Sense(target);
 
     // Assert
+    Assert.AreEqual(sensorOutput.position.cartesian,
+                    target.transform.position - sensor.transform.position);
     Assert.AreEqual(sensorOutput.position.range, 20);
     Assert.AreEqual(sensorOutput.position.azimuth, 0);
     Assert.AreEqual(sensorOutput.position.elevation, 0);
+    Assert.AreEqual(
+        sensorOutput.velocity.cartesian,
+        target.GetVelocity() - sensor.gameObject.GetComponent<Rigidbody>().linearVelocity);
     Assert.AreEqual(sensorOutput.velocity.range, -1);
     Assert.AreEqual(sensorOutput.velocity.azimuth, 0);
     Assert.AreEqual(sensorOutput.velocity.elevation, 1);
@@ -47,9 +52,14 @@ public class IdealSensorTests : SensorTestBase {
     SensorOutput sensorOutput = sensor.Sense(target);
 
     // Assert
+    Assert.AreEqual(sensorOutput.position.cartesian,
+                    target.transform.position - sensor.transform.position);
     Assert.AreEqual(sensorOutput.position.range, 20);
     Assert.AreEqual(sensorOutput.position.azimuth, Mathf.PI / 2);
     Assert.AreEqual(sensorOutput.position.elevation, 0);
+    Assert.AreEqual(
+        sensorOutput.velocity.cartesian,
+        target.GetVelocity() - sensor.gameObject.GetComponent<Rigidbody>().linearVelocity);
     Assert.AreEqual(sensorOutput.velocity.range, 0);
     Assert.AreEqual(sensorOutput.velocity.azimuth, -1);
     Assert.AreEqual(sensorOutput.velocity.elevation, 0);
@@ -72,9 +82,14 @@ public class IdealSensorTests : SensorTestBase {
     SensorOutput sensorOutput = sensor.Sense(target);
 
     // Assert
+    Assert.AreEqual(sensorOutput.position.cartesian,
+                    target.transform.position - sensor.transform.position);
     Assert.AreEqual(sensorOutput.position.range, 20);
     Assert.AreEqual(sensorOutput.position.azimuth, 0);
     Assert.AreEqual(sensorOutput.position.elevation, Mathf.PI / 2);
+    Assert.AreEqual(
+        sensorOutput.velocity.cartesian,
+        target.GetVelocity() - sensor.gameObject.GetComponent<Rigidbody>().linearVelocity);
     Assert.AreEqual(sensorOutput.velocity.range, 0);
     Assert.AreEqual(sensorOutput.velocity.azimuth, 0);
     Assert.AreEqual(sensorOutput.velocity.elevation, -1);

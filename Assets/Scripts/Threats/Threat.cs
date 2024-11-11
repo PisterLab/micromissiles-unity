@@ -10,7 +10,6 @@ public abstract class Threat : Agent {
   protected PowerSetting _currentPowerSetting;
 
   protected SensorOutput _sensorOutput;
-
   protected Sensor _sensor;
 
   public void SetAttackBehavior(AttackBehavior attackBehavior) {

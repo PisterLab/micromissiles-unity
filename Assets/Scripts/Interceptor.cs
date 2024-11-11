@@ -55,7 +55,7 @@ public class Interceptor : Agent {
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add PN acceleration to boost acceleration
-    Vector3 pnAcceleration = CalculateProportionalNavigationAcceleration(deltaTime);
+    Vector3 pnAcceleration = CalculatePnAcceleration(deltaTime);
     Vector3 accelerationInput = boostAccelerationVector + pnAcceleration;
 
     // Calculate the total acceleration
@@ -69,14 +69,14 @@ public class Interceptor : Agent {
     UpdateMissileTrailEffect();
 
     _elapsedTime += deltaTime;
-    Vector3 accelerationInput = CalculateProportionalNavigationAcceleration(deltaTime);
+    Vector3 accelerationInput = CalculatePnAcceleration(deltaTime);
 
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
-  private Vector3 CalculateProportionalNavigationAcceleration(double deltaTime) {
+  private Vector3 CalculatePnAcceleration(double deltaTime) {
     if (!HasAssignedTarget()) {
       return Vector3.zero;
     }
@@ -109,50 +109,13 @@ public class Interceptor : Agent {
   }
 
   private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
-    // TODO(titan): Refactor all controller-related code into a separate controller interface with
-    // subclasses. A controller factory will instantiate the correct controller for each dynamic
-    // configuration.
-
-    // Implement (Augmented) Proportional Navigation guidance law
-    Vector3 accelerationInput = Vector3.zero;
-
-    // Extract relevant information from sensor output
-    float losRateAz = sensorOutput.velocity.azimuth;
-    float losRateEl = sensorOutput.velocity.elevation;
-    float closingVelocity =
-        -sensorOutput.velocity
-             .range;  // Negative because closing velocity is opposite to range rate
-
-    // Navigation gain (adjust as needed)
-    float N = _navigationGain;
-    // Normal PN guidance for positive closing velocity
-    float turnFactor = closingVelocity;
-    // Handle negative closing velocity scenario
-    if (closingVelocity < 0) {
-      // Target is moving away, apply stronger turn
-      turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * 100f);
-    }
-    // Handle spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees
-    if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f ||
-        Mathf.Abs(Mathf.Abs(sensorOutput.position.elevation) - Mathf.PI / 2) < 0.2f) {
-      // Check that the agent is not moving in a spiral by clamping the LOS rate at 0.2 rad/s
-      float minLosRate = 0.2f;  // Adjust as necessary
-      losRateAz = Mathf.Sign(losRateAz) * Mathf.Max(Mathf.Abs(losRateAz), minLosRate);
-      losRateEl = Mathf.Sign(losRateEl) * Mathf.Max(Mathf.Abs(losRateEl), minLosRate);
-      turnFactor = Mathf.Abs(closingVelocity) * 100f;
-    }
-    float accAz = N * turnFactor * losRateAz;
-    float accEl = N * turnFactor * losRateEl;
-    // Convert acceleration inputs to craft body frame
-    accelerationInput = transform.right * accAz + transform.up * accEl;
-
-    // For Augmented Proportional Navigation, add a feedforward term for the target acceleration
+    IController controller;
     if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
-      Vector3 targetAcceleration = _targetModel.GetAcceleration();
-      Vector3 normalTargetAcceleration =
-          Vector3.ProjectOnPlane(targetAcceleration, transform.forward);
-      accelerationInput += N / 2 * normalTargetAcceleration;
+      controller = new ApnController(this, _navigationGain);
+    } else {
+      controller = new PnController(this, _navigationGain);
     }
+    Vector3 accelerationInput = controller.Plan(sensorOutput);
 
     // Clamp the normal acceleration input to the maximum normal acceleration
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
