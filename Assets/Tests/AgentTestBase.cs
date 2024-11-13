@@ -25,10 +25,15 @@ public abstract class AgentTestBase : TestBase {
   }
 
   protected Threat CreateTestThreat(DynamicAgentConfig config) {
-    return InvokePrivateMethod<Threat>(simManager, "CreateThreat", config);
+    Threat threat = InvokePrivateMethod<Threat>(simManager, "CreateThreat", config);
+    InvokePrivateMethod(threat, "Start");
+    return threat;
   }
 
   protected Interceptor CreateTestInterceptor(DynamicAgentConfig config) {
-    return InvokePrivateMethod<Interceptor>(simManager, "CreateInterceptor", config);
+    Interceptor interceptor =
+        InvokePrivateMethod<Interceptor>(simManager, "CreateInterceptor", config);
+    InvokePrivateMethod(interceptor, "Start");
+    return interceptor;
   }
 }
