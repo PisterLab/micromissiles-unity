@@ -39,12 +39,11 @@ public class FixedWingThreat : Threat {
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate state from sensor output
         // For now, we'll use the threat's actual state
-        _sensorOutput = _sensor.SenseWaypoint(_currentWaypoint);
         _elapsedTime = 0;
       }
 
       // Calculate the normal acceleration input using PN
-      Vector3 normalAcceleration = CalculateAccelerationInput(_sensorOutput);
+      Vector3 normalAcceleration = CalculateAccelerationInput();
 
       // Adjust the speed based on power setting
       Vector3 forwardAcceleration = CalculateForwardAcceleration();
@@ -65,7 +64,7 @@ public class FixedWingThreat : Threat {
         _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
 
-  private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
+  private Vector3 CalculateAccelerationInput() {
     // Cache the transform and velocity.
     Transform threatTransform = transform;
     Vector3 right = threatTransform.right;
@@ -75,7 +74,7 @@ public class FixedWingThreat : Threat {
     float speed = velocity.magnitude;
 
     IController controller = new PnController(this, _navigationGain);
-    Vector3 accelerationInput = controller.Plan(sensorOutput);
+    Vector3 accelerationInput = controller.PlanToWaypoint(_currentWaypoint);
 
     // Clamp the normal acceleration input to the maximum normal acceleration.
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
@@ -85,7 +84,7 @@ public class FixedWingThreat : Threat {
     float altitude = position.y;
     // Sink rate is opposite to climb rate.
     float sinkRate = -velocity.y;
-    float distanceToTarget = sensorOutput.position.range;
+    float distanceToTarget = (_currentWaypoint - position).magnitude;
     float groundProximityThreshold = Mathf.Abs(sinkRate) * 5f;  // Adjust threshold as necessary
     if (sinkRate > 0 && altitude / sinkRate < distanceToTarget / speed) {
       // Evade upward normal to the velocity.

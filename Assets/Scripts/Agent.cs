@@ -221,6 +221,122 @@ public abstract class Agent : MonoBehaviour {
     _acceleration = acceleration;
   }
 
+  public Transformation GetRelativeTransformation(Agent target) {
+    Transformation transformation = new Transformation();
+
+    // Get the relative position transformation.
+    transformation.position = GetRelativePositionTransformation(target.GetPosition());
+
+    // Get the relative velocity transformation.
+    transformation.velocity = GetRelativeVelocityTransformation(
+        target.GetPosition() - GetPosition(), target.GetVelocity() - GetVelocity());
+
+    // Get the relative acceleration transformation.
+    transformation.acceleration = GetRelativeAccelerationTransformation(target);
+    return transformation;
+  }
+
+  public Transformation GetRelativeTransformationToWaypoint(Vector3 waypoint) {
+    Transformation transformation = new Transformation();
+
+    // Get the relative position transformation.
+    transformation.position = GetRelativePositionTransformation(waypoint);
+
+    // Get the relative velocity transformation.
+    transformation.velocity =
+        GetRelativeVelocityTransformation(waypoint - GetPosition(), -GetVelocity());
+
+    return transformation;
+  }
+
+  private PositionTransformation GetRelativePositionTransformation(Vector3 relativePosition) {
+    PositionTransformation positionTransformation = new PositionTransformation();
+
+    // Set the relative position in Cartesian coordinates
+    positionTransformation.cartesian = relativePosition;
+
+    // Calculate the distance (range) to the target
+    positionTransformation.range = relativePosition.magnitude;
+
+    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
+    Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
+
+    // Calculate elevation (vertical angle relative to forward)
+    positionTransformation.elevation =
+        Mathf.Atan(verticalRelativePosition.magnitude / flatRelativePosition.magnitude);
+
+    // Calculate azimuth (horizontal angle relative to forward)
+    if (flatRelativePosition.magnitude == 0) {
+      positionTransformation.azimuth = 0;
+    } else {
+      positionTransformation.azimuth =
+          Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) * Mathf.PI /
+          180;
+    }
+
+    return positionTransformation;
+  }
+
+  private VelocityTransformation GetRelativeVelocityTransformation(Vector3 relativePosition,
+                                                                   Vector3 relativeVelocity) {
+    VelocityTransformation velocityTransformation = new VelocityTransformation();
+
+    // Set the relative velocity in Cartesian coordinates.
+    velocityTransformation.cartesian = relativeVelocity;
+
+    // Calculate range rate (radial velocity).
+    velocityTransformation.range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
+
+    // Project relative velocity onto the sphere passing through the target.
+    Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
+
+    // The target azimuth vector is orthogonal to the relative position vector and
+    // points to the starboard of the target along the azimuth-elevation sphere.
+    Vector3 targetAzimuth = Vector3.Cross(transform.up, relativePosition);
+    // The target elevation vector is orthogonal to the relative position vector
+    // and points upwards from the target along the azimuth-elevation sphere.
+    Vector3 targetElevation = Vector3.Cross(relativePosition, transform.right);
+    // If the relative position vector is parallel to the yaw or pitch axis, the
+    // target azimuth vector or the target elevation vector will be undefined.
+    if (targetAzimuth.magnitude == 0) {
+      targetAzimuth = Vector3.Cross(targetElevation, relativePosition);
+    } else if (targetElevation.magnitude == 0) {
+      targetElevation = Vector3.Cross(relativePosition, targetAzimuth);
+    }
+
+    // Project the relative velocity vector on the azimuth-elevation sphere onto
+    // the target azimuth vector.
+    Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
+
+    // Calculate the time derivative of the azimuth to the target.
+    velocityTransformation.azimuth =
+        tangentialVelocityOnAzimuth.magnitude / relativePosition.magnitude;
+    if (Vector3.Dot(tangentialVelocityOnAzimuth, targetAzimuth) < 0) {
+      velocityTransformation.azimuth *= -1;
+    }
+
+    // Project the velocity vector on the azimuth-elevation sphere onto the target
+    // elevation vector.
+    Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
+
+    // Calculate the time derivative of the elevation to the target.
+    velocityTransformation.elevation =
+        tangentialVelocityOnElevation.magnitude / relativePosition.magnitude;
+    if (Vector3.Dot(tangentialVelocityOnElevation, targetElevation) < 0) {
+      velocityTransformation.elevation *= -1;
+    }
+
+    return velocityTransformation;
+  }
+
+  private AccelerationTransformation GetRelativeAccelerationTransformation(Agent agent) {
+    // Since the agent's acceleration is an input, the relative acceleration is just the agent's
+    // acceleration.
+    AccelerationTransformation accelerationTransformation = new AccelerationTransformation();
+    accelerationTransformation.cartesian = agent.GetAcceleration();
+    return accelerationTransformation;
+  }
+
   public double GetDynamicPressure() {
     var airDensity = Constants.CalculateAirDensityAtAltitude(transform.position.y);
     var flowSpeed = GetSpeed();

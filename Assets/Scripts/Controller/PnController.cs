@@ -17,7 +17,7 @@ public class PnController : IController {
     _navigationGain = navigationGain;
   }
 
-  protected override Vector3 PlanImpl(in SensorOutput sensorOutput) {
+  protected override Vector3 PlanImpl(in Transformation relativeTransformation) {
     // Cache the transform and velocity.
     Transform agentTransform = _agent.transform;
     Vector3 right = agentTransform.right;
@@ -28,13 +28,13 @@ public class PnController : IController {
     Vector3 velocity = _agent.GetVelocity();
     float speed = velocity.magnitude;
 
-    // Extract the bearing and closing velocity from the sensor output.
-    float losAz = sensorOutput.position.azimuth;
-    float losEl = sensorOutput.position.elevation;
-    float losRateAz = sensorOutput.velocity.azimuth;
-    float losRateEl = sensorOutput.velocity.elevation;
+    // Extract the bearing and closing velocity from the relative transformation.
+    float losAz = relativeTransformation.position.azimuth;
+    float losEl = relativeTransformation.position.elevation;
+    float losRateAz = relativeTransformation.velocity.azimuth;
+    float losRateEl = relativeTransformation.velocity.elevation;
     // The closing velocity is negative because the closing velocity is opposite to the range rate.
-    float closingVelocity = -sensorOutput.velocity.range;
+    float closingVelocity = -relativeTransformation.velocity.range;
 
     // Set the turn factor, which is equal to the closing velocity by default.
     float turnFactor = closingVelocity;

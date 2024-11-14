@@ -192,10 +192,8 @@ public class ThreatTests : AgentTestBase {
   [Test]
   public void FixedWingThreat_CalculateAccelerationInput_RespectsMaxForwardAcceleration() {
     SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
-    SensorOutput sensorOutput =
-        fixedWingThreat.GetComponent<Sensor>().SenseWaypoint(Vector3.one * 1000f);
     Vector3 acceleration =
-        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput", sensorOutput);
+        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput");
     float maxForwardAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxForwardAcceleration");
     const float epsilon = 1e-5f;
@@ -206,10 +204,8 @@ public class ThreatTests : AgentTestBase {
   [Test]
   public void FixedWingThreat_CalculateAccelerationInput_RespectsMaxNormalAcceleration() {
     SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
-    SensorOutput sensorOutput =
-        fixedWingThreat.GetComponent<Sensor>().SenseWaypoint(Vector3.one * 1000f);
     Vector3 acceleration =
-        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput", sensorOutput);
+        InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput");
     float maxNormalAcceleration =
         InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxNormalAcceleration");
     const float epsilon = 1e-5f;

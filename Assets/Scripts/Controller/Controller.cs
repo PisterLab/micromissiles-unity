@@ -10,16 +10,21 @@ public class IController {
     _agent = agent;
   }
 
-  // Plan the next optimal control.
-  public Vector3 Plan(SensorOutput sensorOutput) {
-    // TODO(titan): The controller should instantiate an ideal sensor to sense the target model.
-    // This sensor is distinct from the agent's sensor used to feed the guidance filter to create
-    // the target model.
-    return PlanImpl(sensorOutput);
+  // Plan the next optimal control to intercept the target.
+  public Vector3 Plan() {
+    Transformation relativeTransformation =
+        _agent.GetRelativeTransformation(_agent.GetTargetModel());
+    return PlanImpl(relativeTransformation);
+  }
+
+  // Plan the next optimal control to the waypoint.
+  public Vector3 PlanToWaypoint(Vector3 waypoint) {
+    Transformation relativeTransformation = _agent.GetRelativeTransformationToWaypoint(waypoint);
+    return PlanImpl(relativeTransformation);
   }
 
   // Controller-dependent implementation of the control law.
-  protected virtual Vector3 PlanImpl(in SensorOutput sensorOutput) {
+  protected virtual Vector3 PlanImpl(in Transformation relativeTransformation) {
     return Vector3.zero;
   }
 }

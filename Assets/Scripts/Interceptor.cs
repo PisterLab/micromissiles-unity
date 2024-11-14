@@ -14,7 +14,6 @@ public class Interceptor : Agent {
 
   private Coroutine _returnParticleToManagerCoroutine;
 
-  private SensorOutput _sensorOutput;
   private Vector3 _accelerationInput;
 
   private double _elapsedTime = 0;
@@ -55,8 +54,8 @@ public class Interceptor : Agent {
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add PN acceleration to boost acceleration
-    Vector3 pnAcceleration = CalculatePnAcceleration(deltaTime);
-    Vector3 accelerationInput = boostAccelerationVector + pnAcceleration;
+    Vector3 controllerAcceleration = CalcualteAccelerationInput(deltaTime);
+    Vector3 accelerationInput = boostAccelerationVector + controllerAcceleration;
 
     // Calculate the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
@@ -69,14 +68,14 @@ public class Interceptor : Agent {
     UpdateMissileTrailEffect();
 
     _elapsedTime += deltaTime;
-    Vector3 accelerationInput = CalculatePnAcceleration(deltaTime);
+    Vector3 accelerationInput = CalcualteAccelerationInput(deltaTime);
 
     // Calculate and set the total acceleration
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
-  private Vector3 CalculatePnAcceleration(double deltaTime) {
+  private Vector3 CalcualteAccelerationInput(double deltaTime) {
     if (!HasAssignedTarget()) {
       return Vector3.zero;
     }
@@ -91,8 +90,19 @@ public class Interceptor : Agent {
     //   return Vector3.zero;
     // }
 
-    _sensorOutput = GetComponent<Sensor>().Sense(_targetModel);
-    return CalculateAccelerationInput(_sensorOutput);
+    IController controller;
+    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
+      controller = new ApnController(this, _navigationGain);
+    } else {
+      controller = new PnController(this, _navigationGain);
+    }
+    Vector3 accelerationInput = controller.Plan();
+
+    // Clamp the normal acceleration input to the maximum normal acceleration
+    float maxNormalAcceleration = CalculateMaxNormalAcceleration();
+    accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
+    _accelerationInput = accelerationInput;
+    return accelerationInput;
   }
 
   private void UpdateTargetModel(double deltaTime) {
@@ -106,22 +116,6 @@ public class Interceptor : Agent {
       _targetModel.SetAcceleration(_target.GetAcceleration());
       _elapsedTime = 0;
     }
-  }
-
-  private Vector3 CalculateAccelerationInput(SensorOutput sensorOutput) {
-    IController controller;
-    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
-      controller = new ApnController(this, _navigationGain);
-    } else {
-      controller = new PnController(this, _navigationGain);
-    }
-    Vector3 accelerationInput = controller.Plan(sensorOutput);
-
-    // Clamp the normal acceleration input to the maximum normal acceleration
-    float maxNormalAcceleration = CalculateMaxNormalAcceleration();
-    accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
-    _accelerationInput = accelerationInput;
-    return accelerationInput;
   }
 
   private void OnTriggerEnter(Collider other) {

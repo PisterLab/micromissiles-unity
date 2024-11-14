@@ -10,8 +10,8 @@ public class WaypointController : IController {
     _desiredSpeed = desiredSpeed;
   }
 
-  protected override Vector3 PlanImpl(in SensorOutput sensorOutput) {
-    Vector3 toWaypoint = sensorOutput.position.cartesian;
+  protected override Vector3 PlanImpl(in Transformation relativeTransformation) {
+    Vector3 toWaypoint = relativeTransformation.position.cartesian;
     Vector3 desiredVelocity = toWaypoint.normalized * _desiredSpeed;
 
     // Calculate the acceleration needed to reach the desired velocity within one time step.
