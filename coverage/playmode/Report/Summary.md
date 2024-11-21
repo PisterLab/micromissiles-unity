@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 11/20/2024 - 03:01:22 |
+| Generated on: | 11/21/2024 - 03:01:15 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 52 |
 | Files: | 50 |
-| Covered lines: | 1315 |
-| Uncovered lines: | 2108 |
+| Covered lines: | 1310 |
+| Uncovered lines: | 2113 |
 | Coverable lines: | 3423 |
 | Total lines: | 6032 |
-| Line coverage: | 38.4% (1315 of 3423) |
+| Line coverage: | 38.2% (1310 of 3423) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 202 |
+| Covered methods: | 201 |
 | Total methods: | 460 |
-| Method coverage: | 43.9% (202 of 460) |
+| Method coverage: | 43.6% (201 of 460) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1266**|**1782**|**3048**|**5863**|**41.5%**|**0**|**0**|****|**199**|**427**|**46.6%**|
+|**bamlab.micromissiles**|**1261**|**1787**|**3048**|**5863**|**41.3%**|**0**|**0**|****|**198**|**427**|**46.3%**|
 |Agent|195|76|271|481|71.9%|0|0||33|45|73.3%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
@@ -49,7 +49,7 @@
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
 |SwarmStatusDialog|4|129|133|167|3%|0|0||1|16|6.2%|
-|Threat|45|56|101|182|44.5%|0|0||8|10|80%|
+|Threat|40|61|101|182|39.6%|0|0||7|10|70%|
 |ThreatAssignment|7|35|42|80|16.6%|0|0||1|5|20%|
 |ThreatData|7|19|26|49|26.9%|0|0||1|5|20%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|

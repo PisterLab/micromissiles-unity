@@ -1,24 +1,24 @@
 {
   "summary": {
-    "generatedon": "2024-11-20T03:01:22Z",
+    "generatedon": "2024-11-21T03:01:15Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 52,
     "files": 50,
-    "coveredlines": 1315,
-    "uncoveredlines": 2108,
+    "coveredlines": 1310,
+    "uncoveredlines": 2113,
     "coverablelines": 3423,
     "totallines": 6032,
-    "linecoverage": 38.4,
+    "linecoverage": 38.2,
     "coveredbranches": 0,
     "totalbranches": 0,
-    "coveredmethods": 202,
+    "coveredmethods": 201,
     "totalmethods": 460,
-    "methodcoverage": 43.9
+    "methodcoverage": 43.6
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 43, "coverage": 41.5, "coveredlines": 1266, "coverablelines": 3048, "totallines": 5863, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 46.6, "coveredmethods": 199, "totalmethods": 427, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 43, "coverage": 41.3, "coveredlines": 1261, "coverablelines": 3048, "totallines": 5863, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 46.3, "coveredmethods": 198, "totalmethods": 427, "classesinassembly": [
         { "name": "Agent", "coverage": 71.9, "coveredlines": 195, "coverablelines": 271, "totallines": 481, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 73.3, "coveredmethods": 33, "totalmethods": 45 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "AttackBehavior", "coverage": 78.5, "coveredlines": 11, "coverablelines": 14, "totallines": 51, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
@@ -48,7 +48,7 @@
         { "name": "SimulationConfig", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 132, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
         { "name": "StaticAgentConfig", "coverage": 100, "coveredlines": 14, "coverablelines": 14, "totallines": 63, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "SwarmStatusDialog", "coverage": 3, "coveredlines": 4, "coverablelines": 133, "totallines": 167, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 6.2, "coveredmethods": 1, "totalmethods": 16 },
-        { "name": "Threat", "coverage": 44.5, "coveredlines": 45, "coverablelines": 101, "totallines": 182, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 80, "coveredmethods": 8, "totalmethods": 10 },
+        { "name": "Threat", "coverage": 39.6, "coveredlines": 40, "coverablelines": 101, "totallines": 182, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 70, "coveredmethods": 7, "totalmethods": 10 },
         { "name": "ThreatAssignment", "coverage": 16.6, "coveredlines": 7, "coverablelines": 42, "totallines": 80, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 20, "coveredmethods": 1, "totalmethods": 5 },
         { "name": "ThreatData", "coverage": 26.9, "coveredlines": 7, "coverablelines": 26, "totallines": 49, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 20, "coveredmethods": 1, "totalmethods": 5 },
         { "name": "UIBuildButton", "coverage": 0, "coveredlines": 0, "coverablelines": 2, "totallines": 11, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
