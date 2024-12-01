@@ -160,6 +160,8 @@ public class SimManager : MonoBehaviour {
   }
 
   public void StartSimulation() {
+    // Invoke the simulation started event to let listeners
+    // know to invoke their own handler behavior
     OnSimulationStarted?.Invoke();
     InitializeSimulation();
   }
@@ -189,9 +191,6 @@ public class SimManager : MonoBehaviour {
       // updating the time scale and fixed delta time from the newly loaded config files
     }
 
-    // Invoke the simulation started event to let listeners
-    // know to invoke their own handler behavior
-    OnSimulationStarted?.Invoke();
     List<Interceptor> missiles = new List<Interceptor>();
     // Create missiles based on config
     foreach (var swarmConfig in simulationConfig.interceptor_swarm_configs) {

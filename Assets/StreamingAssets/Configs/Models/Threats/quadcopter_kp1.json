@@ -1,0 +1,30 @@
+{
+    "name": "Quadcopter",
+    "agentClass": "RotaryWingThreat",
+    "unitCost": 1000,
+    "accelerationConfig": {
+        "maxReferenceNormalAcceleration": 300,
+        "referenceSpeed": 1000,
+        "maxForwardAcceleration": 50
+    },
+    "boostConfig": {
+        "boostTime": 0
+    },
+    "liftDragConfig": {
+      "dragCoefficient": 0
+    },
+    "bodyConfig": {
+        "mass": 1
+    },
+    "hitConfig": {
+        "hitRadius": 1,
+        "killProbability": 1.0
+    },
+    "powerTable": {
+            "IDLE": 0,
+            "LOW": 20,
+            "CRUISE": 40,
+            "MIL": 50,
+            "MAX": 75
+    }
+}
