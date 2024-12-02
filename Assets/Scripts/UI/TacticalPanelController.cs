@@ -109,8 +109,8 @@ public class TacticalPanelController : MonoBehaviour {
   }
 
   private GameObject CreateSymbolPrefab() {
-    return Instantiate(
-        Resources.Load<GameObject>("Prefabs/Symbols/SymbolPrefab"), _radarUIGroupRectTransform);
+    return Instantiate(Resources.Load<GameObject>("Prefabs/Symbols/SymbolPrefab"),
+                       _radarUIGroupRectTransform);
   }
 
   private void CreateOriginSymbol() {

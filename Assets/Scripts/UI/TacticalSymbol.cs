@@ -37,8 +37,7 @@ public class TacticalSymbol : MonoBehaviour {
   public void DisableDirectionArrow() {
     if (_directionArrow != null) {
       _directionArrow.SetActive(false);
-    }
-    else {
+    } else {
       Debug.LogWarning("Direction arrow not found on TacticalSymbol" + name);
     }
   }
