@@ -17,6 +17,8 @@ public class IADS : MonoBehaviour {
 
   private List<Interceptor> _assignmentQueue = new List<Interceptor>();
 
+  private int _trackFileCount = 0;
+
   private void Awake() {
     if (Instance == null) {
       Instance = this;
@@ -83,7 +85,7 @@ public class IADS : MonoBehaviour {
   }
 
   public void RegisterNewThreat(Threat threat) {
-    ThreatData threatData = new ThreatData(threat, threat.gameObject.name);
+    ThreatData threatData = new ThreatData(threat, $"T{1000 + _trackFileCount++}");
     _threatTable.Add(threatData);
     _threatDataMap.Add(threat, threatData);
 
@@ -126,6 +128,10 @@ public class IADS : MonoBehaviour {
     }
   }
 
+  public List<ThreatData> GetThreatTable() {
+    return _threatTable;
+  }
+
   private void RegisterThreatMiss(Threat threat) {
     // The threat missed (meaning it hit the floor, etc)
     ThreatData threatData = _threatDataMap[threat];
@@ -139,5 +145,6 @@ public class IADS : MonoBehaviour {
     _threatTable.Clear();
     _threatDataMap.Clear();
     _assignmentQueue.Clear();
+    _trackFileCount = 0;
   }
 }

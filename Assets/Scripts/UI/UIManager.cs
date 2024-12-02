@@ -10,7 +10,13 @@ public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
 
   [SerializeField]
-  private GameObject _agentStatusPanel;
+  [Tooltip("The UI panel that renders the tactical view for TACTICAL mode")]
+  private GameObject _tacticalPanel;
+
+  [SerializeField]
+  [Tooltip("The UI panel that renders the camera view for THREE_DIMENSIONAL mode")]
+  private GameObject _cameraPanel;
+
   [SerializeField]
   private GameObject _configSelectorPanel;
   private TMP_Dropdown _configDropdown;
@@ -35,7 +41,7 @@ public class UIManager : MonoBehaviour {
   private int _thrtRemainCount = 0;
   public TMP_FontAsset Font;
 
-  private UIMode curMode = UIMode.NONE;
+  private UIMode curMode = UIMode.THREE_DIMENSIONAL;
 
   // Start is called before the first frame update
   void Awake() {
@@ -47,6 +53,7 @@ public class UIManager : MonoBehaviour {
   }
 
   void Start() {
+    SetUIMode(UIMode.THREE_DIMENSIONAL);
     _configSelectorPanel.SetActive(false);
     SetupConfigSelectorPanel();
     // inputManager = InputManager.Instance;
@@ -115,8 +122,14 @@ public class UIManager : MonoBehaviour {
     // }
   }
 
+  public void ToggleUIMode() {
+    SetUIMode(curMode == UIMode.THREE_DIMENSIONAL ? UIMode.TACTICAL : UIMode.THREE_DIMENSIONAL);
+  }
+
   public void SetUIMode(UIMode mode) {
     curMode = mode;
+    _cameraPanel.SetActive(mode == UIMode.THREE_DIMENSIONAL);
+    _tacticalPanel.SetActive(mode == UIMode.TACTICAL);
   }
 
   public UIMode GetUIMode() {
@@ -234,4 +247,4 @@ public class UIManager : MonoBehaviour {
   }
 }
 
-public enum UIMode { NONE, BUILD, MINE }
+public enum UIMode { THREE_DIMENSIONAL, TACTICAL }

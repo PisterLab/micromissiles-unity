@@ -1,6 +1,8 @@
 {
     "name": "UCAV",
     "agentClass": "FixedWingThreat",
+    "symbolPresent": "hostile_ua_present",
+    "symbolDestroyed": "hostile_ua_destroyed",
     "unitCost": 30000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,

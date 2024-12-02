@@ -1,6 +1,8 @@
 {
     "name": "Fateh110B",
     "agentClass": "FixedWingThreat",
+    "symbolPresent": "hostile_missile_ballistic_present",
+    "symbolDestroyed": "hostile_missile_ballistic_destroyed",
     "unitCost": 200000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 10,

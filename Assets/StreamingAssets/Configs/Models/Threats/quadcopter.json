@@ -2,6 +2,8 @@
     "name": "Quadcopter",
     "agentClass": "RotaryWingThreat",
     "unitCost": 1000,
+    "symbolPresent": "hostile_ua_present",
+    "symbolDestroyed": "hostile_ua_destroyed",
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,
         "referenceSpeed": 1000,

@@ -1,6 +1,8 @@
 {
     "name": "Hydra 70",
     "agentClass": "CarrierInterceptor",
+    "symbolPresent": "friendly_missile_interceptor_mr_present",
+    "symbolDestroyed": "friendly_missile_interceptor_mr_destroyed",
     "unitCost": 30000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,
