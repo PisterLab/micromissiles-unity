@@ -34,13 +34,14 @@ public class TacticalPanelController : MonoBehaviour {
   private float _timeSinceLastRefresh;
   private readonly Dictionary<ThreatData, GameObject> _activeSymbols =
       new Dictionary<ThreatData, GameObject>();
-  private SpriteManager _spriteManager;
+
+  private List<GameObject> _originSymbols = new List<GameObject>();
 
   private void Start() {
     _iads = IADS.Instance;
     SetupRadarUIGroup();
-    _spriteManager = new SpriteManager();
     _timeSinceLastRefresh = 0f;
+    CreateOriginSymbol();
   }
 
   private void Update() {
@@ -107,9 +108,23 @@ public class TacticalPanelController : MonoBehaviour {
     }
   }
 
-  private void CreateSymbol(ThreatData threatData) {
-    GameObject symbolPrefab = Instantiate(
+  private GameObject CreateSymbolPrefab() {
+    return Instantiate(
         Resources.Load<GameObject>("Prefabs/Symbols/SymbolPrefab"), _radarUIGroupRectTransform);
+  }
+
+  private void CreateOriginSymbol() {
+    GameObject symbolPrefab = CreateSymbolPrefab();
+    symbolPrefab.GetComponent<TacticalSymbol>().SetSprite("friendly_destroyer_present");
+    symbolPrefab.GetComponent<TacticalSymbol>().DisableDirectionArrow();
+    symbolPrefab.GetComponent<TacticalSymbol>().SetSpeedAlt("");
+    symbolPrefab.GetComponent<TacticalSymbol>().SetType("");
+    symbolPrefab.GetComponent<TacticalSymbol>().SetUniqueDesignator("");
+    _originSymbols.Add(symbolPrefab);
+  }
+
+  private void CreateSymbol(ThreatData threatData) {
+    GameObject symbolPrefab = CreateSymbolPrefab();
 
     TacticalSymbol tacticalSymbol = symbolPrefab.GetComponent<TacticalSymbol>();
     tacticalSymbol.SetSprite(threatData.Threat.staticAgentConfig.symbolPresent);
@@ -200,6 +215,9 @@ public class TacticalPanelController : MonoBehaviour {
 
     // Update all existing symbols' scales
     foreach (var symbol in _activeSymbols.Values) {
+      UpdateSymbolScale(symbol);
+    }
+    foreach (var symbol in _originSymbols) {
       UpdateSymbolScale(symbol);
     }
   }

@@ -34,6 +34,15 @@ public class TacticalSymbol : MonoBehaviour {
     }
   }
 
+  public void DisableDirectionArrow() {
+    if (_directionArrow != null) {
+      _directionArrow.SetActive(false);
+    }
+    else {
+      Debug.LogWarning("Direction arrow not found on TacticalSymbol" + name);
+    }
+  }
+
   public void SetSprite(string spriteName) {
     spriteName = spriteName.ToUpper();
     // Update main symbol image
