@@ -35,6 +35,9 @@ public class TacticalPanelController : MonoBehaviour {
   private readonly Dictionary<ThreatData, GameObject> _activeSymbols =
       new Dictionary<ThreatData, GameObject>();
 
+  private readonly Dictionary<InterceptorData, GameObject> _activeInterceptorSymbols =
+      new Dictionary<InterceptorData, GameObject>();
+
   private List<GameObject> _originSymbols = new List<GameObject>();
 
   private void Start() {
@@ -76,6 +79,11 @@ public class TacticalPanelController : MonoBehaviour {
   }
 
   private void UpdateSymbols() {
+    UpdateThreatSymbols();
+    UpdateInterceptorSymbols();
+  }
+
+  private void UpdateThreatSymbols() {
     var currentThreats = _iads.GetThreatTable();
 
     RemoveInactiveSymbols(currentThreats);
@@ -217,6 +225,9 @@ public class TacticalPanelController : MonoBehaviour {
     foreach (var symbol in _activeSymbols.Values) {
       UpdateSymbolScale(symbol);
     }
+    foreach (var symbol in _activeInterceptorSymbols.Values) {
+      UpdateSymbolScale(symbol);
+    }
     foreach (var symbol in _originSymbols) {
       UpdateSymbolScale(symbol);
     }
@@ -226,5 +237,74 @@ public class TacticalPanelController : MonoBehaviour {
     // Calculate inverse scale to maintain constant visual size
     float inverseScale = 2f / _radarUIGroupRectTransform.localScale.x;
     symbolObj.transform.localScale = new Vector3(inverseScale, inverseScale, 1f);
+  }
+
+  private void UpdateInterceptorSymbols() {
+    var currentInterceptors = _iads.GetInterceptorTable();
+
+    RemoveInactiveInterceptorSymbols(currentInterceptors);
+    UpdateOrCreateActiveInterceptorSymbols(currentInterceptors);
+  }
+
+  private void RemoveInactiveInterceptorSymbols(List<InterceptorData> currentInterceptors) {
+    var interceptorsToRemove = _activeInterceptorSymbols.Keys.Where(interceptor => !currentInterceptors.Contains(interceptor)).ToList();
+
+    foreach (var interceptor in interceptorsToRemove) {
+      Destroy(_activeInterceptorSymbols[interceptor]);
+      _activeInterceptorSymbols.Remove(interceptor);
+    }
+  }
+
+  private void UpdateOrCreateActiveInterceptorSymbols(List<InterceptorData> currentInterceptors) {
+    foreach (var interceptorData in currentInterceptors) {
+      if (interceptorData.Status == InterceptorStatus.DESTROYED) {
+        RemoveInterceptorSymbol(interceptorData);
+        continue;
+      }
+
+      if (_activeInterceptorSymbols.TryGetValue(interceptorData, out GameObject symbolObj)) {
+        UpdateSymbolPosition(symbolObj, interceptorData.Interceptor.transform.position);
+        UpdateSymbolScale(symbolObj);
+      } else {
+        CreateInterceptorSymbol(interceptorData);
+      }
+    }
+  }
+
+  private void CreateInterceptorSymbol(InterceptorData interceptorData) {
+    GameObject symbolPrefab = CreateSymbolPrefab();
+
+    TacticalSymbol tacticalSymbol = symbolPrefab.GetComponent<TacticalSymbol>();
+
+    tacticalSymbol.SetSprite(interceptorData.Interceptor.staticAgentConfig.symbolPresent);
+
+    // Set rotation to the direction of the velocity vector
+    tacticalSymbol.SetDirectionArrowRotation(
+        Mathf.Atan2(interceptorData.Interceptor.GetVelocity().z, interceptorData.Interceptor.GetVelocity().x) * Mathf.Rad2Deg
+    );
+
+    // Set the speed and altitude text
+    tacticalSymbol.SetSpeedAlt(
+        $"{ConvertMpsToKnots(interceptorData.Interceptor.GetVelocity().magnitude):F0}kts" +
+        $"/{ConvertMetersToFeet(interceptorData.Interceptor.transform.position.y):F0}ft"
+    );
+
+    // Set the type text
+    tacticalSymbol.SetType("Interceptor");
+
+    // Set the unique designator text
+    tacticalSymbol.SetUniqueDesignator(interceptorData.InterceptorID);
+
+    UpdateSymbolPosition(symbolPrefab, interceptorData.Interceptor.transform.position);
+    UpdateSymbolRotation(symbolPrefab, interceptorData.Interceptor.transform.forward);
+    UpdateSymbolScale(symbolPrefab);
+    _activeInterceptorSymbols.Add(interceptorData, symbolPrefab);
+  }
+
+  private void RemoveInterceptorSymbol(InterceptorData interceptorData) {
+    if (_activeInterceptorSymbols.TryGetValue(interceptorData, out GameObject symbolObj)) {
+      Destroy(symbolObj);
+      _activeInterceptorSymbols.Remove(interceptorData);
+    }
   }
 }

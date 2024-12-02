@@ -19,6 +19,12 @@ public class IADS : MonoBehaviour {
 
   private int _trackFileCount = 0;
 
+  [SerializeField]
+  private List<InterceptorData> _interceptorTable = new List<InterceptorData>();
+  private Dictionary<Interceptor, InterceptorData> _interceptorDataMap = new Dictionary<Interceptor, InterceptorData>();
+
+  private int _interceptorFileCount = 0;
+
   private void Awake() {
     if (Instance == null) {
       Instance = this;
@@ -78,9 +84,7 @@ public class IADS : MonoBehaviour {
     foreach (var assignment in assignments) {
       assignment.Interceptor.AssignTarget(assignment.Threat);
       _threatDataMap[assignment.Threat].AssignInterceptor(assignment.Interceptor);
-      // Debug.Log(
-      //     $"Interceptor {assignment.Interceptor.name} assigned to threat
-      //     {assignment.Threat.name}");
+      _interceptorDataMap[assignment.Interceptor].AssignThreat(assignment.Threat);
     }
   }
 
@@ -97,7 +101,11 @@ public class IADS : MonoBehaviour {
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
-    // Placeholder
+    InterceptorData interceptorData = new InterceptorData(interceptor, $"I{2000 + _interceptorFileCount++}");
+    _interceptorTable.Add(interceptorData);
+    _interceptorDataMap.Add(interceptor, interceptorData);
+
+    // Subscribe to the interceptor's events
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
     interceptor.OnInterceptHit += RegisterInterceptorHit;
   }
@@ -108,11 +116,19 @@ public class IADS : MonoBehaviour {
       threatData.RemoveInterceptor(interceptor);
       MarkThreatDestroyed(threatData);
     }
+
+    if (_interceptorDataMap.TryGetValue(interceptor, out InterceptorData interceptorData)) {
+      interceptorData.RemoveThreat(threat);
+      interceptorData.MarkDestroyed();
+    }
   }
 
   private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    // Remove the interceptor from the threat's assigned interceptors
     _threatDataMap[threat].RemoveInterceptor(interceptor);
+
+    if (_interceptorDataMap.TryGetValue(interceptor, out InterceptorData interceptorData)) {
+      interceptorData.RemoveThreat(threat);
+    }
   }
 
   private void MarkThreatDestroyed(ThreatData threatData) {
@@ -132,6 +148,10 @@ public class IADS : MonoBehaviour {
     return _threatTable;
   }
 
+  public List<InterceptorData> GetInterceptorTable() {
+    return _interceptorTable;
+  }
+
   private void RegisterThreatMiss(Threat threat) {
     // The threat missed (meaning it hit the floor, etc)
     ThreatData threatData = _threatDataMap[threat];
@@ -144,7 +164,10 @@ public class IADS : MonoBehaviour {
   private void RegisterSimulationEnded() {
     _threatTable.Clear();
     _threatDataMap.Clear();
+    _interceptorTable.Clear();
+    _interceptorDataMap.Clear();
     _assignmentQueue.Clear();
     _trackFileCount = 0;
+    _interceptorFileCount = 0;
   }
 }
