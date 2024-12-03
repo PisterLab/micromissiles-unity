@@ -2403,9 +2403,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1777467269}
   - {fileID: 1417973885}
   - {fileID: 1620765831}
+  - {fileID: 1777467269}
   - {fileID: 1419019257}
   - {fileID: 1373031584}
   m_Father: {fileID: 0}
@@ -5998,7 +5998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5899f1049cf3d64e8c06c1db772c879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _threatTable: []
 --- !u!4 &1134242715
 Transform:
   m_ObjectHideFlags: 0
@@ -8022,8 +8021,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 15}
+  m_SizeDelta: {x: 0, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1620765832
 MonoBehaviour:
@@ -8079,6 +8078,7 @@ MonoBehaviour:
   _refreshRate: 0.1
   _keyboardPanSpeed: 500
   _panelZoomSpeed: 10
+  _gridLineMaterial: {fileID: 0}
 --- !u!1 &1658847972
 GameObject:
   m_ObjectHideFlags: 0
@@ -8286,6 +8286,7 @@ GameObject:
   - component: {fileID: 1720993736}
   - component: {fileID: 1720993738}
   - component: {fileID: 1720993737}
+  - component: {fileID: 1720993739}
   m_Layer: 5
   m_Name: RadarUIGroup
   m_TagString: Untagged
@@ -8350,6 +8351,31 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1720993735}
   m_CullTransparentMesh: 1
+--- !u!114 &1720993739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720993735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d419cc9870420964599b3a589b104ffd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: e5948286d83b8054cb204ff999348af1, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  _gridColor: {r: 0, g: 0, b: 0, a: 0.3}
+  _numberOfBearingLines: 18
+  _numberOfRangeRings: 5
+  _rangeScales:
+  - 100
+  - 1000
+  - 10000
+  - 40000
+  _lineWidth: 4
 --- !u!1 &1770309961
 GameObject:
   m_ObjectHideFlags: 0

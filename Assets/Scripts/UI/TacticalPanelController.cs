@@ -37,6 +37,10 @@ public class TacticalPanelController : MonoBehaviour {
 
   private List<GameObject> _originSymbols = new List<GameObject>();
 
+  private TacticalPolarGridGraphic _polarGridGraphic;
+  [SerializeField]
+  private Material _gridLineMaterial;
+
   private void Start() {
     _iads = IADS.Instance;
     SetupRadarUIGroup();
@@ -54,6 +58,11 @@ public class TacticalPanelController : MonoBehaviour {
 
   private void InitializeController() {
     // Initialize any controller-specific settings here if needed
+    // Create polar grid
+    _polarGridGraphic = _radarUIGroup.GetComponent<TacticalPolarGridGraphic>();
+    if (_polarGridGraphic == null) {
+      Debug.LogError("TacticalPolarGridGraphic not found on radar UI group");
+    }
   }
 
   private void SetupRadarUIGroup() {
@@ -80,12 +89,11 @@ public class TacticalPanelController : MonoBehaviour {
     UpdateTrackSymbols(_iads.GetInterceptorTracks());
   }
 
-  private void UpdateTrackSymbols<T>(List<T> currentTracks) where T : TrackFileData {
+  private void UpdateTrackSymbols<T>(List<T> currentTracks)
+      where T : TrackFileData {
     // Remove inactive symbols
-    var tracksToRemove = _trackSymbols.Keys
-        .OfType<T>()
-        .Where(track => !currentTracks.Contains(track))
-        .ToList();
+    var tracksToRemove =
+        _trackSymbols.Keys.OfType<T>().Where(track => !currentTracks.Contains(track)).ToList();
 
     foreach (var track in tracksToRemove) {
       RemoveTrackSymbol(track);
@@ -131,8 +139,8 @@ public class TacticalPanelController : MonoBehaviour {
     // Set common properties
     tacticalSymbol.SetSprite(trackFile.Agent.staticAgentConfig.symbolPresent);
     tacticalSymbol.SetDirectionArrowRotation(
-        Mathf.Atan2(trackFile.Agent.GetVelocity().z, 
-                   trackFile.Agent.GetVelocity().x) * Mathf.Rad2Deg);
+        Mathf.Atan2(trackFile.Agent.GetVelocity().z, trackFile.Agent.GetVelocity().x) *
+        Mathf.Rad2Deg);
 
     UpdateSymbolSpeedAlt(tacticalSymbol, trackFile);
 
@@ -142,13 +150,13 @@ public class TacticalPanelController : MonoBehaviour {
     } else if (trackFile is InterceptorData) {
       tacticalSymbol.SetType("Interceptor");
     }
- 
+
     tacticalSymbol.SetUniqueDesignator(trackFile.TrackID);
 
     UpdateSymbolPosition(symbolObj, trackFile.Agent.transform.position);
     UpdateSymbolRotation(symbolObj, trackFile.Agent.transform.forward);
     UpdateSymbolScale(symbolObj);
-    
+
     _trackSymbols.Add(trackFile, symbolObj);
   }
 
@@ -216,6 +224,11 @@ public class TacticalPanelController : MonoBehaviour {
     }
     // Temporarily necessary until we implement IADS vessel system
     UpdateSymbolScale(_originSymbols[0]);
+
+    float inverseScale = 2f / _radarUIGroupRectTransform.localScale.x;
+    // if (_polarGridGraphic != null) {
+    //   _polarGridGraphic.UpdateLineWidths(inverseScale);
+    // }
   }
 
   private void UpdateSymbolScale(GameObject symbolObj) {

@@ -55,14 +55,14 @@ public class InterceptorData : TrackFileData {
   [SerializeField]
   private List<Threat> _assignedThreats;
 
-  public InterceptorData(Interceptor interceptor, string interceptorID) : base(interceptor, interceptorID) {
+  public InterceptorData(Interceptor interceptor, string interceptorID)
+      : base(interceptor, interceptorID) {
     _assignedThreats = new List<Threat>();
   }
 
   public void AssignThreat(Threat threat) {
     if (_status == TrackStatus.DESTROYED) {
-      Debug.LogError(
-          $"AssignThreat: Interceptor {TrackID} is destroyed, cannot assign threat");
+      Debug.LogError($"AssignThreat: Interceptor {TrackID} is destroyed, cannot assign threat");
       return;
     }
     _status = TrackStatus.ASSIGNED;
@@ -75,5 +75,4 @@ public class InterceptorData : TrackFileData {
       _status = TrackStatus.UNASSIGNED;
     }
   }
-
 }

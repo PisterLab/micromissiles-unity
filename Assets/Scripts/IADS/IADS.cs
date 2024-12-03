@@ -77,7 +77,7 @@ public class IADS : MonoBehaviour {
     // Apply the assignments to the missiles
     foreach (var assignment in assignments) {
       assignment.Interceptor.AssignTarget(assignment.Threat);
-      ThreatData threatTrack = _trackFileMap[assignment.Threat] as ThreatData;  
+      ThreatData threatTrack = _trackFileMap[assignment.Threat] as ThreatData;
       InterceptorData interceptorTrack = _trackFileMap[assignment.Interceptor] as InterceptorData;
       if (threatTrack != null && interceptorTrack != null) {
         threatTrack.AssignInterceptor(assignment.Interceptor);
@@ -142,10 +142,9 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  public List<ThreatData> GetThreatTracks() => 
-      _trackFiles.OfType<ThreatData>().ToList();
+  public List<ThreatData> GetThreatTracks() => _trackFiles.OfType<ThreatData>().ToList();
 
-  public List<InterceptorData> GetInterceptorTracks() => 
+  public List<InterceptorData> GetInterceptorTracks() =>
       _trackFiles.OfType<InterceptorData>().ToList();
 
   private void RegisterThreatMiss(Threat threat) {
