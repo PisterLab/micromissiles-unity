@@ -8376,6 +8376,7 @@ MonoBehaviour:
   - 10000
   - 40000
   _lineWidth: 4
+  _rangeTextPrefab: {fileID: 4604315487424321950, guid: 1319115a96ff00049a5de1039f27088c, type: 3}
 --- !u!1 &1770309961
 GameObject:
   m_ObjectHideFlags: 0

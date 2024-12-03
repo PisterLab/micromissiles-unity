@@ -128,6 +128,13 @@ public class InputManager : MonoBehaviour {
       keyboardPanDirection.x += 1;
     }
 
+    if (Input.GetKeyDown(KeyCode.Q)) {
+      TacticalPanelController.Instance.CycleRangeUp();
+    }
+    if (Input.GetKeyDown(KeyCode.E)) {
+      TacticalPanelController.Instance.CycleRangeDown();
+    }
+
     if (keyboardPanDirection != Vector2.zero) {
       TacticalPanelController.Instance.PanWithKeyboard(keyboardPanDirection.normalized);
     }

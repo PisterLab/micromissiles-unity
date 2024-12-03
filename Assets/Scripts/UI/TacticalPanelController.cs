@@ -38,8 +38,6 @@ public class TacticalPanelController : MonoBehaviour {
   private List<GameObject> _originSymbols = new List<GameObject>();
 
   private TacticalPolarGridGraphic _polarGridGraphic;
-  [SerializeField]
-  private Material _gridLineMaterial;
 
   private void Start() {
     _iads = IADS.Instance;
@@ -166,10 +164,31 @@ public class TacticalPanelController : MonoBehaviour {
         $"{Utilities.ConvertMetersToFeet(trackFile.Agent.transform.position.y):F0}ft");
   }
 
+  /// <summary>
+  /// Updates the position of a symbol based on the threat's real-world position.
+  /// </summary>
+  /// <param name="symbolObj">The symbol GameObject to update.</param>
+  /// <param name="threatPosition">The real-world position of the threat.</param>
   private void UpdateSymbolPosition(GameObject symbolObj, Vector3 threatPosition) {
-    symbolObj.transform.localPosition =
-        new Vector3(threatPosition.z / 1000.0f, threatPosition.x / 1000.0f, 0f);
+    if (_polarGridGraphic == null) {
+      Debug.LogError("TacticalPolarGridGraphic reference is missing.");
+      return;
+    }
+
+    // Get the current scale factor from the grid
+    float scaleFactor = _polarGridGraphic.CurrentScaleFactor;
+
+    // Assuming threatPosition is in meters, convert to the grid's scale
+    // Adjust the division factor as per your real-world scaling
+    float scaleDivisionFactor = 1000f;  // Example: 1000 meters = 1 unit on grid
+
+    Vector3 scaledPosition = new Vector3(threatPosition.z / scaleDivisionFactor,
+                                         threatPosition.x / scaleDivisionFactor, 0f);
+
+    // Apply the scaleFactor to ensure positioning aligns with grid scaling
+    symbolObj.transform.localPosition = scaledPosition * scaleFactor;
   }
+
   private void UpdateSymbolRotation(GameObject symbolObj, Vector3 forward) {
     symbolObj.GetComponent<TacticalSymbol>().SetDirectionArrowRotation(
         -1 * Mathf.Atan2(forward.z, forward.x) * Mathf.Rad2Deg);
@@ -187,6 +206,14 @@ public class TacticalPanelController : MonoBehaviour {
       Destroy(symbol);
     }
     _trackSymbols.Clear();
+  }
+
+  public void CycleRangeUp() {
+    _polarGridGraphic.CycleRangeUp();
+  }
+
+  public void CycleRangeDown() {
+    _polarGridGraphic.CycleRangeDown();
   }
 
   public void ZoomIn(float amount) {
@@ -208,6 +235,10 @@ public class TacticalPanelController : MonoBehaviour {
     Pan(delta);
   }
 
+  /// <summary>
+  /// Adjusts the radar scale by the specified amount.
+  /// </summary>
+  /// <param name="amount">The amount to adjust the radar scale.</param>
   private void AdjustRadarScale(float amount) {
     Vector3 newScale = _radarUIGroupRectTransform.localScale + new Vector3(amount, amount, 0f);
 
@@ -224,11 +255,6 @@ public class TacticalPanelController : MonoBehaviour {
     }
     // Temporarily necessary until we implement IADS vessel system
     UpdateSymbolScale(_originSymbols[0]);
-
-    float inverseScale = 2f / _radarUIGroupRectTransform.localScale.x;
-    // if (_polarGridGraphic != null) {
-    //   _polarGridGraphic.UpdateLineWidths(inverseScale);
-    // }
   }
 
   private void UpdateSymbolScale(GameObject symbolObj) {
