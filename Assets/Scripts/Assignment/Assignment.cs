@@ -35,6 +35,6 @@ public interface IAssignment {
   // Get the list of active threats.
   [Pure]
   protected static List<ThreatData> GetActiveThreats(in IReadOnlyList<ThreatData> threats) {
-    return threats.Where(t => t.Status != ThreatStatus.DESTROYED).ToList();
+    return threats.Where(t => t.Status != TrackStatus.DESTROYED).ToList();
   }
 }

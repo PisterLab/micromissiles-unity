@@ -40,7 +40,7 @@ public class ThreatAssignment : IAssignment {
     {
       foreach (ThreatInfo threatInfo in threatInfos) {
         assignments.Add(new IAssignment.AssignmentItem(assignableInterceptorsEnumerator.Current,
-                                                       threatInfo.ThreatData.Threat));
+                                                       threatInfo.ThreatData.Agent as Threat));
         if (!assignableInterceptorsEnumerator.MoveNext()) {
           break;
         }
@@ -54,7 +54,7 @@ public class ThreatAssignment : IAssignment {
     List<ThreatInfo> threatInfos = new List<ThreatInfo>();
 
     foreach (ThreatData threatData in threatTable) {
-      Threat threat = threatData.Threat;
+      Threat threat = threatData.Agent as Threat;
       float distanceToMean = Vector3.Distance(threat.transform.position, defensePosition);
       float velocityMagnitude = threat.GetVelocity().magnitude;
 

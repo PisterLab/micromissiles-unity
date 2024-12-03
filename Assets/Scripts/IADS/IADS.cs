@@ -12,18 +12,12 @@ public class IADS : MonoBehaviour {
   private IAssignment _assignmentScheme;
 
   [SerializeField]
-  private List<ThreatData> _threatTable = new List<ThreatData>();
-  private Dictionary<Threat, ThreatData> _threatDataMap = new Dictionary<Threat, ThreatData>();
+  private List<TrackFileData> _trackFiles = new List<TrackFileData>();
+  private Dictionary<Agent, TrackFileData> _trackFileMap = new Dictionary<Agent, TrackFileData>();
 
   private List<Interceptor> _assignmentQueue = new List<Interceptor>();
 
   private int _trackFileCount = 0;
-
-  [SerializeField]
-  private List<InterceptorData> _interceptorTable = new List<InterceptorData>();
-  private Dictionary<Interceptor, InterceptorData> _interceptorDataMap = new Dictionary<Interceptor, InterceptorData>();
-
-  private int _interceptorFileCount = 0;
 
   private void Awake() {
     if (Instance == null) {
@@ -78,96 +72,94 @@ public class IADS : MonoBehaviour {
   public void AssignInterceptorsToThreats(List<Interceptor> missilesToAssign) {
     // Perform the assignment
     IEnumerable<IAssignment.AssignmentItem> assignments =
-        _assignmentScheme.Assign(missilesToAssign, _threatTable);
+        _assignmentScheme.Assign(missilesToAssign, _trackFiles.OfType<ThreatData>().ToList());
 
     // Apply the assignments to the missiles
     foreach (var assignment in assignments) {
       assignment.Interceptor.AssignTarget(assignment.Threat);
-      _threatDataMap[assignment.Threat].AssignInterceptor(assignment.Interceptor);
-      _interceptorDataMap[assignment.Interceptor].AssignThreat(assignment.Threat);
+      ThreatData threatTrack = _trackFileMap[assignment.Threat] as ThreatData;  
+      InterceptorData interceptorTrack = _trackFileMap[assignment.Interceptor] as InterceptorData;
+      if (threatTrack != null && interceptorTrack != null) {
+        threatTrack.AssignInterceptor(assignment.Interceptor);
+        interceptorTrack.AssignThreat(assignment.Threat);
+      }
     }
   }
 
   public void RegisterNewThreat(Threat threat) {
-    ThreatData threatData = new ThreatData(threat, $"T{1000 + _trackFileCount++}");
-    _threatTable.Add(threatData);
-    _threatDataMap.Add(threat, threatData);
+    string trackID = $"T{1000 + _trackFileCount++}";
+    ThreatData trackFile = new ThreatData(threat, trackID);
+    _trackFiles.Add(trackFile);
+    _trackFileMap.Add(threat, trackFile);
 
-    // Subscribe to the threat's events
-    // TODO: If we do not want omniscient IADS, we
-    // need to model the IADS's sensors here.
     threat.OnThreatHit += RegisterThreatHit;
     threat.OnThreatMiss += RegisterThreatMiss;
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
-    InterceptorData interceptorData = new InterceptorData(interceptor, $"I{2000 + _interceptorFileCount++}");
-    _interceptorTable.Add(interceptorData);
-    _interceptorDataMap.Add(interceptor, interceptorData);
+    string trackID = $"I{2000 + _trackFileCount++}";
+    InterceptorData trackFile = new InterceptorData(interceptor, trackID);
+    _trackFiles.Add(trackFile);
+    _trackFileMap.Add(interceptor, trackFile);
 
-    // Subscribe to the interceptor's events
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
     interceptor.OnInterceptHit += RegisterInterceptorHit;
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      threatData.RemoveInterceptor(interceptor);
-      MarkThreatDestroyed(threatData);
+    var threatTrack = _trackFileMap[threat] as ThreatData;
+    var interceptorTrack = _trackFileMap[interceptor] as InterceptorData;
+
+    if (threatTrack != null) {
+      threatTrack.RemoveInterceptor(interceptor);
+      threatTrack.MarkDestroyed();
     }
 
-    if (_interceptorDataMap.TryGetValue(interceptor, out InterceptorData interceptorData)) {
-      interceptorData.RemoveThreat(threat);
-      interceptorData.MarkDestroyed();
+    if (interceptorTrack != null) {
+      interceptorTrack.RemoveThreat(threat);
+      interceptorTrack.MarkDestroyed();
     }
   }
 
   private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    _threatDataMap[threat].RemoveInterceptor(interceptor);
+    var threatTrack = _trackFileMap[threat] as ThreatData;
+    var interceptorTrack = _trackFileMap[interceptor] as InterceptorData;
 
-    if (_interceptorDataMap.TryGetValue(interceptor, out InterceptorData interceptorData)) {
-      interceptorData.RemoveThreat(threat);
+    if (threatTrack != null) {
+      threatTrack.RemoveInterceptor(interceptor);
     }
-  }
 
-  private void MarkThreatDestroyed(ThreatData threatData) {
-    if (threatData != null) {
-      threatData.MarkDestroyed();
+    if (interceptorTrack != null) {
+      interceptorTrack.RemoveThreat(threat);
+      interceptorTrack.MarkDestroyed();
     }
   }
 
   private void RegisterThreatHit(Threat threat) {
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      MarkThreatDestroyed(threatData);
+    var threatTrack = _trackFileMap[threat] as ThreatData;
+    if (threatTrack != null) {
+      threatTrack.MarkDestroyed();
     }
   }
 
-  public List<ThreatData> GetThreatTable() {
-    return _threatTable;
-  }
+  public List<ThreatData> GetThreatTracks() => 
+      _trackFiles.OfType<ThreatData>().ToList();
 
-  public List<InterceptorData> GetInterceptorTable() {
-    return _interceptorTable;
-  }
+  public List<InterceptorData> GetInterceptorTracks() => 
+      _trackFiles.OfType<InterceptorData>().ToList();
 
   private void RegisterThreatMiss(Threat threat) {
     // The threat missed (meaning it hit the floor, etc)
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      MarkThreatDestroyed(threatData);
+    var threatTrack = _trackFileMap[threat] as ThreatData;
+    if (threatTrack != null) {
+      threatTrack.MarkDestroyed();
     }
-    // threatData.RemoveInterceptor(null);
   }
 
   private void RegisterSimulationEnded() {
-    _threatTable.Clear();
-    _threatDataMap.Clear();
-    _interceptorTable.Clear();
-    _interceptorDataMap.Clear();
+    _trackFiles.Clear();
+    _trackFileMap.Clear();
     _assignmentQueue.Clear();
     _trackFileCount = 0;
-    _interceptorFileCount = 0;
   }
 }

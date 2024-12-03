@@ -34,7 +34,7 @@ public class RoundRobinAssignment : IAssignment {
       ThreatData selectedThreat = activeThreats[nextTargetIndex];
 
       // Assign the interceptor to the selected threat.
-      assignments.Add(new IAssignment.AssignmentItem(interceptor, selectedThreat.Threat));
+      assignments.Add(new IAssignment.AssignmentItem(interceptor, selectedThreat.Agent as Threat));
 
       // Update the previous target index.
       prevTargetIndex = nextTargetIndex;
