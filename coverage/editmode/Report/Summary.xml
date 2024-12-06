@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>12/05/2024 - 03:06:57</Generatedon>
+    <Generatedon>12/06/2024 - 03:05:46</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>52</Classes>
