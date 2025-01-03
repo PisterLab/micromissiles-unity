@@ -1,30 +1,31 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/03/2025 - 02:53:24 |
+| Generated on: | 01/03/2025 - 23:53:04 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 52 |
-| Files: | 50 |
+| Classes: | 54 |
+| Files: | 52 |
 | Covered lines: | 1093 |
-| Uncovered lines: | 2330 |
-| Coverable lines: | 3423 |
-| Total lines: | 6032 |
-| Line coverage: | 31.9% (1093 of 3423) |
+| Uncovered lines: | 2433 |
+| Coverable lines: | 3526 |
+| Total lines: | 6202 |
+| Line coverage: | 30.9% (1093 of 3526) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 178 |
-| Total methods: | 460 |
-| Method coverage: | 38.6% (178 of 460) |
+| Total methods: | 477 |
+| Method coverage: | 37.3% (178 of 477) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1083**|**1965**|**3048**|**5863**|**35.5%**|**0**|**0**|****|**176**|**427**|**41.2%**|
+|**bamlab.micromissiles**|**1083**|**2002**|**3085**|**5938**|**35.1%**|**0**|**0**|****|**176**|**437**|**40.2%**|
 |Agent|191|80|271|481|70.4%|0|0||32|45|71.1%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
 |CarrierInterceptor|29|22|51|80|56.8%|0|0||5|7|71.4%|
+|Cluster|0|37|37|75|0%|0|0||0|10|0%|
 |ConfigLoader|29|77|106|153|27.3%|0|0||4|13|30.7%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
@@ -67,7 +68,8 @@
 |AgentTestBase|0|23|23|41|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|26|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**262**|**262**|**574**|**0%**|**0**|**0**|****|**0**|**18**|**0%**|
+|**bamlab.test.editmode**|**0**|**328**|**328**|**669**|**0%**|**0**|**0**|****|**0**|**25**|**0%**|
+|ClusterTest|0|66|66|95|0%|0|0||0|7|0%|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|63|63|141|0%|0|0||0|2|0%|
 |ThreatTests|0|131|131|310|0%|0|0||0|11|0%|
