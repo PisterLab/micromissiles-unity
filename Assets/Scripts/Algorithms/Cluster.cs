@@ -5,11 +5,21 @@ using UnityEngine;
 
 // The cluster class represents a collection of points with a defined centroid.
 public class Cluster {
-  // Centroid of the cluster.
-  private Vector3 centroid = Vector3.zero;
+  // Position of the cluster.
+  private Vector3 position = Vector3.zero;
 
   // List of points in the cluster.
   private List<Vector3> points = new List<Vector3>();
+
+  public Cluster() {}
+  public Cluster(in Vector3 position) {
+    this.position = position;
+  }
+
+  // Get the cluster position.
+  public Vector3 Position {
+    get { return position; }
+  }
 
   // Get the list of points.
   public IReadOnlyList<Vector3> Points {
@@ -52,7 +62,7 @@ public class Cluster {
 
   // Recenter the cluster's centroid to be the mean of all points in the cluster.
   public void Recenter() {
-    centroid = Centroid();
+    position = Centroid();
   }
 
   // Add a point to the cluster.

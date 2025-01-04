@@ -68,8 +68,9 @@ public class ClusterTest {
     }
     Cluster cluster = GenerateCluster(points);
     cluster.AddPoint(new Vector3(10, -10, 0));
+    Assert.AreNotEqual(cluster.Position, new Vector3(1, -1, 0));
     cluster.Recenter();
-    Assert.AreEqual(cluster.Centroid(), new Vector3(1, -1, 0));
+    Assert.AreEqual(cluster.Position, new Vector3(1, -1, 0));
   }
 
   [Test]
@@ -90,6 +91,6 @@ public class ClusterTest {
     cluster1.Merge(cluster2);
     cluster1.Recenter();
     Assert.AreEqual(cluster1.Size(), size1 + size2);
-    Assert.AreEqual(cluster1.Centroid(), (centroid1 + centroid2) / 2);
+    Assert.AreEqual(cluster1.Position, (centroid1 + centroid2) / 2);
   }
 }
