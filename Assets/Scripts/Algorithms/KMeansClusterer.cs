@@ -77,3 +77,40 @@ public class KMeansClusterer : IClusterer {
     }
   }
 }
+
+// The k-means clusterer class performs k-means clustering.
+public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
+  public ConstrainedKMeansClusterer(List<Vector3> points, int maxSize, float maxRadius)
+      : base(points, maxSize, maxRadius) {}
+
+  // Cluster the points.
+  public override void Cluster() {
+    int numClusters = (int)Mathf.Ceil(points.Count / maxSize);
+    KMeansClusterer clusterer;
+    while (true) {
+      clusterer = new KMeansClusterer(points, numClusters);
+      clusterer.Cluster();
+
+      // Count the number of over-populated and over-sized clusters.
+      int numOverPopulatedClusters = 0;
+      int numOverSizedClusters = 0;
+      foreach (var cluster in clusterer.Clusters) {
+        if (cluster.Size() > maxSize) {
+          ++numOverPopulatedClusters;
+        }
+        if (cluster.Radius() > maxRadius) {
+          ++numOverSizedClusters;
+        }
+      }
+
+      // If all clusters satisfy the size and radius constraints, the algorithm has converged.
+      if (numOverPopulatedClusters == 0 && numOverSizedClusters == 0) {
+        break;
+      }
+
+      numClusters +=
+          (int)Mathf.Ceil(Mathf.Max(numOverPopulatedClusters, numOverSizedClusters) / 2.0f);
+    }
+    clusters = new List<Cluster>(clusterer.Clusters);
+  }
+}
