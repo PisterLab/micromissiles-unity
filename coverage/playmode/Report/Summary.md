@@ -1,31 +1,30 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/04/2025 - 01:51:56 |
+| Generated on: | 01/04/2025 - 02:48:35 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 57 |
-| Files: | 55 |
+| Classes: | 52 |
+| Files: | 50 |
 | Covered lines: | 1093 |
-| Uncovered lines: | 2505 |
-| Coverable lines: | 3598 |
-| Total lines: | 6345 |
-| Line coverage: | 30.3% (1093 of 3598) |
+| Uncovered lines: | 2330 |
+| Coverable lines: | 3423 |
+| Total lines: | 6032 |
+| Line coverage: | 31.9% (1093 of 3423) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 178 |
-| Total methods: | 487 |
-| Method coverage: | 36.5% (178 of 487) |
+| Total methods: | 460 |
+| Method coverage: | 38.6% (178 of 460) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1083**|**2064**|**3147**|**6056**|**34.4%**|**0**|**0**|****|**176**|**445**|**39.5%**|
+|**bamlab.micromissiles**|**1083**|**1965**|**3048**|**5863**|**35.5%**|**0**|**0**|****|**176**|**427**|**41.2%**|
 |Agent|191|80|271|481|70.4%|0|0||32|45|71.1%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
 |CarrierInterceptor|29|22|51|80|56.8%|0|0||5|7|71.4%|
-|Cluster|0|42|42|85|0%|0|0||0|12|0%|
 |ConfigLoader|29|77|106|153|27.3%|0|0||4|13|30.7%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
@@ -35,12 +34,10 @@
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|44|43|87|143|50.5%|0|0||10|17|58.8%|
 |IAssignment|3|7|10|40|30%|0|0||1|3|33.3%|
-|IClusterer|0|7|7|29|0%|0|0||0|3|0%|
 |IController|11|3|14|30|78.5%|0|0||3|4|75%|
 |IdealSensor|7|7|14|25|50%|0|0||1|2|50%|
 |InputManager|56|57|113|156|49.5%|0|0||11|11|100%|
 |Interceptor|72|83|155|238|46.4%|0|0||9|17|52.9%|
-|KMeansClusterer|0|50|50|79|0%|0|0||0|3|0%|
 |ParticleManager|29|141|170|245|17%|0|0||8|24|33.3%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
@@ -70,9 +67,7 @@
 |AgentTestBase|0|23|23|41|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|26|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**338**|**338**|**694**|**0%**|**0**|**0**|****|**0**|**27**|**0%**|
-|ClusterTest|0|67|67|96|0%|0|0||0|7|0%|
-|KMeansClustererTest|0|9|9|24|0%|0|0||0|2|0%|
+|**bamlab.test.editmode**|**0**|**262**|**262**|**574**|**0%**|**0**|**0**|****|**0**|**18**|**0%**|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|63|63|141|0%|0|0||0|2|0%|
 |ThreatTests|0|131|131|310|0%|0|0||0|11|0%|
