@@ -1,31 +1,31 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/03/2025 - 23:52:40 |
+| Generated on: | 01/04/2025 - 01:51:38 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 54 |
-| Files: | 52 |
-| Covered lines: | 811 |
-| Uncovered lines: | 2715 |
-| Coverable lines: | 3526 |
-| Total lines: | 6202 |
-| Line coverage: | 23% (811 of 3526) |
+| Classes: | 57 |
+| Files: | 55 |
+| Covered lines: | 880 |
+| Uncovered lines: | 2718 |
+| Coverable lines: | 3598 |
+| Total lines: | 6345 |
+| Line coverage: | 24.4% (880 of 3598) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 110 |
-| Total methods: | 477 |
-| Method coverage: | 23% (110 of 477) |
+| Covered methods: | 119 |
+| Total methods: | 487 |
+| Method coverage: | 24.4% (119 of 487) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**449**|**2636**|**3085**|**5938**|**14.5%**|**0**|**0**|****|**78**|**437**|**17.8%**|
+|**bamlab.micromissiles**|**508**|**2639**|**3147**|**6056**|**16.1%**|**0**|**0**|****|**85**|**445**|**19.1%**|
 |Agent|111|160|271|481|40.9%|0|0||20|45|44.4%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
 |CarrierInterceptor|0|51|51|80|0%|0|0||0|7|0%|
-|Cluster|35|2|37|75|94.5%|0|0||10|10|100%|
+|Cluster|40|2|42|85|95.2%|0|0||12|12|100%|
 |ConfigLoader|18|88|106|153|16.9%|0|0||2|13|15.3%|
 |Constants|0|6|6|17|0%|0|0||0|2|0%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
@@ -35,10 +35,12 @@
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|0|87|87|143|0%|0|0||0|17|0%|
 |IAssignment|10|0|10|40|100%|0|0||3|3|100%|
+|IClusterer|6|1|7|29|85.7%|0|0||2|3|66.6%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
 |IdealSensor|0|14|14|25|0%|0|0||0|2|0%|
 |InputManager|0|113|113|156|0%|0|0||0|11|0%|
 |Interceptor|8|147|155|238|5.1%|0|0||2|17|11.7%|
+|KMeansClusterer|48|2|50|79|96%|0|0||3|3|100%|
 |ParticleManager|0|170|170|245|0%|0|0||0|24|0%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
@@ -68,8 +70,9 @@
 |AgentTestBase|17|6|23|41|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|26|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**317**|**11**|**328**|**669**|**96.6%**|**0**|**0**|****|**23**|**25**|**92%**|
-|ClusterTest|66|0|66|95|100%|0|0||7|7|100%|
+|**bamlab.test.editmode**|**327**|**11**|**338**|**694**|**96.7%**|**0**|**0**|****|**25**|**27**|**92.5%**|
+|ClusterTest|67|0|67|96|100%|0|0||7|7|100%|
+|KMeansClustererTest|9|0|9|24|100%|0|0||2|2|100%|
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|63|0|63|141|100%|0|0||2|2|100%|
 |ThreatTests|122|9|131|310|93.1%|0|0||9|11|81.8%|
