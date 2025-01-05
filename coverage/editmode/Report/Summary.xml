@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>01/05/2025 - 05:24:58</Generatedon>
+    <Generatedon>01/05/2025 - 05:35:24</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>62</Classes>
     <Files>57</Files>
-    <Coveredlines>1037</Coveredlines>
-    <Uncoveredlines>2724</Uncoveredlines>
+    <Coveredlines>1041</Coveredlines>
+    <Uncoveredlines>2720</Uncoveredlines>
     <Coverablelines>3761</Coverablelines>
     <Totallines>6619</Totallines>
-    <Linecoverage>27.5</Linecoverage>
+    <Linecoverage>27.6</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>134</Coveredmethods>
@@ -74,10 +74,10 @@
       <Class name="SensorTestBase" coverage="0" coveredlines="0" coverablelines="11" totallines="26" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="TestBase" coverage="93.3" coveredlines="28" coverablelines="30" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
     </Assembly>
-    <Assembly name="bamlab.test.editmode" classes="8" coverage="96.3" coveredlines="395" coverablelines="410" totallines="893" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="35" totalmethods="37" methodcoverage="94.5">
+    <Assembly name="bamlab.test.editmode" classes="8" coverage="97.3" coveredlines="399" coverablelines="410" totallines="893" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="35" totalmethods="37" methodcoverage="94.5">
       <Class name="AgglomerativeClustererTest" coverage="100" coveredlines="37" coverablelines="37" totallines="63" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
       <Class name="ClusterTest" coverage="100" coveredlines="67" coverablelines="67" totallines="96" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="7" methodcoverage="100" />
-      <Class name="ConstrainedKMeansClustererTest" coverage="88.5" coveredlines="31" coverablelines="35" totallines="80" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
+      <Class name="ConstrainedKMeansClustererTest" coverage="100" coveredlines="35" coverablelines="35" totallines="80" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
       <Class name="KMeansClustererTest" coverage="100" coveredlines="9" coverablelines="9" totallines="80" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="SanityTest" coverage="71.4" coveredlines="5" coverablelines="7" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="ThreatAssignmentTests" coverage="100" coveredlines="63" coverablelines="63" totallines="141" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
