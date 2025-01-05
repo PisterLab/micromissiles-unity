@@ -1,9 +1,9 @@
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 public class AgglomerativeClustererTest {
   public static readonly List<Vector3> Points = new List<Vector3> {

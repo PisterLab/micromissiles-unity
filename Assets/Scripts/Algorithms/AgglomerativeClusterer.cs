@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 // The agglomerative clusterer class performs agglomerative clustering with the stopping condition
 // given by the size and radius constraints.

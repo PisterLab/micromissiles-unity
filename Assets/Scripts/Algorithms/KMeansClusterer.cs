@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 // The k-means clusterer class performs k-means clustering.
 public class KMeansClusterer : IClusterer {

@@ -1,8 +1,8 @@
 using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.TestTools;
 
 public class ClusterTest {
   public static Cluster GenerateCluster(in IReadOnlyList<Vector3> points) {
