@@ -78,7 +78,8 @@ public class KMeansClusterer : IClusterer {
   }
 }
 
-// The k-means clusterer class performs k-means clustering.
+// The constrained k-means clusterer class performs k-means clustering under size and radius
+// constraints.
 public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
   public ConstrainedKMeansClusterer(List<Vector3> points, int maxSize, float maxRadius)
       : base(points, maxSize, maxRadius) {}

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class KMeansClustererTest {
   public static readonly List<Vector3> Points = new List<Vector3> {
@@ -70,5 +71,10 @@ public class ConstrainedKMeansClustererTest {
         new ConstrainedKMeansClusterer(Points, maxSize: Points.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(clusterer.Clusters.Count, 2);
+    List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Position[1]).ToList();
+    Assert.AreEqual(clusters[0].Size(), 2);
+    Assert.AreEqual(clusters[0].Position, new Vector3(0, 0.5f, 0));
+    Assert.AreEqual(clusters[1].Size(), 2);
+    Assert.AreEqual(clusters[1].Position, new Vector3(0, 2, 0));
   }
 }
