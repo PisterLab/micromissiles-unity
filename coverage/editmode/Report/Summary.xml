@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>01/05/2025 - 05:17:19</Generatedon>
+    <Generatedon>01/05/2025 - 05:24:58</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>62</Classes>
@@ -9,7 +9,7 @@
     <Coveredlines>1037</Coveredlines>
     <Uncoveredlines>2724</Uncoveredlines>
     <Coverablelines>3761</Coverablelines>
-    <Totallines>6620</Totallines>
+    <Totallines>6619</Totallines>
     <Linecoverage>27.5</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
@@ -18,9 +18,9 @@
     <Methodcoverage>26.6</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="49" coverage="18.4" coveredlines="597" coverablelines="3238" totallines="6376" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="90" totalmethods="450" methodcoverage="20">
+    <Assembly name="bamlab.micromissiles" classes="49" coverage="18.4" coveredlines="597" coverablelines="3238" totallines="6375" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="90" totalmethods="450" methodcoverage="20">
       <Class name="Agent" coverage="40.9" coveredlines="111" coverablelines="271" totallines="481" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="20" totalmethods="45" methodcoverage="44.4" />
-      <Class name="AgglomerativeClusterer" coverage="100" coveredlines="63" coverablelines="63" totallines="100" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+      <Class name="AgglomerativeClusterer" coverage="100" coveredlines="63" coverablelines="63" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="AttackBehavior" coverage="78.5" coveredlines="11" coverablelines="14" totallines="51" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="CameraController" coverage="0" coveredlines="0" coverablelines="347" totallines="643" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="36" methodcoverage="0" />

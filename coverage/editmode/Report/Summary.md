@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/05/2025 - 05:17:19 |
+| Generated on: | 01/05/2025 - 05:24:57 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 62 |
@@ -9,7 +9,7 @@
 | Covered lines: | 1037 |
 | Uncovered lines: | 2724 |
 | Coverable lines: | 3761 |
-| Total lines: | 6620 |
+| Total lines: | 6619 |
 | Line coverage: | 27.5% (1037 of 3761) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -19,9 +19,9 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**597**|**2641**|**3238**|**6376**|**18.4%**|**0**|**0**|****|**90**|**450**|**20%**|
+|**bamlab.micromissiles**|**597**|**2641**|**3238**|**6375**|**18.4%**|**0**|**0**|****|**90**|**450**|**20%**|
 |Agent|111|160|271|481|40.9%|0|0||20|45|44.4%|
-|AgglomerativeClusterer|63|0|63|100|100%|0|0||2|2|100%|
+|AgglomerativeClusterer|63|0|63|99|100%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|

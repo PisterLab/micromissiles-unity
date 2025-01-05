@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedon": "2025-01-05T05:17:19Z",
+    "generatedon": "2025-01-05T05:24:57Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 62,
@@ -8,7 +8,7 @@
     "coveredlines": 1037,
     "uncoveredlines": 2724,
     "coverablelines": 3761,
-    "totallines": 6620,
+    "totallines": 6619,
     "linecoverage": 27.5,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -18,9 +18,9 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 49, "coverage": 18.4, "coveredlines": 597, "coverablelines": 3238, "totallines": 6376, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 20, "coveredmethods": 90, "totalmethods": 450, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 49, "coverage": 18.4, "coveredlines": 597, "coverablelines": 3238, "totallines": 6375, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 20, "coveredmethods": 90, "totalmethods": 450, "classesinassembly": [
         { "name": "Agent", "coverage": 40.9, "coveredlines": 111, "coverablelines": 271, "totallines": 481, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 44.4, "coveredmethods": 20, "totalmethods": 45 },
-        { "name": "AgglomerativeClusterer", "coverage": 100, "coveredlines": 63, "coverablelines": 63, "totallines": 100, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+        { "name": "AgglomerativeClusterer", "coverage": 100, "coveredlines": 63, "coverablelines": 63, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "AttackBehavior", "coverage": 78.5, "coveredlines": 11, "coverablelines": 14, "totallines": 51, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "CameraController", "coverage": 0, "coveredlines": 0, "coverablelines": 347, "totallines": 643, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 36 },

@@ -225,7 +225,7 @@ var assemblies = [
     "name": "bamlab.micromissiles",
     "classes": [
       { "name": "Agent", "rp": "bamlab.micromissiles_Agent.html", "cl": 111, "ucl": 160, "cal": 271, "tl": 481, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "AgglomerativeClusterer", "rp": "bamlab.micromissiles_AgglomerativeClusterer.html", "cl": 63, "ucl": 0, "cal": 63, "tl": 100, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "AgglomerativeClusterer", "rp": "bamlab.micromissiles_AgglomerativeClusterer.html", "cl": 63, "ucl": 0, "cal": 63, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ApnController", "rp": "bamlab.micromissiles_ApnController.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 20, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "AttackBehavior", "rp": "bamlab.micromissiles_AttackBehavior.html", "cl": 11, "ucl": 3, "cal": 14, "tl": 51, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "CameraController", "rp": "bamlab.micromissiles_CameraController.html", "cl": 0, "ucl": 347, "cal": 347, "tl": 643, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -458,7 +458,7 @@ var riskHotspots = [
       { "value": 42, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "AgglomerativeClusterer", "reportPath": "bamlab.micromissiles_AgglomerativeClusterer.html", "methodName": "System.Void AgglomerativeClusterer::Cluster()", "methodShortName": "Cluster()", "fileIndex": 0, "line": 13,
+    "assembly": "bamlab.micromissiles", "class": "AgglomerativeClusterer", "reportPath": "bamlab.micromissiles_AgglomerativeClusterer.html", "methodName": "System.Void AgglomerativeClusterer::Cluster()", "methodShortName": "Cluster()", "fileIndex": 0, "line": 12,
     "metrics": [
       { "value": 18, "exceeded": true },
       { "value": 0, "exceeded": false },
