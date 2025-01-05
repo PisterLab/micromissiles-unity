@@ -1,14 +1,14 @@
 {
   "summary": {
-    "generatedon": "2025-01-05T05:35:24Z",
+    "generatedon": "2025-01-05T06:41:48Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 62,
     "files": 57,
-    "coveredlines": 1041,
+    "coveredlines": 1037,
     "uncoveredlines": 2720,
-    "coverablelines": 3761,
-    "totallines": 6619,
+    "coverablelines": 3757,
+    "totallines": 6615,
     "linecoverage": 27.6,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -72,11 +72,11 @@
         { "name": "AgentTestBase", "coverage": 73.9, "coveredlines": 17, "coverablelines": 23, "totallines": 41, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 3, "totalmethods": 4 },
         { "name": "SensorTestBase", "coverage": 0, "coveredlines": 0, "coverablelines": 11, "totallines": 26, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "TestBase", "coverage": 93.3, "coveredlines": 28, "coverablelines": 30, "totallines": 44, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 6, "totalmethods": 6 } ] },
-      { "name": "bamlab.test.editmode", "classes": 8, "coverage": 97.3, "coveredlines": 399, "coverablelines": 410, "totallines": 893, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 94.5, "coveredmethods": 35, "totalmethods": 37, "classesinassembly": [
+      { "name": "bamlab.test.editmode", "classes": 8, "coverage": 97.2, "coveredlines": 395, "coverablelines": 406, "totallines": 885, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 94.5, "coveredmethods": 35, "totalmethods": 37, "classesinassembly": [
         { "name": "AgglomerativeClustererTest", "coverage": 100, "coveredlines": 37, "coverablelines": 37, "totallines": 63, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "ClusterTest", "coverage": 100, "coveredlines": 67, "coverablelines": 67, "totallines": 96, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 7, "totalmethods": 7 },
-        { "name": "ConstrainedKMeansClustererTest", "coverage": 100, "coveredlines": 35, "coverablelines": 35, "totallines": 80, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
-        { "name": "KMeansClustererTest", "coverage": 100, "coveredlines": 9, "coverablelines": 9, "totallines": 80, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+        { "name": "ConstrainedKMeansClustererTest", "coverage": 100, "coveredlines": 31, "coverablelines": 31, "totallines": 76, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
+        { "name": "KMeansClustererTest", "coverage": 100, "coveredlines": 9, "coverablelines": 9, "totallines": 76, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "SanityTest", "coverage": 71.4, "coveredlines": 5, "coverablelines": 7, "totallines": 22, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "ThreatAssignmentTests", "coverage": 100, "coveredlines": 63, "coverablelines": 63, "totallines": 141, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "ThreatTests", "coverage": 93.1, "coveredlines": 122, "coverablelines": 131, "totallines": 310, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 81.8, "coveredmethods": 9, "totalmethods": 11 },
