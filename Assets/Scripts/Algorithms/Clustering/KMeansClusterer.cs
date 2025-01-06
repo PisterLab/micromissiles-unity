@@ -13,36 +13,36 @@ public class KMeansClusterer : IClusterer {
   // Maximum number of iterations.
   private int _maxIterations = 20;
 
-  public KMeansClusterer(List<Vector3> points, int k, int maxIterations = 20) : base(points) {
+  public KMeansClusterer(List<GameObject> objects, int k, int maxIterations = 20) : base(objects) {
     _k = k;
     _maxIterations = maxIterations;
   }
 
-  // Cluster the points.
+  // Cluster the game objects.
   public override void Cluster() {
-    // Initialize the clusters with centroids at random points.
-    // Perform Fisher-Yates shuffling to find k random points.
+    // Initialize the clusters with centroids located at random game objects.
+    // Perform Fisher-Yates shuffling to find k random game objects.
     System.Random random = new System.Random();
-    for (int i = _points.Count - 1; i >= _points.Count - _k; --i) {
+    for (int i = _objects.Count - 1; i >= _objects.Count - _k; --i) {
       int j = random.Next(i + 1);
-      (_points[i], _points[j]) = (_points[j], _points[i]);
+      (_objects[i], _objects[j]) = (_objects[j], _objects[i]);
     }
-    for (int i = _points.Count - 1; i >= _points.Count - _k; --i) {
-      _clusters.Add(new Cluster(_points[i]));
+    for (int i = _objects.Count - 1; i >= _objects.Count - _k; --i) {
+      _clusters.Add(new Cluster(_objects[i]));
     }
 
     bool converged = false;
     int iteration = 0;
     while (!converged && iteration < _maxIterations) {
-      AssignPointsToCluster();
+      AssignObjectsToCluster();
 
-      // Calculate the new clusters as the mean of all assigned points.
+      // Calculate the new clusters as the mean of all assigned game objects.
       converged = true;
       for (int clusterIndex = 0; clusterIndex < _clusters.Count; ++clusterIndex) {
         Cluster newCluster;
         if (_clusters[clusterIndex].IsEmpty()) {
-          int pointIndex = random.Next(_points.Count);
-          newCluster = new Cluster(_points[pointIndex]);
+          int objectIndex = random.Next(_objects.Count);
+          newCluster = new Cluster(_objects[objectIndex]);
         } else {
           newCluster = new Cluster(_clusters[clusterIndex].Centroid());
         }
@@ -59,22 +59,23 @@ public class KMeansClusterer : IClusterer {
       ++iteration;
     }
 
-    AssignPointsToCluster();
+    AssignObjectsToCluster();
   }
 
-  private void AssignPointsToCluster() {
-    // Determine the closest centroid to each point.
-    foreach (var point in _points) {
+  private void AssignObjectsToCluster() {
+    // Determine the closest centroid to each game object.
+    foreach (var obj in _objects) {
       float minDistance = Mathf.Infinity;
       int minIndex = -1;
       for (int clusterIndex = 0; clusterIndex < _clusters.Count; ++clusterIndex) {
-        float distance = Vector3.Distance(_clusters[clusterIndex].Coordinates, point);
+        float distance =
+            Vector3.Distance(_clusters[clusterIndex].Coordinates, obj.transform.position);
         if (distance < minDistance) {
           minDistance = distance;
           minIndex = clusterIndex;
         }
       }
-      _clusters[minIndex].AddPoint(point);
+      _clusters[minIndex].AddObject(obj);
     }
   }
 }
@@ -82,15 +83,15 @@ public class KMeansClusterer : IClusterer {
 // The constrained k-means clusterer class performs k-means clustering under size and radius
 // constraints.
 public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
-  public ConstrainedKMeansClusterer(List<Vector3> points, int maxSize, float maxRadius)
-      : base(points, maxSize, maxRadius) {}
+  public ConstrainedKMeansClusterer(List<GameObject> objects, int maxSize, float maxRadius)
+      : base(objects, maxSize, maxRadius) {}
 
-  // Cluster the points.
+  // Cluster the game objects.
   public override void Cluster() {
-    int numClusters = (int)Mathf.Ceil(_points.Count / _maxSize);
+    int numClusters = (int)Mathf.Ceil(_objects.Count / _maxSize);
     KMeansClusterer clusterer;
     while (true) {
-      clusterer = new KMeansClusterer(_points, numClusters);
+      clusterer = new KMeansClusterer(_objects, numClusters);
       clusterer.Cluster();
 
       // Count the number of over-populated and over-sized clusters.

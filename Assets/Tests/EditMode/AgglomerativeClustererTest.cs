@@ -6,30 +6,36 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 public class AgglomerativeClustererTest {
-  public static readonly List<Vector3> Points = new List<Vector3> {
-    new Vector3(0, 0, 0),
-    new Vector3(0, 1, 0),
-    new Vector3(0, 1.5f, 0),
-    new Vector3(0, 2.5f, 0),
+  public static GameObject GenerateObject(in Vector3 position) {
+    GameObject obj = new GameObject();
+    obj.transform.position = position;
+    return obj;
+  }
+
+  public static readonly List<GameObject> Objects = new List<GameObject> {
+    GenerateObject(new Vector3(0, 0, 0)),
+    GenerateObject(new Vector3(0, 1, 0)),
+    GenerateObject(new Vector3(0, 1.5f, 0)),
+    GenerateObject(new Vector3(0, 2.5f, 0)),
   };
 
   [Test]
   public void TestSingleCluster() {
     AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Points, maxSize: Points.Count, maxRadius: Mathf.Infinity);
+        new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(clusterer.Clusters.Count, 1);
     Cluster cluster = clusterer.Clusters[0];
-    Assert.AreEqual(cluster.Size(), Points.Count);
+    Assert.AreEqual(cluster.Size(), Objects.Count);
     Assert.AreEqual(cluster.Centroid(), new Vector3(0, 1.25f, 0));
   }
 
   [Test]
   public void TestMaxSizeOne() {
     AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Points, maxSize: 1, maxRadius: Mathf.Infinity);
+        new AgglomerativeClusterer(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
-    Assert.AreEqual(clusterer.Clusters.Count, Points.Count);
+    Assert.AreEqual(clusterer.Clusters.Count, Objects.Count);
     foreach (var cluster in clusterer.Clusters) {
       Assert.AreEqual(cluster.Size(), 1);
     }
@@ -38,9 +44,9 @@ public class AgglomerativeClustererTest {
   [Test]
   public void TestZeroRadius() {
     AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Points, maxSize: Points.Count, maxRadius: 0);
+        new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 0);
     clusterer.Cluster();
-    Assert.AreEqual(clusterer.Clusters.Count, Points.Count);
+    Assert.AreEqual(clusterer.Clusters.Count, Objects.Count);
     foreach (var cluster in clusterer.Clusters) {
       Assert.AreEqual(cluster.Size(), 1);
     }
@@ -49,7 +55,7 @@ public class AgglomerativeClustererTest {
   [Test]
   public void TestSmallRadius() {
     AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Points, maxSize: Points.Count, maxRadius: 1);
+        new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(clusterer.Clusters.Count, 3);
     List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();

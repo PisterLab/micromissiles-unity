@@ -5,9 +5,15 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 public class ClusterTest {
-  public static Cluster GenerateCluster(in IReadOnlyList<Vector3> points) {
+  public static GameObject GenerateObject(in Vector3 position) {
+    GameObject obj = new GameObject();
+    obj.transform.position = position;
+    return obj;
+  }
+
+  public static Cluster GenerateCluster(in IReadOnlyList<GameObject> objects) {
     Cluster cluster = new Cluster();
-    cluster.AddPoints(points);
+    cluster.AddObjects(objects);
     cluster.Recenter();
     return cluster;
   }
@@ -15,11 +21,11 @@ public class ClusterTest {
   [Test]
   public void TestSize() {
     const int size = 10;
-    List<Vector3> points = new List<Vector3>();
+    List<GameObject> objects = new List<GameObject>();
     for (int i = 0; i < size; ++i) {
-      points.Add(new Vector3(0, i, 0));
+      objects.Add(GenerateObject(new Vector3(0, i, 0)));
     }
-    Cluster cluster = GenerateCluster(points);
+    Cluster cluster = GenerateCluster(objects);
     Assert.AreEqual(cluster.Size(), size);
   }
 
@@ -29,45 +35,44 @@ public class ClusterTest {
     Assert.IsTrue(emptyCluster.IsEmpty());
 
     Cluster cluster = new Cluster();
-    cluster.AddPoint(new Vector3(1, -1, 0));
+    cluster.AddObject(new GameObject());
     Assert.IsFalse(cluster.IsEmpty());
   }
 
   [Test]
   public void TestRadius() {
     const float radius = 5;
-    List<Vector3> points = new List<Vector3> {
-      new Vector3(0, radius, 0),
-      new Vector3(0, -radius, 0),
-    };
-    Cluster cluster = GenerateCluster(points);
+    List<GameObject> objects = new List<GameObject>();
+    objects.Add(GenerateObject(new Vector3(0, radius, 0)));
+    objects.Add(GenerateObject(new Vector3(0, -radius, 0)));
+    Cluster cluster = GenerateCluster(objects);
     Assert.AreEqual(cluster.Radius(), radius);
   }
 
   [Test]
   public void TestCentroid() {
     const float radius = 3;
-    List<Vector3> points = new List<Vector3>();
+    List<GameObject> objects = new List<GameObject>();
     for (int i = -1; i <= 1; ++i) {
       for (int j = -1; j <= 1; ++j) {
-        points.Add(new Vector3(i, j, 0));
+        objects.Add(GenerateObject(new Vector3(i, j, 0)));
       }
     }
-    Cluster cluster = GenerateCluster(points);
+    Cluster cluster = GenerateCluster(objects);
     Assert.AreEqual(cluster.Centroid(), Vector3.zero);
   }
 
   [Test]
   public void TestRecenter() {
     const float radius = 3;
-    List<Vector3> points = new List<Vector3>();
+    List<GameObject> objects = new List<GameObject>();
     for (int i = -1; i <= 1; ++i) {
       for (int j = -1; j <= 1; ++j) {
-        points.Add(new Vector3(i, j, 0));
+        objects.Add(GenerateObject(new Vector3(i, j, 0)));
       }
     }
-    Cluster cluster = GenerateCluster(points);
-    cluster.AddPoint(new Vector3(10, -10, 0));
+    Cluster cluster = GenerateCluster(objects);
+    cluster.AddObject(GenerateObject(new Vector3(10, -10, 0)));
     Assert.AreNotEqual(cluster.Coordinates, new Vector3(1, -1, 0));
     cluster.Recenter();
     Assert.AreEqual(cluster.Coordinates, new Vector3(1, -1, 0));
@@ -76,14 +81,14 @@ public class ClusterTest {
   [Test]
   public void TestMerge() {
     const int size = 10;
-    List<Vector3> points1 = new List<Vector3>();
-    List<Vector3> points2 = new List<Vector3>();
+    List<GameObject> objects1 = new List<GameObject>();
+    List<GameObject> objects2 = new List<GameObject>();
     for (int i = 0; i < size; ++i) {
-      points1.Add(new Vector3(0, i, 0));
-      points2.Add(new Vector3(i, 0, 0));
+      objects1.Add(GenerateObject(new Vector3(0, i, 0)));
+      objects2.Add(GenerateObject(new Vector3(i, 0, 0)));
     }
-    Cluster cluster1 = GenerateCluster(points1);
-    Cluster cluster2 = GenerateCluster(points2);
+    Cluster cluster1 = GenerateCluster(objects1);
+    Cluster cluster2 = GenerateCluster(objects2);
     int size1 = cluster1.Size();
     int size2 = cluster2.Size();
     Vector3 centroid1 = cluster1.Centroid();

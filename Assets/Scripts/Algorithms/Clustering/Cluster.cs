@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// The cluster class represents a collection of points with a defined centroid.
+// The cluster class represents a collection of game objects.
 public class Cluster {
   // Coordinates of the cluster.
   private Vector3 _coordinates = Vector3.zero;
 
-  // List of points in the cluster.
-  private List<Vector3> _points = new List<Vector3>();
+  // List of game objects in the cluster.
+  private List<GameObject> _objects = new List<GameObject>();
 
   public Cluster() {}
   public Cluster(in Vector3 coordinates) {
     _coordinates = coordinates;
+  }
+  public Cluster(in GameObject obj) {
+    _coordinates = obj.transform.position;
   }
 
   // Get the cluster coordinates.
@@ -21,14 +24,14 @@ public class Cluster {
     get { return _coordinates; }
   }
 
-  // Get the list of points.
-  public IReadOnlyList<Vector3> Points {
-    get { return _points; }
+  // Get the list of game objects.
+  public IReadOnlyList<GameObject> Objects {
+    get { return _objects; }
   }
 
   // Return the size of the cluster.
   public int Size() {
-    return _points.Count;
+    return _objects.Count;
   }
 
   // Check whether the cluster is empty.
@@ -43,7 +46,7 @@ public class Cluster {
     }
 
     Vector3 centroid = Centroid();
-    return _points.Max(point => Vector3.Distance(centroid, point));
+    return _objects.Max(obj => Vector3.Distance(centroid, obj.transform.position));
   }
 
   // Calculate the centroid of the cluster.
@@ -53,33 +56,33 @@ public class Cluster {
     }
 
     Vector3 centroid = Vector3.zero;
-    foreach (var point in _points) {
-      centroid += point;
+    foreach (var obj in _objects) {
+      centroid += obj.transform.position;
     }
-    centroid /= _points.Count;
+    centroid /= _objects.Count;
     return centroid;
   }
 
-  // Recenter the cluster's centroid to be the mean of all points in the cluster.
+  // Recenter the cluster's centroid to be the mean of all game objects' positions in the cluster.
   public void Recenter() {
     _coordinates = Centroid();
   }
 
-  // Add a point to the cluster.
+  // Add a game object to the cluster.
   // This function does not update the centroid of the cluster.
-  public void AddPoint(in Vector3 point) {
-    _points.Add(point);
+  public void AddObject(in GameObject obj) {
+    _objects.Add(obj);
   }
 
-  // Add multiple points to the cluster.
+  // Add multiple game objects to the cluster.
   // This function does not update the centroid of the cluster.
-  public void AddPoints(in IReadOnlyList<Vector3> otherPoints) {
-    _points.AddRange(otherPoints);
+  public void AddObjects(in IReadOnlyList<GameObject> objects) {
+    _objects.AddRange(objects);
   }
 
   // Merge another cluster into this one.
   // This function does not update the centroid of the cluster.
   public void Merge(in Cluster cluster) {
-    AddPoints(cluster.Points);
+    AddObjects(cluster.Objects);
   }
 }

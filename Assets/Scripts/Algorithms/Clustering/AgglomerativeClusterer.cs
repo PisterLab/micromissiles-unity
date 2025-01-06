@@ -5,15 +5,15 @@ using UnityEngine;
 // The agglomerative clusterer class performs agglomerative clustering with the stopping condition
 // given by the size and radius constraints.
 public class AgglomerativeClusterer : ISizeAndRadiusConstrainedClusterer {
-  public AgglomerativeClusterer(List<Vector3> points, int maxSize, float maxRadius)
-      : base(points, maxSize, maxRadius) {}
+  public AgglomerativeClusterer(List<GameObject> objects, int maxSize, float maxRadius)
+      : base(objects, maxSize, maxRadius) {}
 
-  // Cluster the points.
+  // Cluster the game objects.
   public override void Cluster() {
-    // Add a cluster for every point.
-    foreach (var point in _points) {
-      Cluster cluster = new Cluster(point);
-      cluster.AddPoint(point);
+    // Add a cluster for every game object.
+    foreach (var obj in _objects) {
+      Cluster cluster = new Cluster(obj);
+      cluster.AddObject(obj);
       _clusters.Add(cluster);
     }
 
