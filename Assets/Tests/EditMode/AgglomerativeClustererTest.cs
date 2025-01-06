@@ -52,12 +52,12 @@ public class AgglomerativeClustererTest {
         new AgglomerativeClusterer(Points, maxSize: Points.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(clusterer.Clusters.Count, 3);
-    List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Position[1]).ToList();
+    List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();
     Assert.AreEqual(clusters[0].Size(), 1);
-    Assert.AreEqual(clusters[0].Position, new Vector3(0, 0, 0));
+    Assert.AreEqual(clusters[0].Coordinates, new Vector3(0, 0, 0));
     Assert.AreEqual(clusters[1].Size(), 2);
-    Assert.AreEqual(clusters[1].Position, new Vector3(0, 1.25f, 0));
+    Assert.AreEqual(clusters[1].Coordinates, new Vector3(0, 1.25f, 0));
     Assert.AreEqual(clusters[2].Size(), 1);
-    Assert.AreEqual(clusters[2].Position, new Vector3(0, 2.5f, 0));
+    Assert.AreEqual(clusters[2].Coordinates, new Vector3(0, 2.5f, 0));
   }
 }

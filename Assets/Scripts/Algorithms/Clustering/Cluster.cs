@@ -5,30 +5,30 @@ using UnityEngine;
 
 // The cluster class represents a collection of points with a defined centroid.
 public class Cluster {
-  // Position of the cluster.
-  private Vector3 position = Vector3.zero;
+  // Coordinates of the cluster.
+  private Vector3 _coordinates = Vector3.zero;
 
   // List of points in the cluster.
-  private List<Vector3> points = new List<Vector3>();
+  private List<Vector3> _points = new List<Vector3>();
 
   public Cluster() {}
-  public Cluster(in Vector3 position) {
-    this.position = position;
+  public Cluster(in Vector3 coordinates) {
+    _coordinates = coordinates;
   }
 
-  // Get the cluster position.
-  public Vector3 Position {
-    get { return position; }
+  // Get the cluster coordinates.
+  public Vector3 Coordinates {
+    get { return _coordinates; }
   }
 
   // Get the list of points.
   public IReadOnlyList<Vector3> Points {
-    get { return points; }
+    get { return _points; }
   }
 
   // Return the size of the cluster.
   public int Size() {
-    return points.Count;
+    return _points.Count;
   }
 
   // Check whether the cluster is empty.
@@ -43,7 +43,7 @@ public class Cluster {
     }
 
     Vector3 centroid = Centroid();
-    return points.Max(point => Vector3.Distance(centroid, point));
+    return _points.Max(point => Vector3.Distance(centroid, point));
   }
 
   // Calculate the centroid of the cluster.
@@ -53,28 +53,28 @@ public class Cluster {
     }
 
     Vector3 centroid = Vector3.zero;
-    foreach (var point in points) {
+    foreach (var point in _points) {
       centroid += point;
     }
-    centroid /= points.Count;
+    centroid /= _points.Count;
     return centroid;
   }
 
   // Recenter the cluster's centroid to be the mean of all points in the cluster.
   public void Recenter() {
-    position = Centroid();
+    _coordinates = Centroid();
   }
 
   // Add a point to the cluster.
   // This function does not update the centroid of the cluster.
   public void AddPoint(in Vector3 point) {
-    points.Add(point);
+    _points.Add(point);
   }
 
   // Add multiple points to the cluster.
   // This function does not update the centroid of the cluster.
   public void AddPoints(in IReadOnlyList<Vector3> otherPoints) {
-    points.AddRange(otherPoints);
+    _points.AddRange(otherPoints);
   }
 
   // Merge another cluster into this one.

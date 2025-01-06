@@ -19,7 +19,7 @@ public class KMeansClustererTest {
     clusterer.Cluster();
     Cluster cluster = clusterer.Clusters[0];
     Assert.AreEqual(cluster.Size(), Points.Count);
-    Assert.AreEqual(cluster.Position, new Vector3(0, 1.25f, 0));
+    Assert.AreEqual(cluster.Coordinates, new Vector3(0, 1.25f, 0));
     Assert.AreEqual(cluster.Centroid(), new Vector3(0, 1.25f, 0));
   }
 }
@@ -71,6 +71,6 @@ public class ConstrainedKMeansClustererTest {
         new ConstrainedKMeansClusterer(Points, maxSize: Points.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(clusterer.Clusters.Count, 2);
-    List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Position[1]).ToList();
+    List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();
   }
 }

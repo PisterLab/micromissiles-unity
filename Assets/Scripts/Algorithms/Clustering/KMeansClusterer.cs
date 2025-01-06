@@ -8,14 +8,14 @@ public class KMeansClusterer : IClusterer {
   public const float Epsilon = 1e-3f;
 
   // Number of clusters.
-  private int k = 0;
+  private int _k = 0;
 
   // Maximum number of iterations.
-  private int maxIterations = 20;
+  private int _maxIterations = 20;
 
   public KMeansClusterer(List<Vector3> points, int k, int maxIterations = 20) : base(points) {
-    this.k = k;
-    this.maxIterations = maxIterations;
+    _k = k;
+    _maxIterations = maxIterations;
   }
 
   // Cluster the points.
@@ -23,36 +23,37 @@ public class KMeansClusterer : IClusterer {
     // Initialize the clusters with centroids at random points.
     // Perform Fisher-Yates shuffling to find k random points.
     System.Random random = new System.Random();
-    for (int i = points.Count - 1; i >= points.Count - k; --i) {
+    for (int i = _points.Count - 1; i >= _points.Count - _k; --i) {
       int j = random.Next(i + 1);
-      (points[i], points[j]) = (points[j], points[i]);
+      (_points[i], _points[j]) = (_points[j], _points[i]);
     }
-    for (int i = points.Count - 1; i >= points.Count - k; --i) {
-      clusters.Add(new Cluster(points[i]));
+    for (int i = _points.Count - 1; i >= _points.Count - _k; --i) {
+      _clusters.Add(new Cluster(_points[i]));
     }
 
     bool converged = false;
     int iteration = 0;
-    while (!converged && iteration < maxIterations) {
+    while (!converged && iteration < _maxIterations) {
       AssignPointsToCluster();
 
       // Calculate the new clusters as the mean of all assigned points.
       converged = true;
-      for (int clusterIndex = 0; clusterIndex < clusters.Count; ++clusterIndex) {
+      for (int clusterIndex = 0; clusterIndex < _clusters.Count; ++clusterIndex) {
         Cluster newCluster;
-        if (clusters[clusterIndex].IsEmpty()) {
-          int pointIndex = random.Next(points.Count);
-          newCluster = new Cluster(points[pointIndex]);
+        if (_clusters[clusterIndex].IsEmpty()) {
+          int pointIndex = random.Next(_points.Count);
+          newCluster = new Cluster(_points[pointIndex]);
         } else {
-          newCluster = new Cluster(clusters[clusterIndex].Centroid());
+          newCluster = new Cluster(_clusters[clusterIndex].Centroid());
         }
 
         // Check whether the algorithm has converged by checking whether the cluster has moved.
-        if (Vector3.Distance(newCluster.Position, clusters[clusterIndex].Position) > Epsilon) {
+        if (Vector3.Distance(newCluster.Coordinates, _clusters[clusterIndex].Coordinates) >
+            Epsilon) {
           converged = false;
         }
 
-        clusters[clusterIndex] = newCluster;
+        _clusters[clusterIndex] = newCluster;
       }
 
       ++iteration;
@@ -63,17 +64,17 @@ public class KMeansClusterer : IClusterer {
 
   private void AssignPointsToCluster() {
     // Determine the closest centroid to each point.
-    foreach (var point in points) {
+    foreach (var point in _points) {
       float minDistance = Mathf.Infinity;
       int minIndex = -1;
-      for (int clusterIndex = 0; clusterIndex < clusters.Count; ++clusterIndex) {
-        float distance = Vector3.Distance(clusters[clusterIndex].Position, point);
+      for (int clusterIndex = 0; clusterIndex < _clusters.Count; ++clusterIndex) {
+        float distance = Vector3.Distance(_clusters[clusterIndex].Coordinates, point);
         if (distance < minDistance) {
           minDistance = distance;
           minIndex = clusterIndex;
         }
       }
-      clusters[minIndex].AddPoint(point);
+      _clusters[minIndex].AddPoint(point);
     }
   }
 }
@@ -86,20 +87,20 @@ public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
 
   // Cluster the points.
   public override void Cluster() {
-    int numClusters = (int)Mathf.Ceil(points.Count / maxSize);
+    int numClusters = (int)Mathf.Ceil(_points.Count / _maxSize);
     KMeansClusterer clusterer;
     while (true) {
-      clusterer = new KMeansClusterer(points, numClusters);
+      clusterer = new KMeansClusterer(_points, numClusters);
       clusterer.Cluster();
 
       // Count the number of over-populated and over-sized clusters.
       int numOverPopulatedClusters = 0;
       int numOverSizedClusters = 0;
       foreach (var cluster in clusterer.Clusters) {
-        if (cluster.Size() > maxSize) {
+        if (cluster.Size() > _maxSize) {
           ++numOverPopulatedClusters;
         }
-        if (cluster.Radius() > maxRadius) {
+        if (cluster.Radius() > _maxRadius) {
           ++numOverSizedClusters;
         }
       }
@@ -112,6 +113,6 @@ public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
       numClusters +=
           (int)Mathf.Ceil(Mathf.Max(numOverPopulatedClusters, numOverSizedClusters) / 2.0f);
     }
-    clusters = new List<Cluster>(clusterer.Clusters);
+    _clusters = new List<Cluster>(clusterer.Clusters);
   }
 }
