@@ -8,15 +8,7 @@ public class LinearExtrapolator : IPredictor {
 
   // Predict the state at the given time.
   public override PredictorState Predict(float time) {
-    if (_states.Count == 0) {
-      Debug.LogError("No states available to extrapolate.");
-      return new PredictorState();
-    }
-
-    PredictorState lastState = _states.LastOrDefault();
-    PredictorState predictedState = new PredictorState();
-    predictedState.Position = lastState.Position + lastState.Velocity * (time - lastState.Time);
-    predictedState.Velocity = lastState.Velocity;
-    return predictedState;
+    Vector3 position = _state.Position + _state.Velocity * time;
+    return new PredictorState(position, _state.Velocity, _state.Acceleration);
   }
 }
