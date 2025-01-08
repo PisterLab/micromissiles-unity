@@ -68,6 +68,19 @@ public class Cluster {
     _coordinates = Centroid();
   }
 
+  // Calculate the velocity of the cluster.
+  // The velocity is the mean velocity of all game objects.
+  public Vector3 Velocity() {
+    Vector3 velocity = Vector3.zero;
+    int numObjects = 0;
+    foreach (var obj in _objects) {
+      if (obj.GetComponent<Rigidbody>() != null) {
+        velocity += obj.GetComponent<Rigidbody>().linearVelocity;
+      }
+    }
+    return numObjects > 0 ? velocity / numObjects : Vector3.zero;
+  }
+
   // Add a game object to the cluster.
   // This function does not update the centroid of the cluster.
   public void AddObject(in GameObject obj) {

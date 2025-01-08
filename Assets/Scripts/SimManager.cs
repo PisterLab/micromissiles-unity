@@ -123,7 +123,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public string GenerateSubmunitionsSwarmTitle(List<(Agent, bool)> swarm) {
-    return GenerateSwarmTitle(swarm, LookupSubmunitionSwarnIndexInInterceptorSwarm(swarm));
+    return GenerateSwarmTitle(swarm, LookupSubmunitionSwarmIndexInInterceptorSwarm(swarm));
   }
 
   public string GenerateThreatSwarmTitle(List<(Agent, bool)> swarm) {
@@ -138,7 +138,7 @@ public class SimManager : MonoBehaviour {
     } else {
       Destroy(gameObject);
     }
-    simulationConfig = ConfigLoader.LoadSimulationConfig("1_salvo_1_hydra_7_drones.json");
+    simulationConfig = ConfigLoader.LoadSimulationConfig(defaultConfig);
     simulatorConfig = ConfigLoader.LoadSimulatorConfig();
     Debug.Log(simulationConfig);
   }
@@ -236,7 +236,7 @@ public class SimManager : MonoBehaviour {
     OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
   }
 
-  public int LookupSubmunitionSwarnIndexInInterceptorSwarm(List<(Agent, bool)> swarm) {
+  public int LookupSubmunitionSwarmIndexInInterceptorSwarm(List<(Agent, bool)> swarm) {
     if (_submunitionInterceptorSwarmMap.TryGetValue(swarm, out var interceptorSwarm)) {
       return _interceptorSwarms.IndexOf(interceptorSwarm);
     }
