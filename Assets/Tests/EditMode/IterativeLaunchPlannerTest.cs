@@ -14,6 +14,10 @@ public class IterativeLaunchPlannerTest {
       return new List<LaunchAngleDataPoint> {
         new LaunchAngleDataPoint(new LaunchAngleInput(distance: 1, altitude: 100),
                                  new LaunchAngleOutput(launchAngle: 90, timeToPosition: 10)),
+        new LaunchAngleDataPoint(new LaunchAngleInput(distance: 60, altitude: 1),
+                                 new LaunchAngleOutput(launchAngle: 20, timeToPosition: 13)),
+        new LaunchAngleDataPoint(new LaunchAngleInput(distance: 80, altitude: 1),
+                                 new LaunchAngleOutput(launchAngle: 15, timeToPosition: 16)),
         new LaunchAngleDataPoint(new LaunchAngleInput(distance: 100, altitude: 1),
                                  new LaunchAngleOutput(launchAngle: 10, timeToPosition: 20)),
       };
@@ -53,8 +57,19 @@ public class IterativeLaunchPlannerTest {
   }
 
   [Test]
+  public void TestInterceptAcrossMultipleDataPoints() {
+    Agent agent = GenerateAgent(position: new Vector3(126, 1, 0), velocity: new Vector3(-5, 0, 0));
+    LinearExtrapolator predictor = new LinearExtrapolator(agent);
+    IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
+    LaunchPlan plan = planner.Plan();
+    Assert.IsTrue(plan.ShouldLaunch);
+    Assert.AreEqual(plan.LaunchAngle, 20);
+    Assert.AreEqual(plan.InterceptPosition, new Vector3(61, 1, 0));
+  }
+
+  [Test]
   public void TestNoLaunchDivergingFromInterceptPoint() {
-    Agent agent = GenerateAgent(position: new Vector3(1, 100, 0), velocity: new Vector3(0, 1, 0));
+    Agent agent = GenerateAgent(position: new Vector3(1, 105, 0), velocity: new Vector3(0, 1, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();

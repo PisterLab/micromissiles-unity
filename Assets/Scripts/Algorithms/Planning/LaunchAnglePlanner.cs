@@ -51,9 +51,8 @@ public interface ILaunchAnglePlanner {
     return Plan(new LaunchAngleInput(distance, altitude));
   }
   public LaunchAngleOutput Plan(Vector3 position) {
-    float distance = Vector3.ProjectOnPlane(position, Vector3.up).magnitude;
-    float altitude = Vector3.Project(position, Vector3.up).magnitude;
-    return Plan(distance, altitude);
+    Vector2 direction = ConvertToDirection(position);
+    return Plan(distance: direction[0], altitude: direction[1]);
   }
 
   // Get the intercept position.
@@ -62,8 +61,13 @@ public interface ILaunchAnglePlanner {
     return GetInterceptPosition(new LaunchAngleInput(distance, altitude));
   }
   public LaunchAngleInput GetInterceptPosition(Vector3 position) {
-    float distance = Vector3.ProjectOnPlane(position, Vector3.up).magnitude;
-    float altitude = Vector3.Project(position, Vector3.up).magnitude;
-    return GetInterceptPosition(distance, altitude);
+    Vector2 direction = ConvertToDirection(position);
+    return GetInterceptPosition(distance: direction[0], altitude: direction[1]);
+  }
+
+  // Convert from a 3D vector to a 2D direction that ignores the azimuth.
+  public static Vector2 ConvertToDirection(Vector3 position) {
+    return new Vector2(Vector3.ProjectOnPlane(position, Vector3.up).magnitude,
+                       Vector3.Project(position, Vector3.up).magnitude);
   }
 }

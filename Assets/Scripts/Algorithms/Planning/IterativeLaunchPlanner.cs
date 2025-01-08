@@ -8,8 +8,6 @@ using UnityEngine;
 //  current position.
 //  2. Intercept position estimation: The algorithm predicts the target position at the estimated
 //  time-to-intercept.
-// If the distance to the predicted target position is greater than the initial distance to the
-// target position, the interceptor should wait to be launched.
 public class IterativeLaunchPlanner : ILaunchPlanner {
   // Maximum number of iterations before declaring failure.
   private const int MaxNumIterations = 10;
@@ -24,42 +22,45 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   public override LaunchPlan Plan() {
     PredictorState initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;
-    Vector2 initialTargetDirection =
-        new Vector2(Vector3.ProjectOnPlane(initialState.Position, Vector3.up).magnitude,
-                    Vector3.Project(initialState.Position, Vector3.up).magnitude);
+    Vector2 initialTargetPositionDirection =
+        ILaunchAnglePlanner.ConvertToDirection(initialState.Position);
 
+    LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
+    Vector2 interceptDirection = Vector2.zero;
+    Vector2 predictedDirection = Vector2.zero;
     for (int i = 0; i < MaxNumIterations; ++i) {
+      Debug.Log(i);
       // Estimate the time-to-intercept.
-      LaunchAngleOutput launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
+      launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
       float timeToIntercept = launchAngleOutput.TimeToPosition;
+      LaunchAngleInput launchAngleInput = _launchAnglePlanner.GetInterceptPosition(targetPosition);
 
       // Estimate the intercept position.
       PredictorState predictedState = _predictor.Predict(timeToIntercept);
-      Vector3 predictedPosition = predictedState.Position;
+      targetPosition = predictedState.Position;
 
-      // Calculate the intercept and predicted directions.
-      LaunchAngleInput launchAngleInput = _launchAnglePlanner.GetInterceptPosition(targetPosition);
-      Vector2 interceptDirection =
+      // Check whether the intercept direction has changed, in which case the algorithm has
+      // converged.
+      Vector2 newInterceptDirection =
           new Vector2(launchAngleInput.Distance, launchAngleInput.Altitude);
-      Vector2 predictedDirection =
-          new Vector2(Vector3.ProjectOnPlane(predictedPosition, Vector3.up).magnitude,
-                      Vector3.Project(predictedPosition, Vector3.up).magnitude);
+      if (interceptDirection == newInterceptDirection) {
+        break;
+      }
+      interceptDirection = newInterceptDirection;
+      predictedDirection = ILaunchAnglePlanner.ConvertToDirection(targetPosition);
 
-      // Check whether the distance from the predicted position to the intercept position is less
-      // than the distance from the initial position to the intercept position.
-      if (Vector2.Distance(predictedDirection, interceptDirection) >
-          Vector2.Distance(initialTargetDirection, interceptDirection)) {
+      // Check that the target is moving towards the intercept position.
+      if (Vector2.Dot(interceptDirection - initialTargetPositionDirection,
+                      predictedDirection - initialTargetPositionDirection) < 0) {
         // The interceptor should wait to be launched.
         return LaunchPlan.NoLaunch;
       }
+    }
 
-      // Check whether the algorithm has converged by checking whether the intercept position and
-      // the predicted position are close together.
-      if (Vector2.Distance(interceptDirection, predictedDirection) < InterceptPositionThreshold) {
-        return new LaunchPlan(launchAngleOutput.LaunchAngle, predictedPosition);
-      }
-
-      targetPosition = predictedPosition;
+    // Check whether the intercept position and the predicted position are within some threshold
+    // distance of each other.
+    if (Vector2.Distance(interceptDirection, predictedDirection) < InterceptPositionThreshold) {
+      return new LaunchPlan(launchAngleOutput.LaunchAngle, targetPosition);
     }
     return LaunchPlan.NoLaunch;
   }
