@@ -51,7 +51,6 @@ public class ClusterTest {
 
   [Test]
   public void TestCentroid() {
-    const float radius = 3;
     List<GameObject> objects = new List<GameObject>();
     for (int i = -1; i <= 1; ++i) {
       for (int j = -1; j <= 1; ++j) {
@@ -64,7 +63,6 @@ public class ClusterTest {
 
   [Test]
   public void TestRecenter() {
-    const float radius = 3;
     List<GameObject> objects = new List<GameObject>();
     for (int i = -1; i <= 1; ++i) {
       for (int j = -1; j <= 1; ++j) {
