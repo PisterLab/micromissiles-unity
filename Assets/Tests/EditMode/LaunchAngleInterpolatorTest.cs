@@ -40,11 +40,11 @@ public class LaunchAngleInterpolatorTest {
   [Test]
   public void TestInvalidInterpolationData() {
     // Create a mock CSV content with insufficient data
-    string mockCsv = "0,0"; // Only x and y, missing angle and time
+    string mockCsv = "0,0";  // Only x and y, missing angle and time
     LaunchAngleInterpolator.ConfigLoaderDelegate mockLoader = (string path) => mockCsv;
 
     LaunchAngleInterpolator interpolator = new LaunchAngleInterpolator(null, mockLoader);
-    
+
     // Use values that will cause the interpolator to return invalid data
     float extremeX = float.MaxValue;
     float extremeY = float.MaxValue;

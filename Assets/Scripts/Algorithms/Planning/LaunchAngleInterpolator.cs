@@ -35,7 +35,9 @@ public class LaunchAngleInterpolator {
 
   private readonly ConfigLoaderDelegate _configLoader;
 
-  // Modified constructor with dependency injection
+  // Initializes a new instance of the LaunchAngleInterpolator.
+  // The interpolator loads launch angle data from a CSV file and provides interpolated values
+  // for arbitrary target positions.
   public LaunchAngleInterpolator(string path = null, ConfigLoaderDelegate configLoader = null) {
     RelativePath = path ?? Path.Combine("Planning", "hydra70_launch_angle.csv");
     _configLoader = configLoader ?? ConfigLoader.LoadFromStreamingAssets;
