@@ -11,7 +11,7 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
   protected IInterpolator2D _interpolator;
 
   public ILaunchAngleInterpolator() {
-    InitInterpolator();
+    // Remove InitInterpolator from constructor
   }
 
   // Initialize the interpolator.
@@ -19,10 +19,21 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
 
   // Calculate the optimal launch angle in degrees and the time-to-target in seconds.
   public LaunchAngleOutput Plan(in LaunchAngleInput input) {
+    if (_interpolator == null) {
+      throw new InvalidOperationException("Interpolator not properly initialized.");
+    }
+    
     Interpolator2DDataPoint interpolatedDataPoint =
         _interpolator.Interpolate(input.Distance, input.Altitude);
-    return new LaunchAngleOutput(launchAngle: interpolatedDataPoint.Data[0],
-                                 timeToPosition: interpolatedDataPoint.Data[1]);
+        
+    if (interpolatedDataPoint == null || interpolatedDataPoint.Data == null || interpolatedDataPoint.Data.Count < 2) {
+      throw new InvalidOperationException("Interpolator returned invalid data.");
+    }
+    
+    return new LaunchAngleOutput(
+      launchAngle: interpolatedDataPoint.Data[0],
+      timeToPosition: interpolatedDataPoint.Data[1]
+    );
   }
 
   // Get the intercept position.
@@ -40,27 +51,49 @@ public class LaunchAngleCsvInterpolator : ILaunchAngleInterpolator {
   // The first two columns of the CSV file specify the coordinates of each data point.
   // The third column denotes the launch angle in degrees, and the fourth column denotes the time to
   // reach the target position.
-  private readonly static string RelativePath =
-      Path.Combine("Planning", "hydra70_launch_angle.csv");
+  public readonly string RelativePath;
 
-  public LaunchAngleCsvInterpolator() : base() {}
+  // Delegate for loading configuration
+  public delegate string ConfigLoaderDelegate(string path);
+
+  private readonly ConfigLoaderDelegate _configLoader;
+
+  // Initializes a new instance of the LaunchAngleInterpolator.
+  // The interpolator loads launch angle data from a CSV file and provides interpolated values
+  // for arbitrary target positions.
+  public LaunchAngleCsvInterpolator(string path = null, ConfigLoaderDelegate configLoader = null) {
+    RelativePath = path ?? Path.Combine("Planning", "hydra70_launch_angle.csv");
+    _configLoader = configLoader ?? ConfigLoader.LoadFromStreamingAssets;
+    InitInterpolator(); // Move initialization here after fields are set
+  }
 
   // Initialize the interpolator.
   protected override void InitInterpolator() {
-    string fileContent = ConfigLoader.LoadFromStreamingAssets(RelativePath);
+    string fileContent = _configLoader(RelativePath);
     if (string.IsNullOrEmpty(fileContent)) {
       Debug.LogError($"Failed to load CSV file from {RelativePath}.");
       throw new InvalidOperationException("Interpolator could not be initialized.");
     }
 
     string[] csvLines = fileContent.Split('\n');
-    _interpolator = new NearestNeighborInterpolator2D(csvLines);
+    if (csvLines.Length < 1) {
+      throw new InvalidOperationException("No data points available for interpolation.");
+    }
+
+    try {
+      _interpolator = new NearestNeighborInterpolator2D(csvLines);
+    }
+    catch (Exception e) {
+      throw new InvalidOperationException("Failed to initialize interpolator: " + e.Message);
+    }
   }
 }
 
 // The launch angle data interpolator class interpolates the values from a static list of values.
 public abstract class LaunchAngleDataInterpolator : ILaunchAngleInterpolator {
-  public LaunchAngleDataInterpolator() : base() {}
+  public LaunchAngleDataInterpolator() : base() {
+    InitInterpolator(); // Move initialization here
+  }
 
   // Initialize the interpolator.
   protected override void InitInterpolator() {
