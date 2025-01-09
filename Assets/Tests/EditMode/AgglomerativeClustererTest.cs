@@ -24,10 +24,10 @@ public class AgglomerativeClustererTest {
     AgglomerativeClusterer clusterer =
         new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
-    Assert.AreEqual(clusterer.Clusters.Count, 1);
+    Assert.AreEqual(1, clusterer.Clusters.Count);
     Cluster cluster = clusterer.Clusters[0];
-    Assert.AreEqual(cluster.Size(), Objects.Count);
-    Assert.AreEqual(cluster.Centroid(), new Vector3(0, 1.25f, 0));
+    Assert.AreEqual(Objects.Count, cluster.Size());
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid());
   }
 
   [Test]
@@ -35,9 +35,9 @@ public class AgglomerativeClustererTest {
     AgglomerativeClusterer clusterer =
         new AgglomerativeClusterer(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
-    Assert.AreEqual(clusterer.Clusters.Count, Objects.Count);
+    Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
     foreach (var cluster in clusterer.Clusters) {
-      Assert.AreEqual(cluster.Size(), 1);
+      Assert.AreEqual(1, cluster.Size());
     }
   }
 
@@ -46,9 +46,9 @@ public class AgglomerativeClustererTest {
     AgglomerativeClusterer clusterer =
         new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 0);
     clusterer.Cluster();
-    Assert.AreEqual(clusterer.Clusters.Count, Objects.Count);
+    Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
     foreach (var cluster in clusterer.Clusters) {
-      Assert.AreEqual(cluster.Size(), 1);
+      Assert.AreEqual(1, cluster.Size());
     }
   }
 
@@ -57,13 +57,13 @@ public class AgglomerativeClustererTest {
     AgglomerativeClusterer clusterer =
         new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 1);
     clusterer.Cluster();
-    Assert.AreEqual(clusterer.Clusters.Count, 3);
+    Assert.AreEqual(3, clusterer.Clusters.Count);
     List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();
-    Assert.AreEqual(clusters[0].Size(), 1);
-    Assert.AreEqual(clusters[0].Coordinates, new Vector3(0, 0, 0));
-    Assert.AreEqual(clusters[1].Size(), 2);
-    Assert.AreEqual(clusters[1].Coordinates, new Vector3(0, 1.25f, 0));
-    Assert.AreEqual(clusters[2].Size(), 1);
-    Assert.AreEqual(clusters[2].Coordinates, new Vector3(0, 2.5f, 0));
+    Assert.AreEqual(1, clusters[0].Size());
+    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Coordinates);
+    Assert.AreEqual(2, clusters[1].Size());
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Coordinates);
+    Assert.AreEqual(1, clusters[2].Size());
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Coordinates);
   }
 }
