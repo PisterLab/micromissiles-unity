@@ -41,8 +41,8 @@ public class IterativeLaunchPlannerTest {
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
-    Assert.AreEqual(plan.LaunchAngle, 90);
-    Assert.AreEqual(plan.InterceptPosition, new Vector3(1, 100, 0));
+    Assert.AreEqual(90, plan.LaunchAngle);
+    Assert.AreEqual(new Vector3(1, 100, 0), plan.InterceptPosition);
   }
 
   [Test]
@@ -52,8 +52,8 @@ public class IterativeLaunchPlannerTest {
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
-    Assert.AreEqual(plan.LaunchAngle, 90);
-    Assert.AreEqual(plan.InterceptPosition, new Vector3(1, 99, 0));
+    Assert.AreEqual(90, plan.LaunchAngle);
+    Assert.AreEqual(new Vector3(1, 99, 0), plan.InterceptPosition);
   }
 
   [Test]
@@ -63,8 +63,8 @@ public class IterativeLaunchPlannerTest {
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
-    Assert.AreEqual(plan.LaunchAngle, 20);
-    Assert.AreEqual(plan.InterceptPosition, new Vector3(61, 1, 0));
+    Assert.AreEqual(20, plan.LaunchAngle);
+    Assert.AreEqual(new Vector3(61, 1, 0), plan.InterceptPosition);
   }
 
   [Test]
