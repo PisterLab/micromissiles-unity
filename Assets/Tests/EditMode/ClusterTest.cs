@@ -26,7 +26,7 @@ public class ClusterTest {
       objects.Add(GenerateObject(new Vector3(0, i, 0)));
     }
     Cluster cluster = GenerateCluster(objects);
-    Assert.AreEqual(cluster.Size(), size);
+    Assert.AreEqual(size, cluster.Size());
   }
 
   [Test]
@@ -46,7 +46,7 @@ public class ClusterTest {
     objects.Add(GenerateObject(new Vector3(0, radius, 0)));
     objects.Add(GenerateObject(new Vector3(0, -radius, 0)));
     Cluster cluster = GenerateCluster(objects);
-    Assert.AreEqual(cluster.Radius(), radius);
+    Assert.AreEqual(radius, cluster.Radius());
   }
 
   [Test]
@@ -58,7 +58,7 @@ public class ClusterTest {
       }
     }
     Cluster cluster = GenerateCluster(objects);
-    Assert.AreEqual(cluster.Centroid(), Vector3.zero);
+    Assert.AreEqual(Vector3.zero, cluster.Centroid());
   }
 
   [Test]
@@ -71,9 +71,9 @@ public class ClusterTest {
     }
     Cluster cluster = GenerateCluster(objects);
     cluster.AddObject(GenerateObject(new Vector3(10, -10, 0)));
-    Assert.AreNotEqual(cluster.Coordinates, new Vector3(1, -1, 0));
+    Assert.AreNotEqual(new Vector3(1, -1, 0), cluster.Coordinates);
     cluster.Recenter();
-    Assert.AreEqual(cluster.Coordinates, new Vector3(1, -1, 0));
+    Assert.AreEqual(new Vector3(1, -1, 0), cluster.Coordinates);
   }
 
   [Test]
@@ -93,7 +93,7 @@ public class ClusterTest {
     Vector3 centroid2 = cluster2.Centroid();
     cluster1.Merge(cluster2);
     cluster1.Recenter();
-    Assert.AreEqual(cluster1.Size(), size1 + size2);
-    Assert.AreEqual(cluster1.Coordinates, (centroid1 + centroid2) / 2);
+    Assert.AreEqual(size1 + size2, cluster1.Size());
+    Assert.AreEqual((centroid1 + centroid2) / 2, cluster1.Coordinates);
   }
 }
