@@ -42,7 +42,7 @@ public abstract class IInterpolator2D {
       string[] values = line.Split(',');
       (bool success, List<float> parsedValues) =
           Interpolator2DDataPoint.ValidateAndParseData(values);
-      if (success && parsedValues.Count > 2) {
+      if (success && parsedValues.Count >= 2) {
         _data.Add(new Interpolator2DDataPoint(new Vector2(parsedValues[0], parsedValues[1]),
                                               parsedValues.Skip(2).ToList()));
       }
@@ -72,7 +72,7 @@ public class NearestNeighborInterpolator2D : IInterpolator2D {
             .FirstOrDefault();
     if (closestPoint == null) {
       Debug.LogError("No data points available for interpolation.");
-      return new Interpolator2DDataPoint();
+      return new Interpolator2DDataPoint(new Vector2(x, y), new List<float>());
     }
     return closestPoint;
   }

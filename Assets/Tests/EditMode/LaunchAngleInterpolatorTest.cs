@@ -28,14 +28,13 @@ public class LaunchAngleCsvInterpolatorTest {
 
   [Test]
   public void TestFileNotFound() {
-    // Inject a mock ConfigLoader that returns an empty string
+    // Inject a mock ConfigLoader that returns an empty string.
     LaunchAngleCsvInterpolator.ConfigLoaderDelegate mockLoader = (string path) => "";
 
-    // Expect the specific error log from LaunchAngleInterpolator
     LogAssert.Expect(LogType.Error, "Failed to load CSV file from Planning/nonexistent.csv.");
-
     Assert.Throws<InvalidOperationException>(() => {
       var interpolator = new LaunchAngleCsvInterpolator("Planning/nonexistent.csv", mockLoader);
+      interpolator.Plan(new LaunchAngleInput());
     });
   }
 
