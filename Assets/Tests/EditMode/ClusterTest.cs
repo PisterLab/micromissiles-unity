@@ -46,7 +46,7 @@ public class ClusterTest {
     objects.Add(GenerateObject(new Vector3(0, radius, 0)));
     objects.Add(GenerateObject(new Vector3(0, -radius, 0)));
     Cluster cluster = GenerateCluster(objects);
-    Assert.AreEqual(size, cluster.Radius());
+    Assert.AreEqual(radius, cluster.Radius());
   }
 
   [Test]
