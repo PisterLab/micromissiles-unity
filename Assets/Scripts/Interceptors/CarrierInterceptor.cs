@@ -59,7 +59,20 @@ public class CarrierInterceptor : Interceptor {
           dynamicAgentConfig.submunitions_config.dynamic_agent_config);
       convertedConfig.initial_state = new InitialState();
       convertedConfig.initial_state.position = transform.position;
-      convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
+
+      // Fan the submunitions radially outwards by 60 degrees from the carrier interceptor's
+      // velocity vector.
+      const float SubmunitionsAngularDeviation = 60.0f * Mathf.Deg2Rad;
+      Vector3 velocity = GetComponent<Rigidbody>().linearVelocity;
+      Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
+      Vector3 lateralDirection =
+          Quaternion.AngleAxis(i * 360 / dynamicAgentConfig.submunitions_config.num_submunitions,
+                               velocity) *
+          perpendicularDirection;
+      convertedConfig.initial_state.velocity = Vector3.RotateTowards(
+          velocity, lateralDirection, maxRadiansDelta: SubmunitionsAngularDeviation,
+          maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation));
+
       Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
       submunition.SetFlightPhase(FlightPhase.READY);
       // Launch the submunitions with the same velocity as the carrier interceptor's.
