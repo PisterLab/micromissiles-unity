@@ -16,35 +16,31 @@ public class ThreatAssignment : IAssignment {
 
     List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
     if (assignableInterceptors.Count == 0) {
-      Debug.LogWarning("No assignable interceptors found");
+      Debug.LogWarning("No assignable interceptors found.");
       return assignments;
     }
 
     List<ThreatData> activeThreats = IAssignment.GetActiveThreats(targets);
     if (activeThreats.Count == 0) {
-      Debug.LogWarning("No active threats found");
+      Debug.LogWarning("No active threats found.");
       return assignments;
     }
 
     Vector3 positionToDefend = Vector3.zero;
     List<ThreatInfo> threatInfos = CalculateThreatLevels(activeThreats, positionToDefend);
 
-    // Sort ThreatInfo first by ThreatData.Status (UNASSIGNED first, then ASSIGNED)
-    // Within each group, order by ThreatLevel descending
-    threatInfos = threatInfos.OrderBy(t => t.ThreatData.assignedInterceptorCount)
+    // Sort the threats first by whether an interceptor is assigned to them already and then by
+    // their threat level in descending order.
+    threatInfos = threatInfos.OrderBy(t => t.ThreatData.AssignedInterceptorCount)
                       .ThenByDescending(t => t.ThreatLevel)
                       .ToList();
 
     var assignableInterceptorsEnumerator = assignableInterceptors.GetEnumerator();
-    if (assignableInterceptorsEnumerator.MoveNext())  // Move to the first element
-    {
-      foreach (ThreatInfo threatInfo in threatInfos) {
-        assignments.Add(new IAssignment.AssignmentItem(assignableInterceptorsEnumerator.Current,
-                                                       threatInfo.ThreatData.Threat));
-        if (!assignableInterceptorsEnumerator.MoveNext()) {
-          break;
-        }
-      }
+    int threatIndex = 0;
+    while (assignableInterceptorsEnumerator.MoveNext()) {
+      assignments.Add(new IAssignment.AssignmentItem(assignableInterceptorsEnumerator.Current,
+                                                     threatInfos[threatIndex].ThreatData.Threat));
+      threatIndex = (threatIndex + 1) % threatInfos.Count;
     }
     return assignments;
   }
@@ -58,13 +54,13 @@ public class ThreatAssignment : IAssignment {
       float distanceToMean = Vector3.Distance(threat.transform.position, defensePosition);
       float velocityMagnitude = threat.GetVelocity().magnitude;
 
-      // Calculate threat level based on proximity and velocity
+      // Calculate the threat level based on proximity and velocity.
       float threatLevel = (1 / distanceToMean) * velocityMagnitude;
 
       threatInfos.Add(new ThreatInfo(threatData, threatLevel));
     }
 
-    // Sort threats in descending order
+    // Sort threats in descending order.
     return threatInfos.OrderByDescending(t => t.ThreatLevel).ToList();
   }
 

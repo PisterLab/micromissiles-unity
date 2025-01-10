@@ -13,7 +13,7 @@ outline: [2,4]
 
 ![Simulation config files](./images/agent_config_files.png)
 
-In this guide, we will explore the different types of configuration files used in the simulation and how to modify them to customize your simulation scenarios. 
+In this guide, we will explore the different types of configuration files used in the simulation and how to modify them to customize your simulation scenarios.
 You can customize interceptor and threat behaviors, simulation parameters, and more to suit your needs.
 There are three main types of configuration files:
 
@@ -29,13 +29,13 @@ Understanding these configurations will enable you to set up complex simulations
 
 ## Configuration Files
 
-The main configuration files you will work with are located in the `Assets/StreamingAssets/Configs/` directory. 
+The main configuration files you will work with are located in the `Assets/StreamingAssets/Configs/` directory.
 
 > [!NOTE]
-> In a deployment context (i.e. you downloaded the binary release from the [releases page](https://github.com/PisterLab/micromissiles-unity/releases)), these files are located in the `micromissiles_Data/StreamingAssets/Configs/` directory. 
-> 
-> On Windows, this directory is co-located with the executable. 
-> 
+> In a deployment context (i.e. you downloaded the binary release from the [releases page](https://github.com/PisterLab/micromissiles-unity/releases)), these files are located in the `micromissiles_Data/StreamingAssets/Configs/` directory.
+>
+> On Windows, this directory is co-located with the executable.
+>
 > On MacOS, you need to right click the `micromissiles-v*.*` Application > `Show Package Contents` > `Contents/Resources/Data/StreamingAssets/Configs/`.
 
 Several example configuration files are provided to help you get started.
@@ -127,7 +127,7 @@ Each swarm configuration includes:
 The simulation configurations are defined in JSON files that specify the initial setup for missiles and targets.
 
 When preparing your own simulation configuration, it is important to keep in mind that small missiles have limited
-range. In the video below, notice the difference in successful intercepts of an evading target when 
+range. In the video below, notice the difference in successful intercepts of an evading target when
 the micromissiles are launched at 2 km vs 6 km from the incoming threats
 
 ![Short range intercept ](./images/short_range_interceptors.gif)
@@ -204,7 +204,7 @@ A simple simulation with one interceptor (`Hydra 70`) and seven threat drones.
 
 > [!IMPORTANT]
 > The initial rotation of an agent is determined by the initial velocity vector.
-> 
+>
 > Reminder: +X is right, +Y is up, +Z is forward.
 
 **Threat Configuration (`threat_swarm_configs`):**
@@ -217,7 +217,7 @@ A simple simulation with one interceptor (`Hydra 70`) and seven threat drones.
 #### Example 2: `3_salvo_2_sfrj_5_fateh110b.json`
 
 A complex simulation that involves multiple solid fuel ramjet interceptor salvos launched at different times to engage a large number of ballistic missile threats.
-This scenario demonstrates a layered defense approach against a large-scale ballistic missile attack. 
+This scenario demonstrates a layered defense approach against a large-scale ballistic missile attack.
 The staggered launch times and varied dispense times help ensure continuous defensive coverage as the threats approach their targets.
 
 ```json
@@ -343,7 +343,7 @@ This simulation involves **three salvos** of SFRJ interceptors, each launched at
     - **Submunitions:** Each SFRJ releases 12 micromissiles
 
 The SFRJs are initialized with substantial velocities (`y: 300`, `z: 200`) to compensate for their lower acceleration rates.
-Remember this also determines the initial orientation of the agent. It helps to set the initial velocity to point the agent 
+Remember this also determines the initial orientation of the agent. It helps to set the initial velocity to point the agent
 towards the threat.
 
 > [!TIP]
@@ -358,7 +358,7 @@ towards the threat.
 
 > [!TIP]
 > Ballistic missile threats are best modeled assuming they've entered their terminal phase, characterized by high velocities and primarily influenced by gravity (and drag)
-> 
+>
 > This means the initial velocity is critically important to good simulation results of ballistic missile threats.
 
 
@@ -632,7 +632,7 @@ This configuration defines a direct attack behavior where threats navigate towar
 
 1. The behavior uses a `DTTFlightPlan` (Distance-To-Target) with waypoints that specify:
    - `distance`: How far from the target this waypoint applies
-   - `altitude`: The height to maintain at this distance 
+   - `altitude`: The height to maintain at this distance
    - `power`: Engine power setting to use (`MIL` = Military Power, `MAX` = Maximum Power)
 
 2. The waypoints are processed in descending distance order. In this example:
@@ -657,7 +657,7 @@ This creates a phased attack profile where threats:
     {
       "num_agents": 1,               // Common error: trailing comma
       "dynamic_agent_config": {},    // <- Remove this comma
-    }  
+    }
   ]
 }
 ```

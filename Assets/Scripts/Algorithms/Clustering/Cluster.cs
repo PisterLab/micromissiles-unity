@@ -76,6 +76,7 @@ public class Cluster {
     foreach (var obj in _objects) {
       if (obj.GetComponent<Rigidbody>() != null) {
         velocity += obj.GetComponent<Rigidbody>().linearVelocity;
+        ++numObjects;
       }
     }
     return numObjects > 0 ? velocity / numObjects : Vector3.zero;

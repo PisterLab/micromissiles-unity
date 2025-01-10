@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Interceptor : Agent {
   [SerializeField]
-  private float _navigationGain = 3f;  // Typically 3-5
+  private float _navigationGain = 3f;  // Typically 3-5.
 
   [SerializeField]
   protected bool _showDebugVectors = true;
@@ -23,7 +23,6 @@ public class Interceptor : Agent {
     SetFlightPhase(FlightPhase.INITIALIZED);
   }
 
-  // Return whether a target can be assigned to the interceptor.
   public override bool IsAssignable() {
     bool assignable = !HasAssignedTarget();
     return assignable;
@@ -48,19 +47,19 @@ public class Interceptor : Agent {
     }
     UpdateMissileTrailEffect();
 
-    // Calculate boost acceleration
+    // Calculate the boost acceleration.
     float boostAcceleration =
         (float)(staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
-    // Add PN acceleration to boost acceleration
-    Vector3 controllerAcceleration = CalcualteAccelerationInput(deltaTime);
+    // Add the PN acceleration to the boost acceleration.
+    Vector3 controllerAcceleration = CalculateAccelerationInput(deltaTime);
     Vector3 accelerationInput = boostAccelerationVector + controllerAcceleration;
 
-    // Calculate the total acceleration
+    // Calculate the total acceleration.
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
 
-    // Apply the acceleration force
+    // Apply the acceleration.
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
@@ -68,23 +67,31 @@ public class Interceptor : Agent {
     UpdateMissileTrailEffect();
 
     _elapsedTime += deltaTime;
-    Vector3 accelerationInput = CalcualteAccelerationInput(deltaTime);
+    Vector3 accelerationInput = CalculateAccelerationInput(deltaTime);
 
-    // Calculate and set the total acceleration
+    // Calculate and set the total acceleration.
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
     GetComponent<Rigidbody>().AddForce(acceleration, ForceMode.Acceleration);
   }
 
-  private Vector3 CalcualteAccelerationInput(double deltaTime) {
+  private Vector3 CalculateAccelerationInput(double deltaTime) {
+    Vector3 accelerationInput = Vector3.zero;
+    float maxNormalAcceleration = CalculateMaxNormalAcceleration();
+
     if (!HasAssignedTarget()) {
-      return Vector3.zero;
+      // Counter gravity if possible.
+      accelerationInput =
+          (float)Constants.kGravity / Vector3.Dot(transform.up, Vector3.up) * transform.up;
+      accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
+      _accelerationInput = accelerationInput;
+      return accelerationInput;
     }
 
     UpdateTargetModel(deltaTime);
 
-    // Check whether the threat should be considered a miss
+    // Check whether the threat should be considered a miss.
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
-    // DL: This causes trouble with Fateh110B (high-speed threats)
+    // TODO(dlovell): This causes trouble with the Fateh 110B (high-speed threats).
     // if (sensorOutput.velocity.range > 1000f) {
     //   this.HandleInterceptMiss();
     //   return Vector3.zero;
@@ -96,10 +103,9 @@ public class Interceptor : Agent {
     } else {
       controller = new PnController(this, _navigationGain);
     }
-    Vector3 accelerationInput = controller.Plan();
+    accelerationInput = controller.Plan();
 
-    // Clamp the normal acceleration input to the maximum normal acceleration
-    float maxNormalAcceleration = CalculateMaxNormalAcceleration();
+    // Clamp the normal acceleration input to the maximum normal acceleration.
     accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
     _accelerationInput = accelerationInput;
     return accelerationInput;
@@ -109,8 +115,8 @@ public class Interceptor : Agent {
     _elapsedTime += deltaTime;
     float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
     if (_elapsedTime >= sensorUpdatePeriod) {
-      // TODO: Implement guidance filter to estimate state from sensor output
-      // For now, we'll use the threat's actual state
+      // TODO: Implement guidance filter to estimate state from the sensor output.
+      // For now, we'll use the threat's actual state.
       _targetModel.SetPosition(_target.GetPosition());
       _targetModel.SetVelocity(_target.GetVelocity());
       _targetModel.SetAcceleration(_target.GetAcceleration());
@@ -119,26 +125,27 @@ public class Interceptor : Agent {
   }
 
   private void OnTriggerEnter(Collider other) {
-    if (other.gameObject.name == "Floor") {
+    // Check if the interceptor hit the floor with a negative vertical speed.
+    if (other.gameObject.name == "Floor" && Vector3.Dot(GetVelocity(), Vector3.up) < 0) {
       this.HandleInterceptMiss();
     }
-    // Check if the collision is with another Agent
+
+    // Check if the collision is with another agent.
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
-      // Check kill probability before marking as hit
+      // Check kill probability before marking as hit.
       float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                             transform.position, Quaternion.identity);
       if (Random.value <= killProbability) {
         markerObject.GetComponent<UIHitMarker>().SetHit();
-        // Mark both this agent and the other agent as hit
+        // Mark both this agent and the other agent as hit.
         this.HandleInterceptHit(otherAgent);
         otherAgent.HandleInterceptHit(otherAgent);
 
       } else {
         markerObject.GetComponent<UIHitMarker>().SetMiss();
         this.HandleInterceptMiss();
-        // otherAgent.MarkAsMiss();
       }
     }
   }
@@ -168,7 +175,7 @@ public class Interceptor : Agent {
         ParticleSystem particleSystem = _missileTrailEffect.GetComponent<ParticleSystem>();
         float duration = particleSystem.main.duration;
 
-        // Extend the duration of the missile trail effect to be the same as the boost time
+        // Extend the duration of the missile trail effect to be the same as the boost time.
         if (duration < staticAgentConfig.boostConfig.boostTime) {
           ParticleSystem.MainModule mainModule = particleSystem.main;
           mainModule.duration = staticAgentConfig.boostConfig.boostTime;
@@ -194,7 +201,7 @@ public class Interceptor : Agent {
       return;
     }
 
-    // Get the particle effect duration time
+    // Get the particle effect duration time.
     float duration = _missileTrailEffect.GetComponent<ParticleSystem>().main.duration;
     if (_timeSinceBoost > duration) {
       DetatchMissileTrail();
@@ -207,7 +214,7 @@ public class Interceptor : Agent {
       _missileTrailEffect.transform.SetParent(null);
       _missileTrailEffect.transform.position = currentPosition;
       _missileTrailEffectAttached = false;
-      // Stop emitting particles
+      // Stop emitting particles.
       ParticleSystem particleSystem = _missileTrailEffect.GetComponent<ParticleSystem>();
       particleSystem.Stop();
     }
@@ -215,19 +222,19 @@ public class Interceptor : Agent {
 
   protected virtual void DrawDebugVectors() {
     if (_target != null) {
-      // Line of sight
+      // Line of sight.
       Debug.DrawLine(transform.position, _target.transform.position, new Color(1, 1, 1, 0.15f));
 
-      // Velocity vector
+      // Velocity vector.
       Debug.DrawRay(transform.position, GetVelocity() * 0.01f, new Color(0, 0, 1, 0.15f));
 
-      // Current forward direction
+      // Current forward direction.
       Debug.DrawRay(transform.position, transform.forward * 5f, Color.yellow);
 
-      // Pitch axis (right)
+      // Pitch axis (right).
       Debug.DrawRay(transform.position, transform.right * 5f, Color.red);
 
-      // Yaw axis (up)
+      // Yaw axis (up).
       Debug.DrawRay(transform.position, transform.up * 5f, Color.magenta);
 
       if (_accelerationInput != null) {

@@ -13,7 +13,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   private const int MaxNumIterations = 10;
 
   // Maximum intercept position threshold to declare convergence.
-  private const float InterceptPositionThreshold = 200;
+  private const float InterceptPositionThreshold = 1000;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
@@ -29,7 +29,6 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     Vector2 interceptDirection = Vector2.zero;
     Vector2 predictedDirection = Vector2.zero;
     for (int i = 0; i < MaxNumIterations; ++i) {
-      Debug.Log(i);
       // Estimate the time-to-intercept.
       launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
       float timeToIntercept = launchAngleOutput.TimeToPosition;
