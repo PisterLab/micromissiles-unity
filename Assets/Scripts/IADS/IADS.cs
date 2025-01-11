@@ -11,8 +11,7 @@ public class IADS : MonoBehaviour {
   private IAssignment _assignmentScheme = new ThreatAssignment();
 
   [SerializeField]
-  private List<ThreatData> _threatTable = new List<ThreatData>();
-  private Dictionary<Threat, ThreatData> _threatDataMap = new Dictionary<Threat, ThreatData>();
+  private List<Threat> _threats = new List<Threat>();
   private List<Cluster> _threatClusters = new List<Cluster>();
   private Dictionary<Cluster, ThreatClusterData> _threatClusterMap =
       new Dictionary<Cluster, ThreatClusterData>();
@@ -145,31 +144,20 @@ public class IADS : MonoBehaviour {
   public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {
     // Assign threats to the submunitions.
     Cluster cluster = _interceptorClusterMap[carrier];
-    List<ThreatData> threats =
-        cluster.Objects
-            .Select(gameObject => _threatDataMap[gameObject.GetComponent<Agent>() as Threat])
-            .ToList();
+    List<Threat> threats =
+        cluster.Objects.Select(gameObject => gameObject.GetComponent<Agent>() as Threat).ToList();
     IEnumerable<IAssignment.AssignmentItem> assignments =
         _assignmentScheme.Assign(interceptors, threats);
 
     // Apply the assignments to the submunitions.
     foreach (var assignment in assignments) {
       assignment.Interceptor.AssignTarget(assignment.Threat);
-      _threatDataMap[assignment.Threat].AssignInterceptor(assignment.Interceptor);
     }
   }
 
   public void RegisterNewThreat(Threat threat) {
-    ThreatData threatData = new ThreatData(threat, threat.gameObject.name);
-    _threatTable.Add(threatData);
-    _threatDataMap.Add(threat, threatData);
-
+    _threats.Add(threat);
     // TODO(titan): Cluster the new threat.
-
-    // Subscribe to the threat's events.
-    // TODO(dlovell): If we do not want omniscient IADS, we need to model the IADS's sensors here.
-    threat.OnThreatHit += RegisterThreatHit;
-    threat.OnThreatMiss += RegisterThreatMiss;
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
@@ -177,43 +165,12 @@ public class IADS : MonoBehaviour {
     interceptor.OnInterceptHit += RegisterInterceptorHit;
   }
 
-  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      threatData.RemoveInterceptor(interceptor);
-      MarkThreatDestroyed(threatData);
-    }
-  }
+  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {}
 
-  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    // Remove the interceptor from the threat's assigned interceptors
-    _threatDataMap[threat].RemoveInterceptor(interceptor);
-  }
-
-  private void MarkThreatDestroyed(ThreatData threatData) {
-    if (threatData != null) {
-      threatData.MarkDestroyed();
-    }
-  }
-
-  private void RegisterThreatHit(Threat threat) {
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      MarkThreatDestroyed(threatData);
-    }
-  }
-
-  private void RegisterThreatMiss(Threat threat) {
-    // The threat missed.
-    ThreatData threatData = _threatDataMap[threat];
-    if (threatData != null) {
-      MarkThreatDestroyed(threatData);
-    }
-  }
+  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {}
 
   private void RegisterSimulationEnded() {
-    _threatTable.Clear();
-    _threatDataMap.Clear();
+    _threats.Clear();
     _threatClusters.Clear();
     _threatClusterMap.Clear();
     _interceptorClusterMap.Clear();

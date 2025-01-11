@@ -23,7 +23,7 @@ public interface IAssignment {
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
   public abstract IEnumerable<AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
-                                                     in IReadOnlyList<ThreatData> threatTable);
+                                                     in IReadOnlyList<Threat> threats);
 
   // Get the list of assignable interceptor indices.
   [Pure]
@@ -34,7 +34,7 @@ public interface IAssignment {
 
   // Get the list of active threats.
   [Pure]
-  protected static List<ThreatData> GetActiveThreats(in IReadOnlyList<ThreatData> threats) {
-    return threats.Where(t => t.Status != ThreatStatus.DESTROYED).ToList();
+  protected static List<Threat> GetActiveThreats(in IReadOnlyList<Threat> threats) {
+    return threats.Where(threat => !threat.IsTerminated()).ToList();
   }
 }

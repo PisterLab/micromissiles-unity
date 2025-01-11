@@ -39,8 +39,7 @@ public abstract class Agent : MonoBehaviour {
   public StaticAgentConfig staticAgentConfig;
   public DynamicAgentConfig dynamicAgentConfig;
 
-  // Define delegates
-  // MarkDestroyed event handler
+  // Define delegates.
   public delegate void TerminatedEventHandler(Agent agent);
   public event TerminatedEventHandler OnTerminated;
 
@@ -49,7 +48,7 @@ public abstract class Agent : MonoBehaviour {
   public delegate void ThreatHitEventHandler(Threat threat);
   public delegate void ThreatMissEventHandler(Threat threat);
 
-  // Define events
+  // Define events.
   public event InterceptHitEventHandler OnInterceptHit;
   public event InterceptMissEventHandler OnInterceptMiss;
   public event ThreatHitEventHandler OnThreatHit;
@@ -113,14 +112,10 @@ public abstract class Agent : MonoBehaviour {
     return _targetModel;
   }
 
-  public void CheckTargetHit() {
-    if (HasAssignedTarget() && _target.IsHit()) {
-      UnassignTarget();
-    }
-  }
-
   public virtual void UnassignTarget() {
-    _target.RemoveInterceptor(this);
+    if (HasAssignedTarget()) {
+      _target.RemoveInterceptor(this);
+    }
     _target = null;
     _targetModel = null;
   }
@@ -128,6 +123,10 @@ public abstract class Agent : MonoBehaviour {
   // Return whether the agent has hit or been hit.
   public bool IsHit() {
     return _isHit;
+  }
+
+  public bool IsTerminated() {
+    return _flightPhase == FlightPhase.TERMINATED;
   }
 
   public void AddInterceptor(Agent interceptor) {
@@ -138,7 +137,12 @@ public abstract class Agent : MonoBehaviour {
     _interceptors.Remove(interceptor);
   }
 
+  public IReadOnlyList<Agent> AssignedInterceptors {
+    get { return _interceptors; }
+  }
+
   public virtual void TerminateAgent() {
+    UnassignTarget();
     if (_flightPhase != FlightPhase.TERMINATED) {
       OnTerminated?.Invoke(this);
     }
@@ -159,18 +163,16 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public void HandleInterceptMiss() {
-    if (_target != null) {
+    if (HasAssignedTarget()) {
       if (this is Interceptor interceptor && _target is Threat threat) {
         OnInterceptMiss?.Invoke(interceptor, threat);
       } else if (this is Threat threatAgent && _target is Interceptor interceptorTarget) {
         OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
       }
-      UnassignTarget();
     }
-    TerminateAgent();
   }
 
-  // This happens if we, e.g., hit the carrier.
+  // This happens, e.g., if the threat hit the carrier.
   public void HandleThreatHit() {
     _isHit = true;
     if (this is Threat threat) {
@@ -179,7 +181,7 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
-  // This happens if we, e.g., hit the floor.
+  // This happens, e.g., if the threat hit the floor.
   public void HandleThreatMiss() {
     if (this is Threat threat) {
       OnThreatMiss?.Invoke(threat);

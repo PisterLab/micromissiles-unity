@@ -12,7 +12,7 @@ public class RoundRobinAssignment : IAssignment {
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
   public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
-                                                        in IReadOnlyList<ThreatData> targets) {
+                                                        in IReadOnlyList<Threat> threats) {
     List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
 
     // Get the list of interceptors that are available for assignment.
@@ -22,8 +22,9 @@ public class RoundRobinAssignment : IAssignment {
     }
 
     // Get the list of active threats that need to be addressed.
-    List<ThreatData> activeThreats = IAssignment.GetActiveThreats(targets);
+    List<Threat> activeThreats = IAssignment.GetActiveThreats(threats);
     if (activeThreats.Count == 0) {
+      Debug.LogWarning("No active threats found.");
       return assignments;
     }
 
@@ -31,10 +32,10 @@ public class RoundRobinAssignment : IAssignment {
     foreach (Interceptor interceptor in assignableInterceptors) {
       // Determine the next target index in a round-robin fashion.
       int nextTargetIndex = (prevTargetIndex + 1) % activeThreats.Count;
-      ThreatData selectedThreat = activeThreats[nextTargetIndex];
+      Threat threat = activeThreats[nextTargetIndex];
 
       // Assign the interceptor to the selected threat.
-      assignments.Add(new IAssignment.AssignmentItem(interceptor, selectedThreat.Threat));
+      assignments.Add(new IAssignment.AssignmentItem(interceptor, threat));
 
       // Update the previous target index.
       prevTargetIndex = nextTargetIndex;

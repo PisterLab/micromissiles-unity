@@ -142,7 +142,6 @@ public class Interceptor : Agent {
         // Mark both this agent and the other agent as hit.
         this.HandleInterceptHit(otherAgent);
         otherAgent.HandleInterceptHit(otherAgent);
-
       } else {
         markerObject.GetComponent<UIHitMarker>().SetMiss();
         this.HandleInterceptMiss();
