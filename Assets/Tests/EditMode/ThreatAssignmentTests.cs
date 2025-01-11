@@ -8,7 +8,7 @@ public class ThreatAssignmentTests {
   [Test]
   public void Assign_Should_Assign_All_Interceptors_And_Threats() {
     // Define the threat assignment.
-    ThreatAssignment threatAssignment = new ThreatAssignment();
+    IAssignment threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor> {
@@ -36,7 +36,7 @@ public class ThreatAssignmentTests {
     rb2.linearVelocity = Vector3.forward * 10f;
     rb3.linearVelocity = Vector3.forward * 15f;
 
-    // Create threat.
+    // Create threats.
     List<Threat> threats = new List<Threat> { threat1, threat2, threat3 };
 
     // Assign the interceptors to the threats.
@@ -74,9 +74,9 @@ public class ThreatAssignmentTests {
   }
 
   [Test]
-  public void Assign_Should_Handle_More_Interceptors_Than_Threats() {
+  public void AssignShouldHandleMoreInterceptorsThanThreats() {
     // Define the threat assignment.
-    ThreatAssignment threatAssignment = new ThreatAssignment();
+    IAssignment threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor> {

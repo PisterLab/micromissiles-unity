@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Diagnostics.Contracts;
 
 // The threat assignment class assigns interceptors to the targets based
 // on the threat level of the targets.
@@ -59,7 +59,7 @@ public class ThreatAssignment : IAssignment {
     }
 
     // Sort threats in descending order.
-    return threatInfos.OrderByDescending(t => t.ThreatLevel).ToList();
+    return threatInfos.OrderByDescending(threat => threat.ThreatLevel).ToList();
   }
 
   private class ThreatInfo {
