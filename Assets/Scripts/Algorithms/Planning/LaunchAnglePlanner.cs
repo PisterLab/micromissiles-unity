@@ -45,6 +45,8 @@ public struct LaunchAngleDataPoint {
 // The launch angle planner class is an interface for a planner that outputs the optimal launch
 // angle and the time-to-target.
 public interface ILaunchAnglePlanner {
+  public ILaunchAnglePlanner() {}
+
   // Calculate the optimal launch angle in degrees and the time-to-target in seconds.
   public LaunchAngleOutput Plan(in LaunchAngleInput input);
   public LaunchAngleOutput Plan(float distance, float altitude) {

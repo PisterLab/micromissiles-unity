@@ -10,7 +10,7 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
   // Launch angle data interpolator.
   protected IInterpolator2D _interpolator;
 
-  public ILaunchAngleInterpolator() {}
+  public ILaunchAngleInterpolator() : base() {}
 
   // Initialize the interpolator.
   protected abstract void InitInterpolator();
@@ -49,22 +49,23 @@ public class LaunchAngleCsvInterpolator : ILaunchAngleInterpolator {
   // The first two columns of the CSV file specify the coordinates of each data point.
   // The third column denotes the launch angle in degrees, and the fourth column denotes the time to
   // reach the target position.
-  private readonly string RelativePath;
+  private readonly string _relativePath;
 
   // Delegate for loading the CSV file.
   public delegate string ConfigLoaderDelegate(string path);
   private readonly ConfigLoaderDelegate _configLoader;
 
-  public LaunchAngleCsvInterpolator(string path = null, ConfigLoaderDelegate configLoader = null) {
-    RelativePath = path ?? Path.Combine("Planning", "hydra70_launch_angle.csv");
+  public LaunchAngleCsvInterpolator(string path = null, ConfigLoaderDelegate configLoader = null)
+      : base() {
+    _relativePath = path ?? Path.Combine("Planning", "hydra70_launch_angle.csv");
     _configLoader = configLoader ?? ConfigLoader.LoadFromStreamingAssets;
   }
 
   // Initialize the interpolator.
   protected override void InitInterpolator() {
-    string fileContent = _configLoader(RelativePath);
+    string fileContent = _configLoader(_relativePath);
     if (string.IsNullOrEmpty(fileContent)) {
-      Debug.LogError($"Failed to load CSV file from {RelativePath}.");
+      Debug.LogError($"Failed to load CSV file from {_relativePath}.");
       throw new InvalidOperationException("Interpolator could not be initialized.");
     }
 
