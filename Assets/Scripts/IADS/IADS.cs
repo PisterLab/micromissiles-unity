@@ -39,7 +39,7 @@ public class IADS : MonoBehaviour {
       _threatClusterMap[cluster].UpdateCentroid();
     }
 
-    // Assign any interceptors that no longer have a valid target.
+    // Assign any interceptors that are no longer assigned to any threat.
     AssignInterceptorToThreat(_assignableInterceptors.ToList());
   }
 
@@ -156,6 +156,13 @@ public class IADS : MonoBehaviour {
     // Apply the assignments to the submunitions.
     foreach (var assignment in assignments) {
       assignment.Interceptor.AssignTarget(assignment.Threat);
+    }
+
+    // Check whether any submunitions were not assigned to a threat.
+    foreach (var interceptor in interceptors) {
+      if (!interceptor.HasAssignedTarget()) {
+        RequestAssignInterceptorToThreat(interceptor);
+      }
     }
   }
 
