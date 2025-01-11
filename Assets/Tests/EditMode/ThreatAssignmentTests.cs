@@ -6,7 +6,45 @@ using UnityEngine.TestTools;
 
 public class ThreatAssignmentTests {
   [Test]
-  public void Assign_Should_Assign_All_Interceptors_And_Threats() {
+  public void AssignNoInterceptors() {
+    // Define the threat assignment.
+    IAssignment threatAssignment = new ThreatAssignment();
+
+    // Create interceptors.
+    List<Interceptor> interceptors = new List<Interceptor>();
+
+    // Create threats.
+    List<Threat> threats =
+        new List<Threat> { new GameObject("Threat").AddComponent<RotaryWingThreat>() };
+
+    // Assign the interceptors to the threats.
+    LogAssert.Expect(LogType.Warning, "No assignable interceptors found.");
+    IEnumerable<IAssignment.AssignmentItem> assignments =
+        threatAssignment.Assign(interceptors, threats);
+    Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
+  }
+
+  [Test]
+  public void AssignNoThreats() {
+    // Define the threat assignment.
+    IAssignment threatAssignment = new ThreatAssignment();
+
+    // Create interceptors.
+    List<Interceptor> interceptors =
+        new List<Interceptor> { new GameObject("Interceptor").AddComponent<MissileInterceptor>() };
+
+    // Create threats.
+    List<Threat> threats = new List<Threat>();
+
+    // Assign the interceptors to the threats.
+    LogAssert.Expect(LogType.Warning, "No active threats found.");
+    IEnumerable<IAssignment.AssignmentItem> assignments =
+        threatAssignment.Assign(interceptors, threats);
+    Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
+  }
+
+  [Test]
+  public void AssignShouldAssignAllInterceptorsAndThreats() {
     // Define the threat assignment.
     IAssignment threatAssignment = new ThreatAssignment();
 
