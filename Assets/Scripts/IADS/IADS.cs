@@ -1,14 +1,14 @@
-using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEngine;
 
 // Integrated Air Defense System.
 public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
-  private IAssignment _assignmentScheme = new ThreatAssignment();
+  private IAssignment _assignmentScheme = new MaxSpeedAssignment();
 
   [SerializeField]
   private List<Threat> _threats = new List<Threat>();
@@ -17,6 +17,7 @@ public class IADS : MonoBehaviour {
       new Dictionary<Cluster, ThreatClusterData>();
   private Dictionary<Interceptor, Cluster> _interceptorClusterMap =
       new Dictionary<Interceptor, Cluster>();
+  private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
 
   private void Awake() {
     if (Instance == null) {
@@ -37,6 +38,9 @@ public class IADS : MonoBehaviour {
     foreach (var cluster in _threatClusters) {
       _threatClusterMap[cluster].UpdateCentroid();
     }
+
+    // Assign any interceptors that no longer have a valid target.
+    AssignInterceptorToThreat(_assignableInterceptors.ToList());
   }
 
   // Cluster the threats.
@@ -155,6 +159,24 @@ public class IADS : MonoBehaviour {
     }
   }
 
+  public void RequestAssignInterceptorToThreat(Interceptor interceptor) {
+    interceptor.UnassignTarget();
+    _assignableInterceptors.Add(interceptor);
+  }
+
+  public void AssignInterceptorToThreat(in IReadOnlyList<Interceptor> interceptors) {
+    // The threat originally assigned to the interceptor has been terminated, so assign another
+    // threat to the interceptor.
+    IEnumerable<IAssignment.AssignmentItem> assignments =
+        _assignmentScheme.Assign(interceptors, _threats);
+
+    // Apply the assignments to the submunitions.
+    foreach (var assignment in assignments) {
+      assignment.Interceptor.AssignTarget(assignment.Threat);
+      _assignableInterceptors.Remove(assignment.Interceptor);
+    }
+  }
+
   public void RegisterNewThreat(Threat threat) {
     _threats.Add(threat);
     // TODO(titan): Cluster the new threat.
@@ -165,14 +187,25 @@ public class IADS : MonoBehaviour {
     interceptor.OnInterceptHit += RegisterInterceptorHit;
   }
 
-  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {}
+  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
+    // Assign the other interceptors to other threats.
+    foreach (var otherInterceptor in threat.AssignedInterceptors.ToList()) {
+      if (interceptor != otherInterceptor) {
+        RequestAssignInterceptorToThreat(otherInterceptor as Interceptor);
+      }
+    }
+  }
 
-  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {}
+  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
+    // Assign the interceptor to another threat.
+    RequestAssignInterceptorToThreat(interceptor);
+  }
 
   private void RegisterSimulationEnded() {
     _threats.Clear();
     _threatClusters.Clear();
     _threatClusterMap.Clear();
     _interceptorClusterMap.Clear();
+    _assignableInterceptors.Clear();
   }
 }

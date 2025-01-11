@@ -25,16 +25,17 @@ public interface IAssignment {
   public abstract IEnumerable<AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
                                                      in IReadOnlyList<Threat> threats);
 
-  // Get the list of assignable interceptor indices.
+  // Get the list of assignable interceptors.
   [Pure]
   public static List<Interceptor> GetAssignableInterceptors(
       in IReadOnlyList<Interceptor> interceptors) {
-    return interceptors.Where(interceptor => interceptor.IsAssignable()).ToList();
+    return interceptors.Where(interceptor => interceptor.IsAssignable() && !interceptor.IsHit())
+        .ToList();
   }
 
   // Get the list of active threats.
   [Pure]
   public static List<Threat> GetActiveThreats(in IReadOnlyList<Threat> threats) {
-    return threats.Where(threat => !threat.IsTerminated()).ToList();
+    return threats.Where(threat => !threat.IsHit() && !threat.IsTerminated()).ToList();
   }
 }
