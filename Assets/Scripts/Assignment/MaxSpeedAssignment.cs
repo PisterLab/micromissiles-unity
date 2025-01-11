@@ -34,7 +34,7 @@ public class MaxSpeedAssignment : IAssignment {
 
     // Find all pairwise assignment costs.
     foreach (var interceptor in assignableInterceptors) {
-      // The speed decays exponentially with distance and with the turn angle.
+      // The speed decays exponentially with travelled distance and with the bearing change.
       float distanceTimeConstant = 2 * interceptor.staticAgentConfig.bodyConfig.mass /
                                    ((float)interceptor.GetDynamicPressure() *
                                     interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
@@ -46,8 +46,8 @@ public class MaxSpeedAssignment : IAssignment {
         float angleToThreat =
             Vector3.Angle(interceptor.GetVelocity(), directionToThreat) * Mathf.Deg2Rad;
 
-        // The speed decay factor is the product of the speed lost through distance and of the speed
-        // lost through turning, and we define the cost to be the (1 - speed decay factor).
+        // The speed loss factor is the product of the speed lost through distance and of the speed
+        // lost through turning, and we define the cost to be the (1 - speed loss factor).
         float cost = 1 - Mathf.Exp(-(distanceToThreat / distanceTimeConstant +
                                      angleToThreat / angleTimeConstant));
         assignmentCosts.Enqueue(new IAssignment.AssignmentItem(interceptor, threat), cost);
