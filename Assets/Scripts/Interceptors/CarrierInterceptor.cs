@@ -79,8 +79,8 @@ public class CarrierInterceptor : Interceptor {
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);
       submunitions.Add(submunition);
     }
-    IADS.Instance.AssignSubmunitionsToThreats(this, submunitions);
     UnassignTarget();
+    IADS.Instance.AssignSubmunitionsToThreats(this, submunitions);
 
     SimManager.Instance.AddSubmunitionsSwarm(
         submunitions.ConvertAll(submunition => submunition as Agent));

@@ -174,6 +174,7 @@ public abstract class Threat : Agent {
     if (other.gameObject.name == "Floor" && Vector3.Dot(GetVelocity(), Vector3.up) < 0) {
       this.HandleThreatMiss();
     }
+
     // Check if the collision is with another agent.
     DummyAgent otherAgent = other.gameObject.GetComponentInParent<DummyAgent>();
     if (otherAgent != null && _target == otherAgent) {
