@@ -20,8 +20,6 @@ public abstract class Agent : MonoBehaviour {
   protected Vector3 _dragAcceleration;
 
   [SerializeField]
-  // Only for debugging (viewing in editor)
-  // Don't bother setting this it won't be used
   protected float _speed;
 
   [SerializeField]
@@ -145,7 +143,7 @@ public abstract class Agent : MonoBehaviour {
       OnTerminated?.Invoke(this);
     }
     _flightPhase = FlightPhase.TERMINATED;
-    SetPosition(new Vector3(0, 0, 0));
+    SetPosition(Vector3.zero);
     gameObject.SetActive(false);
   }
 
@@ -172,7 +170,7 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
-  // This happens if we, e.g., hit the carrier
+  // This happens if we, e.g., hit the carrier.
   public void HandleThreatHit() {
     _isHit = true;
     if (this is Threat threat) {
@@ -181,7 +179,7 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
-  // This happens if we, e.g., hit the floor
+  // This happens if we, e.g., hit the floor.
   public void HandleThreatMiss() {
     if (this is Threat threat) {
       OnThreatMiss?.Invoke(threat);
@@ -360,22 +358,14 @@ public abstract class Agent : MonoBehaviour {
     }
     _timeInPhase += Time.fixedDeltaTime;
 
-    var launch_time = dynamicAgentConfig.dynamic_config.launch_config.launch_time;
     var boost_time = staticAgentConfig.boostConfig.boostTime;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {
       return;
     }
-
     if (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY) {
-      float launchTimeVariance = 0.5f;
-      float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
-      launch_time += launchTimeNoise;
-
-      if (elapsedSimulationTime >= launch_time) {
-        SetFlightPhase(FlightPhase.BOOST);
-      }
+      SetFlightPhase(FlightPhase.BOOST);
     }
     if (_timeSinceBoost > boost_time && _flightPhase == FlightPhase.BOOST) {
       SetFlightPhase(FlightPhase.MIDCOURSE);
@@ -468,14 +458,14 @@ public class DummyAgent : Agent {
   }
 
   protected override void UpdateReady(double deltaTime) {
-    // Do nothing
+    // Do nothing.
   }
 
   protected override void UpdateBoost(double deltaTime) {
-    // Do nothing
+    // Do nothing.
   }
 
   protected override void UpdateMidCourse(double deltaTime) {
-    // Do nothing
+    // Do nothing.
   }
 }
