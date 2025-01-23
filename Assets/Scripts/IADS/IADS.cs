@@ -119,6 +119,7 @@ public class IADS : MonoBehaviour {
     // of the interceptor.
     const float SubmunitionSpawnMaxAngularDeviation = 30.0f;
     const float SubmunitionSpawnMinDistanceToThreat = 500.0f;
+    const float SubmunitionSpawnMaxDistanceToThreat = 2000.0f;
 
     Cluster cluster = _interceptorClusterMap[carrier];
     List<Threat> threats =
@@ -139,7 +140,8 @@ public class IADS : MonoBehaviour {
       float distanceDeviation =
           (Vector3.ProjectOnPlane(positionToThreat, carrierVelocity)).magnitude;
       float angularDeviation = Mathf.Asin(distanceDeviation / distanceToThreat) * Mathf.Rad2Deg;
-      if (angularDeviation > SubmunitionSpawnMaxAngularDeviation) {
+      if (angularDeviation > SubmunitionSpawnMaxAngularDeviation &&
+          positionToThreat.magnitude < SubmunitionSpawnMaxDistanceToThreat) {
         return true;
       }
     }
