@@ -62,14 +62,21 @@ public abstract class IInterpolator2D {
 // The 2D nearest neighbor interpolator class interpolates values on a 2D grid using nearest
 // neighbor interpolation.
 public class NearestNeighborInterpolator2D : IInterpolator2D {
-  public NearestNeighborInterpolator2D(in string[] csvLines) : base(csvLines) {}
-  public NearestNeighborInterpolator2D(List<Interpolator2DDataPoint> data) : base(data) {}
+  // K-D tree for nearest neighbor interpolation.
+  private KDTree<Interpolator2DDataPoint> _tree;
+
+  public NearestNeighborInterpolator2D(in string[] csvLines) : base(csvLines) {
+    _tree = new KDTree<Interpolator2DDataPoint>(
+        _data, (Interpolator2DDataPoint point) => point.Coordinates);
+  }
+  public NearestNeighborInterpolator2D(List<Interpolator2DDataPoint> data) : base(data) {
+    _tree = new KDTree<Interpolator2DDataPoint>(
+        _data, (Interpolator2DDataPoint point) => point.Coordinates);
+  }
 
   // Interpolate the value using nearest neighbor interpolation.
   public override Interpolator2DDataPoint Interpolate(float x, float y) {
-    Interpolator2DDataPoint closestPoint =
-        _data.OrderBy(point => Vector2.Distance(new Vector2(x, y), point.Coordinates))
-            .FirstOrDefault();
+    Interpolator2DDataPoint closestPoint = _tree.NearestNeighbor(new Vector2(x, y));
     if (closestPoint == null) {
       Debug.LogError("No data points available for interpolation.");
       return new Interpolator2DDataPoint(new Vector2(x, y), new List<float>());
