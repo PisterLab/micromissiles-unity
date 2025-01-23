@@ -8,6 +8,10 @@ using UnityEngine;
 // Integrated Air Defense System.
 public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
+
+  // TODO(titan): Choose the CSV file based on the interceptor type.
+  private ILaunchAnglePlanner _launchAnglePlanner =
+      new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignment _assignmentScheme = new MaxSpeedAssignment();
 
   [SerializeField]
@@ -75,10 +79,7 @@ public class IADS : MonoBehaviour {
       IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
 
       // Create a launch planner.
-      // TODO(titan): Choose the CSV file based on the interceptor type.
-      ILaunchAnglePlanner launchAnglePlanner =
-          new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
-      ILaunchPlanner planner = new IterativeLaunchPlanner(launchAnglePlanner, predictor);
+      ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
       LaunchPlan plan = planner.Plan();
 
       // Check whether an interceptor should be launched.
