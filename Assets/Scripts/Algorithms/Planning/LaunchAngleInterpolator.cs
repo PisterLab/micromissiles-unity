@@ -10,7 +10,7 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
   // Launch angle data interpolator.
   protected IInterpolator2D _interpolator;
 
-  public ILaunchAngleInterpolator() {}
+  public ILaunchAngleInterpolator() : base() {}
 
   // Initialize the interpolator.
   protected abstract void InitInterpolator();
@@ -55,7 +55,8 @@ public class LaunchAngleCsvInterpolator : ILaunchAngleInterpolator {
   public delegate string ConfigLoaderDelegate(string path);
   private readonly ConfigLoaderDelegate _configLoader;
 
-  public LaunchAngleCsvInterpolator(string path = null, ConfigLoaderDelegate configLoader = null) {
+  public LaunchAngleCsvInterpolator(string path = null, ConfigLoaderDelegate configLoader = null)
+      : base() {
     _relativePath = path ?? Path.Combine("Planning", "hydra70_launch_angle.csv");
     _configLoader = configLoader ?? ConfigLoader.LoadFromStreamingAssets;
   }
