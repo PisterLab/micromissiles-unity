@@ -40,14 +40,14 @@ public class LaunchAngleCsvInterpolatorTest {
 
   [Test]
   public void TestInvalidInterpolationData() {
-    // Create a mock CSV with invalid data format
-    string mockCsv = "invalid,csv,data\n1,2,3";  // Wrong format but not empty
+    // Create a mock CSV with invalid data format.
+    string mockCsv = "invalid,csv,data\n1,2,3";
     LaunchAngleCsvInterpolator.ConfigLoaderDelegate mockLoader = (string path) => mockCsv;
 
     var interpolator = new LaunchAngleCsvInterpolator(null, mockLoader);
-    var extremeInput = new LaunchAngleInput(distance: float.MaxValue, altitude: float.MaxValue);
+    var input = new LaunchAngleInput(distance: 1, altitude: 2);
 
-    var ex = Assert.Throws<InvalidOperationException>(() => { interpolator.Plan(extremeInput); });
+    var ex = Assert.Throws<InvalidOperationException>(() => { interpolator.Plan(input); });
     Assert.That(ex.Message, Is.EqualTo("Interpolator returned invalid data."));
   }
 }
