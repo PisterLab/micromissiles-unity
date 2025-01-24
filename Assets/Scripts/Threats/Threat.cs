@@ -12,6 +12,11 @@ public abstract class Threat : Agent {
   protected SensorOutput _sensorOutput;
   protected Sensor _sensor;
 
+  protected override void Awake() {
+    base.Awake();
+    SetFlightPhase(FlightPhase.INITIALIZED);
+  }
+
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
     _target = SimManager.Instance.CreateDummyAgent(attackBehavior.targetPosition,

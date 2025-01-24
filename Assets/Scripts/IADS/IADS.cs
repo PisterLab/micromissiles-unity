@@ -87,20 +87,20 @@ public class IADS : MonoBehaviour {
         Debug.Log(
             $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
 
-        // Create a new interceptor and set its initial state.
+        // Create a new interceptor.
         DynamicAgentConfig config =
             SimManager.Instance.SimulationConfig.interceptor_swarm_configs[0].dynamic_agent_config;
-        config.initial_state = new InitialState();
+        InitialState initialState = new InitialState();
 
-        // Set the position, which defaults to the origin.
-        config.initial_state.position = Vector3.zero;
+        // Set the initial position, which defaults to the origin.
+        initialState.position = Vector3.zero;
 
-        // Set the velocity.
+        // Set the initial velocity.
         Vector3 interceptDirection =
             Coordinates3.ConvertCartesianToSpherical(plan.InterceptPosition);
-        config.initial_state.velocity = Coordinates3.ConvertSphericalToCartesian(
+        initialState.velocity = Coordinates3.ConvertSphericalToCartesian(
             r: 1e-3f, azimuth: interceptDirection[1], elevation: plan.LaunchAngle);
-        Interceptor interceptor = SimManager.Instance.CreateInterceptor(config);
+        Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;

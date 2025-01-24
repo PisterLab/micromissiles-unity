@@ -386,8 +386,9 @@ public class SimManager : MonoBehaviour {
   /// Creates a interceptor based on the provided configuration.
   /// </summary>
   /// <param name="config">Configuration settings for the interceptor.</param>
+  /// <param name="initialState">Initial state of the interceptor.</param>
   /// <returns>The created Interceptor instance, or null if creation failed.</returns>
-  public Interceptor CreateInterceptor(DynamicAgentConfig config) {
+  public Interceptor CreateInterceptor(DynamicAgentConfig config, InitialState initialState) {
     string interceptorModelFile = config.agent_model;
     interceptorModelFile = "Interceptors/" + interceptorModelFile;
     StaticAgentConfig interceptorStaticAgentConfig =
@@ -395,7 +396,7 @@ public class SimManager : MonoBehaviour {
     string agentClass = interceptorStaticAgentConfig.agentClass;
     // The interceptor class corresponds to the Prefab that must exist in the Resources/Prefabs
     // folder.
-    GameObject interceptorObject = CreateAgent(config, agentClass);
+    GameObject interceptorObject = CreateAgent(config, initialState, agentClass);
 
     if (interceptorObject == null)
       return null;
@@ -468,9 +469,6 @@ public class SimManager : MonoBehaviour {
     int threatId = _threatObjects.Count;
     threatObject.name = $"{threatStaticAgentConfig.name}_Threat_{threatId}";
 
-    // Threats always start in midcourse.
-    threat.SetFlightPhase(Agent.FlightPhase.MIDCOURSE);
-
     // Let listeners know that a new threat has been created.
     OnNewThreat?.Invoke(threat);
 
@@ -481,9 +479,11 @@ public class SimManager : MonoBehaviour {
   /// Creates a agent based on the provided configuration and prefab name.
   /// </summary>
   /// <param name="config">Configuration settings for the agent.</param>
+  /// <param name="initialState">Initial state of the agent.</param>
   /// <param name="prefabName">Name of the prefab to instantiate.</param>
   /// <returns>The created GameObject instance, or null if creation failed.</returns>
-  public GameObject CreateAgent(DynamicAgentConfig config, string prefabName) {
+  public GameObject CreateAgent(DynamicAgentConfig config, InitialState initialState,
+                                string prefabName) {
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
     if (prefab == null) {
       Debug.LogError($"Prefab '{prefabName}' not found in Resources/Prefabs folder.");
@@ -491,14 +491,13 @@ public class SimManager : MonoBehaviour {
     }
 
     // Set the position.
-    GameObject agentObject =
-        Instantiate(prefab, config.initial_state.position, Quaternion.identity);
+    GameObject agentObject = Instantiate(prefab, initialState.position, Quaternion.identity);
 
     // Set the velocity. The rigid body is frozen while the agent is in the initialized phase.
-    agentObject.GetComponent<Agent>().SetInitialVelocity(config.initial_state.velocity);
+    agentObject.GetComponent<Agent>().SetInitialVelocity(initialState.velocity);
 
     // Set the rotation to face the initial velocity.
-    Vector3 velocityDirection = config.initial_state.velocity.normalized;
+    Vector3 velocityDirection = initialState.velocity.normalized;
     Quaternion targetRotation = Quaternion.LookRotation(velocityDirection, Vector3.up);
     agentObject.transform.rotation = targetRotation;
 
@@ -519,14 +518,17 @@ public class SimManager : MonoBehaviour {
       return null;
     }
 
+    // Randomize the initial state.
+    InitialState initialState = new InitialState();
+
     // Randomize the position.
-    Vector3 noiseOffset = Utilities.GenerateRandomNoise(config.standard_deviation.position);
-    config.initial_state.position += noiseOffset;
+    Vector3 positionNoise = Utilities.GenerateRandomNoise(config.standard_deviation.position);
+    initialState.position = config.initial_state.position + positionNoise;
 
     // Randomize the velocity.
     Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.standard_deviation.velocity);
-    config.initial_state.velocity += velocityNoise;
-    return CreateAgent(config, prefabName);
+    initialState.velocity = config.initial_state.velocity + velocityNoise;
+    return CreateAgent(config, initialState, prefabName);
   }
 
   public void LoadNewConfig(string configFileName) {

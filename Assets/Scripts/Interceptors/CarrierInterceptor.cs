@@ -7,26 +7,6 @@ using System.Linq;
 public class CarrierInterceptor : Interceptor {
   private bool _submunitionsLaunched = false;
 
-  public override void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    base.SetDynamicAgentConfig(config);
-    if (!HasAssignedTarget()) {
-      const float DummyTargetPosition = 100 * 1000f;
-      // Create a dummy target that is projected 100 km out from the initial rotation.
-      Vector3 initialPosition = config.initial_state.position;
-      Quaternion initialRotation = Quaternion.Euler(config.initial_state.rotation);
-      Vector3 forwardDirection = initialRotation * Vector3.forward;
-      Vector3 dummyTargetPosition = initialPosition + forwardDirection * DummyTargetPosition;
-      Vector3 dummyTargetVelocity = Vector3.zero;
-
-      // Create the dummy agent.
-      Agent dummyAgent =
-          SimManager.Instance.CreateDummyAgent(dummyTargetPosition, dummyTargetVelocity);
-
-      // Assign the dummy agent as the target.
-      AssignTarget(dummyAgent);
-    }
-  }
-
   public override bool IsAssignable() {
     return false;
   }
@@ -57,8 +37,8 @@ public class CarrierInterceptor : Interceptor {
     for (int i = 0; i < dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
       DynamicAgentConfig convertedConfig = DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(
           dynamicAgentConfig.submunitions_config.dynamic_agent_config);
-      convertedConfig.initial_state = new InitialState();
-      convertedConfig.initial_state.position = transform.position;
+      InitialState initialState = new InitialState();
+      initialState.position = transform.position;
 
       // Fan the submunitions radially outwards by 60 degrees from the carrier interceptor's
       // velocity vector.
@@ -69,11 +49,12 @@ public class CarrierInterceptor : Interceptor {
           Quaternion.AngleAxis(i * 360 / dynamicAgentConfig.submunitions_config.num_submunitions,
                                velocity) *
           perpendicularDirection;
-      convertedConfig.initial_state.velocity = Vector3.RotateTowards(
+      initialState.velocity = Vector3.RotateTowards(
           velocity, lateralDirection, maxRadiansDelta: SubmunitionsAngularDeviation,
           maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation));
 
-      Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
+      Interceptor submunition =
+          SimManager.Instance.CreateInterceptor(convertedConfig, initialState);
       submunition.SetFlightPhase(FlightPhase.READY);
       // Launch the submunitions with the same velocity as the carrier interceptor's.
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);
