@@ -1,31 +1,31 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/24/2025 - 02:47:52 |
+| Generated on: | 01/25/2025 - 02:42:39 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 94 |
 | Files: | 76 |
-| Covered lines: | 1893 |
-| Uncovered lines: | 2761 |
-| Coverable lines: | 4654 |
-| Total lines: | 8281 |
-| Line coverage: | 40.6% (1893 of 4654) |
+| Covered lines: | 1884 |
+| Uncovered lines: | 2762 |
+| Coverable lines: | 4646 |
+| Total lines: | 8269 |
+| Line coverage: | 40.5% (1884 of 4646) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 266 |
+| Covered methods: | 265 |
 | Total methods: | 642 |
-| Method coverage: | 41.4% (266 of 642) |
+| Method coverage: | 41.2% (265 of 642) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**940**|**2680**|**3620**|**7999**|**25.9%**|**0**|**0**|****|**159**|**527**|**30.1%**|
-|Agent|123|142|265|473|46.4%|0|0||24|46|52.1%|
+|**bamlab.micromissiles**|**931**|**2681**|**3612**|**7987**|**25.7%**|**0**|**0**|****|**158**|**527**|**29.9%**|
+|Agent|114|151|265|473|43%|0|0||23|46|50%|
 |AgglomerativeClusterer|63|0|63|99|100%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
-|CarrierInterceptor|0|53|53|88|0%|0|0||0|7|0%|
+|CarrierInterceptor|0|41|41|69|0%|0|0||0|6|0%|
 |Cluster|43|13|56|102|76.7%|0|0||13|14|92.8%|
 |ConfigLoader|18|88|106|153|16.9%|0|0||2|13|15.3%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
@@ -72,12 +72,12 @@
 |RotaryWingThreat|17|26|43|76|39.5%|0|0||2|8|25%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|
 |Sensor|3|0|3|29|100%|0|0||1|1|100%|
-|SimManager|78|298|376|608|20.7%|0|0||8|47|17%|
+|SimManager|78|298|376|610|20.7%|0|0||8|47|17%|
 |SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
 |SwarmStatusDialog|0|133|133|167|0%|0|0||0|16|0%|
-|Threat|16|85|101|184|15.8%|0|0||4|10|40%|
+|Threat|16|89|105|189|15.2%|0|0||4|11|36.3%|
 |ThreatAssignment|38|0|38|74|100%|0|0||5|5|100%|
 |ThreatClusterData|0|24|24|57|0%|0|0||0|8|0%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
