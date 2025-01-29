@@ -36,7 +36,7 @@
     {
       "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "quadcopter.json",
+        "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 8000 },
@@ -94,7 +94,7 @@
     {
       "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "quadcopter.json",
+        "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 10000 },
@@ -123,7 +123,7 @@
     {
       "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "quadcopter.json",
+        "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 11000 },
@@ -152,7 +152,7 @@
     {
       "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "quadcopter.json",
+        "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 600, "z": 12000 },
