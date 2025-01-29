@@ -12,6 +12,11 @@ public abstract class Threat : Agent {
   protected SensorOutput _sensorOutput;
   protected Sensor _sensor;
 
+  protected override void Awake() {
+    base.Awake();
+    SetFlightPhase(FlightPhase.INITIALIZED);
+  }
+
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
     _target = SimManager.Instance.CreateDummyAgent(attackBehavior.targetPosition,
@@ -31,7 +36,7 @@ public abstract class Threat : Agent {
       case PowerSetting.MAX:
         return staticAgentConfig.powerTable.MAX;
       default:
-        Debug.LogError("Invalid power setting");
+        Debug.LogError("Invalid power setting.");
         return 0f;
     }
   }
@@ -170,10 +175,12 @@ public abstract class Threat : Agent {
   }
 
   private void OnTriggerEnter(Collider other) {
-    if (other.gameObject.name == "Floor") {
+    // Check if the threat hit the floor with a negative vertical speed.
+    if (other.gameObject.name == "Floor" && Vector3.Dot(GetVelocity(), Vector3.up) < 0) {
       this.HandleThreatMiss();
     }
-    // Check if the collision is with another Agent
+
+    // Check if the collision is with another agent.
     DummyAgent otherAgent = other.gameObject.GetComponentInParent<DummyAgent>();
     if (otherAgent != null && _target == otherAgent) {
       this.HandleThreatHit();

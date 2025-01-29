@@ -38,7 +38,7 @@ public class ParticleManager : MonoBehaviour {
       InitializeMissileExplosionParticlePool();
     }
 
-    // Subscribe to events!
+    // Subscribe to events.
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
 

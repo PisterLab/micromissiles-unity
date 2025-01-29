@@ -20,8 +20,6 @@ public abstract class Agent : MonoBehaviour {
   protected Vector3 _dragAcceleration;
 
   [SerializeField]
-  // Only for debugging (viewing in editor)
-  // Don't bother setting this it won't be used
   protected float _speed;
 
   [SerializeField]
@@ -41,8 +39,7 @@ public abstract class Agent : MonoBehaviour {
   public StaticAgentConfig staticAgentConfig;
   public DynamicAgentConfig dynamicAgentConfig;
 
-  // Define delegates
-  // MarkDestroyed event handler
+  // Define delegates.
   public delegate void TerminatedEventHandler(Agent agent);
   public event TerminatedEventHandler OnTerminated;
 
@@ -51,7 +48,7 @@ public abstract class Agent : MonoBehaviour {
   public delegate void ThreatHitEventHandler(Threat threat);
   public delegate void ThreatMissEventHandler(Threat threat);
 
-  // Define events
+  // Define events.
   public event InterceptHitEventHandler OnInterceptHit;
   public event InterceptMissEventHandler OnInterceptMiss;
   public event ThreatHitEventHandler OnThreatHit;
@@ -115,14 +112,10 @@ public abstract class Agent : MonoBehaviour {
     return _targetModel;
   }
 
-  public void CheckTargetHit() {
-    if (HasAssignedTarget() && _target.IsHit()) {
-      UnassignTarget();
-    }
-  }
-
   public virtual void UnassignTarget() {
-    _target.RemoveInterceptor(this);
+    if (HasAssignedTarget()) {
+      _target.RemoveInterceptor(this);
+    }
     _target = null;
     _targetModel = null;
   }
@@ -130,6 +123,10 @@ public abstract class Agent : MonoBehaviour {
   // Return whether the agent has hit or been hit.
   public bool IsHit() {
     return _isHit;
+  }
+
+  public bool IsTerminated() {
+    return _flightPhase == FlightPhase.TERMINATED;
   }
 
   public void AddInterceptor(Agent interceptor) {
@@ -140,12 +137,17 @@ public abstract class Agent : MonoBehaviour {
     _interceptors.Remove(interceptor);
   }
 
+  public IReadOnlyList<Agent> AssignedInterceptors {
+    get { return _interceptors; }
+  }
+
   public virtual void TerminateAgent() {
+    UnassignTarget();
     if (_flightPhase != FlightPhase.TERMINATED) {
       OnTerminated?.Invoke(this);
     }
     _flightPhase = FlightPhase.TERMINATED;
-    SetPosition(new Vector3(0, 0, 0));
+    SetPosition(Vector3.zero);
     gameObject.SetActive(false);
   }
 
@@ -161,18 +163,16 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public void HandleInterceptMiss() {
-    if (_target != null) {
+    if (HasAssignedTarget()) {
       if (this is Interceptor interceptor && _target is Threat threat) {
         OnInterceptMiss?.Invoke(interceptor, threat);
       } else if (this is Threat threatAgent && _target is Interceptor interceptorTarget) {
         OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
       }
-      UnassignTarget();
     }
-    TerminateAgent();
   }
 
-  // This happens if we, e.g., hit the carrier
+  // This happens, e.g., if the threat hit the carrier.
   public void HandleThreatHit() {
     _isHit = true;
     if (this is Threat threat) {
@@ -181,7 +181,7 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
-  // This happens if we, e.g., hit the floor
+  // This happens, e.g., if the threat hit the floor.
   public void HandleThreatMiss() {
     if (this is Threat threat) {
       OnThreatMiss?.Invoke(threat);
@@ -360,22 +360,14 @@ public abstract class Agent : MonoBehaviour {
     }
     _timeInPhase += Time.fixedDeltaTime;
 
-    var launch_time = dynamicAgentConfig.dynamic_config.launch_config.launch_time;
     var boost_time = staticAgentConfig.boostConfig.boostTime;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {
       return;
     }
-
     if (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY) {
-      float launchTimeVariance = 0.5f;
-      float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
-      launch_time += launchTimeNoise;
-
-      if (elapsedSimulationTime >= launch_time) {
-        SetFlightPhase(FlightPhase.BOOST);
-      }
+      SetFlightPhase(FlightPhase.BOOST);
     }
     if (_timeSinceBoost > boost_time && _flightPhase == FlightPhase.BOOST) {
       SetFlightPhase(FlightPhase.MIDCOURSE);
@@ -468,14 +460,14 @@ public class DummyAgent : Agent {
   }
 
   protected override void UpdateReady(double deltaTime) {
-    // Do nothing
+    // Do nothing.
   }
 
   protected override void UpdateBoost(double deltaTime) {
-    // Do nothing
+    // Do nothing.
   }
 
   protected override void UpdateMidCourse(double deltaTime) {
-    // Do nothing
+    // Do nothing.
   }
 }

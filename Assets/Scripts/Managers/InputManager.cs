@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour {
   // Start is called before the first frame update
   void Start() {}
 
-  // Update is called once per frame
+  // Update is called once per frame.
   void Update() {
     HandleInput();
   }
@@ -90,7 +90,7 @@ public class InputManager : MonoBehaviour {
       CameraController.Instance.SetCameraSpeed(CameraController.Instance.GetCameraSpeedNormal());
     }
 
-    // TRANSLATIONAL MOVEMENT
+    // Translational movement.
     if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Forward);
     }
@@ -174,13 +174,12 @@ public class InputManager : MonoBehaviour {
       SimManager.Instance.RestartSimulation();
     }
 
-    if (Input.GetKeyDown(KeyCode.L))  // 'L' for Load
-    {
+    if (Input.GetKeyDown(KeyCode.L)) {
       UIManager.Instance.ToggleConfigSelectorPanel();
     }
 
     if (Input.GetKeyDown(KeyCode.Space)) {
-      // Pause the time
+      // Pause the time.
       if (!SimManager.Instance.IsSimulationPaused()) {
         SimManager.Instance.PauseSimulation();
       } else {
@@ -217,15 +216,15 @@ public class InputManager : MonoBehaviour {
     }
 
     if (Input.GetKeyDown(KeyCode.Alpha4)) {
-      // Set pre-set view 4
+      // Set pre-set view 4.
     }
 
     if (Input.GetKeyDown(KeyCode.Alpha5)) {
-      // Set pre-set view 5
+      // Set pre-set view 5.
     }
 
     if (Input.GetKeyDown(KeyCode.Alpha6)) {
-      // Set pre-set view 6
+      // Set pre-set view 6.
     }
   }
 }

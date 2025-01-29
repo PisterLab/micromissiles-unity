@@ -1,21 +1,31 @@
-using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using UnityEngine;
 
-// Integrated Air Defense System
+// Integrated Air Defense System.
 public class IADS : MonoBehaviour {
-  public enum ThreatAssignmentStyle { ONE_TIME, CONTINUOUS }
-
   public static IADS Instance { get; private set; }
-  private IAssignment _assignmentScheme;
+
+  // TODO(titan): Choose the CSV file based on the interceptor type.
+  private ILaunchAnglePlanner _launchAnglePlanner =
+      new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
+  private IAssignment _assignmentScheme = new MaxSpeedAssignment();
 
   [SerializeField]
   private List<TrackFileData> _trackFiles = new List<TrackFileData>();
   private Dictionary<Agent, TrackFileData> _trackFileMap = new Dictionary<Agent, TrackFileData>();
 
   private List<Interceptor> _assignmentQueue = new List<Interceptor>();
+  private List<Threat> _threats = new List<Threat>();
+  private List<Cluster> _threatClusters = new List<Cluster>();
+  private Dictionary<Cluster, ThreatClusterData> _threatClusterMap =
+      new Dictionary<Cluster, ThreatClusterData>();
+  private Dictionary<Interceptor, Cluster> _interceptorClusterMap =
+      new Dictionary<Interceptor, Cluster>();
+  private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
 
   private int _trackFileCount = 0;
 
@@ -27,62 +37,159 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  private void Start() {
+  public void Start() {
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
-    _assignmentScheme = new ThreatAssignment();
   }
 
   public void LateUpdate() {
-    if (_assignmentQueue.Count > 0) {
-      int popCount = 100;
+    // Update the cluster centroids.
+    foreach (var cluster in _threatClusters) {
+      _threatClusterMap[cluster].UpdateCentroid();
+    }
 
-      // Take up to popCount interceptors from the queue
-      List<Interceptor> interceptorsToAssign = _assignmentQueue.Take(popCount).ToList();
-      AssignInterceptorsToThreats(interceptorsToAssign);
+    // Assign any interceptors that are no longer assigned to any threat.
+    AssignInterceptorToThreat(_assignableInterceptors.ToList());
+  }
 
-      // Remove the processed interceptors from the queue
-      _assignmentQueue.RemoveRange(0, Math.Min(popCount, _assignmentQueue.Count));
+  // Cluster the threats.
+  public void ClusterThreats(List<Threat> threats) {
+    // Maximum number of threats per cluster.
+    const int MaxSize = 7;
+    // Maximum cluster radius in meters.
+    const float MaxRadius = 500;
 
-      // Check if any interceptors were not assigned
-      List<Interceptor> assignedInterceptors =
-          interceptorsToAssign.Where(m => m.HasAssignedTarget()).ToList();
+    // Cluster to threats.
+    IClusterer clusterer = new AgglomerativeClusterer(
+        threats.ConvertAll(threat => threat.gameObject).ToList(), MaxSize, MaxRadius);
+    clusterer.Cluster();
+    var clusters = clusterer.Clusters;
+    Debug.Log($"Clustered {threats.Count} threats into {clusters.Count} clusters.");
 
-      if (assignedInterceptors.Count < interceptorsToAssign.Count) {
-        // Back into the queue they go!
-        _assignmentQueue.AddRange(interceptorsToAssign.Except(assignedInterceptors));
-        Debug.Log($"Backing interceptors into the queue. Failed to assign.");
+    _threatClusters = clusters.ToList();
+    foreach (var cluster in clusters) {
+      _threatClusterMap.Add(cluster, new ThreatClusterData(cluster));
+    }
+  }
+
+  // Check whether an interceptor should be launched at a cluster and launch it.
+  public void CheckAndLaunchInterceptors() {
+    foreach (var cluster in _threatClusters) {
+      // Check whether an interceptor has already been assigned to the cluster.
+      if (_threatClusterMap[cluster].Status == ThreatClusterStatus.ASSIGNED) {
+        continue;
+      }
+
+      // Create a predictor to track the cluster's centroid.
+      IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
+
+      // Create a launch planner.
+      ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
+      LaunchPlan plan = planner.Plan();
+
+      // Check whether an interceptor should be launched.
+      if (plan.ShouldLaunch) {
+        Debug.Log(
+            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+
+        // Create a new interceptor.
+        DynamicAgentConfig config =
+            SimManager.Instance.SimulationConfig.interceptor_swarm_configs[0].dynamic_agent_config;
+        InitialState initialState = new InitialState();
+
+        // Set the initial position, which defaults to the origin.
+        initialState.position = Vector3.zero;
+
+        // Set the initial velocity.
+        Vector3 interceptDirection =
+            Coordinates3.ConvertCartesianToSpherical(plan.InterceptPosition);
+        initialState.velocity = Coordinates3.ConvertSphericalToCartesian(
+            r: 1e-3f, azimuth: interceptDirection[1], elevation: plan.LaunchAngle);
+        Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
+
+        // Assign the interceptor to the cluster.
+        _interceptorClusterMap[interceptor] = cluster;
+        interceptor.AssignTarget(_threatClusterMap[cluster].Centroid);
+        _threatClusterMap[cluster].AssignInterceptor(interceptor);
+
+        // Create an interceptor swarm.
+        SimManager.Instance.AddInterceptorSwarm(new List<Agent> { interceptor as Agent });
       }
     }
   }
 
-  public void RequestThreatAssignment(List<Interceptor> interceptors) {
-    _assignmentQueue.AddRange(interceptors);
+  public bool ShouldLaunchSubmunitions(Interceptor carrier) {
+    // The carrier interceptor will spawn submunitions when any target is greater than 30 degrees
+    // away from the carrier interceptor's current velocity or when any threat is within 500 meters
+    // of the interceptor.
+    const float SubmunitionSpawnMaxAngularDeviation = 30.0f;
+    const float SubmunitionSpawnMinDistanceToThreat = 500.0f;
+    const float SubmunitionSpawnMaxDistanceToThreat = 2000.0f;
+
+    Cluster cluster = _interceptorClusterMap[carrier];
+    List<Threat> threats =
+        cluster.Objects.Select(gameObject => gameObject.GetComponent<Agent>() as Threat).ToList();
+    Vector3 carrierPosition = carrier.GetPosition();
+    Vector3 carrierVelocity = carrier.GetVelocity();
+    foreach (var threat in threats) {
+      Vector3 threatPosition = threat.GetPosition();
+      Vector3 positionToThreat = threatPosition - carrierPosition;
+      float distanceToThreat = positionToThreat.magnitude;
+
+      // Check whether the distance to the threat is less than the minimum distance.
+      if (distanceToThreat < SubmunitionSpawnMinDistanceToThreat) {
+        return true;
+      }
+
+      // Check whether the angular deviation exceeds the maximum angular deviation.
+      float distanceDeviation =
+          (Vector3.ProjectOnPlane(positionToThreat, carrierVelocity)).magnitude;
+      float angularDeviation = Mathf.Asin(distanceDeviation / distanceToThreat) * Mathf.Rad2Deg;
+      if (angularDeviation > SubmunitionSpawnMaxAngularDeviation &&
+          positionToThreat.magnitude < SubmunitionSpawnMaxDistanceToThreat) {
+        return true;
+      }
+    }
+    return false;
   }
 
-  public void RequestThreatAssignment(Interceptor interceptor) {
-    _assignmentQueue.Add(interceptor);
-  }
-
-  /// <summary>
-  /// Assigns the specified list of missiles to available targets based on the assignment scheme.
-  /// </summary>
-  /// <param name="missilesToAssign">The list of missiles to assign.</param>
-  public void AssignInterceptorsToThreats(List<Interceptor> missilesToAssign) {
-    // Perform the assignment
+  public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {
+    // Assign threats to the submunitions.
+    Cluster cluster = _interceptorClusterMap[carrier];
+    List<Threat> threats =
+        cluster.Objects.Select(gameObject => gameObject.GetComponent<Agent>() as Threat).ToList();
     IEnumerable<IAssignment.AssignmentItem> assignments =
-        _assignmentScheme.Assign(missilesToAssign, _trackFiles.OfType<ThreatData>().ToList());
+        _assignmentScheme.Assign(interceptors, threats);
 
-    // Apply the assignments to the missiles
+    // Apply the assignments to the submunitions.
     foreach (var assignment in assignments) {
       assignment.Interceptor.AssignTarget(assignment.Threat);
-      ThreatData threatTrack = _trackFileMap[assignment.Threat] as ThreatData;
-      InterceptorData interceptorTrack = _trackFileMap[assignment.Interceptor] as InterceptorData;
-      if (threatTrack != null && interceptorTrack != null) {
-        threatTrack.AssignInterceptor(assignment.Interceptor);
-        interceptorTrack.AssignThreat(assignment.Threat);
+    }
+
+    // Check whether any submunitions were not assigned to a threat.
+    foreach (var interceptor in interceptors) {
+      if (!interceptor.HasAssignedTarget()) {
+        RequestAssignInterceptorToThreat(interceptor);
       }
+    }
+  }
+
+  public void RequestAssignInterceptorToThreat(Interceptor interceptor) {
+    interceptor.UnassignTarget();
+    _assignableInterceptors.Add(interceptor);
+  }
+
+  public void AssignInterceptorToThreat(in IReadOnlyList<Interceptor> interceptors) {
+    // The threat originally assigned to the interceptor has been terminated, so assign another
+    // threat to the interceptor.
+    IEnumerable<IAssignment.AssignmentItem> assignments =
+        _assignmentScheme.Assign(interceptors, _threats);
+
+    // Apply the assignments to the submunitions.
+    foreach (var assignment in assignments) {
+      assignment.Interceptor.AssignTarget(assignment.Threat);
+      _assignableInterceptors.Remove(assignment.Interceptor);
     }
   }
 
@@ -118,6 +225,11 @@ public class IADS : MonoBehaviour {
     if (interceptorTrack != null) {
       interceptorTrack.RemoveThreat(threat);
       interceptorTrack.MarkDestroyed();
+    // Assign the other interceptors to other threats.
+    foreach (var otherInterceptor in threat.AssignedInterceptors.ToList()) {
+      if (interceptor != otherInterceptor) {
+        RequestAssignInterceptorToThreat(otherInterceptor as Interceptor);
+      }
     }
   }
 

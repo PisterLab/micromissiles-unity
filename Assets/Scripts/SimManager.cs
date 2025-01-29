@@ -19,9 +19,9 @@ public class SimManager : MonoBehaviour {
   /// Configuration settings for the simulation.
   /// </summary>
   [SerializeField]
-  public SimulationConfig simulationConfig;
+  public SimulationConfig SimulationConfig;
 
-  public string defaultConfig = "1_salvo_1_hydra_7_drones.json";
+  private string _defaultConfig = "7_drones.json";
 
   private List<Interceptor> _activeInterceptors = new List<Interceptor>();
 
@@ -32,8 +32,8 @@ public class SimManager : MonoBehaviour {
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
-  // Inclusive of ALL, including SUBMUNITIONS SWARMS
-  // The bool indicates whether the agent is ACTIVE (true) or INACTIVE (false)
+  // Inclusive of all, including submunitions swarms.
+  // The boolean indicates whether the agent is active (true) or inactive (false).
   private List<List<(Agent, bool)>> _interceptorSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> _submunitionsSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> _threatSwarms = new List<List<(Agent, bool)>>();
@@ -46,11 +46,11 @@ public class SimManager : MonoBehaviour {
   private Dictionary<Agent, List<(Agent, bool)>> _threatSwarmMap =
       new Dictionary<Agent, List<(Agent, bool)>>();
 
-  // Maps a submunition swarm to its corresponding interceptor swarm
+  // Maps a submunition swarm to its corresponding interceptor swarm.
   private Dictionary<List<(Agent, bool)>, List<(Agent, bool)>> _submunitionInterceptorSwarmMap =
       new Dictionary<List<(Agent, bool)>, List<(Agent, bool)>>();
 
-  // Events so people can subscribe to changes in each of the swarm tables
+  // Events to subscribe to for changes in each of the swarm tables.
   public delegate void SwarmEventHandler(List<List<(Agent, bool)>> swarm);
   public event SwarmEventHandler OnInterceptorSwarmChanged;
   public event SwarmEventHandler OnSubmunitionsSwarmChanged;
@@ -123,7 +123,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public string GenerateSubmunitionsSwarmTitle(List<(Agent, bool)> swarm) {
-    return GenerateSwarmTitle(swarm, LookupSubmunitionSwarnIndexInInterceptorSwarm(swarm));
+    return GenerateSwarmTitle(swarm, LookupSubmunitionSwarmIndexInInterceptorSwarm(swarm));
   }
 
   public string GenerateThreatSwarmTitle(List<(Agent, bool)> swarm) {
@@ -138,13 +138,12 @@ public class SimManager : MonoBehaviour {
     } else {
       Destroy(gameObject);
     }
-    simulationConfig = ConfigLoader.LoadSimulationConfig("1_salvo_1_hydra_7_drones.json");
+    SimulationConfig = ConfigLoader.LoadSimulationConfig(_defaultConfig);
     simulatorConfig = ConfigLoader.LoadSimulatorConfig();
-    Debug.Log(simulationConfig);
+    Debug.Log(SimulationConfig);
   }
 
   void Start() {
-    // Slow down time by simulationConfig.timeScale
     if (Instance == this) {
       _isSimulationPaused = false;
       StartSimulation();
@@ -152,16 +151,20 @@ public class SimManager : MonoBehaviour {
     }
   }
 
+  void Update() {}
+
   public void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
+    // Time.fixedDeltaTime is derived from simulator.json.
     Time.maximumDeltaTime = Time.fixedDeltaTime * 3;
-
-    // Time.fixedDeltaTime is set in the simulator.json
   }
 
   public void StartSimulation() {
     OnSimulationStarted?.Invoke();
     InitializeSimulation();
+
+    // Cluster the threats.
+    IADS.Instance.ClusterThreats(_threatObjects);
   }
 
   public void PauseSimulation() {
@@ -172,7 +175,7 @@ public class SimManager : MonoBehaviour {
 
   public void ResumeSimulation() {
     Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
-    SetTimeScale(simulationConfig.timeScale);
+    SetTimeScale(SimulationConfig.timeScale);
     _isSimulationPaused = false;
   }
 
@@ -182,33 +185,22 @@ public class SimManager : MonoBehaviour {
 
   private void InitializeSimulation() {
     if (!IsSimulationPaused()) {
-      // If it wasn't paused, we need to update the time scales NOW
-      SetTimeScale(simulationConfig.timeScale);
+      // If the simulation was not paused, we need to update the time scale.
+      SetTimeScale(SimulationConfig.timeScale);
       Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
-      // If the simulation WAS paused, then ResumeSimulation will handle
-      // updating the time scale and fixed delta time from the newly loaded config files
+      // If the simulation WAS paused, then ResumeSimulation will handle updating the time scale and
+      // fixed delta time from the newly loaded config files.
     }
 
-    // Invoke the simulation started event to let listeners
-    // know to invoke their own handler behavior
+    // Invoke the simulation started event to let listeners know to invoke their own handler
+    // behavior.
     OnSimulationStarted?.Invoke();
-    List<Interceptor> missiles = new List<Interceptor>();
-    // Create missiles based on config
-    foreach (var swarmConfig in simulationConfig.interceptor_swarm_configs) {
-      List<Agent> swarm = new List<Agent>();
-      for (int i = 0; i < swarmConfig.num_agents; i++) {
-        Interceptor interceptor = CreateInterceptor(swarmConfig.dynamic_agent_config);
-        swarm.Add(interceptor);
-      }
-      AddInterceptorSwarm(swarm);
-    }
-    IADS.Instance.RequestThreatAssignment(_interceptorObjects);
 
+    // Create targets based on the configuration.
     List<Agent> targets = new List<Agent>();
-    // Create targets based on config
-    foreach (var swarmConfig in simulationConfig.threat_swarm_configs) {
+    foreach (var swarmConfig in SimulationConfig.threat_swarm_configs) {
       List<Agent> swarm = new List<Agent>();
-      for (int i = 0; i < swarmConfig.num_agents; i++) {
+      for (int i = 0; i < swarmConfig.num_agents; ++i) {
         Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
         swarm.Add(threat);
       }
@@ -236,11 +228,12 @@ public class SimManager : MonoBehaviour {
     OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
   }
 
-  public int LookupSubmunitionSwarnIndexInInterceptorSwarm(List<(Agent, bool)> swarm) {
+  public int LookupSubmunitionSwarmIndexInInterceptorSwarm(List<(Agent, bool)> swarm) {
     if (_submunitionInterceptorSwarmMap.TryGetValue(swarm, out var interceptorSwarm)) {
       return _interceptorSwarms.IndexOf(interceptorSwarm);
     }
-    return -1;  // Return -1 if the swarm is not found
+    // Return -1 if the swarm is not found.
+    return -1;
   }
 
   public void AddThreatSwarm(List<Agent> swarm) {
@@ -268,11 +261,11 @@ public class SimManager : MonoBehaviour {
     int count = 0;
     int swarmCount = swarm.Count;
 
-    for (int i = 0; i < swarmCount; i++) {
+    for (int i = 0; i < swarmCount; ++i) {
       Agent agent = swarm[i];
       if (!agent.IsHit()) {
         sum += agent.transform.position;
-        count++;
+        ++count;
       }
     }
 
@@ -291,10 +284,6 @@ public class SimManager : MonoBehaviour {
     return _threatSwarms;
   }
 
-  public void AssignInterceptorsToThreats() {
-    IADS.Instance.AssignInterceptorsToThreats(_interceptorObjects);
-  }
-
   public void DestroyInterceptorInSwarm(Interceptor interceptor) {
     var swarm = _interceptorSwarmMap[interceptor];
     int index = swarm.FindIndex(tuple => tuple.Item1 == interceptor);
@@ -302,17 +291,16 @@ public class SimManager : MonoBehaviour {
       swarm[index] = (swarm[index].Item1, false);
       OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
     } else {
-      Debug.LogError("Interceptor not found in swarm");
+      Debug.LogError("Interceptor not found in swarm.");
     }
     if (swarm.All(tuple => !tuple.Item2)) {
-      // Need to give the CameraController a way to update
-      // to the next swarm if it exists
+      // Need to give the camera controller a way to update to the next swarm if it exists.
       if (CameraController.Instance.cameraMode == CameraMode.FOLLOW_INTERCEPTOR_SWARM) {
         CameraController.Instance.FollowNextInterceptorSwarm();
       }
     }
 
-    // If this also happens to be a submunition, destroy it in the submunition swarm
+    // If this also happens to be a submunition, destroy it in the submunition swarm.
     if (_submunitionsSwarmMap.ContainsKey(interceptor)) {
       DestroySubmunitionInSwarm(interceptor);
     }
@@ -398,21 +386,22 @@ public class SimManager : MonoBehaviour {
   /// Creates a interceptor based on the provided configuration.
   /// </summary>
   /// <param name="config">Configuration settings for the interceptor.</param>
+  /// <param name="initialState">Initial state of the interceptor.</param>
   /// <returns>The created Interceptor instance, or null if creation failed.</returns>
-  public Interceptor CreateInterceptor(DynamicAgentConfig config) {
+  public Interceptor CreateInterceptor(DynamicAgentConfig config, InitialState initialState) {
     string interceptorModelFile = config.agent_model;
     interceptorModelFile = "Interceptors/" + interceptorModelFile;
     StaticAgentConfig interceptorStaticAgentConfig =
         ConfigLoader.LoadStaticAgentConfig(interceptorModelFile);
     string agentClass = interceptorStaticAgentConfig.agentClass;
-    // The interceptor class corresponds to the Prefab that must
-    // exist in the Resources/Prefabs folder
-    GameObject interceptorObject = CreateAgent(config, agentClass);
+    // The interceptor class corresponds to the Prefab that must exist in the Resources/Prefabs
+    // folder.
+    GameObject interceptorObject = CreateAgent(config, initialState, agentClass);
 
     if (interceptorObject == null)
       return null;
 
-    // Interceptor-specific logic
+    // Interceptor-specific logic.
     switch (config.dynamic_config.sensor_config.type) {
       case SensorType.IDEAL:
         interceptorObject.AddComponent<IdealSensor>();
@@ -426,21 +415,21 @@ public class SimManager : MonoBehaviour {
     _interceptorObjects.Add(interceptor);
     _activeInterceptors.Add(interceptor);
 
-    // Set the static agent config
+    // Set the static agent config.
     interceptor.SetStaticAgentConfig(interceptorStaticAgentConfig);
 
-    // Subscribe events
+    // Subscribe events.
     interceptor.OnInterceptHit += RegisterInterceptorHit;
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
 
-    // Assign a unique and simple ID
+    // Assign a unique and simple ID.
     int interceptorId = _interceptorObjects.Count;
     interceptorObject.name = $"{interceptorStaticAgentConfig.name}_Interceptor_{interceptorId}";
 
-    // Add the interceptor's unit cost to the total cost
+    // Add the interceptor's unit cost to the total cost.
     _costLaunchedInterceptors += interceptorStaticAgentConfig.unitCost;
 
-    // Let listeners know a new interceptor has been created
+    // Let listeners know a new interceptor has been created.
     OnNewInterceptor?.Invoke(interceptor);
 
     return interceptor;
@@ -456,9 +445,8 @@ public class SimManager : MonoBehaviour {
     threatModelFile = "Threats/" + threatModelFile;
     StaticAgentConfig threatStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(threatModelFile);
     string agentClass = threatStaticAgentConfig.agentClass;
-    // The threat class corresponds to the Prefab that must
-    // exist in the Resources/Prefabs folder
-    GameObject threatObject = CreateAgent(config, agentClass);
+    // The threat class corresponds to the Prefab that must exist in the Resources/Prefabs folder.
+    GameObject threatObject = CreateRandomAgent(config, agentClass);
 
     if (threatObject == null)
       return null;
@@ -466,86 +454,106 @@ public class SimManager : MonoBehaviour {
     Threat threat = threatObject.GetComponent<Threat>();
     _threatObjects.Add(threat);
 
-    // Set the static agent config
+    // Set the static agent config.
     threat.SetStaticAgentConfig(threatStaticAgentConfig);
 
-    // Set the attack behavior
+    // Set the attack behavior.
     AttackBehavior attackBehavior = LoadAttackBehavior(config);
     threat.SetAttackBehavior(attackBehavior);
 
-    // Subscribe events
+    // Subscribe events.
     threat.OnThreatHit += RegisterThreatHit;
     threat.OnThreatMiss += RegisterThreatMiss;
 
-    // Assign a unique and simple ID
+    // Assign a unique and simple ID.
     int threatId = _threatObjects.Count;
     threatObject.name = $"{threatStaticAgentConfig.name}_Threat_{threatId}";
 
-    // Threats always start in midcourse
-    threat.SetFlightPhase(Agent.FlightPhase.MIDCOURSE);
-
-    // Let listeners know a new threat has been created
+    // Let listeners know that a new threat has been created.
     OnNewThreat?.Invoke(threat);
 
     return threatObject.GetComponent<Threat>();
   }
 
   /// <summary>
-  /// Creates an agent (interceptor or threat) based on the provided configuration and prefab name.
+  /// Creates a agent based on the provided configuration and prefab name.
   /// </summary>
   /// <param name="config">Configuration settings for the agent.</param>
+  /// <param name="initialState">Initial state of the agent.</param>
   /// <param name="prefabName">Name of the prefab to instantiate.</param>
   /// <returns>The created GameObject instance, or null if creation failed.</returns>
-  public GameObject CreateAgent(DynamicAgentConfig config, string prefabName) {
+  public GameObject CreateAgent(DynamicAgentConfig config, InitialState initialState,
+                                string prefabName) {
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
     if (prefab == null) {
       Debug.LogError($"Prefab '{prefabName}' not found in Resources/Prefabs folder.");
       return null;
     }
 
-    Vector3 noiseOffset = Utilities.GenerateRandomNoise(config.standard_deviation.position);
-    Vector3 noisyPosition = config.initial_state.position + noiseOffset;
+    // Set the position.
+    GameObject agentObject = Instantiate(prefab, initialState.position, Quaternion.identity);
 
-    GameObject agentObject = Instantiate(prefab, noisyPosition, Quaternion.identity);
+    // Set the velocity. The rigid body is frozen while the agent is in the initialized phase.
+    agentObject.GetComponent<Agent>().SetInitialVelocity(initialState.velocity);
 
-    Rigidbody agentRigidbody = agentObject.GetComponent<Rigidbody>();
-    Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.standard_deviation.velocity);
-    Vector3 noisyVelocity = config.initial_state.velocity + velocityNoise;
-    agentRigidbody.linearVelocity = noisyVelocity;
-    agentObject.GetComponent<Agent>().SetInitialVelocity(noisyVelocity);
-    // Set rotation to face the initial velocity with noise
-    Vector3 velocityDirection = noisyVelocity.normalized;
+    // Set the rotation to face the initial velocity.
+    Vector3 velocityDirection = initialState.velocity.normalized;
     Quaternion targetRotation = Quaternion.LookRotation(velocityDirection, Vector3.up);
     agentObject.transform.rotation = targetRotation;
 
     agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
-
     return agentObject;
   }
 
+  /// <summary>
+  /// Creates a random agent based on the provided configuration and prefab name.
+  /// </summary>
+  /// <param name="config">Configuration settings for the agent.</param>
+  /// <param name="prefabName">Name of the prefab to instantiate.</param>
+  /// <returns>The created GameObject instance, or null if creation failed.</returns>
+  public GameObject CreateRandomAgent(DynamicAgentConfig config, string prefabName) {
+    GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
+    if (prefab == null) {
+      Debug.LogError($"Prefab '{prefabName}' not found in Resources/Prefabs folder.");
+      return null;
+    }
+
+    // Randomize the initial state.
+    InitialState initialState = new InitialState();
+
+    // Randomize the position.
+    Vector3 positionNoise = Utilities.GenerateRandomNoise(config.standard_deviation.position);
+    initialState.position = config.initial_state.position + positionNoise;
+
+    // Randomize the velocity.
+    Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.standard_deviation.velocity);
+    initialState.velocity = config.initial_state.velocity + velocityNoise;
+    return CreateAgent(config, initialState, prefabName);
+  }
+
   public void LoadNewConfig(string configFileName) {
-    this.simulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
+    this.SimulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
     // Reload the simulator config
     this.simulatorConfig = ConfigLoader.LoadSimulatorConfig();
-    if (simulationConfig != null) {
-      Debug.Log($"Loaded new configuration: {configFileName}");
+    if (SimulationConfig != null) {
+      Debug.Log($"Loaded new configuration: {configFileName}.");
       RestartSimulation();
     } else {
-      Debug.LogError($"Failed to load configuration: {configFileName}");
+      Debug.LogError($"Failed to load configuration: {configFileName}.");
     }
   }
 
   public void RestartSimulation() {
     OnSimulationEnded?.Invoke();
     Debug.Log("Simulation ended");
-    UIManager.Instance.LogActionMessage("[SIM] Simulation restarted");
-    // Reset simulation time
+    UIManager.Instance.LogActionMessage("[SIM] Simulation restarted.");
+    // Reset the simulation time.
     _elapsedSimulationTime = 0f;
     _isSimulationPaused = IsSimulationPaused();
     _costLaunchedInterceptors = 0f;
     _costDestroyedThreats = 0f;
 
-    // Clear existing interceptors and threats
+    // Clear existing interceptors and threats.
     foreach (var interceptor in _interceptorObjects) {
       if (interceptor != null) {
         Destroy(interceptor.gameObject);
@@ -578,28 +586,16 @@ public class SimManager : MonoBehaviour {
     StartSimulation();
   }
 
-  void Update() {
-    // Check if all missiles have terminated
-    bool allInterceptorsTerminated = true;
-    foreach (var interceptor in _interceptorObjects) {
-      if (interceptor != null && interceptor.GetFlightPhase() != Agent.FlightPhase.TERMINATED) {
-        allInterceptorsTerminated = false;
-        break;
-      }
-    }
-    // If all missiles have terminated, restart the simulation
-    if (allInterceptorsTerminated) {
-      RestartSimulation();
-    }
-  }
-
   void FixedUpdate() {
-    if (!_isSimulationPaused && _elapsedSimulationTime < simulationConfig.endTime) {
+    if (!_isSimulationPaused && _elapsedSimulationTime < SimulationConfig.endTime) {
       _elapsedSimulationTime += Time.deltaTime;
-    } else if (_elapsedSimulationTime >= simulationConfig.endTime) {
+    } else if (_elapsedSimulationTime >= SimulationConfig.endTime) {
       RestartSimulation();
       Debug.Log("Simulation completed.");
     }
+
+    // Check whether to launch the interceptors. If so, create and launch the interceptor.
+    IADS.Instance.CheckAndLaunchInterceptors();
   }
 }
 

@@ -7,42 +7,15 @@ using System.Linq;
 public class CarrierInterceptor : Interceptor {
   private bool _submunitionsLaunched = false;
 
-  public override void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    base.SetDynamicAgentConfig(config);
-    if (!HasAssignedTarget()) {
-      // Create a DummyTarget that is projected 100km out from the initialRotation
-      Vector3 initialPosition = config.initial_state.position;
-      Quaternion initialRotation = Quaternion.Euler(config.initial_state.rotation);
-      Vector3 forwardDirection = initialRotation * Vector3.forward;
-      Vector3 dummyTargetPosition =
-          initialPosition + forwardDirection * 100000f;  // 100km in meters
-
-      // Calculate a reasonable velocity for the dummy target
-      Vector3 dummyTargetVelocity = Vector3.zero;  // Assuming 1000 m/s speed
-
-      // Create the dummy agent using SimManager
-      Agent dummyAgent =
-          SimManager.Instance.CreateDummyAgent(dummyTargetPosition, dummyTargetVelocity);
-
-      // Assign the dummy agent as the target
-      AssignTarget(dummyAgent);
-    }
-  }
-
   public override bool IsAssignable() {
     return false;
   }
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
-    float launchTimeVariance = 0.5f;
-    float launchTimeNoise = Random.Range(-launchTimeVariance, launchTimeVariance);
-    double launchTimeWithNoise =
-        dynamicAgentConfig.submunitions_config.dispense_time + launchTimeNoise;
-    // Check if it's time to launch submunitions
-    if (!_submunitionsLaunched &&
-        (GetFlightPhase() == FlightPhase.MIDCOURSE || GetFlightPhase() == FlightPhase.BOOST) &&
-        SimManager.Instance.GetElapsedSimulationTime() >= launchTimeWithNoise) {
+    // Check whether to launch submunitions.
+    if ((GetFlightPhase() == FlightPhase.MIDCOURSE || GetFlightPhase() == FlightPhase.BOOST) &&
+        !_submunitionsLaunched && IADS.Instance.ShouldLaunchSubmunitions(this)) {
       SpawnSubmunitions();
       _submunitionsLaunched = true;
     }
@@ -59,20 +32,36 @@ public class CarrierInterceptor : Interceptor {
     }
   }
 
-  public void SpawnSubmunitions() {
+  private void SpawnSubmunitions() {
     List<Interceptor> submunitions = new List<Interceptor>();
     for (int i = 0; i < dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
       DynamicAgentConfig convertedConfig = DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(
           dynamicAgentConfig.submunitions_config.dynamic_agent_config);
-      convertedConfig.initial_state.position = transform.position;
-      convertedConfig.initial_state.velocity = GetComponent<Rigidbody>().linearVelocity;
-      Interceptor submunition = SimManager.Instance.CreateInterceptor(convertedConfig);
+      InitialState initialState = new InitialState();
+      initialState.position = transform.position;
+
+      // Fan the submunitions radially outwards by 60 degrees from the carrier interceptor's
+      // velocity vector.
+      const float SubmunitionsAngularDeviation = 60.0f * Mathf.Deg2Rad;
+      Vector3 velocity = GetComponent<Rigidbody>().linearVelocity;
+      Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
+      Vector3 lateralDirection =
+          Quaternion.AngleAxis(i * 360 / dynamicAgentConfig.submunitions_config.num_submunitions,
+                               velocity) *
+          perpendicularDirection;
+      initialState.velocity = Vector3.RotateTowards(
+          velocity, lateralDirection, maxRadiansDelta: SubmunitionsAngularDeviation,
+          maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation));
+
+      Interceptor submunition =
+          SimManager.Instance.CreateInterceptor(convertedConfig, initialState);
       submunition.SetFlightPhase(FlightPhase.READY);
-      // Force the submunition to be launched with the same velocity as the carrier
+      // Launch the submunitions with the same velocity as the carrier interceptor's.
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);
       submunitions.Add(submunition);
     }
-    IADS.Instance.RequestThreatAssignment(submunitions);
+    UnassignTarget();
+    IADS.Instance.AssignSubmunitionsToThreats(this, submunitions);
 
     SimManager.Instance.AddSubmunitionsSwarm(
         submunitions.ConvertAll(submunition => submunition as Agent));

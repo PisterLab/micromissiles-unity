@@ -97,7 +97,7 @@ public class SwarmStatusDialog : UIDialog {
     List<UISelectableEntry> children = new List<UISelectableEntry>();
     foreach (var swarm in swarms) {
       int interceptorSwarmIndex =
-          SimManager.Instance.LookupSubmunitionSwarnIndexInInterceptorSwarm(swarm);
+          SimManager.Instance.LookupSubmunitionSwarmIndexInInterceptorSwarm(swarm);
       string swarmTitle = SimManager.Instance.GenerateSubmunitionsSwarmTitle(swarm);
       int activeCount = swarm.Count(agent => agent.Item2);
       UISelectableEntry entry = CreateSelectableEntry();

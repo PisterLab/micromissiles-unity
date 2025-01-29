@@ -3,19 +3,9 @@
   "timeScale": 1,
   "interceptor_swarm_configs": [
     {
-      "num_agents": 1,
       "dynamic_agent_config": {
         "agent_model": "hydra70.json",
-        "initial_state": {
-          "position": { "x": 0, "y": 20, "z": 0 },
-          "velocity": { "x": 0, "y": 10, "z": 10 }
-        },
-        "standard_deviation": {
-          "position": { "x": 10, "y": 0, "z": 10 },
-          "velocity": { "x": 5, "y": 0, "z": 1 }
-        },
         "dynamic_config": {
-          "launch_config": { "launch_time": 0 },
           "sensor_config": {
             "type": "IDEAL",
             "frequency": 100
@@ -26,19 +16,9 @@
         },
         "submunitions_config": {
           "num_submunitions": 7,
-          "dispense_time": 4,
           "dynamic_agent_config": {
             "agent_model": "micromissile.json",
-            "initial_state": {
-              "position": { "x": 0, "y": 0, "z": 0 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
-            "standard_deviation": {
-              "position": { "x": 5, "y": 5, "z": 5 },
-              "velocity": { "x": 0, "y": 0, "z": 0 }
-            },
             "dynamic_config": {
-              "launch_config": { "launch_time": 0 },
               "sensor_config": {
                 "type": "IDEAL",
                 "frequency": 100
