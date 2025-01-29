@@ -21,7 +21,7 @@ public class SimManager : MonoBehaviour {
   [SerializeField]
   public SimulationConfig SimulationConfig;
 
-  private string _defaultConfig = "7_drones.json";
+  private string _defaultConfig = "7_quadcopters.json";
 
   private List<Interceptor> _activeInterceptors = new List<Interceptor>();
 
