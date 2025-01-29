@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour {
   private int _intrMissCount = 0;
   private int _intrRemainCount = 0;
   private int _thrtRemainCount = 0;
-  public TMP_FontAsset Font;
+  public TMP_FontAsset GlobalFont;
 
   private UIMode curMode = UIMode.THREE_DIMENSIONAL;
 

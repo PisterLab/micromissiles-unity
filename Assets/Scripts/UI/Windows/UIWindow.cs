@@ -62,7 +62,7 @@ public class UIWindow : MonoBehaviour {
     windowTitleObject.transform.SetParent(transform);
     TextMeshProUGUI windowTitleHandle = windowTitleObject.AddComponent<TextMeshProUGUI>();
     windowTitleHandle.text = windowTitle;
-    windowTitleHandle.font = UIManager.Instance.Font;
+    windowTitleHandle.font = UIManager.Instance.GlobalFont;
     windowTitleHandle.fontSize = 14;
     windowTitleHandle.color = Color.white;
     windowTitleHandle.alignment = TextAlignmentOptions.Left;
@@ -92,7 +92,7 @@ public class UIWindow : MonoBehaviour {
     // add button component
     TextMeshProUGUI textbox = closeButton.AddComponent<TextMeshProUGUI>();
     textbox.text = "X";
-    textbox.font = UIManager.Instance.Font;
+    textbox.font = UIManager.Instance.GlobalFont;
     textbox.fontSize = 12;
     textbox.alignment = TextAlignmentOptions.Center;
     textbox.verticalAlignment = VerticalAlignmentOptions.Middle;

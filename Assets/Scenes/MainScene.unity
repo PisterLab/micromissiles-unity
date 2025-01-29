@@ -2442,7 +2442,7 @@ MonoBehaviour:
   actionMessageTextHandle: {fileID: 395856070}
   pActionMessageTextHandle: {fileID: 139632341}
   ppActionMessageTextHandle: {fileID: 990988049}
-  Font: {fileID: 0}
+  GlobalFont: {fileID: 11400000, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
 --- !u!1 &360694922
 GameObject:
   m_ObjectHideFlags: 0
@@ -5998,7 +5998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5899f1049cf3d64e8c06c1db772c879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _threats: []
 --- !u!4 &1134242715
 Transform:
   m_ObjectHideFlags: 0
@@ -8079,7 +8078,6 @@ MonoBehaviour:
   _refreshRate: 0.1
   _keyboardPanSpeed: 500
   _panelZoomSpeed: 10
-  _gridLineMaterial: {fileID: 0}
 --- !u!1 &1658847972
 GameObject:
   m_ObjectHideFlags: 0
