@@ -1,27 +1,27 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/29/2025 - 23:10:00 |
+| Generated on: | 01/29/2025 - 23:33:07 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 94 |
-| Files: | 76 |
-| Covered lines: | 1654 |
-| Uncovered lines: | 2992 |
-| Coverable lines: | 4646 |
-| Total lines: | 8269 |
-| Line coverage: | 35.6% (1654 of 4646) |
+| Classes: | 101 |
+| Files: | 80 |
+| Covered lines: | 1703 |
+| Uncovered lines: | 3463 |
+| Coverable lines: | 5166 |
+| Total lines: | 9089 |
+| Line coverage: | 32.9% (1703 of 5166) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 277 |
-| Total methods: | 642 |
-| Method coverage: | 43.1% (277 of 642) |
+| Covered methods: | 293 |
+| Total methods: | 722 |
+| Method coverage: | 40.5% (293 of 722) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1617**|**1995**|**3612**|**7987**|**44.7%**|**0**|**0**|****|**274**|**527**|**51.9%**|
+|**bamlab.micromissiles**|**1666**|**2466**|**4132**|**9061**|**40.3%**|**0**|**0**|****|**290**|**607**|**47.7%**|
 |Agent|190|75|265|473|71.6%|0|0||33|46|71.7%|
-|AgglomerativeClusterer|63|0|63|99|100%|0|0||2|2|100%|
+|AgglomerativeClusterer|61|2|63|99|96.8%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
@@ -35,9 +35,9 @@
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
 |DummyAgent|6|6|12|473|50%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
-|FixedWingThreat|48|16|64|117|75%|0|0||7|9|77.7%|
+|FixedWingThreat|6|58|64|117|9.3%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|92|36|128|221|71.8%|0|0||13|17|76.4%|
+|IADS|104|68|172|277|60.4%|0|0||13|21|61.9%|
 |IAssignment|3|7|10|41|30%|0|0||1|3|33.3%|
 |IClusterer|6|1|7|47|85.7%|0|0||2|3|66.6%|
 |IController|11|3|14|30|78.5%|0|0||3|4|75%|
@@ -46,8 +46,9 @@
 |ILaunchAngleInterpolator|13|2|15|103|86.6%|0|0||3|3|100%|
 |ILaunchAnglePlanner|17|0|17|73|100%|0|0||5|5|100%|
 |ILaunchPlanner|4|0|4|43|100%|0|0||1|1|100%|
-|InputManager|56|56|112|155|50%|0|0||11|11|100%|
+|InputManager|65|107|172|230|37.7%|0|0||12|15|80%|
 |Interceptor|82|77|159|244|51.5%|0|0||11|17|64.7%|
+|InterceptorData|3|13|16|78|18.7%|0|0||1|3|33.3%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|0|6|47|100%|0|0||1|1|100%|
@@ -75,20 +76,26 @@
 |SimManager|237|139|376|610|63%|0|0||28|47|59.5%|
 |SimMonitor|59|110|169|255|34.9%|0|0||10|20|50%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
-|StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
+|SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
+|StaticAgentConfig|14|0|14|65|100%|0|0||5|5|100%|
 |SwarmStatusDialog|4|129|133|167|3%|0|0||1|16|6.2%|
-|Threat|48|57|105|189|45.7%|0|0||9|11|81.8%|
+|TacticalPanelController|23|137|160|265|14.3%|0|0||7|29|24.1%|
+|TacticalPolarGridGraphic|42|98|140|225|30%|0|0||5|15|33.3%|
+|TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
+|Threat|34|71|105|189|32.3%|0|0||8|11|72.7%|
 |ThreatAssignment|0|38|38|74|0%|0|0||0|5|0%|
 |ThreatClusterData|16|8|24|57|66.6%|0|0||5|8|62.5%|
+|ThreatData|3|15|18|78|16.6%|0|0||1|3|33.3%|
+|TrackFileData|7|4|11|78|63.6%|0|0||5|7|71.4%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|4|123|127|217|3.1%|0|0||1|18|5.5%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|104|54|158|237|65.8%|0|0||17|29|58.6%|
+|UIManager|112|52|164|250|68.2%|0|0||19|30|63.3%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|1|57|58|100|1.7%|0|0||1|9|11.1%|
-|Utilities|3|0|3|9|100%|0|0||1|1|100%|
+|Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
 |WaypointController|9|0|9|22|100%|0|0||2|2|100%|
 |**bamlab.test**|**0**|**64**|**64**|**109**|**0%**|**0**|**0**|****|**0**|**12**|**0%**|
