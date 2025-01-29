@@ -75,30 +75,32 @@ public class TacticalPolarGridGraphic : Graphic {
     float extendedMaxRange = maxRange * 10;
 
     for (int i = 1; i <= _numberOfRangeRings * 10; i++) {
-        float radius = (i * extendedMaxRange) / (_numberOfRangeRings * 10);
-        DrawCircle(vh, center, radius * scaleFactor, 128, 1f);
+      float radius = (i * extendedMaxRange) / (_numberOfRangeRings * 10);
+      DrawCircle(vh, center, radius * scaleFactor, 128, 1f);
 
-        // Make every 10th ring thicker to indicate major markers
-        if (i % 10 == 0) {
-            DrawCircle(vh, center, radius * scaleFactor, 128, 2f); // Draw again for thickness
-        }
+      // Make every 10th ring thicker to indicate major markers
+      if (i % 10 == 0) {
+        DrawCircle(vh, center, radius * scaleFactor, 128, 2f);  // Draw again for thickness
+      }
     }
   }
 
-  private void DrawBearingLines(VertexHelper vh, Vector2 center, float maxRange, float scaleFactor) {
+  private void DrawBearingLines(VertexHelper vh, Vector2 center, float maxRange,
+                                float scaleFactor) {
     // Extend the bearing lines to 10x the major marker range
     float extendedMaxRange = maxRange * 10;
 
     float angleStep = 360f / _numberOfBearingLines;
 
     for (int i = 0; i < _numberOfBearingLines; i++) {
-        float angle = i * angleStep * Mathf.Deg2Rad;
-        Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-        DrawLine(vh, center, center + direction * extendedMaxRange * scaleFactor, _lineWidth);
+      float angle = i * angleStep * Mathf.Deg2Rad;
+      Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+      DrawLine(vh, center, center + direction * extendedMaxRange * scaleFactor, _lineWidth);
     }
   }
 
-  private void DrawCircle(VertexHelper vh, Vector2 center, float radius, int segments, float widthMultiplier) {
+  private void DrawCircle(VertexHelper vh, Vector2 center, float radius, int segments,
+                          float widthMultiplier) {
     float angleStep = 360f / segments;
     Vector2 prevPoint = center + new Vector2(radius, 0);
 
