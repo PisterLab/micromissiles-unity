@@ -225,6 +225,7 @@ public class IADS : MonoBehaviour {
     if (interceptorTrack != null) {
       interceptorTrack.RemoveThreat(threat);
       interceptorTrack.MarkDestroyed();
+    }
     // Assign the other interceptors to other threats.
     foreach (var otherInterceptor in threat.AssignedInterceptors.ToList()) {
       if (interceptor != otherInterceptor) {
