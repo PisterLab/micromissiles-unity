@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/29/2025 - 23:08:41 |
+| Generated on: | 01/29/2025 - 23:31:51 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 94 |
-| Files: | 76 |
+| Classes: | 101 |
+| Files: | 80 |
 | Covered lines: | 1884 |
-| Uncovered lines: | 2762 |
-| Coverable lines: | 4646 |
-| Total lines: | 8269 |
-| Line coverage: | 40.5% (1884 of 4646) |
+| Uncovered lines: | 3282 |
+| Coverable lines: | 5166 |
+| Total lines: | 9089 |
+| Line coverage: | 36.4% (1884 of 5166) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 265 |
-| Total methods: | 642 |
-| Method coverage: | 41.2% (265 of 642) |
+| Total methods: | 722 |
+| Method coverage: | 36.7% (265 of 722) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**931**|**2681**|**3612**|**7987**|**25.7%**|**0**|**0**|****|**158**|**527**|**29.9%**|
+|**bamlab.micromissiles**|**931**|**3201**|**4132**|**9061**|**22.5%**|**0**|**0**|****|**158**|**607**|**26%**|
 |Agent|114|151|265|473|43%|0|0||23|46|50%|
 |AgglomerativeClusterer|63|0|63|99|100%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -37,7 +37,7 @@
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|26|38|64|117|40.6%|0|0||3|9|33.3%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|0|128|128|221|0%|0|0||0|17|0%|
+|IADS|0|172|172|277|0%|0|0||0|21|0%|
 |IAssignment|10|0|10|41|100%|0|0||3|3|100%|
 |IClusterer|6|1|7|47|85.7%|0|0||2|3|66.6%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
@@ -46,8 +46,9 @@
 |ILaunchAngleInterpolator|15|0|15|103|100%|0|0||3|3|100%|
 |ILaunchAnglePlanner|17|0|17|73|100%|0|0||5|5|100%|
 |ILaunchPlanner|4|0|4|43|100%|0|0||1|1|100%|
-|InputManager|0|112|112|155|0%|0|0||0|11|0%|
+|InputManager|0|172|172|230|0%|0|0||0|15|0%|
 |Interceptor|8|151|159|244|5%|0|0||2|17|11.7%|
+|InterceptorData|0|16|16|78|0%|0|0||0|3|0%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|0|6|47|100%|0|0||1|1|100%|
@@ -75,20 +76,26 @@
 |SimManager|78|298|376|610|20.7%|0|0||8|47|17%|
 |SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
-|StaticAgentConfig|14|0|14|63|100%|0|0||5|5|100%|
+|SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
+|StaticAgentConfig|14|0|14|65|100%|0|0||5|5|100%|
 |SwarmStatusDialog|0|133|133|167|0%|0|0||0|16|0%|
+|TacticalPanelController|0|160|160|265|0%|0|0||0|29|0%|
+|TacticalPolarGridGraphic|0|140|140|225|0%|0|0||0|15|0%|
+|TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
 |Threat|16|89|105|189|15.2%|0|0||4|11|36.3%|
 |ThreatAssignment|38|0|38|74|100%|0|0||5|5|100%|
 |ThreatClusterData|0|24|24|57|0%|0|0||0|8|0%|
+|ThreatData|0|18|18|78|0%|0|0||0|3|0%|
+|TrackFileData|0|11|11|78|0%|0|0||0|7|0%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|0|127|127|217|0%|0|0||0|18|0%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|158|158|237|0%|0|0||0|29|0%|
+|UIManager|0|164|164|250|0%|0|0||0|30|0%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
-|Utilities|3|0|3|9|100%|0|0||1|1|100%|
+|Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
 |WaypointController|9|0|9|22|100%|0|0||2|2|100%|
 |**bamlab.test**|**45**|**19**|**64**|**109**|**70.3%**|**0**|**0**|****|**9**|**12**|**75%**|
