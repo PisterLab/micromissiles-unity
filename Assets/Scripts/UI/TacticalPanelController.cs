@@ -74,7 +74,7 @@ public class TacticalPanelController : MonoBehaviour {
   }
 
   private void HandleRefreshTimer() {
-    _timeSinceLastRefresh += Time.deltaTime;
+    _timeSinceLastRefresh += Time.unscaledDeltaTime;
 
     if (_timeSinceLastRefresh >= _refreshRate) {
       UpdateSymbols();
@@ -231,7 +231,7 @@ public class TacticalPanelController : MonoBehaviour {
   }
 
   public void PanWithKeyboard(Vector2 direction) {
-    Vector2 delta = direction * _keyboardPanSpeed * Time.deltaTime;
+    Vector2 delta = direction * _keyboardPanSpeed * Time.unscaledDeltaTime;
     Pan(delta);
   }
 
