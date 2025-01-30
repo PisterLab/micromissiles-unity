@@ -160,12 +160,12 @@ public class SimManager : MonoBehaviour {
   }
 
   public void StartSimulation() {
-    OnSimulationStarted?.Invoke();
-    UIManager.Instance.LogActionMessage("[SIM] OnSimulationStarted invoked.");
     InitializeSimulation();
 
-    // Cluster the threats.
-    IADS.Instance.ClusterThreats(_threatObjects);
+    // Invoke the simulation started event to let listeners know to invoke their own handler
+    // behavior.
+    UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
+    OnSimulationStarted?.Invoke();
   }
 
   public void PauseSimulation() {
@@ -192,11 +192,6 @@ public class SimManager : MonoBehaviour {
       // If the simulation WAS paused, then ResumeSimulation will handle updating the time scale and
       // fixed delta time from the newly loaded config files.
     }
-
-    // Invoke the simulation started event to let listeners know to invoke their own handler
-    // behavior.
-    OnSimulationStarted?.Invoke();
-
     // Create targets based on the configuration.
     List<Agent> targets = new List<Agent>();
     foreach (var swarmConfig in SimulationConfig.threat_swarm_configs) {

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class SwarmStatusDialog : UIDialog {
   // Start is called before the first frame update
 
-  bool wasStarted = false;
+  // bool wasStarted = false;
 
   private List<List<(Agent, bool)>> interceptorSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> submunitionsSwarms = new List<List<(Agent, bool)>>();
@@ -17,7 +17,7 @@ public class SwarmStatusDialog : UIDialog {
     base.Start();
 
     InitDialog();
-    wasStarted = true;
+    // wasStarted = true;
   }
 
   public void InitDialog() {

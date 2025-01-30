@@ -37,6 +37,7 @@ public class IADS : MonoBehaviour {
   }
 
   public void Start() {
+    SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
@@ -51,6 +52,11 @@ public class IADS : MonoBehaviour {
     // Assign any interceptors that are no longer assigned to any threat.
     AssignInterceptorToThreat(
         _assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
+  }
+
+  private void RegisterSimulationStarted() {
+    // Cluster the threats.
+    ClusterThreats(SimManager.Instance.GetActiveThreats());
   }
 
   // Cluster the threats.
