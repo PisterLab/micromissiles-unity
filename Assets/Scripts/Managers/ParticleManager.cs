@@ -115,13 +115,9 @@ public class ParticleManager : MonoBehaviour {
     // As the interceptor remains in flight
   }
 
-  private void RegisterThreatHit(Threat threat) {
+  private void RegisterThreatHit(Threat threat) {}
 
-  }
-
-  private void RegisterThreatMiss(Threat threat) {
-
-  }
+  private void RegisterThreatMiss(Threat threat) {}
 
   private void CommandeerAgentTrailRenderer(Agent agent) {
     // Take the TrailRenderer component off of the agent, onto us, and store it
