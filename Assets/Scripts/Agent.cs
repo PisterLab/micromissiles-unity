@@ -231,7 +231,7 @@ public abstract class Agent : MonoBehaviour {
     Transformation transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(waypoint);
+    transformation.position = GetRelativePositionTransformation(waypoint - GetPosition());
 
     // Get the relative velocity transformation.
     transformation.velocity =
@@ -243,20 +243,20 @@ public abstract class Agent : MonoBehaviour {
   private PositionTransformation GetRelativePositionTransformation(Vector3 relativePosition) {
     PositionTransformation positionTransformation = new PositionTransformation();
 
-    // Set the relative position in Cartesian coordinates
+    // Set the relative position in Cartesian coordinates.
     positionTransformation.cartesian = relativePosition;
 
-    // Calculate the distance (range) to the target
+    // Calculate the distance (range) to the target.
     positionTransformation.range = relativePosition.magnitude;
 
     Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
     Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
 
-    // Calculate elevation (vertical angle relative to forward)
+    // Calculate the elevation (vertical angle relative to forward).
     positionTransformation.elevation =
         Mathf.Atan(verticalRelativePosition.magnitude / flatRelativePosition.magnitude);
 
-    // Calculate azimuth (horizontal angle relative to forward)
+    // Calculate the azimuth (horizontal angle relative to forward).
     if (flatRelativePosition.magnitude == 0) {
       positionTransformation.azimuth = 0;
     } else {
