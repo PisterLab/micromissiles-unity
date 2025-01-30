@@ -78,14 +78,13 @@ public class UIManager : MonoBehaviour {
         ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 75%
 
     ppppActionMessageTextHandle.text = ppActionMessageTextHandle.text;
-    ppppActionMessageTextHandle.color =
-        ppActionMessageTextHandle.color * 0.85f;  
+    ppppActionMessageTextHandle.color = ppActionMessageTextHandle.color * 0.85f;
 
     ppActionMessageTextHandle.text = pActionMessageTextHandle.text;
-    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.85f;  
+    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.85f;
 
     pActionMessageTextHandle.text = actionMessageTextHandle.text;
-    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.9f;  
+    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.9f;
 
     // Set new message
     actionMessageTextHandle.text = message;
