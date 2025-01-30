@@ -1,26 +1,26 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/29/2025 - 23:52:14 |
+| Generated on: | 01/30/2025 - 00:38:28 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1703 |
-| Uncovered lines: | 3463 |
-| Coverable lines: | 5166 |
-| Total lines: | 9089 |
-| Line coverage: | 32.9% (1703 of 5166) |
+| Covered lines: | 1707 |
+| Uncovered lines: | 3476 |
+| Coverable lines: | 5183 |
+| Total lines: | 9127 |
+| Line coverage: | 32.9% (1707 of 5183) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 293 |
-| Total methods: | 722 |
-| Method coverage: | 40.5% (293 of 722) |
+| Total methods: | 723 |
+| Method coverage: | 40.5% (293 of 723) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1666**|**2466**|**4132**|**9061**|**40.3%**|**0**|**0**|****|**290**|**607**|**47.7%**|
-|Agent|190|75|265|473|71.6%|0|0||33|46|71.7%|
+|**bamlab.micromissiles**|**1670**|**2479**|**4149**|**9138**|**40.2%**|**0**|**0**|****|**290**|**608**|**47.6%**|
+|Agent|190|72|262|468|72.5%|0|0||33|45|73.3%|
 |AgglomerativeClusterer|61|2|63|99|96.8%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
@@ -33,11 +33,11 @@
 |Coordinates2|0|16|16|58|0%|0|0||0|4|0%|
 |Coordinates3|15|3|18|58|83.3%|0|0||3|4|75%|
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
-|DummyAgent|6|6|12|473|50%|0|0||2|5|40%|
+|DummyAgent|6|6|12|468|50%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|6|58|64|117|9.3%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|104|68|172|277|60.4%|0|0||13|21|61.9%|
+|IADS|108|73|181|298|59.6%|0|0||13|21|61.9%|
 |IAssignment|3|7|10|41|30%|0|0||1|3|33.3%|
 |IClusterer|6|1|7|47|85.7%|0|0||2|3|66.6%|
 |IController|11|3|14|30|78.5%|0|0||3|4|75%|
@@ -48,7 +48,7 @@
 |ILaunchPlanner|4|0|4|43|100%|0|0||1|1|100%|
 |InputManager|65|107|172|230|37.7%|0|0||12|15|80%|
 |Interceptor|82|77|159|244|51.5%|0|0||11|17|64.7%|
-|InterceptorData|3|13|16|78|18.7%|0|0||1|3|33.3%|
+|InterceptorData|3|17|20|100|15%|0|0||1|4|25%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|0|6|47|100%|0|0||1|1|100%|
@@ -85,8 +85,8 @@
 |Threat|34|71|105|189|32.3%|0|0||8|11|72.7%|
 |ThreatAssignment|0|38|38|74|0%|0|0||0|5|0%|
 |ThreatClusterData|16|8|24|57|66.6%|0|0||5|8|62.5%|
-|ThreatData|3|15|18|78|16.6%|0|0||1|3|33.3%|
-|TrackFileData|7|4|11|78|63.6%|0|0||5|7|71.4%|
+|ThreatData|3|22|25|100|12%|0|0||1|4|25%|
+|TrackFileData|7|4|11|100|63.6%|0|0||5|7|71.4%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|4|123|127|217|3.1%|0|0||1|18|5.5%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
