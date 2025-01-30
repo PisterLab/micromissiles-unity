@@ -157,7 +157,7 @@ public class SwarmStatusDialog : UIDialog {
     //   InitDialog();
     //   wasStarted = true;
     // }
-    if(SimManager.Instance != null) {
+    if (SimManager.Instance != null) {
       interceptorSwarms = SimManager.Instance.GetInterceptorSwarms();
       submunitionsSwarms = SimManager.Instance.GetSubmunitionsSwarms();
       threatsSwarms = SimManager.Instance.GetThreatSwarms();

@@ -10,6 +10,7 @@ public class UIDialog : MonoBehaviour {
   private string dialogTitle;
 
   [SerializeField]
+
   private TextMeshProUGUI dialogTitleHandle;
   [SerializeField]
   private RectTransform contentHandle;
@@ -116,8 +117,7 @@ public class UIDialog : MonoBehaviour {
     rTransform.sizeDelta = new Vector2(_tabWidth, _tabHeight);
 
     // Calculate anchoredPosition based on how many tabs exist
-    rTransform.anchoredPosition =
-        new Vector2(_tabWidth * dialogTabs.Count, -(GetTitleBarHeight()));
+    rTransform.anchoredPosition = new Vector2(_tabWidth * dialogTabs.Count, -(GetTitleBarHeight()));
 
     // Add the onClick callback to the button
     Button button = tabButton.AddComponent<Button>();
