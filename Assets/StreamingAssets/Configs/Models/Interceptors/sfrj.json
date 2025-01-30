@@ -1,6 +1,8 @@
 {
     "name": "SFRJ",
     "agentClass": "CarrierInterceptor",
+    "symbolPresent": "friendly_missile_interceptor_lr_present",
+    "symbolDestroyed": "friendly_missile_interceptor_lr_destroyed",
     "unitCost": 100000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 50,

@@ -634,7 +634,7 @@ public class CameraController : MonoBehaviour {
     if (cameraMode != CameraMode.FREE) {
       // Use MoveTowards for smoother and more predictable movement
       _currentCentroid = Vector3.MoveTowards(_currentCentroid, _targetCentroid,
-                                             _currentInterpolationSpeed * Time.deltaTime);
+                                             _currentInterpolationSpeed * Time.unscaledDeltaTime);
       SetCameraTargetPosition(_currentCentroid);
     }
   }

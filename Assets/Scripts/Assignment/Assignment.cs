@@ -29,13 +29,13 @@ public interface IAssignment {
   [Pure]
   public static List<Interceptor> GetAssignableInterceptors(
       in IReadOnlyList<Interceptor> interceptors) {
-    return interceptors.Where(interceptor => interceptor.IsAssignable() && !interceptor.IsHit())
+    return interceptors.Where(interceptor => interceptor.IsAssignable() && !interceptor.IsTerminated())
         .ToList();
   }
 
   // Get the list of active threats.
   [Pure]
   public static List<Threat> GetActiveThreats(in IReadOnlyList<Threat> threats) {
-    return threats.Where(threat => !threat.IsHit() && !threat.IsTerminated()).ToList();
+    return threats.Where(threat => !threat.IsTerminated()).ToList();
   }
 }

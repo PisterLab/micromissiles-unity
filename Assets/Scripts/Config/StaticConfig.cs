@@ -6,6 +6,8 @@ using Newtonsoft.Json.Converters;
 public class StaticAgentConfig {
   public string name;
   public string agentClass;
+  public string symbolPresent;
+  public string symbolDestroyed;
   public float unitCost;
 
   [Serializable]

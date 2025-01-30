@@ -24,7 +24,10 @@ public class InputManager : MonoBehaviour {
     }
   }
 
-  // Start is called before the first frame update.
+  private Vector2 _lastMousePosition;
+  private bool _isDragging = false;
+
+  // Start is called before the first frame update
   void Start() {}
 
   // Update is called once per frame.
@@ -32,7 +35,7 @@ public class InputManager : MonoBehaviour {
     HandleInput();
   }
 
-  private void HandleMouseInput() {
+  private void Handle3DModeMouseInput() {
     if (Input.GetMouseButton(0)) {
       CameraController.Instance.OrbitCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
@@ -48,18 +51,39 @@ public class InputManager : MonoBehaviour {
     HandleNonLockableInput();
   }
 
-  void HandleScrollWheelInput() {
+  void Handle3DModeScrollWheelInput() {
     if (Input.GetAxis("Mouse ScrollWheel") != 0) {
       CameraController.Instance.ZoomCamera(Input.GetAxis("Mouse ScrollWheel") * 500);
     }
   }
 
-  void HandleLockableInput() {
-    if (mouseActive) {
-      HandleMouseInput();
-      HandleScrollWheelInput();
+  void HandleTacticalModeScrollWheelInput() {
+    if (Input.GetAxis("Mouse ScrollWheel") != 0) {
+      TacticalPanelController.Instance.ZoomIn(Input.GetAxis("Mouse ScrollWheel") * 0.1f);
+    }
+  }
+
+  private void HandleTacticalModeMouseInput() {
+    // Start drag on right mouse button
+    if (Input.GetMouseButtonDown(1)) {
+      _isDragging = true;
+      _lastMousePosition = Input.mousePosition;
+    }
+    // End drag when button released
+    else if (Input.GetMouseButtonUp(1)) {
+      _isDragging = false;
     }
 
+    // Handle dragging
+    if (_isDragging) {
+      Vector2 currentMousePos = Input.mousePosition;
+      Vector2 delta = currentMousePos - _lastMousePosition;
+      TacticalPanelController.Instance.Pan(delta);
+      _lastMousePosition = currentMousePos;
+    }
+  }
+
+  void Handle3DModeLockableInput() {
     if (Input.GetKey(KeyCode.LeftShift)) {
       CameraController.Instance.SetCameraSpeed(CameraController.Instance.GetCameraSpeedMax());
     } else {
@@ -84,6 +108,57 @@ public class InputManager : MonoBehaviour {
     }
     if (Input.GetKey(KeyCode.E)) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Down);
+    }
+  }
+
+  void HandleTacticalModeLockableInput() {
+    // Handle keyboard input for panning
+    Vector2 keyboardPanDirection = Vector2.zero;
+
+    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
+      keyboardPanDirection.y += -1;
+    }
+    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+      keyboardPanDirection.y += 1;
+    }
+    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+      keyboardPanDirection.x += -1;
+    }
+    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+      keyboardPanDirection.x += 1;
+    }
+
+    if (Input.GetKeyDown(KeyCode.Q)) {
+      TacticalPanelController.Instance.CycleRangeUp();
+    }
+    if (Input.GetKeyDown(KeyCode.E)) {
+      TacticalPanelController.Instance.CycleRangeDown();
+    }
+
+    if (keyboardPanDirection != Vector2.zero) {
+      TacticalPanelController.Instance.PanWithKeyboard(keyboardPanDirection.normalized);
+    }
+  }
+
+  void HandleLockableInput() {
+    if (mouseActive) {
+      if (UIManager.Instance.GetUIMode() == UIMode.THREE_DIMENSIONAL) {
+        Handle3DModeMouseInput();
+        Handle3DModeScrollWheelInput();
+      } else {
+        HandleTacticalModeMouseInput();
+        HandleTacticalModeScrollWheelInput();
+      }
+    }
+
+    if (UIManager.Instance.GetUIMode() == UIMode.THREE_DIMENSIONAL) {
+      Handle3DModeLockableInput();
+    } else {
+      HandleTacticalModeLockableInput();
+    }
+
+    if (Input.GetKeyDown(KeyCode.Tab)) {
+      UIManager.Instance.ToggleUIMode();
     }
   }
 

@@ -37,7 +37,7 @@ public class UIDialog : MonoBehaviour {
   // Start is called before the first frame update
   public virtual void Start() {
     dialogTitleHandle.text = dialogTitle;
-    dialogTitleHandle.font = UIManager.Instance.Font;
+    dialogTitleHandle.font = UIManager.Instance.GlobalFont;
     isOpen = gameObject.activeSelf;
     if (dialogTabs != null) {
       foreach (GameObject tab in dialogTabs) {
@@ -139,7 +139,7 @@ public class UIDialog : MonoBehaviour {
 
     TextMeshProUGUI buttonText = tabText.AddComponent<TextMeshProUGUI>();
     buttonText.text = tabName;
-    buttonText.font = UIManager.Instance.Font;
+    buttonText.font = UIManager.Instance.GlobalFont;
     buttonText.fontSize = 10;
     buttonText.color = Color.black;
     buttonText.alignment = TextAlignmentOptions.Center;

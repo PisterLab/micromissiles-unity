@@ -102,7 +102,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public List<Threat> GetActiveThreats() {
-    return _threatObjects.Where(threat => !threat.IsHit()).ToList();
+    return _threatObjects.Where(threat => !threat.IsTerminated()).ToList();
   }
 
   public List<Agent> GetActiveAgents() {
@@ -263,7 +263,7 @@ public class SimManager : MonoBehaviour {
 
     for (int i = 0; i < swarmCount; ++i) {
       Agent agent = swarm[i];
-      if (!agent.IsHit()) {
+      if (!agent.IsTerminated()) {
         sum += agent.transform.position;
         ++count;
       }

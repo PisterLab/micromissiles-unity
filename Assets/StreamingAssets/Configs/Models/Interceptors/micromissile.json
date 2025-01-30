@@ -1,6 +1,8 @@
 {
     "name": "Micromissile",
     "agentClass": "MissileInterceptor",
+    "symbolPresent": "friendly_missile_interceptor_sr_present",
+    "symbolDestroyed": "friendly_missile_interceptor_sr_destroyed",
     "unitCost": 2000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,

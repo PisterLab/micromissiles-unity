@@ -120,11 +120,6 @@ public abstract class Agent : MonoBehaviour {
     _targetModel = null;
   }
 
-  // Return whether the agent has hit or been hit.
-  public bool IsHit() {
-    return _isHit;
-  }
-
   public bool IsTerminated() {
     return _flightPhase == FlightPhase.TERMINATED;
   }

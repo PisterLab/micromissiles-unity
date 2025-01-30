@@ -1,6 +1,8 @@
 {
     "name": "BrahmosCruiseMissile",
     "agentClass": "FixedWingThreat",
+    "symbolPresent": "hostile_missile_cruise_present",
+    "symbolDestroyed": "hostile_missile_cruise_destroyed",
     "unitCost": 100000,
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 15,
