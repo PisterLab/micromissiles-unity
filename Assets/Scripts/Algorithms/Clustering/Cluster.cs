@@ -29,6 +29,26 @@ public class Cluster {
     get { return _objects; }
   }
 
+  // Get the list of agents.
+  public IReadOnlyList<Agent> Agents {
+    get { return _objects.Select(gameObject => gameObject.GetComponent<Agent>()).ToList(); }
+  }
+
+  // Get the list of interceptors.
+  public IReadOnlyList<Interceptor> Interceptors {
+    get {
+      return _objects.Select(gameObject => gameObject.GetComponent<Agent>() as Interceptor)
+          .ToList();
+    }
+  }
+
+  // Get the list of threats.
+  public IReadOnlyList<Threat> Threats {
+    get {
+      return _objects.Select(gameObject => gameObject.GetComponent<Agent>() as Threat).ToList();
+    }
+  }
+
   // Return the size of the cluster.
   public int Size() {
     return _objects.Count;

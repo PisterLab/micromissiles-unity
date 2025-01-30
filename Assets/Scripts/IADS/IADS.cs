@@ -67,8 +67,7 @@ public class IADS : MonoBehaviour {
     const float MaxRadius = 500;
 
     // Cluster to threats.
-    IClusterer clusterer = new AgglomerativeClusterer(
-        threats.ConvertAll(threat => threat.gameObject).ToList(), MaxSize, MaxRadius);
+    IClusterer clusterer = new AgglomerativeClusterer(new List<Agent>(threats), MaxSize, MaxRadius);
     clusterer.Cluster();
     var clusters = clusterer.Clusters;
     Debug.Log($"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
@@ -85,7 +84,7 @@ public class IADS : MonoBehaviour {
   public void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
-      if (_threatClusterMap[cluster].Status == ThreatClusterStatus.ASSIGNED) {
+      if (_threatClusterMap[cluster].Status != ThreatClusterStatus.UNASSIGNED) {
         continue;
       }
 
@@ -138,8 +137,7 @@ public class IADS : MonoBehaviour {
     const float SubmunitionSpawnMaxDistanceToThreat = 2000.0f;
 
     Cluster cluster = _interceptorClusterMap[carrier];
-    List<Threat> threats =
-        cluster.Objects.Select(gameObject => gameObject.GetComponent<Agent>() as Threat).ToList();
+    List<Threat> threats = cluster.Threats.ToList();
     Vector3 carrierPosition = carrier.GetPosition();
     Vector3 carrierVelocity = carrier.GetVelocity();
     foreach (var threat in threats) {
@@ -167,10 +165,12 @@ public class IADS : MonoBehaviour {
   public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {
     // Assign threats to the submunitions.
     Cluster cluster = _interceptorClusterMap[carrier];
-    List<Threat> threats =
-        cluster.Objects.Select(gameObject => gameObject.GetComponent<Agent>() as Threat).ToList();
+    List<Threat> threats = cluster.Threats.ToList();
     IEnumerable<IAssignment.AssignmentItem> assignments =
         _assignmentScheme.Assign(interceptors, threats);
+
+    // Mark the cluster as delegated to submunitions.
+    _threatClusterMap[cluster].RemoveInterceptor(carrier, delegated: true);
 
     // Apply the assignments to the submunitions.
     foreach (var assignment in assignments) {

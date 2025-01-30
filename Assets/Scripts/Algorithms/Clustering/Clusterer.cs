@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // The clusterer class is an interface for clustering algorithms.
@@ -12,6 +13,9 @@ public abstract class IClusterer {
 
   public IClusterer(List<GameObject> objects) {
     _objects = objects;
+  }
+  public IClusterer(List<Agent> agents) {
+    _objects = agents.ConvertAll(agent => agent.gameObject).ToList();
   }
 
   // Get the list of game objects.
@@ -41,6 +45,11 @@ public abstract class ISizeAndRadiusConstrainedClusterer : IClusterer {
 
   public ISizeAndRadiusConstrainedClusterer(List<GameObject> objects, int maxSize, float maxRadius)
       : base(objects) {
+    _maxSize = maxSize;
+    _maxRadius = maxRadius;
+  }
+  public ISizeAndRadiusConstrainedClusterer(List<Agent> agents, int maxSize, float maxRadius)
+      : base(agents) {
     _maxSize = maxSize;
     _maxRadius = maxRadius;
   }

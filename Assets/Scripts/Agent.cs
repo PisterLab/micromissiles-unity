@@ -216,7 +216,8 @@ public abstract class Agent : MonoBehaviour {
     Transformation transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(target.GetPosition());
+    transformation.position =
+        GetRelativePositionTransformation(target.GetPosition() - GetPosition());
 
     // Get the relative velocity transformation.
     transformation.velocity = GetRelativeVelocityTransformation(

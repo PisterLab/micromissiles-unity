@@ -57,35 +57,35 @@ public abstract class Threat : Agent {
   protected Vector3 CalculateForwardAcceleration() {
     Vector3 transformVelocity = GetVelocity();
 
-    // Get the target speed for the current power setting
+    // Get the target speed for the current power setting.
     float targetSpeed = PowerTableLookup(_currentPowerSetting);
 
-    // Calculate the current speed
+    // Calculate the current speed.
     float currentSpeed = transformVelocity.magnitude;
 
-    // Speed error
+    // Speed error.
     float speedError = targetSpeed - currentSpeed;
 
-    // Proportional gain for speed control
-    float speedControlGain = 10.0f;  // Adjust this gain as necessary
+    // Proportional gain for speed control.
+    float speedControlGain = 10.0f;  // Adjust this gain as necessary.
 
-    // Desired acceleration to adjust speed
+    // Desired acceleration to adjust speed.
     float desiredAccelerationMagnitude = speedControlGain * speedError;
 
-    // Limit the desired acceleration
+    // Limit the desired acceleration.
     float maxForwardAcceleration = CalculateMaxForwardAcceleration();
     desiredAccelerationMagnitude =
         Mathf.Clamp(desiredAccelerationMagnitude, -maxForwardAcceleration, maxForwardAcceleration);
 
-    // Acceleration direction (along current velocity direction)
+    // Acceleration direction (along current velocity direction).
     Vector3 accelerationDirection = transformVelocity.normalized;
 
-    // Handle zero velocity case
+    // Handle the zero velocity case.
     if (accelerationDirection.magnitude < 0.1f) {
-      accelerationDirection = transform.forward;  // Default direction
+      accelerationDirection = transform.forward;  // Default direction.
     }
 
-    // Calculate acceleration vector
+    // Calculate the acceleration vector.
     Vector3 speedAdjustmentAcceleration = accelerationDirection * desiredAccelerationMagnitude;
     return speedAdjustmentAcceleration;
   }
@@ -131,34 +131,34 @@ public abstract class Threat : Agent {
     Vector3 transformPosition = GetPosition();
     Vector3 interceptorPosition = interceptor.GetPosition();
 
-    // Set power setting to maximum
+    // Set power setting to maximum.
     _currentPowerSetting = PowerSetting.MAX;
 
-    // Evade the interceptor by changing the velocity to be normal to the interceptor's velocity
+    // Evade the interceptor by changing the velocity to be normal to the interceptor's velocity.
     Vector3 normalVelocity = Vector3.ProjectOnPlane(transformVelocity, interceptorVelocity);
     Vector3 normalAccelerationDirection =
         Vector3.ProjectOnPlane(normalVelocity, transformVelocity).normalized;
 
-    // Turn away from the interceptor
+    // Turn away from the interceptor.
     Vector3 relativePosition = interceptorPosition - transformPosition;
     if (Vector3.Dot(relativePosition, normalAccelerationDirection) > 0) {
       normalAccelerationDirection *= -1;
     }
 
-    // Avoid evading straight down when near the ground
+    // Avoid evading straight down when near the ground.
     float altitude = transformPosition.y;
     float groundProximityThreshold =
-        Mathf.Abs(transformVelocity.y) * 5f;  // Adjust threshold as necessary
+        Mathf.Abs(transformVelocity.y) * 5f;  // Adjust threshold as necessary.
     if (transformVelocity.y < 0 && altitude < groundProximityThreshold) {
-      // Determine evasion direction based on angle to interceptor
+      // Determine evasion direction based on angle to interceptor.
       Vector3 toInterceptor = interceptorPosition - transformPosition;
       Vector3 rightDirection = Vector3.Cross(Vector3.up, transform.forward);
       float angle = Vector3.SignedAngle(transform.forward, toInterceptor, Vector3.up);
 
-      // Choose the direction that leads away from the interceptor
+      // Choose the direction that leads away from the interceptor.
       Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
 
-      // Blend between horizontal evasion and slight upward movement
+      // Blend between horizontal evasion and slight upward movement.
       float blendFactor = 1 - (altitude / groundProximityThreshold);
       normalAccelerationDirection =
           Vector3
@@ -168,7 +168,7 @@ public abstract class Threat : Agent {
     }
     Vector3 normalAcceleration = normalAccelerationDirection * CalculateMaxNormalAcceleration();
 
-    // Adjust forward speed
+    // Adjust the forward speed.
     Vector3 forwardAcceleration = CalculateForwardAcceleration();
 
     return normalAcceleration + forwardAcceleration;

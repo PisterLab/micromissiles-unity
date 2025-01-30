@@ -54,7 +54,7 @@
           },
           "flight_config": {
             "evasionEnabled": true,
-            "evasionRangeThreshold": 1000
+            "evasionRangeThreshold": 2000
           }
         },
         "submunitions_config": {
