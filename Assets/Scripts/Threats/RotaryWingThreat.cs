@@ -5,12 +5,12 @@ using UnityEngine;
 public class RotaryWingThreat : Threat {
   private Vector3 _accelerationInput;
 
-  // Start is called before the first frame update
+  // Start is called before the first frame update.
   protected override void Start() {
     base.Start();
   }
 
-  // Update is called once per frame
+  // Update is called once per frame.
   protected override void FixedUpdate() {
     base.FixedUpdate();
   }
@@ -25,14 +25,14 @@ public class RotaryWingThreat : Threat {
     if (ShouldEvade()) {
       accelerationInput = EvadeInterceptor(GetClosestInterceptor());
     } else if (HasAssignedTarget()) {
-      // Update waypoint and power setting
+      // Update waypoint and power setting.
       UpdateWaypointAndPower();
 
-      // Calculate and apply acceleration
+      // Calculate and apply acceleration.
       accelerationInput = CalculateAccelerationToWaypoint();
     }
 
-    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag
+    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag.
     GetComponent<Rigidbody>().AddForce(accelerationInput, ForceMode.Acceleration);
   }
 
