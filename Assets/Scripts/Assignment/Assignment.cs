@@ -29,7 +29,8 @@ public interface IAssignment {
   [Pure]
   public static List<Interceptor> GetAssignableInterceptors(
       in IReadOnlyList<Interceptor> interceptors) {
-    return interceptors.Where(interceptor => interceptor.IsAssignable() && !interceptor.IsTerminated())
+    return interceptors
+        .Where(interceptor => interceptor.IsAssignable() && !interceptor.IsTerminated())
         .ToList();
   }
 

@@ -49,7 +49,8 @@ public class IADS : MonoBehaviour {
     }
 
     // Assign any interceptors that are no longer assigned to any threat.
-    AssignInterceptorToThreat(_assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
+    AssignInterceptorToThreat(
+        _assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
   }
 
   // Cluster the threats.
@@ -185,10 +186,9 @@ public class IADS : MonoBehaviour {
     // TODO: We do not use clusters after the first assignment, we should consider re-clustering.
 
     // This pulls from ALL available track files, not from our previously assigned cluster.
-    List<Threat> threats =
-        _trackFiles.Where(trackFile => trackFile.Agent is Threat)
-                  .Select(trackFile => trackFile.Agent as Threat)
-                  .ToList();
+    List<Threat> threats = _trackFiles.Where(trackFile => trackFile.Agent is Threat)
+                               .Select(trackFile => trackFile.Agent as Threat)
+                               .ToList();
 
     IEnumerable<IAssignment.AssignmentItem> assignments =
         _assignmentScheme.Assign(interceptors, threats);
