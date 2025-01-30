@@ -135,27 +135,32 @@ public class IADS : MonoBehaviour {
     const float SubmunitionSpawnMaxAngularDeviation = 30.0f;
     const float SubmunitionSpawnMinDistanceToThreat = 500.0f;
     const float SubmunitionSpawnMaxDistanceToThreat = 2000.0f;
+    // TODO(titan): The prediction time should be a function of the submunition characteristic, such
+    // as the boost time.
+    const float SubmunitionSpawnPredictionTime = 0.6f;
 
     Cluster cluster = _interceptorClusterMap[carrier];
     List<Threat> threats = cluster.Threats.ToList();
     Vector3 carrierPosition = carrier.GetPosition();
     Vector3 carrierVelocity = carrier.GetVelocity();
     foreach (var threat in threats) {
-      Vector3 threatPosition = threat.GetPosition();
-      Vector3 positionToThreat = threatPosition - carrierPosition;
-      float distanceToThreat = positionToThreat.magnitude;
+      IPredictor predictor = new LinearExtrapolator(threat);
+      PredictorState predictedState = predictor.Predict(SubmunitionSpawnPredictionTime);
+      Vector3 positionToPredictedThreat = predictedState.Position - carrierPosition;
+      float predictedDistanceToThreat = positionToPredictedThreat.magnitude;
 
       // Check whether the distance to the threat is less than the minimum distance.
-      if (distanceToThreat < SubmunitionSpawnMinDistanceToThreat) {
+      if (predictedDistanceToThreat < SubmunitionSpawnMinDistanceToThreat) {
         return true;
       }
 
       // Check whether the angular deviation exceeds the maximum angular deviation.
       float distanceDeviation =
-          (Vector3.ProjectOnPlane(positionToThreat, carrierVelocity)).magnitude;
-      float angularDeviation = Mathf.Asin(distanceDeviation / distanceToThreat) * Mathf.Rad2Deg;
+          (Vector3.ProjectOnPlane(positionToPredictedThreat, carrierVelocity)).magnitude;
+      float angularDeviation =
+          Mathf.Asin(distanceDeviation / predictedDistanceToThreat) * Mathf.Rad2Deg;
       if (angularDeviation > SubmunitionSpawnMaxAngularDeviation &&
-          positionToThreat.magnitude < SubmunitionSpawnMaxDistanceToThreat) {
+          predictedDistanceToThreat < SubmunitionSpawnMaxDistanceToThreat) {
         return true;
       }
     }
