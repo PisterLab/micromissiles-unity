@@ -75,17 +75,17 @@ public class UIManager : MonoBehaviour {
     // Shift existing messages to older slots with faded colors
     pppppActionMessageTextHandle.text = ppppActionMessageTextHandle.text;
     pppppActionMessageTextHandle.color =
-        ppppActionMessageTextHandle.color * 0.25f;  // Fade color by 75%
+        ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 75%
 
     ppppActionMessageTextHandle.text = ppActionMessageTextHandle.text;
     ppppActionMessageTextHandle.color =
-        ppActionMessageTextHandle.color * 0.375f;  // Fade color by 62.5%
+        ppActionMessageTextHandle.color * 0.85f;  
 
     ppActionMessageTextHandle.text = pActionMessageTextHandle.text;
-    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.5f;  // Fade color by 50%
+    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.85f;  
 
     pActionMessageTextHandle.text = actionMessageTextHandle.text;
-    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.75f;  // Fade color by 25%
+    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.9f;  
 
     // Set new message
     actionMessageTextHandle.text = message;
