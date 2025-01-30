@@ -32,7 +32,7 @@ public class RotaryWingThreat : Threat {
       accelerationInput = CalculateAccelerationToWaypoint();
     }
 
-    // For RotaryWingThreat, we don't need to compensate for gravity or consider drag.
+    // For rotary wing threats, we don't need to compensate for gravity or consider drag.
     GetComponent<Rigidbody>().AddForce(accelerationInput, ForceMode.Acceleration);
   }
 

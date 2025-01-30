@@ -10,13 +10,13 @@ public class FixedWingThreat : Threat {
   private double _elapsedTime = 0;
   private Rigidbody _rigidbody;
 
-  // Start is called before the first frame update
+  // Start is called before the first frame update.
   protected override void Start() {
     base.Start();
     _rigidbody = GetComponent<Rigidbody>();
   }
 
-  // Update is called once per frame
+  // Update is called once per frame.
   protected override void FixedUpdate() {
     base.FixedUpdate();
   }
@@ -32,34 +32,33 @@ public class FixedWingThreat : Threat {
     if (ShouldEvade()) {
       accelerationInput = EvadeInterceptor(GetClosestInterceptor());
     } else if (HasAssignedTarget()) {
-      // Update waypoint and power setting
+      // Update the waypoint and power setting.
       UpdateWaypointAndPower();
 
       float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
       if (_elapsedTime >= sensorUpdatePeriod) {
-        // TODO: Implement guidance filter to estimate state from sensor output
-        // For now, we'll use the threat's actual state
+        // TODO: Implement guidance filter to estimate the state from sensor output.
         _elapsedTime = 0;
       }
 
-      // Calculate the normal acceleration input using PN
+      // Calculate the normal acceleration input using proportional navigation.
       Vector3 normalAcceleration = CalculateAccelerationInput();
 
-      // Adjust the speed based on power setting
+      // Adjust the speed based on the power setting.
       Vector3 forwardAcceleration = CalculateForwardAcceleration();
 
-      // Combine the accelerations
+      // Combine the accelerations.
       accelerationInput = normalAcceleration + forwardAcceleration;
     }
 
-    // Calculate and set the total acceleration
+    // Calculate and set the total acceleration.
     Vector3 acceleration = CalculateAcceleration(accelerationInput);
     _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
   }
 
   private void UpdateWaypointAndPower() {
-    // Get the next waypoint and power setting from the attack behavior
-    // TODO: Implement support for SENSORS to update the track on the target position
+    // Get the next waypoint and power setting from the attack behavior.
+    // TODO: Implement support for sensors to update the track on the target position.
     (_currentWaypoint, _currentPowerSetting) =
         _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
@@ -76,6 +75,10 @@ public class FixedWingThreat : Threat {
     IController controller = new PnController(this, _navigationGain);
     Vector3 accelerationInput = controller.PlanToWaypoint(_currentWaypoint);
 
+    // Counter gravity as much as possible.
+    accelerationInput +=
+        (float)Constants.kGravity / Vector3.Dot(transform.up, Vector3.up) * transform.up;
+
     // Clamp the normal acceleration input to the maximum normal acceleration.
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
     accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
@@ -85,7 +88,7 @@ public class FixedWingThreat : Threat {
     // Sink rate is opposite to climb rate.
     float sinkRate = -velocity.y;
     float distanceToTarget = (_currentWaypoint - position).magnitude;
-    float groundProximityThreshold = Mathf.Abs(sinkRate) * 5f;  // Adjust threshold as necessary
+    float groundProximityThreshold = Mathf.Abs(sinkRate) * 5f;  // Adjust threshold as necessary.
     if (sinkRate > 0 && altitude / sinkRate < distanceToTarget / speed) {
       // Evade upward normal to the velocity.
       Vector3 upwardsDirection = Vector3.Cross(forward, right);
@@ -104,7 +107,7 @@ public class FixedWingThreat : Threat {
     return accelerationInput;
   }
 
-  // Optional: Add this method to visualize debug information
+  // Optional: Add this method to visualize debug information.
   protected virtual void OnDrawGizmos() {
     if (Application.isPlaying) {
       Gizmos.color = Color.yellow;

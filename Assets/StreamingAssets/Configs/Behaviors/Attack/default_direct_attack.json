@@ -21,12 +21,12 @@
         "waypoints": [
             {
                 "distance": 10000.0,
-                "altitude": 1000.0,
+                "altitude": 500.0,
                 "power": "MIL"
             },
             {
                 "distance": 4000.0,
-                "altitude": 700.0,
+                "altitude": 500.0,
                 "power": "MIL"
             },
             {
