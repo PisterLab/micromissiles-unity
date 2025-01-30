@@ -181,6 +181,10 @@ public class IADS : MonoBehaviour {
   }
 
   public void AssignInterceptorToThreat(in IReadOnlyList<Interceptor> interceptors) {
+    if (interceptors.Count == 0) {
+      return;
+    }
+
     // The threat originally assigned to the interceptor has been terminated, so assign another
     // threat to the interceptor.
     // TODO: We do not use clusters after the first assignment, we should consider re-clustering.
@@ -189,6 +193,9 @@ public class IADS : MonoBehaviour {
     List<Threat> threats = _trackFiles.Where(trackFile => trackFile.Agent is Threat)
                                .Select(trackFile => trackFile.Agent as Threat)
                                .ToList();
+    if (threats.Count == 0) {
+      return;
+    }
 
     IEnumerable<IAssignment.AssignmentItem> assignments =
         _assignmentScheme.Assign(interceptors, threats);

@@ -28,8 +28,6 @@ public abstract class Agent : MonoBehaviour {
   protected Agent _target;
   [SerializeField]
   protected Agent _targetModel;
-  protected bool _isHit = false;
-  protected bool _isMiss = false;
 
   [SerializeField]
   protected double _timeSinceBoost = 0;
@@ -148,7 +146,6 @@ public abstract class Agent : MonoBehaviour {
 
   // Mark the agent as having hit the target or been hit.
   public void HandleInterceptHit(Agent otherAgent) {
-    _isHit = true;
     if (this is Interceptor interceptor && otherAgent is Threat threat) {
       OnInterceptHit?.Invoke(interceptor, threat);
     } else if (this is Threat threatAgent && otherAgent is Interceptor interceptorTarget) {
@@ -169,7 +166,6 @@ public abstract class Agent : MonoBehaviour {
 
   // This happens, e.g., if the threat hit the carrier.
   public void HandleThreatHit() {
-    _isHit = true;
     if (this is Threat threat) {
       OnThreatHit?.Invoke(threat);
     }
