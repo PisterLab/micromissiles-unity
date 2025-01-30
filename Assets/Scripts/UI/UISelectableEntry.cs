@@ -110,7 +110,7 @@ public class UISelectableEntry : EventTrigger {
       var textHandle = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), rectTransform)
                            .AddComponent<TextMeshProUGUI>();
       textHandle.gameObject.name = $"UISelectableEntry::Text_{i}";
-      textHandle.fontSize = 8;
+      textHandle.fontSize = 6;
       textHandle.font = UIManager.Instance.GlobalFont;
       textHandle.alignment = TextAlignmentOptions.MidlineLeft;
 

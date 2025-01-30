@@ -16,9 +16,9 @@ public class UIDialog : MonoBehaviour {
 
   /// TABS
   [SerializeField]
-  private float tabWidth = 15f;
+  private float _tabWidth = 15f;
   [SerializeField]
-  private float tabHeight = 8f;
+  private float _tabHeight = 8f;
   // List of dialog tabs
   private List<GameObject> dialogTabs;
 
@@ -76,10 +76,10 @@ public class UIDialog : MonoBehaviour {
   }
 
   public float GetTabWidth() {
-    return tabWidth;
+    return _tabWidth;
   }
   public float GetTabHeight() {
-    return tabHeight;
+    return _tabHeight;
   }
 
   /// <summary>
@@ -101,24 +101,34 @@ public class UIDialog : MonoBehaviour {
   /// </summary>
   private GameObject AddTabButton(string tabName, Action onClick) {
     GameObject tabButton = new GameObject("TabButton", typeof(RectTransform));
-    tabButton.transform.SetParent(transform);  // worldPositionStays ?
-    // RectTransform anchors to the right of the content handle
+
+    // Pass false in the second parameter to keep local scale at (1,1,1)
+    tabButton.transform.SetParent(transform, false);
+
+    // Optional: Force localScale to one, if you want to be explicit
+    // tabButton.transform.localScale = Vector3.one;
+
+    // RectTransform setup
     RectTransform rTransform = tabButton.GetComponent<RectTransform>();
     rTransform.anchorMin = new Vector2(0, 1);
     rTransform.anchorMax = new Vector2(0, 1);
     rTransform.pivot = new Vector2(0, 1);
-    rTransform.sizeDelta = new Vector2(tabWidth, tabHeight);
-    // Count tabs * tabSize to get the position from the left
+    rTransform.sizeDelta = new Vector2(_tabWidth, _tabHeight);
+
+    // Calculate anchoredPosition based on how many tabs exist
     rTransform.anchoredPosition =
-        new Vector2((tabWidth / 2) * dialogTabs.Count, -(GetTitleBarHeight()));
+        new Vector2(_tabWidth * dialogTabs.Count, -(GetTitleBarHeight()));
 
     // Add the onClick callback to the button
     Button button = tabButton.AddComponent<Button>();
     button.onClick.AddListener(() => onClick());
+
     // Add the image to the button and link it to the tab
     button.targetGraphic = tabButton.AddComponent<Image>();
 
+    // Create the child text object
     AddTabText(tabName, tabButton);
+
     return tabButton;
   }
 
@@ -127,20 +137,26 @@ public class UIDialog : MonoBehaviour {
   /// </summary>
   private void AddTabText(string tabName, GameObject tabButton) {
     GameObject tabText = new GameObject("TabText", typeof(RectTransform));
-    tabText.transform.SetParent(tabButton.transform);
-    // RectTransform anchors to the center of the button
+
+    // Again, pass false to avoid messing up the new child's scale
+    tabText.transform.SetParent(tabButton.transform, false);
+
+    // Optional: Force localScale to one, if you want to be explicit
+    // tabText.transform.localScale = Vector3.one;
+
+    // RectTransform setup
     RectTransform textRectTransform = tabText.GetComponent<RectTransform>();
     textRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
     textRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
     textRectTransform.pivot = new Vector2(0.5f, 0.5f);
-    textRectTransform.sizeDelta = new Vector2(tabWidth, tabHeight);
-    // Text position
+    textRectTransform.sizeDelta = new Vector2(_tabWidth, _tabHeight);
     textRectTransform.anchoredPosition = new Vector2(0, 0);
 
+    // Create the TextMeshProUGUI component
     TextMeshProUGUI buttonText = tabText.AddComponent<TextMeshProUGUI>();
     buttonText.text = tabName;
     buttonText.font = UIManager.Instance.GlobalFont;
-    buttonText.fontSize = 10;
+    buttonText.fontSize = 6;
     buttonText.color = Color.black;
     buttonText.alignment = TextAlignmentOptions.Center;
     buttonText.verticalAlignment = VerticalAlignmentOptions.Middle;

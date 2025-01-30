@@ -152,15 +152,17 @@ public class SwarmStatusDialog : UIDialog {
 
   protected override void OnEnable() {
     base.OnEnable();
-    if (!wasStarted) {
-      base.Start();
-      InitDialog();
-      wasStarted = true;
+    // if (!wasStarted) {
+    //   base.Start();
+    //   InitDialog();
+    //   wasStarted = true;
+    // }
+    if(SimManager.Instance != null) {
+      interceptorSwarms = SimManager.Instance.GetInterceptorSwarms();
+      submunitionsSwarms = SimManager.Instance.GetSubmunitionsSwarms();
+      threatsSwarms = SimManager.Instance.GetThreatSwarms();
+      RedrawFullDialog();
     }
-    interceptorSwarms = SimManager.Instance.GetInterceptorSwarms();
-    submunitionsSwarms = SimManager.Instance.GetSubmunitionsSwarms();
-    threatsSwarms = SimManager.Instance.GetThreatSwarms();
-    RedrawFullDialog();
   }
   // Update is called once per frame
   void Update() {}
