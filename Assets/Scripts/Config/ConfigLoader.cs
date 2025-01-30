@@ -42,7 +42,7 @@ public static class ConfigLoader {
         JsonConvert.DeserializeObject<SimulationConfig>(fileContent, new JsonSerializerSettings {
           Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
         });
-    UIManager.Instance.LogActionMessage($"Loaded SimulationConfig: {configFileName}.");
+    UIManager.Instance.LogActionMessage($"[SIM] Loaded SimulationConfig: {configFileName}.");
     return config;
   }
 

@@ -65,7 +65,9 @@ public class IADS : MonoBehaviour {
         threats.ConvertAll(threat => threat.gameObject).ToList(), MaxSize, MaxRadius);
     clusterer.Cluster();
     var clusters = clusterer.Clusters;
-    Debug.Log($"Clustered {threats.Count} threats into {clusters.Count} clusters.");
+    Debug.Log($"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
+    UIManager.Instance.LogActionMessage(
+        $"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
 
     _threatClusters = clusters.ToList();
     foreach (var cluster in clusters) {
@@ -93,7 +95,7 @@ public class IADS : MonoBehaviour {
         Debug.Log(
             $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
         UIManager.Instance.LogActionMessage(
-            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
 
         // Create a new interceptor.
         DynamicAgentConfig config =

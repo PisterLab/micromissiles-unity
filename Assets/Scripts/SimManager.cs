@@ -161,7 +161,7 @@ public class SimManager : MonoBehaviour {
 
   public void StartSimulation() {
     OnSimulationStarted?.Invoke();
-    UIManager.Instance.LogActionMessage("OnSimulationStarted invoked.");
+    UIManager.Instance.LogActionMessage("[SIM] OnSimulationStarted invoked.");
     InitializeSimulation();
 
     // Cluster the threats.
