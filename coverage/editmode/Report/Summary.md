@@ -1,26 +1,26 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/29/2025 - 23:51:18 |
+| Generated on: | 01/30/2025 - 00:37:55 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1884 |
-| Uncovered lines: | 3282 |
-| Coverable lines: | 5166 |
-| Total lines: | 9089 |
-| Line coverage: | 36.4% (1884 of 5166) |
+| Covered lines: | 1875 |
+| Uncovered lines: | 3308 |
+| Coverable lines: | 5183 |
+| Total lines: | 9127 |
+| Line coverage: | 36.1% (1875 of 5183) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 265 |
-| Total methods: | 722 |
-| Method coverage: | 36.7% (265 of 722) |
+| Covered methods: | 264 |
+| Total methods: | 723 |
+| Method coverage: | 36.5% (264 of 723) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**931**|**3201**|**4132**|**9061**|**22.5%**|**0**|**0**|****|**158**|**607**|**26%**|
-|Agent|114|151|265|473|43%|0|0||23|46|50%|
+|**bamlab.micromissiles**|**928**|**3221**|**4149**|**9138**|**22.3%**|**0**|**0**|****|**157**|**608**|**25.8%**|
+|Agent|111|151|262|468|42.3%|0|0||22|45|48.8%|
 |AgglomerativeClusterer|63|0|63|99|100%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
@@ -33,11 +33,11 @@
 |Coordinates2|10|6|16|58|62.5%|0|0||2|4|50%|
 |Coordinates3|12|6|18|58|66.6%|0|0||2|4|50%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
-|DummyAgent|3|9|12|473|25%|0|0||1|5|20%|
+|DummyAgent|3|9|12|468|25%|0|0||1|5|20%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|26|38|64|117|40.6%|0|0||3|9|33.3%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|0|172|172|277|0%|0|0||0|21|0%|
+|IADS|0|181|181|298|0%|0|0||0|21|0%|
 |IAssignment|10|0|10|41|100%|0|0||3|3|100%|
 |IClusterer|6|1|7|47|85.7%|0|0||2|3|66.6%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
@@ -48,7 +48,7 @@
 |ILaunchPlanner|4|0|4|43|100%|0|0||1|1|100%|
 |InputManager|0|172|172|230|0%|0|0||0|15|0%|
 |Interceptor|8|151|159|244|5%|0|0||2|17|11.7%|
-|InterceptorData|0|16|16|78|0%|0|0||0|3|0%|
+|InterceptorData|0|20|20|100|0%|0|0||0|4|0%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|0|6|47|100%|0|0||1|1|100%|
@@ -85,8 +85,8 @@
 |Threat|16|89|105|189|15.2%|0|0||4|11|36.3%|
 |ThreatAssignment|38|0|38|74|100%|0|0||5|5|100%|
 |ThreatClusterData|0|24|24|57|0%|0|0||0|8|0%|
-|ThreatData|0|18|18|78|0%|0|0||0|3|0%|
-|TrackFileData|0|11|11|78|0%|0|0||0|7|0%|
+|ThreatData|0|25|25|100|0%|0|0||0|4|0%|
+|TrackFileData|0|11|11|100|0%|0|0||0|7|0%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|0|127|127|217|0%|0|0||0|18|0%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
@@ -102,7 +102,7 @@
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**908**|**13**|**921**|**2003**|**98.5%**|**0**|**0**|****|**98**|**100**|**98%**|
+|**bamlab.test.editmode**|**902**|**19**|**921**|**2003**|**97.9%**|**0**|**0**|****|**98**|**100**|**98%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
@@ -110,7 +110,7 @@
 |Coordinates3Test|19|0|19|97|100%|0|0||4|4|100%|
 |IterativeLaunchPlannerTest|53|0|53|87|100%|0|0||9|9|100%|
 |KDTreeTest|39|0|39|55|100%|0|0||4|4|100%|
-|KMeansClustererTest|37|0|37|150|100%|0|0||4|4|100%|
+|KMeansClustererTest|31|6|37|150|83.7%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTest|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
