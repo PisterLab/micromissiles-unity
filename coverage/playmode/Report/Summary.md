@@ -1,44 +1,44 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/30/2025 - 00:38:28 |
+| Generated on: | 01/30/2025 - 02:45:54 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1707 |
-| Uncovered lines: | 3476 |
-| Coverable lines: | 5183 |
-| Total lines: | 9127 |
-| Line coverage: | 32.9% (1707 of 5183) |
+| Covered lines: | 1702 |
+| Uncovered lines: | 3495 |
+| Coverable lines: | 5197 |
+| Total lines: | 9150 |
+| Line coverage: | 32.7% (1702 of 5197) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 293 |
-| Total methods: | 723 |
-| Method coverage: | 40.5% (293 of 723) |
+| Covered methods: | 291 |
+| Total methods: | 724 |
+| Method coverage: | 40.1% (291 of 724) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1670**|**2479**|**4149**|**9138**|**40.2%**|**0**|**0**|****|**290**|**608**|**47.6%**|
-|Agent|190|72|262|468|72.5%|0|0||33|45|73.3%|
+|**bamlab.micromissiles**|**1665**|**2498**|**4163**|**9157**|**39.9%**|**0**|**0**|****|**288**|**609**|**47.2%**|
+|Agent|188|70|258|464|72.8%|0|0||33|45|73.3%|
 |AgglomerativeClusterer|61|2|63|99|96.8%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
 |CarrierInterceptor|11|30|41|69|26.8%|0|0||3|6|50%|
 |Cluster|45|11|56|102|80.3%|0|0||13|14|92.8%|
-|ConfigLoader|29|77|106|153|27.3%|0|0||4|13|30.7%|
+|ConfigLoader|31|77|108|155|28.7%|0|0||4|13|30.7%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |ConstrainedKMeansClusterer|0|22|22|119|0%|0|0||0|2|0%|
 |Coordinates2|0|16|16|58|0%|0|0||0|4|0%|
 |Coordinates3|15|3|18|58|83.3%|0|0||3|4|75%|
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
-|DummyAgent|6|6|12|468|50%|0|0||2|5|40%|
+|DummyAgent|6|6|12|464|50%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|6|58|64|117|9.3%|0|0||2|9|22.2%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|108|73|181|298|59.6%|0|0||13|21|61.9%|
-|IAssignment|3|7|10|41|30%|0|0||1|3|33.3%|
+|IADS|106|80|186|307|56.9%|0|0||13|21|61.9%|
+|IAssignment|0|11|11|42|0%|0|0||0|3|0%|
 |IClusterer|6|1|7|47|85.7%|0|0||2|3|66.6%|
 |IController|11|3|14|30|78.5%|0|0||3|4|75%|
 |IdealSensor|7|7|14|25|50%|0|0||1|2|50%|
@@ -63,7 +63,7 @@
 |LaunchAngleOutput|6|0|6|73|100%|0|0||3|3|100%|
 |LaunchPlan|12|0|12|43|100%|0|0||6|6|100%|
 |LinearExtrapolator|5|0|5|14|100%|0|0||2|2|100%|
-|MaxSpeedAssignment|7|34|41|80|17%|0|0||1|1|100%|
+|MaxSpeedAssignment|0|41|41|80|0%|0|0||0|1|0%|
 |NearestNeighborInterpolator2D|9|6|15|86|60%|0|0||2|3|66.6%|
 |ParticleManager|33|137|170|245|19.4%|0|0||9|24|37.5%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
@@ -73,7 +73,7 @@
 |RotaryWingThreat|33|10|43|76|76.7%|0|0||6|8|75%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|
 |Sensor|3|0|3|29|100%|0|0||1|1|100%|
-|SimManager|237|139|376|610|63%|0|0||28|47|59.5%|
+|SimManager|238|142|380|615|62.6%|0|0||28|48|58.3%|
 |SimMonitor|59|110|169|255|34.9%|0|0||10|20|50%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
@@ -83,7 +83,7 @@
 |TacticalPolarGridGraphic|42|98|140|225|30%|0|0||5|15|33.3%|
 |TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
 |Threat|34|71|105|189|32.3%|0|0||8|11|72.7%|
-|ThreatAssignment|0|38|38|74|0%|0|0||0|5|0%|
+|ThreatAssignment|0|38|38|73|0%|0|0||0|5|0%|
 |ThreatClusterData|16|8|24|57|66.6%|0|0||5|8|62.5%|
 |ThreatData|3|22|25|100|12%|0|0||1|4|25%|
 |TrackFileData|7|4|11|100|63.6%|0|0||5|7|71.4%|
@@ -92,7 +92,7 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|112|52|164|250|68.2%|0|0||19|30|63.3%|
+|UIManager|118|52|170|261|69.4%|0|0||19|30|63.3%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|1|57|58|100|1.7%|0|0||1|9|11.1%|
 |Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
