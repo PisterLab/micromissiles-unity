@@ -34,6 +34,9 @@ public class UIManager : MonoBehaviour {
   public TextMeshProUGUI actionMessageTextHandle;
   public TextMeshProUGUI pActionMessageTextHandle;
   public TextMeshProUGUI ppActionMessageTextHandle;
+  public TextMeshProUGUI ppppActionMessageTextHandle;
+  public TextMeshProUGUI pppppActionMessageTextHandle;
+
 
   private int _intrHitCount = 0;
   private int _intrMissCount = 0;
@@ -64,10 +67,18 @@ public class UIManager : MonoBehaviour {
     actionMessageTextHandle.text = "";
     pActionMessageTextHandle.text = "";
     ppActionMessageTextHandle.text = "";
+    ppppActionMessageTextHandle.text = "";
+    pppppActionMessageTextHandle.text = "";
   }
 
   public void LogAction(string message, Color color) {
     // Shift existing messages to older slots with faded colors
+    pppppActionMessageTextHandle.text = ppppActionMessageTextHandle.text;
+    pppppActionMessageTextHandle.color = ppppActionMessageTextHandle.color * 0.25f;  // Fade color by 75%
+
+    ppppActionMessageTextHandle.text = ppActionMessageTextHandle.text;
+    ppppActionMessageTextHandle.color = ppActionMessageTextHandle.color * 0.375f;  // Fade color by 62.5%
+
     ppActionMessageTextHandle.text = pActionMessageTextHandle.text;
     ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.5f;  // Fade color by 50%
 

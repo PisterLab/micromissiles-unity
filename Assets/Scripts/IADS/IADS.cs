@@ -92,6 +92,8 @@ public class IADS : MonoBehaviour {
       if (plan.ShouldLaunch) {
         Debug.Log(
             $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+        UIManager.Instance.LogActionMessage(
+            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
 
         // Create a new interceptor.
         DynamicAgentConfig config =

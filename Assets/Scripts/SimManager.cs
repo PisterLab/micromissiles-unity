@@ -161,6 +161,7 @@ public class SimManager : MonoBehaviour {
 
   public void StartSimulation() {
     OnSimulationStarted?.Invoke();
+    UIManager.Instance.LogActionMessage("OnSimulationStarted invoked.");
     InitializeSimulation();
 
     // Cluster the threats.
@@ -596,6 +597,10 @@ public class SimManager : MonoBehaviour {
 
     // Check whether to launch the interceptors. If so, create and launch the interceptor.
     IADS.Instance.CheckAndLaunchInterceptors();
+  }
+
+  public void QuitSimulation() {
+    Application.Quit();
   }
 }
 

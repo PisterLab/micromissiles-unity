@@ -38,9 +38,11 @@ public static class ConfigLoader {
       return null;
     }
 
-    return JsonConvert.DeserializeObject<SimulationConfig>(fileContent, new JsonSerializerSettings {
+    SimulationConfig config = JsonConvert.DeserializeObject<SimulationConfig>(fileContent, new JsonSerializerSettings {
       Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
     });
+    UIManager.Instance.LogActionMessage($"Loaded SimulationConfig: {configFileName}.");
+    return config;
   }
 
   public static StaticAgentConfig LoadStaticAgentConfig(string configFileName) {

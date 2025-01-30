@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // The threat assignment class assigns interceptors to the targets based
