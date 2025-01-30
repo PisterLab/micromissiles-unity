@@ -7,7 +7,7 @@
     "accelerationConfig": {
         "maxReferenceNormalAcceleration": 300,
         "referenceSpeed": 1000,
-        "maxForwardAcceleration": 1
+        "maxForwardAcceleration": 50
     },
     "boostConfig": {
         "boostTime": 0
