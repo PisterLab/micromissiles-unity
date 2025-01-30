@@ -1,44 +1,44 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/30/2025 - 00:37:55 |
+| Generated on: | 01/30/2025 - 02:45:01 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1875 |
-| Uncovered lines: | 3308 |
-| Coverable lines: | 5183 |
-| Total lines: | 9127 |
-| Line coverage: | 36.1% (1875 of 5183) |
+| Covered lines: | 1880 |
+| Uncovered lines: | 3317 |
+| Coverable lines: | 5197 |
+| Total lines: | 9150 |
+| Line coverage: | 36.1% (1880 of 5197) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 264 |
-| Total methods: | 723 |
-| Method coverage: | 36.5% (264 of 723) |
+| Total methods: | 724 |
+| Method coverage: | 36.4% (264 of 724) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**928**|**3221**|**4149**|**9138**|**22.3%**|**0**|**0**|****|**157**|**608**|**25.8%**|
-|Agent|111|151|262|468|42.3%|0|0||22|45|48.8%|
+|**bamlab.micromissiles**|**927**|**3236**|**4163**|**9157**|**22.2%**|**0**|**0**|****|**157**|**609**|**25.7%**|
+|Agent|109|149|258|464|42.2%|0|0||22|45|48.8%|
 |AgglomerativeClusterer|63|0|63|99|100%|0|0||2|2|100%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|643|0%|0|0||0|36|0%|
 |CarrierInterceptor|0|41|41|69|0%|0|0||0|6|0%|
 |Cluster|43|13|56|102|76.7%|0|0||13|14|92.8%|
-|ConfigLoader|18|88|106|153|16.9%|0|0||2|13|15.3%|
+|ConfigLoader|18|90|108|155|16.6%|0|0||2|13|15.3%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |ConstrainedKMeansClusterer|20|2|22|119|90.9%|0|0||2|2|100%|
 |Coordinates2|10|6|16|58|62.5%|0|0||2|4|50%|
 |Coordinates3|12|6|18|58|66.6%|0|0||2|4|50%|
 |DirectAttackBehavior|9|23|32|74|28.1%|0|0||1|2|50%|
-|DummyAgent|3|9|12|468|25%|0|0||1|5|20%|
+|DummyAgent|3|9|12|464|25%|0|0||1|5|20%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|26|38|64|117|40.6%|0|0||3|9|33.3%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|0|181|181|298|0%|0|0||0|21|0%|
-|IAssignment|10|0|10|41|100%|0|0||3|3|100%|
+|IADS|0|186|186|307|0%|0|0||0|21|0%|
+|IAssignment|11|0|11|42|100%|0|0||3|3|100%|
 |IClusterer|6|1|7|47|85.7%|0|0||2|3|66.6%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
 |IdealSensor|0|14|14|25|0%|0|0||0|2|0%|
@@ -73,7 +73,7 @@
 |RotaryWingThreat|17|26|43|76|39.5%|0|0||2|8|25%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|
 |Sensor|3|0|3|29|100%|0|0||1|1|100%|
-|SimManager|78|298|376|610|20.7%|0|0||8|47|17%|
+|SimManager|78|302|380|615|20.5%|0|0||8|48|16.6%|
 |SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
@@ -83,7 +83,7 @@
 |TacticalPolarGridGraphic|0|140|140|225|0%|0|0||0|15|0%|
 |TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
 |Threat|16|89|105|189|15.2%|0|0||4|11|36.3%|
-|ThreatAssignment|38|0|38|74|100%|0|0||5|5|100%|
+|ThreatAssignment|38|0|38|73|100%|0|0||5|5|100%|
 |ThreatClusterData|0|24|24|57|0%|0|0||0|8|0%|
 |ThreatData|0|25|25|100|0%|0|0||0|4|0%|
 |TrackFileData|0|11|11|100|0%|0|0||0|7|0%|
@@ -92,7 +92,7 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|164|164|250|0%|0|0||0|30|0%|
+|UIManager|0|170|170|261|0%|0|0||0|30|0%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
 |Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
@@ -102,7 +102,7 @@
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**902**|**19**|**921**|**2003**|**97.9%**|**0**|**0**|****|**98**|**100**|**98%**|
+|**bamlab.test.editmode**|**908**|**13**|**921**|**2003**|**98.5%**|**0**|**0**|****|**98**|**100**|**98%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
@@ -110,7 +110,7 @@
 |Coordinates3Test|19|0|19|97|100%|0|0||4|4|100%|
 |IterativeLaunchPlannerTest|53|0|53|87|100%|0|0||9|9|100%|
 |KDTreeTest|39|0|39|55|100%|0|0||4|4|100%|
-|KMeansClustererTest|31|6|37|150|83.7%|0|0||4|4|100%|
+|KMeansClustererTest|37|0|37|150|100%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTest|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
