@@ -177,13 +177,13 @@ public abstract class Threat : Agent {
   private void OnTriggerEnter(Collider other) {
     // Check if the threat hit the floor with a negative vertical speed.
     if (other.gameObject.name == "Floor" && Vector3.Dot(GetVelocity(), Vector3.up) < 0) {
-      this.HandleThreatMiss();
+      HandleHitGround();
     }
 
-    // Check if the collision is with another agent.
+    // Check if the collision is with the asset.
     DummyAgent otherAgent = other.gameObject.GetComponentInParent<DummyAgent>();
     if (otherAgent != null && _target == otherAgent) {
-      this.HandleThreatHit();
+      HandleThreatHit();
     }
   }
 }

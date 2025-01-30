@@ -144,36 +144,36 @@ public abstract class Agent : MonoBehaviour {
     gameObject.SetActive(false);
   }
 
-  // Mark the agent as having hit the target or been hit.
-  public void HandleInterceptHit(Agent otherAgent) {
-    if (this is Interceptor interceptor && otherAgent is Threat threat) {
+  public void HandleInterceptHit(Agent agent) {
+    if (this is Interceptor interceptor && agent is Threat threat) {
       OnInterceptHit?.Invoke(interceptor, threat);
-    } else if (this is Threat threatAgent && otherAgent is Interceptor interceptorTarget) {
-      OnInterceptHit?.Invoke(interceptorTarget, threatAgent);
+      TerminateAgent();
     }
-    TerminateAgent();
   }
 
   public void HandleInterceptMiss() {
-    if (HasAssignedTarget()) {
-      if (this is Interceptor interceptor && _target is Threat threat) {
-        OnInterceptMiss?.Invoke(interceptor, threat);
-      } else if (this is Threat threatAgent && _target is Interceptor interceptorTarget) {
-        OnInterceptMiss?.Invoke(interceptorTarget, threatAgent);
-      }
+    if (this is Interceptor interceptor && _target is Threat threat) {
+      OnInterceptMiss?.Invoke(interceptor, threat);
     }
   }
 
-  // This happens, e.g., if the threat hit the carrier.
+  public void HandleTargetIntercepted() {
+    if (this is Threat threat) {
+      TerminateAgent();
+    }
+  }
+
   public void HandleThreatHit() {
     if (this is Threat threat) {
       OnThreatHit?.Invoke(threat);
+      TerminateAgent();
     }
-    TerminateAgent();
   }
 
-  // This happens, e.g., if the threat hit the floor.
-  public void HandleThreatMiss() {
+  public void HandleHitGround() {
+    if (this is Interceptor interceptor && _target is Threat target) {
+      OnInterceptMiss?.Invoke(interceptor, target);
+    }
     if (this is Threat threat) {
       OnThreatMiss?.Invoke(threat);
     }

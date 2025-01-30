@@ -93,7 +93,7 @@ public class Interceptor : Agent {
     SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
     // TODO(dlovell): This causes trouble with the Fateh 110B (high-speed threats).
     // if (sensorOutput.velocity.range > 1000f) {
-    //   this.HandleInterceptMiss();
+    //   HandleInterceptMiss();
     //   return Vector3.zero;
     // }
 
@@ -127,12 +127,13 @@ public class Interceptor : Agent {
   private void OnTriggerEnter(Collider other) {
     // Check if the interceptor hit the floor with a negative vertical speed.
     if (other.gameObject.name == "Floor" && Vector3.Dot(GetVelocity(), Vector3.up) < 0) {
-      this.HandleInterceptMiss();
+      HandleHitGround();
     }
 
     // Check if the collision is with another agent.
     Agent otherAgent = other.gameObject.GetComponentInParent<Agent>();
-    if (otherAgent != null && otherAgent.GetComponent<Threat>() != null) {
+    if (otherAgent != null && otherAgent.GetComponent<Threat>() != null &&
+        _target == otherAgent as Threat) {
       // Check kill probability before marking as hit.
       float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
       GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
@@ -140,11 +141,11 @@ public class Interceptor : Agent {
       if (Random.value <= killProbability) {
         markerObject.GetComponent<UIHitMarker>().SetHit();
         // Mark both this agent and the other agent as hit.
-        this.HandleInterceptHit(otherAgent);
-        otherAgent.HandleInterceptHit(otherAgent);
+        HandleInterceptHit(otherAgent);
+        otherAgent.HandleTargetIntercepted();
       } else {
         markerObject.GetComponent<UIHitMarker>().SetMiss();
-        this.HandleInterceptMiss();
+        HandleInterceptMiss();
       }
     }
   }
