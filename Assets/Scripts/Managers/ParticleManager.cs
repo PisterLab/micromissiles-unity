@@ -6,11 +6,17 @@ using System.Linq;
 public class ParticleManager : MonoBehaviour {
   public static ParticleManager Instance { get; private set; }
 
-  [SerializeField]
   private Queue<GameObject> _missileTrailPool;
   [SerializeField]
+  // Queues cannot be serialized, so if we want to see it in the inspector,
+  // we need to serialize the count.
+  private int _missileTrailPoolCount;
+  [SerializeField]
   private Queue<GameObject> _missileExplosionPool;
+  [SerializeField]
+  private int _missileExplosionPoolCount;
 
+  [SerializeField]
   private List<TrailRenderer> _agentTrailRenderers = new List<TrailRenderer>();
 
   [SerializeField, Tooltip("The material to use for commandeered interceptor trail renderers")]
@@ -43,6 +49,11 @@ public class ParticleManager : MonoBehaviour {
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
 
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+  }
+
+  private void Update() {
+    _missileTrailPoolCount = _missileTrailPool.Count;
+    _missileExplosionPoolCount = _missileExplosionPool.Count;
   }
 
   private void InitializeMissileTrailParticlePool() {
@@ -78,39 +89,38 @@ public class ParticleManager : MonoBehaviour {
   private void RegisterNewInterceptor(Interceptor interceptor) {
     interceptor.OnInterceptHit += RegisterInterceptorHit;
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
+    interceptor.OnTerminated += RegisterAgentTerminated;
   }
 
   private void RegisterNewThreat(Threat threat) {
     threat.OnThreatHit += RegisterThreatHit;
     threat.OnThreatMiss += RegisterThreatMiss;
+    threat.OnTerminated += RegisterAgentTerminated;
+  }
+
+  private void RegisterAgentTerminated(Agent agent) {
+    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
+      CommandeerAgentTrailRenderer(agent);
+    }
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
     if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
       PlayMissileExplosion(interceptor.transform.position);
     }
-    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
-      CommandeerAgentTrailRenderer(interceptor);
-      CommandeerAgentTrailRenderer(threat);
-    }
   }
 
   private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
-      CommandeerAgentTrailRenderer(interceptor);
-    }
+    // It does not make sense to commandeer the TrailRenderer for a miss.
+    // As the interceptor remains in flight
   }
 
   private void RegisterThreatHit(Threat threat) {
-    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
-      CommandeerAgentTrailRenderer(threat);
-    }
+
   }
 
   private void RegisterThreatMiss(Threat threat) {
-    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
-      CommandeerAgentTrailRenderer(threat);
-    }
+
   }
 
   private void CommandeerAgentTrailRenderer(Agent agent) {
