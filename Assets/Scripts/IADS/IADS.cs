@@ -297,6 +297,7 @@ public class IADS : MonoBehaviour {
       _trackFiles.OfType<InterceptorData>().ToList();
 
   private void RegisterSimulationEnded() {
+    _assignableInterceptors.Clear();
     _trackFiles.Clear();
     _threatClusters.Clear();
     _threatClusterMap.Clear();
