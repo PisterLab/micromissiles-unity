@@ -9,10 +9,14 @@ using UnityEngine;
 public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
 
+  private const float LaunchInterceptorsPeriod = 0.4f;
+  private const float ClusterThreatsPeriod = 5.0f;
+
   // TODO(titan): Choose the CSV file based on the interceptor type.
   private ILaunchAnglePlanner _launchAnglePlanner =
       new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignment _assignmentScheme = new MaxSpeedAssignment();
+  private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
   private List<TrackFileData> _trackFiles = new List<TrackFileData>();
@@ -25,7 +29,9 @@ public class IADS : MonoBehaviour {
   private Dictionary<Interceptor, Cluster> _interceptorClusterMap =
       new Dictionary<Interceptor, Cluster>();
   private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
+
   private HashSet<Threat> _threatsToCluster = new HashSet<Threat>();
+  private Coroutine _clusterThreatsCoroutine;
 
   private int _trackFileIdTicker = 0;
 
@@ -34,6 +40,15 @@ public class IADS : MonoBehaviour {
       Instance = this;
     } else {
       Destroy(gameObject);
+    }
+  }
+
+  private void OnDestroy() {
+    if (_launchInterceptorsCoroutine != null) {
+      StopCoroutine(_launchInterceptorsCoroutine);
+    }
+    if (_clusterThreatsCoroutine != null) {
+      StopCoroutine(_clusterThreatsCoroutine);
     }
   }
 
@@ -55,10 +70,21 @@ public class IADS : MonoBehaviour {
         _assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
   }
 
-  private void RegisterSimulationStarted() {}
+  private void RegisterSimulationStarted() {
+    _launchInterceptorsCoroutine =
+        StartCoroutine(LaunchInterceptorsManager(LaunchInterceptorsPeriod));
+    _clusterThreatsCoroutine = StartCoroutine(ClusterThreatsManager(ClusterThreatsPeriod));
+  }
 
-  // Check whether an interceptor should be launched at a cluster and launch it.
-  public void CheckAndLaunchInterceptors() {
+  private IEnumerator LaunchInterceptorsManager(float period) {
+    while (true) {
+      // Check whether an interceptor should be launched at a cluster and launch it.
+      CheckAndLaunchInterceptors();
+      yield return new WaitForSeconds(period);
+    }
+  }
+
+  private void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
       if (_threatClusterMap[cluster].Status != ThreatClusterStatus.UNASSIGNED) {
@@ -198,22 +224,35 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  public void RequestClusterThreats(Threat threat) {
+  public void RequestClusterThreat(Threat threat) {
     _threatsToCluster.Add(threat);
   }
 
-  private void ClusterThreats(List<Threat> threats) {
+  private IEnumerator ClusterThreatsManager(float period) {
+    while (true) {
+      ClusterThreats();
+      yield return new WaitForSeconds(period);
+    }
+  }
+
+  private void ClusterThreats() {
     // Maximum number of threats per cluster.
     const int MaxSize = 7;
     // Maximum cluster radius in meters.
     const float MaxRadius = 500;
 
+    // Filter the threats.
+    List<Threat> threats =
+        _threatsToCluster.Where(threat => threat.AssignedInterceptors.Count == 0).ToList();
+    if (threats.Count == 0) {
+      return;
+    }
+
     // Cluster threats.
-    IClusterer clusterer =
-        new AgglomerativeClusterer(new List<Agent>(_threatsToCluster), MaxSize, MaxRadius);
+    IClusterer clusterer = new AgglomerativeClusterer(new List<Agent>(threats), MaxSize, MaxRadius);
     clusterer.Cluster();
     var clusters = clusterer.Clusters;
-    Debug.Log($"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
+    Debug.Log($"Clustered {threats.Count} threats into {clusters.Count} clusters.");
     UIManager.Instance.LogActionMessage(
         $"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
 
@@ -230,7 +269,7 @@ public class IADS : MonoBehaviour {
     ThreatData trackFile = new ThreatData(threat, trackID);
     _trackFiles.Add(trackFile);
     _trackFileMap.Add(threat, trackFile);
-    RequestClusterThreats(threat);
+    RequestClusterThreat(threat);
 
     threat.OnThreatHit += RegisterThreatHit;
     threat.OnThreatMiss += RegisterThreatMiss;
@@ -278,7 +317,7 @@ public class IADS : MonoBehaviour {
 
       // Check if the threat is being targeted by at least one interceptor.
       if (threatTrack.AssignedInterceptorCount == 0) {
-        RequestClusterThreats(threat);
+        RequestClusterThreat(threat);
       }
     }
 

@@ -589,9 +589,6 @@ public class SimManager : MonoBehaviour {
       RestartSimulation();
       Debug.Log("Simulation completed.");
     }
-
-    // Check whether to launch the interceptors. If so, create and launch the interceptor.
-    IADS.Instance.CheckAndLaunchInterceptors();
   }
 
   public void QuitSimulation() {
