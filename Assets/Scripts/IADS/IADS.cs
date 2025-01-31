@@ -10,7 +10,8 @@ public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
 
   private const float LaunchInterceptorsPeriod = 0.4f;
-  private const float ClusterThreatsPeriod = 5.0f;
+  private const float CheckForEscapingThreatsPeriod = 5.0f;
+  private const float ClusterThreatsPeriod = 2.0f;
 
   // TODO(titan): Choose the CSV file based on the interceptor type.
   private ILaunchAnglePlanner _launchAnglePlanner =
@@ -31,6 +32,7 @@ public class IADS : MonoBehaviour {
   private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
 
   private HashSet<Threat> _threatsToCluster = new HashSet<Threat>();
+  private Coroutine _checkForEscapingThreatsCoroutine;
   private Coroutine _clusterThreatsCoroutine;
 
   private int _trackFileIdTicker = 0;
@@ -46,6 +48,9 @@ public class IADS : MonoBehaviour {
   private void OnDestroy() {
     if (_launchInterceptorsCoroutine != null) {
       StopCoroutine(_launchInterceptorsCoroutine);
+    }
+    if (_checkForEscapingThreatsCoroutine != null) {
+      StopCoroutine(_checkForEscapingThreatsCoroutine);
     }
     if (_clusterThreatsCoroutine != null) {
       StopCoroutine(_clusterThreatsCoroutine);
@@ -73,6 +78,8 @@ public class IADS : MonoBehaviour {
   private void RegisterSimulationStarted() {
     _launchInterceptorsCoroutine =
         StartCoroutine(LaunchInterceptorsManager(LaunchInterceptorsPeriod));
+    _checkForEscapingThreatsCoroutine =
+        StartCoroutine(CheckForEscapingThreatsManager(CheckForEscapingThreatsPeriod));
     _clusterThreatsCoroutine = StartCoroutine(ClusterThreatsManager(ClusterThreatsPeriod));
   }
 
@@ -226,6 +233,45 @@ public class IADS : MonoBehaviour {
 
   public void RequestClusterThreat(Threat threat) {
     _threatsToCluster.Add(threat);
+  }
+
+  private IEnumerator CheckForEscapingThreatsManager(float period) {
+    while (true) {
+      yield return new WaitForSeconds(period);
+      CheckForEscapingThreats();
+    }
+  }
+
+  private void CheckForEscapingThreats() {
+    List<Threat> threats = _trackFiles
+                               .Where(trackFile => trackFile.Status == TrackStatus.ASSIGNED &&
+                                                   trackFile.Agent is Threat)
+                               .Select(trackFile => trackFile.Agent as Threat)
+                               .ToList();
+    if (threats.Count == 0) {
+      return;
+    }
+
+    // Check whether the threats are escaping the pursuing interceptors.
+    foreach (var threat in threats) {
+      bool isEscaping = true;
+      foreach (var interceptor in threat.AssignedInterceptors) {
+        Vector3 interceptorPosition = interceptor.GetPosition();
+        Vector3 threatPosition = threat.GetPosition();
+
+        float threatTimeToHit = (float)(threatPosition.magnitude / threat.GetSpeed());
+        float interceptorTimeToHit =
+            (float)((threatPosition - interceptorPosition).magnitude / interceptor.GetSpeed());
+        if (interceptorPosition.magnitude < threatPosition.magnitude &&
+            threatTimeToHit > interceptorTimeToHit) {
+          isEscaping = false;
+          break;
+        }
+      }
+      if (isEscaping) {
+        RequestClusterThreat(threat);
+      }
+    }
   }
 
   private IEnumerator ClusterThreatsManager(float period) {
