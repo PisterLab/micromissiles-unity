@@ -414,11 +414,11 @@ public abstract class Agent : MonoBehaviour {
     return accelerationInput + gravity + dragAccelerationAlongRoll;
   }
 
-  protected float CalculateMaxForwardAcceleration() {
+  public float CalculateMaxForwardAcceleration() {
     return staticAgentConfig.accelerationConfig.maxForwardAcceleration;
   }
 
-  protected float CalculateMaxNormalAcceleration() {
+  public float CalculateMaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
         (float)(staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);
