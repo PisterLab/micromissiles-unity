@@ -1,14 +1,14 @@
 {
   "summary": {
-    "generatedon": "2025-01-31T19:31:31Z",
+    "generatedon": "2025-01-31T21:45:56Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 101,
     "files": 80,
     "coveredlines": 1351,
-    "uncoveredlines": 3957,
-    "coverablelines": 5308,
-    "totallines": 9372,
+    "uncoveredlines": 3948,
+    "coverablelines": 5299,
+    "totallines": 9362,
     "linecoverage": 25.4,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -18,7 +18,7 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 30.6, "coveredlines": 1303, "coverablelines": 4257, "totallines": 9367, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35.2, "coveredmethods": 221, "totalmethods": 627, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 30.6, "coveredlines": 1303, "coverablelines": 4248, "totallines": 9357, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35.2, "coveredmethods": 221, "totalmethods": 627, "classesinassembly": [
         { "name": "Agent", "coverage": 61.5, "coveredlines": 160, "coverablelines": 260, "totallines": 465, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 58.6, "coveredmethods": 27, "totalmethods": 46 },
         { "name": "AgglomerativeClusterer", "coverage": 98.4, "coveredlines": 63, "coverablelines": 64, "totallines": 101, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -36,7 +36,7 @@
         { "name": "DynamicAgentConfig", "coverage": 0, "coveredlines": 0, "coverablelines": 3, "totallines": 132, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "FixedWingThreat", "coverage": 78.4, "coveredlines": 51, "coverablelines": 65, "totallines": 120, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 77.7, "coveredmethods": 7, "totalmethods": 9 },
         { "name": "GenerateCone", "coverage": 0, "coveredlines": 0, "coverablelines": 100, "totallines": 144, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 },
-        { "name": "IADS", "coverage": 34.2, "coveredlines": 91, "coverablelines": 266, "totallines": 432, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 57.1, "coveredmethods": 16, "totalmethods": 28 },
+        { "name": "IADS", "coverage": 35.4, "coveredlines": 91, "coverablelines": 257, "totallines": 422, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 57.1, "coveredmethods": 16, "totalmethods": 28 },
         { "name": "IAssignment", "coverage": 0, "coveredlines": 0, "coverablelines": 11, "totallines": 42, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 3 },
         { "name": "IClusterer", "coverage": 60, "coveredlines": 6, "coverablelines": 10, "totallines": 56, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 3, "totalmethods": 4 },
         { "name": "IController", "coverage": 50, "coveredlines": 7, "coverablelines": 14, "totallines": 30, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 50, "coveredmethods": 2, "totalmethods": 4 },
