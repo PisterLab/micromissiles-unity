@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/31/2025 - 06:42:58 |
+| Generated on: | 01/31/2025 - 07:01:39 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1338 |
-| Uncovered lines: | 3952 |
+| Covered lines: | 1333 |
+| Uncovered lines: | 3957 |
 | Coverable lines: | 5290 |
 | Total lines: | 9343 |
-| Line coverage: | 25.2% (1338 of 5290) |
+| Line coverage: | 25.1% (1333 of 5290) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 224 |
+| Covered methods: | 223 |
 | Total methods: | 742 |
-| Method coverage: | 30.1% (224 of 742) |
+| Method coverage: | 30% (223 of 742) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1301**|**2955**|**4256**|**9362**|**30.5%**|**0**|**0**|****|**221**|**627**|**35.2%**|
+|**bamlab.micromissiles**|**1296**|**2960**|**4256**|**9362**|**30.4%**|**0**|**0**|****|**220**|**627**|**35%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -82,7 +82,7 @@
 |TacticalPanelController|23|137|160|265|14.3%|0|0||7|29|24.1%|
 |TacticalPolarGridGraphic|42|98|140|225|30%|0|0||5|15|33.3%|
 |TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
-|Threat|48|57|105|189|45.7%|0|0||9|11|81.8%|
+|Threat|43|62|105|189|40.9%|0|0||8|11|72.7%|
 |ThreatAssignment|0|38|38|73|0%|0|0||0|5|0%|
 |ThreatClusterData|10|20|30|68|33.3%|0|0||2|8|25%|
 |ThreatData|2|20|22|99|9%|0|0||1|5|20%|

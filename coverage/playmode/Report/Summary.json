@@ -1,24 +1,24 @@
 {
   "summary": {
-    "generatedon": "2025-01-31T06:42:58Z",
+    "generatedon": "2025-01-31T07:01:39Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 101,
     "files": 80,
-    "coveredlines": 1338,
-    "uncoveredlines": 3952,
+    "coveredlines": 1333,
+    "uncoveredlines": 3957,
     "coverablelines": 5290,
     "totallines": 9343,
-    "linecoverage": 25.2,
+    "linecoverage": 25.1,
     "coveredbranches": 0,
     "totalbranches": 0,
-    "coveredmethods": 224,
+    "coveredmethods": 223,
     "totalmethods": 742,
-    "methodcoverage": 30.1
+    "methodcoverage": 30
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 30.5, "coveredlines": 1301, "coverablelines": 4256, "totallines": 9362, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35.2, "coveredmethods": 221, "totalmethods": 627, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 30.4, "coveredlines": 1296, "coverablelines": 4256, "totallines": 9362, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35, "coveredmethods": 220, "totalmethods": 627, "classesinassembly": [
         { "name": "Agent", "coverage": 61.5, "coveredlines": 160, "coverablelines": 260, "totallines": 465, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 58.6, "coveredmethods": 27, "totalmethods": 46 },
         { "name": "AgglomerativeClusterer", "coverage": 98.4, "coveredlines": 63, "coverablelines": 64, "totallines": 101, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -81,7 +81,7 @@
         { "name": "TacticalPanelController", "coverage": 14.3, "coveredlines": 23, "coverablelines": 160, "totallines": 265, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 24.1, "coveredmethods": 7, "totalmethods": 29 },
         { "name": "TacticalPolarGridGraphic", "coverage": 30, "coveredlines": 42, "coverablelines": 140, "totallines": 225, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 33.3, "coveredmethods": 5, "totalmethods": 15 },
         { "name": "TacticalSymbol", "coverage": 0, "coveredlines": 0, "coverablelines": 51, "totallines": 98, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 11 },
-        { "name": "Threat", "coverage": 45.7, "coveredlines": 48, "coverablelines": 105, "totallines": 189, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 81.8, "coveredmethods": 9, "totalmethods": 11 },
+        { "name": "Threat", "coverage": 40.9, "coveredlines": 43, "coverablelines": 105, "totallines": 189, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 72.7, "coveredmethods": 8, "totalmethods": 11 },
         { "name": "ThreatAssignment", "coverage": 0, "coveredlines": 0, "coverablelines": 38, "totallines": 73, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 5 },
         { "name": "ThreatClusterData", "coverage": 33.3, "coveredlines": 10, "coverablelines": 30, "totallines": 68, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 25, "coveredmethods": 2, "totalmethods": 8 },
         { "name": "ThreatData", "coverage": 9, "coveredlines": 2, "coverablelines": 22, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 20, "coveredmethods": 1, "totalmethods": 5 },
