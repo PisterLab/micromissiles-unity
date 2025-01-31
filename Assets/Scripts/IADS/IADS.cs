@@ -25,10 +25,12 @@ public class IADS : MonoBehaviour {
 
   private List<Interceptor> _assignmentQueue = new List<Interceptor>();
   private List<Cluster> _threatClusters = new List<Cluster>();
-  private Dictionary<Cluster, ThreatClusterData> _threatClusterMap =
+  private Dictionary<Threat, Cluster> _threatClusterMap = new Dictionary<Threat, Cluster>();
+  private Dictionary<Cluster, ThreatClusterData> _threatClusterDataMap =
       new Dictionary<Cluster, ThreatClusterData>();
   private Dictionary<Interceptor, Cluster> _interceptorClusterMap =
       new Dictionary<Interceptor, Cluster>();
+  private HashSet<Interceptor> _assignableCarrierInterceptors = new HashSet<Interceptor>();
   private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
 
   private HashSet<Threat> _threatsToCluster = new HashSet<Threat>();
@@ -68,8 +70,11 @@ public class IADS : MonoBehaviour {
     // Update the cluster centroids.
     foreach (var cluster in _threatClusters) {
       cluster.Recenter();
-      _threatClusterMap[cluster].UpdateCentroid();
+      _threatClusterDataMap[cluster].UpdateCentroid();
     }
+
+    // Assign any carrier interceptors whose clusters have been terminated.
+    AssignCarrierInterceptorToCluster(_assignableCarrierInterceptors.ToList());
 
     // Assign any interceptors that are no longer assigned to any threat.
     AssignInterceptorToThreat(
@@ -95,7 +100,7 @@ public class IADS : MonoBehaviour {
   private void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
-      if (_threatClusterMap[cluster].Status != ThreatClusterStatus.UNASSIGNED) {
+      if (_threatClusterDataMap[cluster].Status != ThreatClusterStatus.UNASSIGNED) {
         continue;
       }
 
@@ -106,7 +111,7 @@ public class IADS : MonoBehaviour {
       }
 
       // Create a predictor to track the cluster's centroid.
-      IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
+      IPredictor predictor = new LinearExtrapolator(_threatClusterDataMap[cluster].Centroid);
 
       // Create a launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
@@ -136,8 +141,8 @@ public class IADS : MonoBehaviour {
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;
-        interceptor.AssignTarget(_threatClusterMap[cluster].Centroid);
-        _threatClusterMap[cluster].AssignInterceptor(interceptor);
+        interceptor.AssignTarget(_threatClusterDataMap[cluster].Centroid);
+        _threatClusterDataMap[cluster].AssignInterceptor(interceptor);
 
         // Create an interceptor swarm.
         SimManager.Instance.AddInterceptorSwarm(new List<Agent> { interceptor as Agent });
@@ -192,7 +197,7 @@ public class IADS : MonoBehaviour {
         _assignmentScheme.Assign(interceptors, threats);
 
     // Mark the cluster as delegated to submunitions.
-    _threatClusterMap[cluster].RemoveInterceptor(carrier, delegated: true);
+    _threatClusterDataMap[cluster].RemoveInterceptor(carrier, delegated: true);
 
     // Apply the assignments to the submunitions.
     foreach (var assignment in assignments) {
@@ -203,6 +208,63 @@ public class IADS : MonoBehaviour {
     foreach (var interceptor in interceptors) {
       if (!interceptor.HasAssignedTarget()) {
         RequestAssignInterceptorToThreat(interceptor);
+      }
+    }
+  }
+
+  public void RequestAssignCarrierInterceptorToCluster(Interceptor interceptor) {
+    interceptor.UnassignTarget();
+    _assignableCarrierInterceptors.Add(interceptor);
+  }
+
+  private void AssignCarrierInterceptorToCluster(in IReadOnlyList<Interceptor> interceptors) {
+    if (interceptors.Count == 0) {
+      return;
+    }
+
+    // Find all clusters that have not been terminated.
+    List<Cluster> clusters =
+        _threatClusters.Where(cluster => cluster.Threats.All(threat => !threat.IsTerminated()))
+            .ToList();
+
+    // All threats in the originally assigned cluster have been terminated, so assign another
+    // cluster to the carrier interceptor.
+    // TODO(titan): Re-use the assignment scheme for assigning carrier interceptors to clusters.
+    foreach (var interceptor in interceptors) {
+      Vector3 carrierPosition = interceptor.GetPosition();
+      Vector3 carrierVelocity = interceptor.GetVelocity();
+
+      // Find the cluster that is closest to the carrier interceptor and ahead of the interceptor as
+      // well as the closest cluster in general.
+      float minDistanceToCluster = Mathf.Infinity;
+      Cluster nearestCluster = null;
+      float minDistanceToClusterAhead = Mathf.Infinity;
+      Cluster nearestClusterAhead = null;
+      foreach (var cluster in clusters) {
+        Vector3 positionToCluster = cluster.Coordinates - carrierPosition;
+        float distanceToCluster = positionToCluster.magnitude;
+        if (distanceToCluster < minDistanceToCluster) {
+          minDistanceToCluster = distanceToCluster;
+          nearestCluster = cluster;
+        }
+
+        if (Vector3.Dot(positionToCluster, carrierVelocity) > 0 &&
+            distanceToCluster < minDistanceToClusterAhead) {
+          minDistanceToClusterAhead = distanceToCluster;
+          nearestClusterAhead = cluster;
+        }
+      }
+
+      Cluster clusterToAssign = nearestClusterAhead;
+      if (clusterToAssign == null) {
+        clusterToAssign = nearestCluster;
+      }
+
+      if (clusterToAssign != null) {
+        // Assign the carrier interceptor to the cluster.
+        _interceptorClusterMap[interceptor] = clusterToAssign;
+        interceptor.AssignTarget(_threatClusterDataMap[clusterToAssign].Centroid);
+        _threatClusterDataMap[clusterToAssign].AssignInterceptor(interceptor);
       }
     }
   }
@@ -309,7 +371,10 @@ public class IADS : MonoBehaviour {
 
     _threatClusters = clusters.ToList();
     foreach (var cluster in clusters) {
-      _threatClusterMap.Add(cluster, new ThreatClusterData(cluster));
+      foreach (var threat in cluster.Threats) {
+        _threatClusterMap[threat] = cluster;
+      }
+      _threatClusterDataMap[cluster] = new ThreatClusterData(cluster);
     }
 
     _threatsToCluster.Clear();
@@ -319,7 +384,7 @@ public class IADS : MonoBehaviour {
     string trackID = $"T{1000 + ++_trackFileIdTicker}";
     ThreatData trackFile = new ThreatData(threat, trackID);
     _trackFiles.Add(trackFile);
-    _trackFileMap.Add(threat, trackFile);
+    _trackFileMap[threat] = trackFile;
     RequestClusterThreat(threat);
 
     threat.OnThreatHit += RegisterThreatHit;
@@ -330,7 +395,7 @@ public class IADS : MonoBehaviour {
     string trackID = $"I{2000 + ++_trackFileIdTicker}";
     InterceptorData trackFile = new InterceptorData(interceptor, trackID);
     _trackFiles.Add(trackFile);
-    _trackFileMap.Add(interceptor, trackFile);
+    _trackFileMap[interceptor] = trackFile;
 
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
     interceptor.OnInterceptHit += RegisterInterceptorHit;
@@ -354,6 +419,14 @@ public class IADS : MonoBehaviour {
     foreach (var assignedInterceptor in threat.AssignedInterceptors.ToList()) {
       if (assignedInterceptor is not CarrierInterceptor) {
         RequestAssignInterceptorToThreat(assignedInterceptor as Interceptor);
+      }
+    }
+
+    // Check whether the entire cluster has been terminated.
+    Cluster cluster = _threatClusterMap[threat];
+    if (cluster.Threats.All(threat => threat.IsTerminated())) {
+      foreach (var carrier in _threatClusterDataMap[cluster].AssignedInterceptors) {
+        RequestAssignCarrierInterceptorToCluster(carrier);
       }
     }
   }
@@ -416,7 +489,9 @@ public class IADS : MonoBehaviour {
     _assignmentQueue.Clear();
     _threatClusters.Clear();
     _threatClusterMap.Clear();
+    _threatClusterDataMap.Clear();
     _interceptorClusterMap.Clear();
+    _assignableCarrierInterceptors.Clear();
     _assignableInterceptors.Clear();
     _threatsToCluster.Clear();
     _trackFileIdTicker = 0;

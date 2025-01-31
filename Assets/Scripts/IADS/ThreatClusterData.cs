@@ -35,6 +35,10 @@ public class ThreatClusterData {
     get { return _status; }
   }
 
+  public IReadOnlyList<Interceptor> AssignedInterceptors {
+    get { return _assignedInterceptors; }
+  }
+
   public int AssignedInterceptorCount {
     get { return _assignedInterceptors.Count; }
   }
