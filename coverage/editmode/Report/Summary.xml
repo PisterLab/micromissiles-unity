@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>01/31/2025 - 19:29:04</Generatedon>
+    <Generatedon>01/31/2025 - 21:42:50</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>101</Classes>
     <Files>80</Files>
     <Coveredlines>1819</Coveredlines>
-    <Uncoveredlines>3489</Uncoveredlines>
-    <Coverablelines>5308</Coverablelines>
-    <Totallines>9372</Totallines>
-    <Linecoverage>34.2</Linecoverage>
+    <Uncoveredlines>3480</Uncoveredlines>
+    <Coverablelines>5299</Coverablelines>
+    <Totallines>9362</Totallines>
+    <Linecoverage>34.3</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>266</Coveredmethods>
@@ -18,7 +18,7 @@
     <Methodcoverage>35.8</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="78" coverage="21" coveredlines="898" coverablelines="4257" totallines="9367" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="159" totalmethods="627" methodcoverage="25.3">
+    <Assembly name="bamlab.micromissiles" classes="78" coverage="21.1" coveredlines="898" coverablelines="4248" totallines="9357" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="159" totalmethods="627" methodcoverage="25.3">
       <Class name="Agent" coverage="40" coveredlines="104" coverablelines="260" totallines="465" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="21" totalmethods="46" methodcoverage="45.6" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -36,7 +36,7 @@
       <Class name="DynamicAgentConfig" coverage="0" coveredlines="0" coverablelines="3" totallines="132" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="FixedWingThreat" coverage="41.5" coveredlines="27" coverablelines="65" totallines="120" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="9" methodcoverage="33.3" />
       <Class name="GenerateCone" coverage="0" coveredlines="0" coverablelines="100" totallines="144" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
-      <Class name="IADS" coverage="0" coveredlines="0" coverablelines="266" totallines="432" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="28" methodcoverage="0" />
+      <Class name="IADS" coverage="0" coveredlines="0" coverablelines="257" totallines="422" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="28" methodcoverage="0" />
       <Class name="IAssignment" coverage="100" coveredlines="11" coverablelines="11" totallines="42" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="IClusterer" coverage="60" coveredlines="6" coverablelines="10" totallines="56" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="4" methodcoverage="75" />
       <Class name="IController" coverage="50" coveredlines="7" coverablelines="14" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="4" methodcoverage="50" />

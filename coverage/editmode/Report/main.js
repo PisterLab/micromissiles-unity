@@ -241,7 +241,7 @@ var assemblies = [
       { "name": "DynamicAgentConfig", "rp": "bamlab.micromissiles_DynamicAgentConfig.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 132, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "FixedWingThreat", "rp": "bamlab.micromissiles_FixedWingThreat.html", "cl": 27, "ucl": 38, "cal": 65, "tl": 120, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "GenerateCone", "rp": "bamlab.micromissiles_GenerateCone.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 144, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "IADS", "rp": "bamlab.micromissiles_IADS.html", "cl": 0, "ucl": 266, "cal": 266, "tl": 432, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "IADS", "rp": "bamlab.micromissiles_IADS.html", "cl": 0, "ucl": 257, "cal": 257, "tl": 422, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IAssignment", "rp": "bamlab.micromissiles_IAssignment.html", "cl": 11, "ucl": 0, "cal": 11, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IClusterer", "rp": "bamlab.micromissiles_IClusterer.html", "cl": 6, "ucl": 4, "cal": 10, "tl": 56, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IController", "rp": "bamlab.micromissiles_IController.html", "cl": 7, "ucl": 7, "cal": 14, "tl": 30, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -406,13 +406,6 @@ var riskHotspots = [
       { "value": 110, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "IADS", "reportPath": "bamlab.micromissiles_IADS.html", "methodName": "System.Void IADS::CheckForEscapingThreats()", "methodShortName": "CheckForEscapingThreats()", "fileIndex": 0, "line": 258,
-    "metrics": [
-      { "value": 10, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 110, "exceeded": true },
-    ]},
-  {
     "assembly": "bamlab.micromissiles", "class": "CameraController", "reportPath": "bamlab.micromissiles_CameraController.html", "methodName": "System.Void CameraController::UpdateDirectionVectors()", "methodShortName": "UpdateDirectionVectors()", "fileIndex": 0, "line": 594,
     "metrics": [
       { "value": 9, "exceeded": false },
@@ -427,13 +420,6 @@ var riskHotspots = [
       { "value": 90, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "IADS", "reportPath": "bamlab.micromissiles_IADS.html", "methodName": "System.Void IADS::CheckAndLaunchInterceptors()", "methodShortName": "CheckAndLaunchInterceptors()", "fileIndex": 0, "line": 95,
-    "metrics": [
-      { "value": 8, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 72, "exceeded": true },
-    ]},
-  {
     "assembly": "bamlab.micromissiles", "class": "DirectAttackBehavior", "reportPath": "bamlab.micromissiles_DirectAttackBehavior.html", "methodName": "System.ValueTuple[Vector3,PowerSetting] DirectAttackBehavior::GetNextWaypoint(UnityEngine.Vector3, UnityEngine.Vector3)", "methodShortName": "GetNextWaypoint(...)", "fileIndex": 0, "line": 13,
     "metrics": [
       { "value": 7, "exceeded": false },
@@ -441,7 +427,7 @@ var riskHotspots = [
       { "value": 56, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "IADS", "reportPath": "bamlab.micromissiles_IADS.html", "methodName": "System.Void IADS::AssignInterceptorToThreat(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "AssignInterceptorToThreat(...)", "fileIndex": 0, "line": 221,
+    "assembly": "bamlab.micromissiles", "class": "IADS", "reportPath": "bamlab.micromissiles_IADS.html", "methodName": "System.Void IADS::AssignInterceptorToThreat(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "AssignInterceptorToThreat(...)", "fileIndex": 0, "line": 215,
     "metrics": [
       { "value": 7, "exceeded": false },
       { "value": 0, "exceeded": false },
@@ -505,6 +491,20 @@ var riskHotspots = [
     ]},
   {
     "assembly": "bamlab.micromissiles", "class": "CameraController", "reportPath": "bamlab.micromissiles_CameraController.html", "methodName": "System.Void CameraController::SnapToNextThreatSwarm(System.Boolean)", "methodShortName": "SnapToNextThreatSwarm(...)", "fileIndex": 0, "line": 370,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "bamlab.micromissiles", "class": "IADS", "reportPath": "bamlab.micromissiles_IADS.html", "methodName": "System.Void IADS::CheckAndLaunchInterceptors()", "methodShortName": "CheckAndLaunchInterceptors()", "fileIndex": 0, "line": 95,
+    "metrics": [
+      { "value": 6, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "bamlab.micromissiles", "class": "IADS", "reportPath": "bamlab.micromissiles_IADS.html", "methodName": "System.Void IADS::CheckForEscapingThreats()", "methodShortName": "CheckForEscapingThreats()", "fileIndex": 0, "line": 252,
     "metrics": [
       { "value": 6, "exceeded": false },
       { "value": 0, "exceeded": false },
