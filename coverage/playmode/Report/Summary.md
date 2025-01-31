@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/31/2025 - 07:38:17 |
+| Generated on: | 01/31/2025 - 19:31:31 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
 | Covered lines: | 1351 |
-| Uncovered lines: | 3956 |
-| Coverable lines: | 5307 |
-| Total lines: | 9367 |
-| Line coverage: | 25.4% (1351 of 5307) |
+| Uncovered lines: | 3957 |
+| Coverable lines: | 5308 |
+| Total lines: | 9372 |
+| Line coverage: | 25.4% (1351 of 5308) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 224 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1303**|**2953**|**4256**|**9362**|**30.6%**|**0**|**0**|****|**221**|**627**|**35.2%**|
+|**bamlab.micromissiles**|**1303**|**2954**|**4257**|**9367**|**30.6%**|**0**|**0**|****|**221**|**627**|**35.2%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -63,7 +63,7 @@
 |LaunchAngleOutput|0|6|6|73|0%|0|0||0|3|0%|
 |LaunchPlan|0|12|12|43|0%|0|0||0|6|0%|
 |LinearExtrapolator|0|5|5|14|0%|0|0||0|2|0%|
-|MaxSpeedAssignment|0|41|41|80|0%|0|0||0|1|0%|
+|MaxSpeedAssignment|0|42|42|85|0%|0|0||0|1|0%|
 |NearestNeighborInterpolator2D|0|15|15|86|0%|0|0||0|3|0%|
 |ParticleManager|30|136|166|251|18%|0|0||8|26|30.7%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
