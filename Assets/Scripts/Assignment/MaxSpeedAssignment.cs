@@ -35,10 +35,11 @@ public class MaxSpeedAssignment : IAssignment {
     // Find all pairwise assignment costs.
     foreach (var interceptor in assignableInterceptors) {
       // The speed decays exponentially with the travelled distance and with the bearing change.
-      float distanceTimeConstant = 2 * interceptor.staticAgentConfig.bodyConfig.mass /
-                                   ((float)interceptor.GetDynamicPressure() *
-                                    interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
-                                    interceptor.staticAgentConfig.bodyConfig.crossSectionalArea);
+      float distanceTimeConstant =
+          2 * interceptor.staticAgentConfig.bodyConfig.mass /
+          ((float)Constants.CalculateAirDensityAtAltitude(interceptor.GetPosition().y) *
+           interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
+           interceptor.staticAgentConfig.bodyConfig.crossSectionalArea);
       float angleTimeConstant = interceptor.staticAgentConfig.liftDragConfig.liftDragRatio;
       // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
       float minTurningRadius = (float)(interceptor.GetVelocity().sqrMagnitude /
