@@ -239,7 +239,7 @@ var assemblies = [
       { "name": "DirectAttackBehavior", "rp": "bamlab.micromissiles_DirectAttackBehavior.html", "cl": 26, "ucl": 6, "cal": 32, "tl": 74, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "DummyAgent", "rp": "bamlab.micromissiles_DummyAgent.html", "cl": 6, "ucl": 6, "cal": 12, "tl": 465, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "DynamicAgentConfig", "rp": "bamlab.micromissiles_DynamicAgentConfig.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 132, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "FixedWingThreat", "rp": "bamlab.micromissiles_FixedWingThreat.html", "cl": 49, "ucl": 16, "cal": 65, "tl": 120, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "FixedWingThreat", "rp": "bamlab.micromissiles_FixedWingThreat.html", "cl": 51, "ucl": 14, "cal": 65, "tl": 120, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "GenerateCone", "rp": "bamlab.micromissiles_GenerateCone.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 144, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IADS", "rp": "bamlab.micromissiles_IADS.html", "cl": 91, "ucl": 175, "cal": 266, "tl": 432, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IAssignment", "rp": "bamlab.micromissiles_IAssignment.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -286,7 +286,7 @@ var assemblies = [
       { "name": "TacticalPanelController", "rp": "bamlab.micromissiles_TacticalPanelController.html", "cl": 23, "ucl": 137, "cal": 160, "tl": 265, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TacticalPolarGridGraphic", "rp": "bamlab.micromissiles_TacticalPolarGridGraphic.html", "cl": 42, "ucl": 98, "cal": 140, "tl": 225, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TacticalSymbol", "rp": "bamlab.micromissiles_TacticalSymbol.html", "cl": 0, "ucl": 51, "cal": 51, "tl": 98, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "Threat", "rp": "bamlab.micromissiles_Threat.html", "cl": 43, "ucl": 62, "cal": 105, "tl": 189, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "Threat", "rp": "bamlab.micromissiles_Threat.html", "cl": 48, "ucl": 57, "cal": 105, "tl": 189, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ThreatAssignment", "rp": "bamlab.micromissiles_ThreatAssignment.html", "cl": 0, "ucl": 38, "cal": 38, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ThreatClusterData", "rp": "bamlab.micromissiles_ThreatClusterData.html", "cl": 10, "ucl": 20, "cal": 30, "tl": 68, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ThreatData", "rp": "bamlab.micromissiles_ThreatData.html", "cl": 2, "ucl": 20, "cal": 22, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -335,7 +335,7 @@ var assemblies = [
   {
     "name": "bamlab.test.playmode",
     "classes": [
-      { "name": "ConfigTest", "rp": "bamlab.test.playmode_ConfigTest.html", "cl": 30, "ucl": 12, "cal": 42, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ConfigTest", "rp": "bamlab.test.playmode_ConfigTest.html", "cl": 41, "ucl": 1, "cal": 42, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SanityTest", "rp": "bamlab.test.playmode_SanityTest.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];

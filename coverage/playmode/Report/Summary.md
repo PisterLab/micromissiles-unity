@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/31/2025 - 07:01:39 |
+| Generated on: | 01/31/2025 - 07:17:11 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1333 |
-| Uncovered lines: | 3957 |
+| Covered lines: | 1351 |
+| Uncovered lines: | 3939 |
 | Coverable lines: | 5290 |
 | Total lines: | 9343 |
-| Line coverage: | 25.1% (1333 of 5290) |
+| Line coverage: | 25.5% (1351 of 5290) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 223 |
+| Covered methods: | 224 |
 | Total methods: | 742 |
-| Method coverage: | 30% (223 of 742) |
+| Method coverage: | 30.1% (224 of 742) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1296**|**2960**|**4256**|**9362**|**30.4%**|**0**|**0**|****|**220**|**627**|**35%**|
+|**bamlab.micromissiles**|**1303**|**2953**|**4256**|**9362**|**30.6%**|**0**|**0**|****|**221**|**627**|**35.2%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -35,7 +35,7 @@
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
 |DummyAgent|6|6|12|465|50%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
-|FixedWingThreat|49|16|65|120|75.3%|0|0||7|9|77.7%|
+|FixedWingThreat|51|14|65|120|78.4%|0|0||7|9|77.7%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |IADS|91|175|266|432|34.2%|0|0||16|28|57.1%|
 |IAssignment|0|11|11|42|0%|0|0||0|3|0%|
@@ -82,7 +82,7 @@
 |TacticalPanelController|23|137|160|265|14.3%|0|0||7|29|24.1%|
 |TacticalPolarGridGraphic|42|98|140|225|30%|0|0||5|15|33.3%|
 |TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
-|Threat|43|62|105|189|40.9%|0|0||8|11|72.7%|
+|Threat|48|57|105|189|45.7%|0|0||9|11|81.8%|
 |ThreatAssignment|0|38|38|73|0%|0|0||0|5|0%|
 |ThreatClusterData|10|20|30|68|33.3%|0|0||2|8|25%|
 |ThreatData|2|20|22|99|9%|0|0||1|5|20%|
@@ -121,6 +121,6 @@
 |ThreatAssignmentTests|0|80|80|176|0%|0|0||0|4|0%|
 |ThreatTests|0|131|131|310|0%|0|0||0|11|0%|
 |TransformationTests|0|61|61|101|0%|0|0||0|3|0%|
-|**bamlab.test.playmode**|**37**|**12**|**49**|**97**|**75.5%**|**0**|**0**|****|**3**|**3**|**100%**|
-|ConfigTest|30|12|42|73|71.4%|0|0||2|2|100%|
+|**bamlab.test.playmode**|**48**|**1**|**49**|**97**|**97.9%**|**0**|**0**|****|**3**|**3**|**100%**|
+|ConfigTest|41|1|42|73|97.6%|0|0||2|2|100%|
 |SanityTest|7|0|7|24|100%|0|0||1|1|100%|
