@@ -55,7 +55,7 @@ public class GenerateCone : EditorWindow {
     const float TAU = 2f * Mathf.PI;
     var pts = new Vector2[vertices];
     var step = TAU / vertices;  // angular step between two vertices
-    for (int i = 0; i < vertices; i++) {
+    for (int i = 0; i < vertices; ++i) {
       pts[i] = radius * Trig(i * step);  // convert polar coordinate to cartesian space
     }
     return pts;
@@ -68,7 +68,7 @@ public class GenerateCone : EditorWindow {
       throw new InvalidOperationException("Requires at least 3 base vertices.");
     var verts = new Vector3[baseVerts.Length + 1];
     verts[0] = new Vector3(0f, coneHeight, 0f);
-    for (int i = 0; i < baseVerts.Length; i++) {
+    for (int i = 0; i < baseVerts.Length; ++i) {
       verts[i + 1] = new Vector3(baseVerts[i].x, 0f, baseVerts[i].y);
     }
     return verts;
@@ -86,13 +86,13 @@ public class GenerateCone : EditorWindow {
     var rimVertices = coneVerts.Length - 1;
 
     // Side faces
-    for (int i = 1; i <= rimVertices; i++) {
+    for (int i = 1; i <= rimVertices; ++i) {
       int a = i, b = i < rimVertices ? i + 1 : 1;
       AddTriangle(coneVerts[0], coneVerts[b], coneVerts[a]);
     }
 
     // Base face
-    for (int i = 1; i < rimVertices - 1; i++) {
+    for (int i = 1; i < rimVertices - 1; ++i) {
       AddTriangle(coneVerts[1], coneVerts[i + 1], coneVerts[i + 2]);
     }
 
@@ -114,13 +114,13 @@ public class GenerateCone : EditorWindow {
     var tris = new List<int>();
     ConstructCone(coneVerts, verts, tris);
 
-    for (int i = 0; i < verts.Count; i++) {
+    for (int i = 0; i < verts.Count; ++i) {
       verts[i] = rotation * (verts[i] - coneVerts[0]);
     }
 
     // Recenter the cone
     Vector3 center = CalculateCenter(verts);
-    for (int i = 0; i < verts.Count; i++) {
+    for (int i = 0; i < verts.Count; ++i) {
       verts[i] = verts[i] - center + apex;
     }
 

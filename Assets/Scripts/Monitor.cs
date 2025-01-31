@@ -97,7 +97,7 @@ public class SimMonitor : MonoBehaviour {
       Debug.LogWarning("Telemetry binary writer is null");
       return;
     }
-    for (int i = 0; i < agents.Count; i++) {
+    for (int i = 0; i < agents.Count; ++i) {
       var agent = agents[i];
 
       if (!agent.gameObject.activeInHierarchy)

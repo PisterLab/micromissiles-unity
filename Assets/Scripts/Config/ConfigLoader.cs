@@ -77,12 +77,12 @@ public static class ConfigLoader {
     Debug.Log($"Time Scale: {config.timeScale}");
 
     Debug.Log("Interceptor Swarm Configurations:");
-    for (int i = 0; i < config.interceptor_swarm_configs.Count; i++) {
+    for (int i = 0; i < config.interceptor_swarm_configs.Count; ++i) {
       PrintSwarmConfig(config.interceptor_swarm_configs[i], $"Interceptor Swarm {i + 1}");
     }
 
     Debug.Log("Threat Swarm Configurations:");
-    for (int i = 0; i < config.threat_swarm_configs.Count; i++) {
+    for (int i = 0; i < config.threat_swarm_configs.Count; ++i) {
       PrintSwarmConfig(config.threat_swarm_configs[i], $"Threat Swarm {i + 1}");
     }
   }

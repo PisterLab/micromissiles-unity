@@ -218,7 +218,7 @@ public class UIDialog : MonoBehaviour {
     // actually indent the text
     entry.GetTextTransform(0).anchoredPosition = new Vector2(entryIndentWidth * depth, 0);
     heightHead -= entryHeight;
-    count++;
+    ++count;
     // Print the children
     if (entry.GetChildEntries() != null) {
       foreach (UISelectableEntry child in entry.GetChildEntries()) {

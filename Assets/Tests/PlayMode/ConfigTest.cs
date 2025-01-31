@@ -21,7 +21,7 @@ public class ConfigTest : TestBase {
 
     bool isPaused = false;
     double epsilon = 0.0002;
-    for (int i = 0; i < jsonFiles.Length; i++) {
+    for (int i = 0; i < jsonFiles.Length; ++i) {
       if (i % 2 == 1) {
         SimManager.Instance.PauseSimulation();
         isPaused = true;
