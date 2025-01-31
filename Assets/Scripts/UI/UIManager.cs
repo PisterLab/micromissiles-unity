@@ -234,9 +234,9 @@ public class UIManager : MonoBehaviour {
 
   private void RegisterAgentTerminated(Agent agent) {
     if (agent is Interceptor) {
-      _intrRemainCount--;
+      --_intrRemainCount;
     } else if (agent is Threat) {
-      _thrtRemainCount--;
+      --_thrtRemainCount;
     }
     UpdateSummaryText();
   }
