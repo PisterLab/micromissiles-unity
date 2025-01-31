@@ -219,7 +219,7 @@ public class UIManager : MonoBehaviour {
   }
 
   private void RegisterNewInterceptor(Interceptor interceptor) {
-    _intrRemainCount++;
+    ++_intrRemainCount;
     interceptor.OnInterceptHit += RegisterInterceptorHit;
     interceptor.OnInterceptMiss += RegisterInterceptorMiss;
     interceptor.OnTerminated += RegisterAgentTerminated;
@@ -227,7 +227,7 @@ public class UIManager : MonoBehaviour {
   }
 
   private void RegisterNewThreat(Threat threat) {
-    _thrtRemainCount++;
+    ++_thrtRemainCount;
     threat.OnTerminated += RegisterAgentTerminated;
     UpdateSummaryText();
   }
@@ -242,12 +242,12 @@ public class UIManager : MonoBehaviour {
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    _intrHitCount++;
+    ++_intrHitCount;
     UpdateSummaryText();
   }
 
   private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    _intrMissCount++;
+    ++_intrMissCount;
     UpdateSummaryText();
   }
 

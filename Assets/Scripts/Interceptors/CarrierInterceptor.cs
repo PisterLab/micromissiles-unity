@@ -34,7 +34,7 @@ public class CarrierInterceptor : Interceptor {
 
   private void SpawnSubmunitions() {
     List<Interceptor> submunitions = new List<Interceptor>();
-    for (int i = 0; i < dynamicAgentConfig.submunitions_config.num_submunitions; i++) {
+    for (int i = 0; i < dynamicAgentConfig.submunitions_config.num_submunitions; ++i) {
       DynamicAgentConfig convertedConfig = DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(
           dynamicAgentConfig.submunitions_config.dynamic_agent_config);
       InitialState initialState = new InitialState();

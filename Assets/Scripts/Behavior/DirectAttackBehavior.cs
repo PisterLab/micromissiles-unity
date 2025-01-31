@@ -21,7 +21,7 @@ public class DirectAttackBehavior : AttackBehavior {
 
     // Find the current waypoint based on the distance to target.
     int currentWaypointIndex = 0;
-    for (int i = 0; i < flightPlan.waypoints.Count; i++) {
+    for (int i = 0; i < flightPlan.waypoints.Count; ++i) {
       if (distanceToTarget > flightPlan.waypoints[i].distance) {
         break;
       }
