@@ -100,13 +100,7 @@ public class IADS : MonoBehaviour {
       }
 
       // Check whether all threats in the cluster have terminated.
-      bool allTerminated = true;
-      foreach (var threat in cluster.Threats) {
-        if (!threat.IsTerminated()) {
-          allTerminated = false;
-          break;
-        }
-      }
+      bool allTerminated = cluster.Threats.All(threat => threat.IsTerminated());
       if (allTerminated) {
         continue;
       }
@@ -267,20 +261,16 @@ public class IADS : MonoBehaviour {
 
     // Check whether the threats are escaping the pursuing interceptors.
     foreach (var threat in threats) {
-      bool isEscaping = true;
-      foreach (var interceptor in threat.AssignedInterceptors) {
+      bool isEscaping = threat.AssignedInterceptors.All(interceptor => {
         Vector3 interceptorPosition = interceptor.GetPosition();
         Vector3 threatPosition = threat.GetPosition();
 
         float threatTimeToHit = (float)(threatPosition.magnitude / threat.GetSpeed());
         float interceptorTimeToHit =
             (float)((threatPosition - interceptorPosition).magnitude / interceptor.GetSpeed());
-        if (interceptorPosition.magnitude < threatPosition.magnitude &&
-            threatTimeToHit > interceptorTimeToHit) {
-          isEscaping = false;
-          break;
-        }
-      }
+        return interceptorPosition.magnitude > threatPosition.magnitude ||
+               threatTimeToHit < interceptorTimeToHit;
+      });
       if (isEscaping) {
         RequestClusterThreat(threat);
       }
