@@ -67,6 +67,7 @@ public class IADS : MonoBehaviour {
   public void LateUpdate() {
     // Update the cluster centroids.
     foreach (var cluster in _threatClusters) {
+      cluster.Recenter();
       _threatClusterMap[cluster].UpdateCentroid();
     }
 
@@ -95,6 +96,18 @@ public class IADS : MonoBehaviour {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
       if (_threatClusterMap[cluster].Status != ThreatClusterStatus.UNASSIGNED) {
+        continue;
+      }
+
+      // Check whether all threats in the cluster have terminated.
+      bool allTerminated = true;
+      foreach (var threat in cluster.Threats) {
+        if (!threat.IsTerminated()) {
+          allTerminated = false;
+          break;
+        }
+      }
+      if (allTerminated) {
         continue;
       }
 
@@ -289,7 +302,9 @@ public class IADS : MonoBehaviour {
 
     // Filter the threats.
     List<Threat> threats =
-        _threatsToCluster.Where(threat => threat.AssignedInterceptors.Count == 0).ToList();
+        _threatsToCluster
+            .Where(threat => !threat.IsTerminated() && threat.AssignedInterceptors.Count == 0)
+            .ToList();
     if (threats.Count == 0) {
       return;
     }
