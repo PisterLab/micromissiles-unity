@@ -1,80 +1,80 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/31/2025 - 02:47:58 |
+| Generated on: | 01/31/2025 - 06:42:58 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1793 |
-| Uncovered lines: | 3427 |
-| Coverable lines: | 5220 |
-| Total lines: | 9236 |
-| Line coverage: | 34.3% (1793 of 5220) |
+| Covered lines: | 1338 |
+| Uncovered lines: | 3952 |
+| Coverable lines: | 5290 |
+| Total lines: | 9343 |
+| Line coverage: | 25.2% (1338 of 5290) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 303 |
-| Total methods: | 735 |
-| Method coverage: | 41.2% (303 of 735) |
+| Covered methods: | 224 |
+| Total methods: | 742 |
+| Method coverage: | 30.1% (224 of 742) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1756**|**2430**|**4186**|**9257**|**41.9%**|**0**|**0**|****|**300**|**620**|**48.3%**|
-|Agent|191|69|260|465|73.4%|0|0||34|46|73.9%|
+|**bamlab.micromissiles**|**1301**|**2955**|**4256**|**9362**|**30.5%**|**0**|**0**|****|**221**|**627**|**35.2%**|
+|Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|106|241|347|643|30.5%|0|0||13|36|36.1%|
-|CarrierInterceptor|11|30|41|69|26.8%|0|0||3|6|50%|
-|Cluster|48|15|63|122|76.1%|0|0||14|17|82.3%|
+|CarrierInterceptor|0|41|41|69|0%|0|0||0|6|0%|
+|Cluster|45|18|63|122|71.4%|0|0||13|17|76.4%|
 |ConfigLoader|31|77|108|156|28.7%|0|0||4|13|30.7%|
 |Constants|3|3|6|17|50%|0|0||1|2|50%|
 |ConstrainedKMeansClusterer|0|22|22|123|0%|0|0||0|2|0%|
 |Coordinates2|0|16|16|58|0%|0|0||0|4|0%|
-|Coordinates3|15|3|18|58|83.3%|0|0||3|4|75%|
+|Coordinates3|0|18|18|58|0%|0|0||0|4|0%|
 |DirectAttackBehavior|26|6|32|74|81.2%|0|0||2|2|100%|
 |DummyAgent|6|6|12|465|50%|0|0||2|5|40%|
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|49|16|65|120|75.3%|0|0||7|9|77.7%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|111|80|191|321|58.1%|0|0||14|22|63.6%|
+|IADS|91|175|266|432|34.2%|0|0||16|28|57.1%|
 |IAssignment|0|11|11|42|0%|0|0||0|3|0%|
 |IClusterer|6|4|10|56|60%|0|0||3|4|75%|
-|IController|11|3|14|30|78.5%|0|0||3|4|75%|
-|IdealSensor|7|7|14|25|50%|0|0||1|2|50%|
-|IInterpolator2D|10|6|16|86|62.5%|0|0||2|3|66.6%|
-|ILaunchAngleInterpolator|13|2|15|103|86.6%|0|0||3|3|100%|
-|ILaunchAnglePlanner|17|0|17|73|100%|0|0||5|5|100%|
-|ILaunchPlanner|4|0|4|43|100%|0|0||1|1|100%|
+|IController|7|7|14|30|50%|0|0||2|4|50%|
+|IdealSensor|0|14|14|25|0%|0|0||0|2|0%|
+|IInterpolator2D|0|16|16|86|0%|0|0||0|3|0%|
+|ILaunchAngleInterpolator|1|14|15|103|6.6%|0|0||1|3|33.3%|
+|ILaunchAnglePlanner|0|17|17|73|0%|0|0||0|5|0%|
+|ILaunchPlanner|0|4|4|43|0%|0|0||0|1|0%|
 |InputManager|65|107|172|230|37.7%|0|0||12|15|80%|
-|Interceptor|82|78|160|245|51.2%|0|0||11|17|64.7%|
-|InterceptorData|3|17|20|100|15%|0|0||1|4|25%|
-|Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
-|IPredictor|3|0|3|37|100%|0|0||1|1|100%|
+|Interceptor|0|160|160|245|0%|0|0||0|17|0%|
+|InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
+|Interpolator2DDataPoint|0|16|16|86|0%|0|0||0|5|0%|
+|IPredictor|0|3|3|37|0%|0|0||0|1|0%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
-|IterativeLaunchPlanner|25|2|27|66|92.5%|0|0||2|2|100%|
-|KDNode[T]|5|0|5|87|100%|0|0||1|1|100%|
-|KDTree[T]|42|1|43|87|97.6%|0|0||4|4|100%|
+|IterativeLaunchPlanner|0|27|27|66|0%|0|0||0|2|0%|
+|KDNode[T]|0|5|5|87|0%|0|0||0|1|0%|
+|KDTree[T]|0|43|43|87|0%|0|0||0|4|0%|
 |KMeansClusterer|0|55|55|123|0%|0|0||0|4|0%|
-|LaunchAngleCsvInterpolator|13|4|17|103|76.4%|0|0||2|2|100%|
+|LaunchAngleCsvInterpolator|4|13|17|103|23.5%|0|0||1|2|50%|
 |LaunchAngleDataInterpolator|0|9|9|103|0%|0|0||0|2|0%|
 |LaunchAngleDataPoint|0|6|6|73|0%|0|0||0|3|0%|
-|LaunchAngleInput|6|0|6|73|100%|0|0||3|3|100%|
-|LaunchAngleOutput|6|0|6|73|100%|0|0||3|3|100%|
-|LaunchPlan|12|0|12|43|100%|0|0||6|6|100%|
-|LinearExtrapolator|5|0|5|14|100%|0|0||2|2|100%|
+|LaunchAngleInput|0|6|6|73|0%|0|0||0|3|0%|
+|LaunchAngleOutput|0|6|6|73|0%|0|0||0|3|0%|
+|LaunchPlan|0|12|12|43|0%|0|0||0|6|0%|
+|LinearExtrapolator|0|5|5|14|0%|0|0||0|2|0%|
 |MaxSpeedAssignment|0|41|41|80|0%|0|0||0|1|0%|
-|NearestNeighborInterpolator2D|9|6|15|86|60%|0|0||2|3|66.6%|
-|ParticleManager|39|127|166|251|23.4%|0|0||10|26|38.4%|
+|NearestNeighborInterpolator2D|0|15|15|86|0%|0|0||0|3|0%|
+|ParticleManager|30|136|166|251|18%|0|0||8|26|30.7%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
-|PredictorState|13|1|14|37|92.8%|0|0||5|6|83.3%|
+|PredictorState|0|14|14|37|0%|0|0||0|6|0%|
 |PriorityQueue[T]|0|37|37|59|0%|0|0||0|7|0%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|33|10|43|76|76.7%|0|0||6|8|75%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|
 |Sensor|3|0|3|29|100%|0|0||1|1|100%|
-|SimManager|236|142|378|610|62.4%|0|0||28|48|58.3%|
-|SimMonitor|59|110|169|255|34.9%|0|0||10|20|50%|
+|SimManager|201|176|377|607|53.3%|0|0||26|48|54.1%|
+|SimMonitor|50|119|169|255|29.5%|0|0||9|20|45%|
 |SimulationConfig|4|0|4|132|100%|0|0||1|1|100%|
 |SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
 |StaticAgentConfig|14|0|14|65|100%|0|0||5|5|100%|
@@ -82,17 +82,17 @@
 |TacticalPanelController|23|137|160|265|14.3%|0|0||7|29|24.1%|
 |TacticalPolarGridGraphic|42|98|140|225|30%|0|0||5|15|33.3%|
 |TacticalSymbol|0|51|51|98|0%|0|0||0|11|0%|
-|Threat|63|42|105|189|60%|0|0||9|11|81.8%|
+|Threat|48|57|105|189|45.7%|0|0||9|11|81.8%|
 |ThreatAssignment|0|38|38|73|0%|0|0||0|5|0%|
-|ThreatClusterData|19|11|30|68|63.3%|0|0||5|8|62.5%|
-|ThreatData|3|22|25|100|12%|0|0||1|4|25%|
-|TrackFileData|7|4|11|100|63.6%|0|0||5|7|71.4%|
+|ThreatClusterData|10|20|30|68|33.3%|0|0||2|8|25%|
+|ThreatData|2|20|22|99|9%|0|0||1|5|20%|
+|TrackFileData|7|4|11|99|63.6%|0|0||5|7|71.4%|
 |UIBuildButton|0|2|2|11|0%|0|0||0|2|0%|
 |UIDialog|4|123|127|233|3.1%|0|0||1|18|5.5%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|118|52|170|262|69.4%|0|0||19|30|63.3%|
+|UIManager|110|60|170|262|64.7%|0|0||18|30|60%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|1|57|58|100|1.7%|0|0||1|9|11.1%|
 |Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
