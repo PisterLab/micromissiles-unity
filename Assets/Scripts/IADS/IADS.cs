@@ -25,6 +25,7 @@ public class IADS : MonoBehaviour {
   private Dictionary<Interceptor, Cluster> _interceptorClusterMap =
       new Dictionary<Interceptor, Cluster>();
   private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
+  private HashSet<Threat> _threatsToCluster = new HashSet<Threat>();
 
   private int _trackFileIdTicker = 0;
 
@@ -54,31 +55,7 @@ public class IADS : MonoBehaviour {
         _assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
   }
 
-  private void RegisterSimulationStarted() {
-    // Cluster the threats.
-    ClusterThreats(SimManager.Instance.GetActiveThreats());
-  }
-
-  // Cluster the threats.
-  public void ClusterThreats(List<Threat> threats) {
-    // Maximum number of threats per cluster.
-    const int MaxSize = 7;
-    // Maximum cluster radius in meters.
-    const float MaxRadius = 500;
-
-    // Cluster to threats.
-    IClusterer clusterer = new AgglomerativeClusterer(new List<Agent>(threats), MaxSize, MaxRadius);
-    clusterer.Cluster();
-    var clusters = clusterer.Clusters;
-    Debug.Log($"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
-    UIManager.Instance.LogActionMessage(
-        $"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
-
-    _threatClusters = clusters.ToList();
-    foreach (var cluster in clusters) {
-      _threatClusterMap.Add(cluster, new ThreatClusterData(cluster));
-    }
-  }
+  private void RegisterSimulationStarted() {}
 
   // Check whether an interceptor should be launched at a cluster and launch it.
   public void CheckAndLaunchInterceptors() {
@@ -195,16 +172,15 @@ public class IADS : MonoBehaviour {
     _assignableInterceptors.Add(interceptor);
   }
 
-  public void AssignInterceptorToThreat(in IReadOnlyList<Interceptor> interceptors) {
+  private void AssignInterceptorToThreat(in IReadOnlyList<Interceptor> interceptors) {
     if (interceptors.Count == 0) {
       return;
     }
 
     // The threat originally assigned to the interceptor has been terminated, so assign another
     // threat to the interceptor.
-    // TODO: We do not use clusters after the first assignment, we should consider re-clustering.
 
-    // This pulls from ALL available track files, not from our previously assigned cluster.
+    // This pulls from all available track files, not from our previously assigned cluster.
     List<Threat> threats = _trackFiles.Where(trackFile => trackFile.Agent is Threat)
                                .Select(trackFile => trackFile.Agent as Threat)
                                .ToList();
@@ -222,18 +198,46 @@ public class IADS : MonoBehaviour {
     }
   }
 
+  public void RequestClusterThreats(Threat threat) {
+    _threatsToCluster.Add(threat);
+  }
+
+  private void ClusterThreats(List<Threat> threats) {
+    // Maximum number of threats per cluster.
+    const int MaxSize = 7;
+    // Maximum cluster radius in meters.
+    const float MaxRadius = 500;
+
+    // Cluster threats.
+    IClusterer clusterer =
+        new AgglomerativeClusterer(new List<Agent>(_threatsToCluster), MaxSize, MaxRadius);
+    clusterer.Cluster();
+    var clusters = clusterer.Clusters;
+    Debug.Log($"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
+    UIManager.Instance.LogActionMessage(
+        $"[IADS] Clustered {threats.Count} threats into {clusters.Count} clusters.");
+
+    _threatClusters = clusters.ToList();
+    foreach (var cluster in clusters) {
+      _threatClusterMap.Add(cluster, new ThreatClusterData(cluster));
+    }
+
+    _threatsToCluster.Clear();
+  }
+
   public void RegisterNewThreat(Threat threat) {
-    string trackID = $"T{1000 + _trackFileIdTicker++}";
+    string trackID = $"T{1000 + ++_trackFileIdTicker}";
     ThreatData trackFile = new ThreatData(threat, trackID);
     _trackFiles.Add(trackFile);
     _trackFileMap.Add(threat, trackFile);
+    RequestClusterThreats(threat);
 
     threat.OnThreatHit += RegisterThreatHit;
     threat.OnThreatMiss += RegisterThreatMiss;
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
-    string trackID = $"I{2000 + _trackFileIdTicker++}";
+    string trackID = $"I{2000 + ++_trackFileIdTicker}";
     InterceptorData trackFile = new InterceptorData(interceptor, trackID);
     _trackFiles.Add(trackFile);
     _trackFileMap.Add(interceptor, trackFile);
@@ -271,6 +275,11 @@ public class IADS : MonoBehaviour {
 
     if (threatTrack != null) {
       threatTrack.RemoveInterceptor(interceptor);
+
+      // Check if the threat is being targeted by at least one interceptor.
+      if (threatTrack.AssignedInterceptorCount == 0) {
+        RequestClusterThreats(threat);
+      }
     }
 
     if (interceptorTrack != null) {
@@ -310,12 +319,14 @@ public class IADS : MonoBehaviour {
       _trackFiles.OfType<InterceptorData>().ToList();
 
   private void RegisterSimulationEnded() {
-    _assignableInterceptors.Clear();
     _trackFiles.Clear();
-    _threatClusters.Clear();
-    _threatClusterMap.Clear();
     _trackFileMap.Clear();
     _assignmentQueue.Clear();
+    _threatClusters.Clear();
+    _threatClusterMap.Clear();
+    _interceptorClusterMap.Clear();
+    _assignableInterceptors.Clear();
+    _threatsToCluster.Clear();
     _trackFileIdTicker = 0;
   }
 }
