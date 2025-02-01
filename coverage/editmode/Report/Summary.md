@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/31/2025 - 21:42:50 |
+| Generated on: | 02/01/2025 - 02:51:13 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
 | Covered lines: | 1819 |
-| Uncovered lines: | 3480 |
-| Coverable lines: | 5299 |
-| Total lines: | 9362 |
-| Line coverage: | 34.3% (1819 of 5299) |
+| Uncovered lines: | 3482 |
+| Coverable lines: | 5301 |
+| Total lines: | 9364 |
+| Line coverage: | 34.3% (1819 of 5301) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 266 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**898**|**3350**|**4248**|**9357**|**21.1%**|**0**|**0**|****|**159**|**627**|**25.3%**|
+|**bamlab.micromissiles**|**898**|**3352**|**4250**|**9359**|**21.1%**|**0**|**0**|****|**159**|**627**|**25.3%**|
 |Agent|104|156|260|465|40%|0|0||21|46|45.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -37,7 +37,7 @@
 |DynamicAgentConfig|0|3|3|132|0%|0|0||0|1|0%|
 |FixedWingThreat|27|38|65|120|41.5%|0|0||3|9|33.3%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|0|257|257|422|0%|0|0||0|28|0%|
+|IADS|0|259|259|424|0%|0|0||0|28|0%|
 |IAssignment|11|0|11|42|100%|0|0||3|3|100%|
 |IClusterer|6|4|10|56|60%|0|0||3|4|75%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
