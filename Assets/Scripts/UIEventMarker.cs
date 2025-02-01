@@ -22,7 +22,6 @@ public class UIEventMarker : MonoBehaviour {
     _text.color = Color.red;
   }
 
-
   // Update is called once per frame
   void LateUpdate() {
     transform.LookAt(Camera.main.transform);

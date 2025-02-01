@@ -136,7 +136,7 @@ public class Interceptor : Agent {
         _target == otherAgent as Threat) {
       // Check kill probability before marking as hit.
       float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
-      
+
       if (Random.value <= killProbability) {
         // Mark both this agent and the other agent as hit.
         HandleInterceptHit(otherAgent);

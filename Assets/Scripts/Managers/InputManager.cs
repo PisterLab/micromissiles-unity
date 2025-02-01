@@ -178,8 +178,13 @@ public class InputManager : MonoBehaviour {
       UIManager.Instance.ToggleConfigSelectorPanel();
     }
 
+    if (Input.GetKeyDown(KeyCode.C)) {
+      ParticleManager.Instance.ClearHitMarkers();
+    }
+
     if (Input.GetKeyDown(KeyCode.Space)) {
       // Pause the time.
+
       if (!SimManager.Instance.IsSimulationPaused()) {
         SimManager.Instance.PauseSimulation();
       } else {

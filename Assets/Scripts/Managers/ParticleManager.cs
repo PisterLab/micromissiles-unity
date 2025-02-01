@@ -117,8 +117,6 @@ public class ParticleManager : MonoBehaviour {
     _hitMarkerList.Add(hitMarkerObject);
   }
 
-
-
   private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
     // It does not make sense to commandeer the TrailRenderer for a miss.
     // As the interceptor remains in flight
@@ -126,7 +124,6 @@ public class ParticleManager : MonoBehaviour {
     hitMarkerObject.GetComponent<UIEventMarker>().SetEventMiss();
     _hitMarkerList.Add(hitMarkerObject);
   }
-
 
   private void RegisterThreatHit(Threat threat) {}
 
@@ -147,7 +144,7 @@ public class ParticleManager : MonoBehaviour {
 
   private GameObject SpawnHitMarker(Vector3 position) {
     GameObject hitMarker = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
-                                      position, Quaternion.identity);
+                                       position, Quaternion.identity);
     _hitMarkerList.Add(hitMarker);
     return hitMarker;
   }
@@ -163,7 +160,6 @@ public class ParticleManager : MonoBehaviour {
   /// Returns a missile explosion particle prefab from the pool and plays it at the specified
   /// location. If the pool is empty, it returns null.
   /// </summary>
-
 
   public GameObject PlayMissileExplosion(Vector3 position) {
     if (_missileExplosionPool.Count > 0) {
