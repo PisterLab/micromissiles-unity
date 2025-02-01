@@ -136,15 +136,12 @@ public class Interceptor : Agent {
         _target == otherAgent as Threat) {
       // Check kill probability before marking as hit.
       float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
-      GameObject markerObject = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
-                                            transform.position, Quaternion.identity);
+      
       if (Random.value <= killProbability) {
-        markerObject.GetComponent<UIHitMarker>().SetHit();
         // Mark both this agent and the other agent as hit.
         HandleInterceptHit(otherAgent);
         otherAgent.HandleTargetIntercepted();
       } else {
-        markerObject.GetComponent<UIHitMarker>().SetMiss();
         HandleInterceptMiss();
       }
     }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class UIHitMarker : MonoBehaviour {
+public class UIEventMarker : MonoBehaviour {
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   private TextMeshProUGUI _text;
 
@@ -12,15 +12,16 @@ public class UIHitMarker : MonoBehaviour {
     }
   }
 
-  public void SetHit() {
+  public void SetEventHit() {
     _text.text = "x";
     _text.color = Color.green;
   }
 
-  public void SetMiss() {
+  public void SetEventMiss() {
     _text.text = "o";
     _text.color = Color.red;
   }
+
 
   // Update is called once per frame
   void LateUpdate() {

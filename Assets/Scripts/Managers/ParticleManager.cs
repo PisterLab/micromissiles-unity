@@ -24,6 +24,9 @@ public class ParticleManager : MonoBehaviour {
   [SerializeField, Tooltip("The material to use for commandeered threat trail renderers")]
   public Material threatTrailMatFaded;
 
+  [SerializeField]
+  private List<GameObject> _hitMarkerList = new List<GameObject>();
+
   private void Awake() {
     if (Instance == null) {
       Instance = this;
@@ -36,6 +39,7 @@ public class ParticleManager : MonoBehaviour {
   private void Start() {
     _missileTrailPool = new Queue<GameObject>();
     _missileExplosionPool = new Queue<GameObject>();
+    _hitMarkerList = new List<GameObject>();
 
     if (SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
       InitializeMissileTrailParticlePool();
@@ -108,12 +112,21 @@ public class ParticleManager : MonoBehaviour {
     if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
       PlayMissileExplosion(interceptor.transform.position);
     }
+    GameObject hitMarkerObject = SpawnHitMarker(interceptor.transform.position);
+    hitMarkerObject.GetComponent<UIEventMarker>().SetEventHit();
+    _hitMarkerList.Add(hitMarkerObject);
   }
+
+
 
   private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
     // It does not make sense to commandeer the TrailRenderer for a miss.
     // As the interceptor remains in flight
+    GameObject hitMarkerObject = SpawnHitMarker(interceptor.transform.position);
+    hitMarkerObject.GetComponent<UIEventMarker>().SetEventMiss();
+    _hitMarkerList.Add(hitMarkerObject);
   }
+
 
   private void RegisterThreatHit(Threat threat) {}
 
@@ -132,10 +145,26 @@ public class ParticleManager : MonoBehaviour {
     }
   }
 
+  private GameObject SpawnHitMarker(Vector3 position) {
+    GameObject hitMarker = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
+                                      position, Quaternion.identity);
+    _hitMarkerList.Add(hitMarker);
+    return hitMarker;
+  }
+
+  public void ClearHitMarkers() {
+    foreach (var hitMarker in _hitMarkerList) {
+      Destroy(hitMarker);
+    }
+    _hitMarkerList.Clear();
+  }
+
   /// <summary>
   /// Returns a missile explosion particle prefab from the pool and plays it at the specified
   /// location. If the pool is empty, it returns null.
   /// </summary>
+
+
   public GameObject PlayMissileExplosion(Vector3 position) {
     if (_missileExplosionPool.Count > 0) {
       GameObject explosion = _missileExplosionPool.Dequeue();
