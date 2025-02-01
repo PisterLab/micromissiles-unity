@@ -216,7 +216,8 @@ public abstract class Agent : MonoBehaviour {
     Transformation transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(target.GetPosition());
+    transformation.position =
+        GetRelativePositionTransformation(target.GetPosition() - GetPosition());
 
     // Get the relative velocity transformation.
     transformation.velocity = GetRelativeVelocityTransformation(
@@ -413,11 +414,11 @@ public abstract class Agent : MonoBehaviour {
     return accelerationInput + gravity + dragAccelerationAlongRoll;
   }
 
-  protected float CalculateMaxForwardAcceleration() {
+  public float CalculateMaxForwardAcceleration() {
     return staticAgentConfig.accelerationConfig.maxForwardAcceleration;
   }
 
-  protected float CalculateMaxNormalAcceleration() {
+  public float CalculateMaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
         (float)(staticAgentConfig.accelerationConfig.maxReferenceNormalAcceleration *
                 Constants.kGravity);

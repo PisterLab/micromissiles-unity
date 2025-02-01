@@ -34,12 +34,12 @@
   ],
   "threat_swarm_configs": [
     {
-      "num_agents": 200,
+      "num_agents": 100,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 800, "z": 8000 },
+          "position": { "x": 0, "y": 800, "z": 10000 },
           "velocity": { "x": 0, "y": 0, "z": -100 }
         },
         "standard_deviation": {
@@ -63,12 +63,12 @@
       }
     },
     {
-      "num_agents": 200,
+      "num_agents": 100,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 800, "z": 9000 },
+          "position": { "x": 0, "y": 900, "z": 11000 },
           "velocity": { "x": 0, "y": 0, "z": -100 }
         },
         "standard_deviation": {
@@ -92,12 +92,12 @@
       }
     },
     {
-      "num_agents": 200,
+      "num_agents": 100,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 1200, "z": 10000 },
+          "position": { "x": 0, "y": 1000, "z": 12000 },
           "velocity": { "x": 0, "y": 0, "z": -100 }
         },
         "standard_deviation": {
@@ -121,12 +121,12 @@
       }
     },
     {
-      "num_agents": 200,
+      "num_agents": 100,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 1200, "z": 11000 },
+          "position": { "x": 0, "y": 1100, "z": 13000 },
           "velocity": { "x": 0, "y": 0, "z": -100 }
         },
         "standard_deviation": {
@@ -150,12 +150,12 @@
       }
     },
     {
-      "num_agents": 7,
+      "num_agents": 100,
       "dynamic_agent_config": {
         "agent_model": "ucav.json",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
-          "position": { "x": 0, "y": 1200, "z": 12000 },
+          "position": { "x": 0, "y": 1200, "z": 14000 },
           "velocity": { "x": 0, "y": 0, "z": -100 }
         },
         "standard_deviation": {

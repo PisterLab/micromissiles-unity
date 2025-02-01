@@ -105,7 +105,7 @@ public class UISelectableEntry : EventTrigger {
     float totalWidth = rectTransform.rect.width;
     float columnWidth = totalWidth / columnCount;
 
-    for (int i = 0; i < columnCount; i++) {
+    for (int i = 0; i < columnCount; ++i) {
       // Create a new TextMeshProUGUI for each column
       var textHandle = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), rectTransform)
                            .AddComponent<TextMeshProUGUI>();

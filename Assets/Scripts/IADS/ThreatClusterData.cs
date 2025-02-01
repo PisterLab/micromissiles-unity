@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
-public enum ThreatClusterStatus { UNASSIGNED, ASSIGNED }
+public enum ThreatClusterStatus { UNASSIGNED, ASSIGNED, DELEGATED }
 
 [System.Serializable]
 public class ThreatClusterData {
@@ -46,12 +47,22 @@ public class ThreatClusterData {
   public void AssignInterceptor(Interceptor interceptor) {
     _status = ThreatClusterStatus.ASSIGNED;
     _assignedInterceptors.Add(interceptor);
+
+    // Assign the interceptor to all threats within the cluster.
+    foreach (var threat in _cluster.Threats.ToList()) {
+      threat.AddInterceptor(interceptor);
+    }
   }
 
-  public void RemoveInterceptor(Interceptor interceptor) {
+  public void RemoveInterceptor(Interceptor interceptor, bool delegated = false) {
     _assignedInterceptors.Remove(interceptor);
     if (AssignedInterceptorCount == 0) {
-      _status = ThreatClusterStatus.UNASSIGNED;
+      _status = delegated ? ThreatClusterStatus.DELEGATED : ThreatClusterStatus.UNASSIGNED;
+    }
+
+    // Remove the interceptor from all threats within the cluster.
+    foreach (var threat in _cluster.Threats.ToList()) {
+      threat.RemoveInterceptor(interceptor);
     }
   }
 }

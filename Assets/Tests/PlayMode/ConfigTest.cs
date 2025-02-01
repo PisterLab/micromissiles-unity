@@ -21,7 +21,7 @@ public class ConfigTest : TestBase {
 
     bool isPaused = false;
     double epsilon = 0.0002;
-    for (int i = 0; i < jsonFiles.Length; i++) {
+    for (int i = 0; i < jsonFiles.Length; ++i) {
       if (i % 2 == 1) {
         SimManager.Instance.PauseSimulation();
         isPaused = true;
@@ -40,10 +40,10 @@ public class ConfigTest : TestBase {
                 "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused");
 
           } else if (agent is Threat) {
-            // All threats start in MIDCOURSE phase
+            // All threats start in INITIALIZED phase
             Assert.AreEqual(
-                Agent.FlightPhase.MIDCOURSE, agent.GetFlightPhase(),
-                "All THREAT agents should be in the MIDCOURSE flight phase after loading while paused");
+                Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
+                "All THREAT agents should be in the INITIALIZED flight phase after loading while paused");
           }
         }
         Assert.LessOrEqual(Mathf.Abs(Time.fixedDeltaTime), epsilon,

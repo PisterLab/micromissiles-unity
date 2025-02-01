@@ -17,6 +17,10 @@ public class KMeansClusterer : IClusterer {
     _k = k;
     _maxIterations = maxIterations;
   }
+  public KMeansClusterer(List<Agent> agents, int k, int maxIterations = 20) : base(agents) {
+    _k = k;
+    _maxIterations = maxIterations;
+  }
 
   // Cluster the game objects.
   public override void Cluster() {

@@ -66,7 +66,7 @@ public class ParticleManager : MonoBehaviour {
         Resources.Load<GameObject>("Prefabs/Effects/InterceptorSmokeEffect");
 
     // Pre-instantiate 10 missile trail particles
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; ++i) {
       InstantiateMissileTrail(missileTrailPrefab);
     }
     // Instantiate over an interval
@@ -77,7 +77,7 @@ public class ParticleManager : MonoBehaviour {
     GameObject missileExplosionPrefab =
         Resources.Load<GameObject>("Prefabs/Effects/InterceptExplosionEffect");
     // Pre-instantiate 10 missile trail particles
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; ++i) {
       InstantiateMissileExplosion(missileExplosionPrefab);
     }
     StartCoroutine(InstantiateMissileExplosionsOverTime(missileExplosionPrefab, 200, 0.05f));
@@ -227,7 +227,7 @@ public class ParticleManager : MonoBehaviour {
   private IEnumerator InstantiateMissileTrailsOverTime(GameObject prefab, int count,
                                                        float duration) {
     float interval = duration / count;
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
       InstantiateMissileTrail(prefab);
       yield return new WaitForSeconds(interval);
     }
@@ -236,7 +236,7 @@ public class ParticleManager : MonoBehaviour {
   private IEnumerator InstantiateMissileExplosionsOverTime(GameObject prefab, int count,
                                                            float duration) {
     float interval = duration / count;
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
       InstantiateMissileExplosion(prefab);
       yield return new WaitForSeconds(interval);
     }

@@ -7,6 +7,8 @@ using UnityEngine;
 public class AgglomerativeClusterer : ISizeAndRadiusConstrainedClusterer {
   public AgglomerativeClusterer(List<GameObject> objects, int maxSize, float maxRadius)
       : base(objects, maxSize, maxRadius) {}
+  public AgglomerativeClusterer(List<Agent> agents, int maxSize, float maxRadius)
+      : base(agents, maxSize, maxRadius) {}
 
   // Cluster the game objects.
   public override void Cluster() {

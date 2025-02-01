@@ -1,0 +1,66 @@
+{
+  "endTime": 300,
+  "timeScale": 1,
+  "interceptor_swarm_configs": [
+    {
+      "dynamic_agent_config": {
+        "agent_model": "hydra70.json",
+        "dynamic_config": {
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 100
+          },
+          "flight_config": {
+            "augmentedPnEnabled": false
+          }
+        },
+        "submunitions_config": {
+          "num_submunitions": 7,
+          "dynamic_agent_config": {
+            "agent_model": "micromissile.json",
+            "dynamic_config": {
+              "sensor_config": {
+                "type": "IDEAL",
+                "frequency": 100
+              },
+              "flight_config": {
+                "augmentedPnEnabled": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "threat_swarm_configs": [
+    {
+      "num_agents": 7,
+      "dynamic_agent_config": {
+        "agent_model": "brahmos.json",
+        "attack_behavior": "brahmos_direct_attack.json",
+        "initial_state": {
+          "position": { "x": 0, "y": 50, "z": 40000 },
+          "velocity": { "x": 0, "y": 0, "z": -800 }
+        },
+        "standard_deviation": {
+          "position": { "x": 3000, "y": 10, "z": 200 },
+          "velocity": { "x": 0, "y": 0, "z": 25 }
+        },
+        "dynamic_config": {
+          "launch_config": { "launch_time": 0 },
+          "sensor_config": {
+            "type": "IDEAL",
+            "frequency": 100
+          },
+          "flight_config": {
+            "evasionEnabled": true,
+            "evasionRangeThreshold": 2000
+          }
+        },
+        "submunitions_config": {
+          "num_submunitions": 0
+        }
+      }
+    }
+  ]
+}

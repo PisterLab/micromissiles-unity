@@ -35,20 +35,23 @@ public abstract class TrackFileData {
 
 [System.Serializable]
 public class ThreatData : TrackFileData {
-  public int assignedInterceptorCount = 0;
   [SerializeField]
   private List<Interceptor> _assignedInterceptors = new List<Interceptor>();
 
   public ThreatData(Threat threat, string trackID) : base(threat, trackID) {}
 
+  public int AssignedInterceptorCount {
+    get { return _assignedInterceptors.Count; }
+  }
+
   public void AssignInterceptor(Interceptor interceptor) {
     if (Status == TrackStatus.DESTROYED) {
-      Debug.LogError($"AssignInterceptor: Track {TrackID} is destroyed, cannot assign interceptor");
+      Debug.LogError(
+          $"AssignInterceptor: Track {TrackID} is destroyed, cannot assign interceptor.");
       return;
     }
     _status = TrackStatus.ASSIGNED;
     _assignedInterceptors.Add(interceptor);
-    assignedInterceptorCount++;
   }
   public void RemoveInterceptor(Interceptor interceptor) {
     if (_assignedInterceptors.Contains(interceptor)) {
@@ -56,30 +59,26 @@ public class ThreatData : TrackFileData {
       if (_assignedInterceptors.Count == 0) {
         _status = TrackStatus.UNASSIGNED;
       }
-      assignedInterceptorCount--;
     }
   }
 
   public override void MarkDestroyed() {
     base.MarkDestroyed();
     _assignedInterceptors.Clear();
-    assignedInterceptorCount = 0;
   }
 }
 
 [System.Serializable]
 public class InterceptorData : TrackFileData {
   [SerializeField]
-  private List<Threat> _assignedThreats;
+  private List<Threat> _assignedThreats = new List<Threat>();
 
   public InterceptorData(Interceptor interceptor, string interceptorID)
-      : base(interceptor, interceptorID) {
-    _assignedThreats = new List<Threat>();
-  }
+      : base(interceptor, interceptorID) {}
 
   public void AssignThreat(Threat threat) {
     if (_status == TrackStatus.DESTROYED) {
-      Debug.LogError($"AssignThreat: Interceptor {TrackID} is destroyed, cannot assign threat");
+      Debug.LogError($"AssignThreat: Interceptor {TrackID} is destroyed, cannot assign threat.");
       return;
     }
     _status = TrackStatus.ASSIGNED;

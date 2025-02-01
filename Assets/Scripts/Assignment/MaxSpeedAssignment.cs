@@ -34,12 +34,16 @@ public class MaxSpeedAssignment : IAssignment {
 
     // Find all pairwise assignment costs.
     foreach (var interceptor in assignableInterceptors) {
-      // The speed decays exponentially with travelled distance and with the bearing change.
-      float distanceTimeConstant = 2 * interceptor.staticAgentConfig.bodyConfig.mass /
-                                   ((float)interceptor.GetDynamicPressure() *
-                                    interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
-                                    interceptor.staticAgentConfig.bodyConfig.crossSectionalArea);
+      // The speed decays exponentially with the travelled distance and with the bearing change.
+      float distanceTimeConstant =
+          2 * interceptor.staticAgentConfig.bodyConfig.mass /
+          ((float)Constants.CalculateAirDensityAtAltitude(interceptor.GetPosition().y) *
+           interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
+           interceptor.staticAgentConfig.bodyConfig.crossSectionalArea);
       float angleTimeConstant = interceptor.staticAgentConfig.liftDragConfig.liftDragRatio;
+      // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
+      float minTurningRadius = (float)(interceptor.GetVelocity().sqrMagnitude /
+                                       interceptor.CalculateMaxNormalAcceleration());
       foreach (var threat in activeThreats) {
         Vector3 directionToThreat = threat.GetPosition() - interceptor.GetPosition();
         float distanceToThreat = directionToThreat.magnitude;
@@ -48,7 +52,8 @@ public class MaxSpeedAssignment : IAssignment {
 
         // The speed loss factor is the product of the speed lost through distance and of the speed
         // lost through turning, and we define the cost to be the (1 - speed loss factor).
-        float cost = 1 - Mathf.Exp(-(distanceToThreat / distanceTimeConstant +
+        float cost = 1 - Mathf.Exp(-((distanceToThreat + angleToThreat * minTurningRadius) /
+                                         distanceTimeConstant +
                                      angleToThreat / angleTimeConstant));
         assignmentCosts.Enqueue(new IAssignment.AssignmentItem(interceptor, threat), cost);
       }
