@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/01/2025 - 02:51:13 |
+| Generated on: | 02/02/2025 - 02:49:13 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
 | Covered lines: | 1819 |
-| Uncovered lines: | 3482 |
-| Coverable lines: | 5301 |
-| Total lines: | 9364 |
-| Line coverage: | 34.3% (1819 of 5301) |
+| Uncovered lines: | 3501 |
+| Coverable lines: | 5320 |
+| Total lines: | 9391 |
+| Line coverage: | 34.1% (1819 of 5320) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 266 |
-| Total methods: | 742 |
-| Method coverage: | 35.8% (266 of 742) |
+| Total methods: | 744 |
+| Method coverage: | 35.7% (266 of 744) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**898**|**3352**|**4250**|**9359**|**21.1%**|**0**|**0**|****|**159**|**627**|**25.3%**|
+|**bamlab.micromissiles**|**898**|**3371**|**4269**|**9386**|**21%**|**0**|**0**|****|**159**|**629**|**25.2%**|
 |Agent|104|156|260|465|40%|0|0||21|46|45.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -46,8 +46,8 @@
 |ILaunchAngleInterpolator|15|0|15|103|100%|0|0||3|3|100%|
 |ILaunchAnglePlanner|17|0|17|73|100%|0|0||5|5|100%|
 |ILaunchPlanner|4|0|4|43|100%|0|0||1|1|100%|
-|InputManager|0|172|172|230|0%|0|0||0|15|0%|
-|Interceptor|8|152|160|245|5%|0|0||2|17|11.7%|
+|InputManager|0|175|175|235|0%|0|0||0|15|0%|
+|Interceptor|8|149|157|242|5%|0|0||2|17|11.7%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
@@ -65,7 +65,7 @@
 |LinearExtrapolator|5|0|5|14|100%|0|0||2|2|100%|
 |MaxSpeedAssignment|16|26|42|85|38%|0|0||1|1|100%|
 |NearestNeighborInterpolator2D|15|0|15|86|100%|0|0||3|3|100%|
-|ParticleManager|0|166|166|251|0%|0|0||0|26|0%|
+|ParticleManager|0|185|185|276|0%|0|0||0|28|0%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
 |PredictorState|13|1|14|37|92.8%|0|0||5|6|83.3%|
 |PriorityQueue[T]|34|3|37|59|91.8%|0|0||6|7|85.7%|
@@ -91,7 +91,7 @@
 |UIDialog|0|127|127|233|0%|0|0||0|18|0%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
-|UIHitMarker|0|17|17|29|0%|0|0||0|4|0%|
+|UIEventMarker|0|17|17|29|0%|0|0||0|4|0%|
 |UIManager|0|170|170|262|0%|0|0||0|30|0%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|100|0%|0|0||0|9|0%|
