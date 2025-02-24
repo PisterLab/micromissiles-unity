@@ -1,16 +1,13 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
 using UnityEngine;
 
 // The maximum speed assignment class assigns interceptors to the targets to maximize the intercept
-// speed by defining a cost of the assignment equal to the speed lost for the maneuver. This
-// assignment scheme is slow and should only be used for few interceptors and threats.
+// speed by defining a cost of the assignment equal to the speed lost for the maneuver.
 public class MaxSpeedAssignment : IAssignment {
   // Assign a target to each interceptor that has not been assigned a target yet.
-  [Pure]
-  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
-                                                        in IReadOnlyList<Threat> threats) {
+  public unsafe IEnumerable<IAssignment.AssignmentItem> Assign(
+      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
     List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
 
     List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
@@ -25,15 +22,12 @@ public class MaxSpeedAssignment : IAssignment {
       return assignments;
     }
 
-    // Greedily assign the interceptor to the threat with the lowest intercept cost if the threat
-    // has not been assigned an interceptor yet.
-    // TODO(titan): Use the Hungarian algorithm and create dummy nodes that are connected with
-    // maximum weight.
-    PriorityQueue<IAssignment.AssignmentItem> assignmentCosts =
-        new PriorityQueue<IAssignment.AssignmentItem>();
-
     // Find all pairwise assignment costs.
-    foreach (var interceptor in assignableInterceptors) {
+    float[] assignmentCosts = new float[assignableInterceptors.Count * activeThreats.Count];
+    for (int interceptorIndex = 0; interceptorIndex < assignableInterceptors.Count;
+         ++interceptorIndex) {
+      Interceptor interceptor = assignableInterceptors[interceptorIndex];
+
       // The speed decays exponentially with the travelled distance and with the bearing change.
       float distanceTimeConstant =
           2 * interceptor.staticAgentConfig.bodyConfig.mass /
@@ -44,41 +38,40 @@ public class MaxSpeedAssignment : IAssignment {
       // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
       float minTurningRadius = (float)(interceptor.GetVelocity().sqrMagnitude /
                                        interceptor.CalculateMaxNormalAcceleration());
-      foreach (var threat in activeThreats) {
+
+      for (int threatIndex = 0; threatIndex < activeThreats.Count; ++threatIndex) {
+        Threat threat = activeThreats[threatIndex];
         Vector3 directionToThreat = threat.GetPosition() - interceptor.GetPosition();
         float distanceToThreat = directionToThreat.magnitude;
         float angleToThreat =
             Vector3.Angle(interceptor.GetVelocity(), directionToThreat) * Mathf.Deg2Rad;
 
         // The speed loss factor is the product of the speed lost through distance and of the speed
-        // lost through turning, and we define the cost to be the (1 - speed loss factor).
-        float cost = 1 - Mathf.Exp(-((distanceToThreat + angleToThreat * minTurningRadius) /
-                                         distanceTimeConstant +
-                                     angleToThreat / angleTimeConstant));
-        assignmentCosts.Enqueue(new IAssignment.AssignmentItem(interceptor, threat), cost);
+        // lost through turning.
+        float speedLossFactor = Mathf.Exp(
+            -((distanceToThreat + angleToThreat * minTurningRadius) / distanceTimeConstant +
+              angleToThreat / angleTimeConstant));
+        float cost = (1 - speedLossFactor) * (float)interceptor.GetSpeed();
+        assignmentCosts[interceptorIndex * activeThreats.Count + threatIndex] = cost;
       }
     }
 
-    // Greedily assign the interceptor to the threat with the lowest intercept cost if the threat
-    // has not been assigned an interceptor yet.
-    HashSet<Interceptor> assignedInterceptors = new HashSet<Interceptor>();
-    HashSet<Threat> targetedThreats = new HashSet<Threat>();
-    foreach (var assignmentItem in assignmentCosts) {
-      if (!assignedInterceptors.Contains(assignmentItem.Interceptor) &&
-          !targetedThreats.Contains(assignmentItem.Threat)) {
-        assignments.Add(assignmentItem);
-        assignedInterceptors.Add(assignmentItem.Interceptor);
-        targetedThreats.Add(assignmentItem.Threat);
-      }
+    // Solve the assignment problem.
+    int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
+    int[] assignedThreatIndices = new int[assignableInterceptors.Count];
+    int numAssignments = 0;
+    fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
+        fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
+      numAssignments = Assignment.Assignment_EvenAssignment_Assign(
+          assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
+          (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr);
     }
-
-    // Iterate through the priority queue again for unassigned interceptors.
-    foreach (var assignmentItem in assignmentCosts) {
-      if (!assignedInterceptors.Contains(assignmentItem.Interceptor)) {
-        assignments.Add(assignmentItem);
-        assignedInterceptors.Add(assignmentItem.Interceptor);
-        targetedThreats.Add(assignmentItem.Threat);
-      }
+    Debug.Log($"Made {numAssignments} {assignableInterceptors.Count} {activeThreats.Count}.");
+    for (int i = 0; i < numAssignments; ++i) {
+      int interceptorIndex = assignedInterceptorIndices[i];
+      int threatIndex = assignedThreatIndices[i];
+      assignments.Add(new IAssignment.AssignmentItem(assignableInterceptors[interceptorIndex],
+                                                     activeThreats[threatIndex]));
     }
     return assignments;
   }
