@@ -267,7 +267,7 @@ var assemblies = [
       { "name": "LaunchAngleOutput", "rp": "bamlab.micromissiles_LaunchAngleOutput.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchPlan", "rp": "bamlab.micromissiles_LaunchPlan.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 43, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LinearExtrapolator", "rp": "bamlab.micromissiles_LinearExtrapolator.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 14, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 78, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 77, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "NearestNeighborInterpolator2D", "rp": "bamlab.micromissiles_NearestNeighborInterpolator2D.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ParticleManager", "rp": "bamlab.micromissiles_ParticleManager.html", "cl": 32, "ucl": 153, "cal": 185, "tl": 276, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "PnController", "rp": "bamlab.micromissiles_PnController.html", "cl": 24, "ucl": 7, "cal": 31, "tl": 61, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
