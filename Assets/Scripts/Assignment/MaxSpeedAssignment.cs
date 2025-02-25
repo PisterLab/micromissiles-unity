@@ -46,12 +46,12 @@ public class MaxSpeedAssignment : IAssignment {
         float angleToThreat =
             Vector3.Angle(interceptor.GetVelocity(), directionToThreat) * Mathf.Deg2Rad;
 
-        // The speed loss factor is the product of the speed lost through distance and of the speed
-        // lost through turning.
-        float speedLossFactor = Mathf.Exp(
+        // The fractional speed is the product of the fractional speed after traveling the distance
+        // and of the fractional speed after turning.
+        float fractionalSpeed = Mathf.Exp(
             -((distanceToThreat + angleToThreat * minTurningRadius) / distanceTimeConstant +
               angleToThreat / angleTimeConstant));
-        float cost = (1 - speedLossFactor) * (float)interceptor.GetSpeed();
+        float cost = (float)interceptor.GetSpeed() / fractionalSpeed;
         assignmentCosts[interceptorIndex * activeThreats.Count + threatIndex] = cost;
       }
     }
@@ -66,7 +66,6 @@ public class MaxSpeedAssignment : IAssignment {
           assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
           (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr);
     }
-    Debug.Log($"Made {numAssignments} {assignableInterceptors.Count} {activeThreats.Count}.");
     for (int i = 0; i < numAssignments; ++i) {
       int interceptorIndex = assignedInterceptorIndices[i];
       int threatIndex = assignedThreatIndices[i];
