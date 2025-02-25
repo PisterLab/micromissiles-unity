@@ -194,8 +194,7 @@ public class ThreatTests : AgentTestBase {
     SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
     Vector3 acceleration =
         InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput");
-    float maxForwardAcceleration =
-        InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxForwardAcceleration");
+    float maxForwardAcceleration = fixedWingThreat.CalculateMaxForwardAcceleration();
     const float epsilon = 1e-5f;
     Assert.LessOrEqual((Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
                        maxForwardAcceleration + epsilon);
@@ -206,8 +205,7 @@ public class ThreatTests : AgentTestBase {
     SetPrivateField(fixedWingThreat, "_currentWaypoint", Vector3.one * 1000f);
     Vector3 acceleration =
         InvokePrivateMethod<Vector3>(fixedWingThreat, "CalculateAccelerationInput");
-    float maxNormalAcceleration =
-        InvokePrivateMethod<float>(fixedWingThreat, "CalculateMaxNormalAcceleration");
+    float maxNormalAcceleration = fixedWingThreat.CalculateMaxNormalAcceleration();
     const float epsilon = 1e-5f;
     Assert.LessOrEqual(
         acceleration.magnitude, maxNormalAcceleration + epsilon,
@@ -219,8 +217,7 @@ public class ThreatTests : AgentTestBase {
     SetPrivateField(rotaryWingThreat, "_currentWaypoint", Vector3.one * 1000f);
     Vector3 acceleration =
         InvokePrivateMethod<Vector3>(rotaryWingThreat, "CalculateAccelerationToWaypoint");
-    float maxForwardAcceleration =
-        InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxForwardAcceleration");
+    float maxForwardAcceleration = rotaryWingThreat.CalculateMaxForwardAcceleration();
     const float epsilon = 1e-5f;
     Assert.LessOrEqual((Vector3.Project(acceleration, fixedWingThreat.transform.forward)).magnitude,
                        maxForwardAcceleration + epsilon);
@@ -231,8 +228,7 @@ public class ThreatTests : AgentTestBase {
     SetPrivateField(rotaryWingThreat, "_currentWaypoint", Vector3.one * 1000f);
     Vector3 acceleration =
         InvokePrivateMethod<Vector3>(rotaryWingThreat, "CalculateAccelerationToWaypoint");
-    float maxNormalAcceleration =
-        InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxNormalAcceleration");
+    float maxNormalAcceleration = rotaryWingThreat.CalculateMaxNormalAcceleration();
     const float epsilon = 1e-5f;
     // Calculate the normal component of acceleration
     Vector3 forwardComponent = Vector3.Project(acceleration, rotaryWingThreat.transform.forward);
@@ -294,11 +290,9 @@ public class ThreatTests : AgentTestBase {
     Vector3 normalAcceleration = expectedAcceleration - forwardAcceleration;
 
     // Limit acceleration magnitude
-    float maxForwardAcceleration =
-        InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxForwardAcceleration");
+    float maxForwardAcceleration = rotaryWingThreat.CalculateMaxNormalAcceleration();
     forwardAcceleration = Vector3.ClampMagnitude(forwardAcceleration, maxForwardAcceleration);
-    float maxNormalAcceleration =
-        InvokePrivateMethod<float>(rotaryWingThreat, "CalculateMaxNormalAcceleration");
+    float maxNormalAcceleration = rotaryWingThreat.CalculateMaxNormalAcceleration();
     normalAcceleration = Vector3.ClampMagnitude(normalAcceleration, maxNormalAcceleration);
     expectedAcceleration = forwardAcceleration + normalAcceleration;
 
