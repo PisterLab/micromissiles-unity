@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/25/2025 - 20:19:58 |
+| Generated on: | 02/25/2025 - 20:30:58 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1838 |
-| Uncovered lines: | 3482 |
+| Covered lines: | 1854 |
+| Uncovered lines: | 3466 |
 | Coverable lines: | 5320 |
-| Total lines: | 9384 |
-| Line coverage: | 34.5% (1838 of 5320) |
+| Total lines: | 9378 |
+| Line coverage: | 34.8% (1854 of 5320) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 266 |
@@ -98,11 +98,11 @@
 |Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
 |WaypointController|9|0|9|22|100%|0|0||2|2|100%|
-|**bamlab.test**|**46**|**18**|**64**|**109**|**71.8%**|**0**|**0**|****|**9**|**12**|**75%**|
+|**bamlab.test**|**45**|**19**|**64**|**109**|**70.3%**|**0**|**0**|****|**9**|**12**|**75%**|
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
-|TestBase|29|1|30|44|96.6%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**876**|**63**|**939**|**2052**|**93.2%**|**0**|**0**|****|**98**|**100**|**98%**|
+|TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
+|**bamlab.test.editmode**|**893**|**46**|**939**|**2046**|**95.1%**|**0**|**0**|****|**98**|**100**|**98%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
@@ -119,7 +119,7 @@
 |PriorityQueueTest|62|0|62|87|100%|0|0||7|7|100%|
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|80|0|80|176|100%|0|0||4|4|100%|
-|ThreatTests|105|26|131|310|80.1%|0|0||9|11|81.8%|
+|ThreatTests|122|9|131|304|93.1%|0|0||9|11|81.8%|
 |TransformationTests|61|0|61|101|100%|0|0||3|3|100%|
 |**bamlab.test.playmode**|**0**|**49**|**49**|**97**|**0%**|**0**|**0**|****|**0**|**3**|**0%**|
 |ConfigTest|0|42|42|73|0%|0|0||0|2|0%|

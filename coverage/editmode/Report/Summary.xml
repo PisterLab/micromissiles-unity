@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>02/25/2025 - 20:19:58</Generatedon>
+    <Generatedon>02/25/2025 - 20:30:58</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>101</Classes>
     <Files>80</Files>
-    <Coveredlines>1838</Coveredlines>
-    <Uncoveredlines>3482</Uncoveredlines>
+    <Coveredlines>1854</Coveredlines>
+    <Uncoveredlines>3466</Uncoveredlines>
     <Coverablelines>5320</Coverablelines>
-    <Totallines>9384</Totallines>
-    <Linecoverage>34.5</Linecoverage>
+    <Totallines>9378</Totallines>
+    <Linecoverage>34.8</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>266</Coveredmethods>
@@ -98,12 +98,12 @@
       <Class name="Vessel" coverage="0" coveredlines="0" coverablelines="15" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="WaypointController" coverage="100" coveredlines="9" coverablelines="9" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
     </Assembly>
-    <Assembly name="bamlab.test" classes="3" coverage="71.8" coveredlines="46" coverablelines="64" totallines="109" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="12" methodcoverage="75">
+    <Assembly name="bamlab.test" classes="3" coverage="70.3" coveredlines="45" coverablelines="64" totallines="109" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="12" methodcoverage="75">
       <Class name="AgentTestBase" coverage="73.9" coveredlines="17" coverablelines="23" totallines="40" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="4" methodcoverage="75" />
       <Class name="SensorTestBase" coverage="0" coveredlines="0" coverablelines="11" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="TestBase" coverage="96.6" coveredlines="29" coverablelines="30" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
+      <Class name="TestBase" coverage="93.3" coveredlines="28" coverablelines="30" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
     </Assembly>
-    <Assembly name="bamlab.test.editmode" classes="18" coverage="93.2" coveredlines="876" coverablelines="939" totallines="2052" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="98" totalmethods="100" methodcoverage="98">
+    <Assembly name="bamlab.test.editmode" classes="18" coverage="95.1" coveredlines="893" coverablelines="939" totallines="2046" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="98" totalmethods="100" methodcoverage="98">
       <Class name="AgglomerativeClustererTest" coverage="100" coveredlines="42" coverablelines="42" totallines="69" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
       <Class name="ClusterTest" coverage="100" coveredlines="74" coverablelines="74" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="ConstrainedKMeansClustererTest" coverage="100" coveredlines="35" coverablelines="35" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
@@ -120,7 +120,7 @@
       <Class name="PriorityQueueTest" coverage="100" coveredlines="62" coverablelines="62" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="7" methodcoverage="100" />
       <Class name="SanityTest" coverage="71.4" coveredlines="5" coverablelines="7" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="ThreatAssignmentTests" coverage="100" coveredlines="80" coverablelines="80" totallines="176" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
-      <Class name="ThreatTests" coverage="80.1" coveredlines="105" coverablelines="131" totallines="310" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="11" methodcoverage="81.8" />
+      <Class name="ThreatTests" coverage="93.1" coveredlines="122" coverablelines="131" totallines="304" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="11" methodcoverage="81.8" />
       <Class name="TransformationTests" coverage="100" coveredlines="61" coverablelines="61" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
     </Assembly>
     <Assembly name="bamlab.test.playmode" classes="2" coverage="0" coveredlines="0" coverablelines="49" totallines="97" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0">

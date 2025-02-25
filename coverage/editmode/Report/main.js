@@ -308,7 +308,7 @@ var assemblies = [
     "classes": [
       { "name": "AgentTestBase", "rp": "bamlab.test_AgentTestBase.html", "cl": 17, "ucl": 6, "cal": 23, "tl": 40, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SensorTestBase", "rp": "bamlab.test_SensorTestBase.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 25, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "TestBase", "rp": "bamlab.test_TestBase.html", "cl": 29, "ucl": 1, "cal": 30, "tl": 44, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "TestBase", "rp": "bamlab.test_TestBase.html", "cl": 28, "ucl": 2, "cal": 30, "tl": 44, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
   {
     "name": "bamlab.test.editmode",
@@ -329,7 +329,7 @@ var assemblies = [
       { "name": "PriorityQueueTest", "rp": "bamlab.test.editmode_PriorityQueueTest.html", "cl": 62, "ucl": 0, "cal": 62, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SanityTest", "rp": "bamlab.test.editmode_SanityTest.html", "cl": 5, "ucl": 2, "cal": 7, "tl": 22, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ThreatAssignmentTests", "rp": "bamlab.test.editmode_ThreatAssignmentTests.html", "cl": 80, "ucl": 0, "cal": 80, "tl": 176, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ThreatTests", "rp": "bamlab.test.editmode_ThreatTests.html", "cl": 105, "ucl": 26, "cal": 131, "tl": 310, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ThreatTests", "rp": "bamlab.test.editmode_ThreatTests.html", "cl": 122, "ucl": 9, "cal": 131, "tl": 304, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TransformationTests", "rp": "bamlab.test.editmode_TransformationTests.html", "cl": 61, "ucl": 0, "cal": 61, "tl": 101, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
   {
