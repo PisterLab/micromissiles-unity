@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedon": "2025-02-24T02:59:33Z",
+    "generatedon": "2025-02-25T00:17:18Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 101,
@@ -8,7 +8,7 @@
     "coveredlines": 1354,
     "uncoveredlines": 3966,
     "coverablelines": 5320,
-    "totallines": 9391,
+    "totallines": 9384,
     "linecoverage": 25.4,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -18,7 +18,7 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 30.5, "coveredlines": 1306, "coverablelines": 4269, "totallines": 9386, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35.1, "coveredmethods": 221, "totalmethods": 629, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 30.5, "coveredlines": 1306, "coverablelines": 4269, "totallines": 9379, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 35.1, "coveredmethods": 221, "totalmethods": 629, "classesinassembly": [
         { "name": "Agent", "coverage": 61.5, "coveredlines": 160, "coverablelines": 260, "totallines": 465, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 58.6, "coveredmethods": 27, "totalmethods": 46 },
         { "name": "AgglomerativeClusterer", "coverage": 98.4, "coveredlines": 63, "coverablelines": 64, "totallines": 101, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -62,7 +62,7 @@
         { "name": "LaunchAngleOutput", "coverage": 0, "coveredlines": 0, "coverablelines": 6, "totallines": 73, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 3 },
         { "name": "LaunchPlan", "coverage": 0, "coveredlines": 0, "coverablelines": 12, "totallines": 43, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "LinearExtrapolator", "coverage": 0, "coveredlines": 0, "coverablelines": 5, "totallines": 14, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
-        { "name": "MaxSpeedAssignment", "coverage": 0, "coveredlines": 0, "coverablelines": 42, "totallines": 85, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
+        { "name": "MaxSpeedAssignment", "coverage": 0, "coveredlines": 0, "coverablelines": 42, "totallines": 78, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "NearestNeighborInterpolator2D", "coverage": 0, "coveredlines": 0, "coverablelines": 15, "totallines": 86, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 3 },
         { "name": "ParticleManager", "coverage": 17.2, "coveredlines": 32, "coverablelines": 185, "totallines": 276, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 28.5, "coveredmethods": 8, "totalmethods": 28 },
         { "name": "PnController", "coverage": 77.4, "coveredlines": 24, "coverablelines": 31, "totallines": 61, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
