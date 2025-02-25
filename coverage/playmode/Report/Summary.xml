@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>02/25/2025 - 19:07:02</Generatedon>
+    <Generatedon>02/25/2025 - 20:22:14</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>101</Classes>
     <Files>80</Files>
     <Coveredlines>1354</Coveredlines>
-    <Uncoveredlines>3965</Uncoveredlines>
-    <Coverablelines>5319</Coverablelines>
-    <Totallines>9383</Totallines>
+    <Uncoveredlines>3966</Uncoveredlines>
+    <Coverablelines>5320</Coverablelines>
+    <Totallines>9384</Totallines>
     <Linecoverage>25.4</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
@@ -103,7 +103,7 @@
       <Class name="SensorTestBase" coverage="0" coveredlines="0" coverablelines="11" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="TestBase" coverage="0" coveredlines="0" coverablelines="30" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
     </Assembly>
-    <Assembly name="bamlab.test.editmode" classes="18" coverage="0" coveredlines="0" coverablelines="938" totallines="2051" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="100" methodcoverage="0">
+    <Assembly name="bamlab.test.editmode" classes="18" coverage="0" coveredlines="0" coverablelines="939" totallines="2052" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="100" methodcoverage="0">
       <Class name="AgglomerativeClustererTest" coverage="0" coveredlines="0" coverablelines="42" totallines="69" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
       <Class name="ClusterTest" coverage="0" coveredlines="0" coverablelines="74" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
       <Class name="ConstrainedKMeansClustererTest" coverage="0" coveredlines="0" coverablelines="35" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
@@ -115,7 +115,7 @@
       <Class name="LaunchAngleCsvInterpolatorTest" coverage="0" coveredlines="0" coverablelines="28" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
       <Class name="LaunchAngleDataInterpolatorTest" coverage="0" coveredlines="0" coverablelines="16" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
       <Class name="LinearExtrapolatorTest" coverage="0" coveredlines="0" coverablelines="28" totallines="42" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="MaxSpeedAssignmentTest" coverage="0" coveredlines="0" coverablelines="106" totallines="180" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
+      <Class name="MaxSpeedAssignmentTest" coverage="0" coveredlines="0" coverablelines="107" totallines="181" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="NearestNeighborInterpolator2DTest" coverage="0" coveredlines="0" coverablelines="56" totallines="107" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
       <Class name="PriorityQueueTest" coverage="0" coveredlines="0" coverablelines="62" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
       <Class name="SanityTest" coverage="0" coveredlines="0" coverablelines="7" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
