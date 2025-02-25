@@ -23,20 +23,36 @@ public class Example {
   // Define a delegate for the functional.
   public delegate float ExecuteDelegate(float value);
 
-  // Add two numbers.
+// Add two numbers.
+#if UNITY_WIN
+  [DllImport("example")]
+#else   // !UNITY_WIN
   [DllImport("libexample")]
+#endif  // UNITY_WIN
   public static extern int Example_Add(int a, int b);
 
-  // Calculate the sum of the floats.
+// Calculate the sum of the floats.
+#if UNITY_WIN
+  [DllImport("example")]
+#else   // !UNITY_WIN
   [DllImport("libexample")]
+#endif  // UNITY_WIN
   public static extern float Example_Sum(float[] values, int length);
 
-  // Generate a range of integers from 0 to size - 1.
+// Generate a range of integers from 0 to size - 1.
+#if UNITY_WIN
+  [DllImport("example")]
+#else   // !UNITY_WIN
   [DllImport("libexample")]
+#endif  // UNITY_WIN
   public static extern void Example_Range(int size, IntPtr array, ref int length);
 
-  // Execute the function on the given input and return the result.
+// Execute the function on the given input and return the result.
+#if UNITY_WIN
+  [DllImport("example")]
+#else   // !UNITY_WIN
   [DllImport("libexample")]
+#endif  // UNITY_WIN
   public static extern float Example_Execute(ExecuteDelegate function, float input);
 
   // Example functional to double the input value.
