@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>02/25/2025 - 00:27:08</Generatedon>
+    <Generatedon>02/25/2025 - 02:56:10</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>101</Classes>
     <Files>80</Files>
-    <Coveredlines>1821</Coveredlines>
-    <Uncoveredlines>3499</Uncoveredlines>
+    <Coveredlines>1819</Coveredlines>
+    <Uncoveredlines>3501</Uncoveredlines>
     <Coverablelines>5320</Coverablelines>
-    <Totallines>9384</Totallines>
-    <Linecoverage>34.2</Linecoverage>
+    <Totallines>9391</Totallines>
+    <Linecoverage>34.1</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>266</Coveredmethods>
@@ -18,7 +18,7 @@
     <Methodcoverage>35.7</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="78" coverage="21" coveredlines="900" coverablelines="4269" totallines="9379" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="159" totalmethods="629" methodcoverage="25.2">
+    <Assembly name="bamlab.micromissiles" classes="78" coverage="21" coveredlines="898" coverablelines="4269" totallines="9386" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="159" totalmethods="629" methodcoverage="25.2">
       <Class name="Agent" coverage="40" coveredlines="104" coverablelines="260" totallines="465" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="21" totalmethods="46" methodcoverage="45.6" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -62,7 +62,7 @@
       <Class name="LaunchAngleOutput" coverage="100" coveredlines="6" coverablelines="6" totallines="73" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="LaunchPlan" coverage="100" coveredlines="12" coverablelines="12" totallines="43" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
       <Class name="LinearExtrapolator" coverage="100" coveredlines="5" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
-      <Class name="MaxSpeedAssignment" coverage="42.8" coveredlines="18" coverablelines="42" totallines="78" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+      <Class name="MaxSpeedAssignment" coverage="38" coveredlines="16" coverablelines="42" totallines="85" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="NearestNeighborInterpolator2D" coverage="100" coveredlines="15" coverablelines="15" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="ParticleManager" coverage="0" coveredlines="0" coverablelines="185" totallines="276" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="28" methodcoverage="0" />
       <Class name="PnController" coverage="77.4" coveredlines="24" coverablelines="31" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
