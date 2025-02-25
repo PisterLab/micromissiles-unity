@@ -267,7 +267,7 @@ var assemblies = [
       { "name": "LaunchAngleOutput", "rp": "bamlab.micromissiles_LaunchAngleOutput.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchPlan", "rp": "bamlab.micromissiles_LaunchPlan.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 43, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LinearExtrapolator", "rp": "bamlab.micromissiles_LinearExtrapolator.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 14, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 78, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 85, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "NearestNeighborInterpolator2D", "rp": "bamlab.micromissiles_NearestNeighborInterpolator2D.html", "cl": 0, "ucl": 15, "cal": 15, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ParticleManager", "rp": "bamlab.micromissiles_ParticleManager.html", "cl": 32, "ucl": 153, "cal": 185, "tl": 276, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "PnController", "rp": "bamlab.micromissiles_PnController.html", "cl": 24, "ucl": 7, "cal": 31, "tl": 61, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -378,14 +378,14 @@ var riskHotspots = [
       { "value": 156, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "CameraController", "reportPath": "bamlab.micromissiles_CameraController.html", "methodName": "System.Void CameraController::UpdateTargetCentroid()", "methodShortName": "UpdateTargetCentroid()", "fileIndex": 0, "line": 447,
+    "assembly": "bamlab.micromissiles", "class": "MaxSpeedAssignment", "reportPath": "bamlab.micromissiles_MaxSpeedAssignment.html", "methodName": "System.Collections.Generic.IEnumerable[AssignmentItem] MaxSpeedAssignment::Assign(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Collections.Generic.IReadOnlyList`1[[Threat, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "Assign(...)", "fileIndex": 0, "line": 13,
     "metrics": [
-      { "value": 10, "exceeded": false },
+      { "value": 12, "exceeded": false },
       { "value": 0, "exceeded": false },
-      { "value": 110, "exceeded": true },
+      { "value": 156, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "MaxSpeedAssignment", "reportPath": "bamlab.micromissiles_MaxSpeedAssignment.html", "methodName": "System.Collections.Generic.IEnumerable[AssignmentItem] MaxSpeedAssignment::Assign(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Collections.Generic.IReadOnlyList`1[[Threat, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "Assign(...)", "fileIndex": 0, "line": 10,
+    "assembly": "bamlab.micromissiles", "class": "CameraController", "reportPath": "bamlab.micromissiles_CameraController.html", "methodName": "System.Void CameraController::UpdateTargetCentroid()", "methodShortName": "UpdateTargetCentroid()", "fileIndex": 0, "line": 447,
     "metrics": [
       { "value": 10, "exceeded": false },
       { "value": 0, "exceeded": false },
