@@ -267,7 +267,7 @@ var assemblies = [
       { "name": "LaunchAngleOutput", "rp": "bamlab.micromissiles_LaunchAngleOutput.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchPlan", "rp": "bamlab.micromissiles_LaunchPlan.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 43, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LinearExtrapolator", "rp": "bamlab.micromissiles_LinearExtrapolator.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 14, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 16, "ucl": 26, "cal": 42, "tl": 85, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 18, "ucl": 24, "cal": 42, "tl": 78, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "NearestNeighborInterpolator2D", "rp": "bamlab.micromissiles_NearestNeighborInterpolator2D.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ParticleManager", "rp": "bamlab.micromissiles_ParticleManager.html", "cl": 0, "ucl": 185, "cal": 185, "tl": 276, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "PnController", "rp": "bamlab.micromissiles_PnController.html", "cl": 24, "ucl": 7, "cal": 31, "tl": 61, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -320,7 +320,7 @@ var assemblies = [
       { "name": "Coordinates3Test", "rp": "bamlab.test.editmode_Coordinates3Test.html", "cl": 28, "ucl": 0, "cal": 28, "tl": 121, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IterativeLaunchPlannerTest", "rp": "bamlab.test.editmode_IterativeLaunchPlannerTest.html", "cl": 53, "ucl": 0, "cal": 53, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KDTreeTest", "rp": "bamlab.test.editmode_KDTreeTest.html", "cl": 39, "ucl": 0, "cal": 39, "tl": 55, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "KMeansClustererTest", "rp": "bamlab.test.editmode_KMeansClustererTest.html", "cl": 31, "ucl": 6, "cal": 37, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "KMeansClustererTest", "rp": "bamlab.test.editmode_KMeansClustererTest.html", "cl": 37, "ucl": 0, "cal": 37, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchAngleCsvInterpolatorTest", "rp": "bamlab.test.editmode_LaunchAngleCsvInterpolatorTest.html", "cl": 27, "ucl": 1, "cal": 28, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchAngleDataInterpolatorTest", "rp": "bamlab.test.editmode_LaunchAngleDataInterpolatorTest.html", "cl": 16, "ucl": 0, "cal": 16, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LinearExtrapolatorTest", "rp": "bamlab.test.editmode_LinearExtrapolatorTest.html", "cl": 28, "ucl": 0, "cal": 28, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -462,13 +462,6 @@ var riskHotspots = [
       { "value": 56, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "MaxSpeedAssignment", "reportPath": "bamlab.micromissiles_MaxSpeedAssignment.html", "methodName": "System.Collections.Generic.IEnumerable[AssignmentItem] MaxSpeedAssignment::Assign(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Collections.Generic.IReadOnlyList`1[[Threat, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "Assign(...)", "fileIndex": 0, "line": 13,
-    "metrics": [
-      { "value": 12, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 49.63, "exceeded": true },
-    ]},
-  {
     "assembly": "bamlab.micromissiles", "class": "Agent", "reportPath": "bamlab.micromissiles_Agent.html", "methodName": "System.Void Agent::HandleHitGround()", "methodShortName": "HandleHitGround()", "fileIndex": 0, "line": 173,
     "metrics": [
       { "value": 6, "exceeded": false },
@@ -523,6 +516,13 @@ var riskHotspots = [
       { "value": 6, "exceeded": false },
       { "value": 0, "exceeded": false },
       { "value": 42, "exceeded": true },
+    ]},
+  {
+    "assembly": "bamlab.micromissiles", "class": "MaxSpeedAssignment", "reportPath": "bamlab.micromissiles_MaxSpeedAssignment.html", "methodName": "System.Collections.Generic.IEnumerable[AssignmentItem] MaxSpeedAssignment::Assign(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Collections.Generic.IReadOnlyList`1[[Threat, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "Assign(...)", "fileIndex": 0, "line": 10,
+    "metrics": [
+      { "value": 10, "exceeded": false },
+      { "value": 0, "exceeded": false },
+      { "value": 32.01, "exceeded": true },
     ]},
   {
     "assembly": "bamlab.micromissiles", "class": "AgglomerativeClusterer", "reportPath": "bamlab.micromissiles_AgglomerativeClusterer.html", "methodName": "System.Void AgglomerativeClusterer::Cluster()", "methodShortName": "Cluster()", "fileIndex": 0, "line": 14,
