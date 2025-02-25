@@ -7,6 +7,7 @@ using UnityEngine.TestTools;
 public class MaxSpeedAssignmentTest {
   public static StaticAgentConfig CreateStaticAgentConfig() {
     StaticAgentConfig config = new StaticAgentConfig();
+    config.accelerationConfig = new StaticAgentConfig.AccelerationConfig();
     config.bodyConfig = new StaticAgentConfig.BodyConfig();
     config.liftDragConfig = new StaticAgentConfig.LiftDragConfig();
     return config;
