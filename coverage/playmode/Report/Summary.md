@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/25/2025 - 20:22:14 |
+| Generated on: | 02/25/2025 - 20:33:05 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
@@ -9,7 +9,7 @@
 | Covered lines: | 1354 |
 | Uncovered lines: | 3966 |
 | Coverable lines: | 5320 |
-| Total lines: | 9384 |
+| Total lines: | 9378 |
 | Line coverage: | 25.4% (1354 of 5320) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -102,7 +102,7 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**939**|**939**|**2052**|**0%**|**0**|**0**|****|**0**|**100**|**0%**|
+|**bamlab.test.editmode**|**0**|**939**|**939**|**2046**|**0%**|**0**|**0**|****|**0**|**100**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
@@ -119,7 +119,7 @@
 |PriorityQueueTest|0|62|62|87|0%|0|0||0|7|0%|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|80|80|176|0%|0|0||0|4|0%|
-|ThreatTests|0|131|131|310|0%|0|0||0|11|0%|
+|ThreatTests|0|131|131|304|0%|0|0||0|11|0%|
 |TransformationTests|0|61|61|101|0%|0|0||0|3|0%|
 |**bamlab.test.playmode**|**48**|**1**|**49**|**97**|**97.9%**|**0**|**0**|****|**3**|**3**|**100%**|
 |ConfigTest|41|1|42|73|97.6%|0|0||2|2|100%|
