@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/25/2025 - 20:33:05 |
+| Generated on: | 02/26/2025 - 02:58:23 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
@@ -9,7 +9,7 @@
 | Covered lines: | 1354 |
 | Uncovered lines: | 3966 |
 | Coverable lines: | 5320 |
-| Total lines: | 9378 |
+| Total lines: | 9391 |
 | Line coverage: | 25.4% (1354 of 5320) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1306**|**2962**|**4268**|**9378**|**30.5%**|**0**|**0**|****|**221**|**629**|**35.1%**|
+|**bamlab.micromissiles**|**1306**|**2963**|**4269**|**9386**|**30.5%**|**0**|**0**|****|**221**|**629**|**35.1%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -63,7 +63,7 @@
 |LaunchAngleOutput|0|6|6|73|0%|0|0||0|3|0%|
 |LaunchPlan|0|12|12|43|0%|0|0||0|6|0%|
 |LinearExtrapolator|0|5|5|14|0%|0|0||0|2|0%|
-|MaxSpeedAssignment|0|41|41|77|0%|0|0||0|1|0%|
+|MaxSpeedAssignment|0|42|42|85|0%|0|0||0|1|0%|
 |NearestNeighborInterpolator2D|0|15|15|86|0%|0|0||0|3|0%|
 |ParticleManager|32|153|185|276|17.2%|0|0||8|28|28.5%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
@@ -102,7 +102,7 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**939**|**939**|**2046**|**0%**|**0**|**0**|****|**0**|**100**|**0%**|
+|**bamlab.test.editmode**|**0**|**938**|**938**|**2051**|**0%**|**0**|**0**|****|**0**|**100**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
@@ -114,12 +114,12 @@
 |LaunchAngleCsvInterpolatorTest|0|28|28|87|0%|0|0||0|4|0%|
 |LaunchAngleDataInterpolatorTest|0|16|16|87|0%|0|0||0|4|0%|
 |LinearExtrapolatorTest|0|28|28|42|0%|0|0||0|4|0%|
-|MaxSpeedAssignmentTest|0|107|107|181|0%|0|0||0|5|0%|
+|MaxSpeedAssignmentTest|0|106|106|180|0%|0|0||0|5|0%|
 |NearestNeighborInterpolator2DTest|0|56|56|107|0%|0|0||0|7|0%|
 |PriorityQueueTest|0|62|62|87|0%|0|0||0|7|0%|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|80|80|176|0%|0|0||0|4|0%|
-|ThreatTests|0|131|131|304|0%|0|0||0|11|0%|
+|ThreatTests|0|131|131|310|0%|0|0||0|11|0%|
 |TransformationTests|0|61|61|101|0%|0|0||0|3|0%|
 |**bamlab.test.playmode**|**48**|**1**|**49**|**97**|**97.9%**|**0**|**0**|****|**3**|**3**|**100%**|
 |ConfigTest|41|1|42|73|97.6%|0|0||2|2|100%|
