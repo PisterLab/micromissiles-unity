@@ -37,7 +37,7 @@ jobs:
       - name: Build documentation
         run: npm run docs:build
 
-      - name: Deploy Documentation
+      - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
