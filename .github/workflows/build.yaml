@@ -12,6 +12,7 @@ on:
       - release
   schedule:
     - cron: '0 2 * * *'  # Run at 2 AM UTC every day
+  workflow_dispatch:
 
 jobs:
   buildForAllSupportedPlatforms:
