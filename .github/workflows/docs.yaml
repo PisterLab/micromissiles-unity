@@ -1,4 +1,3 @@
-# .github/workflows/docs.yaml
 name: Deploy Documentation
 
 on:
