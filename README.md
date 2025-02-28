@@ -13,7 +13,7 @@ Documentation is hosted on the [micromissiles-unity GitHub Pages site](https://p
 
 # Quick Start
 
-We generate pre-built standalone binaries for Windows and Mac users from the `release` branch. These binaries are intended for non-development users who just want to run the application and modify a few configurations along the way.
+We generate pre-built standalone binaries from the `release` branch. These binaries are intended for non-development users who just want to run the application and modify a few configurations along the way.
 
 You can find the latest release [here](https://github.com/PisterLab/micromissiles-unity/releases/latest).
 
@@ -32,6 +32,12 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
      * Open `System Preferences`.
      * Navigate to `Privacy & Security`.
      * Click on `Open Anyway` to bypass Apple's developer check.
+
+## Linux
+
+1. Download the tarball file for Linux: `micromissiles-<version>-linux-x86_64.tar.gz`.
+2. Untar the tarball.
+3. Run the `micromissiles-<version>-StandaloneLinux64` executable.
 
 # Next Steps
 

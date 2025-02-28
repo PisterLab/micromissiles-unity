@@ -2,7 +2,7 @@
 
 ## Instructions
 
-Download and extract the archive corresponding to your platform (Windows or Mac) from the binaries listed below.
+Download and extract the archive corresponding to your platform from the binaries listed below.
 
 ## Windows
 
@@ -17,3 +17,8 @@ Download and extract the archive corresponding to your platform (Windows or Mac)
      * Open `System Preferences`.
      * Navigate to `Privacy & Security`.
      * Click on `Open Anyway` to bypass Apple's developer check.
+
+## Linux
+
+1. Download the tarball for Linux.
+2. Untar the tarball and run the executable.
