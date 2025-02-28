@@ -7,7 +7,7 @@
 [![GitHub Release](https://img.shields.io/github/v/release/PisterLab/micromissiles-unity?link=https%3A%2F%2Fgithub.com%2FPisterLab%2Fmicromissiles-unity%2Freleases%2Flatest)](https://github.com/PisterLab/micromissiles-unity/releases/latest)
 [![Static Badge](https://img.shields.io/badge/%F0%9F%93%93-Documentation-blue?labelColor=white)](https://pisterlab.github.io/micromissiles-unity/)
 
-# Documentation 
+# Documentation
 
 Documentation is hosted on the [micromissiles-unity GitHub Pages site](https://pisterlab.github.io/micromissiles-unity/).
 
@@ -19,15 +19,15 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 
 ## Windows
 
-1. Download the zip file for Windows: `micromissiles-<version>-windows_x86_64.zip`.
-2. Unzip the zip file. The zip file should contain a single directory called `micromissiles-<version>-windows_x86_64`.
-3. In the `micromissiles-<version>-windows_x86_64` directory, run `micromissiles-<version>-StandaloneWindows64.exe`.
+1. Download the zip file for Windows: `micromissiles-<version>-windows-x86_64.zip`.
+2. Unzip the zip file. The zip file should contain a single directory called `micromissiles-<version>-windows-x86_64`.
+3. In the `micromissiles-<version>-windows-x86_64` directory, run `micromissiles-<version>-StandaloneWindows64.exe`.
 
 ## Mac
 
-1. Download the tarball file for Darwin: `micromissiles-<version>-darwin.tar.gz`.
-2. Untar the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin`.
-3. In the `micromissiles-<version>-darwin` directory, run the app file.
+1. Download the tarball file for Darwin: `micromissiles-<version>-darwin-x86_64.tar.gz`.
+2. Untar the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin-x86_64`.
+3. In the `micromissiles-<version>-darwin-x86_64` directory, run the app file.
 4. If you get a warning that Apple cannot check the application for malicious software:
      * Open `System Preferences`.
      * Navigate to `Privacy & Security`.

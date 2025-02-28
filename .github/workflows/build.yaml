@@ -1,4 +1,3 @@
-# .github/workflows/build.yaml
 name: Build
 
 on:
@@ -24,6 +23,7 @@ jobs:
         targetPlatform:
           - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - StandaloneLinux64 # Build a Linux 64-bit standalone.
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,7 +45,7 @@ jobs:
           buildName: micromissiles-${{ github.ref_name }}-${{ matrix.targetPlatform }}
           versioning: Semantic
           targetPlatform: ${{ matrix.targetPlatform }}
-      - name: Copy Tools Directory
+      - name: Copy tools directory
         run: |
           sudo cp -r Tools/ build/${{ matrix.targetPlatform }}/
       - if: matrix.targetPlatform == 'StandaloneWindows64'
@@ -58,6 +58,13 @@ jobs:
       - if: matrix.targetPlatform == 'StandaloneOSX'
         run: sudo tar -czvf build/build-${{ matrix.targetPlatform }}.tar.gz -C build/${{ matrix.targetPlatform }} .
       - if: matrix.targetPlatform == 'StandaloneOSX'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/build-${{ matrix.targetPlatform }}.tar.gz
+      - if: matrix.targetPlatform == 'StandaloneLinux64'
+        run: sudo tar -czvf build/build-${{ matrix.targetPlatform }}.tar.gz -C build/${{ matrix.targetPlatform }} .
+      - if: matrix.targetPlatform == 'StandaloneLinux64'
         uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}

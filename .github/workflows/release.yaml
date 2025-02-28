@@ -1,4 +1,3 @@
-# .github/workflows/release.yaml
 name: Release
 
 on:
@@ -13,7 +12,7 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     if: |
-      github.event.workflow_run.conclusion == 'success' && 
+      github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event != 'schedule'
     steps:
       - uses: actions/checkout@v4
@@ -49,7 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-windows_x86_64.zip
+          asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-windows-x86_64.zip
           asset_path: build/build-StandaloneWindows64.zip
           asset_content_type: application/zip
       - name: Upload Darwin release assets
@@ -58,6 +57,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-darwin.tar.gz
+          asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-darwin-x86_64.tar.gz
           asset_path: build/build-StandaloneOSX.tar.gz
+          asset_content_type: application/gzip
+      - name: Upload Linux release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-linux-x86_64.tar.gz
+          asset_path: build/build-StandaloneLinux64.tar.gz
           asset_content_type: application/gzip
