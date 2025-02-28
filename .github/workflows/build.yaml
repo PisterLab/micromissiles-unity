@@ -55,9 +55,16 @@ jobs:
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/build-${{ matrix.targetPlatform }}.zip
-      - if: ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
+      - if: matrix.targetPlatform == 'StandaloneOSX'
         run: sudo tar -czvf build/build-${{ matrix.targetPlatform }}.tar.gz -C build/${{ matrix.targetPlatform }} .
-      - if: ${{ matrix.targetPlatform == 'StandaloneOSX' || matrix.targetPlatform == 'StandaloneLinux64' }}
+      - if: matrix.targetPlatform == 'StandaloneOSX'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/build-${{ matrix.targetPlatform }}.tar.gz
+      - if: matrix.targetPlatform == 'StandaloneLinux64'
+        run: sudo tar -czvf build/build-${{ matrix.targetPlatform }}.tar.gz -C build/${{ matrix.targetPlatform }} .
+      - if: matrix.targetPlatform == 'StandaloneLinux64'
         uses: actions/upload-artifact@v4
         with:
           name: Build-${{ matrix.targetPlatform }}
