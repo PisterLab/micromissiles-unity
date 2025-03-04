@@ -74,7 +74,7 @@ jobs:
       - name: Extract plugins
         run: |
           cd Assets/Plugins
-          tar -xzvf plugins-*.tar.gz
+          cat plugins-*.tar.gz | tar -xzvf -
           rm plugins-*.tar.gz
       - uses: game-ci/unity-builder@v4
         env:
