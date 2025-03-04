@@ -27,10 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download Buildifier
+      - name: Install buildifier
         run: |
-          curl -L -o buildifier https://github.com/bazelbuild/buildtools/releases/download/5.3.0/buildifier-linux-amd64
-          chmod +x buildifier
-      - name: Run Buildifier Check
+          curl -L -o /usr/local/bin/buildifier https://github.com/bazelbuild/buildtools/releases/download/v6.4.0/buildifier-linux-amd64
+          chmod +x /usr/local/bin/buildifier
+      - name: Run buildifier
         run: |
-          find plugins -type f \( -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" \) | xargs ./buildifier -mode=check -lint=warn
+          find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -mode=check
+          find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -lint=warn -mode=check
