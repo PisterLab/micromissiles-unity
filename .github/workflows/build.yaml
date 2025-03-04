@@ -74,8 +74,9 @@ jobs:
       - name: Extract plugins
         run: |
           cd Assets/Plugins
+          unzip "plugins-*.zip"
           cat plugins-*.tar.gz | tar -xzvf -
-          rm plugins-*.tar.gz
+          rm plugins-*.zip plugins-*.tar.gz
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
