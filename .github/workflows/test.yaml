@@ -2,7 +2,7 @@ name: Test
 
 on:
     schedule:
-      - cron: '0 2 * * *'  # Runs at 2 AM UTC every day
+      - cron: '0 2 * * *'  # Runs at 2 AM UTC every day.
     pull_request:
       branches:
         - master
@@ -24,7 +24,7 @@ jobs:
       - name: Test plugins
         working-directory: plugins
         run: bazel test --test_output=errors //...
-        
+
   testAllModes:
     name: Test in ${{ matrix.testMode }}
     runs-on: ubuntu-latest

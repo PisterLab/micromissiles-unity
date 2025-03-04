@@ -23,10 +23,9 @@ A few important notes:
 
 ## Building the Project
 
-1. Clone the repository:
+1. Change into the `plugins` directory.
    ```bash
-   git clone https://github.com/PisterLab/micromissiles-unity-plugins.git
-   cd micromissiles-unity-plugins
+   cd plugins
    ```
 
 2. Build all plugins:

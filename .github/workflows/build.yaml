@@ -10,7 +10,7 @@ on:
     branches:
       - release
   schedule:
-    - cron: '0 2 * * *'  # Run at 2 AM UTC every day
+    - cron: '0 2 * * *'  # Run at 2 AM UTC every day.
   workflow_dispatch:
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - ubuntu-22.04 # Plugins should only be built on Ubuntu 22.04
+          - ubuntu-22.04 # Plugins should only be built on Ubuntu 22.04.
           - macos-latest
           - windows-latest
     steps:
@@ -41,7 +41,7 @@ jobs:
         with:
           name: plugins-${{ matrix.platform }}
           path: plugins/bazel-bin/plugins.tar.gz
-          
+
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
@@ -68,13 +68,14 @@ jobs:
       - name: Download plugins
         uses: actions/download-artifact@v4
         with:
-          name: plugins-ubuntu-latest
           path: Assets/Plugins
+          pattern: plugins-*
+          merge-multiple: true
       - name: Extract plugins
         run: |
           cd Assets/Plugins
-          tar -xzvf plugins.tar.gz
-          rm plugins.tar.gz
+          tar -xzvf plugins-*.tar.gz
+          rm plugins-*.tar.gz
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
