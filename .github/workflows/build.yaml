@@ -70,16 +70,12 @@ jobs:
         with:
           path: Assets/Plugins
           pattern: plugins-*
-          merge-multiple: true
+          merge-multiple: false
       - name: Extract plugins
         run: |
           cd Assets/Plugins
-          ls -la .
-          tar -xvzf plugins.tar.gz
-          ls -la .
-          unzip "plugins-*.zip"
-          cat plugins-*.tar.gz | tar -xzvf -
-          rm plugins-*.zip plugins-*.tar.gz
+          find plugins-*/*.tar.gz -type f -exec tar -xvzf {} \;
+          rm -rf plugins-*
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
