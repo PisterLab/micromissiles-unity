@@ -250,7 +250,7 @@ var assemblies = [
       { "name": "ILaunchAngleInterpolator", "rp": "bamlab.micromissiles_ILaunchAngleInterpolator.html", "cl": 15, "ucl": 0, "cal": 15, "tl": 103, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ILaunchAnglePlanner", "rp": "bamlab.micromissiles_ILaunchAnglePlanner.html", "cl": 17, "ucl": 0, "cal": 17, "tl": 73, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ILaunchPlanner", "rp": "bamlab.micromissiles_ILaunchPlanner.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 43, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "InputManager", "rp": "bamlab.micromissiles_InputManager.html", "cl": 0, "ucl": 175, "cal": 175, "tl": 235, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "InputManager", "rp": "bamlab.micromissiles_InputManager.html", "cl": 0, "ucl": 174, "cal": 174, "tl": 234, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Interceptor", "rp": "bamlab.micromissiles_Interceptor.html", "cl": 8, "ucl": 149, "cal": 157, "tl": 242, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InterceptorData", "rp": "bamlab.micromissiles_InterceptorData.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Interpolator2DDataPoint", "rp": "bamlab.micromissiles_Interpolator2DDataPoint.html", "cl": 15, "ucl": 1, "cal": 16, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },

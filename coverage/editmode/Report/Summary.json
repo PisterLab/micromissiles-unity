@@ -1,14 +1,14 @@
 {
   "summary": {
-    "generatedon": "2025-03-04T02:59:12Z",
+    "generatedon": "2025-03-04T18:17:04Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 101,
     "files": 80,
     "coveredlines": 1889,
-    "uncoveredlines": 3431,
-    "coverablelines": 5320,
-    "totallines": 9378,
+    "uncoveredlines": 3430,
+    "coverablelines": 5319,
+    "totallines": 9377,
     "linecoverage": 35.5,
     "coveredbranches": 0,
     "totalbranches": 0,
@@ -18,7 +18,7 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 21.6, "coveredlines": 923, "coverablelines": 4268, "totallines": 9378, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 25.2, "coveredmethods": 159, "totalmethods": 629, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 78, "coverage": 21.6, "coveredlines": 923, "coverablelines": 4267, "totallines": 9377, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 25.2, "coveredmethods": 159, "totalmethods": 629, "classesinassembly": [
         { "name": "Agent", "coverage": 40, "coveredlines": 104, "coverablelines": 260, "totallines": 465, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 45.6, "coveredmethods": 21, "totalmethods": 46 },
         { "name": "AgglomerativeClusterer", "coverage": 98.4, "coveredlines": 63, "coverablelines": 64, "totallines": 101, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -45,7 +45,7 @@
         { "name": "ILaunchAngleInterpolator", "coverage": 100, "coveredlines": 15, "coverablelines": 15, "totallines": 103, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3 },
         { "name": "ILaunchAnglePlanner", "coverage": 100, "coveredlines": 17, "coverablelines": 17, "totallines": 73, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "ILaunchPlanner", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 43, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
-        { "name": "InputManager", "coverage": 0, "coveredlines": 0, "coverablelines": 175, "totallines": 235, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 15 },
+        { "name": "InputManager", "coverage": 0, "coveredlines": 0, "coverablelines": 174, "totallines": 234, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 15 },
         { "name": "Interceptor", "coverage": 5, "coveredlines": 8, "coverablelines": 157, "totallines": 242, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 11.7, "coveredmethods": 2, "totalmethods": 17 },
         { "name": "InterceptorData", "coverage": 0, "coveredlines": 0, "coverablelines": 19, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "Interpolator2DDataPoint", "coverage": 93.7, "coveredlines": 15, "coverablelines": 16, "totallines": 86, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 80, "coveredmethods": 4, "totalmethods": 5 },
