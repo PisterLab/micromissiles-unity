@@ -75,6 +75,8 @@ jobs:
         run: |
           cd Assets/Plugins
           ls -la .
+          tar -xvzf plugins.tar.gz
+          ls -la .
           unzip "plugins-*.zip"
           cat plugins-*.tar.gz | tar -xzvf -
           rm plugins-*.zip plugins-*.tar.gz
