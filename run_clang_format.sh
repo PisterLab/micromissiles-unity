@@ -9,8 +9,19 @@ if ! command -v "$CLANG_FORMAT" &> /dev/null; then
     exit 1
 fi
 
+# 1) Format all .cs and .json files in Assets/
+echo "Formatting Unity Assets..."
+cd Assets
+find . -type f \( -name "*.cs" -o -name "*.json" \) \
+  -exec "$CLANG_FORMAT" -i -style=file {} +
+cd ..
 
-# Run clang-format on .cs and .json files in Assets/ folder
-cd Assets && find . -type f \( -name "*.cs" -o -name "*.json" \) -exec "$CLANG_FORMAT" -i -style=file {} + && cd ..
+# 2) Format only C/C++ files under plugins/, excluding any in bazel-* directories
+echo "Formatting Bazel project files..."
+cd plugins
+find . -type d -name "bazel-\*" -prune -o \
+  -type f \( -name "*.cc" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) \
+  -exec "$CLANG_FORMAT" -i -style=file {} +
+cd ..
 
 echo "Formatting complete."
