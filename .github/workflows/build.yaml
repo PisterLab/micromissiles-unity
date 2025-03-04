@@ -37,10 +37,11 @@ jobs:
       - name: Build plugins
         working-directory: plugins
         run: bazel build -c opt //:plugins
+      - run: cp plugins/bazel-bin/plugins.tar.gz plugins/bazel-bin/plugins-${{ matrix.platform }}.tar.gz
       - uses: actions/upload-artifact@v4
         with:
           name: plugins-${{ matrix.platform }}
-          path: plugins/bazel-bin/plugins.tar.gz
+          path: plugins/bazel-bin/plugins-${{ matrix.platform }}.tar.gz
 
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
@@ -69,13 +70,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: Assets/Plugins
-          pattern: plugins-*
-          merge-multiple: false
+          merge-multiple: true
       - name: Extract plugins
         run: |
           cd Assets/Plugins
-          find plugins-*/*.tar.gz -type f -exec tar -xvzf {} \;
-          rm -rf plugins-*
+          find *.tar.gz -exec tar -xvzf {} \;
+          rm plugins-*.tar.gz
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
