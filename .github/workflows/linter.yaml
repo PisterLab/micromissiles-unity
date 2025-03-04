@@ -1,4 +1,4 @@
-name: Run Linter
+name: Linter
 
 on:
   push:
@@ -17,7 +17,21 @@ jobs:
     - uses: actions/checkout@v4
     - uses: jidicula/clang-format-action@v4.13.0
       with:
-        clang-format-version: 18
+        clang-format-version: 19
         check-path: '.'
         fallback-style: 'Google'
         include-regex: '^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cs|cu))$'
+
+  buildifier:
+    name: Run buildifier
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Buildifier
+      uses: dkoval/setup-action@v1.1.0
+      with:
+        tools: buildifier@latest
+    - name: Run buildifier
+      run: |
+        find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -mode=check
+        find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -lint=warn -mode=check

@@ -9,9 +9,26 @@ on:
     workflow_dispatch:
 
 jobs:
+  testPlugins:
+    name: Test plugins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+      - uses: bazel-contrib/setup-bazel@0.14.0
+        with:
+          bazelisk-cache: true
+          disk-cache: ${{ github.workflow }}
+          repository-cache: true
+      - name: Test plugins
+        working-directory: plugins
+        run: bazel test --test_output=errors //...
+        
   testAllModes:
     name: Test in ${{ matrix.testMode }}
     runs-on: ubuntu-latest
+    needs: testPlugins
     strategy:
       fail-fast: false
       matrix:

@@ -1,0 +1,14 @@
+# This config is deprecated.
+# Please use the root .pre-commit-config.yaml file which now includes all necessary hooks.
+# This file is kept only for backward compatibility and may be removed in the future.
+
+repos:
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v19.1.5
+    hooks:
+      - id: clang-format
+  - repo: https://github.com/keith/pre-commit-buildifier
+    rev: 7.3.1.1
+    hooks:
+      - id: buildifier
+      - id: buildifier-lint

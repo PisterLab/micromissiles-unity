@@ -1,0 +1,32 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "base",
+    hdrs = ["base.h"],
+    deps = [
+        ":commandlineflags",
+        ":logging",
+    ],
+)
+
+cc_library(
+    name = "commandlineflags",
+    srcs = ["commandlineflags.cc"],
+    hdrs = ["commandlineflags.h"],
+    deps = [
+        "@com_google_absl//absl/flags:flag",
+        "@com_google_absl//absl/flags:parse",
+    ],
+)
+
+cc_library(
+    name = "logging",
+    srcs = ["logging.cc"],
+    hdrs = ["logging.h"],
+    deps = [
+        "@com_google_absl//absl/base:log_severity",
+        "@com_google_absl//absl/log",
+        "@com_google_absl//absl/log:globals",
+        "@com_google_absl//absl/log:initialize",
+    ],
+)
