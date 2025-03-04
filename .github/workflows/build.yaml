@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - ubuntu-latest
+          - ubuntu-22.04 # Plugins should only be built on Ubuntu 22.04
           - macos-latest
           - windows-latest
     steps:
