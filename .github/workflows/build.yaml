@@ -74,6 +74,7 @@ jobs:
       - name: Extract plugins
         run: |
           cd Assets/Plugins
+          ls -la .
           unzip "plugins-*.zip"
           cat plugins-*.tar.gz | tar -xzvf -
           rm plugins-*.zip plugins-*.tar.gz
