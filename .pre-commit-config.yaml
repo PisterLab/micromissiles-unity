@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v19.1.5  # Upgraded to match the plugins version
+    rev: v19.1.5
     hooks:
       - id: clang-format
   - repo: https://github.com/keith/pre-commit-buildifier
