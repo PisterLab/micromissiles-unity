@@ -85,6 +85,7 @@ jobs:
           buildName: micromissiles-${{ github.ref_name }}-${{ matrix.targetPlatform }}
           versioning: Semantic
           targetPlatform: ${{ matrix.targetPlatform }}
+          allowDirtyBuild: true
       - name: Copy tools directory
         run: |
           sudo cp -r Tools/ build/${{ matrix.targetPlatform }}/
