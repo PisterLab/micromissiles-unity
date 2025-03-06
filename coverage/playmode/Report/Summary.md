@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 03/06/2025 - 03:01:19 |
+| Generated on: | 03/06/2025 - 18:37:00 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
 | Covered lines: | 1354 |
-| Uncovered lines: | 3966 |
-| Coverable lines: | 5320 |
-| Total lines: | 9378 |
-| Line coverage: | 25.4% (1354 of 5320) |
+| Uncovered lines: | 3965 |
+| Coverable lines: | 5319 |
+| Total lines: | 9377 |
+| Line coverage: | 25.4% (1354 of 5319) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 224 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1306**|**2962**|**4268**|**9378**|**30.5%**|**0**|**0**|****|**221**|**629**|**35.1%**|
+|**bamlab.micromissiles**|**1306**|**2961**|**4267**|**9377**|**30.6%**|**0**|**0**|****|**221**|**629**|**35.1%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -46,7 +46,7 @@
 |ILaunchAngleInterpolator|1|14|15|103|6.6%|0|0||1|3|33.3%|
 |ILaunchAnglePlanner|0|17|17|73|0%|0|0||0|5|0%|
 |ILaunchPlanner|0|4|4|43|0%|0|0||0|1|0%|
-|InputManager|66|109|175|235|37.7%|0|0||12|15|80%|
+|InputManager|66|108|174|234|37.9%|0|0||12|15|80%|
 |Interceptor|0|157|157|242|0%|0|0||0|17|0%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
 |Interpolator2DDataPoint|0|16|16|86|0%|0|0||0|5|0%|
