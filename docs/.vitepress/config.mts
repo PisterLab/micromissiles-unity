@@ -31,7 +31,8 @@ export default defineConfig({
               { text: 'PlayMode Tests', link: 'https://pisterlab.github.io/micromissiles-unity/coverage/playmode/Report/index.html' }
             ]
           },
-          { text: 'Development Guide', link: '/Development_Guide' }
+          { text: 'Development Guide', link: '/Development_Guide' },
+          { text: 'C++ Plugins Guide', link: '/Cpp_Plugins_Guide' }
         ]
       }
     ],

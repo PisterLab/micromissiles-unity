@@ -1,0 +1,87 @@
+package(default_visibility = ["//visibility:public"])
+
+exports_files(["assignment.def"])
+
+cc_library(
+    name = "assignment",
+    srcs = ["assignment.cc"],
+    hdrs = ["assignment.h"],
+    deps = ["@com_google_absl//absl/strings:str_format"],
+)
+
+cc_library(
+    name = "cover_assignment",
+    srcs = ["cover_assignment.cc"],
+    hdrs = ["cover_assignment.h"],
+    deps = [
+        ":assignment",
+        "//base:logging",
+        "@ortools//ortools/sat:cp_model",
+    ],
+)
+
+cc_test(
+    name = "cover_assignment_test",
+    srcs = ["cover_assignment_test.cc"],
+    deps = [
+        ":assignment",
+        ":cover_assignment",
+        "@com_google_googletest//:gtest",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "even_assignment",
+    srcs = ["even_assignment.cc"],
+    hdrs = ["even_assignment.h"],
+    deps = [
+        ":assignment",
+        "//base:logging",
+        "@ortools//ortools/sat:cp_model",
+    ],
+)
+
+cc_test(
+    name = "even_assignment_test",
+    srcs = ["even_assignment_test.cc"],
+    deps = [
+        ":assignment",
+        ":even_assignment",
+        "@com_google_googletest//:gtest",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "weighted_even_assignment",
+    srcs = ["weighted_even_assignment.cc"],
+    hdrs = ["weighted_even_assignment.h"],
+    deps = [
+        ":assignment",
+        "//base:logging",
+        "@com_google_absl//absl/strings:str_format",
+        "@ortools//ortools/sat:cp_model",
+    ],
+)
+
+cc_test(
+    name = "weighted_even_assignment_test",
+    srcs = ["weighted_even_assignment_test.cc"],
+    deps = [
+        ":assignment",
+        ":weighted_even_assignment",
+        "@com_google_googletest//:gtest",
+        "@com_google_googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "assignment_plugin",
+    srcs = ["assignment_plugin.cc"],
+    deps = [
+        ":cover_assignment",
+        ":even_assignment",
+        ":weighted_even_assignment",
+    ],
+)

@@ -1,0 +1,13 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "example",
+    srcs = ["example.cc"],
+    hdrs = ["example.h"],
+)
+
+cc_library(
+    name = "example_plugin",
+    srcs = ["example_plugin.cc"],
+    deps = [":example"],
+)

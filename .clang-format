@@ -1,5 +1,7 @@
 BasedOnStyle: Google
 InsertNewlineAtEOF: true
+AllowShortBlocksOnASingleLine: Empty
+DerivePointerAlignment: false
 ---
 Language: CSharp
 ColumnLimit: 100

@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - master
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:  # Allows manual triggering.
 
 permissions:
   contents: write

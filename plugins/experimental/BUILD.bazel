@@ -1,0 +1,31 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_binary(
+    name = "assignment_example_main",
+    srcs = ["assignment_example_main.cc"],
+    deps = [
+        "//base",
+        "//base:logging",
+        "@ortools//ortools/sat:cp_model",
+    ],
+)
+
+cc_binary(
+    name = "integer_programming_example_main",
+    srcs = ["integer_programming_example_main.cc"],
+    deps = [
+        "//base",
+        "//base:logging",
+        "@ortools//ortools/linear_solver",
+    ],
+)
+
+cc_binary(
+    name = "linear_sum_assignment_example_main",
+    srcs = ["linear_sum_assignment_example_main.cc"],
+    deps = [
+        "//base",
+        "//base:logging",
+        "@ortools//ortools/graph:assignment",
+    ],
+)
