@@ -7,11 +7,11 @@ This guide explains how to build and develop the C++ plugins that provide core f
 - A C++ compiler (GCC, Clang, or MSVC)
 - Git
 - Python (for Bazel)
-- Bazel 8.0.0 (or Bazelisk)
+- Bazel 8.1.1 (or Bazelisk)
 
 ## Installing Bazel
 
-This project requires Bazel version 8.0.0.
+This project requires Bazel version 8.1.1.
 
 For detailed installation instructions for your platform (Windows, macOS, Linux), please refer to the [official Bazel documentation](https://bazel.build/install).
 
@@ -76,4 +76,4 @@ To use these plugins with the micromissiles Unity project:
 Ensure that the plugin is compiled on the same Ubuntu version (e.g., 2022.04) on which the Unity project will run to maintain compability with the `glibc` and `libstdc++` standard libraries.
 Unity will fail load the plugin if the plugin was compiled against a newer version of `glibc` or `libstdc++` that is not present on the current system.
 
-Currently, the plugin is compatible with Ubuntu 22.04 or newer. 
+Currently, the plugin is compatible with Ubuntu 22.04 or newer.

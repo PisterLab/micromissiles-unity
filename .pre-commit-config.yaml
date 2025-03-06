@@ -1,10 +1,10 @@
 repos:
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v19.1.5
+    rev: v19.1.7
     hooks:
       - id: clang-format
   - repo: https://github.com/keith/pre-commit-buildifier
-    rev: 7.3.1.1
+    rev: 8.0.1
     hooks:
       - id: buildifier
         files: ^plugins/.*\.(bazel|bzl|BUILD)$  # Only apply to Bazel files in plugins directory
