@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 03/25/2025 - 03:03:52 |
+| Generated on: | 03/26/2025 - 03:02:53 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1889 |
-| Uncovered lines: | 3430 |
+| Covered lines: | 1895 |
+| Uncovered lines: | 3424 |
 | Coverable lines: | 5319 |
 | Total lines: | 9377 |
-| Line coverage: | 35.5% (1889 of 5319) |
+| Line coverage: | 35.6% (1895 of 5319) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 266 |
@@ -102,7 +102,7 @@
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**921**|**18**|**939**|**2046**|**98%**|**0**|**0**|****|**98**|**100**|**98%**|
+|**bamlab.test.editmode**|**927**|**12**|**939**|**2046**|**98.7%**|**0**|**0**|****|**98**|**100**|**98%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
@@ -110,7 +110,7 @@
 |Coordinates3Test|28|0|28|121|100%|0|0||4|4|100%|
 |IterativeLaunchPlannerTest|53|0|53|87|100%|0|0||9|9|100%|
 |KDTreeTest|39|0|39|55|100%|0|0||4|4|100%|
-|KMeansClustererTest|31|6|37|150|83.7%|0|0||4|4|100%|
+|KMeansClustererTest|37|0|37|150|100%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTest|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
