@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>04/22/2025 - 03:07:36</Generatedon>
+    <Generatedon>04/23/2025 - 03:09:07</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>101</Classes>
     <Files>80</Files>
-    <Coveredlines>1895</Coveredlines>
-    <Uncoveredlines>3424</Uncoveredlines>
+    <Coveredlines>1889</Coveredlines>
+    <Uncoveredlines>3430</Uncoveredlines>
     <Coverablelines>5319</Coverablelines>
     <Totallines>9377</Totallines>
-    <Linecoverage>35.6</Linecoverage>
+    <Linecoverage>35.5</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>266</Coveredmethods>
@@ -103,7 +103,7 @@
       <Class name="SensorTestBase" coverage="0" coveredlines="0" coverablelines="11" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="TestBase" coverage="93.3" coveredlines="28" coverablelines="30" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
     </Assembly>
-    <Assembly name="bamlab.test.editmode" classes="18" coverage="98.7" coveredlines="927" coverablelines="939" totallines="2046" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="98" totalmethods="100" methodcoverage="98">
+    <Assembly name="bamlab.test.editmode" classes="18" coverage="98" coveredlines="921" coverablelines="939" totallines="2046" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="98" totalmethods="100" methodcoverage="98">
       <Class name="AgglomerativeClustererTest" coverage="100" coveredlines="42" coverablelines="42" totallines="69" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
       <Class name="ClusterTest" coverage="100" coveredlines="74" coverablelines="74" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="ConstrainedKMeansClustererTest" coverage="100" coveredlines="35" coverablelines="35" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
@@ -111,7 +111,7 @@
       <Class name="Coordinates3Test" coverage="100" coveredlines="28" coverablelines="28" totallines="121" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="IterativeLaunchPlannerTest" coverage="100" coveredlines="53" coverablelines="53" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="9" methodcoverage="100" />
       <Class name="KDTreeTest" coverage="100" coveredlines="39" coverablelines="39" totallines="55" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
-      <Class name="KMeansClustererTest" coverage="100" coveredlines="37" coverablelines="37" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
+      <Class name="KMeansClustererTest" coverage="83.7" coveredlines="31" coverablelines="37" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="LaunchAngleCsvInterpolatorTest" coverage="96.4" coveredlines="27" coverablelines="28" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="LaunchAngleDataInterpolatorTest" coverage="100" coveredlines="16" coverablelines="16" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="LinearExtrapolatorTest" coverage="100" coveredlines="28" coverablelines="28" totallines="42" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
