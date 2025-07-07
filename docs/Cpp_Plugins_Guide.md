@@ -7,11 +7,11 @@ This guide explains how to build and develop the C++ plugins that provide core f
 - A C++ compiler (GCC, Clang, or MSVC)
 - Git
 - Python (for Bazel)
-- Bazel 8.1.1 (or Bazelisk)
+- Bazel 8 (or Bazelisk)
 
 ## Installing Bazel
 
-This project requires Bazel version 8.1.1.
+This project requires Bazel version 8.
 
 For detailed installation instructions for your platform (Windows, macOS, Linux), please refer to the [official Bazel documentation](https://bazel.build/install).
 
