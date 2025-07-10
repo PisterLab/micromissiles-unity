@@ -118,4 +118,41 @@ public class Coordinates3Test {
     Assert.That(actualCartesian.y, Is.EqualTo(expectedCartesian.y).Within(Epsilon));
     Assert.That(actualCartesian.z, Is.EqualTo(expectedCartesian.z).Within(Epsilon));
   }
+
+  [Test]
+  public void TestCylindricalToCartesianOrigin() {
+    Vector3 cylindrical = new Vector3(0, 45, 0);
+    Vector3 expectedCartesian = Vector3.zero;
+    Vector3 actualCartesian = Coordinates3.ConvertCylindricalToCartesian(cylindrical);
+    Assert.That(actualCartesian.x, Is.EqualTo(expectedCartesian.x).Within(Epsilon));
+    Assert.That(actualCartesian.y, Is.EqualTo(expectedCartesian.y).Within(Epsilon));
+    Assert.That(actualCartesian.z, Is.EqualTo(expectedCartesian.z).Within(Epsilon));
+  }
+
+  [Test]
+  public void TestCylindricalToCartesian() {
+    Vector3 cylindrical = new Vector3(10, 60, 2);
+    Vector3 expectedCartesian = new Vector3(8.660254f, 2.0f, 5.0f);
+    Vector3 actualCartesian = Coordinates3.ConvertCylindricalToCartesian(cylindrical);
+    Assert.That(actualCartesian.x, Is.EqualTo(expectedCartesian.x).Within(Epsilon));
+    Assert.That(actualCartesian.y, Is.EqualTo(expectedCartesian.y).Within(Epsilon));
+    Assert.That(actualCartesian.z, Is.EqualTo(expectedCartesian.z).Within(Epsilon));
+  }
+
+  [Test]
+  public void TestCartesianToCylindricalOrigin() {
+    Vector3 cartesian = Vector3.zero;
+    Assert.That(Coordinates3.ConvertCartesianToCylindrical(cartesian).x,
+                Is.EqualTo(0).Within(Epsilon));
+  }
+
+  [Test]
+  public void TestCartesianToCylindrical() {
+    Vector3 cartesian = new Vector3(2, -1, 3);
+    Vector3 expectedCylindrical = new Vector3(Mathf.Sqrt(13), 33.6900675f, -1);
+    Vector3 actualCylindrical = Coordinates3.ConvertCartesianToCylindrical(cartesian);
+    Assert.That(actualCylindrical.x, Is.EqualTo(expectedCylindrical.x).Within(Epsilon));
+    Assert.That(actualCylindrical.y, Is.EqualTo(expectedCylindrical.y).Within(Epsilon));
+    Assert.That(actualCylindrical.z, Is.EqualTo(expectedCylindrical.z).Within(Epsilon));
+  }
 }

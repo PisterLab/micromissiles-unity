@@ -22,6 +22,13 @@ public class LaunchPlan {
     InterceptPosition = interceptPosition;
     ShouldLaunch = shouldLaunch;
   }
+
+  // Get the normalized launch vector.
+  public Vector3 GetNormalizedLaunchVector() {
+    Vector3 interceptDirection = Coordinates3.ConvertCartesianToSpherical(InterceptPosition);
+    return Coordinates3.ConvertSphericalToCartesian(r: 1, azimuth: interceptDirection[1],
+                                                    elevation: LaunchAngle);
+  }
 }
 
 // The launch planner class is an interface for planning when and where to launch an interceptor to
