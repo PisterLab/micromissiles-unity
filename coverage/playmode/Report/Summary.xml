@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>07/11/2025 - 05:44:30</Generatedon>
+    <Generatedon>07/11/2025 - 22:22:19</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>101</Classes>
     <Files>80</Files>
     <Coveredlines>1354</Coveredlines>
-    <Uncoveredlines>4013</Uncoveredlines>
-    <Coverablelines>5367</Coverablelines>
-    <Totallines>9449</Totallines>
+    <Uncoveredlines>4015</Uncoveredlines>
+    <Coverablelines>5369</Coverablelines>
+    <Totallines>9456</Totallines>
     <Linecoverage>25.2</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
@@ -18,7 +18,7 @@
     <Methodcoverage>29.8</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="78" coverage="30.5" coveredlines="1306" coverablelines="4280" totallines="9407" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="221" totalmethods="631" methodcoverage="35">
+    <Assembly name="bamlab.micromissiles" classes="78" coverage="30.4" coveredlines="1306" coverablelines="4282" totallines="9414" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="221" totalmethods="631" methodcoverage="35">
       <Class name="Agent" coverage="61.5" coveredlines="160" coverablelines="260" totallines="465" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="27" totalmethods="46" methodcoverage="58.6" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -51,7 +51,7 @@
       <Class name="Interpolator2DDataPoint" coverage="0" coveredlines="0" coverablelines="16" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="IPredictor" coverage="0" coveredlines="0" coverablelines="3" totallines="37" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="ISizeAndRadiusConstrainedClusterer" coverage="60" coveredlines="6" coverablelines="10" totallines="56" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
-      <Class name="IterativeLaunchPlanner" coverage="0" coveredlines="0" coverablelines="27" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="IterativeLaunchPlanner" coverage="0" coveredlines="0" coverablelines="29" totallines="79" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="KDNode[T]" coverage="0" coveredlines="0" coverablelines="5" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="KDTree[T]" coverage="0" coveredlines="0" coverablelines="43" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
       <Class name="KMeansClusterer" coverage="0" coveredlines="0" coverablelines="55" totallines="123" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
