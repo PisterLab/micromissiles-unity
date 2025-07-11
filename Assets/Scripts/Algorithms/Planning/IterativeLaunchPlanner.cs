@@ -9,14 +9,19 @@ using UnityEngine;
 //  2. Intercept position estimation: The algorithm predicts the target position at the estimated
 //  time-to-intercept.
 public class IterativeLaunchPlanner : ILaunchPlanner {
-  // Maximum number of iterations before declaring failure.
+  // Maximum number of iterations before declaring failure. In certain cases, the predictor and
+  // planner do not converge, so we need to limit the number of iterations.
   private const int MaxNumIterations = 10;
 
-  // Convergence threshold for the difference vector magnitude.
-  private const float ConvergenceThreshold = 1e-3f;
+  // Convergence threshold in meters for the difference vector magnitude. Convergence is declared
+  // when the intercept position has not changed by more than this threshold between iterations.
+  private const float ConvergenceThreshold = 10f;
 
-  // Maximum intercept position threshold to declare convergence.
-  private const float InterceptPositionThreshold = 1000;
+  // Maximum intercept position threshold in meters to declare convergence. This threshold is used
+  // as a final sanity check to ensure that the predicted target position and intercept position do
+  // not differ by more than this threshold. This threshold should be set depending on the
+  // granularity of the possible intercept positions.
+  private const float InterceptPositionThreshold = 1000f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
@@ -28,7 +33,6 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
     LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
     Vector3 interceptPosition = new Vector3();
-    LaunchPlan launchPlan = new LaunchPlan();
     for (int i = 0; i < MaxNumIterations; ++i) {
       // Estimate the time-to-intercept.
       launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
@@ -49,8 +53,9 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
       // Check that the target is moving towards the intercept position. Otherwise, the interceptor
       // should wait to be launched.
-      if (Vector3.Dot(interceptPosition - initialState.Position,
-                      targetPosition - initialState.Position) < 0) {
+      Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
+      Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
+      if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
         return LaunchPlan.NoLaunch;
       }
     }
@@ -58,7 +63,9 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     // Check that the interceptor is moving towards the target. If the target is moving too fast,
     // the interceptor might be launched backwards because the intercept position and the predicted
     // position are behind the asset. In this case, the interceptor should wait to be launched.
-    if (Vector3.Dot(interceptPosition, targetPosition - initialState.Position) > 0) {
+    Vector3 interceptorToInterceptPosition = interceptPosition;
+    Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
+    if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
       return LaunchPlan.NoLaunch;
     }
 
