@@ -69,6 +69,15 @@ public class IterativeLaunchPlannerTest {
   }
 
   [Test]
+  public void TestLaunchDivergingFromOrigin() {
+    Agent agent = GenerateAgent(position: new Vector3(0, 1, -80), velocity: new Vector3(0, 0, -1));
+    LinearExtrapolator predictor = new LinearExtrapolator(agent);
+    IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
+    LaunchPlan plan = planner.Plan();
+    Assert.IsFalse(plan.ShouldLaunch);
+  }
+
+  [Test]
   public void TestNoLaunchDivergingFromInterceptPoint() {
     Agent agent = GenerateAgent(position: new Vector3(1, 105, 0), velocity: new Vector3(0, 1, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
