@@ -541,7 +541,7 @@ public class SimManager : MonoBehaviour {
 
   public void RestartSimulation() {
     OnSimulationEnded?.Invoke();
-    Debug.Log("Simulation ended");
+    Debug.Log("Simulation ended.");
     UIManager.Instance.LogActionMessage("[SIM] Simulation restarted.");
     // Reset the simulation time.
     _elapsedSimulationTime = 0f;

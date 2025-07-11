@@ -28,9 +28,11 @@ public class Coordinates2 {
 // Utility functions for 3D coordinates.
 // In Cartesian coordinates, the x-axis points right, the y-axis points up, and the z-axis points
 // forward. The coordinates are given by (x, y, z).
-// In spherical coordinates, the azimuth is measured in degrees from the x-axis clockwise to the
-// z-axis, and elevation is measured in degrees from the x-z plane up to the y-axis. The coordinates
+// In spherical coordinates, the azimuth is measured in degrees from the z-axis clockwise to the
+// x-axis, and elevation is measured in degrees from the x-z plane up to the y-axis. The coordinates
 // are given by (r, azimuth, elevation).
+// In cylindrical coordinates, the azimuth is measured in degrees from the z-axis clockwise to the
+// x-axis. The coordinates are given by (r, azimuth, height).
 public class Coordinates3 {
   public static Vector3 ConvertCartesianToSpherical(in Vector3 cartesian) {
     float r = cartesian.magnitude;
@@ -54,5 +56,25 @@ public class Coordinates3 {
   }
   public static Vector3 ConvertSphericalToCartesian(float r, float azimuth, float elevation) {
     return ConvertSphericalToCartesian(new Vector3(r, azimuth, elevation));
+  }
+
+  public static Vector3 ConvertCartesianToCylindrical(in Vector3 cartesian) {
+    float r = Mathf.Sqrt(cartesian.x * cartesian.x + cartesian.z * cartesian.z);
+    float azimuth = Mathf.Atan2(cartesian.x, cartesian.z) * Mathf.Rad2Deg;
+    float height = cartesian.y;
+    return new Vector3(r, azimuth, height);
+  }
+  public static Vector3 ConvertCartesianToCylindrical(float x, float y, float z) {
+    return ConvertCartesianToCylindrical(new Vector3(x, y, z));
+  }
+
+  public static Vector3 ConvertCylindricalToCartesian(in Vector3 cylindrical) {
+    float y = cylindrical.z;
+    float x = cylindrical.x * Mathf.Sin(cylindrical.y * Mathf.Deg2Rad);
+    float z = cylindrical.x * Mathf.Cos(cylindrical.y * Mathf.Deg2Rad);
+    return new Vector3(x, y, z);
+  }
+  public static Vector3 ConvertCylindricalToCartesian(float r, float azimuth, float height) {
+    return ConvertCylindricalToCartesian(new Vector3(r, azimuth, height));
   }
 }

@@ -34,11 +34,14 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
   }
 
   // Get the intercept position.
-  public LaunchAngleInput GetInterceptPosition(in LaunchAngleInput input) {
+  public Vector3 GetInterceptPosition(Vector3 position) {
+    Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(position);
     Interpolator2DDataPoint interpolatedDataPoint =
-        _interpolator.Interpolate(input.Distance, input.Altitude);
-    return new LaunchAngleInput(interpolatedDataPoint.Coordinates[0],
-                                altitude: interpolatedDataPoint.Coordinates[1]);
+        _interpolator.Interpolate(direction[0], direction[1]);
+    Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(position);
+    return Coordinates3.ConvertCylindricalToCartesian(r: interpolatedDataPoint.Coordinates[0],
+                                                      azimuth: cylindricalPosition.y,
+                                                      height: interpolatedDataPoint.Coordinates[1]);
   }
 }
 
