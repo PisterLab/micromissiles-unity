@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/11/2025 - 05:42:48 |
+| Generated on: | 07/11/2025 - 22:20:09 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 101 |
 | Files: | 80 |
-| Covered lines: | 1937 |
-| Uncovered lines: | 3430 |
-| Coverable lines: | 5367 |
-| Total lines: | 9449 |
-| Line coverage: | 36% (1937 of 5367) |
+| Covered lines: | 1933 |
+| Uncovered lines: | 3436 |
+| Coverable lines: | 5369 |
+| Total lines: | 9456 |
+| Line coverage: | 36% (1933 of 5369) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 271 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**930**|**3350**|**4280**|**9407**|**21.7%**|**0**|**0**|****|**159**|**631**|**25.1%**|
+|**bamlab.micromissiles**|**932**|**3350**|**4282**|**9414**|**21.7%**|**0**|**0**|****|**159**|**631**|**25.1%**|
 |Agent|104|156|260|465|40%|0|0||21|46|45.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -52,7 +52,7 @@
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
-|IterativeLaunchPlanner|27|0|27|72|100%|0|0||2|2|100%|
+|IterativeLaunchPlanner|29|0|29|79|100%|0|0||2|2|100%|
 |KDNode[T]|5|0|5|87|100%|0|0||1|1|100%|
 |KDTree[T]|43|0|43|87|100%|0|0||4|4|100%|
 |KMeansClusterer|49|6|55|123|89%|0|0||4|4|100%|
@@ -102,7 +102,7 @@
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**962**|**12**|**974**|**2130**|**98.7%**|**0**|**0**|****|**103**|**105**|**98%**|
+|**bamlab.test.editmode**|**956**|**18**|**974**|**2130**|**98.1%**|**0**|**0**|****|**103**|**105**|**98%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
@@ -110,7 +110,7 @@
 |Coordinates3Test|56|0|56|158|100%|0|0||8|8|100%|
 |IterativeLaunchPlannerTest|60|0|60|97|100%|0|0||10|10|100%|
 |KDTreeTest|39|0|39|55|100%|0|0||4|4|100%|
-|KMeansClustererTest|37|0|37|150|100%|0|0||4|4|100%|
+|KMeansClustererTest|31|6|37|150|83.7%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTest|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
