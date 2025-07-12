@@ -32,7 +32,7 @@ export default defineConfig({
             ]
           },
           { text: 'Development Guide', link: '/Development_Guide' },
-          { text: 'C++ Plugins Guide', link: '/Cpp_Plugins_Guide' }
+          { text: 'C++ Plugins Guide', link: '/Plugins_Guide' }
         ]
       }
     ],

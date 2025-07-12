@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "micromissiles-unity"
   
-  tagline: "Swarm-on-swarm simulator using micromissiles for point defense"
+  tagline: "A large-scale air defense simulation platform for simulating swarm-on-swarm engagements with hierarchical interceptors and micromissiles"
   actions:
     - theme: brand
       text: Documentation
