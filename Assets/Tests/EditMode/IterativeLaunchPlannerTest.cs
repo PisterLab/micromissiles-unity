@@ -36,7 +36,7 @@ public class IterativeLaunchPlannerTest {
 
   [Test]
   public void TestInterceptAtDataPoint() {
-    Agent agent = GenerateAgent(position: new Vector3(1, 90, 0), velocity: new Vector3(0, 1, 0));
+    Agent agent = GenerateAgent(position: new Vector3(1, 110, 0), velocity: new Vector3(0, -1, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();
@@ -47,7 +47,8 @@ public class IterativeLaunchPlannerTest {
 
   [Test]
   public void TestInterceptAroundDataPoint() {
-    Agent agent = GenerateAgent(position: new Vector3(1, 90, 0), velocity: new Vector3(0, 0.9f, 0));
+    Agent agent =
+        GenerateAgent(position: new Vector3(1, 110, 0), velocity: new Vector3(0, -1.1f, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();
@@ -65,6 +66,15 @@ public class IterativeLaunchPlannerTest {
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(20, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(61, 1, 0), plan.InterceptPosition);
+  }
+
+  [Test]
+  public void TestLaunchDivergingFromOrigin() {
+    Agent agent = GenerateAgent(position: new Vector3(0, 1, -80), velocity: new Vector3(0, 0, -1));
+    LinearExtrapolator predictor = new LinearExtrapolator(agent);
+    IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
+    LaunchPlan plan = planner.Plan();
+    Assert.IsFalse(plan.ShouldLaunch);
   }
 
   [Test]

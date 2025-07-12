@@ -127,11 +127,8 @@ public class IADS : MonoBehaviour {
         // Set the initial position, which defaults to the origin.
         initialState.position = Vector3.zero;
 
-        // Set the initial velocity.
-        Vector3 interceptDirection =
-            Coordinates3.ConvertCartesianToSpherical(plan.InterceptPosition);
-        initialState.velocity = Coordinates3.ConvertSphericalToCartesian(
-            r: 1e-3f, azimuth: interceptDirection[1], elevation: plan.LaunchAngle);
+        // Set the initial velocity to point along the launch vector.
+        initialState.velocity = plan.GetNormalizedLaunchVector() * 1e-3f;
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Assign the interceptor to the cluster.
