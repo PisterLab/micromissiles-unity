@@ -36,7 +36,6 @@ Follow the instructions below for your operating system to download and run the 
 2. Untar the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin`.
 3. In the `micromissiles-<version>-darwin` directory, run the app file.
 
-
 ## Basics
 
 - Use the mouse and arrow keys (or WASD) to pan and rotate the camera.
@@ -44,7 +43,6 @@ Follow the instructions below for your operating system to download and run the 
 - Use `R` to restart the simulation.
 - Use `SPACEBAR` to pause/resume the simulation.
 - Use `ESC` to exit the application.
-
 
 ## Next Steps
 

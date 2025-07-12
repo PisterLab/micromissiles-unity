@@ -8,7 +8,6 @@ outline: [2,4]
 
 [[toc]]
 
-
 ## Introduction
 
 ![Simulation config files](./images/agent_config_files.png)
@@ -25,7 +24,6 @@ Understanding these configurations will enable you to set up complex simulations
 
 > [!DANGER]
 > Always back up configuration files before making significant changes. Incorrect configurations can lead to simulation errors.
-
 
 ## Configuration Files
 
@@ -121,7 +119,6 @@ Each swarm configuration includes:
   - **`dynamic_config`**: Time-dependent settings (launch times, sensor configurations, flight configurations).
   - **`submunitions_config`** (for interceptors): Configuration for any submunitions deployed.
 
-
 ### Examples
 
 The simulation configurations are defined in JSON files that specify the initial setup for missiles and targets.
@@ -212,7 +209,6 @@ A simple simulation with one interceptor (`Hydra 70`) and seven threat drones.
   - Uses quadcopter model and direct attack behavior
   - Initial positions/velocities also get random variations
   - Each drone follows attack_behavior defined in "default_direct_attack.json"
-
 
 #### Example 2: `3_salvo_2_sfrj_5_fateh110b.json`
 
@@ -361,8 +357,6 @@ towards the threat.
 >
 > This means the initial velocity is critically important to good simulation results of ballistic missile threats.
 
-
-
 ### Adding/Modifying Agents to a Simulation Configuration
 
 1. **Add a New Swarm Configuration**:
@@ -428,8 +422,6 @@ The `Models` directory contains the following default model configurations:
 |                 | `fateh110b.json`     | Tactical ballistic missile                     |
 |                 | `quadcopter.json`    | Generic rotary-wing drone                      |
 |                 | `ucav.json`          | Fixed-wing combat drone modeled roughly after the Shahed-136 |
-
-
 
 These JSON files serve as templates of archetypes and can be tweaked to modify the behavior of the corresponding models.
 
@@ -544,10 +536,7 @@ This configuration represents a small drone threat:
 
 The power settings for threats determine their speed and maneuverability at different flight phases. These correspond to the power settings used in their attack behavior configurations.
 
-
 ### Modifying Parameters
-
-
 
 You can tweak the parameters in these model files to adjust performance. For example:
 
@@ -565,7 +554,6 @@ To define a new interceptor or threat model:
 
 3. **Reference the New Model** in your simulation configuration files.
 
-
 ### Relevant C# Scripts
 
 The [Assets/Scripts/Config/StaticConfig.cs](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/StaticConfig.cs) script defines the classes corresponding to the model configuration JSON structure.
@@ -579,7 +567,6 @@ The [Assets/Scripts/Config/StaticConfig.cs](https://github.com/PisterLab/micromi
 **Enums**:
 
 - `InterceptorType`, `ThreatType`, and `SensorType` define available types.
-
 
 ## Attack Behavior Configurations
 
@@ -644,7 +631,6 @@ This creates a phased attack profile where threats:
 1. Initially approach at a higher altitude with efficient power
 2. Maintain altitude through mid-range
 3. Make a final aggressive descent at maximum power for terminal attack
-
 
 ## Troubleshooting Guide
 

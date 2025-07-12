@@ -77,7 +77,6 @@ After the project opens in Unity:
 
 4. The scene will load in the **Scene** view. You can now run the simulation by clicking the **Play** button at the top of the Unity Editor.
 
-
 ## Additional Resources
 
 - [Keybinds and Controls](Keybinds_and_Controls.md)
