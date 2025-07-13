@@ -24,7 +24,6 @@ On macOS, the logs are exported to:
 
 `visualize_log.py` is an example script provided to help visualize and interpret the simulation logs. It is included in the `Tools` directory of the release download.
 
-
 ## Understanding Log Files and Directory Structure
 
 ### Log Directory Structure
@@ -91,7 +90,6 @@ The event log records significant occurrences within the simulation. Key columns
 - **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position where the event occurred.
 - **`EventType`**: Type of event (e.g., `HIT`, `MISS`, `NEW_THREAT`, `NEW_INTERCEPTOR`).
 - **`Details`**: Additional details about the event.
-
 
 ## Running the `visualize_log.py` Script
 

@@ -81,3 +81,4 @@ After the project opens in Unity:
 
 - [Keybinds and Controls](Keybinds_and_Controls.md)
 - [Simulation Configuration Guide](Simulation_Config_Guide.md)
+- [Plugins Guide](Plugins_Guide.md)

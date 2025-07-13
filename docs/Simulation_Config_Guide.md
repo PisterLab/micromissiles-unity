@@ -69,14 +69,14 @@ Configs/
         └── fateh110b_direct_attack.json     # Ballistic missile profile
 ```
 
-| **Scenario Type**          | **File Name**                        | **Description**                                      |
-|---------------------------|--------------------------------------|------------------------------------------------------|
-| **Basic Scenarios**       | `1_salvo_1_hydra_7_drones.json`      | Simple 7v7 scenario with one carrier rocket          |
-|                          | `2_salvo_4_hydra_7_quad_15_ucav.json` | Mixed threat scenario with drones and UCAVs          |
-| **Large-Scale Scenarios** | `3_salvo_10_hydra_200_drones.json`   | Large-scale defense against drone swarm (210v200)    |
-|                          | `3_salvo_6_sfrj_50_fateh110b.json`    | Large-scale ballistic missile defense (72v50)        |
-| **Advanced Threats**     | `1_salvo_4_hydra_10_brahmos.json`     | Defense against supersonic cruise missiles           |
-|                          | `1_salvo_3_sfrj_30_ascm.json`         | Anti-ship missile defense scenario                   |
+| **Scenario Type**          | **File Name**                         | **Description**                                      |
+|----------------------------|---------------------------------------|------------------------------------------------------|
+| **Basic Scenarios**        | `1_salvo_1_hydra_7_drones.json`       | Simple 7v7 scenario with one carrier rocket          |
+|                            | `2_salvo_4_hydra_7_quad_15_ucav.json` | Mixed threat scenario with drones and UCAVs          |
+| **Large-Scale Scenarios**  | `3_salvo_10_hydra_200_drones.json`    | Large-scale defense against drone swarm (210v200)    |
+|                            | `3_salvo_6_sfrj_50_fateh110b.json`    | Large-scale ballistic missile defense (72v50)        |
+| **Advanced Threats**       | `1_salvo_4_hydra_10_brahmos.json`     | Defense against supersonic cruise missiles           |
+|                            | `1_salvo_3_sfrj_30_ascm.json`         | Anti-ship missile defense scenario                   |
 
 ### File Locations
 
