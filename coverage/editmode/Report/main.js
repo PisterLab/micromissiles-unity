@@ -254,7 +254,7 @@ var assemblies = [
       { "name": "Interceptor", "rp": "bamlab.micromissiles_Interceptor.html", "cl": 8, "ucl": 149, "cal": 157, "tl": 242, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InterceptorData", "rp": "bamlab.micromissiles_InterceptorData.html", "cl": 0, "ucl": 19, "cal": 19, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InterceptorOriginConfig", "rp": "bamlab.micromissiles_InterceptorOriginConfig.html", "cl": 25, "ucl": 39, "cal": 64, "tl": 188, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "InterceptorOriginManager", "rp": "bamlab.micromissiles_InterceptorOriginManager.html", "cl": 99, "ucl": 64, "cal": 163, "tl": 358, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "InterceptorOriginManager", "rp": "bamlab.micromissiles_InterceptorOriginManager.html", "cl": 93, "ucl": 64, "cal": 157, "tl": 342, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InterceptorOriginObject", "rp": "bamlab.micromissiles_InterceptorOriginObject.html", "cl": 9, "ucl": 65, "cal": 74, "tl": 153, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InterceptorOriginReference", "rp": "bamlab.micromissiles_InterceptorOriginReference.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 55, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Interpolator2DDataPoint", "rp": "bamlab.micromissiles_Interpolator2DDataPoint.html", "cl": 15, "ucl": 1, "cal": 16, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -333,7 +333,7 @@ var assemblies = [
       { "name": "MaxSpeedAssignmentTest", "rp": "bamlab.test.editmode_MaxSpeedAssignmentTest.html", "cl": 107, "ucl": 0, "cal": 107, "tl": 181, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "MockPredictor", "rp": "bamlab.test.editmode_MockPredictor.html", "cl": 18, "ucl": 6, "cal": 24, "tl": 290, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "NearestNeighborInterpolator2DTest", "rp": "bamlab.test.editmode_NearestNeighborInterpolator2DTest.html", "cl": 56, "ucl": 0, "cal": 56, "tl": 107, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "OriginAssignmentStrategyTest", "rp": "bamlab.test.editmode_OriginAssignmentStrategyTest.html", "cl": 142, "ucl": 0, "cal": 142, "tl": 320, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "OriginAssignmentStrategyTest", "rp": "bamlab.test.editmode_OriginAssignmentStrategyTest.html", "cl": 129, "ucl": 0, "cal": 129, "tl": 295, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "OriginAwareLaunchPlanningTest", "rp": "bamlab.test.editmode_OriginAwareLaunchPlanningTest.html", "cl": 105, "ucl": 0, "cal": 105, "tl": 290, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "PriorityQueueTest", "rp": "bamlab.test.editmode_PriorityQueueTest.html", "cl": 62, "ucl": 0, "cal": 62, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SanityTest", "rp": "bamlab.test.editmode_SanityTest.html", "cl": 5, "ucl": 2, "cal": 7, "tl": 22, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -443,7 +443,7 @@ var riskHotspots = [
       { "value": 90, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "InterceptorOriginManager", "reportPath": "bamlab.micromissiles_InterceptorOriginManager.html", "methodName": "System.Collections.Generic.List[String] InterceptorOriginManager::ValidateConfiguration()", "methodShortName": "ValidateConfiguration()", "fileIndex": 0, "line": 310,
+    "assembly": "bamlab.micromissiles", "class": "InterceptorOriginManager", "reportPath": "bamlab.micromissiles_InterceptorOriginManager.html", "methodName": "System.Collections.Generic.List[String] InterceptorOriginManager::ValidateConfiguration()", "methodShortName": "ValidateConfiguration()", "fileIndex": 0, "line": 294,
     "metrics": [
       { "value": 8, "exceeded": false },
       { "value": 0, "exceeded": false },

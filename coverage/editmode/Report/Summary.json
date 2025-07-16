@@ -1,24 +1,24 @@
 {
   "summary": {
-    "generatedon": "2025-07-16T06:32:38Z",
+    "generatedon": "2025-07-16T21:27:29Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 110,
     "files": 88,
-    "coveredlines": 2561,
+    "coveredlines": 2542,
     "uncoveredlines": 3810,
-    "coverablelines": 6371,
-    "totallines": 11597,
-    "linecoverage": 40.1,
+    "coverablelines": 6352,
+    "totallines": 11556,
+    "linecoverage": 40,
     "coveredbranches": 0,
     "totalbranches": 0,
-    "coveredmethods": 347,
-    "totalmethods": 870,
-    "methodcoverage": 39.8
+    "coveredmethods": 345,
+    "totalmethods": 868,
+    "methodcoverage": 39.7
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 83, "coverage": 24.3, "coveredlines": 1189, "coverablelines": 4882, "totallines": 10947, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 27.7, "coveredmethods": 197, "totalmethods": 710, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 83, "coverage": 24.2, "coveredlines": 1183, "coverablelines": 4876, "totallines": 10931, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 27.6, "coveredmethods": 196, "totalmethods": 709, "classesinassembly": [
         { "name": "Agent", "coverage": 40, "coveredlines": 104, "coverablelines": 260, "totallines": 465, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 45.6, "coveredmethods": 21, "totalmethods": 46 },
         { "name": "AgglomerativeClusterer", "coverage": 98.4, "coveredlines": 63, "coverablelines": 64, "totallines": 101, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -49,7 +49,7 @@
         { "name": "Interceptor", "coverage": 5, "coveredlines": 8, "coverablelines": 157, "totallines": 242, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 11.7, "coveredmethods": 2, "totalmethods": 17 },
         { "name": "InterceptorData", "coverage": 0, "coveredlines": 0, "coverablelines": 19, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "InterceptorOriginConfig", "coverage": 39, "coveredlines": 25, "coverablelines": 64, "totallines": 188, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 60, "coveredmethods": 6, "totalmethods": 10 },
-        { "name": "InterceptorOriginManager", "coverage": 60.7, "coveredlines": 99, "coverablelines": 163, "totallines": 358, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 57.1, "coveredmethods": 12, "totalmethods": 21 },
+        { "name": "InterceptorOriginManager", "coverage": 59.2, "coveredlines": 93, "coverablelines": 157, "totallines": 342, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 55, "coveredmethods": 11, "totalmethods": 20 },
         { "name": "InterceptorOriginObject", "coverage": 12.1, "coveredlines": 9, "coverablelines": 74, "totallines": 153, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 14.2, "coveredmethods": 2, "totalmethods": 14 },
         { "name": "InterceptorOriginReference", "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 55, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "Interpolator2DDataPoint", "coverage": 93.7, "coveredlines": 15, "coverablelines": 16, "totallines": 86, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 80, "coveredmethods": 4, "totalmethods": 5 },
@@ -106,7 +106,7 @@
         { "name": "AgentTestBase", "coverage": 73.9, "coveredlines": 17, "coverablelines": 23, "totallines": 40, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 3, "totalmethods": 4 },
         { "name": "SensorTestBase", "coverage": 0, "coveredlines": 0, "coverablelines": 11, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "TestBase", "coverage": 93.3, "coveredlines": 28, "coverablelines": 30, "totallines": 44, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 6, "totalmethods": 6 } ] },
-      { "name": "bamlab.test.editmode", "classes": 22, "coverage": 96.4, "coveredlines": 1327, "coverablelines": 1376, "totallines": 3319, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 97.2, "coveredmethods": 141, "totalmethods": 145, "classesinassembly": [
+      { "name": "bamlab.test.editmode", "classes": 22, "coverage": 96.4, "coveredlines": 1314, "coverablelines": 1363, "totallines": 3294, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 97.2, "coveredmethods": 140, "totalmethods": 144, "classesinassembly": [
         { "name": "AgglomerativeClustererTest", "coverage": 100, "coveredlines": 42, "coverablelines": 42, "totallines": 69, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 6, "totalmethods": 6 },
         { "name": "ClusterTest", "coverage": 100, "coveredlines": 74, "coverablelines": 74, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 },
         { "name": "ConstrainedKMeansClustererTest", "coverage": 100, "coveredlines": 35, "coverablelines": 35, "totallines": 150, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 6, "totalmethods": 6 },
@@ -122,7 +122,7 @@
         { "name": "MaxSpeedAssignmentTest", "coverage": 100, "coveredlines": 107, "coverablelines": 107, "totallines": 181, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "MockPredictor", "coverage": 75, "coveredlines": 18, "coverablelines": 24, "totallines": 290, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 4, "totalmethods": 6 },
         { "name": "NearestNeighborInterpolator2DTest", "coverage": 100, "coveredlines": 56, "coverablelines": 56, "totallines": 107, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 7, "totalmethods": 7 },
-        { "name": "OriginAssignmentStrategyTest", "coverage": 100, "coveredlines": 142, "coverablelines": 142, "totallines": 320, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 14, "totalmethods": 14 },
+        { "name": "OriginAssignmentStrategyTest", "coverage": 100, "coveredlines": 129, "coverablelines": 129, "totallines": 295, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 13, "totalmethods": 13 },
         { "name": "OriginAwareLaunchPlanningTest", "coverage": 100, "coveredlines": 105, "coverablelines": 105, "totallines": 290, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 10, "totalmethods": 10 },
         { "name": "PriorityQueueTest", "coverage": 100, "coveredlines": 62, "coverablelines": 62, "totallines": 87, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 7, "totalmethods": 7 },
         { "name": "SanityTest", "coverage": 71.4, "coveredlines": 5, "coverablelines": 7, "totallines": 22, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
