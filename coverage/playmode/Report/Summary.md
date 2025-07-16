@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/16/2025 - 06:35:43 |
+| Generated on: | 07/16/2025 - 21:29:18 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
 | Files: | 88 |
 | Covered lines: | 1526 |
-| Uncovered lines: | 4845 |
-| Coverable lines: | 6371 |
-| Total lines: | 11597 |
-| Line coverage: | 23.9% (1526 of 6371) |
+| Uncovered lines: | 4826 |
+| Coverable lines: | 6352 |
+| Total lines: | 11556 |
+| Line coverage: | 24% (1526 of 6352) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 241 |
-| Total methods: | 870 |
-| Method coverage: | 27.7% (241 of 870) |
+| Total methods: | 868 |
+| Method coverage: | 27.7% (241 of 868) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1478**|**3404**|**4882**|**10947**|**30.2%**|**0**|**0**|****|**238**|**710**|**33.5%**|
+|**bamlab.micromissiles**|**1478**|**3398**|**4876**|**10931**|**30.3%**|**0**|**0**|****|**238**|**709**|**33.5%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -50,7 +50,7 @@
 |Interceptor|0|157|157|242|0%|0|0||0|17|0%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
 |InterceptorOriginConfig|29|35|64|188|45.3%|0|0||4|10|40%|
-|InterceptorOriginManager|39|124|163|358|23.9%|0|0||6|21|28.5%|
+|InterceptorOriginManager|39|118|157|342|24.8%|0|0||6|20|30%|
 |InterceptorOriginObject|14|60|74|153|18.9%|0|0||4|14|28.5%|
 |InterceptorOriginReference|0|22|22|55|0%|0|0||0|6|0%|
 |Interpolator2DDataPoint|0|16|16|86|0%|0|0||0|5|0%|
@@ -107,7 +107,7 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**1376**|**1376**|**3319**|**0%**|**0**|**0**|****|**0**|**145**|**0%**|
+|**bamlab.test.editmode**|**0**|**1363**|**1363**|**3294**|**0%**|**0**|**0**|****|**0**|**144**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
@@ -123,7 +123,7 @@
 |MaxSpeedAssignmentTest|0|107|107|181|0%|0|0||0|5|0%|
 |MockPredictor|0|24|24|290|0%|0|0||0|6|0%|
 |NearestNeighborInterpolator2DTest|0|56|56|107|0%|0|0||0|7|0%|
-|OriginAssignmentStrategyTest|0|142|142|320|0%|0|0||0|14|0%|
+|OriginAssignmentStrategyTest|0|129|129|295|0%|0|0||0|13|0%|
 |OriginAwareLaunchPlanningTest|0|105|105|290|0%|0|0||0|10|0%|
 |PriorityQueueTest|0|62|62|87|0%|0|0||0|7|0%|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
