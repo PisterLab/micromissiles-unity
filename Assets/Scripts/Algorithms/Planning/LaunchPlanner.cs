@@ -23,12 +23,11 @@ public class LaunchPlan {
     ShouldLaunch = shouldLaunch;
   }
 
-  /// <summary>
-  /// Gets the normalized launch vector from the interceptor origin.
-  /// This vector represents the direction the interceptor should be launched.
-  /// </summary>
-  /// <param name="originPosition">Position of the interceptor origin (default: Vector3.zero for
-  /// backward compatibility)</param> <returns>Normalized launch direction vector</returns>
+  // Gets the normalized launch vector from the interceptor origin.
+  // This vector represents the direction the interceptor should be launched.
+  // Parameters:
+  //   originPosition: Position of the interceptor origin (default: Vector3.zero for backward compatibility)
+  // Returns: Normalized launch direction vector
   public Vector3 GetNormalizedLaunchVector(Vector3 originPosition = default(Vector3)) {
     // Calculate direction from origin to intercept position
     Vector3 targetDirection = InterceptPosition - originPosition;
@@ -37,9 +36,7 @@ public class LaunchPlan {
                                                     elevation: LaunchAngle);
   }
 
-  /// <summary>
-  /// Determines whether the specified LaunchPlan is equal to the current LaunchPlan.
-  /// </summary>
+  // Determines whether the specified LaunchPlan is equal to the current LaunchPlan.
   public override bool Equals(object obj) {
     if (obj == null || GetType() != obj.GetType()) {
       return false;
@@ -62,16 +59,12 @@ public class LaunchPlan {
            Vector3.Distance(InterceptPosition, other.InterceptPosition) < 0.001f;
   }
 
-  /// <summary>
-  /// Returns a hash code for this LaunchPlan.
-  /// </summary>
+  // Returns a hash code for this LaunchPlan.
   public override int GetHashCode() {
     return ShouldLaunch.GetHashCode() ^ LaunchAngle.GetHashCode() ^ InterceptPosition.GetHashCode();
   }
 
-  /// <summary>
-  /// Returns a string representation of this LaunchPlan.
-  /// </summary>
+  // Returns a string representation of this LaunchPlan.
   public override string ToString() {
     if (!ShouldLaunch) {
       return "LaunchPlan: NoLaunch";
@@ -94,20 +87,17 @@ public abstract class ILaunchPlanner {
     _predictor = predictor;
   }
 
-  /// <summary>
-  /// Plan the launch from the default origin (0,0,0).
-  /// Maintained for backward compatibility.
-  /// </summary>
-  /// <returns>Launch plan with timing and angle information</returns>
+  // Plan the launch from the default origin (0,0,0).
+  // Maintained for backward compatibility.
+  // Returns: Launch plan with timing and angle information
   public abstract LaunchPlan Plan();
 
-  /// <summary>
-  /// Plan the launch from a specific interceptor origin.
-  /// This method accounts for the interceptor's starting position when calculating
-  /// intercept trajectories and launch angles.
-  /// </summary>
-  /// <param name="origin">Interceptor origin configuration</param>
-  /// <param name="currentTime">Current simulation time for moving origins</param>
-  /// <returns>Launch plan with timing and angle information</returns>
+  // Plan the launch from a specific interceptor origin.
+  // This method accounts for the interceptor's starting position when calculating
+  // intercept trajectories and launch angles.
+  // Parameters:
+  //   origin: Interceptor origin configuration
+  //   currentTime: Current simulation time for moving origins
+  // Returns: Launch plan with timing and angle information
   public abstract LaunchPlan Plan(InterceptorOriginConfig origin, float currentTime);
 }

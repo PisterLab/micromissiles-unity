@@ -94,10 +94,8 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  /// <summary>
-  /// Checks each threat cluster and launches interceptors as needed.
-  /// Now supports origin-aware launch planning with configurable assignment strategies.
-  /// </summary>
+  // Checks each threat cluster and launches interceptors as needed.
+  // Now supports origin-aware launch planning with configurable assignment strategies.
   private void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
@@ -172,10 +170,8 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  /// <summary>
-  /// Gets the interceptor configuration for launching.
-  /// Supports manual origin assignment from swarm configuration.
-  /// </summary>
+  // Gets the interceptor configuration for launching.
+  // Supports manual origin assignment from swarm configuration.
   private DynamicAgentConfig GetInterceptorConfig() {
     var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
     if (swarmConfigs == null || swarmConfigs.Count == 0) {
@@ -188,11 +184,9 @@ public class IADS : MonoBehaviour {
     return swarmConfigs[0].dynamic_agent_config;
   }
 
-  /// <summary>
-  /// Selects the most appropriate origin for engaging a threat.
-  /// Uses the configured assignment strategy and accounts for origin capabilities.
-  /// Returns the runtime origin object, not just the configuration.
-  /// </summary>
+  // Selects the most appropriate origin for engaging a threat.
+  // Uses the configured assignment strategy and accounts for origin capabilities.
+  // Returns the runtime origin object, not just the configuration.
   private InterceptorOriginObject SelectOriginForThreat(Vector3 threatPosition,
                                                         string interceptorType) {
     var strategy = SimManager.Instance.SimulationConfig.origin_assignment_strategy;
@@ -209,10 +203,8 @@ public class IADS : MonoBehaviour {
                                        manualOriginId);
   }
 
-  /// <summary>
-  /// Creates an initial state for an interceptor based on the selected origin and launch plan.
-  /// Uses the runtime origin object to get actual position.
-  /// </summary>
+  // Creates an initial state for an interceptor based on the selected origin and launch plan.
+  // Uses the runtime origin object to get actual position.
   private InitialState CreateInitialStateFromOrigin(InterceptorOriginObject origin, LaunchPlan plan,
                                                     float currentTime) {
     // Use the actual GameObject position from runtime object

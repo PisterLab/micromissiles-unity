@@ -1,25 +1,20 @@
 using UnityEngine;
 
-/// <summary>
-/// Runtime representation of an interceptor origin in the simulation.
-/// This component manages the actual GameObject state and provides access to current position/velocity.
-/// The associated InterceptorOriginConfig provides the static configuration data.
-/// </summary>
+// Runtime representation of an interceptor origin in the simulation.
+// This component manages the actual GameObject state and provides access to current position/velocity.
+// The associated InterceptorOriginConfig provides the static configuration data.
 public class InterceptorOriginObject : MonoBehaviour {
   private InterceptorOriginConfig _originConfig;
   private Vector3 _startPosition;
   private float _startTime;
   private Rigidbody _rigidbody;
 
-  /// <summary>
-  /// Gets the unique identifier for this origin.
-  /// </summary>
+  // Gets the unique identifier for this origin.
   public string OriginId => _originConfig?.id ?? "Unknown";
 
-  /// <summary>
-  /// Sets the origin configuration for this GameObject.
-  /// </summary>
-  /// <param name="config">The origin configuration</param>
+  // Sets the origin configuration for this GameObject.
+  // Parameters:
+  //   config: The origin configuration
   public void SetOriginConfig(InterceptorOriginConfig config) {
     _originConfig = config;
     _startPosition = transform.position;
@@ -27,29 +22,23 @@ public class InterceptorOriginObject : MonoBehaviour {
     _rigidbody = GetComponent<Rigidbody>();
   }
 
-  /// <summary>
-  /// Gets the origin configuration.
-  /// </summary>
-  /// <returns>The origin configuration</returns>
+  // Gets the origin configuration.
+  // Returns: The origin configuration
   public InterceptorOriginConfig GetOriginConfig() {
     return _originConfig;
   }
 
-  /// <summary>
-  /// Gets the current position of this origin in world space.
-  /// This is the actual GameObject position, not a calculated value.
-  /// </summary>
-  /// <returns>Current position</returns>
+  // Gets the current position of this origin in world space.
+  // This is the actual GameObject position, not a calculated value.
+  // Returns: Current position
   public Vector3 GetPosition() {
     return transform.position;
   }
 
-  /// <summary>
-  /// Gets the current velocity of this origin.
-  /// For static origins, returns Vector3.zero.
-  /// For moving origins, returns the actual Rigidbody velocity.
-  /// </summary>
-  /// <returns>Current velocity</returns>
+  // Gets the current velocity of this origin.
+  // For static origins, returns Vector3.zero.
+  // For moving origins, returns the actual Rigidbody velocity.
+  // Returns: Current velocity
   public Vector3 GetVelocity() {
     if (_rigidbody != null && !_rigidbody.isKinematic) {
       return _rigidbody.linearVelocity;
@@ -57,51 +46,41 @@ public class InterceptorOriginObject : MonoBehaviour {
     return Vector3.zero;
   }
 
-  /// <summary>
-  /// Gets the distance from this origin to a target position.
-  /// </summary>
-  /// <param name="targetPosition">Target position in world space</param>
-  /// <returns>Distance in meters</returns>
+  // Gets the distance from this origin to a target position.
+  // Parameters:
+  //   targetPosition: Target position in world space
+  // Returns: Distance in meters
   public float GetDistanceToTarget(Vector3 targetPosition) {
     return Vector3.Distance(GetPosition(), targetPosition);
   }
 
-  /// <summary>
-  /// Checks if this origin supports launching the specified interceptor type.
-  /// </summary>
-  /// <param name="interceptorType">Interceptor type to check</param>
-  /// <returns>True if supported</returns>
+  // Checks if this origin supports launching the specified interceptor type.
+  // Parameters:
+  //   interceptorType: Interceptor type to check
+  // Returns: True if supported
   public bool SupportsInterceptorType(string interceptorType) {
     return _originConfig?.SupportsInterceptorType(interceptorType) ?? false;
   }
 
-  /// <summary>
-  /// Checks if this origin has available capacity.
-  /// </summary>
-  /// <returns>True if capacity available</returns>
+  // Checks if this origin has available capacity.
+  // Returns: True if capacity available
   public bool HasCapacity() {
     return _originConfig?.HasCapacity() ?? false;
   }
 
-  /// <summary>
-  /// Gets the available interceptor capacity.
-  /// </summary>
-  /// <returns>Number of interceptors that can still be allocated</returns>
+  // Gets the available interceptor capacity.
+  // Returns: Number of interceptors that can still be allocated
   public int GetAvailableCapacity() {
     return _originConfig?.GetAvailableCapacity() ?? 0;
   }
 
-  /// <summary>
-  /// Allocates an interceptor from this origin.
-  /// </summary>
-  /// <returns>True if allocation successful</returns>
+  // Allocates an interceptor from this origin.
+  // Returns: True if allocation successful
   public bool AllocateInterceptor() {
     return _originConfig?.AllocateInterceptor() ?? false;
   }
 
-  /// <summary>
-  /// Releases an interceptor back to this origin.
-  /// </summary>
+  // Releases an interceptor back to this origin.
   public void ReleaseInterceptor() {
     _originConfig?.ReleaseInterceptor();
   }
@@ -114,9 +93,7 @@ public class InterceptorOriginObject : MonoBehaviour {
     }
   }
 
-  /// <summary>
-  /// Called when the origin is selected in the editor or for debugging.
-  /// </summary>
+  // Called when the origin is selected in the editor or for debugging.
   void OnDrawGizmosSelected() {
     if (_originConfig != null) {
       // Draw capacity indicator
@@ -156,9 +133,7 @@ public class InterceptorOriginObject : MonoBehaviour {
     }
   }
 
-  /// <summary>
-  /// Draws gizmos for all origins, even when not selected.
-  /// </summary>
+  // Draws gizmos for all origins, even when not selected.
   void OnDrawGizmos() {
     if (_originConfig != null) {
       // Draw a simple marker for the origin
