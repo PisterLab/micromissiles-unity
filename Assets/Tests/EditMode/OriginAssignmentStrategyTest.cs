@@ -272,31 +272,6 @@ public class OriginAssignmentStrategyTest : TestBase {
   }
 
   [Test]
-  public void TestOriginManager_UpdateMovingOrigins() {
-    // Test bulk update of all moving origin positions
-    float deltaTime = 30f;
-
-    // Get initial positions - calculate directly instead of using obsolete method
-    var initialPositions = new Dictionary<string, Vector3>();
-    foreach (var origin in _testOrigins) {
-      initialPositions[origin.id] = origin.initial_position;
-    }
-
-    // Update all moving origins
-    _originManager.UpdateMovingOrigins(deltaTime);
-
-    // Verify positions updated correctly
-    foreach (var origin in _testOrigins) {
-      // Calculate expected position directly instead of using obsolete method
-      Vector3 newPosition = origin.initial_position + origin.velocity * deltaTime;
-      Vector3 expectedPosition = initialPositions[origin.id] + origin.velocity * deltaTime;
-
-      Assert.AreEqual(expectedPosition, newPosition,
-                      $"Origin {origin.id} position should be correctly updated");
-    }
-  }
-
-  [Test]
   public void TestOriginManager_GetAvailableOrigins() {
     // Test filtering of available origins by interceptor type and capacity
     string interceptorType = "hydra70.json";

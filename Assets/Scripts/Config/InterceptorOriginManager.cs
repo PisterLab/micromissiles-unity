@@ -267,22 +267,6 @@ public class InterceptorOriginManager {
     return origin;
   }
 
-  // Updates positions of all moving origins based on elapsed time.
-  // Should be called regularly during simulation to maintain accurate positions.
-  //   deltaTime: Time elapsed since last update
-  public void UpdateMovingOrigins(float deltaTime) {
-    // Note: Origin positions are now tracked by runtime InterceptorOriginObject instances
-    // This method is provided for interface compatibility and future extensions
-    // such as course changes or formation adjustments
-
-    foreach (var origin in _origins) {
-      if (origin.velocity.magnitude > 0) {
-        // Future: Could implement course changes, formation adjustments, etc.
-        // For now, origins move in straight lines as defined by their velocity
-      }
-    }
-  }
-
   // Gets all origins that support the specified interceptor type and have available capacity.
   //   interceptorType: Interceptor type to filter by
   // Returns: List of available origins
