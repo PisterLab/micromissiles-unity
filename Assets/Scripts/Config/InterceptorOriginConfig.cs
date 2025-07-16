@@ -69,7 +69,7 @@ public class InterceptorOriginConfig {
     if (velocity.magnitude <= 0) {
       return initial_position;
     }
-    
+
     float elapsedTime = currentTime;
     return initial_position + velocity * elapsedTime;
   }
@@ -141,12 +141,10 @@ public class InterceptorOriginConfig {
   // Applies standard deviation to position and velocity for formation spread.
   // Returns: New origin config with randomized position and velocity
   public InterceptorOriginConfig CreateRandomizedVersion() {
-    var randomizedConfig = new InterceptorOriginConfig {
-      id = id,
-      max_interceptors = max_interceptors,
-      interceptor_types = new List<string>(interceptor_types),
-      standard_deviation = standard_deviation
-    };
+    var randomizedConfig =
+        new InterceptorOriginConfig { id = id, max_interceptors = max_interceptors,
+                                      interceptor_types = new List<string>(interceptor_types),
+                                      standard_deviation = standard_deviation };
 
     // Apply randomization to position
     if (standard_deviation?.position != null) {
@@ -156,7 +154,7 @@ public class InterceptorOriginConfig {
       randomizedConfig.initial_position = initial_position;
     }
 
-    // Apply randomization to velocity  
+    // Apply randomization to velocity
     if (standard_deviation?.velocity != null) {
       Vector3 velocityNoise = Utilities.GenerateRandomNoise(standard_deviation.velocity);
       randomizedConfig.velocity = velocity + velocityNoise;

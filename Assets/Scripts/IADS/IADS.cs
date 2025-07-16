@@ -133,7 +133,7 @@ public class IADS : MonoBehaviour {
 
       // Create an origin-aware launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-      
+
       // Use the runtime object directly for planning
       LaunchPlan plan = planner.Plan(selectedOrigin.GetOriginConfig(), Time.time);
 
@@ -157,7 +157,8 @@ public class IADS : MonoBehaviour {
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Store origin reference for capacity management
-        interceptor.gameObject.AddComponent<InterceptorOriginReference>().SetOrigin(selectedOrigin.GetOriginConfig());
+        interceptor.gameObject.AddComponent<InterceptorOriginReference>().SetOrigin(
+            selectedOrigin.GetOriginConfig());
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;
@@ -199,8 +200,8 @@ public class IADS : MonoBehaviour {
       strategy = OriginAssignmentStrategy.MANUAL;
     }
 
-    return SimManager.Instance.OriginManager.SelectOriginObject(threatPosition, interceptorType, strategy,
-                                       manualOriginId);
+    return SimManager.Instance.OriginManager.SelectOriginObject(threatPosition, interceptorType,
+                                                                strategy, manualOriginId);
   }
 
   // Creates an initial state for an interceptor based on the selected origin and launch plan.

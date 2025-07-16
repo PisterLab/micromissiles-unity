@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 // Component that tracks which origin an interceptor was launched from.
 // This enables proper capacity management and statistics tracking.
 //

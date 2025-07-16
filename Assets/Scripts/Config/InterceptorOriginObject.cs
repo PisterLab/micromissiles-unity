@@ -1,8 +1,8 @@
 using UnityEngine;
 
 // Runtime representation of an interceptor origin in the simulation.
-// This component manages the actual GameObject state and provides access to current position/velocity.
-// The associated InterceptorOriginConfig provides the static configuration data.
+// This component manages the actual GameObject state and provides access to current
+// position/velocity. The associated InterceptorOriginConfig provides the static configuration data.
 public class InterceptorOriginObject : MonoBehaviour {
   private InterceptorOriginConfig _originConfig;
   private Vector3 _startPosition;
@@ -102,34 +102,34 @@ public class InterceptorOriginObject : MonoBehaviour {
 
       // Draw velocity vector for moving origins using actual rigidbody velocity
       Vector3 actualVelocity = GetVelocity();
-      
+
       if (actualVelocity.magnitude > 0) {
         Gizmos.color = Color.blue;
         Vector3 velocityVector = actualVelocity.normalized * 200f;
         Gizmos.DrawRay(transform.position, velocityVector);
-        
+
         // Draw movement trail
         Gizmos.color = Color.cyan;
         Vector3 startPos = _startPosition;
         Vector3 currentPos = transform.position;
         Gizmos.DrawLine(startPos, currentPos);
-        
+
         // Draw predicted future position using actual velocity
         Gizmos.color = Color.yellow;
         Vector3 futurePos = transform.position + actualVelocity * 60f;  // 1 minute ahead
         Gizmos.DrawWireCube(futurePos, Vector3.one * 30f);
         Gizmos.DrawLine(currentPos, futurePos);
       }
-      
+
       // Draw origin info text
       Vector3 labelPos = transform.position + Vector3.up * 100f;
-      #if UNITY_EDITOR
-      UnityEditor.Handles.Label(labelPos, 
-        $"{OriginId}\n" +
-        $"Capacity: {GetAvailableCapacity()}/{_originConfig.max_interceptors}\n" +
-        $"Velocity: {actualVelocity.magnitude:F1} m/s\n" +
-        $"Types: {_originConfig.interceptor_types.Count}");
-      #endif
+#if UNITY_EDITOR
+      UnityEditor.Handles.Label(
+          labelPos, $"{OriginId}\n" +
+                        $"Capacity: {GetAvailableCapacity()}/{_originConfig.max_interceptors}\n" +
+                        $"Velocity: {actualVelocity.magnitude:F1} m/s\n" +
+                        $"Types: {_originConfig.interceptor_types.Count}");
+#endif
     }
   }
 
@@ -139,10 +139,10 @@ public class InterceptorOriginObject : MonoBehaviour {
       // Draw a simple marker for the origin
       Gizmos.color = HasCapacity() ? Color.green : Color.red;
       Gizmos.DrawSphere(transform.position, 10f);
-      
+
       // Draw direction indicator for moving origins using actual velocity
       Vector3 actualVelocity = GetVelocity();
-      
+
       if (actualVelocity.magnitude > 0) {
         Gizmos.color = Color.blue;
         Vector3 forward = actualVelocity.normalized * 50f;
@@ -150,4 +150,4 @@ public class InterceptorOriginObject : MonoBehaviour {
       }
     }
   }
-} 
+}

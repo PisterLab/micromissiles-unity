@@ -123,8 +123,9 @@ public class InterceptorOriginManager {
                                                     OriginAssignmentStrategy strategy,
                                                     string manualOriginId = null) {
     // First select the config using existing logic
-    var selectedConfig = SelectOrigin(threatPosition, interceptorType, strategy, Time.time, manualOriginId);
-    
+    var selectedConfig =
+        SelectOrigin(threatPosition, interceptorType, strategy, Time.time, manualOriginId);
+
     if (selectedConfig == null) {
       return null;
     }
@@ -152,7 +153,7 @@ public class InterceptorOriginManager {
       // Use runtime object position if available, otherwise fall back to calculated
       var originObject = GetOriginObject(origin.id);
       float distance;
-      
+
       if (originObject != null) {
         // Use actual GameObject position
         distance = originObject.GetDistanceToTarget(threatPosition);
@@ -160,7 +161,7 @@ public class InterceptorOriginManager {
         // Fallback to calculated position
         distance = origin.GetDistanceToTarget(threatPosition, currentTime);
       }
-      
+
       if (distance < closestDistance) {
         closestDistance = distance;
         closestOrigin = origin;
