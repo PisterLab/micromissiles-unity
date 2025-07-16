@@ -238,7 +238,7 @@ public class ParticleManager : MonoBehaviour {
 
   // Returns a missile trail particle prefab from the pool.
   // If the pool is empty, it returns null
-  // Returns: 
+  // Returns:
   public GameObject RequestMissileTrailParticle() {
     if (_missileTrailPool.Count > 0 &&
         SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
