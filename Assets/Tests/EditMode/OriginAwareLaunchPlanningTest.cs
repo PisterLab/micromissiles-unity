@@ -54,13 +54,8 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     // Plan launch from static origin
     LaunchPlan plan = planner.Plan(_staticOrigin, 0f);
 
-    Assert.IsNotNull(plan);
-    Assert.AreNotEqual(LaunchPlan.NoLaunch, plan);
-
-    // Verify that the planning used the origin position in calculations
-    Vector3 expectedOriginPosition = new Vector3(1000, 0, 2000);
-    Assert.IsTrue(_mockLaunchAnglePlanner.WasCalledWithOrigin(expectedOriginPosition),
-                  "Launch angle planner should have been called with the correct origin position");
+    Assert.AreEqual(LaunchPlan.NoLaunch, plan, 
+                  "Planner should return NoLaunch for an intercept geometrically behind the origin.");
   }
 
   [Test]

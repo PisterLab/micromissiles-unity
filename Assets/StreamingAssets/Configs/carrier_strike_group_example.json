@@ -92,7 +92,7 @@
   ],
   "threat_swarm_configs": [
     {
-      "num_agents": 5,
+      "num_agents": 22,
       "dynamic_agent_config": {
         "agent_model": "brahmos.json",
         "attack_behavior": "brahmos_direct_attack.json",
@@ -101,7 +101,7 @@
           "velocity": { "x": 0, "y": 0, "z": -2000 }
         },
         "standard_deviation": {
-          "position": { "x": 5000, "y": 10, "z": 500 },
+          "position": { "x": 20000, "y": 10, "z": 10000 },
           "velocity": { "x": 0, "y": 0, "z": 100 }
         },
         "dynamic_config": {

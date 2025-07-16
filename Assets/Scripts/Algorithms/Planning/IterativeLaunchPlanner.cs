@@ -80,15 +80,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
       }
     }
 
-    // Check that the interceptor is moving towards the target. This prevents backwards launches
-    // when the intercept position is behind the origin relative to the threat direction.
-    // This is the core fix for the backwards launch issue identified in PR #46.
-    Vector3 interceptorToInterceptPosition = interceptPosition - Vector3.zero;
-    Vector3 threatDirection = initialState.Velocity.normalized;
-    float dot2 = Vector3.Dot(interceptorToInterceptPosition.normalized, threatDirection);
-    // Only flag as backwards if interceptor and threat are moving in very similar directions (>
-    // 0.8)
-    if (dot2 > 0.8f) {
+    // Check for backwards/sideways launch scenarios using proper geometric analysis.
+    if (IsInvalidLaunchGeometry(Vector3.zero, interceptPosition, initialState)) {
       return LaunchPlan.NoLaunch;
     }
 
@@ -139,16 +132,9 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
       }
     }
 
-    // Check that the interceptor is moving towards the target. This prevents backwards launches
-    // when the intercept position is behind the origin relative to the threat direction.
-    // This is the core fix for the backwards launch issue identified in PR #46.
-    Vector3 interceptorToInterceptPosition = interceptPosition - originPosition;
-    Vector3 threatDirection = initialState.Velocity.normalized;
-    float dot = Vector3.Dot(interceptorToInterceptPosition.normalized, threatDirection);
-    // Only flag as backwards if interceptor and threat are moving in very similar directions (>
-    // 0.8)
-    if (dot > 0.8f) {
-      return LaunchPlan.NoLaunch;
+    // Check for backwards/sideways launch scenarios using proper geometric analysis.
+    if (IsInvalidLaunchGeometry(originPosition, interceptPosition, initialState)) {
+        return LaunchPlan.NoLaunch;
     }
 
     // Final validation: ensure intercept and predicted positions are reasonably close
@@ -157,5 +143,35 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     }
 
     return LaunchPlan.NoLaunch;
+  }
+
+  // Determines if a launch scenario is geometrically invalid (e.g., backwards or sideways).
+  //   originPosition: Position from which the interceptor will be launched.
+  //   interceptPosition: Calculated intercept position.
+  //   threatState: Initial state of the threat (position and velocity).
+  // Returns: True if the launch geometry is invalid and should be prevented.
+  private bool IsInvalidLaunchGeometry(Vector3 originPosition, Vector3 interceptPosition, PredictorState threatState)
+  {
+      Vector3 originToThreat = threatState.Position - originPosition;
+      Vector3 threatVelocity = threatState.Velocity;
+
+      // A launch is invalid if the threat is moving away from the origin.
+      // A dot product > 0 means the angle between the vector from the origin to the threat 
+      // and its velocity is < 90 degrees, indicating it's moving away.
+      if (Vector3.Dot(originToThreat, threatVelocity) > 0.0f)
+      {
+          return true;
+      }
+
+      // A launch is also invalid if the intercept point is "behind" the origin
+      // relative to the threat's direction of approach. "Behind" means the angle
+      // between the vector to the threat and the vector to the intercept point is > 90 degrees.
+      Vector3 originToIntercept = interceptPosition - originPosition;
+      if (Vector3.Dot(originToIntercept.normalized, originToThreat.normalized) < 0.0f)
+      {
+          return true;
+      }
+
+      return false;
   }
 }
