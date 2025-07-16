@@ -15,13 +15,13 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
   // Convergence threshold in meters for the difference vector magnitude. Convergence is declared
   // when the intercept position has not changed by more than this threshold between iterations.
-  private const float ConvergenceThreshold = 1e-3f;
+  private const float ConvergenceThreshold = 10f;
 
   // Maximum intercept position threshold in meters to declare convergence. This threshold is used
   // as a final sanity check to ensure that the predicted target position and intercept position do
   // not differ by more than this threshold. This threshold should be set depending on the
   // granularity of the possible intercept positions.
-  private const float InterceptPositionThreshold = 1000;
+  private const float InterceptPositionThreshold = 1000f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
@@ -52,7 +52,6 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
     LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
     Vector3 interceptPosition = new Vector3();
-
     for (int i = 0; i < MaxNumIterations; ++i) {
       // Estimate the time-to-intercept from the current origin position
       launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
