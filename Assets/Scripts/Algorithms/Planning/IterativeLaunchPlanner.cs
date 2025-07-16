@@ -31,25 +31,21 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     return PlanFromZeroOrigin();
   }
 
-  /// <summary>
-  /// Plan the launch from a specific interceptor origin.
-  /// This implementation accounts for the interceptor's starting position and the origin's
-  /// current location (including movement for naval assets).
-  /// </summary>
-  /// <param name="origin">Interceptor origin configuration</param>
-  /// <param name="currentTime">Current simulation time for moving origins</param>
-  /// <returns>Launch plan with timing and angle information</returns>
+  // Plan the launch from a specific interceptor origin.
+  // This implementation accounts for the interceptor's starting position and the origin's
+  // current location (including movement for naval assets).
+  //   origin: Interceptor origin configuration
+  //   currentTime: Current simulation time for moving origins
+  // Returns: Launch plan with timing and angle information
   public override LaunchPlan Plan(InterceptorOriginConfig origin, float currentTime) {
     // Get the current origin position (accounts for moving origins)
     Vector3 originPosition = origin.GetCurrentPosition(currentTime);
     return PlanFromOrigin(originPosition);
   }
 
-  /// <summary>
-  /// Original implementation for zero origin (0,0,0).
-  /// Preserved for backward compatibility with existing tests.
-  /// </summary>
-  /// <returns>Launch plan with timing and angle information</returns>
+  // Original implementation for zero origin (0,0,0).
+  // Preserved for backward compatibility with existing tests.
+  // Returns: Launch plan with timing and angle information
   private LaunchPlan PlanFromZeroOrigin() {
     PredictorState initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;
@@ -105,12 +101,10 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     return LaunchPlan.NoLaunch;
   }
 
-  /// <summary>
-  /// Origin-aware implementation for non-zero origins.
-  /// This implementation properly accounts for interceptor starting position.
-  /// </summary>
-  /// <param name="originPosition">The position from which the interceptor will be launched</param>
-  /// <returns>Launch plan with timing and angle information</returns>
+  // Origin-aware implementation for non-zero origins.
+  // This implementation properly accounts for interceptor starting position.
+  //   originPosition: The position from which the interceptor will be launched
+  // Returns: Launch plan with timing and angle information
   private LaunchPlan PlanFromOrigin(Vector3 originPosition) {
     PredictorState initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;

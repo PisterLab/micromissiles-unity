@@ -1,16 +1,14 @@
 using NUnit.Framework;
 using UnityEngine;
 
-/// <summary>
-/// Unit tests for origin-aware launch planning functionality.
-/// Tests that launch planning algorithms correctly account for interceptor origins
-/// rather than assuming launch from (0,0,0).
-///
-/// KEY PRINCIPLE: The intercept position should be where both interceptor and target meet.
-/// For successful intercepts, this should be very close to the predicted target position.
-/// Origin-aware planning ensures interceptors launch from the correct starting position
-/// to reach this intercept point.
-/// </summary>
+// Unit tests for origin-aware launch planning functionality.
+// Tests that launch planning algorithms correctly account for interceptor origins
+// rather than assuming launch from (0,0,0).
+//
+// KEY PRINCIPLE: The intercept position should be where both interceptor and target meet.
+// For successful intercepts, this should be very close to the predicted target position.
+// Origin-aware planning ensures interceptors launch from the correct starting position
+// to reach this intercept point.
 [TestFixture]
 public class OriginAwareLaunchPlanningTest : TestBase {
   private InterceptorOriginConfig _staticOrigin;
@@ -229,10 +227,8 @@ public class OriginAwareLaunchPlanningTest : TestBase {
   }
 }
 
-/// <summary>
-/// Mock implementation of IPredictor for testing purposes.
-/// Provides predictable threat trajectories for unit tests.
-/// </summary>
+// Mock implementation of IPredictor for testing purposes.
+// Provides predictable threat trajectories for unit tests.
 public class MockPredictor : IPredictor {
   private Vector3 _initialPosition;
   private Vector3 _velocity;
@@ -272,10 +268,8 @@ public class MockPredictor : IPredictor {
   }
 }
 
-/// <summary>
-/// Mock implementation of ILaunchAnglePlanner for testing purposes.
-/// Allows controlled responses for testing launch planning logic.
-/// </summary>
+// Mock implementation of ILaunchAnglePlanner for testing purposes.
+// Allows controlled responses for testing launch planning logic.
 public class MockLaunchAnglePlanner : ILaunchAnglePlanner {
   private float _mockLaunchAngle = 45f;
   private float _mockTimeToPosition = 10f;

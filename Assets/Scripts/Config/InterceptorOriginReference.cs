@@ -9,28 +9,22 @@ public class InterceptorOriginReference : MonoBehaviour {
   private InterceptorOriginConfig _origin;
   private bool _capacityReleased = false;
 
-  /// <summary>
-  /// Sets the origin reference for this interceptor.
-  /// This should be called immediately after the interceptor is created.
-  /// </summary>
-  /// <param name="origin">The origin this interceptor was launched from</param>
+  // Sets the origin reference for this interceptor.
+  // This should be called immediately after the interceptor is created.
+  //   origin: The origin this interceptor was launched from
   public void SetOrigin(InterceptorOriginConfig origin) {
     _origin = origin;
   }
 
-  /// <summary>
-  /// Gets the origin this interceptor was launched from.
-  /// </summary>
-  /// <returns>Origin configuration, or null if not set</returns>
+  // Gets the origin this interceptor was launched from.
+  // Returns: Origin configuration, or null if not set
   public InterceptorOriginConfig GetOrigin() {
     return _origin;
   }
 
-  /// <summary>
-  /// Manually releases the interceptor capacity back to the origin.
-  /// This is automatically called when the interceptor is destroyed,
-  /// but can be called manually for early release scenarios.
-  /// </summary>
+  // Manually releases the interceptor capacity back to the origin.
+  // This is automatically called when the interceptor is destroyed,
+  // but can be called manually for early release scenarios.
   public void ReleaseCapacity() {
     if (_origin != null && !_capacityReleased) {
       _origin.ReleaseInterceptor();
@@ -41,18 +35,14 @@ public class InterceptorOriginReference : MonoBehaviour {
     }
   }
 
-  /// <summary>
-  /// Automatically release capacity when the interceptor is destroyed.
-  /// This ensures proper cleanup and prevents capacity leaks.
-  /// </summary>
+  // Automatically release capacity when the interceptor is destroyed.
+  // This ensures proper cleanup and prevents capacity leaks.
   private void OnDestroy() {
     ReleaseCapacity();
   }
 
-  /// <summary>
-  /// Gets a string representation for debugging.
-  /// </summary>
-  /// <returns>Debug information about the origin reference</returns>
+  // Gets a string representation for debugging.
+  // Returns: Debug information about the origin reference
   public override string ToString() {
     if (_origin == null) {
       return "InterceptorOriginReference[No Origin Set]";

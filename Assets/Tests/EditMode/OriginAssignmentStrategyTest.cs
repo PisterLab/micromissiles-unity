@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
-/// <summary>
-/// Unit tests for origin assignment strategies and multiple origin management.
-/// Tests the logic for selecting appropriate interceptor origins based on different strategies.
-/// </summary>
+// Unit tests for origin assignment strategies and multiple origin management.
+// Tests the logic for selecting appropriate interceptor origins based on different strategies.
 [TestFixture]
 public class OriginAssignmentStrategyTest : TestBase {
   private List<InterceptorOriginConfig> _testOrigins;

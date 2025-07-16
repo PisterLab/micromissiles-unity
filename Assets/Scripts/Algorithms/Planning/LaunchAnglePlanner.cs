@@ -46,33 +46,27 @@ public struct LaunchAngleDataPoint {
   }
 }
 
-/// The launch angle planner interface defines methods for calculating optimal launch angles
-/// and intercept positions.
+// The launch angle planner interface defines methods for calculating optimal launch angles
+// and intercept positions.
 public interface ILaunchAnglePlanner {
-  /// <summary>
-  /// Calculate the optimal launch angle and time-to-target for a given input.
-  /// </summary>
-  /// <param name="input">Launch angle input parameters</param>
-  /// <returns>Launch angle output with timing information</returns>
+  // Calculate the optimal launch angle and time-to-target for a given input.
+  //   input: Launch angle input parameters
+  // Returns: Launch angle output with timing information
   public LaunchAngleOutput Plan(in LaunchAngleInput input);
 
-  /// <summary>
-  /// Calculate launch parameters for a target position from the default origin (0,0,0).
-  /// Maintained for backward compatibility.
-  /// </summary>
-  /// <param name="position">Target position</param>
-  /// <returns>Launch angle output</returns>
+  // Calculate launch parameters for a target position from the default origin (0,0,0).
+  // Maintained for backward compatibility.
+  //   position: Target position
+  // Returns: Launch angle output
   public LaunchAngleOutput Plan(Vector3 position) {
     return Plan(position, Vector3.zero);
   }
 
-  /// <summary>
-  /// Calculate launch parameters for a target position from a specific origin.
-  /// This method accounts for the distance and direction from origin to target.
-  /// </summary>
-  /// <param name="targetPosition">Target position</param>
-  /// <param name="originPosition">Interceptor origin position</param>
-  /// <returns>Launch angle output with origin-relative calculations</returns>
+  // Calculate launch parameters for a target position from a specific origin.
+  // This method accounts for the distance and direction from origin to target.
+  //   targetPosition: Target position
+  //   originPosition: Interceptor origin position
+  // Returns: Launch angle output with origin-relative calculations
   public LaunchAngleOutput Plan(Vector3 targetPosition, Vector3 originPosition) {
     Vector2 direction = ConvertToDirection(targetPosition, originPosition);
     float distance = Vector3.Distance(originPosition, targetPosition);
@@ -80,32 +74,26 @@ public interface ILaunchAnglePlanner {
     return new LaunchAngleOutput(output.LaunchAngle, output.TimeToPosition, distance);
   }
 
-  /// <summary>
-  /// Get the intercept position for a target from the default origin (0,0,0).
-  /// Maintained for backward compatibility.
-  /// </summary>
-  /// <param name="position">Target position</param>
-  /// <returns>Calculated intercept position</returns>
+  // Get the intercept position for a target from the default origin (0,0,0).
+  // Maintained for backward compatibility.
+  //   position: Target position
+  // Returns: Calculated intercept position
   public Vector3 GetInterceptPosition(Vector3 position) {
     return GetInterceptPosition(position, Vector3.zero);
   }
 
-  /// <summary>
-  /// Get the intercept position for a target from a specific origin.
-  /// This accounts for the interceptor's starting position when calculating intercept geometry.
-  /// </summary>
-  /// <param name="targetPosition">Target position</param>
-  /// <param name="originPosition">Interceptor origin position</param>
-  /// <returns>Calculated intercept position</returns>
+  // Get the intercept position for a target from a specific origin.
+  // This accounts for the interceptor's starting position when calculating intercept geometry.
+  //   targetPosition: Target position
+  //   originPosition: Interceptor origin position
+  // Returns: Calculated intercept position
   public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition);
 
-  /// <summary>
-  /// Convert from a 3D vector to a 2D direction that ignores the azimuth.
-  /// This method now supports origin-relative calculations.
-  /// </summary>
-  /// <param name="targetPosition">Target position</param>
-  /// <param name="originPosition">Origin position (default: Vector3.zero)</param>
-  /// <returns>2D direction vector (horizontal distance, altitude)</returns>
+  // Convert from a 3D vector to a 2D direction that ignores the azimuth.
+  // This method now supports origin-relative calculations.
+  //   targetPosition: Target position
+  //   originPosition: Origin position (default: Vector3.zero)
+  // Returns: 2D direction vector (horizontal distance, altitude)
   protected static Vector2 ConvertToDirection(Vector3 targetPosition,
                                               Vector3 originPosition = default(Vector3)) {
     Vector3 relativePosition = targetPosition - originPosition;

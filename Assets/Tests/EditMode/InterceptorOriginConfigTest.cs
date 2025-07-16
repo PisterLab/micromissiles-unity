@@ -3,11 +3,9 @@ using NUnit.Framework;
 using UnityEngine;
 using Newtonsoft.Json;
 
-/// <summary>
-/// Unit tests for InterceptorOriginConfig and related origin management functionality.
-/// These tests follow Test Driven Development principles and should initially fail
-/// until the corresponding implementation is completed.
-/// </summary>
+// Unit tests for InterceptorOriginConfig and related origin management functionality.
+// These tests follow Test Driven Development principles and should initially fail
+// until the corresponding implementation is completed.
 [TestFixture]
 public class InterceptorOriginConfigTest : TestBase {
   [Test]

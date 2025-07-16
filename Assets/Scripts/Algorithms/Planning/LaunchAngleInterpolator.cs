@@ -33,19 +33,17 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
                                  timeToPosition: interpolatedDataPoint.Data[1]);
   }
 
-  /// <summary>
-  /// Get the intercept position for a target from the default origin (0,0,0).
-  ///
-  /// INTERCEPT CALCULATION PRINCIPLE:
-  /// The intercept position is where both the interceptor and target should meet.
-  /// For a successful intercept, this should be very close to the predicted target position.
-  /// The interpolation table provides launch parameters (angle, time) to reach that position,
-  /// not a different intercept location.
-  ///
-  /// This is the original implementation preserved for backward compatibility.
-  /// </summary>
-  /// <param name="position">Target position where intercept should occur</param>
-  /// <returns>Calculated intercept position (should be very close to input position)</returns>
+  // Get the intercept position for a target from the default origin (0,0,0).
+  //
+  // INTERCEPT CALCULATION PRINCIPLE:
+  // The intercept position is where both the interceptor and target should meet.
+  // For a successful intercept, this should be very close to the predicted target position.
+  // The interpolation table provides launch parameters (angle, time) to reach that position,
+  // not a different intercept location.
+  //
+  // This is the original implementation preserved for backward compatibility.
+  //   position: Target position where intercept should occur
+  // Returns: Calculated intercept position (should be very close to input position)
   public Vector3 GetInterceptPosition(Vector3 position) {
     if (_interpolator == null) {
       InitInterpolator();
@@ -73,13 +71,11 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
     }
   }
 
-  /// <summary>
-  /// Get the intercept position for a target from a specific origin.
-  /// This accounts for the interceptor's starting position when calculating intercept geometry.
-  /// </summary>
-  /// <param name="targetPosition">Target position</param>
-  /// <param name="originPosition">Interceptor origin position</param>
-  /// <returns>Calculated intercept position</returns>
+  // Get the intercept position for a target from a specific origin.
+  // This accounts for the interceptor's starting position when calculating intercept geometry.
+  //   targetPosition: Target position
+  //   originPosition: Interceptor origin position
+  // Returns: Calculated intercept position
   public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition) {
     Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(targetPosition, originPosition);
 

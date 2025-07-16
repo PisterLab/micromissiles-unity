@@ -5,14 +5,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-/// <summary>
-/// Tests for the iterative launch planner algorithm.
-///
-/// KEY PRINCIPLE: In a successful intercept scenario, the final intercept position
-/// should equal (or be very close to) the predicted target position. Both the
-/// interceptor and target arrive at the same point at the same time.
-/// The interpolation table provides launch parameters (angle, time) to achieve this.
-/// </summary>
+// Tests for the iterative launch planner algorithm.
+//
+// KEY PRINCIPLE: In a successful intercept scenario, the final intercept position
+// should equal (or be very close to) the predicted target position. Both the
+// interceptor and target arrive at the same point at the same time.
+// The interpolation table provides launch parameters (angle, time) to achieve this.
 public class IterativeLaunchPlannerTest {
   private class DummyLaunchAngleDataInterpolator : LaunchAngleDataInterpolator {
     public DummyLaunchAngleDataInterpolator() : base() {}

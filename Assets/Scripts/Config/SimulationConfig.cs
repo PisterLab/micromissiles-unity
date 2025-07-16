@@ -36,11 +36,9 @@ public class SwarmConfig {
   public int num_agents;
   public DynamicAgentConfig dynamic_agent_config;
 
-  /// <summary>
-  /// Optional origin ID for manual origin assignment.
-  /// When specified and using MANUAL assignment strategy, interceptors will be assigned to this
-  /// origin. If null or empty, the configured assignment strategy will be used.
-  /// </summary>
+  // Optional origin ID for manual origin assignment.
+  // When specified and using MANUAL assignment strategy, interceptors will be assigned to this
+  // origin. If null or empty, the configured assignment strategy will be used.
   public string origin_id;
 }
 

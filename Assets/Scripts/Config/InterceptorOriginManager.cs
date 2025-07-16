@@ -23,10 +23,8 @@ public class InterceptorOriginManager {
                      Func<Vector3, string, float, string, InterceptorOriginConfig>> _strategies;
   private Dictionary<string, int> _assignmentCounts;  // For load balancing
 
-  /// <summary>
-  /// Initializes a new InterceptorOriginManager with the specified origins.
-  /// </summary>
-  /// <param name="origins">List of interceptor origin configurations</param>
+  // Initializes a new InterceptorOriginManager with the specified origins.
+  //   origins: List of interceptor origin configurations
   public InterceptorOriginManager(List<InterceptorOriginConfig> origins) {
     _origins = origins ?? new List<InterceptorOriginConfig>();
     _originObjects = new Dictionary<string, InterceptorOriginObject>();
@@ -40,38 +38,30 @@ public class InterceptorOriginManager {
     InitializeStrategies();
   }
 
-  /// <summary>
-  /// Registers a runtime InterceptorOriginObject with its corresponding config.
-  /// This should be called when origin GameObjects are created.
-  /// </summary>
-  /// <param name="originObject">The runtime origin object</param>
+  // Registers a runtime InterceptorOriginObject with its corresponding config.
+  // This should be called when origin GameObjects are created.
+  //   originObject: The runtime origin object
   public void RegisterOriginObject(InterceptorOriginObject originObject) {
     if (originObject != null && originObject.GetOriginConfig() != null) {
       _originObjects[originObject.OriginId] = originObject;
     }
   }
 
-  /// <summary>
-  /// Gets the runtime InterceptorOriginObject for a given origin ID.
-  /// </summary>
-  /// <param name="originId">Origin ID to find</param>
-  /// <returns>The runtime origin object, or null if not found</returns>
+  // Gets the runtime InterceptorOriginObject for a given origin ID.
+  //   originId: Origin ID to find
+  // Returns: The runtime origin object, or null if not found
   public InterceptorOriginObject GetOriginObject(string originId) {
     return _originObjects.TryGetValue(originId, out var originObject) ? originObject : null;
   }
 
-  /// <summary>
-  /// Gets all registered runtime origin objects.
-  /// </summary>
-  /// <returns>Collection of runtime origin objects</returns>
+  // Gets all registered runtime origin objects.
+  // Returns: Collection of runtime origin objects
   public IEnumerable<InterceptorOriginObject> GetAllOriginObjects() {
     return _originObjects.Values;
   }
 
-  /// <summary>
-  /// Initializes the strategy function mappings.
-  /// Each strategy implements a different logic for selecting interceptor origins.
-  /// </summary>
+  // Initializes the strategy function mappings.
+  // Each strategy implements a different logic for selecting interceptor origins.
   private void InitializeStrategies() {
     _strategies = new Dictionary<OriginAssignmentStrategy,
                                  Func<Vector3, string, float, string, InterceptorOriginConfig>> {
@@ -82,15 +72,13 @@ public class InterceptorOriginManager {
     };
   }
 
-  /// <summary>
-  /// Selects an appropriate interceptor origin based on the specified strategy.
-  /// </summary>
-  /// <param name="threatPosition">Position of the incoming threat</param>
-  /// <param name="interceptorType">Type of interceptor needed (e.g., "sm2.json")</param>
-  /// <param name="strategy">Assignment strategy to use</param>
-  /// <param name="currentTime">Current simulation time</param>
-  /// <param name="manualOriginId">Manual origin ID (for MANUAL strategy)</param>
-  /// <returns>Selected origin, or null if no suitable origin available</returns>
+  // Selects an appropriate interceptor origin based on the specified strategy.
+  //   threatPosition: Position of the incoming threat
+  //   interceptorType: Type of interceptor needed (e.g., "sm2.json")
+  //   strategy: Assignment strategy to use
+  //   currentTime: Current simulation time
+  //   manualOriginId: Manual origin ID (for MANUAL strategy)
+  // Returns: Selected origin, or null if no suitable origin available
   public InterceptorOriginConfig SelectOrigin(Vector3 threatPosition, string interceptorType,
                                               OriginAssignmentStrategy strategy, float currentTime,
                                               string manualOriginId = null) {
@@ -110,15 +98,13 @@ public class InterceptorOriginManager {
     return null;
   }
 
-  /// <summary>
-  /// Selects an appropriate interceptor origin runtime object based on the specified strategy.
-  /// This is the preferred method that returns the actual runtime object.
-  /// </summary>
-  /// <param name="threatPosition">Position of the incoming threat</param>
-  /// <param name="interceptorType">Type of interceptor needed (e.g., "sm2.json")</param>
-  /// <param name="strategy">Assignment strategy to use</param>
-  /// <param name="manualOriginId">Manual origin ID (for MANUAL strategy)</param>
-  /// <returns>Selected origin runtime object, or null if no suitable origin available</returns>
+  // Selects an appropriate interceptor origin runtime object based on the specified strategy.
+  // This is the preferred method that returns the actual runtime object.
+  //   threatPosition: Position of the incoming threat
+  //   interceptorType: Type of interceptor needed (e.g., "sm2.json")
+  //   strategy: Assignment strategy to use
+  //   manualOriginId: Manual origin ID (for MANUAL strategy)
+  // Returns: Selected origin runtime object, or null if no suitable origin available
   public InterceptorOriginObject SelectOriginObject(Vector3 threatPosition, string interceptorType,
                                                     OriginAssignmentStrategy strategy,
                                                     string manualOriginId = null) {
@@ -134,10 +120,8 @@ public class InterceptorOriginManager {
     return GetOriginObject(selectedConfig.id);
   }
 
-  /// <summary>
-  /// Selects the closest available origin that supports the interceptor type.
-  /// Accounts for origin movement when calculating distances.
-  /// </summary>
+  // Selects the closest available origin that supports the interceptor type.
+  // Accounts for origin movement when calculating distances.
   private InterceptorOriginConfig SelectClosestOrigin(Vector3 threatPosition,
                                                       string interceptorType, float currentTime,
                                                       string manualOriginId) {
@@ -171,10 +155,8 @@ public class InterceptorOriginManager {
     return closestOrigin;
   }
 
-  /// <summary>
-  /// Selects an origin using load balancing to distribute assignments evenly.
-  /// Prefers origins with fewer current assignments.
-  /// </summary>
+  // Selects an origin using load balancing to distribute assignments evenly.
+  // Prefers origins with fewer current assignments.
   private InterceptorOriginConfig SelectLoadBalancedOrigin(Vector3 threatPosition,
                                                            string interceptorType,
                                                            float currentTime,
@@ -193,10 +175,8 @@ public class InterceptorOriginManager {
     return sortedOrigins.First();
   }
 
-  /// <summary>
-  /// Selects an origin based on capability matching with the interceptor type.
-  /// Implements preference rules for different interceptor-origin combinations.
-  /// </summary>
+  // Selects an origin based on capability matching with the interceptor type.
+  // Implements preference rules for different interceptor-origin combinations.
   private InterceptorOriginConfig SelectCapabilityBasedOrigin(Vector3 threatPosition,
                                                               string interceptorType,
                                                               float currentTime,
@@ -218,10 +198,8 @@ public class InterceptorOriginManager {
     return preferenceScores.OrderByDescending(kvp => kvp.Value).First().Key;
   }
 
-  /// <summary>
-  /// Calculates a capability score for an origin-interceptor combination.
-  /// Higher scores indicate better capability matches.
-  /// </summary>
+  // Calculates a capability score for an origin-interceptor combination.
+  // Higher scores indicate better capability matches.
   private int CalculateCapabilityScore(InterceptorOriginConfig origin, string interceptorType,
                                        Vector3 threatPosition, float currentTime) {
     int score = 0;
@@ -257,9 +235,7 @@ public class InterceptorOriginManager {
     return score;
   }
 
-  /// <summary>
-  /// Selects the manually specified origin if it's available and capable.
-  /// </summary>
+  // Selects the manually specified origin if it's available and capable.
   private InterceptorOriginConfig SelectManualOrigin(Vector3 threatPosition, string interceptorType,
                                                      float currentTime, string manualOriginId) {
     if (string.IsNullOrEmpty(manualOriginId)) {
@@ -287,11 +263,9 @@ public class InterceptorOriginManager {
     return origin;
   }
 
-  /// <summary>
-  /// Updates positions of all moving origins based on elapsed time.
-  /// Should be called regularly during simulation to maintain accurate positions.
-  /// </summary>
-  /// <param name="deltaTime">Time elapsed since last update</param>
+  // Updates positions of all moving origins based on elapsed time.
+  // Should be called regularly during simulation to maintain accurate positions.
+  //   deltaTime: Time elapsed since last update
   public void UpdateMovingOrigins(float deltaTime) {
     // Note: Origin positions are calculated dynamically in GetCurrentPosition()
     // This method is provided for interface compatibility and future extensions
@@ -305,38 +279,30 @@ public class InterceptorOriginManager {
     }
   }
 
-  /// <summary>
-  /// Gets all origins that support the specified interceptor type and have available capacity.
-  /// </summary>
-  /// <param name="interceptorType">Interceptor type to filter by</param>
-  /// <returns>List of available origins</returns>
+  // Gets all origins that support the specified interceptor type and have available capacity.
+  //   interceptorType: Interceptor type to filter by
+  // Returns: List of available origins
   public List<InterceptorOriginConfig> GetAvailableOrigins(string interceptorType) {
     return _origins
         .Where(origin => origin.SupportsInterceptorType(interceptorType) && origin.HasCapacity())
         .ToList();
   }
 
-  /// <summary>
-  /// Gets an origin by its unique identifier.
-  /// </summary>
-  /// <param name="originId">Unique origin identifier</param>
-  /// <returns>Origin configuration, or null if not found</returns>
+  // Gets an origin by its unique identifier.
+  //   originId: Unique origin identifier
+  // Returns: Origin configuration, or null if not found
   public InterceptorOriginConfig GetOriginById(string originId) {
     return _origins.Find(o => o.id == originId);
   }
 
-  /// <summary>
-  /// Gets all configured origins.
-  /// </summary>
-  /// <returns>List of all origins</returns>
+  // Gets all configured origins.
+  // Returns: List of all origins
   public List<InterceptorOriginConfig> GetAllOrigins() {
     return new List<InterceptorOriginConfig>(_origins);
   }
 
-  /// <summary>
-  /// Validates all origin configurations and returns any errors found.
-  /// </summary>
-  /// <returns>List of validation error messages</returns>
+  // Validates all origin configurations and returns any errors found.
+  // Returns: List of validation error messages
   public List<string> ValidateConfiguration() {
     var errors = new List<string>();
 
@@ -357,9 +323,7 @@ public class InterceptorOriginManager {
     return errors;
   }
 
-  /// <summary>
-  /// Resets assignment counters for load balancing. Useful for simulation restarts.
-  /// </summary>
+  // Resets assignment counters for load balancing. Useful for simulation restarts.
   public void ResetAssignmentCounters() {
     foreach (var originId in _assignmentCounts.Keys.ToList()) {
       _assignmentCounts[originId] = 0;
@@ -371,19 +335,15 @@ public class InterceptorOriginManager {
     }
   }
 
-  /// <summary>
-  /// Gets assignment statistics for monitoring and debugging.
-  /// </summary>
-  /// <returns>Dictionary mapping origin IDs to assignment counts</returns>
+  // Gets assignment statistics for monitoring and debugging.
+  // Returns: Dictionary mapping origin IDs to assignment counts
   public Dictionary<string, int> GetAssignmentStatistics() {
     return new Dictionary<string, int>(_assignmentCounts);
   }
 
-  /// <summary>
-  /// Gets the total available interceptor capacity across all origins.
-  /// </summary>
-  /// <param name="interceptorType">Optional filter by interceptor type</param>
-  /// <returns>Total available capacity</returns>
+  // Gets the total available interceptor capacity across all origins.
+  //   interceptorType: Optional filter by interceptor type
+  // Returns: Total available capacity
   public int GetTotalAvailableCapacity(string interceptorType = null) {
     var relevantOrigins = string.IsNullOrEmpty(interceptorType)
                               ? _origins
