@@ -54,8 +54,9 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     // Plan launch from static origin
     LaunchPlan plan = planner.Plan(_staticOrigin, 0f);
 
-    Assert.AreEqual(LaunchPlan.NoLaunch, plan, 
-                  "Planner should return NoLaunch for an intercept geometrically behind the origin.");
+    Assert.AreEqual(
+        LaunchPlan.NoLaunch, plan,
+        "Planner should return NoLaunch for an intercept geometrically behind the origin.");
   }
 
   [Test]

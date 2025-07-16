@@ -134,7 +134,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
     // Check for backwards/sideways launch scenarios using proper geometric analysis.
     if (IsInvalidLaunchGeometry(originPosition, interceptPosition, initialState)) {
-        return LaunchPlan.NoLaunch;
+      return LaunchPlan.NoLaunch;
     }
 
     // Final validation: ensure intercept and predicted positions are reasonably close
@@ -150,28 +150,26 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   //   interceptPosition: Calculated intercept position.
   //   threatState: Initial state of the threat (position and velocity).
   // Returns: True if the launch geometry is invalid and should be prevented.
-  private bool IsInvalidLaunchGeometry(Vector3 originPosition, Vector3 interceptPosition, PredictorState threatState)
-  {
-      Vector3 originToThreat = threatState.Position - originPosition;
-      Vector3 threatVelocity = threatState.Velocity;
+  private bool IsInvalidLaunchGeometry(Vector3 originPosition, Vector3 interceptPosition,
+                                       PredictorState threatState) {
+    Vector3 originToThreat = threatState.Position - originPosition;
+    Vector3 threatVelocity = threatState.Velocity;
 
-      // A launch is invalid if the threat is moving away from the origin.
-      // A dot product > 0 means the angle between the vector from the origin to the threat 
-      // and its velocity is < 90 degrees, indicating it's moving away.
-      if (Vector3.Dot(originToThreat, threatVelocity) > 0.0f)
-      {
-          return true;
-      }
+    // A launch is invalid if the threat is moving away from the origin.
+    // A dot product > 0 means the angle between the vector from the origin to the threat
+    // and its velocity is < 90 degrees, indicating it's moving away.
+    if (Vector3.Dot(originToThreat, threatVelocity) > 0.0f) {
+      return true;
+    }
 
-      // A launch is also invalid if the intercept point is "behind" the origin
-      // relative to the threat's direction of approach. "Behind" means the angle
-      // between the vector to the threat and the vector to the intercept point is > 90 degrees.
-      Vector3 originToIntercept = interceptPosition - originPosition;
-      if (Vector3.Dot(originToIntercept.normalized, originToThreat.normalized) < 0.0f)
-      {
-          return true;
-      }
+    // A launch is also invalid if the intercept point is "behind" the origin
+    // relative to the threat's direction of approach. "Behind" means the angle
+    // between the vector to the threat and the vector to the intercept point is > 90 degrees.
+    Vector3 originToIntercept = interceptPosition - originPosition;
+    if (Vector3.Dot(originToIntercept.normalized, originToThreat.normalized) < 0.0f) {
+      return true;
+    }
 
-      return false;
+    return false;
   }
 }
