@@ -113,7 +113,8 @@ public class OriginAssignmentStrategyTest : TestBase {
     Vector3 expectedCarrierPosition = new Vector3(0, 0, 5000 - 12 * 100);  // 5000 - 1200 = 3800
     float expectedDistance = Vector3.Distance(expectedCarrierPosition, threatPosition);
     // Calculate distance directly instead of using obsolete method
-    Vector3 actualCarrierPosition = selectedOrigin.initial_position + selectedOrigin.velocity * currentTime;
+    Vector3 actualCarrierPosition =
+        selectedOrigin.initial_position + selectedOrigin.velocity * currentTime;
     float actualDistance = Vector3.Distance(actualCarrierPosition, threatPosition);
 
     Assert.AreEqual(expectedDistance, actualDistance, 0.1f);

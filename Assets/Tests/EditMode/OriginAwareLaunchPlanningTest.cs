@@ -38,18 +38,20 @@ public class OriginAwareLaunchPlanningTest : TestBase {
   }
 
   // Helper method to create a mock InterceptorOriginObject for testing
-  private InterceptorOriginObject CreateMockOriginObject(InterceptorOriginConfig config, float currentTime = 0f) {
+  private InterceptorOriginObject CreateMockOriginObject(InterceptorOriginConfig config,
+                                                         float currentTime = 0f) {
     // Create a GameObject to serve as the mock origin object
     GameObject mockOriginGameObject = new GameObject($"Mock_{config.id}");
-    
+
     // Calculate position accounting for time and velocity
     Vector3 currentPosition = config.initial_position + config.velocity * currentTime;
     mockOriginGameObject.transform.position = currentPosition;
-    
+
     // Add the InterceptorOriginObject component
-    InterceptorOriginObject originObject = mockOriginGameObject.AddComponent<InterceptorOriginObject>();
+    InterceptorOriginObject originObject =
+        mockOriginGameObject.AddComponent<InterceptorOriginObject>();
     originObject.SetOriginConfig(config);
-    
+
     return originObject;
   }
 
@@ -90,7 +92,8 @@ public class OriginAwareLaunchPlanningTest : TestBase {
 
     // Plan launch from moving origin at t=10 seconds using mock origin object
     float planningTime = 10f;
-    InterceptorOriginObject movingOriginObject = CreateMockOriginObject(_movingOrigin, planningTime);
+    InterceptorOriginObject movingOriginObject =
+        CreateMockOriginObject(_movingOrigin, planningTime);
     LaunchPlan plan = planner.Plan(movingOriginObject);
 
     Assert.IsNotNull(plan);
@@ -285,4 +288,3 @@ public class MockPredictor : IPredictor {
     return new PredictorState(position, _velocity, Vector3.zero);
   }
 }
-
