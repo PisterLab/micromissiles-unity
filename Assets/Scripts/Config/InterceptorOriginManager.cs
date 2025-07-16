@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-/// <summary>
-/// Manages multiple interceptor origins and implements origin assignment strategies.
-///
-/// This class provides centralized management of interceptor launch platforms,
-/// including:
-/// - Origin selection based on different strategies
-/// - Capacity management across multiple origins
-/// - Position tracking for moving origins
-/// - Load balancing and capability-based assignment
-///
-/// The manager supports various scenarios:
-/// - Naval task forces with multiple ships
-/// - Layered defense networks with shore and ship-based systems
-/// - Mixed static and mobile launcher deployments
-/// </summary>
+// Manages multiple interceptor origins and implements origin assignment strategies.
+//
+// This class provides centralized management of interceptor launch platforms,
+// including:
+// - Origin selection based on different strategies
+// - Capacity management across multiple origins
+// - Position tracking for moving origins
+// - Load balancing and capability-based assignment
+//
+// The manager supports various scenarios:
+// - Naval task forces with multiple ships
+// - Layered defense networks with shore and ship-based systems
+// - Mixed static and mobile launcher deployments
 public class InterceptorOriginManager {
   private List<InterceptorOriginConfig> _origins;
+  private Dictionary<string, InterceptorOriginObject> _originObjects;
   private Dictionary<OriginAssignmentStrategy,
                      Func<Vector3, string, float, string, InterceptorOriginConfig>> _strategies;
   private Dictionary<string, int> _assignmentCounts;  // For load balancing
@@ -30,6 +29,7 @@ public class InterceptorOriginManager {
   /// <param name="origins">List of interceptor origin configurations</param>
   public InterceptorOriginManager(List<InterceptorOriginConfig> origins) {
     _origins = origins ?? new List<InterceptorOriginConfig>();
+    _originObjects = new Dictionary<string, InterceptorOriginObject>();
     _assignmentCounts = new Dictionary<string, int>();
 
     // Initialize assignment counters for load balancing
@@ -38,6 +38,34 @@ public class InterceptorOriginManager {
     }
 
     InitializeStrategies();
+  }
+
+  /// <summary>
+  /// Registers a runtime InterceptorOriginObject with its corresponding config.
+  /// This should be called when origin GameObjects are created.
+  /// </summary>
+  /// <param name="originObject">The runtime origin object</param>
+  public void RegisterOriginObject(InterceptorOriginObject originObject) {
+    if (originObject != null && originObject.GetOriginConfig() != null) {
+      _originObjects[originObject.OriginId] = originObject;
+    }
+  }
+
+  /// <summary>
+  /// Gets the runtime InterceptorOriginObject for a given origin ID.
+  /// </summary>
+  /// <param name="originId">Origin ID to find</param>
+  /// <returns>The runtime origin object, or null if not found</returns>
+  public InterceptorOriginObject GetOriginObject(string originId) {
+    return _originObjects.TryGetValue(originId, out var originObject) ? originObject : null;
+  }
+
+  /// <summary>
+  /// Gets all registered runtime origin objects.
+  /// </summary>
+  /// <returns>Collection of runtime origin objects</returns>
+  public IEnumerable<InterceptorOriginObject> GetAllOriginObjects() {
+    return _originObjects.Values;
   }
 
   /// <summary>
@@ -83,6 +111,29 @@ public class InterceptorOriginManager {
   }
 
   /// <summary>
+  /// Selects an appropriate interceptor origin runtime object based on the specified strategy.
+  /// This is the preferred method that returns the actual runtime object.
+  /// </summary>
+  /// <param name="threatPosition">Position of the incoming threat</param>
+  /// <param name="interceptorType">Type of interceptor needed (e.g., "sm2.json")</param>
+  /// <param name="strategy">Assignment strategy to use</param>
+  /// <param name="manualOriginId">Manual origin ID (for MANUAL strategy)</param>
+  /// <returns>Selected origin runtime object, or null if no suitable origin available</returns>
+  public InterceptorOriginObject SelectOriginObject(Vector3 threatPosition, string interceptorType,
+                                                    OriginAssignmentStrategy strategy,
+                                                    string manualOriginId = null) {
+    // First select the config using existing logic
+    var selectedConfig = SelectOrigin(threatPosition, interceptorType, strategy, Time.time, manualOriginId);
+    
+    if (selectedConfig == null) {
+      return null;
+    }
+
+    // Return the corresponding runtime object
+    return GetOriginObject(selectedConfig.id);
+  }
+
+  /// <summary>
   /// Selects the closest available origin that supports the interceptor type.
   /// Accounts for origin movement when calculating distances.
   /// </summary>
@@ -98,7 +149,18 @@ public class InterceptorOriginManager {
     float closestDistance = float.MaxValue;
 
     foreach (var origin in availableOrigins) {
-      float distance = origin.GetDistanceToTarget(threatPosition, currentTime);
+      // Use runtime object position if available, otherwise fall back to calculated
+      var originObject = GetOriginObject(origin.id);
+      float distance;
+      
+      if (originObject != null) {
+        // Use actual GameObject position
+        distance = originObject.GetDistanceToTarget(threatPosition);
+      } else {
+        // Fallback to calculated position
+        distance = origin.GetDistanceToTarget(threatPosition, currentTime);
+      }
+      
       if (distance < closestDistance) {
         closestDistance = distance;
         closestOrigin = origin;

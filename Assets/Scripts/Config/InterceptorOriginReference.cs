@@ -1,12 +1,11 @@
 using UnityEngine;
 
-/// <summary>
-/// Component that tracks which origin an interceptor was launched from.
-/// This enables proper capacity management and statistics tracking.
-///
-/// This component is automatically attached to interceptors when they are launched
-/// and handles origin capacity release when the interceptor is destroyed.
-/// </summary>
+
+// Component that tracks which origin an interceptor was launched from.
+// This enables proper capacity management and statistics tracking.
+//
+// This component is automatically attached to interceptors when they are launched
+// and handles origin capacity release when the interceptor is destroyed.
 public class InterceptorOriginReference : MonoBehaviour {
   private InterceptorOriginConfig _origin;
   private bool _capacityReleased = false;

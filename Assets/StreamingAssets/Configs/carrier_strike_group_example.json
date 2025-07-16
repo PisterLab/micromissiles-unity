@@ -7,35 +7,55 @@
       "initial_position": { "x": 0, "y": 0, "z": 5000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 24,
-      "interceptor_types": ["hydra70.json", "micromissile.json", "f18_missile.json"]
+      "interceptor_types": ["hydra70.json", "micromissile.json"],
+      "standard_deviation": {
+        "position": { "x": 50, "y": 5, "z": 100 },
+        "velocity": { "x": 1, "y": 0, "z": 2 }
+      }
     },
     {
       "id": "DDG-51-Burke-1",
       "initial_position": { "x": -2000, "y": 0, "z": 4000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 8,
-      "interceptor_types": ["sm2.json", "sm6.json"]
+      "interceptor_types": ["sm2.json", "sm6.json"],
+      "standard_deviation": {
+        "position": { "x": 100, "y": 5, "z": 150 },
+        "velocity": { "x": 1, "y": 0, "z": 1 }
+      }
     },
     {
       "id": "DDG-51-Burke-2", 
       "initial_position": { "x": 2000, "y": 0, "z": 4000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 8,
-      "interceptor_types": ["sm2.json", "sm6.json"]
+      "interceptor_types": ["sm2.json", "sm6.json"],
+      "standard_deviation": {
+        "position": { "x": 100, "y": 5, "z": 150 },
+        "velocity": { "x": 1, "y": 0, "z": 1 }
+      }
     },
     {
       "id": "CG-47-Ticonderoga",
       "initial_position": { "x": 3000, "y": 0, "z": 6000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 12,
-      "interceptor_types": ["sm2.json", "sm6.json", "tomahawk.json"]
+      "interceptor_types": ["sm2.json", "sm6.json", "tomahawk.json"],
+      "standard_deviation": {
+        "position": { "x": 75, "y": 5, "z": 125 },
+        "velocity": { "x": 1, "y": 0, "z": 1.5 }
+      }
     },
     {
       "id": "Aegis-Ashore-Guam",
       "initial_position": { "x": 15000, "y": 100, "z": 0 },
       "velocity": { "x": 0, "y": 0, "z": 0 },
       "max_interceptors": 48,
-      "interceptor_types": ["sm3.json", "thaad.json", "patriot.json"]
+      "interceptor_types": ["sm3.json", "thaad.json", "patriot.json"],
+      "standard_deviation": {
+        "position": { "x": 200, "y": 10, "z": 200 },
+        "velocity": { "x": 0, "y": 0, "z": 0 }
+      }
     }
   ],
   "origin_assignment_strategy": "CLOSEST",

@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-/// <summary>
-/// Configuration for an interceptor origin (launch platform).
-/// Supports both static origins (shore batteries) and moving origins (naval assets).
-///
-/// An interceptor origin represents a platform capable of launching interceptors,
-/// such as:
-/// - Naval vessels (aircraft carriers, destroyers, cruisers)
-/// - Shore-based installations (Aegis Ashore, Patriot batteries)
-/// - Mobile platforms (TEL vehicles)
-///
-/// Each origin has:
-/// - A unique identifier for reference
-/// - Initial position and optional velocity for movement
-/// - Launch capacity constraints
-/// - Supported interceptor types
-/// </summary>
+// Configuration for an interceptor origin (launch platform).
+// Supports both static origins (shore batteries) and moving origins (naval assets).
+//
+// An interceptor origin represents a platform capable of launching interceptors,
+// such as:
+// - Naval vessels (aircraft carriers, destroyers, cruisers)
+// - Shore-based installations (Aegis Ashore, Patriot batteries)
+// - Mobile platforms (TEL vehicles)
+//
+// Each origin has:
+// - A unique identifier for reference
+// - Initial position and optional velocity for movement
+// - Launch capacity constraints
+// - Supported interceptor types
+// - Optional randomization for position and velocity
 [Serializable]
 public class InterceptorOriginConfig {
   /// <summary>
@@ -54,6 +53,13 @@ public class InterceptorOriginConfig {
   public List<string> interceptor_types;
 
   /// <summary>
+  /// Standard deviation for randomizing initial position and velocity.
+  /// Enables formation spread and realistic deployment variations.
+  /// If not specified, no randomization is applied.
+  /// </summary>
+  public StandardDeviation standard_deviation;
+
+  /// <summary>
   /// Current number of allocated interceptors. Used for capacity management.
   /// This tracks how many interceptors are currently assigned to this origin.
   /// </summary>
@@ -65,17 +71,24 @@ public class InterceptorOriginConfig {
   /// </summary>
   public InterceptorOriginConfig() {
     interceptor_types = new List<string>();
+    standard_deviation = new StandardDeviation();
   }
 
   /// <summary>
   /// Gets the current position of this origin at the specified time.
-  /// For static origins, returns the initial position.
-  /// For moving origins, calculates position based on velocity and elapsed time.
+  /// DEPRECATED: Use InterceptorOriginObject.GetPosition() instead for runtime positions.
+  /// This method is kept for backward compatibility with tests and legacy code.
   /// </summary>
   /// <param name="currentTime">Current simulation time in seconds</param>
   /// <returns>Current position of the origin</returns>
+  [System.Obsolete("Use InterceptorOriginObject.GetPosition() for runtime positions")]
   public Vector3 GetCurrentPosition(float currentTime) {
-    return initial_position + velocity * currentTime;
+    if (velocity.magnitude <= 0) {
+      return initial_position;
+    }
+    
+    float elapsedTime = currentTime;
+    return initial_position + velocity * elapsedTime;
   }
 
   /// <summary>
@@ -153,6 +166,38 @@ public class InterceptorOriginConfig {
     return $"InterceptorOrigin[{id}] at {initial_position}, " +
            $"capacity: {_allocated_interceptors}/{max_interceptors}, " +
            $"types: [{string.Join(", ", interceptor_types)}]";
+  }
+
+  /// <summary>
+  /// Creates a randomized version of this origin configuration.
+  /// Applies standard deviation to position and velocity for formation spread.
+  /// </summary>
+  /// <returns>New origin config with randomized position and velocity</returns>
+  public InterceptorOriginConfig CreateRandomizedVersion() {
+    var randomizedConfig = new InterceptorOriginConfig {
+      id = id,
+      max_interceptors = max_interceptors,
+      interceptor_types = new List<string>(interceptor_types),
+      standard_deviation = standard_deviation
+    };
+
+    // Apply randomization to position
+    if (standard_deviation?.position != null) {
+      Vector3 positionNoise = Utilities.GenerateRandomNoise(standard_deviation.position);
+      randomizedConfig.initial_position = initial_position + positionNoise;
+    } else {
+      randomizedConfig.initial_position = initial_position;
+    }
+
+    // Apply randomization to velocity  
+    if (standard_deviation?.velocity != null) {
+      Vector3 velocityNoise = Utilities.GenerateRandomNoise(standard_deviation.velocity);
+      randomizedConfig.velocity = velocity + velocityNoise;
+    } else {
+      randomizedConfig.velocity = velocity;
+    }
+
+    return randomizedConfig;
   }
 
   /// <summary>
