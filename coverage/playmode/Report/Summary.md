@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/16/2025 - 06:35:10 |
+| Generated on: | 07/16/2025 - 06:35:43 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
@@ -9,7 +9,7 @@
 | Covered lines: | 1526 |
 | Uncovered lines: | 4845 |
 | Coverable lines: | 6371 |
-| Total lines: | 11593 |
+| Total lines: | 11597 |
 | Line coverage: | 23.9% (1526 of 6371) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -107,24 +107,24 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**1376**|**1376**|**3313**|**0%**|**0**|**0**|****|**0**|**145**|**0%**|
+|**bamlab.test.editmode**|**0**|**1376**|**1376**|**3319**|**0%**|**0**|**0**|****|**0**|**145**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
 |Coordinates2Test|0|55|55|158|0%|0|0||0|8|0%|
 |Coordinates3Test|0|56|56|158|0%|0|0||0|8|0%|
 |InterceptorOriginConfigTest|0|56|56|130|0%|0|0||0|5|0%|
-|IterativeLaunchPlannerTest|0|135|135|255|0%|0|0||0|15|0%|
+|IterativeLaunchPlannerTest|0|135|135|256|0%|0|0||0|15|0%|
 |KDTreeTest|0|39|39|55|0%|0|0||0|4|0%|
 |KMeansClustererTest|0|37|37|150|0%|0|0||0|4|0%|
 |LaunchAngleCsvInterpolatorTest|0|28|28|87|0%|0|0||0|4|0%|
 |LaunchAngleDataInterpolatorTest|0|16|16|87|0%|0|0||0|4|0%|
 |LinearExtrapolatorTest|0|28|28|42|0%|0|0||0|4|0%|
 |MaxSpeedAssignmentTest|0|107|107|181|0%|0|0||0|5|0%|
-|MockPredictor|0|24|24|288|0%|0|0||0|6|0%|
+|MockPredictor|0|24|24|290|0%|0|0||0|6|0%|
 |NearestNeighborInterpolator2DTest|0|56|56|107|0%|0|0||0|7|0%|
-|OriginAssignmentStrategyTest|0|142|142|319|0%|0|0||0|14|0%|
-|OriginAwareLaunchPlanningTest|0|105|105|288|0%|0|0||0|10|0%|
+|OriginAssignmentStrategyTest|0|142|142|320|0%|0|0||0|14|0%|
+|OriginAwareLaunchPlanningTest|0|105|105|290|0%|0|0||0|10|0%|
 |PriorityQueueTest|0|62|62|87|0%|0|0||0|7|0%|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|80|80|176|0%|0|0||0|4|0%|
