@@ -55,7 +55,7 @@ public interface ILaunchAnglePlanner {
   /// <param name="input">Launch angle input parameters</param>
   /// <returns>Launch angle output with timing information</returns>
   public LaunchAngleOutput Plan(in LaunchAngleInput input);
-  
+
   /// <summary>
   /// Calculate launch parameters for a target position from the default origin (0,0,0).
   /// Maintained for backward compatibility.
@@ -106,7 +106,8 @@ public interface ILaunchAnglePlanner {
   /// <param name="targetPosition">Target position</param>
   /// <param name="originPosition">Origin position (default: Vector3.zero)</param>
   /// <returns>2D direction vector (horizontal distance, altitude)</returns>
-  protected static Vector2 ConvertToDirection(Vector3 targetPosition, Vector3 originPosition = default(Vector3)) {
+  protected static Vector2 ConvertToDirection(Vector3 targetPosition,
+                                              Vector3 originPosition = default(Vector3)) {
     Vector3 relativePosition = targetPosition - originPosition;
     return new Vector2(Vector3.ProjectOnPlane(relativePosition, Vector3.up).magnitude,
                        Vector3.Project(relativePosition, Vector3.up).magnitude);

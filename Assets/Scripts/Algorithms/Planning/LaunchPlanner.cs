@@ -27,8 +27,8 @@ public class LaunchPlan {
   /// Gets the normalized launch vector from the interceptor origin.
   /// This vector represents the direction the interceptor should be launched.
   /// </summary>
-  /// <param name="originPosition">Position of the interceptor origin (default: Vector3.zero for backward compatibility)</param>
-  /// <returns>Normalized launch direction vector</returns>
+  /// <param name="originPosition">Position of the interceptor origin (default: Vector3.zero for
+  /// backward compatibility)</param> <returns>Normalized launch direction vector</returns>
   public Vector3 GetNormalizedLaunchVector(Vector3 originPosition = default(Vector3)) {
     // Calculate direction from origin to intercept position
     Vector3 targetDirection = InterceptPosition - originPosition;
@@ -44,19 +44,19 @@ public class LaunchPlan {
     if (obj == null || GetType() != obj.GetType()) {
       return false;
     }
-    
+
     LaunchPlan other = (LaunchPlan)obj;
-    
+
     // Handle NoLaunch comparison specially - both must have ShouldLaunch == false
     if (!ShouldLaunch && !other.ShouldLaunch) {
       return true;
     }
-    
+
     // If only one should launch, they're not equal
     if (ShouldLaunch != other.ShouldLaunch) {
       return false;
     }
-    
+
     // Both should launch - compare angle and position
     return Mathf.Approximately(LaunchAngle, other.LaunchAngle) &&
            Vector3.Distance(InterceptPosition, other.InterceptPosition) < 0.001f;

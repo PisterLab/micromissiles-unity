@@ -55,8 +55,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     Vector3 targetPosition = initialState.Position;
 
     LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
-    Vector3 interceptPosition = new Vector3(); 
-    
+    Vector3 interceptPosition = new Vector3();
+
     for (int i = 0; i < MaxNumIterations; ++i) {
       // Estimate the time-to-intercept from the current origin position
       launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
@@ -68,15 +68,16 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
       // Check whether the intercept position has converged
       Vector3 newInterceptPosition = _launchAnglePlanner.GetInterceptPosition(targetPosition);
-      
+
       if ((interceptPosition - newInterceptPosition).magnitude < ConvergenceThreshold) {
         interceptPosition = newInterceptPosition;
         break;
       }
       interceptPosition = newInterceptPosition;
 
-      // Check that the target is moving towards the intercept position relative to the threat's initial position.
-      // This prevents launching when the threat is moving away from the predicted intercept.
+      // Check that the target is moving towards the intercept position relative to the threat's
+      // initial position. This prevents launching when the threat is moving away from the predicted
+      // intercept.
       Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
       Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
       if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
@@ -90,7 +91,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     Vector3 interceptorToInterceptPosition = interceptPosition - Vector3.zero;
     Vector3 threatDirection = initialState.Velocity.normalized;
     float dot2 = Vector3.Dot(interceptorToInterceptPosition.normalized, threatDirection);
-    // Only flag as backwards if interceptor and threat are moving in very similar directions (> 0.8)
+    // Only flag as backwards if interceptor and threat are moving in very similar directions (>
+    // 0.8)
     if (dot2 > 0.8f) {
       return LaunchPlan.NoLaunch;
     }
@@ -99,7 +101,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     if (Vector3.Distance(interceptPosition, targetPosition) < InterceptPositionThreshold) {
       return new LaunchPlan(launchAngleOutput.LaunchAngle, interceptPosition);
     }
-    
+
     return LaunchPlan.NoLaunch;
   }
 
@@ -115,7 +117,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
 
     LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
     Vector3 interceptPosition = new Vector3();
-    
+
     for (int i = 0; i < MaxNumIterations; ++i) {
       // Estimate the time-to-intercept from the current origin position
       launchAngleOutput = _launchAnglePlanner.Plan(targetPosition, originPosition);
@@ -126,15 +128,17 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
       targetPosition = predictedState.Position;
 
       // Check whether the intercept position has converged
-      Vector3 newInterceptPosition = _launchAnglePlanner.GetInterceptPosition(targetPosition, originPosition);
+      Vector3 newInterceptPosition =
+          _launchAnglePlanner.GetInterceptPosition(targetPosition, originPosition);
       if ((interceptPosition - newInterceptPosition).magnitude < ConvergenceThreshold) {
         interceptPosition = newInterceptPosition;
         break;
       }
       interceptPosition = newInterceptPosition;
 
-      // Check that the target is moving towards the intercept position relative to the threat's initial position.
-      // This prevents launching when the threat is moving away from the predicted intercept.
+      // Check that the target is moving towards the intercept position relative to the threat's
+      // initial position. This prevents launching when the threat is moving away from the predicted
+      // intercept.
       Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
       Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
       if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
@@ -148,7 +152,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     Vector3 interceptorToInterceptPosition = interceptPosition - originPosition;
     Vector3 threatDirection = initialState.Velocity.normalized;
     float dot = Vector3.Dot(interceptorToInterceptPosition.normalized, threatDirection);
-    // Only flag as backwards if interceptor and threat are moving in very similar directions (> 0.8)
+    // Only flag as backwards if interceptor and threat are moving in very similar directions (>
+    // 0.8)
     if (dot > 0.8f) {
       return LaunchPlan.NoLaunch;
     }
@@ -157,7 +162,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     if (Vector3.Distance(interceptPosition, targetPosition) < InterceptPositionThreshold) {
       return new LaunchPlan(launchAngleOutput.LaunchAngle, interceptPosition);
     }
-    
+
     return LaunchPlan.NoLaunch;
   }
 }

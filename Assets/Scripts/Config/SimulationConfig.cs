@@ -38,8 +38,8 @@ public class SwarmConfig {
 
   /// <summary>
   /// Optional origin ID for manual origin assignment.
-  /// When specified and using MANUAL assignment strategy, interceptors will be assigned to this origin.
-  /// If null or empty, the configured assignment strategy will be used.
+  /// When specified and using MANUAL assignment strategy, interceptors will be assigned to this
+  /// origin. If null or empty, the configured assignment strategy will be used.
   /// </summary>
   public string origin_id;
 }
