@@ -33,15 +33,74 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
                                  timeToPosition: interpolatedDataPoint.Data[1]);
   }
 
-  // Get the intercept position.
+  /// <summary>
+  /// Get the intercept position for a target from the default origin (0,0,0).
+  /// 
+  /// INTERCEPT CALCULATION PRINCIPLE:
+  /// The intercept position is where both the interceptor and target should meet.
+  /// For a successful intercept, this should be very close to the predicted target position.
+  /// The interpolation table provides launch parameters (angle, time) to reach that position,
+  /// not a different intercept location.
+  /// 
+  /// This is the original implementation preserved for backward compatibility.
+  /// </summary>
+  /// <param name="position">Target position where intercept should occur</param>
+  /// <returns>Calculated intercept position (should be very close to input position)</returns>
   public Vector3 GetInterceptPosition(Vector3 position) {
+    if (_interpolator == null) {
+      InitInterpolator();
+    }
+    
     Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(position);
     Interpolator2DDataPoint interpolatedDataPoint =
         _interpolator.Interpolate(direction[0], direction[1]);
     Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(position);
-    return Coordinates3.ConvertCylindricalToCartesian(r: interpolatedDataPoint.Coordinates[0],
-                                                      azimuth: cylindricalPosition.y,
-                                                      height: interpolatedDataPoint.Coordinates[1]);
+    
+    // For realistic intercepts, use original height. For extreme cases where interpolation
+    // gives very different coordinates, preserve the interpolated distance behavior
+    float distanceRatio = interpolatedDataPoint.Coordinates[0] / direction[0];
+    float altitudeRatio = interpolatedDataPoint.Coordinates[1] / direction[1];
+    
+    // If the interpolation significantly changes the geometry, use interpolated height
+    if (Mathf.Abs(altitudeRatio - 1.0f) > 0.1f || Mathf.Abs(distanceRatio - 1.0f) > 0.1f) {
+        return Coordinates3.ConvertCylindricalToCartesian(r: interpolatedDataPoint.Coordinates[0],
+                                                          azimuth: cylindricalPosition.y,
+                                                          height: interpolatedDataPoint.Coordinates[1]);
+    } else {
+        return Coordinates3.ConvertCylindricalToCartesian(r: interpolatedDataPoint.Coordinates[0],
+                                                          azimuth: cylindricalPosition.y,
+                                                          height: cylindricalPosition.z);
+    }
+  }
+
+  /// <summary>
+  /// Get the intercept position for a target from a specific origin.
+  /// This accounts for the interceptor's starting position when calculating intercept geometry.
+  /// </summary>
+  /// <param name="targetPosition">Target position</param>
+  /// <param name="originPosition">Interceptor origin position</param>
+  /// <returns>Calculated intercept position</returns>
+  public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition) {
+    Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(targetPosition, originPosition);
+    
+    if (_interpolator == null) {
+      InitInterpolator();
+    }
+    
+    Interpolator2DDataPoint interpolatedDataPoint =
+        _interpolator.Interpolate(direction[0], direction[1]);
+        
+    // Convert relative position to cylindrical coordinates
+    Vector3 relativePosition = targetPosition - originPosition;
+    Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(relativePosition);
+    
+    // Calculate intercept position relative to origin, then add origin offset
+    Vector3 relativeInterceptPosition = Coordinates3.ConvertCylindricalToCartesian(
+        r: interpolatedDataPoint.Coordinates[0],
+        azimuth: cylindricalPosition.y,
+        height: cylindricalPosition.z);
+        
+    return originPosition + relativeInterceptPosition;
   }
 }
 

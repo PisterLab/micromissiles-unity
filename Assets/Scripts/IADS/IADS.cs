@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 
 // Integrated Air Defense System.
+// Manages interceptor origins, threat clustering, and launch coordination.
 public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
 
@@ -17,6 +18,12 @@ public class IADS : MonoBehaviour {
   private ILaunchAnglePlanner _launchAnglePlanner =
       new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignment _assignmentScheme = new MaxSpeedAssignment();
+
+  /// <summary>
+  /// Manager for interceptor origins and assignment strategies.
+  /// Handles origin selection and capacity management.
+  /// </summary>
+  private InterceptorOriginManager _originManager;
   private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
@@ -58,10 +65,47 @@ public class IADS : MonoBehaviour {
   }
 
   public void Start() {
+    // Initialize the origin manager with configured origins
+    InitializeOriginManager();
+    
     SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+  }
+
+  /// <summary>
+  /// Initializes the interceptor origin manager based on simulation configuration.
+  /// Creates a default origin at (0,0,0) if no origins are configured for backward compatibility.
+  /// </summary>
+  private void InitializeOriginManager() {
+    var simulationConfig = SimManager.Instance.SimulationConfig;
+    
+    if (simulationConfig.interceptor_origins == null || simulationConfig.interceptor_origins.Count == 0) {
+      // Create default origin for backward compatibility
+      var defaultOrigin = new InterceptorOriginConfig {
+        id = "Default-Origin",
+        initial_position = Vector3.zero,
+        velocity = Vector3.zero,
+        max_interceptors = 100, // Large capacity for backward compatibility
+        interceptor_types = new List<string> { "hydra70.json", "micromissile.json" } // Common types
+      };
+      
+      var origins = new List<InterceptorOriginConfig> { defaultOrigin };
+      _originManager = new InterceptorOriginManager(origins);
+      
+      Debug.LogWarning("No interceptor origins configured. Using default origin at (0,0,0) for backward compatibility.");
+    } else {
+      _originManager = new InterceptorOriginManager(simulationConfig.interceptor_origins);
+      
+      // Validate configuration
+      var validationErrors = _originManager.ValidateConfiguration();
+      if (validationErrors.Count > 0) {
+        Debug.LogError("Interceptor origin configuration errors:\n" + string.Join("\n", validationErrors));
+      }
+      
+      Debug.Log($"Initialized IADS with {simulationConfig.interceptor_origins.Count} interceptor origins using {simulationConfig.origin_assignment_strategy} strategy.");
+    }
   }
 
   public void LateUpdate() {
@@ -92,6 +136,10 @@ public class IADS : MonoBehaviour {
     }
   }
 
+  /// <summary>
+  /// Checks each threat cluster and launches interceptors as needed.
+  /// Now supports origin-aware launch planning with configurable assignment strategies.
+  /// </summary>
   private void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
@@ -105,31 +153,51 @@ public class IADS : MonoBehaviour {
         continue;
       }
 
+      // Get the cluster's centroid position for origin selection
+      Vector3 threatPosition = _threatClusterMap[cluster].Centroid.transform.position;
+      
+      // Get the interceptor configuration for this launch
+      DynamicAgentConfig config = GetInterceptorConfig();
+      if (config == null) {
+        Debug.LogWarning("No interceptor configuration available for launch.");
+        continue;
+      }
+
+      // Select appropriate origin based on strategy
+      InterceptorOriginConfig selectedOrigin = SelectOriginForThreat(threatPosition, config.agent_model);
+      if (selectedOrigin == null) {
+        Debug.LogWarning($"No suitable origin available for interceptor type {config.agent_model} against threat at {threatPosition}");
+        continue;
+      }
+
       // Create a predictor to track the cluster's centroid.
       IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
 
-      // Create a launch planner.
+      // Create an origin-aware launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-      LaunchPlan plan = planner.Plan();
+      LaunchPlan plan = planner.Plan(selectedOrigin, Time.time);
 
       // Check whether an interceptor should be launched.
       if (plan.ShouldLaunch) {
-        Debug.Log(
-            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+        // Allocate capacity from the selected origin
+        if (!selectedOrigin.AllocateInterceptor()) {
+          Debug.LogWarning($"Failed to allocate interceptor from origin {selectedOrigin.id} - capacity exhausted");
+          continue;
+        }
+
+        Vector3 currentOriginPosition = selectedOrigin.GetCurrentPosition(Time.time);
+        
+        Debug.Log($"Launching interceptor from {selectedOrigin.id} at {currentOriginPosition} " +
+                 $"with elevation {plan.LaunchAngle} degrees to intercept at {plan.InterceptPosition}.");
         UIManager.Instance.LogActionMessage(
-            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+            $"[IADS] Launching interceptor from {selectedOrigin.id} at elevation {plan.LaunchAngle} degrees.");
 
-        // Create a new interceptor.
-        DynamicAgentConfig config =
-            SimManager.Instance.SimulationConfig.interceptor_swarm_configs[0].dynamic_agent_config;
-        InitialState initialState = new InitialState();
-
-        // Set the initial position, which defaults to the origin.
-        initialState.position = Vector3.zero;
-
-        // Set the initial velocity to point along the launch vector.
-        initialState.velocity = plan.GetNormalizedLaunchVector() * 1e-3f;
+        // Create a new interceptor with origin-aware initial state
+        InitialState initialState = CreateInitialStateFromOrigin(selectedOrigin, plan, Time.time);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
+
+        // Store origin reference for capacity management
+        interceptor.gameObject.AddComponent<InterceptorOriginReference>().SetOrigin(selectedOrigin);
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;
@@ -140,6 +208,56 @@ public class IADS : MonoBehaviour {
         SimManager.Instance.AddInterceptorSwarm(new List<Agent> { interceptor as Agent });
       }
     }
+  }
+
+  /// <summary>
+  /// Gets the interceptor configuration for launching.
+  /// Supports manual origin assignment from swarm configuration.
+  /// </summary>
+  private DynamicAgentConfig GetInterceptorConfig() {
+    var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
+    if (swarmConfigs == null || swarmConfigs.Count == 0) {
+      Debug.LogError("No interceptor swarm configurations available");
+      return null;
+    }
+    
+    // For now, use the first configuration. Future  could implement
+    // more sophisticated configuration selection based on threat characteristics.
+    return swarmConfigs[0].dynamic_agent_config;
+  }
+
+  /// <summary>
+  /// Selects the most appropriate origin for engaging a threat.
+  /// Uses the configured assignment strategy and accounts for origin capabilities.
+  /// </summary>
+  private InterceptorOriginConfig SelectOriginForThreat(Vector3 threatPosition, string interceptorType) {
+    var strategy = SimManager.Instance.SimulationConfig.origin_assignment_strategy;
+    
+    // Check for manual origin assignment in swarm configuration
+    string manualOriginId = null;
+    var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
+    if (swarmConfigs.Count > 0 && !string.IsNullOrEmpty(swarmConfigs[0].origin_id)) {
+      manualOriginId = swarmConfigs[0].origin_id;
+      strategy = OriginAssignmentStrategy.MANUAL;
+    }
+
+    return _originManager.SelectOrigin(threatPosition, interceptorType, strategy, Time.time, manualOriginId);
+  }
+
+  /// <summary>
+  /// Creates an initial state for an interceptor based on the selected origin and launch plan.
+  /// Accounts for origin position and movement.
+  /// </summary>
+  private InitialState CreateInitialStateFromOrigin(InterceptorOriginConfig origin, LaunchPlan plan, float currentTime) {
+    Vector3 originPosition = origin.GetCurrentPosition(currentTime);
+    
+    InitialState initialState = new InitialState {
+      position = originPosition,
+      velocity = plan.GetNormalizedLaunchVector(originPosition) * 1e-3f,
+      rotation = Vector3.zero
+    };
+
+    return initialState;
   }
 
   public bool ShouldLaunchSubmunitions(Interceptor carrier) {

@@ -11,6 +11,12 @@ public class SimulationConfig {
 
   public float endTime = 300f;  // 5 minutes by default
 
+  [Header("Interceptor Origins")]
+  public List<InterceptorOriginConfig> interceptor_origins = new List<InterceptorOriginConfig>();
+
+  [Header("Origin Assignment Strategy")]
+  public OriginAssignmentStrategy origin_assignment_strategy = OriginAssignmentStrategy.CLOSEST;
+
   [Header("Interceptor Swarm Configurations")]
   public List<SwarmConfig> interceptor_swarm_configs = new List<SwarmConfig>();
 
@@ -29,6 +35,13 @@ public class DynamicConfig {
 public class SwarmConfig {
   public int num_agents;
   public DynamicAgentConfig dynamic_agent_config;
+
+  /// <summary>
+  /// Optional origin ID for manual origin assignment.
+  /// When specified and using MANUAL assignment strategy, interceptors will be assigned to this origin.
+  /// If null or empty, the configured assignment strategy will be used.
+  /// </summary>
+  public string origin_id;
 }
 
 [Serializable]
