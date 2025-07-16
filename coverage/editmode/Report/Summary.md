@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/16/2025 - 06:00:34 |
+| Generated on: | 07/16/2025 - 06:32:09 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
-| Files: | 87 |
-| Covered lines: | 2576 |
-| Uncovered lines: | 3819 |
-| Coverable lines: | 6395 |
-| Total lines: | 11657 |
-| Line coverage: | 40.2% (2576 of 6395) |
+| Files: | 88 |
+| Covered lines: | 2561 |
+| Uncovered lines: | 3810 |
+| Coverable lines: | 6371 |
+| Total lines: | 11593 |
+| Line coverage: | 40.1% (2561 of 6371) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 349 |
-| Total methods: | 874 |
-| Method coverage: | 39.9% (349 of 874) |
+| Covered methods: | 347 |
+| Total methods: | 870 |
+| Method coverage: | 39.8% (347 of 870) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1147**|**3689**|**4836**|**10881**|**23.7%**|**0**|**0**|****|**189**|**701**|**26.9%**|
+|**bamlab.micromissiles**|**1189**|**3693**|**4882**|**10947**|**24.3%**|**0**|**0**|****|**197**|**710**|**27.7%**|
 |Agent|104|156|260|465|40%|0|0||21|46|45.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -45,18 +45,18 @@
 |IInterpolator2D|16|0|16|86|100%|0|0||3|3|100%|
 |ILaunchAngleInterpolator|32|4|36|160|88.8%|0|0||4|4|100%|
 |ILaunchAnglePlanner|13|3|16|103|81.2%|0|0||3|4|75%|
-|ILaunchPlanner|4|0|4|104|100%|0|0||1|1|100%|
+|ILaunchPlanner|4|0|4|102|100%|0|0||1|1|100%|
 |InputManager|0|174|174|234|0%|0|0||0|15|0%|
 |Interceptor|8|149|157|242|5%|0|0||2|17|11.7%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
-|InterceptorOriginConfig|35|39|74|215|47.2%|0|0||8|12|66.6%|
-|InterceptorOriginManager|97|64|161|354|60.2%|0|0||11|20|55%|
-|InterceptorOriginObject|0|74|74|153|0%|0|0||0|14|0%|
+|InterceptorOriginConfig|25|39|64|188|39%|0|0||6|10|60%|
+|InterceptorOriginManager|99|64|163|358|60.7%|0|0||12|21|57.1%|
+|InterceptorOriginObject|9|65|74|153|12.1%|0|0||2|14|14.2%|
 |InterceptorOriginReference|0|22|22|55|0%|0|0||0|6|0%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
-|IterativeLaunchPlanner|67|3|70|175|95.7%|0|0||6|6|100%|
+|IterativeLaunchPlanner|67|3|70|174|95.7%|0|0||6|6|100%|
 |KDNode[T]|5|0|5|87|100%|0|0||1|1|100%|
 |KDTree[T]|43|0|43|87|100%|0|0||4|4|100%|
 |KMeansClusterer|49|6|55|123|89%|0|0||4|4|100%|
@@ -65,9 +65,10 @@
 |LaunchAngleDataPoint|6|0|6|103|100%|0|0||3|3|100%|
 |LaunchAngleInput|6|0|6|103|100%|0|0||3|3|100%|
 |LaunchAngleOutput|8|0|8|103|100%|0|0||4|4|100%|
-|LaunchPlan|28|7|35|104|80%|0|0||9|10|90%|
+|LaunchPlan|28|7|35|102|80%|0|0||9|10|90%|
 |LinearExtrapolator|5|0|5|14|100%|0|0||2|2|100%|
 |MaxSpeedAssignment|41|0|41|77|100%|0|0||1|1|100%|
+|MockLaunchAnglePlanner|41|13|54|94|75.9%|0|0||7|10|70%|
 |NearestNeighborInterpolator2D|15|0|15|86|100%|0|0||3|3|100%|
 |ParticleManager|0|185|185|272|0%|0|0||0|28|0%|
 |PnController|24|7|31|61|77.4%|0|0||2|2|100%|
@@ -106,25 +107,24 @@
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**1384**|**62**|**1446**|**3873**|**95.7%**|**0**|**0**|****|**151**|**158**|**95.5%**|
+|**bamlab.test.editmode**|**1327**|**49**|**1376**|**3313**|**96.4%**|**0**|**0**|****|**141**|**145**|**97.2%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
 |Coordinates2Test|55|0|55|158|100%|0|0||8|8|100%|
 |Coordinates3Test|56|0|56|158|100%|0|0||8|8|100%|
-|InterceptorOriginConfigTest|89|0|89|203|100%|0|0||9|9|100%|
-|IterativeLaunchPlannerTest|100|31|131|248|76.3%|0|0||15|15|100%|
+|InterceptorOriginConfigTest|56|0|56|130|100%|0|0||5|5|100%|
+|IterativeLaunchPlannerTest|104|31|135|255|77%|0|0||15|15|100%|
 |KDTreeTest|39|0|39|55|100%|0|0||4|4|100%|
 |KMeansClustererTest|37|0|37|150|100%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTest|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
 |MaxSpeedAssignmentTest|107|0|107|181|100%|0|0||5|5|100%|
-|MockLaunchAnglePlanner|41|13|54|358|75.9%|0|0||7|10|70%|
-|MockPredictor|18|6|24|358|75%|0|0||4|6|66.6%|
+|MockPredictor|18|6|24|288|75%|0|0||4|6|66.6%|
 |NearestNeighborInterpolator2DTest|56|0|56|107|100%|0|0||7|7|100%|
-|OriginAssignmentStrategyTest|141|0|141|315|100%|0|0||14|14|100%|
-|OriginAwareLaunchPlanningTest|93|0|93|358|100%|0|0||9|9|100%|
+|OriginAssignmentStrategyTest|142|0|142|319|100%|0|0||14|14|100%|
+|OriginAwareLaunchPlanningTest|105|0|105|288|100%|0|0||10|10|100%|
 |PriorityQueueTest|62|0|62|87|100%|0|0||7|7|100%|
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|80|0|80|176|100%|0|0||4|4|100%|
