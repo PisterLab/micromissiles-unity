@@ -37,6 +37,22 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockLaunchAnglePlanner = new MockLaunchAnglePlanner();
   }
 
+  // Helper method to create a mock InterceptorOriginObject for testing
+  private InterceptorOriginObject CreateMockOriginObject(InterceptorOriginConfig config, float currentTime = 0f) {
+    // Create a GameObject to serve as the mock origin object
+    GameObject mockOriginGameObject = new GameObject($"Mock_{config.id}");
+    
+    // Calculate position accounting for time and velocity
+    Vector3 currentPosition = config.initial_position + config.velocity * currentTime;
+    mockOriginGameObject.transform.position = currentPosition;
+    
+    // Add the InterceptorOriginObject component
+    InterceptorOriginObject originObject = mockOriginGameObject.AddComponent<InterceptorOriginObject>();
+    originObject.SetOriginConfig(config);
+    
+    return originObject;
+  }
+
   [Test]
   public void TestIterativeLaunchPlanner_WithOrigin_StaticOrigin() {
     // Test that IterativeLaunchPlanner correctly uses static origin position
@@ -51,8 +67,9 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockLaunchAnglePlanner.SetMockResponse(
         45f, 10f);  // 45 degree launch angle, 10 second time-to-intercept
 
-    // Plan launch from static origin
-    LaunchPlan plan = planner.Plan(_staticOrigin, 0f);
+    // Plan launch from static origin using mock origin object
+    InterceptorOriginObject staticOriginObject = CreateMockOriginObject(_staticOrigin);
+    LaunchPlan plan = planner.Plan(staticOriginObject);
 
     Assert.AreEqual(
         LaunchPlan.NoLaunch, plan,
@@ -71,9 +88,10 @@ public class OriginAwareLaunchPlanningTest : TestBase {
 
     _mockLaunchAnglePlanner.SetMockResponse(30f, 15f);
 
-    // Plan launch from moving origin at t=10 seconds
+    // Plan launch from moving origin at t=10 seconds using mock origin object
     float planningTime = 10f;
-    LaunchPlan plan = planner.Plan(_movingOrigin, planningTime);
+    InterceptorOriginObject movingOriginObject = CreateMockOriginObject(_movingOrigin, planningTime);
+    LaunchPlan plan = planner.Plan(movingOriginObject);
 
     Assert.IsNotNull(plan);
     Assert.AreNotEqual(LaunchPlan.NoLaunch, plan);
@@ -168,7 +186,9 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
     _mockLaunchAnglePlanner.SetMockResponse(45f, 5f);
 
-    LaunchPlan plan = planner.Plan(origin, 0f);
+    // Use mock origin object instead of config and time
+    InterceptorOriginObject originObject = CreateMockOriginObject(origin);
+    LaunchPlan plan = planner.Plan(originObject);
 
     // Should return NoLaunch because interceptor would be launched backwards
     Assert.AreEqual(LaunchPlan.NoLaunch, plan,
@@ -212,7 +232,9 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
     _mockLaunchAnglePlanner.SetMockConvergentResponse();  // Make it converge after a few iterations
 
-    LaunchPlan plan = planner.Plan(origin, 0f);
+    // Use mock origin object instead of config and time
+    InterceptorOriginObject originObject = CreateMockOriginObject(origin);
+    LaunchPlan plan = planner.Plan(originObject);
 
     Assert.IsNotNull(plan);
     Assert.AreNotEqual(LaunchPlan.NoLaunch, plan);
@@ -264,95 +286,3 @@ public class MockPredictor : IPredictor {
   }
 }
 
-// Mock implementation of ILaunchAnglePlanner for testing purposes.
-// Allows controlled responses for testing launch planning logic.
-public class MockLaunchAnglePlanner : ILaunchAnglePlanner {
-  private float _mockLaunchAngle = 45f;
-  private float _mockTimeToPosition = 10f;
-  private Vector3 _lastOriginUsed;
-  private int _callCount = 0;
-  private bool _convergentMode = false;
-  private Vector3 _lastInterceptPosition = Vector3.zero;
-
-  public void SetMockResponse(float launchAngle, float timeToPosition) {
-    _mockLaunchAngle = launchAngle;
-    _mockTimeToPosition = timeToPosition;
-  }
-
-  public void SetMockConvergentResponse() {
-    _convergentMode = true;
-    _callCount = 0;  // Reset call count for convergence simulation
-  }
-
-  // Required interface method
-  public LaunchAngleOutput Plan(in LaunchAngleInput input) {
-    _callCount++;
-
-    if (_convergentMode) {
-      float convergenceFactor = 1f / _callCount;
-      return new LaunchAngleOutput(_mockLaunchAngle + convergenceFactor,
-                                   _mockTimeToPosition + convergenceFactor, input.Distance);
-    }
-
-    return new LaunchAngleOutput(_mockLaunchAngle, _mockTimeToPosition, input.Distance);
-  }
-
-  public LaunchAngleOutput Plan(Vector3 targetPosition) {
-    return Plan(targetPosition, Vector3.zero);
-  }
-
-  public LaunchAngleOutput Plan(Vector3 targetPosition, Vector3 originPosition) {
-    _lastOriginUsed = originPosition;
-    _callCount++;
-
-    float distance = Vector3.Distance(originPosition, targetPosition);
-
-    if (_convergentMode) {
-      // Simulate convergence by returning slightly different values that converge
-      float convergenceFactor = 1f / _callCount;
-      return new LaunchAngleOutput(_mockLaunchAngle + convergenceFactor,
-                                   _mockTimeToPosition + convergenceFactor, distance);
-    }
-
-    // Make launch angle and time dependent on origin position to ensure different results
-    float originBasedVariation = (originPosition.x + originPosition.z) * 0.01f;
-    float adjustedLaunchAngle = _mockLaunchAngle + originBasedVariation;
-    float adjustedTimeToPosition = _mockTimeToPosition + originBasedVariation;
-
-    return new LaunchAngleOutput(adjustedLaunchAngle, adjustedTimeToPosition, distance);
-  }
-
-  public Vector3 GetInterceptPosition(Vector3 targetPosition) {
-    return GetInterceptPosition(targetPosition, Vector3.zero);
-  }
-
-  public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition) {
-    if (_convergentMode) {
-      // Return positions that converge over iterations
-      // Start with a larger offset and converge to target position
-      float convergenceOffset = Mathf.Max(1f, 50f / _callCount);  // Starts at 50, converges to 1
-      Vector3 direction = (targetPosition - originPosition).normalized;
-      Vector3 offset = direction * convergenceOffset;
-      _lastInterceptPosition = targetPosition + offset;
-      return _lastInterceptPosition;
-    }
-
-    // Simple but realistic intercept calculation for testing
-    // The intercept position should be close to the predicted target position
-    // with origin-dependent variation to ensure different behavior for different origins
-
-    float originVariation = (originPosition.x + originPosition.z) * 0.001f;
-
-    // Return the target position with slight variation
-    // This simulates a simple intercept calculation
-    return targetPosition + Vector3.right * originVariation;
-  }
-
-  public bool WasCalledWithOrigin(Vector3 expectedOrigin) {
-    return Vector3.Distance(_lastOriginUsed, expectedOrigin) < 0.001f;
-  }
-
-  public int GetCallCount() {
-    return _callCount;
-  }
-}

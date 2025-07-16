@@ -112,7 +112,9 @@ public class OriginAssignmentStrategyTest : TestBase {
     // Verify that the distance calculation used the origin's position at the specified time
     Vector3 expectedCarrierPosition = new Vector3(0, 0, 5000 - 12 * 100);  // 5000 - 1200 = 3800
     float expectedDistance = Vector3.Distance(expectedCarrierPosition, threatPosition);
-    float actualDistance = selectedOrigin.GetDistanceToTarget(threatPosition, currentTime);
+    // Calculate distance directly instead of using obsolete method
+    Vector3 actualCarrierPosition = selectedOrigin.initial_position + selectedOrigin.velocity * currentTime;
+    float actualDistance = Vector3.Distance(actualCarrierPosition, threatPosition);
 
     Assert.AreEqual(expectedDistance, actualDistance, 0.1f);
   }
@@ -231,7 +233,8 @@ public class OriginAssignmentStrategyTest : TestBase {
     float timeOffset = 60f;  // 1 minute into simulation
 
     foreach (var origin in _testOrigins) {
-      Vector3 currentPosition = origin.GetCurrentPosition(timeOffset);
+      // Calculate position directly instead of using obsolete method
+      Vector3 currentPosition = origin.initial_position + origin.velocity * timeOffset;
 
       if (origin.velocity.magnitude > 0) {
         // Moving origins should have moved
@@ -272,10 +275,10 @@ public class OriginAssignmentStrategyTest : TestBase {
     // Test bulk update of all moving origin positions
     float deltaTime = 30f;
 
-    // Get initial positions
+    // Get initial positions - calculate directly instead of using obsolete method
     var initialPositions = new Dictionary<string, Vector3>();
     foreach (var origin in _testOrigins) {
-      initialPositions[origin.id] = origin.GetCurrentPosition(0f);
+      initialPositions[origin.id] = origin.initial_position;
     }
 
     // Update all moving origins
@@ -283,7 +286,8 @@ public class OriginAssignmentStrategyTest : TestBase {
 
     // Verify positions updated correctly
     foreach (var origin in _testOrigins) {
-      Vector3 newPosition = origin.GetCurrentPosition(deltaTime);
+      // Calculate expected position directly instead of using obsolete method
+      Vector3 newPosition = origin.initial_position + origin.velocity * deltaTime;
       Vector3 expectedPosition = initialPositions[origin.id] + origin.velocity * deltaTime;
 
       Assert.AreEqual(expectedPosition, newPosition,

@@ -9,42 +9,6 @@ using Newtonsoft.Json;
 [TestFixture]
 public class InterceptorOriginConfigTest : TestBase {
   [Test]
-  public void TestInterceptorOriginConfig_GetCurrentPosition_StaticOrigin() {
-    // Test that static origins (zero velocity) return initial position regardless of time
-    var staticOrigin =
-        new InterceptorOriginConfig { id = "Shore-Battery-Alpha",
-                                      initial_position = new Vector3(5000, 100, 0),
-                                      velocity = Vector3.zero, max_interceptors = 50,
-                                      interceptor_types = new List<string> { "patriot.json" } };
-
-    Vector3 positionAtT0 = staticOrigin.GetCurrentPosition(0f);
-    Vector3 positionAtT100 = staticOrigin.GetCurrentPosition(100f);
-
-    Assert.AreEqual(new Vector3(5000, 100, 0), positionAtT0);
-    Assert.AreEqual(new Vector3(5000, 100, 0), positionAtT100);
-  }
-
-  [Test]
-  public void TestInterceptorOriginConfig_GetCurrentPosition_MovingOrigin() {
-    // Test that moving origins calculate position based on velocity and time
-    var movingOrigin = new InterceptorOriginConfig {
-      id = "DDG-51-Burke", initial_position = new Vector3(3000, 0, 6000),
-      velocity = new Vector3(0, 0, -15),  // Moving at 15 m/s in negative Z direction
-      max_interceptors = 8, interceptor_types = new List<string> { "sm2.json" }
-    };
-
-    Vector3 positionAtT0 = movingOrigin.GetCurrentPosition(0f);
-    Vector3 positionAtT10 = movingOrigin.GetCurrentPosition(10f);
-    Vector3 positionAtT60 = movingOrigin.GetCurrentPosition(60f);
-
-    Assert.AreEqual(new Vector3(3000, 0, 6000), positionAtT0);
-    Assert.AreEqual(new Vector3(3000, 0, 5850), positionAtT10,
-                    "Position after 10 seconds should move 150m in -Z");
-    Assert.AreEqual(new Vector3(3000, 0, 5100), positionAtT60,
-                    "Position after 60 seconds should move 900m in -Z");
-  }
-
-  [Test]
   public void TestInterceptorOriginConfig_SupportsInterceptorType() {
     // Test interceptor type compatibility checking
     var origin = new InterceptorOriginConfig {
@@ -162,42 +126,5 @@ public class InterceptorOriginConfigTest : TestBase {
     Assert.AreEqual(originalOrigin.max_interceptors, deserializedOrigin.max_interceptors);
     CollectionAssert.AreEqual(originalOrigin.interceptor_types,
                               deserializedOrigin.interceptor_types);
-  }
-
-  [Test]
-  public void TestInterceptorOriginConfig_DistanceCalculation() {
-    // Test distance calculation from origin to target position
-    var origin =
-        new InterceptorOriginConfig { id = "Distance-Test", initial_position = new Vector3(0, 0, 0),
-                                      velocity = Vector3.zero, max_interceptors = 10,
-                                      interceptor_types = new List<string> { "test.json" } };
-
-    Vector3 targetPosition1 = new Vector3(3, 4, 0);   // Should be distance 5
-    Vector3 targetPosition2 = new Vector3(0, 0, 10);  // Should be distance 10
-
-    float distance1 = origin.GetDistanceToTarget(targetPosition1, 0f);
-    float distance2 = origin.GetDistanceToTarget(targetPosition2, 0f);
-
-    Assert.AreEqual(5f, distance1, 0.001f);
-    Assert.AreEqual(10f, distance2, 0.001f);
-  }
-
-  [Test]
-  public void TestInterceptorOriginConfig_DistanceCalculation_MovingOrigin() {
-    // Test distance calculation for moving origins at different times
-    var movingOrigin = new InterceptorOriginConfig {
-      id = "Moving-Distance-Test", initial_position = new Vector3(0, 0, 0),
-      velocity = new Vector3(1, 0, 0),  // Moving 1 m/s in +X direction
-      max_interceptors = 10, interceptor_types = new List<string> { "test.json" }
-    };
-
-    Vector3 fixedTarget = new Vector3(10, 0, 0);
-
-    float distanceAtT0 = movingOrigin.GetDistanceToTarget(fixedTarget, 0f);
-    float distanceAtT5 = movingOrigin.GetDistanceToTarget(fixedTarget, 5f);
-
-    Assert.AreEqual(10f, distanceAtT0, 0.001f, "Distance at t=0 should be 10m");
-    Assert.AreEqual(5f, distanceAtT5, 0.001f,
-                    "Distance at t=5 should be 5m (origin moved 5m closer)");
   }
 }

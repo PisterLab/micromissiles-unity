@@ -74,7 +74,7 @@ public class InterceptorOriginManager {
 
   // Selects an appropriate interceptor origin based on the specified strategy.
   //   threatPosition: Position of the incoming threat
-  //   interceptorType: Type of interceptor needed (e.g., "sm2.json")
+  //   interceptorType: Type of interceptor needed (e.g., "hydra70.json")
   //   strategy: Assignment strategy to use
   //   currentTime: Current simulation time
   //   manualOriginId: Manual origin ID (for MANUAL strategy)
@@ -101,7 +101,7 @@ public class InterceptorOriginManager {
   // Selects an appropriate interceptor origin runtime object based on the specified strategy.
   // This is the preferred method that returns the actual runtime object.
   //   threatPosition: Position of the incoming threat
-  //   interceptorType: Type of interceptor needed (e.g., "sm2.json")
+  //   interceptorType: Type of interceptor needed (e.g., "hydra70.json")
   //   strategy: Assignment strategy to use
   //   manualOriginId: Manual origin ID (for MANUAL strategy)
   // Returns: Selected origin runtime object, or null if no suitable origin available
@@ -120,6 +120,20 @@ public class InterceptorOriginManager {
     return GetOriginObject(selectedConfig.id);
   }
 
+  // Gets the distance from an origin to a target, using the runtime object if available.
+  private float GetDistanceToThreat(InterceptorOriginConfig origin, Vector3 threatPosition,
+                                    float currentTime) {
+    var originObject = GetOriginObject(origin.id);
+    if (originObject != null) {
+      // Prefer the runtime object's actual position
+      return originObject.GetDistanceToTarget(threatPosition);
+    }
+
+    // Fallback to calculated position if runtime object isn't available
+    Vector3 currentPosition = origin.initial_position + origin.velocity * currentTime;
+    return Vector3.Distance(currentPosition, threatPosition);
+  }
+
   // Selects the closest available origin that supports the interceptor type.
   // Accounts for origin movement when calculating distances.
   private InterceptorOriginConfig SelectClosestOrigin(Vector3 threatPosition,
@@ -134,17 +148,7 @@ public class InterceptorOriginManager {
     float closestDistance = float.MaxValue;
 
     foreach (var origin in availableOrigins) {
-      // Use runtime object position if available, otherwise fall back to calculated
-      var originObject = GetOriginObject(origin.id);
-      float distance;
-
-      if (originObject != null) {
-        // Use actual GameObject position
-        distance = originObject.GetDistanceToTarget(threatPosition);
-      } else {
-        // Fallback to calculated position
-        distance = origin.GetDistanceToTarget(threatPosition, currentTime);
-      }
+      float distance = GetDistanceToThreat(origin, threatPosition, currentTime);
 
       if (distance < closestDistance) {
         closestDistance = distance;
@@ -169,7 +173,7 @@ public class InterceptorOriginManager {
     // Sort by assignment count (ascending) and then by distance as tiebreaker
     var sortedOrigins =
         availableOrigins.OrderBy(origin => _assignmentCounts[origin.id])
-            .ThenBy(origin => origin.GetDistanceToTarget(threatPosition, currentTime))
+            .ThenBy(origin => GetDistanceToThreat(origin, threatPosition, currentTime))
             .ToList();
 
     return sortedOrigins.First();
@@ -226,7 +230,7 @@ public class InterceptorOriginManager {
     }
 
     // Distance penalty (closer is better)
-    float distance = origin.GetDistanceToTarget(threatPosition, currentTime);
+    float distance = GetDistanceToThreat(origin, threatPosition, currentTime);
     score -= Mathf.RoundToInt(distance / 1000f);  // -1 point per km
 
     // Capacity bonus (more available capacity is better)
@@ -267,7 +271,7 @@ public class InterceptorOriginManager {
   // Should be called regularly during simulation to maintain accurate positions.
   //   deltaTime: Time elapsed since last update
   public void UpdateMovingOrigins(float deltaTime) {
-    // Note: Origin positions are calculated dynamically in GetCurrentPosition()
+    // Note: Origin positions are now tracked by runtime InterceptorOriginObject instances
     // This method is provided for interface compatibility and future extensions
     // such as course changes or formation adjustments
 

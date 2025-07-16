@@ -201,11 +201,18 @@ public class IterativeLaunchPlannerTest {
                                       velocity = Vector3.zero, max_interceptors = 10,
                                       interceptor_types = new List<string> { "test.json" } };
 
-    LaunchPlan plan = planner.Plan(origin, 0f);
+    // Create mock origin object for testing instead of using old Plan signature
+    GameObject mockOriginGameObject = new GameObject("Mock_test-origin");
+    mockOriginGameObject.transform.position = origin.initial_position;
+    InterceptorOriginObject originObject = mockOriginGameObject.AddComponent<InterceptorOriginObject>();
+    originObject.SetOriginConfig(origin);
+    
+    LaunchPlan plan = planner.Plan(originObject);
 
     // Verify that if launch is allowed, geometry is reasonable
     if (plan.ShouldLaunch) {
-      Vector3 originPos = origin.GetCurrentPosition(0f);
+      // Calculate position directly instead of using obsolete method
+      Vector3 originPos = origin.initial_position + origin.velocity * 0f;
       Vector3 interceptorDirection = plan.InterceptPosition - originPos;
       Vector3 threatDirection = agent.GetVelocity().normalized;
 

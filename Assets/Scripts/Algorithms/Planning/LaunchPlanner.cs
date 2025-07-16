@@ -96,9 +96,7 @@ public abstract class ILaunchPlanner {
   // Plan the launch from a specific interceptor origin.
   // This method accounts for the interceptor's starting position when calculating
   // intercept trajectories and launch angles.
-  // Parameters:
-  //   origin: Interceptor origin configuration
-  //   currentTime: Current simulation time for moving origins
+  //   origin: Interceptor origin object
   // Returns: Launch plan with timing and angle information
-  public abstract LaunchPlan Plan(InterceptorOriginConfig origin, float currentTime);
+  public abstract LaunchPlan Plan(InterceptorOriginObject origin);
 }

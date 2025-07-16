@@ -135,7 +135,7 @@ public class IADS : MonoBehaviour {
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
 
       // Use the runtime object directly for planning
-      LaunchPlan plan = planner.Plan(selectedOrigin.GetOriginConfig(), Time.time);
+      LaunchPlan plan = planner.Plan(selectedOrigin);
 
       // Check whether an interceptor should be launched.
       if (plan.ShouldLaunch) {

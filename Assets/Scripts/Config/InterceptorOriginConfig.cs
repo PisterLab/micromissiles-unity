@@ -58,22 +58,6 @@ public class InterceptorOriginConfig {
     standard_deviation = new StandardDeviation();
   }
 
-  // Gets the current position of this origin at the specified time.
-  // DEPRECATED: Use InterceptorOriginObject.GetPosition() instead for runtime positions.
-  // This method is kept for backward compatibility with tests and legacy code.
-  // Parameters:
-  //   currentTime: Current simulation time in seconds
-  // Returns: Current position of the origin
-  [System.Obsolete("Use InterceptorOriginObject.GetPosition() for runtime positions")]
-  public Vector3 GetCurrentPosition(float currentTime) {
-    if (velocity.magnitude <= 0) {
-      return initial_position;
-    }
-
-    float elapsedTime = currentTime;
-    return initial_position + velocity * elapsedTime;
-  }
-
   // Checks if this origin supports launching the specified interceptor type.
   // Parameters:
   //   interceptorType: Model filename of the interceptor (e.g., "sm2.json")
@@ -111,17 +95,6 @@ public class InterceptorOriginConfig {
     if (_allocated_interceptors > 0) {
       _allocated_interceptors--;
     }
-  }
-
-  // Calculates the distance from this origin to a target position at the specified time.
-  // Accounts for origin movement for moving platforms.
-  // Parameters:
-  //   targetPosition: Position of the target
-  //   currentTime: Current simulation time
-  // Returns: Distance in meters from origin to target
-  public float GetDistanceToTarget(Vector3 targetPosition, float currentTime) {
-    Vector3 currentPosition = GetCurrentPosition(currentTime);
-    return Vector3.Distance(currentPosition, targetPosition);
   }
 
   // Resets the allocation counter. Useful for simulation resets or testing.
