@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/16/2025 - 06:32:09 |
+| Generated on: | 07/16/2025 - 06:32:38 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
@@ -9,7 +9,7 @@
 | Covered lines: | 2561 |
 | Uncovered lines: | 3810 |
 | Coverable lines: | 6371 |
-| Total lines: | 11593 |
+| Total lines: | 11597 |
 | Line coverage: | 40.1% (2561 of 6371) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -107,24 +107,24 @@
 |AgentTestBase|17|6|23|40|73.9%|0|0||3|4|75%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|28|2|30|44|93.3%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**1327**|**49**|**1376**|**3313**|**96.4%**|**0**|**0**|****|**141**|**145**|**97.2%**|
+|**bamlab.test.editmode**|**1327**|**49**|**1376**|**3319**|**96.4%**|**0**|**0**|****|**141**|**145**|**97.2%**|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
 |Coordinates2Test|55|0|55|158|100%|0|0||8|8|100%|
 |Coordinates3Test|56|0|56|158|100%|0|0||8|8|100%|
 |InterceptorOriginConfigTest|56|0|56|130|100%|0|0||5|5|100%|
-|IterativeLaunchPlannerTest|104|31|135|255|77%|0|0||15|15|100%|
+|IterativeLaunchPlannerTest|104|31|135|256|77%|0|0||15|15|100%|
 |KDTreeTest|39|0|39|55|100%|0|0||4|4|100%|
 |KMeansClustererTest|37|0|37|150|100%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTest|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
 |MaxSpeedAssignmentTest|107|0|107|181|100%|0|0||5|5|100%|
-|MockPredictor|18|6|24|288|75%|0|0||4|6|66.6%|
+|MockPredictor|18|6|24|290|75%|0|0||4|6|66.6%|
 |NearestNeighborInterpolator2DTest|56|0|56|107|100%|0|0||7|7|100%|
-|OriginAssignmentStrategyTest|142|0|142|319|100%|0|0||14|14|100%|
-|OriginAwareLaunchPlanningTest|105|0|105|288|100%|0|0||10|10|100%|
+|OriginAssignmentStrategyTest|142|0|142|320|100%|0|0||14|14|100%|
+|OriginAwareLaunchPlanningTest|105|0|105|290|100%|0|0||10|10|100%|
 |PriorityQueueTest|62|0|62|87|100%|0|0||7|7|100%|
 |SanityTest|5|2|7|22|71.4%|0|0||2|2|100%|
 |ThreatAssignmentTests|80|0|80|176|100%|0|0||4|4|100%|
