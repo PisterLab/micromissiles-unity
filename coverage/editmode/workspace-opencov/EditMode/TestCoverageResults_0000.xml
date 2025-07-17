@@ -14765,12 +14765,12 @@
               <SequencePoints>
                 <SequencePoint vc="0" uspid="6310" ordinal="0" offset="0" sl="111" sc="0" el="111" ec="0" bec="0" bev="0" fileid="74" />
                 <SequencePoint vc="0" uspid="6311" ordinal="0" offset="1" sl="115" sc="0" el="115" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6312" ordinal="0" offset="55" sl="116" sc="0" el="116" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6313" ordinal="0" offset="63" sl="117" sc="0" el="117" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6314" ordinal="0" offset="75" sl="118" sc="0" el="118" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6315" ordinal="0" offset="82" sl="119" sc="0" el="119" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6316" ordinal="0" offset="131" sl="121" sc="0" el="121" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6317" ordinal="0" offset="143" sl="122" sc="0" el="122" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6312" ordinal="0" offset="55" sl="117" sc="0" el="117" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6313" ordinal="0" offset="63" sl="118" sc="0" el="118" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6314" ordinal="0" offset="75" sl="119" sc="0" el="119" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6315" ordinal="0" offset="82" sl="120" sc="0" el="120" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6316" ordinal="0" offset="131" sl="122" sc="0" el="122" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6317" ordinal="0" offset="143" sl="123" sc="0" el="123" ec="0" bec="0" bev="0" fileid="74" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -14780,13 +14780,13 @@
               <Name>System.Void IterativeLaunchPlannerTest::TestNoLaunchThreatBehindOrigin()</Name>
               <FileRef uid="74" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="6318" ordinal="0" offset="0" sl="127" sc="0" el="127" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6319" ordinal="0" offset="1" sl="129" sc="0" el="129" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6320" ordinal="0" offset="55" sl="131" sc="0" el="131" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6321" ordinal="0" offset="63" sl="132" sc="0" el="132" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6322" ordinal="0" offset="75" sl="133" sc="0" el="133" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6323" ordinal="0" offset="82" sl="134" sc="0" el="134" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6324" ordinal="0" offset="110" sl="136" sc="0" el="136" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6318" ordinal="0" offset="0" sl="128" sc="0" el="128" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6319" ordinal="0" offset="1" sl="130" sc="0" el="130" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6320" ordinal="0" offset="55" sl="132" sc="0" el="132" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6321" ordinal="0" offset="63" sl="133" sc="0" el="133" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6322" ordinal="0" offset="75" sl="134" sc="0" el="134" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6323" ordinal="0" offset="82" sl="135" sc="0" el="135" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6324" ordinal="0" offset="110" sl="137" sc="0" el="137" ec="0" bec="0" bev="0" fileid="74" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -14796,21 +14796,21 @@
               <Name>System.Void IterativeLaunchPlannerTest::TestNoLaunchExtremeSidewaysGeometry()</Name>
               <FileRef uid="74" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="6325" ordinal="0" offset="0" sl="139" sc="0" el="139" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6326" ordinal="0" offset="1" sl="141" sc="0" el="141" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6327" ordinal="0" offset="55" sl="143" sc="0" el="143" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6328" ordinal="0" offset="63" sl="144" sc="0" el="144" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6329" ordinal="0" offset="75" sl="145" sc="0" el="145" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6330" ordinal="0" offset="82" sl="148" sc="0" el="148" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6331" ordinal="0" offset="97" sl="148" sc="0" el="148" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6332" ordinal="0" offset="98" sl="149" sc="0" el="149" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6333" ordinal="0" offset="116" sl="150" sc="0" el="150" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6334" ordinal="0" offset="133" sl="153" sc="0" el="153" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6335" ordinal="0" offset="144" sl="155" sc="0" el="155" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6336" ordinal="0" offset="155" sl="157" sc="0" el="157" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6337" ordinal="0" offset="178" sl="158" sc="0" el="158" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6338" ordinal="0" offset="237" sl="161" sc="0" el="161" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6339" ordinal="0" offset="238" sl="162" sc="0" el="162" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6325" ordinal="0" offset="0" sl="140" sc="0" el="140" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6326" ordinal="0" offset="1" sl="142" sc="0" el="142" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6327" ordinal="0" offset="55" sl="144" sc="0" el="144" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6328" ordinal="0" offset="63" sl="145" sc="0" el="145" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6329" ordinal="0" offset="75" sl="146" sc="0" el="146" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6330" ordinal="0" offset="82" sl="149" sc="0" el="149" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6331" ordinal="0" offset="97" sl="149" sc="0" el="149" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6332" ordinal="0" offset="98" sl="150" sc="0" el="150" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6333" ordinal="0" offset="116" sl="151" sc="0" el="151" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6334" ordinal="0" offset="133" sl="154" sc="0" el="154" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6335" ordinal="0" offset="144" sl="156" sc="0" el="156" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6336" ordinal="0" offset="155" sl="158" sc="0" el="158" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6337" ordinal="0" offset="178" sl="159" sc="0" el="159" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6338" ordinal="0" offset="237" sl="162" sc="0" el="162" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6339" ordinal="0" offset="238" sl="163" sc="0" el="163" ec="0" bec="0" bev="0" fileid="74" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -14820,21 +14820,21 @@
               <Name>System.Void IterativeLaunchPlannerTest::TestValidLaunchFastApproachingThreat()</Name>
               <FileRef uid="74" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="6340" ordinal="0" offset="0" sl="165" sc="0" el="165" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6341" ordinal="0" offset="1" sl="168" sc="0" el="168" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6342" ordinal="0" offset="55" sl="170" sc="0" el="170" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6343" ordinal="0" offset="63" sl="171" sc="0" el="171" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6344" ordinal="0" offset="75" sl="172" sc="0" el="172" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6345" ordinal="0" offset="82" sl="176" sc="0" el="176" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6346" ordinal="0" offset="97" sl="176" sc="0" el="176" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6347" ordinal="0" offset="98" sl="177" sc="0" el="177" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6348" ordinal="0" offset="115" sl="178" sc="0" el="178" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6349" ordinal="0" offset="133" sl="181" sc="0" el="181" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6350" ordinal="0" offset="149" sl="184" sc="0" el="184" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6351" ordinal="0" offset="168" sl="185" sc="0" el="185" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6352" ordinal="0" offset="184" sl="187" sc="0" el="187" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6353" ordinal="0" offset="232" sl="190" sc="0" el="190" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6354" ordinal="0" offset="233" sl="191" sc="0" el="191" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6340" ordinal="0" offset="0" sl="166" sc="0" el="166" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6341" ordinal="0" offset="1" sl="169" sc="0" el="169" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6342" ordinal="0" offset="55" sl="171" sc="0" el="171" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6343" ordinal="0" offset="63" sl="172" sc="0" el="172" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6344" ordinal="0" offset="75" sl="173" sc="0" el="173" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6345" ordinal="0" offset="82" sl="177" sc="0" el="177" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6346" ordinal="0" offset="97" sl="177" sc="0" el="177" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6347" ordinal="0" offset="98" sl="178" sc="0" el="178" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6348" ordinal="0" offset="115" sl="179" sc="0" el="179" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6349" ordinal="0" offset="133" sl="182" sc="0" el="182" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6350" ordinal="0" offset="149" sl="185" sc="0" el="185" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6351" ordinal="0" offset="168" sl="186" sc="0" el="186" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6352" ordinal="0" offset="184" sl="188" sc="0" el="188" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6353" ordinal="0" offset="232" sl="191" sc="0" el="191" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6354" ordinal="0" offset="233" sl="192" sc="0" el="192" ec="0" bec="0" bev="0" fileid="74" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -14844,32 +14844,32 @@
               <Name>System.Void IterativeLaunchPlannerTest::TestValidLaunchFromOrigin()</Name>
               <FileRef uid="74" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="6355" ordinal="0" offset="0" sl="194" sc="0" el="194" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6356" ordinal="0" offset="1" sl="196" sc="0" el="196" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6357" ordinal="0" offset="55" sl="198" sc="0" el="198" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6358" ordinal="0" offset="63" sl="199" sc="0" el="199" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6359" ordinal="0" offset="75" sl="202" sc="0" el="202" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6360" ordinal="0" offset="160" sl="208" sc="0" el="208" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6361" ordinal="0" offset="172" sl="209" sc="0" el="209" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6362" ordinal="0" offset="191" sl="210" sc="0" el="210" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6363" ordinal="0" offset="200" sl="212" sc="0" el="212" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6364" ordinal="0" offset="209" sl="214" sc="0" el="214" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6365" ordinal="0" offset="219" sl="217" sc="0" el="217" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6366" ordinal="0" offset="235" sl="217" sc="0" el="217" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6367" ordinal="0" offset="236" sl="219" sc="0" el="219" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6368" ordinal="0" offset="265" sl="220" sc="0" el="220" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6369" ordinal="0" offset="281" sl="221" sc="0" el="221" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6370" ordinal="0" offset="298" sl="224" sc="0" el="224" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6371" ordinal="0" offset="328" sl="227" sc="0" el="227" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6372" ordinal="0" offset="343" sl="228" sc="0" el="228" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6373" ordinal="0" offset="359" sl="230" sc="0" el="230" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6374" ordinal="0" offset="374" sl="230" sc="0" el="230" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6375" ordinal="0" offset="375" sl="231" sc="0" el="231" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6376" ordinal="0" offset="391" sl="232" sc="0" el="232" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6377" ordinal="0" offset="412" sl="233" sc="0" el="233" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6378" ordinal="0" offset="461" sl="236" sc="0" el="236" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6379" ordinal="0" offset="462" sl="237" sc="0" el="237" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6380" ordinal="0" offset="463" sl="238" sc="0" el="238" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6355" ordinal="0" offset="0" sl="195" sc="0" el="195" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6356" ordinal="0" offset="1" sl="197" sc="0" el="197" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6357" ordinal="0" offset="55" sl="199" sc="0" el="199" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6358" ordinal="0" offset="63" sl="200" sc="0" el="200" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6359" ordinal="0" offset="75" sl="203" sc="0" el="203" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6360" ordinal="0" offset="160" sl="209" sc="0" el="209" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6361" ordinal="0" offset="172" sl="210" sc="0" el="210" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6362" ordinal="0" offset="191" sl="211" sc="0" el="211" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6363" ordinal="0" offset="200" sl="213" sc="0" el="213" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6364" ordinal="0" offset="209" sl="215" sc="0" el="215" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6365" ordinal="0" offset="219" sl="218" sc="0" el="218" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6366" ordinal="0" offset="235" sl="218" sc="0" el="218" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6367" ordinal="0" offset="236" sl="220" sc="0" el="220" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6368" ordinal="0" offset="265" sl="221" sc="0" el="221" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6369" ordinal="0" offset="281" sl="222" sc="0" el="222" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6370" ordinal="0" offset="298" sl="225" sc="0" el="225" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6371" ordinal="0" offset="328" sl="228" sc="0" el="228" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6372" ordinal="0" offset="343" sl="229" sc="0" el="229" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6373" ordinal="0" offset="359" sl="231" sc="0" el="231" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6374" ordinal="0" offset="374" sl="231" sc="0" el="231" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6375" ordinal="0" offset="375" sl="232" sc="0" el="232" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6376" ordinal="0" offset="391" sl="233" sc="0" el="233" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6377" ordinal="0" offset="412" sl="234" sc="0" el="234" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6378" ordinal="0" offset="461" sl="237" sc="0" el="237" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6379" ordinal="0" offset="462" sl="238" sc="0" el="238" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6380" ordinal="0" offset="463" sl="239" sc="0" el="239" ec="0" bec="0" bev="0" fileid="74" />
               </SequencePoints>
               <BranchPoints />
             </Method>
@@ -14879,19 +14879,19 @@
               <Name>System.Void IterativeLaunchPlannerTest::TestNoLaunchThreatDivergingFromIntercept()</Name>
               <FileRef uid="74" />
               <SequencePoints>
-                <SequencePoint vc="0" uspid="6381" ordinal="0" offset="0" sl="241" sc="0" el="241" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6382" ordinal="0" offset="1" sl="243" sc="0" el="243" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6383" ordinal="0" offset="55" sl="244" sc="0" el="244" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6384" ordinal="0" offset="63" sl="245" sc="0" el="245" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6385" ordinal="0" offset="75" sl="246" sc="0" el="246" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6386" ordinal="0" offset="82" sl="249" sc="0" el="249" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6387" ordinal="0" offset="94" sl="249" sc="0" el="249" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6388" ordinal="0" offset="95" sl="250" sc="0" el="250" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6389" ordinal="0" offset="114" sl="251" sc="0" el="251" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6390" ordinal="0" offset="131" sl="252" sc="0" el="252" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6391" ordinal="0" offset="147" sl="254" sc="0" el="254" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6392" ordinal="0" offset="195" sl="257" sc="0" el="257" ec="0" bec="0" bev="0" fileid="74" />
-                <SequencePoint vc="0" uspid="6393" ordinal="0" offset="196" sl="258" sc="0" el="258" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6381" ordinal="0" offset="0" sl="242" sc="0" el="242" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6382" ordinal="0" offset="1" sl="244" sc="0" el="244" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6383" ordinal="0" offset="55" sl="245" sc="0" el="245" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6384" ordinal="0" offset="63" sl="246" sc="0" el="246" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6385" ordinal="0" offset="75" sl="247" sc="0" el="247" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6386" ordinal="0" offset="82" sl="250" sc="0" el="250" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6387" ordinal="0" offset="94" sl="250" sc="0" el="250" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6388" ordinal="0" offset="95" sl="251" sc="0" el="251" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6389" ordinal="0" offset="114" sl="252" sc="0" el="252" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6390" ordinal="0" offset="131" sl="253" sc="0" el="253" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6391" ordinal="0" offset="147" sl="255" sc="0" el="255" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6392" ordinal="0" offset="195" sl="258" sc="0" el="258" ec="0" bec="0" bev="0" fileid="74" />
+                <SequencePoint vc="0" uspid="6393" ordinal="0" offset="196" sl="259" sc="0" el="259" ec="0" bec="0" bev="0" fileid="74" />
               </SequencePoints>
               <BranchPoints />
             </Method>
