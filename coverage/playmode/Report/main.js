@@ -260,7 +260,7 @@ var assemblies = [
       { "name": "Interpolator2DDataPoint", "rp": "bamlab.micromissiles_Interpolator2DDataPoint.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IPredictor", "rp": "bamlab.micromissiles_IPredictor.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 37, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ISizeAndRadiusConstrainedClusterer", "rp": "bamlab.micromissiles_ISizeAndRadiusConstrainedClusterer.html", "cl": 6, "ucl": 4, "cal": 10, "tl": 56, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "IterativeLaunchPlanner", "rp": "bamlab.micromissiles_IterativeLaunchPlanner.html", "cl": 0, "ucl": 44, "cal": 44, "tl": 123, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "IterativeLaunchPlanner", "rp": "bamlab.micromissiles_IterativeLaunchPlanner.html", "cl": 0, "ucl": 44, "cal": 44, "tl": 136, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KDNode[T]", "rp": "bamlab.micromissiles_KDNode_T_.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KDTree[T]", "rp": "bamlab.micromissiles_KDTree_T_.html", "cl": 0, "ucl": 43, "cal": 43, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KMeansClusterer", "rp": "bamlab.micromissiles_KMeansClusterer.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 123, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -324,7 +324,7 @@ var assemblies = [
       { "name": "Coordinates2Test", "rp": "bamlab.test.editmode_Coordinates2Test.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Coordinates3Test", "rp": "bamlab.test.editmode_Coordinates3Test.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InterceptorOriginConfigTest", "rp": "bamlab.test.editmode_InterceptorOriginConfigTest.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 130, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "IterativeLaunchPlannerTest", "rp": "bamlab.test.editmode_IterativeLaunchPlannerTest.html", "cl": 0, "ucl": 135, "cal": 135, "tl": 256, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "IterativeLaunchPlannerTest", "rp": "bamlab.test.editmode_IterativeLaunchPlannerTest.html", "cl": 0, "ucl": 135, "cal": 135, "tl": 260, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KDTreeTest", "rp": "bamlab.test.editmode_KDTreeTest.html", "cl": 0, "ucl": 39, "cal": 39, "tl": 55, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KMeansClustererTest", "rp": "bamlab.test.editmode_KMeansClustererTest.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchAngleCsvInterpolatorTest", "rp": "bamlab.test.editmode_LaunchAngleCsvInterpolatorTest.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -527,7 +527,7 @@ var riskHotspots = [
       { "value": 42, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "IterativeLaunchPlanner", "reportPath": "bamlab.micromissiles_IterativeLaunchPlanner.html", "methodName": "LaunchPlan IterativeLaunchPlanner::PlanFromOrigin(UnityEngine.Vector3)", "methodShortName": "PlanFromOrigin(...)", "fileIndex": 0, "line": 48,
+    "assembly": "bamlab.micromissiles", "class": "IterativeLaunchPlanner", "reportPath": "bamlab.micromissiles_IterativeLaunchPlanner.html", "methodName": "LaunchPlan IterativeLaunchPlanner::PlanFromOrigin(UnityEngine.Vector3)", "methodShortName": "PlanFromOrigin(...)", "fileIndex": 0, "line": 61,
     "metrics": [
       { "value": 6, "exceeded": false },
       { "value": 0, "exceeded": false },
