@@ -20,14 +20,14 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // Maximum distance in meters between the final intercept position (where the interceptor can
   // reach) and the predicted target position (where we expect the target to be). This serves as
   // a final validation that the iterative algorithm has converged to a realistic solution.
-  // 
+  //
   // If this distance exceeds the threshold, it indicates either:
   // - The algorithm failed to converge properly
   // - The launch angle planner is extrapolating beyond its valid data range
   // - Numerical errors accumulated during iteration
   //
   // Reasonable values:
-  // - 50-200m: Appropriate for most scenarios 
+  // - 50-200m: Appropriate for most scenarios
   // - 100m: Should be a good balance between accuracy and practicality
   //
   // Problematic values:

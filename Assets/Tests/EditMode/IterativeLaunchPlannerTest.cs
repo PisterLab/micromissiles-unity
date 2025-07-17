@@ -112,7 +112,8 @@ public class IterativeLaunchPlannerTest {
     // Test the InterceptPositionThreshold enforcement (100m).
     // Use a target far outside the dummy interpolator's data range to cause
     // inaccurate interpolation that results in intercept/predicted positions > 100m apart.
-    Agent agent = GenerateAgent(position: new Vector3(200, 500, 0), velocity: new Vector3(-50, -10, 0));
+    Agent agent =
+        GenerateAgent(position: new Vector3(200, 500, 0), velocity: new Vector3(-50, -10, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
     LaunchPlan plan = planner.Plan();
