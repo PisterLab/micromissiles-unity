@@ -6,7 +6,7 @@ In the initial phase of the project, we have implemented a simple aerodynamic mo
 Both interceptors and threats have perfect knowledge of their opponents at a configurable sensor update rate.
 While the initial positions and velocities of the threats are hard-coded for each engagement scenario, our simulator automatically clusters the threats, predicts their future positions, plans when to automatically launch the interceptors, and assigns a threat to each interceptor to pursue.
 
-### Proposal
+## Introduction
 
 To minimize the engagement cost, maximize the terminal speed and agility, and simultaneously defend against multiple threats, we propose using a hierarchical air defense system (ADS), where cheap, possibly unguided "carrier interceptors" carry multiple smaller, intelligent missile interceptors as submunitions.
 Once the carrier interceptors are close to their intended cluster of targets, they each release the missile interceptors that light their rocket motor and accelerate up to speeds on the order of 1 km/s.
@@ -15,10 +15,24 @@ Then, they distribute the task of engaging the many threats among themselves.
 
 ![Hierarchical strategy](./images/hierarchical_strategy.png)
 
+The command structure is hierarchical for better autonomy and tractability because to successfully defend against hundreds of threats, we intend to recursively cluster and assign them to groups of interceptors.
+At the bottom of the hierarchy, a single missile interceptor is assigned to puruse a single threat.
+At the next level of the hierarchy, a carrier interceptor is assigned to defend against a cluster of threats.
+Above that, a salvo of interceptors is assigned to defend against a swarm of threats, and so on.
+
+![Hierarchical command structure](./images/hierarchical_command_structure.png){width=80%}
+
+The simulator implements the following architecture to tractably defend against a swarm of threats.
+This hierarchical command structure naturally leads to a recursive architecture.
+Details for each block are provided below in this page.
+
+![Architecture](./images/architecture.png)
+
+The simulator architecture was designed to be as modular as possible with interfaces for each component to facilitate the development of and comparison between new algorithms.
 Future versions will model the non-idealities of the sensors, considering the sensor range and resolution limits, and implement a realistic communication model between the interceptors.
 We also plan to explore optimal control and machine learning approaches to launch sequencing, target assignment, trajectory generation, and control.
 
-## Introduction
+### Agents
 
 The simulator performs a multi-agent simulation between two types of agents: interceptors and threats.
 The threats will target the static asset, located at the origin of the coordinate system, and the interceptors will defend the asset from the incoming threats.
@@ -31,11 +45,6 @@ There are two types of interceptors:
 There are also two types of threats:
 - **Fixed-wing threats**: Pursue their targets using proportional navigation.
 - **Rotary-wing threats**: Pursue their targets using direct linear guidance.
-
-The simulator implements the following architecture to tractably defend against a swarm of threats.
-Details for each block are provided below.
-
-![Architecture](./images/architecture.png)
 
 ## Physics
 
@@ -131,8 +140,97 @@ where the initial conditions $\vec{p}(t)|_{t = nT}$ and $\vec{v}(t)|_{t = nT}$ a
 Threats are assumed to be omniscient, so they have no frequency constraint on their sensor output and know the positions, velocities, and accelerations of all interceptors at all times.
 
 ## Clustering
+
+![Clustering](./images/clustering.png){width=60%}
+
+To cluster the threats into more manageable clusters, we use a size and radius-constrained clustering algorithm.
+- **Size constraint**: Maximum 7 threats per cluster
+- **Radius constraint**: Cluster radius must be less than or equal to 1 km
+The size constraint is necessary, especially at the bottommost level of the hierarchy, because each carrier interceptor only carries up to seven missile interceptors.
+The radius constraint ensures that when the submunitions are released, each missile interceptor will have sufficient terminal speed to reach all of the threats within the cluster.
+As each cluster represents an additional launched interceptor, the algorithm should minimize the number of clusters $k$ to minimize the engagement cost.
+
+### Agglomerative Clustering
+
+A simple greedy algorithm to satisfy both the size and radius constraints is agglomerative clustering.
+Each agent to be clustered starts in its own cluster, and while the distance between the two closest clusters is less than the radius constraint, the two closest clusters are merged together as long as the resulting cluster satisfies the size constraint.
+If the two closest clusters cannot be merged due to the size constraint, the algorithm proceeds to the next two closest clusters.
+This clustering algorithm continues until no more clusters can be merged.
+
+### Constrained $k$-means Clustering
+
+The simulator also implements a constrained $k$-means clustering algorithm that satisfies both the radius and the size constraints.
+The standard $k$-means clustering algorithm is modified to include a $k$ refinement step, where the number of clusters $k$ is increased depending on the number of clusters that do not satisfy both constraints.
+
+![Constrained k-means clustering](./images/constrained_k_means_clustering.png){width=80%}
+
+### Minimum Cost Flow Clustering
+
+Instead of modifying the standard $k$-means clustering algorithm, we have explored modifying the size-constrained $k$-means clustering algorithm proposed by Bradley et al., [2000](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2000-65.pdf).
+We introduce a $k$ refinement step, where the numebr of clusters $k$ is increased depending on the number of clusters that do not satisfy the radius constraint.
+The centroids of the new clusters are placed at the agents that are farthest away from their assigned clusters' centroids.
+
+This algorithm has yet to be implemented in the Unity simulator.
+
 ## Prediction
+
+The simulator currently uses a simple predictor, where the future position of the threat is extrapolated based on the threat's current velocity and acceleration.
+Future work involves using a probabilistic predictor that accounts for the threat's maneuverability.
+
+### Predictor-Planner Convergence
+
+The predictor estimates the position of the threat at some given time-to-intercept while the planner estimates the time-to-intercept given the threat position.
+In order to find the time-to-intercept and the intercept position, the predictor and the planner must converge to the same time-to-intercept and intercept position.
+
+The simulator achieves predictor-planner convergence by performing a 2-step iterative process that repeatedly updates the time-to-intercept estimate using the planner and then updates the intercept position using the predictor.
+
+The iterative launch planner also performs a few sanity checks to check for corner cases.
+For example, this algorithm may not always converge to a solution, so to prevent an infinite loop, the algorithm should declare no launch if the distance between the intercept position and the estimated threat position exceed some threshold.
+```csharp
+// Check that the intercept position and the predicted position are within some threshold
+// distance of each other.
+if (Vector3.Distance(interceptPosition, targetPosition) >= InterceptPositionThreshold) {
+  return LaunchPlan.NoLaunch;
+}
+```
+Furthermore, the algorithm checks that the threat is indeed heading towards the intercept position.
+```csharp
+// Check that the target is moving towards the intercept position. Otherwise, the interceptor
+// should wait to be launched.
+Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
+Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
+if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
+  return LaunchPlan.NoLaunch;
+}
+```
+Finally, the interceptor might be launched into the posterior hemisphere away from the threat if the estimated intercept position is behind the launch position.
+The solution is to delay the launch until the intercept position is in the anterior hemisphere.
+```csharp
+// Check that the interceptor is moving towards the target. If the target is moving too fast,
+// the interceptor might be launched backwards because the intercept position and the predicted
+// position are behind the asset. In this case, the interceptor should wait to be launched.
+Vector3 interceptorToInterceptPosition = interceptPosition;
+Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
+if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
+  return LaunchPlan.NoLaunch;
+}
+```
+
 ## Planning
+
+### Launch Angle Planner Lookup Table
+
+Since the dynamics of the interceptors is nonlinear, the simulator implements a lookup table to determine the launch angle at which the carrier interceptor should be launched given the range and altitude of the threat.
+The planner attempts to maximize the terminal speed to ensure the maximum kill probability.
+
+To generate the lookup table, the nonlinear dynamics of the carrier interceptors along with those of the released missile interceptors were simulated while sweeping through the launch angle, the submunition dispense time, and the submunition motor light time.
+We realized that the maximum speed is achieved if the missile interceptors light their motors directly prior to reaching the intercept position.
+
+The resulting trajectory points were interpolated to generate the lookup table shown below:
+
+![Launch angle planner](./images/launch_angle_planner.png){width=80%}
+
+In the simulator, only the un-interpolated samples of the lookup table are used, and the current launch angle planner performs a nearest-neighbor interpolation to determine the optimal launch angle.
 
 ## Assignment
 
