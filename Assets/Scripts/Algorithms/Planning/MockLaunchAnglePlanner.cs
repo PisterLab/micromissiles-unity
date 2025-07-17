@@ -27,10 +27,10 @@ public class MockLaunchAnglePlanner : ILaunchAnglePlanner {
     if (_convergentMode) {
       float convergenceFactor = 1f / _callCount;
       return new LaunchAngleOutput(_mockLaunchAngle + convergenceFactor,
-                                   _mockTimeToPosition + convergenceFactor, input.Distance);
+                                   _mockTimeToPosition + convergenceFactor);
     }
 
-    return new LaunchAngleOutput(_mockLaunchAngle, _mockTimeToPosition, input.Distance);
+    return new LaunchAngleOutput(_mockLaunchAngle, _mockTimeToPosition);
   }
 
   public LaunchAngleOutput Plan(Vector3 targetPosition) {
@@ -47,7 +47,7 @@ public class MockLaunchAnglePlanner : ILaunchAnglePlanner {
       // Simulate convergence by returning slightly different values that converge
       float convergenceFactor = 1f / _callCount;
       return new LaunchAngleOutput(_mockLaunchAngle + convergenceFactor,
-                                   _mockTimeToPosition + convergenceFactor, distance);
+                                   _mockTimeToPosition + convergenceFactor);
     }
 
     // Make launch angle and time dependent on origin position to ensure different results
@@ -55,7 +55,7 @@ public class MockLaunchAnglePlanner : ILaunchAnglePlanner {
     float adjustedLaunchAngle = _mockLaunchAngle + originBasedVariation;
     float adjustedTimeToPosition = _mockTimeToPosition + originBasedVariation;
 
-    return new LaunchAngleOutput(adjustedLaunchAngle, adjustedTimeToPosition, distance);
+    return new LaunchAngleOutput(adjustedLaunchAngle, adjustedTimeToPosition);
   }
 
   public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition) {

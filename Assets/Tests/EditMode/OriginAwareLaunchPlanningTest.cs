@@ -120,11 +120,6 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     Assert.Greater(output.TimeToPosition, 0f, "Time to position should be positive");
     Assert.GreaterOrEqual(output.LaunchAngle, 0f, "Launch angle should be non-negative");
     Assert.LessOrEqual(output.LaunchAngle, 90f, "Launch angle should not exceed 90 degrees");
-
-    // Verify that distance calculation is origin-relative
-    float expectedDistance = Vector3.Distance(originPosition, targetPosition);
-    Assert.AreEqual(expectedDistance, output.DistanceToTarget, 0.1f,
-                    "Distance calculation should be relative to origin position");
   }
 
   [Test]
@@ -144,9 +139,6 @@ public class OriginAwareLaunchPlanningTest : TestBase {
                        "Launch angles should differ when using different origin positions");
     Assert.AreNotEqual(outputFromNonZeroOrigin.TimeToPosition, outputFromZeroOrigin.TimeToPosition,
                        "Time to position should differ when using different origin positions");
-    Assert.AreNotEqual(outputFromNonZeroOrigin.DistanceToTarget,
-                       outputFromZeroOrigin.DistanceToTarget,
-                       "Distance to target should differ when using different origin positions");
   }
 
   [Test]
