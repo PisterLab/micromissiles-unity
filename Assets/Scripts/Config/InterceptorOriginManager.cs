@@ -106,8 +106,8 @@ public class InterceptorOriginManager {
   //   manualOriginId: Manual origin ID (for MANUAL strategy)
   // Returns: Selected origin runtime object, or null if no suitable origin available
   public InterceptorOrigin SelectOriginObject(Vector3 threatPosition, string interceptorType,
-                                                    OriginAssignmentStrategy strategy,
-                                                    string manualOriginId = null) {
+                                              OriginAssignmentStrategy strategy,
+                                              string manualOriginId = null) {
     // First select the config using existing logic
     var selectedConfig =
         SelectOrigin(threatPosition, interceptorType, strategy, Time.time, manualOriginId);

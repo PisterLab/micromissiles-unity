@@ -120,8 +120,7 @@ public class IADS : MonoBehaviour {
       }
 
       // Select appropriate origin based on strategy
-      InterceptorOrigin selectedOrigin =
-          SelectOriginForThreat(threatPosition, config.agent_model);
+      InterceptorOrigin selectedOrigin = SelectOriginForThreat(threatPosition, config.agent_model);
       if (selectedOrigin == null) {
         Debug.LogWarning(
             $"No suitable origin available for interceptor type {config.agent_model} against threat at {threatPosition}");
@@ -188,8 +187,7 @@ public class IADS : MonoBehaviour {
   // Selects the most appropriate origin for engaging a threat.
   // Uses the configured assignment strategy and accounts for origin capabilities.
   // Returns the runtime origin object, not just the configuration.
-  private InterceptorOrigin SelectOriginForThreat(Vector3 threatPosition,
-                                                        string interceptorType) {
+  private InterceptorOrigin SelectOriginForThreat(Vector3 threatPosition, string interceptorType) {
     var strategy = SimManager.Instance.SimulationConfig.origin_assignment_strategy;
 
     // Check for manual origin assignment in swarm configuration

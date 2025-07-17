@@ -88,8 +88,6 @@ public abstract class ILaunchPlanner {
     _predictor = predictor;
   }
 
-
-
   // Plan the launch from a specific interceptor origin.
   // This method accounts for the interceptor's starting position when calculating
   // intercept trajectories and launch angles.

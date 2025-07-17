@@ -39,8 +39,6 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
 
-
-
   // Plan the launch from a specific interceptor origin.
   // This implementation accounts for the interceptor's starting position and the origin's
   // current location (including movement for naval assets).
@@ -103,7 +101,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     return LaunchPlan.NoLaunch;
   }
 
-  // Determines if a launch scenario is geometrically invalid (e.g., backwards or sideways).
+  // Determines if a launch scenario is geometrically invalid (e.g., into the anterior hemisphere
+  // behind the space between the origin and the threat).
   //   originPosition: Position from which the interceptor will be launched.
   //   interceptPosition: Calculated intercept position.
   //   threatState: Initial state of the threat (position and velocity).
