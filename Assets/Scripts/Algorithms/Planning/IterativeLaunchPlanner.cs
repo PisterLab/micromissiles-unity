@@ -48,7 +48,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // This implementation accounts for the interceptor's starting position and the origin's
   // current location (including movement for naval assets).
   // Returns: Launch plan with timing and angle information
-  public override LaunchPlan Plan(InterceptorOriginObject origin) {
+  public override LaunchPlan Plan(InterceptorOrigin origin) {
     // Get the current origin position (accounts for moving origins)
     Vector3 originPosition = origin.GetPosition();
     return PlanFromOrigin(originPosition);

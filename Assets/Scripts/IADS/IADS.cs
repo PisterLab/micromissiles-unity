@@ -120,7 +120,7 @@ public class IADS : MonoBehaviour {
       }
 
       // Select appropriate origin based on strategy
-      InterceptorOriginObject selectedOrigin =
+      InterceptorOrigin selectedOrigin =
           SelectOriginForThreat(threatPosition, config.agent_model);
       if (selectedOrigin == null) {
         Debug.LogWarning(
@@ -188,7 +188,7 @@ public class IADS : MonoBehaviour {
   // Selects the most appropriate origin for engaging a threat.
   // Uses the configured assignment strategy and accounts for origin capabilities.
   // Returns the runtime origin object, not just the configuration.
-  private InterceptorOriginObject SelectOriginForThreat(Vector3 threatPosition,
+  private InterceptorOrigin SelectOriginForThreat(Vector3 threatPosition,
                                                         string interceptorType) {
     var strategy = SimManager.Instance.SimulationConfig.origin_assignment_strategy;
 
@@ -206,7 +206,7 @@ public class IADS : MonoBehaviour {
 
   // Creates an initial state for an interceptor based on the selected origin and launch plan.
   // Uses the runtime origin object to get actual position.
-  private InitialState CreateInitialStateFromOrigin(InterceptorOriginObject origin, LaunchPlan plan,
+  private InitialState CreateInitialStateFromOrigin(InterceptorOrigin origin, LaunchPlan plan,
                                                     float currentTime) {
     // Use the actual GameObject position from runtime object
     Vector3 originPosition = origin.GetPosition();

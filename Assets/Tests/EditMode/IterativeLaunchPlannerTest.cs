@@ -208,8 +208,8 @@ public class IterativeLaunchPlannerTest {
     // Create mock origin object for testing instead of using old Plan signature
     GameObject mockOriginGameObject = new GameObject("Mock_test-origin");
     mockOriginGameObject.transform.position = origin.initial_position;
-    InterceptorOriginObject originObject =
-        mockOriginGameObject.AddComponent<InterceptorOriginObject>();
+    InterceptorOrigin originObject =
+        mockOriginGameObject.AddComponent<InterceptorOrigin>();
     originObject.SetOriginConfig(origin);
 
     LaunchPlan plan = planner.Plan(originObject);
