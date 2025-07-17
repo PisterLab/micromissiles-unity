@@ -75,7 +75,7 @@ public class IterativeLaunchPlannerTest {
     LaunchPlan plan = planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(20, plan.LaunchAngle);
-    Vector3 expected = new Vector3(60, 1, 0);
+    Vector3 expected = new Vector3(61, 1, 0);
     Assert.That(Vector3.Distance(plan.InterceptPosition, expected), Is.LessThan(0.01f),
                 $"Expected {expected}, but was {plan.InterceptPosition}");
   }
