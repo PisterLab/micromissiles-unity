@@ -1,38 +1,48 @@
 # Simulator Overview
 
-This simulator is designed to allow us to explore strategies and tactics for swarm-on-swarm combat,
-particularly in the area of missile and UAV defense, and with a bias toward small smart munitions.
-Our aspirational goal is to develop a science of swarm-on-swarm combat.
-In phase 1 of the project we have implemented a simple aerodynamic model that provides rough estimates of the capabilities of different weapons.
-Proportional navigation and augmented proportional navigation guide interceptors to threats.
-Threats have the ability to evade.
-Threats and interceptors have perfect position knowledge at a configurable sensor update rate.
-At this stage, interceptor launch and submunition dispense are hand coded.
+This simulator is designed to explore strategies and tactics for large-scale swarm-on-swarm combat, particularly in the area of missile and UAV defense, and with a bias toward small smart munitions.
 
-Moving forward we will add sensor range and resolution limits, and a realistic communication model.
-Future versions will explore optimal control and machine learning approaches to launch sequencing, target assignment, trajectory generation, and control.
+In the initial phase of the project, we have implemented a simple aerodynamic model that roughly estimates the capabilities of different interceptors and threats, including (augmented) proportional navigation for the interceptors and the ability to evade for the threats.
+Both interceptors and threats have perfect knowledge of their opponents at a configurable sensor update rate.
+While the initial positions and velocities of the threats are hard-coded for each engagement scenario, our simulator automatically clusters the threats, predicts their future positions, plans when to automatically launch the interceptors, and assigns a threat to each interceptor to pursue.
+
+### Proposal
+
+To minimize the engagement cost, maximize the terminal speed and agility, and simultaneously defend against multiple threats, we propose using a hierarchical air defense system (ADS), where cheap, possibly unguided "carrier interceptors" carry multiple smaller, intelligent missile interceptors as submunitions.
+Once the carrier interceptors are close to their intended cluster of targets, they each release the missile interceptors that light their rocket motor and accelerate up to speeds on the order of 1 km/s.
+The missile interceptors rely on the carrier interceptors’ track data as well as their own radio frequency and/or optical sensors to acquire their targets.
+Then, they distribute the task of engaging the many threats among themselves.
+
+![Hierarchical strategy](./images/hierarchical_strategy.png)
+
+Future versions will model the non-idealities of the sensors, considering the sensor range and resolution limits, and implement a realistic communication model between the interceptors.
+We also plan to explore optimal control and machine learning approaches to launch sequencing, target assignment, trajectory generation, and control.
 
 ## Introduction
 
 The simulator performs a multi-agent simulation between two types of agents: interceptors and threats.
 The threats will target the static asset, located at the origin of the coordinate system, and the interceptors will defend the asset from the incoming threats.
+Currently, all interceptors are launched from the origin of the coordinate system as well.
 
 There are two types of interceptors:
-- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra-70 rockets)
-- **Missile interceptors**: interceptors that pursue threats (e.g., micromissiles)
+- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra-70 rockets).
+- **Missile interceptors**: interceptors that pursue threats (e.g., micromissiles).
 
 There are also two types of threats:
-- **Fixed-wing threats**: Pursue their targets using proportional navigation (PN)
-- **Rotary-wing threats**: Pursue their targets using direct linear guidance
+- **Fixed-wing threats**: Pursue their targets using proportional navigation.
+- **Rotary-wing threats**: Pursue their targets using direct linear guidance.
 
-## Simulator Physics
+The simulator implements the following architecture to tractably defend against a swarm of threats.
+Details for each block are provided below.
 
-### Agent System Model
+![Architecture](./images/architecture.png)
 
-Each agent is modeled as a point mass, i.e., a 3-DOF body ignoring any rotations.
-It also has instantaneous acceleration in all directions, subject to constraints, because we do not model any actuator or rotational dynamics.
-Finally, we abstract away the aerodynamics of the agents, so we do not model the angle of attack or stall.
+## Physics
 
+### Agent Model
+
+Each agent is modeled as a point mass, i.e., a 3-DOF body without rotational dynamics.
+It has instantaneous acceleration in all directions, subject to constraints, because we do not model any sensing, actuation, or airframe delays.
 As a point mass, each agent is represented by a six-dimensional state vector consisting of the agent's three-dimensional position and three-dimensional velocity.
 The input to the system is a three-dimensional acceleration vector.
 
@@ -40,7 +50,7 @@ The state vector is given by:
 $$
 \vec{x}(t) = \begin{bmatrix}
   \vec{p}(t) \\
-  \vec{v}(t)
+  \vec{v}(t) \\
 \end{bmatrix} \in \mathbb{R}^6,
 $$
 where $\vec{p}(t) \in \mathbb{R}^3$ denotes the agent's position and $\vec{v}(t) \in \mathbb{R}^3$ denotes the agent's velocity in the Cartesian coordinates.
@@ -55,30 +65,26 @@ The nonlinear state evolution equation is given by:
 $$
 \frac{d}{dt} \vec{x}(t) = \begin{bmatrix}
   \vec{v}(t) \\
-  \vec{a}(t) - \vec{g} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
+  \vec{a}(t) - \vec{g} - \left(\frac{F_D(\|\vec{v}(t)\|)}{m} + \frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
 \end{bmatrix},
 $$
-where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\vec{v}(t))}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}$ represents the deleceration along the agent's velocity vector due to lift-induced drag.
-
+where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\|\vec{v}(t)\|)}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}$ represents the deleceration along the agent's velocity vector due to lift-induced drag.
 Any acceleration normal to the agent's velocity vector, including the components of the acceleration vector $\vec{a}_\perp(t)$ and gravity vector $\vec{g}_\perp$ that are normal to the velocity vector, will induce some lift-induced drag.
 $$
-\vec{a}_\perp(t) = \vec{a}(t) - \text{proj}_{\vec{v}(t)}(\vec{a}(t))
-$$
-$$
-\vec{g}_\perp = \vec{g} - \text{proj}_{\vec{v}(t)}(\vec{g})
+\vec{a}_\perp(t) = (\vec{a}(t) + \vec{g}) - \text{proj}_{\vec{v}(t)}(\vec{a}(t) + \vec{g})
 $$
 
 ### Agent Acceleration
 
 The agent acceleration is given by:
 $$
-\frac{d}{dt} \vec{v}(t) = \vec{a}(t) - \vec{g} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
+\frac{d}{dt} \vec{v}(t) = \vec{a}(t) - \vec{g} - \left(\frac{F_D(\|\vec{v}(t)\|)}{m} + \frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
 $$
 Unlike interceptors, threats are not subject to drag or gravity.
 
 The air drag is given by:
 $$
-F_D(\vec{v}(t)) = \frac{1}{2} \rho C_D A\|\vec{v}(t)\|^2,
+F_D(\|\vec{v}(t)\|) = \frac{1}{2} \rho C_D A\|\vec{v}(t)\|^2,
 $$
 where $\rho$ is the air density that decays exponentially with altitude: $\rho = 1.204 \frac{\text{kg}}{\text{m}^3} \cdot e^{-\frac{\text{altitude}}{10.4\text{ km}}}$, $C_D$ is the airframe's coefficient of drag, and $A$ is the cross-sectional area.
 For all angles of attack, we specify a constant $(L/D)$ ratio.
@@ -93,9 +99,7 @@ We do impose some constraints on the acceleration:
   $$
   $a_{\text{ref}}$ denotes the maximum normal acceleration that the airframe can pull at the reference speed $v_{\text{ref}}$.
 
-## Simulator Behaviors
-
-### Sensing
+## Perception
 
 Currently, all agents are equipped with an ideal sensor, one that can peek through the fog of war with no noise and no delay.
 Sensing is performed within the agent's frame of reference using spherical coordinates, so each sensor output $\vec{y}$ is a nine-dimensional vector.
@@ -103,7 +107,7 @@ $$
 \vec{y} = \begin{bmatrix}
   \vec{y}_p \\
   \vec{y}_v \\
-  \vec{y}_a
+  \vec{y}_a \\
 \end{bmatrix} \in \mathbb{R}^9,
 $$
 where $\vec{y}_p \in \mathbb{R}^3$ denotes the three-dimensional position difference between the agent and its sensing target, $\vec{y}_v$ denotes the three-dimensional velocity difference between the agent and its sensing target, and $\vec{y}_a$ denotes the three-dimensional acceleration of the sensing target.
@@ -111,7 +115,7 @@ $\vec{y}_p$ and $\vec{y}_v$ are both given in spherical coordinates in the agent
 
 Interceptors are constrained in their sensor update frequency, which is configurable for each interceptor type.
 As a result, interceptors can change their actuation input at a rate faster than the sensor update frequency.
-The simulator currently uses a naive guidance filter simply performs a zero-hold interpolation on the latest sensor output and applies the latest acceleration to a model of the sensing target until the next sensor output arrives and resets the model's position, velocity, and acceleration.
+The simulator currently uses a naive guidance filter that simply performs a zero-order hold interpolation on the latest sensor output and applies the latest acceleration to a model of the sensing target until the next sensor output arrives and updates the model's position, velocity, and acceleration.
 In other words, for $nT \leq t < (n + 1)T$, where $T$ is the sensor update period, the simple target model is as follows:
 $$
 \frac{d}{dt} \begin{bmatrix}
@@ -119,18 +123,29 @@ $$
   \vec{v}(t) \\
 \end{bmatrix} = \begin{bmatrix}
   \vec{v}(t) \\
-  \vec{a}(t)|_{t = nT}
+  \vec{a}(t)|_{t = nT} \\
 \end{bmatrix},
 $$
 where the initial conditions $\vec{p}(t)|_{t = nT}$ and $\vec{v}(t)|_{t = nT}$ are set by the latest sensor output.
 
 Threats are assumed to be omniscient, so they have no frequency constraint on their sensor output and know the positions, velocities, and accelerations of all interceptors at all times.
 
-### Guidance & Navigation
+## Clustering
+## Prediction
+## Planning
+
+## Assignment
+
+### Maximum Speed Assignment
+
+The simulator assigns the threats to the interceptors such that the terminal speed of each engagement is maximized, which maximizes the overall kill probability.
+For any assignment between an interceptor and a threat, we can assign a cost that represents the loss of the interceptor’s speed as a result of both the distance to be covered and the bearing change required for the intercept.
+
+## Controls
 
 **Proportional Navigation**
 
-![Proportional Navigation](./images/proportional_navigation.png){width=60%}
+![Proportional navigation](./images/proportional_navigation.png){width=60%}
 
 Using the fact that constant bearing decreasing range (CBDR) leads to a collision, we apply an acceleration normal to the velocity vector to correct for any bearing drift.
 In the simulator, proportional navigation follows the simple control law:
@@ -207,25 +222,7 @@ if (sinkRate > 0 && timeToGround < timeToTarget) {
 }
 ```
 
-### Interceptor Assignment
-
-**Threat-Based Assignment**
-
-![Threat-based assignment](./images/threat_based_assignment.png){width=40%}
-
-When submunitions are dispensed (e.g., micromissiles from Hydra-70s), they are assigned a threat to intercept.
-The assignment algorithm prefers assigning an interceptor to each threat before doubling up on previously assigned threats.
-
-Given the list of threats, the simulator first sorts the threats as follows:
-1. Sorting (descending) by the number of already assigned interceptors
-2. Sorting (ascending) by threat value, where the threat value of a threat is given by:
-   $$
-   V_{threat} = \frac{\|\vec{v}(t)\|}{\|\vec{p}(t)\|},
-   $$
-   where $\|v_t\|$ is the threat's speed and $\vec{p}(t)$ is the threat's position vector, assuming that the asset is at the origin.
-After sorting the threats, we simply assign interceptors down the list.
-
-Note that this algorithm may not be optimal but is a good starting point.
+## Threat
 
 ### Intercept Evasion
 

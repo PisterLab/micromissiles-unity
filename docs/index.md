@@ -16,6 +16,8 @@ hero:
 
 ---
 
+![Simulator view](./images/simulator_view.png)
+
 # Quick Start
 
 We generate pre-built standalone binaries for Windows and Mac users from the `release` branch. These binaries are intended for non-development users who just want to run the application and modify a few configurations along the way.
