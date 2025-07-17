@@ -88,10 +88,7 @@ public abstract class ILaunchPlanner {
     _predictor = predictor;
   }
 
-  // Plan the launch from the default origin (0,0,0).
-  // Maintained for backward compatibility.
-  // Returns: Launch plan with timing and angle information
-  public abstract LaunchPlan Plan();
+
 
   // Plan the launch from a specific interceptor origin.
   // This method accounts for the interceptor's starting position when calculating

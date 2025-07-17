@@ -39,10 +39,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
 
-  // Plan the launch.
-  public override LaunchPlan Plan() {
-    return PlanFromOrigin(Vector3.zero);
-  }
+
 
   // Plan the launch from a specific interceptor origin.
   // This implementation accounts for the interceptor's starting position and the origin's
