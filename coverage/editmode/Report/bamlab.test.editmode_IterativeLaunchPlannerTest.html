@@ -17,11 +17,11 @@
 <tr><th>Class:</th><td>IterativeLaunchPlannerTest</td></tr>
 <tr><th>Assembly:</th><td>bamlab.test.editmode</td></tr>
 <tr><th>File(s):</th><td><a href="#githubworkspaceAssetsTestsEditModeIterativeLaunchPlannerTestcs" class="navigatetohash">/github/workspace/Assets/Tests/EditMode/IterativeLaunchPlannerTest.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>104</td></tr>
-<tr><th>Uncovered lines:</th><td>31</td></tr>
+<tr><th>Covered lines:</th><td>103</td></tr>
+<tr><th>Uncovered lines:</th><td>32</td></tr>
 <tr><th>Coverable lines:</th><td>135</td></tr>
 <tr><th>Total lines:</th><td>256</td></tr>
-<tr><th>Line coverage:</th><td>77% (104 of 135)</td></tr>
+<tr><th>Line coverage:</th><td>76.2% (103 of 135)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>0</td></tr>
 <tr><th>Covered methods:</th><td>15</td></tr>
@@ -42,7 +42,7 @@
 <tr><td title="System.Void IterativeLaunchPlannerTest::TestInterceptAcrossMultipleDataPoints()"><a href="#file0_line71" class="navigatetohash">TestInterceptAcrossMultipleDataPoints()</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
 <tr><td title="System.Void IterativeLaunchPlannerTest::TestLaunchDivergingFromOrigin()"><a href="#file0_line84" class="navigatetohash">TestLaunchDivergingFromOrigin()</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
 <tr><td title="System.Void IterativeLaunchPlannerTest::TestNoLaunchInterceptBehindOrigin()"><a href="#file0_line94" class="navigatetohash">TestNoLaunchInterceptBehindOrigin()</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
-<tr><td title="System.Void IterativeLaunchPlannerTest::TestNoLaunchTooFarFromInterceptPoint()"><a href="#file0_line111" class="navigatetohash">TestNoLaunchTooFarFromInterceptPoint()</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
+<tr><td title="System.Void IterativeLaunchPlannerTest::TestNoLaunchTooFarFromInterceptPoint()"><a href="#file0_line111" class="navigatetohash">TestNoLaunchTooFarFromInterceptPoint()</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>87.5%</td></tr>
 <tr><td title="System.Void IterativeLaunchPlannerTest::TestNoLaunchThreatBehindOrigin()"><a href="#file0_line124" class="navigatetohash">TestNoLaunchThreatBehindOrigin()</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
 <tr><td title="System.Void IterativeLaunchPlannerTest::TestNoLaunchExtremeSidewaysGeometry()"><a href="#file0_line136" class="navigatetohash">TestNoLaunchExtremeSidewaysGeometry()</a></td><td>0%</td><td>2.61</td><td>2</td><td>0</td><td>46.67%</td></tr>
 <tr><td title="System.Void IterativeLaunchPlannerTest::TestValidLaunchFastApproachingThreat()"><a href="#file0_line162" class="navigatetohash">TestValidLaunchFastApproachingThreat()</a></td><td>0%</td><td>2.61</td><td>2</td><td>0</td><td>46.67%</td></tr>
@@ -132,7 +132,7 @@
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line75"></a><code>75</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;LaunchPlan&nbsp;plan&nbsp;=&nbsp;planner.Plan();</code></td></tr>
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line76"></a><code>76</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsTrue(plan.ShouldLaunch);</code></td></tr>
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line77"></a><code>77</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Assert.AreEqual(20,&nbsp;plan.LaunchAngle);</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line78"></a><code>78</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Vector3&nbsp;expected&nbsp;=&nbsp;new&nbsp;Vector3(60,&nbsp;1,&nbsp;0);</code></td></tr>
+<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line78"></a><code>78</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Vector3&nbsp;expected&nbsp;=&nbsp;new&nbsp;Vector3(61,&nbsp;1,&nbsp;0);</code></td></tr>
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line79"></a><code>79</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Assert.That(Vector3.Distance(plan.InterceptPosition,&nbsp;expected),&nbsp;Is.LessThan(0.01f),</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line80"></a><code>80</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&quot;Expected&nbsp;{expected},&nbsp;but&nbsp;was&nbsp;{plan.InterceptPosition}&quot;);</code></td></tr>
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line81"></a><code>81</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;}</code></td></tr>
@@ -173,7 +173,7 @@
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line116"></a><code>116</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;UnityEngine.Debug.Log(</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line117"></a><code>117</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&quot;TestNoLaunchTooFarFromInterceptPoint:&nbsp;ShouldLaunch={plan.ShouldLaunch},&nbsp;Angle={plan.LaunchAngle},&nbsp;Position={pl</code></td></tr>
 <tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line118"></a><code>118</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;Assert.IsFalse(plan.ShouldLaunch);</code></td></tr>
-<tr class="coverableline" title="Covered (1 visits)" data-coverage="{'AllTestMethods': {'VC': '1', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">1</td><td class="rightmargin right"><a id="file0_line119"></a><code>119</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line119"></a><code>119</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line120"></a><code>120</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line121"></a><code>121</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;//&nbsp;==========&nbsp;NEW&nbsp;BACKWARDS/SIDEWAYS&nbsp;LAUNCH&nbsp;PREVENTION&nbsp;TESTS&nbsp;==========</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line122"></a><code>122</code></td><td></td><td class="lightgray"><code></code></td></tr>
@@ -313,7 +313,7 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line256"></a><code>256</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />07/16/2025 - 21:27:29<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />07/17/2025 - 01:22:08<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
@@ -326,7 +326,7 @@
 <a href="#file0_line71" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - TestInterceptAcrossMultipleDataPoints()"><i class="icon-cube"></i>TestInterceptAcrossMultipleDataPoints()</a><br />
 <a href="#file0_line84" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - TestLaunchDivergingFromOrigin()"><i class="icon-cube"></i>TestLaunchDivergingFromOrigin()</a><br />
 <a href="#file0_line94" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - TestNoLaunchInterceptBehindOrigin()"><i class="icon-cube"></i>TestNoLaunchInterceptBehindOrigin()</a><br />
-<a href="#file0_line111" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - TestNoLaunchTooFarFromInterceptPoint()"><i class="icon-cube"></i>TestNoLaunchTooFarFromInterceptPoint()</a><br />
+<a href="#file0_line111" class="navigatetohash percentagebar percentagebar80" title="Line coverage: 87.5% - TestNoLaunchTooFarFromInterceptPoint()"><i class="icon-cube"></i>TestNoLaunchTooFarFromInterceptPoint()</a><br />
 <a href="#file0_line124" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - TestNoLaunchThreatBehindOrigin()"><i class="icon-cube"></i>TestNoLaunchThreatBehindOrigin()</a><br />
 <a href="#file0_line136" class="navigatetohash percentagebar percentagebar50" title="Line coverage: 50% - TestNoLaunchExtremeSidewaysGeometry()"><i class="icon-cube"></i>TestNoLaunchExtremeSidewaysGeometry()</a><br />
 <a href="#file0_line162" class="navigatetohash percentagebar percentagebar50" title="Line coverage: 50% - TestValidLaunchFastApproachingThreat()"><i class="icon-cube"></i>TestValidLaunchFastApproachingThreat()</a><br />

@@ -17,23 +17,23 @@
 <tr><th>Class:</th><td>ILaunchAnglePlanner</td></tr>
 <tr><th>Assembly:</th><td>bamlab.micromissiles</td></tr>
 <tr><th>File(s):</th><td><a href="#githubworkspaceAssetsScriptsAlgorithmsPlanningLaunchAnglePlannercs" class="navigatetohash">/github/workspace/Assets/Scripts/Algorithms/Planning/LaunchAnglePlanner.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>13</td></tr>
-<tr><th>Uncovered lines:</th><td>3</td></tr>
+<tr><th>Covered lines:</th><td>10</td></tr>
+<tr><th>Uncovered lines:</th><td>6</td></tr>
 <tr><th>Coverable lines:</th><td>16</td></tr>
 <tr><th>Total lines:</th><td>103</td></tr>
-<tr><th>Line coverage:</th><td>81.2% (13 of 16)</td></tr>
+<tr><th>Line coverage:</th><td>62.5% (10 of 16)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>0</td></tr>
-<tr><th>Covered methods:</th><td>3</td></tr>
+<tr><th>Covered methods:</th><td>2</td></tr>
 <tr><th>Total methods:</th><td>4</td></tr>
-<tr><th>Method coverage:</th><td>75% (3 of 4)</td></tr>
+<tr><th>Method coverage:</th><td>50% (2 of 4)</td></tr>
 </tbody>
 </table>
 <h1>Metrics</h1>
 <table class="overview table-fixed">
 <thead><tr><th>Method</th><th>Branch coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th><th>Crap Score <a href="https://googletesting.blogspot.de/2011/02/this-code-is-crap.html"><i class="icon-info-circled"></i></a></th><th>Cyclomatic complexity <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon-info-circled"></i></a></th><th>NPath complexity <a href="https://modess.io/npath-complexity-cyclomatic-complexity-explained"><i class="icon-info-circled"></i></a></th><th>Sequence coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th></tr></thead>
 <tbody>
-<tr><td title="LaunchAngleOutput ILaunchAnglePlanner::Plan(UnityEngine.Vector3)"><a href="#file0_line61" class="navigatetohash">Plan(...)</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
+<tr><td title="LaunchAngleOutput ILaunchAnglePlanner::Plan(UnityEngine.Vector3)"><a href="#file0_line61" class="navigatetohash">Plan(...)</a></td><td>0%</td><td>2</td><td>1</td><td>0</td><td>0%</td></tr>
 <tr><td title="LaunchAngleOutput ILaunchAnglePlanner::Plan(UnityEngine.Vector3, UnityEngine.Vector3)"><a href="#file0_line70" class="navigatetohash">Plan(...)</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
 <tr><td title="UnityEngine.Vector3 ILaunchAnglePlanner::GetInterceptPosition(UnityEngine.Vector3)"><a href="#file0_line81" class="navigatetohash">GetInterceptPosition(...)</a></td><td>0%</td><td>2</td><td>1</td><td>0</td><td>0%</td></tr>
 <tr><td title="static UnityEngine.Vector2 ILaunchAnglePlanner::ConvertToDirection(UnityEngine.Vector3, UnityEngine.Vector3)"><a href="#file0_line98" class="navigatetohash">ConvertToDirection(...)</a></td><td>0%</td><td>1</td><td>1</td><td>0</td><td>100%</td></tr>
@@ -104,9 +104,9 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line58"></a><code>58</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;//&nbsp;Maintained&nbsp;for&nbsp;backward&nbsp;compatibility.</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line59"></a><code>59</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;position:&nbsp;Target&nbsp;position</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line60"></a><code>60</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;//&nbsp;Returns:&nbsp;Launch&nbsp;angle&nbsp;output</code></td></tr>
-<tr class="coverableline" title="Covered (28 visits)" data-coverage="{'AllTestMethods': {'VC': '28', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">28</td><td class="rightmargin right"><a id="file0_line61"></a><code>61</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;public&nbsp;LaunchAngleOutput&nbsp;Plan(Vector3&nbsp;position)&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Covered (28 visits)" data-coverage="{'AllTestMethods': {'VC': '28', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">28</td><td class="rightmargin right"><a id="file0_line62"></a><code>62</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Plan(position,&nbsp;Vector3.zero);</code></td></tr>
-<tr class="coverableline" title="Covered (28 visits)" data-coverage="{'AllTestMethods': {'VC': '28', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">28</td><td class="rightmargin right"><a id="file0_line63"></a><code>63</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line61"></a><code>61</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;public&nbsp;LaunchAngleOutput&nbsp;Plan(Vector3&nbsp;position)&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line62"></a><code>62</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;Plan(position,&nbsp;Vector3.zero);</code></td></tr>
+<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line63"></a><code>63</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line64"></a><code>64</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line65"></a><code>65</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;//&nbsp;Calculate&nbsp;launch&nbsp;parameters&nbsp;for&nbsp;a&nbsp;target&nbsp;position&nbsp;from&nbsp;a&nbsp;specific&nbsp;origin.</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line66"></a><code>66</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;//&nbsp;This&nbsp;method&nbsp;accounts&nbsp;for&nbsp;the&nbsp;distance&nbsp;and&nbsp;direction&nbsp;from&nbsp;origin&nbsp;to&nbsp;target.</code></td></tr>
@@ -149,11 +149,11 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line103"></a><code>103</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />07/16/2025 - 21:27:28<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />07/17/2025 - 01:22:07<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
-<a href="#file0_line61" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - Plan(UnityEngine.Vector3)"><i class="icon-cube"></i>Plan(UnityEngine.Vector3)</a><br />
+<a href="#file0_line61" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - Plan(UnityEngine.Vector3)"><i class="icon-cube"></i>Plan(UnityEngine.Vector3)</a><br />
 <a href="#file0_line70" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - Plan(UnityEngine.Vector3, UnityEngine.Vector3)"><i class="icon-cube"></i>Plan(UnityEngine.Vector3, UnityEngine.Vector3)</a><br />
 <a href="#file0_line81" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - GetInterceptPosition(UnityEngine.Vector3)"><i class="icon-cube"></i>GetInterceptPosition(UnityEngine.Vector3)</a><br />
 <a href="#file0_line98" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - ConvertToDirection(UnityEngine.Vector3, UnityEngine.Vector3)"><i class="icon-cube"></i>ConvertToDirection(UnityEngine.Vector3, UnityEngine.Vector3)</a><br />
