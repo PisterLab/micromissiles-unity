@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/16/2025 - 21:29:18 |
+| Generated on: | 07/17/2025 - 01:24:46 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
 | Files: | 88 |
 | Covered lines: | 1526 |
-| Uncovered lines: | 4826 |
-| Coverable lines: | 6352 |
-| Total lines: | 11556 |
-| Line coverage: | 24% (1526 of 6352) |
+| Uncovered lines: | 4800 |
+| Coverable lines: | 6326 |
+| Total lines: | 11505 |
+| Line coverage: | 24.1% (1526 of 6326) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 241 |
-| Total methods: | 868 |
-| Method coverage: | 27.7% (241 of 868) |
+| Total methods: | 867 |
+| Method coverage: | 27.7% (241 of 867) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1478**|**3398**|**4876**|**10931**|**30.3%**|**0**|**0**|****|**238**|**709**|**33.5%**|
+|**bamlab.micromissiles**|**1478**|**3372**|**4850**|**10880**|**30.4%**|**0**|**0**|****|**238**|**708**|**33.6%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -56,7 +56,7 @@
 |Interpolator2DDataPoint|0|16|16|86|0%|0|0||0|5|0%|
 |IPredictor|0|3|3|37|0%|0|0||0|1|0%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
-|IterativeLaunchPlanner|0|70|70|174|0%|0|0||0|6|0%|
+|IterativeLaunchPlanner|0|44|44|123|0%|0|0||0|5|0%|
 |KDNode[T]|0|5|5|87|0%|0|0||0|1|0%|
 |KDTree[T]|0|43|43|87|0%|0|0||0|4|0%|
 |KMeansClusterer|0|55|55|123|0%|0|0||0|4|0%|

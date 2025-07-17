@@ -260,7 +260,7 @@ var assemblies = [
       { "name": "Interpolator2DDataPoint", "rp": "bamlab.micromissiles_Interpolator2DDataPoint.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 86, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IPredictor", "rp": "bamlab.micromissiles_IPredictor.html", "cl": 0, "ucl": 3, "cal": 3, "tl": 37, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ISizeAndRadiusConstrainedClusterer", "rp": "bamlab.micromissiles_ISizeAndRadiusConstrainedClusterer.html", "cl": 6, "ucl": 4, "cal": 10, "tl": 56, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "IterativeLaunchPlanner", "rp": "bamlab.micromissiles_IterativeLaunchPlanner.html", "cl": 0, "ucl": 70, "cal": 70, "tl": 174, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "IterativeLaunchPlanner", "rp": "bamlab.micromissiles_IterativeLaunchPlanner.html", "cl": 0, "ucl": 44, "cal": 44, "tl": 123, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KDNode[T]", "rp": "bamlab.micromissiles_KDNode_T_.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KDTree[T]", "rp": "bamlab.micromissiles_KDTree_T_.html", "cl": 0, "ucl": 43, "cal": 43, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "KMeansClusterer", "rp": "bamlab.micromissiles_KMeansClusterer.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 123, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -527,14 +527,7 @@ var riskHotspots = [
       { "value": 42, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "IterativeLaunchPlanner", "reportPath": "bamlab.micromissiles_IterativeLaunchPlanner.html", "methodName": "LaunchPlan IterativeLaunchPlanner::PlanFromZeroOrigin()", "methodShortName": "PlanFromZeroOrigin()", "fileIndex": 0, "line": 48,
-    "metrics": [
-      { "value": 6, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 42, "exceeded": true },
-    ]},
-  {
-    "assembly": "bamlab.micromissiles", "class": "IterativeLaunchPlanner", "reportPath": "bamlab.micromissiles_IterativeLaunchPlanner.html", "methodName": "LaunchPlan IterativeLaunchPlanner::PlanFromOrigin(UnityEngine.Vector3)", "methodShortName": "PlanFromOrigin(...)", "fileIndex": 0, "line": 99,
+    "assembly": "bamlab.micromissiles", "class": "IterativeLaunchPlanner", "reportPath": "bamlab.micromissiles_IterativeLaunchPlanner.html", "methodName": "LaunchPlan IterativeLaunchPlanner::PlanFromOrigin(UnityEngine.Vector3)", "methodShortName": "PlanFromOrigin(...)", "fileIndex": 0, "line": 48,
     "metrics": [
       { "value": 6, "exceeded": false },
       { "value": 0, "exceeded": false },
