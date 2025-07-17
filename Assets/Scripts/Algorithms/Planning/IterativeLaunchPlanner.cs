@@ -17,11 +17,24 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // when the intercept position has not changed by more than this threshold between iterations.
   private const float ConvergenceThreshold = 10f;
 
-  // Maximum intercept position threshold in meters to declare convergence. This threshold is used
-  // as a final sanity check to ensure that the predicted target position and intercept position do
-  // not differ by more than this threshold. This threshold should be set depending on the
-  // granularity of the possible intercept positions.
-  private const float InterceptPositionThreshold = 1000f;
+  // Maximum distance in meters between the final intercept position (where the interceptor can
+  // reach) and the predicted target position (where we expect the target to be). This serves as
+  // a final validation that the iterative algorithm has converged to a realistic solution.
+  // 
+  // If this distance exceeds the threshold, it indicates either:
+  // - The algorithm failed to converge properly
+  // - The launch angle planner is extrapolating beyond its valid data range
+  // - Numerical errors accumulated during iteration
+  //
+  // Reasonable values:
+  // - 50-200m: Appropriate for most scenarios 
+  // - 100m: Should be a good balance between accuracy and practicality
+  //
+  // Problematic values:
+  // - <10m: Too strict, may reject valid intercepts due to minor numerical errors
+  // - >500m: Too lenient, potentially inaccurate launch solutions
+  // - >1000m: Effectively useless, never triggerable
+  private const float InterceptPositionThreshold = 100f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
