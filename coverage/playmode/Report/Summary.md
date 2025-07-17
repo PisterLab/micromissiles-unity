@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/17/2025 - 01:46:31 |
+| Generated on: | 07/17/2025 - 01:46:39 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
@@ -9,7 +9,7 @@
 | Covered lines: | 1526 |
 | Uncovered lines: | 4800 |
 | Coverable lines: | 6326 |
-| Total lines: | 11522 |
+| Total lines: | 11521 |
 | Line coverage: | 24.1% (1526 of 6326) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -107,14 +107,14 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**1363**|**1363**|**3298**|**0%**|**0**|**0**|****|**0**|**144**|**0%**|
+|**bamlab.test.editmode**|**0**|**1363**|**1363**|**3297**|**0%**|**0**|**0**|****|**0**|**144**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
 |Coordinates2Test|0|55|55|158|0%|0|0||0|8|0%|
 |Coordinates3Test|0|56|56|158|0%|0|0||0|8|0%|
 |InterceptorOriginConfigTest|0|56|56|130|0%|0|0||0|5|0%|
-|IterativeLaunchPlannerTest|0|135|135|260|0%|0|0||0|15|0%|
+|IterativeLaunchPlannerTest|0|135|135|259|0%|0|0||0|15|0%|
 |KDTreeTest|0|39|39|55|0%|0|0||0|4|0%|
 |KMeansClustererTest|0|37|37|150|0%|0|0||0|4|0%|
 |LaunchAngleCsvInterpolatorTest|0|28|28|87|0%|0|0||0|4|0%|
