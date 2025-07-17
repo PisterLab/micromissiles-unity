@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>07/17/2025 - 03:42:38</Generatedon>
+    <Generatedon>07/17/2025 - 03:56:54</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>110</Classes>
     <Files>88</Files>
-    <Coveredlines>2498</Coveredlines>
+    <Coveredlines>2513</Coveredlines>
     <Uncoveredlines>3803</Uncoveredlines>
-    <Coverablelines>6301</Coverablelines>
-    <Totallines>11460</Totallines>
-    <Linecoverage>39.6</Linecoverage>
+    <Coverablelines>6316</Coverablelines>
+    <Totallines>11482</Totallines>
+    <Linecoverage>39.7</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>341</Coveredmethods>
@@ -18,7 +18,7 @@
     <Methodcoverage>39.5</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="83" coverage="23.6" coveredlines="1142" coverablelines="4828" totallines="10727" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="192" totalmethods="704" methodcoverage="27.2">
+    <Assembly name="bamlab.micromissiles" classes="83" coverage="23.6" coveredlines="1139" coverablelines="4825" totallines="10718" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="191" totalmethods="703" methodcoverage="27.1">
       <Class name="Agent" coverage="40" coveredlines="104" coverablelines="260" totallines="465" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="21" totalmethods="46" methodcoverage="45.6" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -44,7 +44,7 @@
       <Class name="IInterpolator2D" coverage="100" coveredlines="16" coverablelines="16" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="ILaunchAngleInterpolator" coverage="90.9" coveredlines="20" coverablelines="22" totallines="122" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="ILaunchAnglePlanner" coverage="76.9" coveredlines="10" coverablelines="13" totallines="91" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
-      <Class name="ILaunchPlanner" coverage="100" coveredlines="4" coverablelines="4" totallines="102" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+      <Class name="ILaunchPlanner" coverage="100" coveredlines="4" coverablelines="4" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="InputManager" coverage="0" coveredlines="0" coverablelines="174" totallines="234" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
       <Class name="Interceptor" coverage="5" coveredlines="8" coverablelines="157" totallines="242" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="17" methodcoverage="11.7" />
       <Class name="InterceptorData" coverage="0" coveredlines="0" coverablelines="19" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
@@ -55,7 +55,7 @@
       <Class name="Interpolator2DDataPoint" coverage="93.7" coveredlines="15" coverablelines="16" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="5" methodcoverage="80" />
       <Class name="IPredictor" coverage="100" coveredlines="3" coverablelines="3" totallines="37" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="ISizeAndRadiusConstrainedClusterer" coverage="60" coveredlines="6" coverablelines="10" totallines="56" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
-      <Class name="IterativeLaunchPlanner" coverage="97.7" coveredlines="43" coverablelines="44" totallines="136" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
+      <Class name="IterativeLaunchPlanner" coverage="97.5" coveredlines="40" coverablelines="41" totallines="133" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="KDNode[T]" coverage="100" coveredlines="5" coverablelines="5" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="KDTree[T]" coverage="100" coveredlines="43" coverablelines="43" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="KMeansClusterer" coverage="89" coveredlines="49" coverablelines="55" totallines="123" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
@@ -64,7 +64,7 @@
       <Class name="LaunchAngleDataPoint" coverage="100" coveredlines="6" coverablelines="6" totallines="91" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="LaunchAngleInput" coverage="100" coveredlines="6" coverablelines="6" totallines="91" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="LaunchAngleOutput" coverage="100" coveredlines="6" coverablelines="6" totallines="91" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
-      <Class name="LaunchPlan" coverage="80" coveredlines="28" coverablelines="35" totallines="102" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="10" methodcoverage="90" />
+      <Class name="LaunchPlan" coverage="80" coveredlines="28" coverablelines="35" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="10" methodcoverage="90" />
       <Class name="LinearExtrapolator" coverage="100" coveredlines="5" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="MaxSpeedAssignment" coverage="100" coveredlines="41" coverablelines="41" totallines="77" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="MockLaunchAnglePlanner" coverage="80.3" coveredlines="41" coverablelines="51" totallines="90" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="9" methodcoverage="77.7" />
@@ -108,14 +108,14 @@
       <Class name="SensorTestBase" coverage="0" coveredlines="0" coverablelines="11" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="TestBase" coverage="93.3" coveredlines="28" coverablelines="30" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
     </Assembly>
-    <Assembly name="bamlab.test.editmode" classes="22" coverage="96.3" coveredlines="1311" coverablelines="1360" totallines="3282" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="140" totalmethods="144" methodcoverage="97.2">
+    <Assembly name="bamlab.test.editmode" classes="22" coverage="96.4" coveredlines="1329" coverablelines="1378" totallines="3310" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="141" totalmethods="145" methodcoverage="97.2">
       <Class name="AgglomerativeClustererTest" coverage="100" coveredlines="42" coverablelines="42" totallines="69" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
       <Class name="ClusterTest" coverage="100" coveredlines="74" coverablelines="74" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="ConstrainedKMeansClustererTest" coverage="100" coveredlines="35" coverablelines="35" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
       <Class name="Coordinates2Test" coverage="100" coveredlines="55" coverablelines="55" totallines="158" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="Coordinates3Test" coverage="100" coveredlines="56" coverablelines="56" totallines="158" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="InterceptorOriginConfigTest" coverage="100" coveredlines="56" coverablelines="56" totallines="130" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
-      <Class name="IterativeLaunchPlannerTest" coverage="77" coveredlines="104" coverablelines="135" totallines="260" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="15" totalmethods="15" methodcoverage="100" />
+      <Class name="IterativeLaunchPlannerTest" coverage="79.7" coveredlines="122" coverablelines="153" totallines="288" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="16" totalmethods="16" methodcoverage="100" />
       <Class name="KDTreeTest" coverage="100" coveredlines="39" coverablelines="39" totallines="55" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="KMeansClustererTest" coverage="100" coveredlines="37" coverablelines="37" totallines="150" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="LaunchAngleCsvInterpolatorTest" coverage="96.4" coveredlines="27" coverablelines="28" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
