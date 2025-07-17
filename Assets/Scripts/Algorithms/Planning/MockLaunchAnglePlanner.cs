@@ -58,10 +58,6 @@ public class MockLaunchAnglePlanner : ILaunchAnglePlanner {
     return new LaunchAngleOutput(adjustedLaunchAngle, adjustedTimeToPosition, distance);
   }
 
-  public Vector3 GetInterceptPosition(Vector3 targetPosition) {
-    return GetInterceptPosition(targetPosition, Vector3.zero);
-  }
-
   public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition) {
     if (_convergentMode) {
       // Return positions that converge over iterations

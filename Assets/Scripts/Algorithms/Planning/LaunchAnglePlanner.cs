@@ -74,14 +74,6 @@ public interface ILaunchAnglePlanner {
     return new LaunchAngleOutput(output.LaunchAngle, output.TimeToPosition, distance);
   }
 
-  // Get the intercept position for a target from the default origin (0,0,0).
-  // Maintained for backward compatibility.
-  //   position: Target position
-  // Returns: Calculated intercept position
-  public Vector3 GetInterceptPosition(Vector3 position) {
-    return GetInterceptPosition(position, Vector3.zero);
-  }
-
   // Get the intercept position for a target from a specific origin.
   // This accounts for the interceptor's starting position when calculating intercept geometry.
   //   targetPosition: Target position
