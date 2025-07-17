@@ -167,7 +167,7 @@ TrailRenderer:
   m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 5
+    widthMultiplier: 10
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -367,6 +367,8 @@ MonoBehaviour:
   staticAgentConfig:
     name: 
     agentClass: 
+    symbolPresent: 
+    symbolDestroyed: 
     unitCost: 0
     accelerationConfig:
       maxReferenceNormalAcceleration: 300
@@ -420,8 +422,7 @@ MonoBehaviour:
       marker: 0
     submunitions_config:
       num_submunitions: 0
-      launch_config:
-        launch_time: 0
+      dispense_time: 0
       dynamic_agent_config:
         agent_model: 
         initial_state:
