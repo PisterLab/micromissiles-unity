@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/17/2025 - 03:45:13 |
+| Generated on: | 07/17/2025 - 03:59:11 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
 | Files: | 88 |
 | Covered lines: | 1526 |
-| Uncovered lines: | 4775 |
-| Coverable lines: | 6301 |
-| Total lines: | 11460 |
-| Line coverage: | 24.2% (1526 of 6301) |
+| Uncovered lines: | 4790 |
+| Coverable lines: | 6316 |
+| Total lines: | 11482 |
+| Line coverage: | 24.1% (1526 of 6316) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 241 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1478**|**3350**|**4828**|**10727**|**30.6%**|**0**|**0**|****|**238**|**704**|**33.8%**|
+|**bamlab.micromissiles**|**1478**|**3347**|**4825**|**10718**|**30.6%**|**0**|**0**|****|**238**|**703**|**33.8%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -45,7 +45,7 @@
 |IInterpolator2D|0|16|16|86|0%|0|0||0|3|0%|
 |ILaunchAngleInterpolator|1|21|22|122|4.5%|0|0||1|3|33.3%|
 |ILaunchAnglePlanner|0|13|13|91|0%|0|0||0|3|0%|
-|ILaunchPlanner|0|4|4|102|0%|0|0||0|1|0%|
+|ILaunchPlanner|0|4|4|99|0%|0|0||0|1|0%|
 |InputManager|66|108|174|234|37.9%|0|0||12|15|80%|
 |Interceptor|0|157|157|242|0%|0|0||0|17|0%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
@@ -56,7 +56,7 @@
 |Interpolator2DDataPoint|0|16|16|86|0%|0|0||0|5|0%|
 |IPredictor|0|3|3|37|0%|0|0||0|1|0%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
-|IterativeLaunchPlanner|0|44|44|136|0%|0|0||0|5|0%|
+|IterativeLaunchPlanner|0|41|41|133|0%|0|0||0|4|0%|
 |KDNode[T]|0|5|5|87|0%|0|0||0|1|0%|
 |KDTree[T]|0|43|43|87|0%|0|0||0|4|0%|
 |KMeansClusterer|0|55|55|123|0%|0|0||0|4|0%|
@@ -65,7 +65,7 @@
 |LaunchAngleDataPoint|0|6|6|91|0%|0|0||0|3|0%|
 |LaunchAngleInput|0|6|6|91|0%|0|0||0|3|0%|
 |LaunchAngleOutput|0|6|6|91|0%|0|0||0|3|0%|
-|LaunchPlan|0|35|35|102|0%|0|0||0|10|0%|
+|LaunchPlan|0|35|35|99|0%|0|0||0|10|0%|
 |LinearExtrapolator|0|5|5|14|0%|0|0||0|2|0%|
 |MaxSpeedAssignment|0|41|41|77|0%|0|0||0|1|0%|
 |MockLaunchAnglePlanner|0|51|51|90|0%|0|0||0|9|0%|
@@ -107,14 +107,14 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**1360**|**1360**|**3282**|**0%**|**0**|**0**|****|**0**|**144**|**0%**|
+|**bamlab.test.editmode**|**0**|**1378**|**1378**|**3310**|**0%**|**0**|**0**|****|**0**|**145**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
 |Coordinates2Test|0|55|55|158|0%|0|0||0|8|0%|
 |Coordinates3Test|0|56|56|158|0%|0|0||0|8|0%|
 |InterceptorOriginConfigTest|0|56|56|130|0%|0|0||0|5|0%|
-|IterativeLaunchPlannerTest|0|135|135|260|0%|0|0||0|15|0%|
+|IterativeLaunchPlannerTest|0|153|153|288|0%|0|0||0|16|0%|
 |KDTreeTest|0|39|39|55|0%|0|0||0|4|0%|
 |KMeansClustererTest|0|37|37|150|0%|0|0||0|4|0%|
 |LaunchAngleCsvInterpolatorTest|0|28|28|87|0%|0|0||0|4|0%|
