@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
@@ -45,6 +46,11 @@ public class UIManager : MonoBehaviour {
   public TMP_FontAsset GlobalFont;
 
   private UIMode curMode = UIMode.THREE_DIMENSIONAL;
+
+  private VisualElement _root;
+  [SerializeField]
+  private UIDocument _mainOverlay;
+  private MultiColumnListView _messageListView;
 
   // Start is called before the first frame update
   void Awake() {
@@ -89,6 +95,8 @@ public class UIManager : MonoBehaviour {
     // Set new message
     actionMessageTextHandle.text = message;
     actionMessageTextHandle.color = color;
+
+    _mainOverlay.GetComponent<UITKMainOverlay>().MessageListController.LogNewMessage(message);
   }
 
   public void LogActionMessage(string message) {
@@ -108,7 +116,7 @@ public class UIManager : MonoBehaviour {
   }
 
   private void SetupConfigSelectorPanel() {
-    _configSelectorPanel.GetComponentInChildren<Button>().onClick.AddListener(
+    _configSelectorPanel.GetComponentInChildren<UnityEngine.UI.Button>().onClick.AddListener(
         delegate { LoadSelectedConfig(); });
     _configDropdown = _configSelectorPanel.GetComponentInChildren<TMP_Dropdown>();
     PopulateConfigDropdown();

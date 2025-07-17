@@ -1,0 +1,24 @@
+.OverlayVE {
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.ButtonContainer {
+    padding-top: 2%;
+    padding-right: 2%;
+    padding-bottom: 2%;
+    padding-left: 2%;
+}
+
+.ButtonContainer Button {
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
+    height: 30px;
+    margin-top: 1px;
+    margin-right: 2px;
+    margin-bottom: 1px;
+    margin-left: 2px;
+    padding-top: 1px;
+    padding-right: 2px;
+    padding-bottom: 1px;
+    padding-left: 2px;
+    font-size: 16px;
+}

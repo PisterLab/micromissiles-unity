@@ -1,1 +1,10 @@
 @import url("unity-theme://default");
+
+* {
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
+
+}
+
+Button {
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
+}

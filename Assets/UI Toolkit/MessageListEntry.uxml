@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MessageListEntry.uss?fileID=7433441132597879392&amp;guid=39679a7da2b96a64a913887a01cd2027&amp;type=3#MessageListEntry" />
+    <ui:VisualElement name="list-entry" style="border-left-color: rgb(95, 95, 95); border-right-color: rgb(95, 95, 95); border-top-color: rgb(95, 95, 95); border-bottom-color: rgb(95, 95, 95); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; height: 25px;">
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="message-text" style="flex-shrink: 0; flex-grow: 0; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&amp;guid=779f171e6b914754db77215d3190f7a1&amp;type=3#Roboto_Condensed-Regular&quot;); font-size: 14px; -unity-font-style: normal; margin-top: 2px; margin-right: 2px; padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px;" />
+    </ui:VisualElement>
+</ui:UXML>

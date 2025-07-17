@@ -1,0 +1,30 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/MainOverlayTheme.uss?fileID=7433441132597879392&amp;guid=b9bc3d0910a9ce041b701ed976901e57&amp;type=3#MainOverlayTheme" />
+    <ui:VisualElement name="VisualElement" class="OverlayVE" style="flex-grow: 0; top: 85%; flex-shrink: 1; flex-direction: row; height: 15%; width: auto; align-items: stretch;">
+        <ui:VisualElement name="MessageListContainer" class="OverlayVE" style="flex-grow: 0; flex-direction: column; opacity: 1; display: flex; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); flex-shrink: 0; width: 33%;">
+            <ui:ListView name="MessageListView" fixed-item-height="25" style="margin-top: 0; padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; flex-direction: column;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; visibility: visible; flex-direction: row;">
+            <ui:VisualElement name="Column1" class="ButtonContainer" style="flex-grow: 1;">
+                <ui:Button text="Swarm Status" name="SwarmStatusButton" />
+                <ui:Button text="Restart" name="RestartButton" />
+                <ui:Button text="Load Config" name="LoadConfigButton" />
+                <ui:Button text="Quit App" name="QuitAppButton" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Column2" class="ButtonContainer" style="flex-grow: 1;">
+                <ui:Button text="Clear Markers" name="ClearMarkersButton" />
+                <ui:Button text="Button" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Column3" class="ButtonContainer" style="flex-grow: 1;">
+                <ui:Button text="Button" />
+                <ui:Button text="Button" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; visibility: visible; flex-direction: row;">
+            <ui:ScrollView />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; visibility: visible; flex-direction: row;">
+            <ui:ScrollView />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
