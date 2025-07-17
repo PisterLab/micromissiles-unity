@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/17/2025 - 03:59:11 |
+| Generated on: | 07/17/2025 - 04:51:21 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
@@ -9,7 +9,7 @@
 | Covered lines: | 1526 |
 | Uncovered lines: | 4790 |
 | Coverable lines: | 6316 |
-| Total lines: | 11482 |
+| Total lines: | 11473 |
 | Line coverage: | 24.1% (1526 of 6316) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1478**|**3347**|**4825**|**10718**|**30.6%**|**0**|**0**|****|**238**|**703**|**33.8%**|
+|**bamlab.micromissiles**|**1478**|**3347**|**4825**|**10711**|**30.6%**|**0**|**0**|****|**238**|**703**|**33.8%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -37,7 +37,7 @@
 |DynamicAgentConfig|0|3|3|143|0%|0|0||0|1|0%|
 |FixedWingThreat|51|14|65|120|78.4%|0|0||7|9|77.7%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|91|199|290|498|31.3%|0|0||16|31|51.6%|
+|IADS|91|199|290|496|31.3%|0|0||16|31|51.6%|
 |IAssignment|0|11|11|42|0%|0|0||0|3|0%|
 |IClusterer|6|4|10|56|60%|0|0||3|4|75%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
@@ -45,7 +45,7 @@
 |IInterpolator2D|0|16|16|86|0%|0|0||0|3|0%|
 |ILaunchAngleInterpolator|1|21|22|122|4.5%|0|0||1|3|33.3%|
 |ILaunchAnglePlanner|0|13|13|91|0%|0|0||0|3|0%|
-|ILaunchPlanner|0|4|4|99|0%|0|0||0|1|0%|
+|ILaunchPlanner|0|4|4|97|0%|0|0||0|1|0%|
 |InputManager|66|108|174|234|37.9%|0|0||12|15|80%|
 |Interceptor|0|157|157|242|0%|0|0||0|17|0%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
@@ -56,7 +56,7 @@
 |Interpolator2DDataPoint|0|16|16|86|0%|0|0||0|5|0%|
 |IPredictor|0|3|3|37|0%|0|0||0|1|0%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
-|IterativeLaunchPlanner|0|41|41|133|0%|0|0||0|4|0%|
+|IterativeLaunchPlanner|0|41|41|132|0%|0|0||0|4|0%|
 |KDNode[T]|0|5|5|87|0%|0|0||0|1|0%|
 |KDTree[T]|0|43|43|87|0%|0|0||0|4|0%|
 |KMeansClusterer|0|55|55|123|0%|0|0||0|4|0%|
@@ -65,7 +65,7 @@
 |LaunchAngleDataPoint|0|6|6|91|0%|0|0||0|3|0%|
 |LaunchAngleInput|0|6|6|91|0%|0|0||0|3|0%|
 |LaunchAngleOutput|0|6|6|91|0%|0|0||0|3|0%|
-|LaunchPlan|0|35|35|99|0%|0|0||0|10|0%|
+|LaunchPlan|0|35|35|97|0%|0|0||0|10|0%|
 |LinearExtrapolator|0|5|5|14|0%|0|0||0|2|0%|
 |MaxSpeedAssignment|0|41|41|77|0%|0|0||0|1|0%|
 |MockLaunchAnglePlanner|0|51|51|90|0%|0|0||0|9|0%|
@@ -107,24 +107,24 @@
 |AgentTestBase|0|23|23|40|0%|0|0||0|4|0%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
 |TestBase|0|30|30|44|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**1378**|**1378**|**3310**|**0%**|**0**|**0**|****|**0**|**145**|**0%**|
+|**bamlab.test.editmode**|**0**|**1378**|**1378**|**3304**|**0%**|**0**|**0**|****|**0**|**145**|**0%**|
 |AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
 |ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
 |ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
 |Coordinates2Test|0|55|55|158|0%|0|0||0|8|0%|
 |Coordinates3Test|0|56|56|158|0%|0|0||0|8|0%|
 |InterceptorOriginConfigTest|0|56|56|130|0%|0|0||0|5|0%|
-|IterativeLaunchPlannerTest|0|153|153|288|0%|0|0||0|16|0%|
+|IterativeLaunchPlannerTest|0|153|153|286|0%|0|0||0|16|0%|
 |KDTreeTest|0|39|39|55|0%|0|0||0|4|0%|
 |KMeansClustererTest|0|37|37|150|0%|0|0||0|4|0%|
 |LaunchAngleCsvInterpolatorTest|0|28|28|87|0%|0|0||0|4|0%|
 |LaunchAngleDataInterpolatorTest|0|16|16|87|0%|0|0||0|4|0%|
 |LinearExtrapolatorTest|0|28|28|42|0%|0|0||0|4|0%|
 |MaxSpeedAssignmentTest|0|107|107|181|0%|0|0||0|5|0%|
-|MockPredictor|0|24|24|282|0%|0|0||0|6|0%|
+|MockPredictor|0|24|24|280|0%|0|0||0|6|0%|
 |NearestNeighborInterpolator2DTest|0|56|56|107|0%|0|0||0|7|0%|
 |OriginAssignmentStrategyTest|0|129|129|295|0%|0|0||0|13|0%|
-|OriginAwareLaunchPlanningTest|0|102|102|282|0%|0|0||0|10|0%|
+|OriginAwareLaunchPlanningTest|0|102|102|280|0%|0|0||0|10|0%|
 |PriorityQueueTest|0|62|62|87|0%|0|0||0|7|0%|
 |SanityTest|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|80|80|176|0%|0|0||0|4|0%|
