@@ -1,6 +1,6 @@
 {
   "summary": {
-    "generatedon": "2025-07-17T03:36:27Z",
+    "generatedon": "2025-07-17T03:42:38Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
     "classes": 110,
@@ -48,9 +48,9 @@
         { "name": "InputManager", "coverage": 0, "coveredlines": 0, "coverablelines": 174, "totallines": 234, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 15 },
         { "name": "Interceptor", "coverage": 5, "coveredlines": 8, "coverablelines": 157, "totallines": 242, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 11.7, "coveredmethods": 2, "totalmethods": 17 },
         { "name": "InterceptorData", "coverage": 0, "coveredlines": 0, "coverablelines": 19, "totallines": 99, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
+        { "name": "InterceptorOrigin", "coverage": 12.1, "coveredlines": 9, "coverablelines": 74, "totallines": 153, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 14.2, "coveredmethods": 2, "totalmethods": 14 },
         { "name": "InterceptorOriginConfig", "coverage": 39, "coveredlines": 25, "coverablelines": 64, "totallines": 188, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 60, "coveredmethods": 6, "totalmethods": 10 },
         { "name": "InterceptorOriginManager", "coverage": 59.2, "coveredlines": 93, "coverablelines": 157, "totallines": 342, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 55, "coveredmethods": 11, "totalmethods": 20 },
-        { "name": "InterceptorOriginObject", "coverage": 12.1, "coveredlines": 9, "coverablelines": 74, "totallines": 153, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 14.2, "coveredmethods": 2, "totalmethods": 14 },
         { "name": "InterceptorOriginReference", "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 55, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "Interpolator2DDataPoint", "coverage": 93.7, "coveredlines": 15, "coverablelines": 16, "totallines": 86, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 80, "coveredmethods": 4, "totalmethods": 5 },
         { "name": "IPredictor", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 37, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },

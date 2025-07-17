@@ -1,7 +1,7 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/17/2025 - 03:36:27 |
+| Generated on: | 07/17/2025 - 03:42:38 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
@@ -49,9 +49,9 @@
 |InputManager|0|174|174|234|0%|0|0||0|15|0%|
 |Interceptor|8|149|157|242|5%|0|0||2|17|11.7%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
+|InterceptorOrigin|9|65|74|153|12.1%|0|0||2|14|14.2%|
 |InterceptorOriginConfig|25|39|64|188|39%|0|0||6|10|60%|
 |InterceptorOriginManager|93|64|157|342|59.2%|0|0||11|20|55%|
-|InterceptorOriginObject|9|65|74|153|12.1%|0|0||2|14|14.2%|
 |InterceptorOriginReference|0|22|22|55|0%|0|0||0|6|0%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
