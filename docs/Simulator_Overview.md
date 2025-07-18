@@ -413,6 +413,13 @@ if (sinkRate > 0 && timeToGround < timeToTarget) {
 
 ## Threat
 
+### Kill Probability
+
+To model non-idealities and noise in the sensing and guidance systems, each threat is assigned a hit radius and a kill probability.
+Whenever an interceptor is within the hit radius of the threat, the simulator treats it as an intercept, where the interceptor has collided with the threat.
+However, the simulator does not automatically count the threat as destroyed; instead, the kill probability determines whether the threat is destroyed.
+Unlike threats, interceptors are always destroyed during an intercept.
+
 ### Intercept Evasion
 
 ![Intercept evasion tactics](./images/intercept_evasion.png){width=60%}
@@ -457,3 +464,18 @@ if (sinkRate > 0 && altitude < groundProximityThreshold) {
   normalAccelerationDirection = Vector3.Lerp(normalAccelerationDirection, bestHorizontalDirection + transform.up * 5f, blendFactor).normalized;
   }
 ```
+
+### Automatic Re-Clustering and Re-Assignment
+
+Since threats can sometimes successfully evade the interceptors, the IADS must be prepared to handle cases of missed intercepts.
+The simulator currently implements automatic re-clustering of missed or escaping threats as well as automatic re-assignment of missed interceptors.
+- **Re-clustering**:
+  Since interceptors are unpropelled in their midcourse phase, once the threat speed is greater than the interceptor speed, the threat can evade the assigned interceptor.
+  Every 5 seconds, the IADS checks whether any threat has escaped the assigned interceptors and places the escaping threats back into the clustering queue.
+  Every 2 seconds, the IADS will process the clustering queue and, if necessary, launch additional interceptors.
+- **Re-assignment**:
+  Re-assigning a new threat to an interceptor can happen in two ways:
+  1. The assigned threat has already been intercepted by another interceptor.
+  2. The assigned threat has escaped the interceptor and is located behind the interceptor, such that it would be ineffective for the interceptor to perform a 180 degree turn.
+  In these cases, the interceptor will be placed onto a queue containing all interceptors to be assigned a threat.
+  At the end of the update, all interceptors in the queue will be assigned according to the assignment scheme, possibly doubling up on some threats.
