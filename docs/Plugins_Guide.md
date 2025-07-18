@@ -2,6 +2,10 @@
 
 This guide explains how to build and develop the C++ plugins that provide core functionality for the micromissiles simulator and that allow C++ code to be executed within Unity.
 
+## Table of Contents
+
+[[toc]]
+
 ## Prerequisites
 
 - A C++ compiler (GCC, Clang, or MSVC)
