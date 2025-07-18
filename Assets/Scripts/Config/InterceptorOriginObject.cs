@@ -3,7 +3,7 @@ using UnityEngine;
 // Runtime representation of an interceptor origin in the simulation.
 // This component manages the actual GameObject state and provides access to current
 // position/velocity. The associated InterceptorOriginConfig provides the static configuration data.
-public class InterceptorOriginObject : MonoBehaviour {
+public class InterceptorOrigin : MonoBehaviour {
   private InterceptorOriginConfig _originConfig;
   private Vector3 _startPosition;
   private float _startTime;

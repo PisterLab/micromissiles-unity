@@ -17,25 +17,33 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // when the intercept position has not changed by more than this threshold between iterations.
   private const float ConvergenceThreshold = 10f;
 
-  // Maximum intercept position threshold in meters to declare convergence. This threshold is used
-  // as a final sanity check to ensure that the predicted target position and intercept position do
-  // not differ by more than this threshold. This threshold should be set depending on the
-  // granularity of the possible intercept positions.
-  private const float InterceptPositionThreshold = 1000f;
+  // Maximum distance in meters between the final intercept position (where the interceptor can
+  // reach) and the predicted target position (where we expect the target to be). This serves as
+  // a final validation that the iterative algorithm has converged to a realistic solution.
+  //
+  // If this distance exceeds the threshold, it indicates either:
+  // - The algorithm failed to converge properly
+  // - The launch angle planner is extrapolating beyond its valid data range
+  // - Numerical errors accumulated during iteration
+  //
+  // Reasonable values:
+  // - 50-200m: Appropriate for most scenarios
+  // - 100m: Should be a good balance between accuracy and practicality
+  //
+  // Problematic values:
+  // - <10m: Too strict, may reject valid intercepts due to minor numerical errors
+  // - >500m: Too lenient, potentially inaccurate launch solutions
+  // - >1000m: Effectively useless, never triggerable
+  private const float InterceptPositionThreshold = 100f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
-
-  // Plan the launch.
-  public override LaunchPlan Plan() {
-    return PlanFromOrigin(Vector3.zero);
-  }
 
   // Plan the launch from a specific interceptor origin.
   // This implementation accounts for the interceptor's starting position and the origin's
   // current location (including movement for naval assets).
   // Returns: Launch plan with timing and angle information
-  public override LaunchPlan Plan(InterceptorOriginObject origin) {
+  public override LaunchPlan Plan(InterceptorOrigin origin) {
     // Get the current origin position (accounts for moving origins)
     Vector3 originPosition = origin.GetPosition();
     return PlanFromOrigin(originPosition);
@@ -93,7 +101,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     return LaunchPlan.NoLaunch;
   }
 
-  // Determines if a launch scenario is geometrically invalid (e.g., backwards or sideways).
+  // Determines if a launch scenario is geometrically invalid (e.g., into the anterior hemisphere
+  // behind the space between the origin and the threat).
   //   originPosition: Position from which the interceptor will be launched.
   //   interceptPosition: Calculated intercept position.
   //   threatState: Initial state of the threat (position and velocity).

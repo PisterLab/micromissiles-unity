@@ -270,9 +270,9 @@ public class SimManager : MonoBehaviour {
       originObject.name = $"Origin_{originConfig.id}";
 
       // Add a component to track the origin configuration
-      var originComponent = originObject.GetComponent<InterceptorOriginObject>();
+      var originComponent = originObject.GetComponent<InterceptorOrigin>();
       if (originComponent == null) {
-        originComponent = originObject.AddComponent<InterceptorOriginObject>();
+        originComponent = originObject.AddComponent<InterceptorOrigin>();
       }
       originComponent.SetOriginConfig(originConfig);
 

@@ -32,6 +32,23 @@ public class IterativeLaunchPlannerTest {
 
   private static ILaunchAnglePlanner _launchAnglePlanner = new DummyLaunchAngleDataInterpolator();
 
+  // Creates a default InterceptorOrigin at (0,0,0) for backward compatibility testing.
+  public static InterceptorOrigin CreateDefaultOrigin() {
+    // Create a mock origin config for testing at the default position
+    InterceptorOriginConfig origin =
+        new InterceptorOriginConfig { id = "default-test-origin", initial_position = Vector3.zero,
+                                      velocity = Vector3.zero, max_interceptors = 100,
+                                      interceptor_types = new List<string> { "test.json" } };
+
+    // Create mock origin object for testing
+    GameObject mockOriginGameObject = new GameObject("Mock_default-test-origin");
+    mockOriginGameObject.transform.position = origin.initial_position;
+    InterceptorOrigin originObject = mockOriginGameObject.AddComponent<InterceptorOrigin>();
+    originObject.SetOriginConfig(origin);
+
+    return originObject;
+  }
+
   public static Agent GenerateAgent(in Vector3 position, in Vector3 velocity) {
     Agent agent = new GameObject().AddComponent<DummyAgent>();
     Rigidbody rb = agent.gameObject.AddComponent<Rigidbody>();
@@ -45,7 +62,8 @@ public class IterativeLaunchPlannerTest {
     Agent agent = GenerateAgent(position: new Vector3(1, 110, 0), velocity: new Vector3(0, -1, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(90, plan.LaunchAngle);
     Vector3 expected = new Vector3(1, 100, 0);
@@ -59,7 +77,8 @@ public class IterativeLaunchPlannerTest {
         GenerateAgent(position: new Vector3(1, 110, 0), velocity: new Vector3(0, -1.1f, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(90, plan.LaunchAngle);
     Vector3 expected = new Vector3(1, 99, 0);
@@ -72,7 +91,8 @@ public class IterativeLaunchPlannerTest {
     Agent agent = GenerateAgent(position: new Vector3(126, 1, 0), velocity: new Vector3(-5, 0, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(20, plan.LaunchAngle);
     Vector3 expected = new Vector3(61, 1, 0);
@@ -85,7 +105,8 @@ public class IterativeLaunchPlannerTest {
     Agent agent = GenerateAgent(position: new Vector3(0, 1, -80), velocity: new Vector3(0, 0, -1));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
     Assert.IsFalse(plan.ShouldLaunch,
                    $"Should not launch at threat moving away from origin. Plan: {plan}");
   }
@@ -98,7 +119,8 @@ public class IterativeLaunchPlannerTest {
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
 
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
 
     // The logic should prevent a launch where the intercept point is behind the origin
     // relative to the threat's approach.
@@ -109,10 +131,15 @@ public class IterativeLaunchPlannerTest {
 
   [Test]
   public void TestNoLaunchTooFarFromInterceptPoint() {
-    Agent agent = GenerateAgent(position: new Vector3(1, 2000, 0), velocity: new Vector3(0, -1, 0));
+    // Test the InterceptPositionThreshold enforcement (100m).
+    // Use a target far outside the dummy interpolator's data range to cause
+    // inaccurate interpolation that results in intercept/predicted positions > 100m apart.
+    Agent agent =
+        GenerateAgent(position: new Vector3(200, 500, 0), velocity: new Vector3(-50, -10, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
     UnityEngine.Debug.Log(
         $"TestNoLaunchTooFarFromInterceptPoint: ShouldLaunch={plan.ShouldLaunch}, Angle={plan.LaunchAngle}, Position={plan.InterceptPosition}");
     Assert.IsFalse(plan.ShouldLaunch);
@@ -127,7 +154,8 @@ public class IterativeLaunchPlannerTest {
         GenerateAgent(position: new Vector3(0, 1, -100), velocity: new Vector3(0, 0, -50));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
     Assert.IsFalse(plan.ShouldLaunch,
                    $"Should not launch at threat moving away behind origin, but got: {plan}");
   }
@@ -139,7 +167,8 @@ public class IterativeLaunchPlannerTest {
         GenerateAgent(position: new Vector3(5000, 1, 100), velocity: new Vector3(0, 0, -30));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
 
     // This should either not launch or the intercept geometry should be reasonable
     if (plan.ShouldLaunch) {
@@ -166,7 +195,8 @@ public class IterativeLaunchPlannerTest {
         GenerateAgent(position: new Vector3(0, 50, 10000), velocity: new Vector3(0, 0, -500));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
 
     // This should potentially launch (depending on interpolation data) and geometry should be
     // reasonable
@@ -204,8 +234,7 @@ public class IterativeLaunchPlannerTest {
     // Create mock origin object for testing instead of using old Plan signature
     GameObject mockOriginGameObject = new GameObject("Mock_test-origin");
     mockOriginGameObject.transform.position = origin.initial_position;
-    InterceptorOriginObject originObject =
-        mockOriginGameObject.AddComponent<InterceptorOriginObject>();
+    InterceptorOrigin originObject = mockOriginGameObject.AddComponent<InterceptorOrigin>();
     originObject.SetOriginConfig(origin);
 
     LaunchPlan plan = planner.Plan(originObject);
@@ -240,7 +269,8 @@ public class IterativeLaunchPlannerTest {
     Agent agent = GenerateAgent(position: new Vector3(50, 1, 80), velocity: new Vector3(20, 0, 0));
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
     IterativeLaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-    LaunchPlan plan = planner.Plan();
+    InterceptorOrigin origin = CreateDefaultOrigin();
+    LaunchPlan plan = planner.Plan(origin);
 
     // This should either not launch, or if it does, threat shouldn't be strongly diverging
     if (plan.ShouldLaunch) {

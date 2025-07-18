@@ -18,7 +18,7 @@ using UnityEngine;
 // - Mixed static and mobile launcher deployments
 public class InterceptorOriginManager {
   private List<InterceptorOriginConfig> _origins;
-  private Dictionary<string, InterceptorOriginObject> _originObjects;
+  private Dictionary<string, InterceptorOrigin> _originObjects;
   private Dictionary<OriginAssignmentStrategy,
                      Func<Vector3, string, float, string, InterceptorOriginConfig>> _strategies;
   private Dictionary<string, int> _assignmentCounts;  // For load balancing
@@ -27,7 +27,7 @@ public class InterceptorOriginManager {
   //   origins: List of interceptor origin configurations
   public InterceptorOriginManager(List<InterceptorOriginConfig> origins) {
     _origins = origins ?? new List<InterceptorOriginConfig>();
-    _originObjects = new Dictionary<string, InterceptorOriginObject>();
+    _originObjects = new Dictionary<string, InterceptorOrigin>();
     _assignmentCounts = new Dictionary<string, int>();
 
     // Initialize assignment counters for load balancing
@@ -38,25 +38,25 @@ public class InterceptorOriginManager {
     InitializeStrategies();
   }
 
-  // Registers a runtime InterceptorOriginObject with its corresponding config.
+  // Registers a runtime InterceptorOrigin with its corresponding config.
   // This should be called when origin GameObjects are created.
   //   originObject: The runtime origin object
-  public void RegisterOriginObject(InterceptorOriginObject originObject) {
+  public void RegisterOriginObject(InterceptorOrigin originObject) {
     if (originObject != null && originObject.GetOriginConfig() != null) {
       _originObjects[originObject.OriginId] = originObject;
     }
   }
 
-  // Gets the runtime InterceptorOriginObject for a given origin ID.
+  // Gets the runtime InterceptorOrigin for a given origin ID.
   //   originId: Origin ID to find
   // Returns: The runtime origin object, or null if not found
-  public InterceptorOriginObject GetOriginObject(string originId) {
+  public InterceptorOrigin GetOriginObject(string originId) {
     return _originObjects.TryGetValue(originId, out var originObject) ? originObject : null;
   }
 
   // Gets all registered runtime origin objects.
   // Returns: Collection of runtime origin objects
-  public IEnumerable<InterceptorOriginObject> GetAllOriginObjects() {
+  public IEnumerable<InterceptorOrigin> GetAllOriginObjects() {
     return _originObjects.Values;
   }
 
@@ -105,9 +105,9 @@ public class InterceptorOriginManager {
   //   strategy: Assignment strategy to use
   //   manualOriginId: Manual origin ID (for MANUAL strategy)
   // Returns: Selected origin runtime object, or null if no suitable origin available
-  public InterceptorOriginObject SelectOriginObject(Vector3 threatPosition, string interceptorType,
-                                                    OriginAssignmentStrategy strategy,
-                                                    string manualOriginId = null) {
+  public InterceptorOrigin SelectOriginObject(Vector3 threatPosition, string interceptorType,
+                                              OriginAssignmentStrategy strategy,
+                                              string manualOriginId = null) {
     // First select the config using existing logic
     var selectedConfig =
         SelectOrigin(threatPosition, interceptorType, strategy, Time.time, manualOriginId);

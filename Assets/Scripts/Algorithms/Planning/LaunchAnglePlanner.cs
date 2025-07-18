@@ -22,13 +22,9 @@ public struct LaunchAngleOutput {
   // Time to reach the target position in seconds.
   public float TimeToPosition { get; }
 
-  // Distance from origin to target in meters.
-  public float DistanceToTarget { get; }
-
-  public LaunchAngleOutput(float launchAngle, float timeToPosition, float distanceToTarget = 0f) {
+  public LaunchAngleOutput(float launchAngle, float timeToPosition) {
     LaunchAngle = launchAngle;
     TimeToPosition = timeToPosition;
-    DistanceToTarget = distanceToTarget;
   }
 }
 
@@ -71,15 +67,7 @@ public interface ILaunchAnglePlanner {
     Vector2 direction = ConvertToDirection(targetPosition, originPosition);
     float distance = Vector3.Distance(originPosition, targetPosition);
     var output = Plan(new LaunchAngleInput(distance: direction[0], altitude: direction[1]));
-    return new LaunchAngleOutput(output.LaunchAngle, output.TimeToPosition, distance);
-  }
-
-  // Get the intercept position for a target from the default origin (0,0,0).
-  // Maintained for backward compatibility.
-  //   position: Target position
-  // Returns: Calculated intercept position
-  public Vector3 GetInterceptPosition(Vector3 position) {
-    return GetInterceptPosition(position, Vector3.zero);
+    return new LaunchAngleOutput(output.LaunchAngle, output.TimeToPosition);
   }
 
   // Get the intercept position for a target from a specific origin.
