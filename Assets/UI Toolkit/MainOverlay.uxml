@@ -20,11 +20,21 @@
                 <ui:Button text="Button" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement style="flex-grow: 1; visibility: visible; flex-direction: row;">
-            <ui:ScrollView />
+        <ui:VisualElement style="flex-grow: 0; visibility: visible; flex-direction: column; width: 20%;">
+            <ui:VisualElement name="TimeControlPanel" style="flex-grow: 1; background-color: rgba(190, 190, 190, 0.36); flex-direction: column;">
+                <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
+                    <ui:Button text="-" />
+                    <ui:FloatField value="1.0" />
+                    <ui:Button text="+" />
+                    <ui:Label text="Current Simulation Time&#x9;" name="SimTimeLabel" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/Roboto/Roboto_SemiCondensed-Regular.ttf?fileID=12800000&amp;guid=35c7960788f99e449897e1901e108b12&amp;type=3#Roboto_SemiCondensed-Regular&quot;); -unity-font-style: normal; font-size: 16px; color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
+                </ui:VisualElement>
+                <ui:VisualElement style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 1; visibility: visible; flex-direction: row;">
             <ui:ScrollView />
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement name="VisualElement" class="OverlayVE" style="flex-grow: 1; width: 10%; background-position-y: center 0; height: 85%; position: absolute;" />
 </ui:UXML>

@@ -49,14 +49,14 @@ public class UITKMessageListController
     
     public void LogNewMessage(string message)
     {
-        // Add message to data source
-        m_Messages.Add(message);
+        // Insert message at the top of the data source
+        m_Messages.Insert(0, message);
         
         // Refresh the ListView to show the new item
         m_MessageListView.RefreshItems();
         
-        // Optional: Scroll to the latest message
-        m_MessageListView.ScrollToItem(m_Messages.Count - 1);
+        // Scroll to the top to show the latest message
+        m_MessageListView.ScrollToItem(0);
     }
     
     public void ClearMessages()

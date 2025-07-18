@@ -174,15 +174,16 @@ public class UIManager : MonoBehaviour {
   }
 
   private void UpdateSimTimeText() {
-    simTimeText.text =
+    string simTimeText =
         "Elapsed Sim Time: " + SimManager.Instance.GetElapsedSimulationTime().ToString("F2");
     float expectedSimTimeAdvance = Time.unscaledDeltaTime * Time.timeScale;
     float actualSimTimeAdvance = Time.deltaTime;
 
     // Allow a small epsilon to account for floating-point precision errors
-    if (actualSimTimeAdvance < expectedSimTimeAdvance - 0.001f) {
-      simTimeText.text += "\nThrottling time to meet physics rate";
-    }
+    // if (actualSimTimeAdvance < expectedSimTimeAdvance - 0.001f) {
+    //   simTimeText.text += "\nThrottling time to meet physics rate";
+    // }
+    _mainOverlay.GetComponent<UITKMainOverlay>().UpdateSimTimeText(simTimeText);
   }
 
   private void UpdateTotalCostText() {
