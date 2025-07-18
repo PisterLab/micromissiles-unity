@@ -4,14 +4,7 @@ This guide will help you set up and run the project in development mode. You'll 
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Installation Steps](#installation-steps)
-  - [1. Install Unity Hub](#1-install-unity-hub)
-  - [2. Clone the Project Repository](#2-clone-the-project-repository)
-  - [3. Launch the Project via Unity Hub](#3-launch-the-project-via-unity-hub)
-  - [4. Open the Main Scene](#4-open-the-main-scene)
-- [Next Steps](#next-steps)
-- [Additional Resources](#additional-resources)
+[[toc]]
 
 ## Prerequisites
 
@@ -77,8 +70,8 @@ After the project opens in Unity:
 
 4. The scene will load in the **Scene** view. You can now run the simulation by clicking the **Play** button at the top of the Unity Editor.
 
-
 ## Additional Resources
 
 - [Keybinds and Controls](Keybinds_and_Controls.md)
 - [Simulation Configuration Guide](Simulation_Config_Guide.md)
+- [Plugins Guide](Plugins_Guide.md)

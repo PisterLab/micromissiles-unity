@@ -3,16 +3,8 @@
 This guide will help you navigate and interact with the environment using your mouse and keyboard. Below are the keybindings organized into easy-to-read tables, along with detailed descriptions to enhance your experience.
 
 ## Table of Contents
-- [Keybinds and Controls](#keybinds-and-controls)
-  - [Table of Contents](#table-of-contents)
-  - [Mouse Controls](#mouse-controls)
-  - [Keyboard Controls](#keyboard-controls)
-    - [Camera Movement](#camera-movement)
-    - [Camera Speed](#camera-speed)
-    - [Simulation Controls](#simulation-controls)
-    - [Camera Shortcuts](#camera-shortcuts)
-    - [Additional Controls](#additional-controls)
-  - [Tips for Effective Navigation](#tips-for-effective-navigation)
+
+[[toc]]
 
 ## Mouse Controls
 

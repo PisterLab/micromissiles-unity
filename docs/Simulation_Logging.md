@@ -2,6 +2,10 @@
 
 This guide provides instructions on how to access and interpret the simulation logs, how they are structured by the `SimMonitor` class, and how to utilize the provided `visualize_log.py` script to analyze simulation data. Additionally, it offers guidance on creating your own scripts for custom analysis.
 
+## Table of Contents
+
+[[toc]]
+
 ## Overview
 
 ![Python simulation log visualizer](./images/sim_visualizer.png)
@@ -23,7 +27,6 @@ On macOS, the logs are exported to:
 ```
 
 `visualize_log.py` is an example script provided to help visualize and interpret the simulation logs. It is included in the `Tools` directory of the release download.
-
 
 ## Understanding Log Files and Directory Structure
 
@@ -91,7 +94,6 @@ The event log records significant occurrences within the simulation. Key columns
 - **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position where the event occurred.
 - **`EventType`**: Type of event (e.g., `HIT`, `MISS`, `NEW_THREAT`, `NEW_INTERCEPTOR`).
 - **`Details`**: Additional details about the event.
-
 
 ## Running the `visualize_log.py` Script
 
@@ -256,4 +258,4 @@ print(f'Average Miss Distance: {average_miss_distance:.2f} meters')
 
 ## Additional Resources
 
-- **Python Documentation**: [pandas](https://pandas.pydata.org/), [matplotlib](https://matplotlib.org/), [NumPy](https://numpy.org/)
+- **Python Documentation**: [NumPy](https://numpy.org/), [matplotlib](https://matplotlib.org/), [pandas](https://pandas.pydata.org/)
