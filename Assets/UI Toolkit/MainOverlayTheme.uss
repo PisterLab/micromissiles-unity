@@ -1,24 +1,181 @@
+@import url("unity-theme://default");
+
+* {
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
+    color: #ffffff;
+}
+
+/* Global background */
+VisualElement {
+    background-color: #1a1a1a;
+}
+
+Button {
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    border-width: 1px;
+    border-radius: 0;
+    color: #ffffff;
+    font-size: 14px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    transition-duration: 0.2s;
+}
+
+Button:hover {
+    background-color: #363636;
+    border-color: #00d4ff;
+}
+
+Button:active {
+    background-color: #00d4ff;
+    color: #1a1a1a;
+}
+
+/* Labels */
+Label {
+    color: #ffffff;
+    font-size: 14px;
+}
+
+TextField, IntegerField, FloatField {
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    border-width: 1px;
+    border-radius: 0;
+    color: #ffffff;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+TextField:focus, IntegerField:focus, FloatField:focus {
+    border-color: #00d4ff;
+}
+
+ScrollView {
+    background-color: #1a1a1a;
+}
+
+.unity-scroller {
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+}
+
+.unity-scroller__slider {
+    background-color: #4a4a4a;
+    border-radius: 0;
+}
+
+.unity-scroller__slider:hover {
+    background-color: #5a5a5a;
+}
+
+/* Main overlay container */
 .OverlayVE {
-    background-color: rgb(60, 60, 60);
+    background-color: #1a1a1a;
 }
 
 .ButtonContainer {
-    padding-top: 2%;
-    padding-right: 2%;
-    padding-bottom: 2%;
-    padding-left: 2%;
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    border-width: 1px;
+    border-radius: 0;
+    padding-top: 12px;
+    padding-right: 12px;
+    padding-bottom: 12px;
+    padding-left: 12px;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
 }
 
 .ButtonContainer Button {
     -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
-    height: 30px;
-    margin-top: 1px;
-    margin-right: 2px;
-    margin-bottom: 1px;
-    margin-left: 2px;
-    padding-top: 1px;
-    padding-right: 2px;
-    padding-bottom: 1px;
-    padding-left: 2px;
+    background-color: #363636;
+    border-color: #4a4a4a;
+    border-width: 1px;
+    border-radius: 0;
+    color: #ffffff;
+    font-size: 14px;
+    height: 24px;
+    margin-top: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    margin-left: 3px;
+    padding-top: 0;
+    padding-right: 12px;
+    padding-bottom: 0;
+    padding-left: 12px;
+    transition-duration: 0.15s;
+}
+
+.ButtonContainer Button:hover {
+    background-color: #4a4a4a;
+    border-color: #00d4ff;
+    color: #ffffff;
+}
+
+.ButtonContainer Button:active {
+    background-color: #00d4ff;
+    border-color: #00d4ff;
+    color: #1a1a1a;
+}
+
+#TimeControlPanel {
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    border-width: 1px;
+    border-radius: 0;
+    padding-top: 8px;
+    padding-right: 8px;
+    padding-bottom: 8px;
+    padding-left: 8px;
+}
+
+/* Simulation time label */
+#SimTimeLabel {
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
     font-size: 16px;
+    color: #00d4ff;
+    -unity-font-style: bold;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* Message list container with sharp edges */
+#MessageListContainer {
+    background-color: #2a2a2a;
+    border-color: #4a4a4a;
+    border-width: 1px;
+    border-radius: 0;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+}
+
+/* ListView styling */
+ListView {
+    background-color: transparent;
+    border-width: 0;
+}
+
+.unity-list-view__item {
+    border-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.unity-list-view__item:hover {
+    background-color: #363636;
+}
+
+.unity-list-view__item:selected {
+    background-color: #00d4ff;
 }

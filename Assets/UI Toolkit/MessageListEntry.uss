@@ -1,19 +1,51 @@
 #list-entry {
-    height: 41px;
-    align-items: flex-start;
-    justify-content: center;
-    padding-left: 10px;
-    border-color: rgb(49, 26, 17);
-    border-width: 2px;
+    background-color:rgba(54, 54, 54, 0);
+    border-color: #4a4a4a;
+    border-width: 1px;
     border-radius: 0;
-    background-color: rgb(79, 79, 79);
+    height: 32px;
+    margin-top: 2px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    justify-content: flex-start;
+    transition-duration: 0.15s;
 }
 
 #list-entry:hover {
-    background-color: rgba(77, 96, 190, 0.71);
+    border-color: #00d4ff;
+}
+
+#list-entry:selected #message-text {
+    color: #1a1a1a;
+    -unity-font-style: bold;
 }
 
 #message-text {
-    font-size: 12px;
-    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
+    font-size: 13px;
+    color: #ffffff;
+    -unity-text-align: middle-left;
+    flex-grow: 1;
+    flex-shrink: 1;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Message priority indicators with sharp edges */
+.message-priority-high #list-entry {
+    border-left-color: #ff6b6b;
+    border-left-width: 3px;
+}
+
+.message-priority-medium #list-entry {
+    border-left-color: #ffa726;
+    border-left-width: 3px;
+}
+
+.message-priority-low #list-entry {
+    border-left-color: #66bb6a;
+    border-left-width: 3px;
 }
