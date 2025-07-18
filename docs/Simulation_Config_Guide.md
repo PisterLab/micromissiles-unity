@@ -1,7 +1,3 @@
----
-outline: [2,4]
----
-
 # Simulation Config Guide
 
 ## Table of Contents

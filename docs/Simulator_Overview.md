@@ -6,6 +6,10 @@ In the initial phase of the project, we have implemented a simple aerodynamic mo
 Both interceptors and threats have perfect knowledge of their opponents at a configurable sensor update rate.
 While the initial positions and velocities of the threats are hard-coded for each engagement scenario, our simulator automatically clusters the threats, predicts their future positions, plans when to automatically launch the interceptors, and assigns a threat to each interceptor to pursue.
 
+## Table of Contents
+
+[[toc]]
+
 ## Introduction
 
 To minimize the engagement cost, maximize the terminal speed and agility, and simultaneously defend against multiple threats, we propose using a hierarchical air defense system (ADS), where cheap, possibly unguided "carrier interceptors" carry multiple smaller, intelligent missile interceptors as submunitions.
@@ -157,7 +161,7 @@ Each agent to be clustered starts in its own cluster, and while the distance bet
 If the two closest clusters cannot be merged due to the size constraint, the algorithm proceeds to the next two closest clusters.
 This clustering algorithm continues until no more clusters can be merged.
 
-### Constrained $k$-means Clustering
+### Constrained k-means Clustering
 
 The simulator also implements a constrained $k$-means clustering algorithm that satisfies both the radius and the size constraints.
 The standard $k$-means clustering algorithm is modified to include a $k$ refinement step, where the number of clusters $k$ is increased depending on the number of clusters that do not satisfy both constraints.
@@ -224,20 +228,107 @@ Since the dynamics of the interceptors is nonlinear, the simulator implements a 
 The planner attempts to maximize the terminal speed to ensure the maximum kill probability.
 
 To generate the lookup table, the nonlinear dynamics of the carrier interceptors along with those of the released missile interceptors were simulated while sweeping through the launch angle, the submunition dispense time, and the submunition motor light time.
-We realized that the maximum speed is achieved if the missile interceptors light their motors directly prior to reaching the intercept position.
+The maximum speed is achieved if the missile interceptors light their motors directly prior to reaching the intercept position.
 
 The resulting trajectory points were interpolated to generate the lookup table shown below:
 
-![Launch angle planner](./images/launch_angle_planner.png){width=80%}
+![Launch angle planner](./images/launch_angle_planner.png)
 
-In the simulator, only the un-interpolated samples of the lookup table are used, and the current launch angle planner performs a nearest-neighbor interpolation to determine the optimal launch angle.
+In the current version of the simulator, only the un-interpolated samples of the lookup table are used, and the launch angle planner performs a nearest-neighbor interpolation to determine the optimal launch angle given the range and altitude of the threat.
 
 ## Assignment
 
 ### Maximum Speed Assignment
 
-The simulator assigns the threats to the interceptors such that the terminal speed of each engagement is maximized, which maximizes the overall kill probability.
-For any assignment between an interceptor and a threat, we can assign a cost that represents the loss of the interceptor’s speed as a result of both the distance to be covered and the bearing change required for the intercept.
+Interceptors should strive to maximize their terminal speed to maximize their agility, and the assignment algorithm should optimize for this objective.
+
+#### Fractional Speed
+
+Interceptors lose speed through the air drag and through the lift-induced drag.
+The air drag force is proportional to the squared speed of the interceptor, and the fractional speed of the interceptors decreases exponentially as a function of the distance traveled.
+The lift-induced drag causes the fractional speed to decrease exponentially as a function of the bearing change.
+During the bearing change, additional air drag is incurred due to the minimum turning radius.
+$$
+\text{Fractional speed} \propto e^{-\frac{d}{L_{\text{eq}}}} \cdot e^{-\frac{\Delta \theta}{(L/D)}} \cdot e^{-\frac{\Delta \theta r_{\text{min}}}{L_{\text{eq}}}},
+$$
+where $d$ is the traveled distance, $\Delta \theta$ is the bearing change, $L_{\text{eq}} = \frac{2m}{\rho C_D A}$ is the equivalent air length, $(L/D)$ is the lift-to-drag ratio, and $r_{\text{min}}$ is the minimum turning radius.
+
+The simulator uses a cost-based assignment scheme, where the cost represents the speed loss, i.e., is inversely related to the fractional speed.
+$$
+\text{Cost}(m, t) \propto \frac{1}{\text{Fractional speed of missile $m$ after pursuing threat $t$}}
+$$
+```csharp
+Vector3 directionToThreat = threat.GetPosition() - interceptor.GetPosition();
+float distanceToThreat = directionToThreat.magnitude;
+float angleToThreat =
+    Vector3.Angle(interceptor.GetVelocity(), directionToThreat) * Mathf.Deg2Rad;
+
+// The fractional speed is the product of the fractional speed after traveling the distance
+// and of the fractional speed after turning.
+float fractionalSpeed = Mathf.Exp(
+    -((distanceToThreat + angleToThreat * minTurningRadius) / distanceTimeConstant +
+      angleToThreat / angleTimeConstant));
+float cost = (float)interceptor.GetSpeed() / fractionalSpeed;
+```
+
+Cost-based assignment schemes can be formulated as integer linear programming (ILP) problems that optimize over boolean variables $x_{mt}$ representing whether missile $m$ is assigned to threat $t$.
+Currently, the simulator uses [Google's OR-Tools](https://developers.google.com/optimization) to solve these ILP problems.
+
+#### Cover Assignment
+
+In the cover assignment scheme, the constraints ensure that at least one interceptor is assigned to every threat to guarantee coverage over all threats.
+
+The objective is as follows:
+$$
+\min_{x_{mt}, 0 \leq m \leq M - 1, 0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} \sum_{t = 0}^{T - 1} \text{Cost}(m, t)x_{mt}, x_{mt} \in \{0, 1\}
+$$
+
+The following constraint ensures that each interceptor only pursues one threat.
+$$
+\forall 0 \leq m \leq M - 1, \sum_{t = 0}^{T - 1} x_{mt} = 1
+$$
+
+The following constraint ensures that at least one interceptor is assigned to every threat.
+$$
+\forall 0 \leq t \leq T - 1, \sum_{m = 0}^{M - 1} x_{mt} \geq 1
+$$
+
+One issue with the cover assignment is that the resulting distribution of interceptors may be uneven.
+
+#### Even Assignment
+
+The even assignment guarantees that the interceptors are evenly distributed among the threats.
+$$
+\min_{x_{mt}, 0 \leq m \leq M - 1, 0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} \sum_{t = 0}^{T - 1} \text{Cost}(m, t)x_{mt}, x_{mt} \in \{0, 1\}
+$$
+$$
+\forall 0 \leq m \leq M - 1, \sum_{t = 0}^{T - 1} x_{mt} = 1
+$$
+
+The following constraint is added to ensure even coverage.
+$$
+\max_{0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} x_{mt} - \min_{0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} x_{mt} \leq 1
+$$
+
+The even assignment is used by the current version of the simulator.
+
+#### Weighted Even Assignment
+
+Instead of evenly distributing the interceptors among all threats, a more optimal assignment should take into consideration the threat level of each threat.
+We propose a weighted even assignment, where $w_t$ represents a mitigation factor, i.e., the reduction of the threat level through an additional assigned interceptor.
+For example, a supersonic threat will have a lower $w_t$ than a quadcopter and should be assigned more interceptors to achieve the same kill probability as that of the quadcopter.
+
+$$
+\min_{x_{mt}, 0 \leq m \leq M - 1, 0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} \sum_{t = 0}^{T - 1} \text{Cost}(m, t)x_{mt}, x_{mt} \in \{0, 1\}
+$$
+$$
+\forall 0 \leq m \leq M - 1, \sum_{t = 0}^{T - 1} x_{mt} = 1
+$$
+
+The following constraint is modified to reflect the mitigation factors of different threats.
+$$
+\max_{0 \leq t \leq T - 1} w_t \sum_{m = 0}^{M - 1} x_{mt} - \min_{0 \leq t \leq T - 1} w_t \sum_{m = 0}^{M - 1} x_{mt} \leq 1
+$$
 
 ## Controls
 
