@@ -8,7 +8,7 @@ hero:
   tagline: "A large-scale air defense simulation platform for simulating swarm-on-swarm engagements with hierarchical interceptors and micromissiles"
   actions:
     - theme: brand
-      text: Documentation
+      text: Simulator Overview
       link: /Simulator_Overview
     - theme: alt
       text: Development Guide

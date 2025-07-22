@@ -1,6 +1,6 @@
 # Plugins Guide
 
-This guide explains how to build and develop the C++ plugins that provide core functionality for the micromissiles simulator and that allow C++ code to be executed within Unity.
+This guide explains how to build and develop the C++ plugins that provide core functionality for the micromissiles simulator and allow C++ code to be executed within Unity.
 
 ## Table of Contents
 
@@ -66,7 +66,8 @@ A few important notes:
 
 ## Output Files
 
-After building, the compiled shared libraries can be found in the `bazel-bin` directory. The packaged plugins tarball will located at `bazel-bin/plugins.tar.gz`.
+After building, the compiled shared libraries can be found in the `bazel-bin` directory.
+The packaged plugins tarball are located at `bazel-bin/plugins.tar.gz`.
 
 ## Integrating with Unity
 

@@ -43,7 +43,7 @@ The threats will target the static asset, located at the origin of the coordinat
 Currently, all interceptors are launched from the origin of the coordinate system as well.
 
 There are two types of interceptors:
-- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra-70 rockets).
+- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra 70 rockets).
 - **Missile interceptors**: interceptors that pursue threats (e.g., micromissiles).
 
 There are also two types of threats:

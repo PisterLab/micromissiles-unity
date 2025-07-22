@@ -119,7 +119,7 @@ The simulation configurations are defined in JSON files that specify the initial
 
 #### Example 1: `7_quadcopters.json`
 
-A simple simulation with one interceptor type (`Hydra 70`) to be launched to interceptor and seven threat quadcopter drones.
+A simple simulation with one interceptor type (Hydra 70) launched against seven quadcopter threats.
 
 ```json
 {
@@ -195,7 +195,7 @@ A simple simulation with one interceptor type (`Hydra 70`) to be launched to int
 - `timeScale: 1` - Runs in real-time (increase for faster simulation)
 
 **Interceptor Configuration (`interceptor_swarm_configs`):**
-- Deploys Hydra-70 rockets with:
+- Deploys Hydra 70 rockets with:
   - Sensor settings: Uses ideal sensor at an update frequency of 100 Hz
   - Submunitions capability: Releases 7 micromissiles
 
