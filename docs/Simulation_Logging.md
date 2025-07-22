@@ -113,14 +113,14 @@ Make sure you have Python 3 installed on your system, along with the required li
 
 The script depends on the following Python libraries:
 
-- **`pandas`**
 - **`matplotlib`**
 - **`numpy`**
+- **`pandas`**
 
-You can install them using `pip`:
+You can install them using `pip` or `conda`:
 
 ```bash
-pip install pandas matplotlib numpy
+pip install matplotlib numpy pandas
 ```
 
 ### Usage
@@ -197,21 +197,21 @@ For example, using Python and the `pandas` library, you can load the telemetry a
 ```python
 import pandas as pd
 
-telemetry_df = pd.read_csv('path/to/sim_telemetry_*.csv')
-event_df = pd.read_csv('path/to/sim_events_*.csv')
+telemetry_df = pd.read_csv("path/to/sim_telemetry_*.csv")
+event_df = pd.read_csv("path/to/sim_events_*.csv")
 ```
 
 ### Visualization
 
-- **2D Plots**: Use `matplotlib` to create time-series plots:
+- **2D Plots**: Use `matplotlib` to create time series plots:
 
 ```python
 import matplotlib.pyplot as plt
 
-plt.plot(telemetry_df['Time'], telemetry_df['AgentY'])
-plt.xlabel('Time (s)')
-plt.ylabel('Altitude (m)')
-plt.title('Agent Altitude Over Time')
+plt.plot(telemetry_df["Time"], telemetry_df["AgentY"])
+plt.xlabel("Time (s)")
+plt.ylabel("Altitude (m)")
+plt.title("Agent Altitude Over Time")
 plt.show()
 ```
 
@@ -220,34 +220,34 @@ plt.show()
 ### Sample Script: Calculating Miss Distances
 
 ```python
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # Load telemetry and event data
-telemetry_df = pd.read_csv('path/to/sim_telemetry_*.csv')
-event_df = pd.read_csv('path/to/sim_events_*.csv')
+telemetry_df = pd.read_csv("path/to/sim_telemetry_*.csv")
+event_df = pd.read_csv("path/to/sim_events_*.csv")
 
 # Filter miss events
-miss_events = event_df[event_df['Event'] == 'MISS']
+miss_events = event_df[event_df["Event"] == "MISS"]
 
 # Calculate miss distances
 miss_distances = []
 for idx, miss in miss_events.iterrows():
-    agent_id = miss['AgentID']
-    time = miss['Time']
+    agent_id = miss["AgentID"]
+    time = miss["Time"]
     # Get agent position at the time of miss
-    agent_state = telemetry_df[(telemetry_df['AgentID'] == agent_id) & (telemetry_df['Time'] == time)]
+    agent_state = telemetry_df[(telemetry_df["AgentID"] == agent_id) & (telemetry_df["Time"] == time)]
     if not agent_state.empty:
-        x = agent_state['AgentX'].values[0]
-        y = agent_state['AgentY'].values[0]
-        z = agent_state['AgentZ'].values[0]
+        x = agent_state["AgentX"].values[0]
+        y = agent_state["AgentY"].values[0]
+        z = agent_state["AgentZ"].values[0]
         # Calculate distance to target or predefined point
         distance = np.sqrt(x**2 + y**2 + z**2)
         miss_distances.append(distance)
 
 # Output average miss distance
 average_miss_distance = np.mean(miss_distances)
-print(f'Average Miss Distance: {average_miss_distance:.2f} meters')
+print(f"Average Miss Distance: {average_miss_distance:.2f} meters")
 ```
 
 ### Suggestions for Analysis
@@ -258,4 +258,4 @@ print(f'Average Miss Distance: {average_miss_distance:.2f} meters')
 
 ## Additional Resources
 
-- **Python Documentation**: [NumPy](https://numpy.org/), [matplotlib](https://matplotlib.org/), [pandas](https://pandas.pydata.org/)
+- **Python Documentation**: [Matplotlib](https://matplotlib.org/), [NumPy](https://numpy.org/), [Pandas](https://pandas.pydata.org/)
