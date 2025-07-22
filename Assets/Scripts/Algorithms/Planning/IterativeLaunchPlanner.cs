@@ -13,27 +13,19 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // planner do not converge, so we need to limit the number of iterations.
   private const int MaxNumIterations = 10;
 
-  // Convergence threshold in meters for the difference vector magnitude. Convergence is declared
-  // when the intercept position has not changed by more than this threshold between iterations.
+  // Convergence threshold in meters. If the intercept position changes by less than this amount
+  // between iterations, the algorithm is considered to have converged. This value was determined
+  // empirically for a NearestNeighborInterpolator2D.
   private const float ConvergenceThreshold = 10f;
 
-  // Maximum distance in meters between the final intercept position (where the interceptor can
-  // reach) and the predicted target position (where we expect the target to be). This serves as
-  // a final validation that the iterative algorithm has converged to a realistic solution.
+  // Maximum distance in meters between the final intercept position and the predicted target
+  // position. This validates that the solution is physically realistic.
   //
-  // If this distance exceeds the threshold, it indicates either:
-  // - The algorithm failed to converge properly
-  // - The launch angle planner is extrapolating beyond its valid data range
-  // - Numerical errors accumulated during iteration
-  //
-  // Reasonable values:
-  // - 50-200 meters: Appropriate for most scenarios
-  // - 100 meters: Should be a good balance between accuracy and practicality
-  //
-  // Problematic values:
-  // - <10 meters: Too strict, may reject valid intercepts due to minor numerical errors
-  // - >500 meters: Too lenient, potentially inaccurate launch solutions
-  // - >1000 meters: Effectively useless, never triggerable
+  // This threshold is highly dependent on the ILaunchAnglePlanner implementation. The current
+  // value was determined empirically for a NearestNeighborInterpolator2D using the data in
+  // hydra70_launch_angle.csv. It accommodates inaccuracies inherent in a nearest-neighbor search
+  // with non-uniform data granularity. This value may need to be retuned if the interpolation
+  // method or its underlying data source is changed.
   private const float InterceptPositionThreshold = 100f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
