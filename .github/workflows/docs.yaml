@@ -1,4 +1,4 @@
-name: Deploy Documentation
+name: Documentation
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - master
-  workflow_dispatch:  # Allows manual triggering.
+  workflow_dispatch:  # Allow manual triggering.
 
 permissions:
   contents: write
@@ -15,11 +15,8 @@ permissions:
   id-token: write
 
 jobs:
-  build-deploy:
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
+  build:
+    name: Build documentation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -28,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Use Node.js 18
+          node-version: '18'
 
       - name: Install dependencies
         run: npm ci
@@ -36,7 +33,17 @@ jobs:
       - name: Build documentation
         run: npm run docs:build
 
-      - name: Deploy documentation
+  deploy:
+    name: Deploy documentation
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
