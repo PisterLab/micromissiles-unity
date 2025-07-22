@@ -39,7 +39,7 @@ public class LaunchPlan {
   // Determines whether the specified LaunchPlan is equal to the current LaunchPlan.
   public override bool Equals(object obj) {
     const float PositionTolerance = 0.001f;
-    
+
     if (obj == null || GetType() != obj.GetType()) {
       return false;
     }
