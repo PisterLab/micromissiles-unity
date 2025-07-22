@@ -277,7 +277,7 @@ public class SimManager : MonoBehaviour {
       originComponent.SetOriginConfig(originConfig);
 
       // Register the runtime object with the origin manager
-      _originManager.RegisterOriginObject(originComponent);
+      _originManager.RegisterInterceptorOrigin(originComponent);
 
       // Configure the existing rigidbody (prefab should have one)
       var rigidbody = originObject.GetComponent<Rigidbody>();

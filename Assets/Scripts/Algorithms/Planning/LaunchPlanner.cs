@@ -26,8 +26,7 @@ public class LaunchPlan {
   // Gets the normalized launch vector from the interceptor origin.
   // This vector represents the direction the interceptor should be launched.
   // Parameters:
-  //   originPosition: Position of the interceptor origin (default: Vector3.zero for backward
-  //   compatibility)
+  //   originPosition: Position of the interceptor origin (default: Vector3.zero)
   // Returns: Normalized launch direction vector
   public Vector3 GetNormalizedLaunchVector(Vector3 originPosition = default(Vector3)) {
     // Calculate direction from origin to intercept position
@@ -39,6 +38,8 @@ public class LaunchPlan {
 
   // Determines whether the specified LaunchPlan is equal to the current LaunchPlan.
   public override bool Equals(object obj) {
+    const float PositionTolerance = 0.001f;
+    
     if (obj == null || GetType() != obj.GetType()) {
       return false;
     }
@@ -57,7 +58,7 @@ public class LaunchPlan {
 
     // Both should launch - compare angle and position
     return Mathf.Approximately(LaunchAngle, other.LaunchAngle) &&
-           Vector3.Distance(InterceptPosition, other.InterceptPosition) < 0.001f;
+           Vector3.Distance(InterceptPosition, other.InterceptPosition) < PositionTolerance;
   }
 
   // Returns a hash code for this LaunchPlan.

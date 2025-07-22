@@ -41,22 +41,22 @@ public class InterceptorOriginManager {
   // Registers a runtime InterceptorOrigin with its corresponding config.
   // This should be called when origin GameObjects are created.
   //   originObject: The runtime origin object
-  public void RegisterOriginObject(InterceptorOrigin originObject) {
-    if (originObject != null && originObject.GetOriginConfig() != null) {
-      _originObjects[originObject.OriginId] = originObject;
+  public void RegisterInterceptorOrigin(InterceptorOrigin interceptorOrigin) {
+    if (interceptorOrigin != null && interceptorOrigin.GetOriginConfig() != null) {
+      _originObjects[interceptorOrigin.OriginId] = interceptorOrigin;
     }
   }
 
   // Gets the runtime InterceptorOrigin for a given origin ID.
   //   originId: Origin ID to find
   // Returns: The runtime origin object, or null if not found
-  public InterceptorOrigin GetOriginObject(string originId) {
+  public InterceptorOrigin GetInterceptorOrigin(string originId) {
     return _originObjects.TryGetValue(originId, out var originObject) ? originObject : null;
   }
 
   // Gets all registered runtime origin objects.
   // Returns: Collection of runtime origin objects
-  public IEnumerable<InterceptorOrigin> GetAllOriginObjects() {
+  public IEnumerable<InterceptorOrigin> GetAllInterceptorOrigins() {
     return _originObjects.Values;
   }
 
@@ -88,7 +88,7 @@ public class InterceptorOriginManager {
 
       // Update assignment counter for load balancing
       if (selectedOrigin != null) {
-        _assignmentCounts[selectedOrigin.id]++;
+        ++_assignmentCounts[selectedOrigin.id];
       }
 
       return selectedOrigin;
@@ -117,13 +117,13 @@ public class InterceptorOriginManager {
     }
 
     // Return the corresponding runtime object
-    return GetOriginObject(selectedConfig.id);
+    return GetInterceptorOrigin(selectedConfig.id);
   }
 
   // Gets the distance from an origin to a target, using the runtime object if available.
   private float GetDistanceToThreat(InterceptorOriginConfig origin, Vector3 threatPosition,
                                     float currentTime) {
-    var originObject = GetOriginObject(origin.id);
+    var originObject = GetInterceptorOrigin(origin.id);
     if (originObject != null) {
       // Prefer the runtime object's actual position
       return originObject.GetDistanceToTarget(threatPosition);

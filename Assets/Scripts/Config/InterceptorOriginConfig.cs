@@ -83,7 +83,7 @@ public class InterceptorOriginConfig {
   // Returns: True if allocation successful, false if no capacity available
   public bool AllocateInterceptor() {
     if (HasCapacity()) {
-      _allocated_interceptors++;
+      ++_allocated_interceptors;
       return true;
     }
     return false;
@@ -93,7 +93,7 @@ public class InterceptorOriginConfig {
   // This should be called when an interceptor mission is complete or interceptor is destroyed.
   public void ReleaseInterceptor() {
     if (_allocated_interceptors > 0) {
-      _allocated_interceptors--;
+      --_allocated_interceptors;
     }
   }
 
