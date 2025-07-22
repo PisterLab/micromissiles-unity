@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   build:
+    name: Build documentation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -33,6 +34,7 @@ jobs:
         run: npm run docs:build
 
   deploy:
+    name: Deploy documentation
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     permissions:
@@ -41,7 +43,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy documentation
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
