@@ -48,6 +48,11 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
     Interpolator2DDataPoint interpolatedDataPoint =
         _interpolator.Interpolate(direction[0], direction[1]);
 
+    if (interpolatedDataPoint == null || interpolatedDataPoint.Data == null ||
+        interpolatedDataPoint.Data.Count < 2) {
+      throw new InvalidOperationException("Interpolator returned invalid data.");
+    }
+
     // Convert relative position to cylindrical coordinates
     Vector3 relativePosition = targetPosition - originPosition;
     Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(relativePosition);

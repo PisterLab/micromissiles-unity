@@ -27,13 +27,13 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // - Numerical errors accumulated during iteration
   //
   // Reasonable values:
-  // - 50-200m: Appropriate for most scenarios
-  // - 100m: Should be a good balance between accuracy and practicality
+  // - 50-200 meters: Appropriate for most scenarios
+  // - 100 meters: Should be a good balance between accuracy and practicality
   //
   // Problematic values:
-  // - <10m: Too strict, may reject valid intercepts due to minor numerical errors
-  // - >500m: Too lenient, potentially inaccurate launch solutions
-  // - >1000m: Effectively useless, never triggerable
+  // - <10 meters: Too strict, may reject valid intercepts due to minor numerical errors
+  // - >500 meters: Too lenient, potentially inaccurate launch solutions
+  // - >1000 meters: Effectively useless, never triggerable
   private const float InterceptPositionThreshold = 100f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
@@ -46,14 +46,14 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   public override LaunchPlan Plan(InterceptorOrigin origin) {
     // Get the current origin position (accounts for moving origins)
     Vector3 originPosition = origin.GetPosition();
-    return PlanFromOrigin(originPosition);
+    return Plan(originPosition);
   }
 
   // Origin-aware implementation for non-zero origins.
   // This implementation properly accounts for interceptor starting position.
   //   originPosition: The position from which the interceptor will be launched
   // Returns: Launch plan with timing and angle information
-  private LaunchPlan PlanFromOrigin(Vector3 originPosition) {
+  private LaunchPlan Plan(Vector3 originPosition) {
     PredictorState initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;
 
@@ -101,7 +101,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     return LaunchPlan.NoLaunch;
   }
 
-  // Determines if a launch scenario is geometrically invalid (e.g., into the anterior hemisphere
+  // Determines if a launch scenario is geometrically invalid (e.g., into the posterior hemisphere
   // behind the space between the origin and the threat).
   //   originPosition: Position from which the interceptor will be launched.
   //   interceptPosition: Calculated intercept position.
@@ -123,10 +123,6 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     // relative to the threat's direction of approach. "Behind" means the angle
     // between the vector to the threat and the vector to the intercept point is > 90 degrees.
     Vector3 originToIntercept = interceptPosition - originPosition;
-    if (Vector3.Dot(originToIntercept.normalized, originToThreat.normalized) < 0.0f) {
-      return true;
-    }
-
-    return false;
+    return Vector3.Dot(originToIntercept.normalized, originToThreat.normalized) < 0.0f;
   }
 }
