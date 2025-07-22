@@ -170,7 +170,7 @@ The standard $k$-means clustering algorithm is modified to include a $k$ refinem
 
 ### Minimum Cost Flow Clustering
 
-Instead of modifying the standard $k$-means clustering algorithm, we have explored modifying the size-constrained $k$-means clustering algorithm proposed by Bradley et al., [2000](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2000-65.pdf).
+Instead of modifying the standard $k$-means clustering algorithm, we have explored modifying the size-constrained $k$-means clustering algorithm proposed by [Bradley et al., 2000](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2000-65.pdf).
 We introduce a $k$ refinement step, where the numebr of clusters $k$ is increased depending on the number of clusters that do not satisfy the radius constraint.
 The centroids of the new clusters are placed at the agents that are farthest away from their assigned clusters' centroids.
 
@@ -235,6 +235,17 @@ The resulting trajectory points were interpolated to generate the lookup table s
 ![Launch angle planner](./images/launch_angle_planner.png)
 
 In the current version of the simulator, only the un-interpolated samples of the lookup table are used, and the launch angle planner performs a nearest-neighbor interpolation to determine the optimal launch angle given the range and altitude of the threat.
+
+### Submunitions Release
+
+The time at which a carrier interceptor dispenses its submunitions is a critical factor in the trade-off between a higher terminal intercept speed (later dispense time) and smaller bearing changes to reach threat (earlier dispense time).
+
+In the simulator, the submunitions are automatically dispensed when one of the following conditions is fulfilled:
+1. One of the threats within the cluster is at a bearing >30° to the carrier interceptor’s velocity vector.
+2. The carrier interceptor is within 500 meters of the planned cluster intercept point (i.e., its centroid).
+
+When the submuntions are released, they are distributed uniformly radially at a 60° to the carrier interceptor's velocity vector to fan out and encompass the entire threat space while minimizing any risk of mid-air collisions.
+Their velocities are set according to the law of conservation of momentum.
 
 ## Assignment
 

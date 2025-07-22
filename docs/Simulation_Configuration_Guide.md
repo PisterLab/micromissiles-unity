@@ -1,4 +1,4 @@
-# Simulation Config Guide
+# Simulation Configuration Guide
 
 In this guide, we will explore the different types of configuration files used in the simulation and how to modify them to customize your simulation scenarios.
 
@@ -8,7 +8,7 @@ In this guide, we will explore the different types of configuration files used i
 
 ## Introduction
 
-![Simulation config files](./images/agent_config_files.png){width=80%}
+![Simulation configuration files](./images/agent_configuration_files.png){width=80%}
 
 You can customize interceptor and threat behaviors, simulation parameters, and more to suit your needs.
 There are three main types of configuration files:
@@ -109,9 +109,10 @@ Each swarm configuration includes:
   - **`standard_deviation`** (for threats): Variability in initial states.
   - **`dynamic_config`**: Time-dependent settings (sensor configurations, flight configurations).
   - **`submunitions_config`** (for interceptors): Configuration for any submunitions deployed.
+    - **`num_submunitions`**: Number of submunitions that each interceptor in the swarm will release.
 
 Note that the number of agents in the swarm, the initial states, and the launch times are not specified for interceptor swarms.
-The IADS will automatically determine how many and when to launch interceptors against the incoming threats, and the carrier interceptors will automatically determine when to release the submunitions.
+The IADS will automatically determine how many and when to launch interceptors against the incoming threats by [clustering](./Simulator_Overview.md#clustering) them, and the carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#submunitions-release).
 
 ### Examples
 
@@ -352,7 +353,7 @@ data structures used to interpret the JSON simulation configuration files.
 The model configurations define the physical and performance characteristics of interceptor and threat models. The default models provided can be customized to suit your simulation goals.
 
 > [!IMPORTANT]
-> To understand the impact of aerodynamics/flight model parameters, refer to the [Simulator Physics section of the Simulator Overview](Simulator_Overview.md#simulator-physics).
+> To understand the impact of aerodynamics/flight model parameters, refer to the [Simulator Physics](./Simulator_Overview.md#physics).
 
 ### Structure
 

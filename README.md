@@ -42,7 +42,7 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 # Next Steps
 
 - To get started with Unity development, see the [**Development Guide**](https://pisterlab.github.io/micromissiles-unity/Development_Guide.html)
-- To learn how to build and develop the C++ plugins, see the [**C++ Plugins Guide**](https://pisterlab.github.io/micromissiles-unity/Cpp_Plugins_Guide.html)
+- To learn how to build and develop the C++ plugins, see the [**Plugins Guide**](https://pisterlab.github.io/micromissiles-unity/Plugins_Guide.html)
 - To navigate and interact with the simulation, see the [**Keybinds and Controls**](https://pisterlab.github.io/micromissiles-unity/Keybinds_and_Controls.html)
-- To configure simulation settings, see the [**Simulation Configuration Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Config_Guide.html)
+- To configure simulation settings, see the [**Simulation Configuration Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Configuration_Guide.html)
 - To analyze simulation logs, see the [**Simulation Logging Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Logging.html)

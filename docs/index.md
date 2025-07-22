@@ -4,23 +4,38 @@ layout: home
 
 hero:
   name: "micromissiles-unity"
-  
   tagline: "A large-scale air defense simulation platform for simulating swarm-on-swarm engagements with hierarchical interceptors and micromissiles"
   actions:
     - theme: brand
-      text: Simulator Overview
+      text: DOWNLOAD
+      link: /#quick-start
+    - theme: alt
+      text: EXPLORE
       link: /Simulator_Overview
     - theme: alt
-      text: Development Guide
+      text: CONTRIBUTE
       link: /Development_Guide
-
+features:
+  - title: Simulator Overview
+    details: Explore the simulator architecture and the swarm algorithms currently implemented in the simulator.
+    link: /Simulator_Overview
+  - title: Keybinds and Controls
+    details: Learn how to navigate and interact with the simulation environment using your keyboard and mouse.
+    link: /Keybinds_and_Controls
+  - title: Simulation Configuration Guide
+    details: Explore the different configuration files used in the simulation and how to modify them to customize your engagement scenarios.
+    link: /Simulation_Configuration_Guide
+  - title: Development Guide
+    details: Follow the step-by-step guide on setting up the Unity project in development mode to contribute to it.
+    link: /Development_Guide
 ---
 
 ![Simulator view](./images/simulator_view.png)
 
-# Quick Start
+## Quick Start
 
-We generate pre-built standalone binaries for Windows and Mac users from the `release` branch. These binaries are intended for non-development users who just want to run the application and modify a few configurations along the way.
+We generate pre-built standalone binaries for Windows, Mac, and Linux from the `release` branch.
+These binaries are intended for non-development users who just want to run the application and modify a few configurations along the way.
 
 You can find the latest release [here](https://github.com/PisterLab/micromissiles-unity/releases/latest).
 
@@ -42,7 +57,7 @@ Follow the instructions below for your operating system to download and run the 
    * Navigate to `Privacy & Security`.
    * Click on `Open Anyway` to bypass Apple's developer check.
 
-## Linux
+### Linux
 
 1. Download the tarball for Linux.
 2. Untar the tarball and run the executable.
@@ -57,6 +72,7 @@ Follow the instructions below for your operating system to download and run the 
 
 ## Next Steps
 
-- Read the [**Simulation Overview**](Simulator_Overview.md) to understand the simulation physics fidelity, agent behaviors, and assumptions.
-- Familiarize yourself with the [**Keybinds and Controls**](Keybinds_and_Controls.md) to navigate and interact with the simulation.
-- Learn how to configure the simulation settings by reading the [**Simulation Configuration Guide**](Simulation_Config_Guide.md).
+- Read the [**Simulation Overview**](./Simulator_Overview.md) to understand the simulation physics, agent behaviors, and swarm algorithms currently implemented in the simulator.
+- Familiarize yourself with the [**Keybinds and Controls**](./Keybinds_and_Controls.md) to navigate and interact with the simulation.
+- Learn how to configure the simulation settings by reading the [**Simulation Configuration Guide**](./Simulation_Configuration_Guide.md).
+- Contribute to the project by setting up the Unity project according to the [**Development Guide**](./Development_Guide.md).

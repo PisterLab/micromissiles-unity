@@ -23,7 +23,7 @@ export default defineConfig({
         items: [
           { text: "Simulator Overview", link: "/Simulator_Overview" },
           { text: "Keybinds and Controls", link: "/Keybinds_and_Controls" },
-          { text: "Simulation Config Guide", link: "/Simulation_Config_Guide" },
+          { text: "Simulation Configuration Guide", link: "/Simulation_Configuration_Guide" },
           { text: "Simulation Logging", link: "/Simulation_Logging" },
           { text: "Coverage Reports", 
             items: [
@@ -45,7 +45,7 @@ export default defineConfig({
     },
     footer: {
       message: "Released under the <a href='https://github.com/PisterLab/micromissiles-unity/blob/main/LICENSE'>BSD-3-Clause License</a>.",
-      copyright: "Copyright © 2024-present by The Regents of the University of California. All Rights Reserved."
+      copyright: "Copyright © 2024-present The Regents of the University of California. All Rights Reserved."
     }
   }
 });

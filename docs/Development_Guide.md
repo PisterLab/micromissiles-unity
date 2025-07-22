@@ -1,6 +1,7 @@
 # Development Guide
 
-This guide will help you set up and run the project in development mode. You'll learn how to install Unity Hub, open the project, and navigate the main scene.
+This guide will help you set up and run the project in development mode.
+You'll learn how to install Unity Hub, open the project, and navigate the main scene.
 
 ## Table of Contents
 
@@ -16,12 +17,13 @@ This guide will help you set up and run the project in development mode. You'll 
 
 ### 1. Install Unity Hub
 
-Unity Hub is a desktop application that manages your Unity projects and installations. It simplifies the process of installing different Unity versions and launching projects.
+Unity Hub is a desktop application that manages your Unity projects and installations.
+It simplifies the process of installing different Unity versions and launching projects.
 
 **Steps to Install Unity Hub:**
 
-1. Visit the [Unity Download Page](https://unity3d.com/get-unity/download).
-2. Click on **"Download Unity Hub"**.
+1. Visit the [Unity Download Page](https://unity.com/download).
+2. Follow the instructions to download the Unity Hub for your system.
 3. Run the downloaded installer and follow the on-screen instructions to complete the installation.
 
 ### 2. Clone the Project Repository
@@ -29,7 +31,7 @@ Unity Hub is a desktop application that manages your Unity projects and installa
 Obtain the project source code by cloning the repository from GitHub.
 
 ```bash
-git clone https://github.com/PisterLab/micromissiles-unity.git
+git clone git@github.com:PisterLab/micromissiles-unity.git
 ```
 Alternatively, you can download the repository as a ZIP file and extract it to a preferred location.
 
@@ -72,6 +74,6 @@ After the project opens in Unity:
 
 ## Additional Resources
 
-- [Keybinds and Controls](Keybinds_and_Controls.md)
-- [Simulation Configuration Guide](Simulation_Config_Guide.md)
-- [Plugins Guide](Plugins_Guide.md)
+- [Plugins Guide](./Plugins_Guide.md)
+- [Keybinds and Controls](./Keybinds_and_Controls.md)
+- [Simulation Configuration Guide](./Simulation_Configuration_Guide.md)

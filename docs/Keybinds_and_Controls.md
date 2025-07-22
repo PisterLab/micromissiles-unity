@@ -44,24 +44,24 @@ Adjust the speed of the camera movement to suit your preference:
 
 Manage the simulation state with these keybinds:
 
-| **Action**                   | **Keybind**       | **Description**                                           |
-|------------------------------|-------------------|-----------------------------------------------------------|
-| **Pause/Resume Simulation**  | **Spacebar**      | Toggles between pausing and resuming the simulation.     |
-| **Restart Simulation**       | **R**             | Restarts the simulation from the beginning.               |
+| **Action**                   | **Keybind**       | **Description**                                                                     |
+|------------------------------|-------------------|-------------------------------------------------------------------------------------|
+| **Pause/Resume Simulation**  | **Spacebar**      | Toggles between pausing and resuming the simulation.                                |
+| **Restart Simulation**       | **R**             | Restarts the simulation from the beginning.                                         |
 | **Toggle Configuration Panel** | **L**           | Opens or closes the configuration selector panel for adjusting simulation settings. |
 
 ### Camera Shortcuts
 
 Quickly focus on specific swarms or centers of interest:
 
-| **Action**                                 | **Keybind**       | **Description**                                           |
-|--------------------------------------------|-------------------|-----------------------------------------------------------|
-| **Snap to Next Interceptor Swarm**         | **1**             | Cycles through interceptor swarms and snaps the camera to their centroid. |
+| **Action**                                 | **Keybind**       | **Description**                                                            |
+|--------------------------------------------|-------------------|----------------------------------------------------------------------------|
+| **Snap to Next Interceptor Swarm**         | **1**             | Cycles through interceptor swarms and snaps the camera to their centroid.  |
 | **Snap to Next Threat Swarm**              | **2**             | Cycles through threat swarms and snaps the camera to their centroid.       |
-| **Snap to All Agents Center**              | **3**             | Snaps the camera to the centroid of all agents.           |
-| **Follow Next Interceptor Swarm**          | **Ctrl + 1**      | Cycles through interceptor swarms and follows their centroid dynamically. |
-| **Follow Next Threat Swarm**               | **Ctrl + 2**      | Cycles through threat swarms and follows their centroid dynamically.      |
-| **Follow All Agents Center**               | **Ctrl + 3**      | Follows the centroid of all agents dynamically.           |
+| **Snap to All Agents Center**              | **3**             | Snaps the camera to the centroid of all agents.                            |
+| **Follow Next Interceptor Swarm**          | **Ctrl + 1**      | Cycles through interceptor swarms and follows their centroid dynamically.  |
+| **Follow Next Threat Swarm**               | **Ctrl + 2**      | Cycles through threat swarms and follows their centroid dynamically.       |
+| **Follow All Agents Center**               | **Ctrl + 3**      | Follows the centroid of all agents dynamically.                            |
 
 > [!TIP]
 > Press the number keys (**1**, **2**, **3**) to snap the camera to the respective centroids. Hold **Ctrl** while pressing the number keys to follow the centroids dynamically.
