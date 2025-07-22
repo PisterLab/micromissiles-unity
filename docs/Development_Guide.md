@@ -42,15 +42,15 @@ Alternatively, you can download the repository as a ZIP file and extract it to a
 1. **Open Unity Hub**.
 
 2. **Add the Project to Unity Hub**:
-   - Navigate to the **"Projects"** tab.
-   - Click on the **"ADD"** button.
+   - Navigate to the **Projects** tab.
+   - Click the **ADD** button.
    - Browse to the folder where you cloned or extracted the project.
-   - Select the folder containing the `Assets` folder and click on **"Select Folder"**.
+   - Select the folder containing the `Assets` folder and click on **Select Folder**.
 
 3. **Install the Required Unity Version**:
    - Unity Hub will detect if the project requires a Unity version that is not currently installed.
    - A notification or warning icon may appear next to the project name.
-   - Click on the notification and select **"Install Unity **[version]**"**.
+   - Click on the notification and select **Install Unity [version]**.
    - Unity Hub will download and install the required Unity version automatically.
 
 4. **Open the Project**:

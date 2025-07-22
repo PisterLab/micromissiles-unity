@@ -29,9 +29,9 @@ The main configuration files you will work with are located in the `Assets/Strea
 > [!NOTE]
 > In a deployment context (i.e. you downloaded the binary release from the [releases page](https://github.com/PisterLab/micromissiles-unity/releases)), these files are located in the `micromissiles_Data/StreamingAssets/Configs/` directory.
 >
-> On Windows and Linux, this directory is co-located with the executable.
+> On Windows and Linux, this directory is located alongside the executable.
 >
-> On MacOS, you need to right click the `micromissiles-v*.*` Application > `Show Package Contents` > `Contents/Resources/Data/StreamingAssets/Configs/`.
+> On MacOS, you need to right-click the `micromissiles-v*.*` Application > `Show Package Contents` > `Contents/Resources/Data/StreamingAssets/Configs/`.
 
 Several example configuration files are provided to help you get started.
 
@@ -112,7 +112,8 @@ Each swarm configuration includes:
     - **`num_submunitions`**: Number of submunitions that each interceptor in the swarm will release.
 
 Note that the number of agents in the swarm, the initial states, and the launch times are not specified for interceptor swarms.
-The IADS will automatically determine how many and when to launch interceptors against the incoming threats by [clustering](./Simulator_Overview.md#clustering) them, and the carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#submunitions-release).
+The IADS will automatically determine how many interceptors to launch and when to launch them against the incoming threats by [clustering](./Simulator_Overview.md#clustering) them.
+The carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#submunitions-release).
 
 ### Examples
 
@@ -315,7 +316,7 @@ This scenario demonstrates how the IADS will stagger the interceptor launch time
 > SFRJs have extended propulsion phases, this requires attention to the initial velocity settings to ensure they reach effective interception velocities and do not "topple over" during initial acceleration.
 
 > [!TIP]
-> Ballistic missile threats are best modeled assuming they've entered their terminal phase, characterized by high velocities and primarily influenced by gravity (and drag)
+> Ballistic missile threats are best modeled as already being in their terminal phase, characterized by high velocities and primarily influenced by gravity (and drag).
 >
 > This means the initial velocity is critically important to good simulation results of ballistic missile threats.
 
@@ -348,7 +349,7 @@ This scenario demonstrates how the IADS will stagger the interceptor launch time
 The [Assets/Scripts/Config/SimulationConfig.cs](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Config/SimulationConfig.cs) script defines the
 data structures used to interpret the JSON simulation configuration files.
 
-## Static Agent Configurations / Agent "Models"
+## Static Agent Configurations (Agent Models)
 
 The model configurations define the physical and performance characteristics of interceptor and threat models. The default models provided can be customized to suit your simulation goals.
 

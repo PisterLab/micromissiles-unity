@@ -20,7 +20,7 @@ Then, they distribute the task of engaging the many threats among themselves.
 ![Hierarchical strategy](./images/hierarchical_strategy.png)
 
 The command structure is hierarchical for better autonomy and tractability because to successfully defend against hundreds of threats, we intend to recursively cluster and assign them to groups of interceptors.
-At the bottom of the hierarchy, a single missile interceptor is assigned to puruse a single threat.
+At the bottom of the hierarchy, a single missile interceptor is assigned to pursue a single threat.
 At the next level of the hierarchy, a carrier interceptor is assigned to defend against a cluster of threats.
 Above that, a salvo of interceptors is assigned to defend against a swarm of threats, and so on.
 
@@ -81,7 +81,7 @@ $$
   \vec{a}(t) - \vec{g} - \left(\frac{F_D(\|\vec{v}(t)\|)}{m} + \frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
 \end{bmatrix},
 $$
-where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\|\vec{v}(t)\|)}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}$ represents the deleceration along the agent's velocity vector due to lift-induced drag.
+where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\|\vec{v}(t)\|)}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}$ represents the deceleration along the agent's velocity vector due to lift-induced drag.
 Any acceleration normal to the agent's velocity vector, including the components of the acceleration vector $\vec{a}_\perp(t)$ and gravity vector $\vec{g}_\perp$ that are normal to the velocity vector, will induce some lift-induced drag.
 $$
 \vec{a}_\perp(t) = (\vec{a}(t) + \vec{g}) - \text{proj}_{\vec{v}(t)}(\vec{a}(t) + \vec{g})
@@ -171,7 +171,7 @@ The standard $k$-means clustering algorithm is modified to include a $k$ refinem
 ### Minimum Cost Flow Clustering
 
 Instead of modifying the standard $k$-means clustering algorithm, we have explored modifying the size-constrained $k$-means clustering algorithm proposed by [Bradley et al., 2000](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2000-65.pdf).
-We introduce a $k$ refinement step, where the numebr of clusters $k$ is increased depending on the number of clusters that do not satisfy the radius constraint.
+We introduce a $k$ refinement step, where the number of clusters $k$ is increased depending on the number of clusters that do not satisfy the radius constraint.
 The centroids of the new clusters are placed at the agents that are farthest away from their assigned clusters' centroids.
 
 This algorithm has yet to be implemented in the Unity simulator.
@@ -228,7 +228,7 @@ Since the dynamics of the interceptors is nonlinear, the simulator implements a 
 The planner attempts to maximize the terminal speed to ensure the maximum kill probability.
 
 To generate the lookup table, the nonlinear dynamics of the carrier interceptors along with those of the released missile interceptors were simulated while sweeping through the launch angle, the submunition dispense time, and the submunition motor light time.
-The maximum speed is achieved if the missile interceptors light their motors directly prior to reaching the intercept position.
+The maximum speed is achieved if the missile interceptors ignite their motors directly prior to reaching the intercept position.
 
 The resulting trajectory points were interpolated to generate the lookup table shown below:
 
@@ -238,13 +238,13 @@ In the current version of the simulator, only the un-interpolated samples of the
 
 ### Submunitions Release
 
-The time at which a carrier interceptor dispenses its submunitions is a critical factor in the trade-off between a higher terminal intercept speed (later dispense time) and smaller bearing changes to reach threat (earlier dispense time).
+The time at which a carrier interceptor dispenses its submunitions is a critical factor in the trade-off between a higher terminal intercept speed (later dispense time) and smaller bearing changes to reach the threat (earlier dispense time).
 
 In the simulator, the submunitions are automatically dispensed when one of the following conditions is fulfilled:
 1. One of the threats within the cluster is at a bearing >30° to the carrier interceptor’s velocity vector.
 2. The carrier interceptor is within 500 meters of the planned cluster intercept point (i.e., its centroid).
 
-When the submuntions are released, they are distributed uniformly radially at a 60° to the carrier interceptor's velocity vector to fan out and encompass the entire threat space while minimizing any risk of mid-air collisions.
+When the submunitions are released, they are distributed uniformly radially at a 60° to the carrier interceptor's velocity vector to fan out and encompass the entire threat space while minimizing any risk of mid-air collisions.
 Their velocities are set according to the law of conservation of momentum.
 
 ## Assignment
@@ -368,8 +368,8 @@ However, simply using true proportional navigation as a guidance law leads to so
    }
    ```
 2. **Spiral behavior**:
-   If the target is at a near-constant ${90}^\circ$ bearing from the agent, the agent may end up in a spiral encircling the target because $\vec{\lambda}$ is roughly constant and so $\|\dot{\vec{\lambda}}\| \approx 0$.
-   To overcome this limitation, the agent will apply a higher navigation gain if the target bearing is within $\pm {10}^\circ$ of ${90}^\circ$.
+   If the target is at an approximately 90° bearing from the agent, the agent may end up in a spiral encircling the target because $\vec{\lambda}$ is roughly constant and so $\|\dot{\vec{\lambda}}\| \approx 0$.
+   To overcome this limitation, the agent will apply a higher navigation gain if the target bearing is within ±10° of 90°.
    ```csharp
    // Handle the case of the spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees.
    if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f ||
@@ -428,7 +428,7 @@ if (sinkRate > 0 && timeToGround < timeToTarget) {
 
 To model non-idealities and noise in the sensing and guidance systems, each threat is assigned a hit radius and a kill probability.
 Whenever an interceptor is within the hit radius of the threat, the simulator treats it as an intercept, where the interceptor has collided with the threat.
-However, the simulator does not automatically count the threat as destroyed; instead, the kill probability determines whether the threat is destroyed.
+However, the simulator does not automatically assume that the threat as destroyed; instead, the kill probability determines whether the threat is destroyed.
 Unlike threats, interceptors are always destroyed during an intercept.
 
 ### Intercept Evasion

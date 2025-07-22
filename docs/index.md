@@ -50,7 +50,7 @@ Follow the instructions below for your operating system to download and run the 
 ### Mac
 
 1. Download the tarball file for Darwin: `micromissiles-<version>-darwin.tar.gz`.
-2. Untar the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin`.
+2. Extract the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin`.
 3. In the `micromissiles-<version>-darwin` directory, run the app file.
 4. If you get a warning that Apple cannot check the application for malicious software:
    * Open `System Preferences`.
@@ -60,14 +60,14 @@ Follow the instructions below for your operating system to download and run the 
 ### Linux
 
 1. Download the tarball for Linux.
-2. Untar the tarball and run the executable.
+2. Extract the tarball and run the executable.
 
 ## Basics
 
 - Use the mouse and arrow keys (or `WASD`) to pan and rotate the camera.
 - Use `L` to load a new simulation configuration.
 - Use `R` to restart the simulation.
-- Use `SPACEBAR` to pause/resume the simulation.
+- Use `Space` to pause/resume the simulation.
 - Use `ESC` to exit the application.
 
 ## Next Steps

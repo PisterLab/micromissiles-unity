@@ -26,7 +26,7 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 ## Mac
 
 1. Download the tarball file for Darwin: `micromissiles-<version>-darwin-x86_64.tar.gz`.
-2. Untar the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin-x86_64`.
+2. Extract the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin-x86_64`.
 3. In the `micromissiles-<version>-darwin-x86_64` directory, run the app file.
 4. If you get a warning that Apple cannot check the application for malicious software:
      * Open `System Preferences`.
@@ -36,7 +36,7 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 ## Linux
 
 1. Download the tarball file for Linux: `micromissiles-<version>-linux-x86_64.tar.gz`.
-2. Untar the tarball.
+2. Extract the tarball.
 3. Run the `micromissiles-<version>-StandaloneLinux64` executable.
 
 # Next Steps
