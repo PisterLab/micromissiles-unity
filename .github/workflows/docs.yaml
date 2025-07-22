@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-deploy:
+  build:
     permissions:
       contents: write
       pages: write
@@ -36,8 +36,11 @@ jobs:
       - name: Build documentation
         run: npm run docs:build
 
+  deploy:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    steps:
       - name: Deploy documentation
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
