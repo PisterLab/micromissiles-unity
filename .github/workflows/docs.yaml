@@ -16,10 +16,6 @@ permissions:
 
 jobs:
   build:
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,6 +35,11 @@ jobs:
   deploy:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy documentation
         uses: peaceiris/actions-gh-pages@v4
