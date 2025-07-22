@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>07/22/2025 - 23:01:50</Generatedon>
+    <Generatedon>07/22/2025 - 23:18:07</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>110</Classes>
     <Files>88</Files>
-    <Coveredlines>1526</Coveredlines>
-    <Uncoveredlines>4788</Uncoveredlines>
-    <Coverablelines>6314</Coverablelines>
-    <Totallines>11459</Totallines>
-    <Linecoverage>24.1</Linecoverage>
+    <Coveredlines>1519</Coveredlines>
+    <Uncoveredlines>4794</Uncoveredlines>
+    <Coverablelines>6313</Coverablelines>
+    <Totallines>11453</Totallines>
+    <Linecoverage>24</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>241</Coveredmethods>
@@ -18,7 +18,7 @@
     <Methodcoverage>27.9</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="83" coverage="30.6" coveredlines="1478" coverablelines="4823" totallines="10684" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="238" totalmethods="702" methodcoverage="33.9">
+    <Assembly name="bamlab.micromissiles" classes="83" coverage="30.5" coveredlines="1471" coverablelines="4822" totallines="10678" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="238" totalmethods="702" methodcoverage="33.9">
       <Class name="Agent" coverage="61.5" coveredlines="160" coverablelines="260" totallines="465" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="27" totalmethods="46" methodcoverage="58.6" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -77,7 +77,7 @@
       <Class name="RotaryWingThreat" coverage="76.7" coveredlines="33" coverablelines="43" totallines="76" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="8" methodcoverage="75" />
       <Class name="RoundRobinAssignment" coverage="0" coveredlines="0" coverablelines="18" totallines="46" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="Sensor" coverage="100" coveredlines="3" coverablelines="3" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
-      <Class name="SimManager" coverage="60.5" coveredlines="288" coverablelines="476" totallines="776" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="29" totalmethods="52" methodcoverage="55.7" />
+      <Class name="SimManager" coverage="59.1" coveredlines="281" coverablelines="475" totallines="770" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="29" totalmethods="52" methodcoverage="55.7" />
       <Class name="SimMonitor" coverage="29.5" coveredlines="50" coverablelines="169" totallines="255" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="20" methodcoverage="45" />
       <Class name="SimulationConfig" coverage="100" coveredlines="6" coverablelines="6" totallines="143" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="SpriteManager" coverage="0" coveredlines="0" coverablelines="8" totallines="98" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />

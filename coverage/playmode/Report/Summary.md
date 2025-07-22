@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/22/2025 - 23:01:50 |
+| Generated on: | 07/22/2025 - 23:18:07 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 110 |
 | Files: | 88 |
-| Covered lines: | 1526 |
-| Uncovered lines: | 4788 |
-| Coverable lines: | 6314 |
-| Total lines: | 11459 |
-| Line coverage: | 24.1% (1526 of 6314) |
+| Covered lines: | 1519 |
+| Uncovered lines: | 4794 |
+| Coverable lines: | 6313 |
+| Total lines: | 11453 |
+| Line coverage: | 24% (1519 of 6313) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 241 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1478**|**3345**|**4823**|**10684**|**30.6%**|**0**|**0**|****|**238**|**702**|**33.9%**|
+|**bamlab.micromissiles**|**1471**|**3351**|**4822**|**10678**|**30.5%**|**0**|**0**|****|**238**|**702**|**33.9%**|
 |Agent|160|100|260|465|61.5%|0|0||27|46|58.6%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -78,7 +78,7 @@
 |RotaryWingThreat|33|10|43|76|76.7%|0|0||6|8|75%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|
 |Sensor|3|0|3|25|100%|0|0||1|1|100%|
-|SimManager|288|188|476|776|60.5%|0|0||29|52|55.7%|
+|SimManager|281|194|475|770|59.1%|0|0||29|52|55.7%|
 |SimMonitor|50|119|169|255|29.5%|0|0||9|20|45%|
 |SimulationConfig|6|0|6|143|100%|0|0||1|1|100%|
 |SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
