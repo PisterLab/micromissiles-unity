@@ -225,9 +225,10 @@ public class SimManager : MonoBehaviour {
       var randomizedOrigin = originConfig.CreateRandomizedVersion();
       randomizedOrigins.Add(randomizedOrigin);
 
-      Debug.Log($"Origin {originConfig.id}: Original pos={originConfig.initial_position}, " +
-                $"Randomized pos={randomizedOrigin.initial_position}, " +
-                $"Original vel={originConfig.velocity}, Randomized vel={randomizedOrigin.velocity}");
+      Debug.Log(
+          $"Origin {originConfig.id}: Original pos={originConfig.initial_position}, " +
+          $"Randomized pos={randomizedOrigin.initial_position}, " +
+          $"Original vel={originConfig.velocity}, Randomized vel={randomizedOrigin.velocity}");
     }
 
     _originManager = new InterceptorOriginManager(randomizedOrigins);
@@ -236,12 +237,11 @@ public class SimManager : MonoBehaviour {
     var validationErrors = _originManager.ValidateConfiguration();
     if (validationErrors.Count > 0) {
       Debug.LogError("Interceptor origin configuration errors:\n" +
-                      string.Join("\n", validationErrors));
+                     string.Join("\n", validationErrors));
     }
 
-    Debug.Log(
-        $"Initialized {SimulationConfig.interceptor_origins.Count} interceptor origins " +
-        $"with randomization using {SimulationConfig.origin_assignment_strategy} strategy.");
+    Debug.Log($"Initialized {SimulationConfig.interceptor_origins.Count} interceptor origins " +
+              $"with randomization using {SimulationConfig.origin_assignment_strategy} strategy.");
 
     // Create GameObjects for each origin
     CreateOriginGameObjects();
