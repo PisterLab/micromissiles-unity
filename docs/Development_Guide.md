@@ -23,7 +23,7 @@ It simplifies the process of installing different Unity versions and launching p
 **Steps to Install Unity Hub:**
 
 1. Visit the [Unity Download Page](https://unity.com/download).
-2. Follow the instructions to download the Unity Hub for your system.
+2. Follow the instructions to download Unity Hub for your system.
 3. Run the downloaded installer and follow the on-screen instructions to complete the installation.
 
 ### 2. Clone the Project Repository
