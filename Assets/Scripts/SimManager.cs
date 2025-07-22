@@ -209,45 +209,39 @@ public class SimManager : MonoBehaviour {
   private void InitializeOrigins() {
     if (SimulationConfig.interceptor_origins == null ||
         SimulationConfig.interceptor_origins.Count == 0) {
-      // Create default origin for backward compatibility
-      var defaultOrigin = new InterceptorOriginConfig {
-        id = "Default-Origin", initial_position = Vector3.zero, velocity = Vector3.zero,
-        max_interceptors = 100,  // Large capacity for backward compatibility
-        interceptor_types =
-            new List<string> { "hydra70.json", "micromissile.json" }  // Common types
-      };
-
-      var origins = new List<InterceptorOriginConfig> { defaultOrigin };
-      _originManager = new InterceptorOriginManager(origins);
-
-      Debug.LogWarning(
-          "No interceptor origins configured. Using default origin at (0,0,0) for backward compatibility.");
-    } else {
-      // Create randomized versions of origins for formation spread
-      var randomizedOrigins = new List<InterceptorOriginConfig>();
-      foreach (var originConfig in SimulationConfig.interceptor_origins) {
-        var randomizedOrigin = originConfig.CreateRandomizedVersion();
-        randomizedOrigins.Add(randomizedOrigin);
-
-        Debug.Log(
-            $"Origin {originConfig.id}: Original pos={originConfig.initial_position}, " +
-            $"Randomized pos={randomizedOrigin.initial_position}, " +
-            $"Original vel={originConfig.velocity}, Randomized vel={randomizedOrigin.velocity}");
-      }
-
-      _originManager = new InterceptorOriginManager(randomizedOrigins);
-
-      // Validate configuration
-      var validationErrors = _originManager.ValidateConfiguration();
-      if (validationErrors.Count > 0) {
-        Debug.LogError("Interceptor origin configuration errors:\n" +
-                       string.Join("\n", validationErrors));
-      }
-
-      Debug.Log(
-          $"Initialized {SimulationConfig.interceptor_origins.Count} interceptor origins " +
-          $"with randomization using {SimulationConfig.origin_assignment_strategy} strategy.");
+      // TODO: The simulation still gets started, so the message to the user is slightly
+      // buried in the logs. Consider highlighting, or actually throwing exception.
+      string errorMsg =
+          "[ERROR] No interceptor origins specified in the simulation config. Please define at least one interceptor origin.";
+      Debug.LogError(errorMsg);
+      UIManager.Instance.LogActionMessage(errorMsg);
+      PauseSimulation();
+      return;
     }
+
+    // Create randomized versions of origins for formation spread
+    var randomizedOrigins = new List<InterceptorOriginConfig>();
+    foreach (var originConfig in SimulationConfig.interceptor_origins) {
+      var randomizedOrigin = originConfig.CreateRandomizedVersion();
+      randomizedOrigins.Add(randomizedOrigin);
+
+      Debug.Log($"Origin {originConfig.id}: Original pos={originConfig.initial_position}, " +
+                $"Randomized pos={randomizedOrigin.initial_position}, " +
+                $"Original vel={originConfig.velocity}, Randomized vel={randomizedOrigin.velocity}");
+    }
+
+    _originManager = new InterceptorOriginManager(randomizedOrigins);
+
+    // Validate configuration
+    var validationErrors = _originManager.ValidateConfiguration();
+    if (validationErrors.Count > 0) {
+      Debug.LogError("Interceptor origin configuration errors:\n" +
+                      string.Join("\n", validationErrors));
+    }
+
+    Debug.Log(
+        $"Initialized {SimulationConfig.interceptor_origins.Count} interceptor origins " +
+        $"with randomization using {SimulationConfig.origin_assignment_strategy} strategy.");
 
     // Create GameObjects for each origin
     CreateOriginGameObjects();
