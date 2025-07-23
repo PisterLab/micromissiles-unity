@@ -1,38 +1,61 @@
 # Simulator Overview
 
-This simulator is designed to allow us to explore strategies and tactics for swarm-on-swarm combat,
-particularly in the area of missile and UAV defense, and with a bias toward small smart munitions.
-Our aspirational goal is to develop a science of swarm-on-swarm combat.
-In phase 1 of the project we have implemented a simple aerodynamic model that provides rough estimates of the capabilities of different weapons.
-Proportional navigation and augmented proportional navigation guide interceptors to threats.
-Threats have the ability to evade.
-Threats and interceptors have perfect position knowledge at a configurable sensor update rate.
-At this stage, interceptor launch and submunition dispense are hand coded.
+This simulator is designed to explore strategies and tactics for large-scale swarm-on-swarm combat, particularly in the area of missile and UAV defense, and with a bias toward small smart munitions.
 
-Moving forward we will add sensor range and resolution limits, and a realistic communication model.
-Future versions will explore optimal control and machine learning approaches to launch sequencing, target assignment, trajectory generation, and control.
+In the initial phase of the project, we have implemented a simple aerodynamic model that roughly estimates the capabilities of different interceptors and threats, including (augmented) proportional navigation for the interceptors and the ability to evade for the threats.
+Both interceptors and threats have perfect knowledge of their opponents at a configurable sensor update rate.
+While the initial positions and velocities of the threats are hard-coded for each engagement scenario, our simulator automatically clusters the threats, predicts their future positions, plans when to automatically launch the interceptors, and assigns a threat to each interceptor to pursue.
+
+## Table of Contents
+
+[[toc]]
 
 ## Introduction
 
+To minimize the engagement cost, maximize the terminal speed and agility, and simultaneously defend against multiple threats, we propose using a hierarchical air defense system (ADS), where cheap, possibly unguided "carrier interceptors" carry multiple smaller, intelligent missile interceptors as submunitions.
+Once the carrier interceptors are close to their intended cluster of targets, they each release the missile interceptors that light their rocket motor and accelerate up to speeds on the order of 1 km/s.
+The missile interceptors rely on the carrier interceptors’ track data as well as their own radio frequency and/or optical sensors to acquire their targets.
+Then, they distribute the task of engaging the many threats among themselves.
+
+![Hierarchical strategy](./images/hierarchical_strategy.png)
+
+The command structure is hierarchical for better autonomy and tractability because to successfully defend against hundreds of threats, we intend to recursively cluster and assign them to groups of interceptors.
+At the bottom of the hierarchy, a single missile interceptor is assigned to pursue a single threat.
+At the next level of the hierarchy, a carrier interceptor is assigned to defend against a cluster of threats.
+Above that, a salvo of interceptors is assigned to defend against a swarm of threats, and so on.
+
+![Hierarchical command structure](./images/hierarchical_command_structure.png){width=80%}
+
+The simulator implements the following architecture to tractably defend against a swarm of threats.
+This hierarchical command structure naturally leads to a recursive architecture.
+Details for each block are provided below in this page.
+
+![Architecture](./images/architecture.png)
+
+The simulator architecture was designed to be as modular as possible with interfaces for each component to facilitate the development of and comparison between new algorithms.
+Future versions will model the non-idealities of the sensors, considering the sensor range and resolution limits, and implement a realistic communication model between the interceptors.
+We also plan to explore optimal control and machine learning approaches to launch sequencing, target assignment, trajectory generation, and control.
+
+### Agents
+
 The simulator performs a multi-agent simulation between two types of agents: interceptors and threats.
 The threats will target the static asset, located at the origin of the coordinate system, and the interceptors will defend the asset from the incoming threats.
+Currently, all interceptors are launched from the origin of the coordinate system as well.
 
 There are two types of interceptors:
-- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra-70 rockets)
-- **Missile interceptors**: interceptors that pursue threats (e.g., micromissiles)
+- **Carrier interceptors**: interceptors that carry and dispense other interceptors (e.g., Hydra 70 rockets).
+- **Missile interceptors**: interceptors that pursue threats (e.g., micromissiles).
 
 There are also two types of threats:
-- **Fixed-wing threats**: Pursue their targets using proportional navigation (PN)
-- **Rotary-wing threats**: Pursue their targets using direct linear guidance
+- **Fixed-wing threats**: Pursue their targets using proportional navigation.
+- **Rotary-wing threats**: Pursue their targets using direct linear guidance.
 
-## Simulator Physics
+## Physics
 
-### Agent System Model
+### Agent Model
 
-Each agent is modeled as a point mass, i.e., a 3-DOF body ignoring any rotations.
-It also has instantaneous acceleration in all directions, subject to constraints, because we do not model any actuator or rotational dynamics.
-Finally, we abstract away the aerodynamics of the agents, so we do not model the angle of attack or stall.
-
+Each agent is modeled as a point mass, i.e., a 3-DOF body without rotational dynamics.
+It has instantaneous acceleration in all directions, subject to constraints, because we do not model any sensing, actuation, or airframe delays.
 As a point mass, each agent is represented by a six-dimensional state vector consisting of the agent's three-dimensional position and three-dimensional velocity.
 The input to the system is a three-dimensional acceleration vector.
 
@@ -40,7 +63,7 @@ The state vector is given by:
 $$
 \vec{x}(t) = \begin{bmatrix}
   \vec{p}(t) \\
-  \vec{v}(t)
+  \vec{v}(t) \\
 \end{bmatrix} \in \mathbb{R}^6,
 $$
 where $\vec{p}(t) \in \mathbb{R}^3$ denotes the agent's position and $\vec{v}(t) \in \mathbb{R}^3$ denotes the agent's velocity in the Cartesian coordinates.
@@ -55,30 +78,26 @@ The nonlinear state evolution equation is given by:
 $$
 \frac{d}{dt} \vec{x}(t) = \begin{bmatrix}
   \vec{v}(t) \\
-  \vec{a}(t) - \vec{g} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
+  \vec{a}(t) - \vec{g} - \left(\frac{F_D(\|\vec{v}(t)\|)}{m} + \frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
 \end{bmatrix},
 $$
-where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\vec{v}(t))}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}$ represents the deleceration along the agent's velocity vector due to lift-induced drag.
-
+where $\vec{g} = \begin{bmatrix} 0 \\ 0 \\ g \end{bmatrix}$ represents the acceleration due to gravity, $\frac{F_D(\|\vec{v}(t)\|)}{m}$ represents the deceleration along the agent's velocity vector due to air drag, and $\frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}$ represents the deceleration along the agent's velocity vector due to lift-induced drag.
 Any acceleration normal to the agent's velocity vector, including the components of the acceleration vector $\vec{a}_\perp(t)$ and gravity vector $\vec{g}_\perp$ that are normal to the velocity vector, will induce some lift-induced drag.
 $$
-\vec{a}_\perp(t) = \vec{a}(t) - \text{proj}_{\vec{v}(t)}(\vec{a}(t))
-$$
-$$
-\vec{g}_\perp = \vec{g} - \text{proj}_{\vec{v}(t)}(\vec{g})
+\vec{a}_\perp(t) = (\vec{a}(t) + \vec{g}) - \text{proj}_{\vec{v}(t)}(\vec{a}(t) + \vec{g})
 $$
 
 ### Agent Acceleration
 
 The agent acceleration is given by:
 $$
-\frac{d}{dt} \vec{v}(t) = \vec{a}(t) - \vec{g} - \left(\frac{F_D(\vec{v}(t))}{m} + \frac{\left\|\vec{a}_\perp(t) + \vec{g}_\perp\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
+\frac{d}{dt} \vec{v}(t) = \vec{a}(t) - \vec{g} - \left(\frac{F_D(\|\vec{v}(t)\|)}{m} + \frac{\left\|\vec{a}_\perp(t)\right\|}{(L/D)}\right) \frac{\vec{v}(t)}{\|\vec{v}(t)\|}
 $$
 Unlike interceptors, threats are not subject to drag or gravity.
 
 The air drag is given by:
 $$
-F_D(\vec{v}(t)) = \frac{1}{2} \rho C_D A\|\vec{v}(t)\|^2,
+F_D(\|\vec{v}(t)\|) = \frac{1}{2} \rho C_D A\|\vec{v}(t)\|^2,
 $$
 where $\rho$ is the air density that decays exponentially with altitude: $\rho = 1.204 \frac{\text{kg}}{\text{m}^3} \cdot e^{-\frac{\text{altitude}}{10.4\text{ km}}}$, $C_D$ is the airframe's coefficient of drag, and $A$ is the cross-sectional area.
 For all angles of attack, we specify a constant $(L/D)$ ratio.
@@ -93,9 +112,7 @@ We do impose some constraints on the acceleration:
   $$
   $a_{\text{ref}}$ denotes the maximum normal acceleration that the airframe can pull at the reference speed $v_{\text{ref}}$.
 
-## Simulator Behaviors
-
-### Sensing
+## Perception
 
 Currently, all agents are equipped with an ideal sensor, one that can peek through the fog of war with no noise and no delay.
 Sensing is performed within the agent's frame of reference using spherical coordinates, so each sensor output $\vec{y}$ is a nine-dimensional vector.
@@ -103,7 +120,7 @@ $$
 \vec{y} = \begin{bmatrix}
   \vec{y}_p \\
   \vec{y}_v \\
-  \vec{y}_a
+  \vec{y}_a \\
 \end{bmatrix} \in \mathbb{R}^9,
 $$
 where $\vec{y}_p \in \mathbb{R}^3$ denotes the three-dimensional position difference between the agent and its sensing target, $\vec{y}_v$ denotes the three-dimensional velocity difference between the agent and its sensing target, and $\vec{y}_a$ denotes the three-dimensional acceleration of the sensing target.
@@ -111,7 +128,7 @@ $\vec{y}_p$ and $\vec{y}_v$ are both given in spherical coordinates in the agent
 
 Interceptors are constrained in their sensor update frequency, which is configurable for each interceptor type.
 As a result, interceptors can change their actuation input at a rate faster than the sensor update frequency.
-The simulator currently uses a naive guidance filter simply performs a zero-hold interpolation on the latest sensor output and applies the latest acceleration to a model of the sensing target until the next sensor output arrives and resets the model's position, velocity, and acceleration.
+The simulator currently uses a naive guidance filter that simply performs a zero-order hold interpolation on the latest sensor output and applies the latest acceleration to a model of the sensing target until the next sensor output arrives and updates the model's position, velocity, and acceleration.
 In other words, for $nT \leq t < (n + 1)T$, where $T$ is the sensor update period, the simple target model is as follows:
 $$
 \frac{d}{dt} \begin{bmatrix}
@@ -119,18 +136,216 @@ $$
   \vec{v}(t) \\
 \end{bmatrix} = \begin{bmatrix}
   \vec{v}(t) \\
-  \vec{a}(t)|_{t = nT}
+  \vec{a}(t)|_{t = nT} \\
 \end{bmatrix},
 $$
 where the initial conditions $\vec{p}(t)|_{t = nT}$ and $\vec{v}(t)|_{t = nT}$ are set by the latest sensor output.
 
 Threats are assumed to be omniscient, so they have no frequency constraint on their sensor output and know the positions, velocities, and accelerations of all interceptors at all times.
 
-### Guidance & Navigation
+## Clustering
+
+![Clustering](./images/clustering.png){width=60%}
+
+To cluster the threats into more manageable clusters, we use a size and radius-constrained clustering algorithm.
+- **Size constraint**: Maximum 7 threats per cluster
+- **Radius constraint**: Cluster radius must be less than or equal to 1 km
+The size constraint is necessary, especially at the bottommost level of the hierarchy, because each carrier interceptor only carries up to seven missile interceptors.
+The radius constraint ensures that when the submunitions are released, each missile interceptor will have sufficient terminal speed to reach all of the threats within the cluster.
+As each cluster represents an additional launched interceptor, the algorithm should minimize the number of clusters $k$ to minimize the engagement cost.
+
+### Agglomerative Clustering
+
+A simple greedy algorithm to satisfy both the size and radius constraints is agglomerative clustering.
+Each agent to be clustered starts in its own cluster, and while the distance between the two closest clusters is less than the radius constraint, the two closest clusters are merged together as long as the resulting cluster satisfies the size constraint.
+If the two closest clusters cannot be merged due to the size constraint, the algorithm proceeds to the next two closest clusters.
+This clustering algorithm continues until no more clusters can be merged.
+
+### Constrained k-means Clustering
+
+The simulator also implements a constrained $k$-means clustering algorithm that satisfies both the radius and the size constraints.
+The standard $k$-means clustering algorithm is modified to include a $k$ refinement step, where the number of clusters $k$ is increased depending on the number of clusters that do not satisfy both constraints.
+
+![Constrained k-means clustering](./images/constrained_k_means_clustering.png){width=80%}
+
+### Minimum Cost Flow Clustering
+
+Instead of modifying the standard $k$-means clustering algorithm, we have explored modifying the size-constrained $k$-means clustering algorithm proposed by [Bradley et al., 2000](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/02/tr-2000-65.pdf).
+We introduce a $k$ refinement step, where the number of clusters $k$ is increased depending on the number of clusters that do not satisfy the radius constraint.
+The centroids of the new clusters are placed at the agents that are farthest away from their assigned clusters' centroids.
+
+This algorithm has yet to be implemented in the Unity simulator.
+
+## Prediction
+
+The simulator currently uses a simple predictor, where the future position of the threat is extrapolated based on the threat's current velocity and acceleration.
+Future work involves using a probabilistic predictor that accounts for the threat's maneuverability.
+
+### Predictor-Planner Convergence
+
+The predictor estimates the position of the threat at some given time-to-intercept while the planner estimates the time-to-intercept given the threat position.
+In order to find the time-to-intercept and the intercept position, the predictor and the planner must converge to the same time-to-intercept and intercept position.
+
+The simulator achieves predictor-planner convergence by performing a 2-step iterative process that repeatedly updates the time-to-intercept estimate using the planner and then updates the intercept position using the predictor.
+
+The iterative launch planner also performs a few sanity checks to check for corner cases.
+For example, this algorithm may not always converge to a solution, so to prevent an infinite loop, the algorithm should declare no launch if the distance between the intercept position and the estimated threat position exceed some threshold.
+```csharp
+// Check that the intercept position and the predicted position are within some threshold
+// distance of each other.
+if (Vector3.Distance(interceptPosition, targetPosition) >= InterceptPositionThreshold) {
+  return LaunchPlan.NoLaunch;
+}
+```
+Furthermore, the algorithm checks that the threat is indeed heading towards the intercept position.
+```csharp
+// Check that the target is moving towards the intercept position. Otherwise, the interceptor
+// should wait to be launched.
+Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
+Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
+if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
+  return LaunchPlan.NoLaunch;
+}
+```
+Finally, the interceptor might be launched into the posterior hemisphere away from the threat if the estimated intercept position is behind the launch position.
+The solution is to delay the launch until the intercept position is in the anterior hemisphere.
+```csharp
+// Check that the interceptor is moving towards the target. If the target is moving too fast,
+// the interceptor might be launched backwards because the intercept position and the predicted
+// position are behind the asset. In this case, the interceptor should wait to be launched.
+Vector3 interceptorToInterceptPosition = interceptPosition;
+Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
+if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
+  return LaunchPlan.NoLaunch;
+}
+```
+
+## Planning
+
+### Launch Angle Planner Lookup Table
+
+Since the dynamics of the interceptors is nonlinear, the simulator implements a lookup table to determine the launch angle at which the carrier interceptor should be launched given the range and altitude of the threat.
+The planner attempts to maximize the terminal speed to ensure the maximum kill probability.
+
+To generate the lookup table, the nonlinear dynamics of the carrier interceptors along with those of the released missile interceptors were simulated while sweeping through the launch angle, the submunition dispense time, and the submunition motor light time.
+The maximum speed is achieved if the missile interceptors ignite their motors directly prior to reaching the intercept position.
+
+The resulting trajectory points were interpolated to generate the lookup table shown below:
+
+![Launch angle planner](./images/launch_angle_planner.png)
+
+In the current version of the simulator, only the un-interpolated samples of the lookup table are used, and the launch angle planner performs a nearest-neighbor interpolation to determine the optimal launch angle given the range and altitude of the threat.
+
+### Submunitions Release
+
+The time at which a carrier interceptor dispenses its submunitions is a critical factor in the trade-off between a higher terminal intercept speed (later dispense time) and smaller bearing changes to reach the threat (earlier dispense time).
+
+In the simulator, the submunitions are automatically dispensed when one of the following conditions is fulfilled:
+1. One of the threats within the cluster is at a bearing >30° to the carrier interceptor’s velocity vector.
+2. The carrier interceptor is within 500 meters of the planned cluster intercept point (i.e., its centroid).
+
+When the submunitions are released, they are distributed uniformly radially at a 60° to the carrier interceptor's velocity vector to fan out and encompass the entire threat space while minimizing any risk of mid-air collisions.
+Their velocities are set according to the law of conservation of momentum.
+
+## Assignment
+
+### Maximum Speed Assignment
+
+Interceptors should strive to maximize their terminal speed to maximize their agility, and the assignment algorithm should optimize for this objective.
+
+#### Fractional Speed
+
+Interceptors lose speed through the air drag and through the lift-induced drag.
+The air drag force is proportional to the squared speed of the interceptor, and the fractional speed of the interceptors decreases exponentially as a function of the distance traveled.
+The lift-induced drag causes the fractional speed to decrease exponentially as a function of the bearing change.
+During the bearing change, additional air drag is incurred due to the minimum turning radius.
+$$
+\text{Fractional speed} \propto e^{-\frac{d}{L_{\text{eq}}}} \cdot e^{-\frac{\Delta \theta}{(L/D)}} \cdot e^{-\frac{\Delta \theta r_{\text{min}}}{L_{\text{eq}}}},
+$$
+where $d$ is the traveled distance, $\Delta \theta$ is the bearing change, $L_{\text{eq}} = \frac{2m}{\rho C_D A}$ is the equivalent air length, $(L/D)$ is the lift-to-drag ratio, and $r_{\text{min}}$ is the minimum turning radius.
+
+The simulator uses a cost-based assignment scheme, where the cost represents the speed loss, i.e., is inversely related to the fractional speed.
+$$
+\text{Cost}(m, t) \propto \frac{1}{\text{Fractional speed of missile $m$ after pursuing threat $t$}}
+$$
+```csharp
+Vector3 directionToThreat = threat.GetPosition() - interceptor.GetPosition();
+float distanceToThreat = directionToThreat.magnitude;
+float angleToThreat =
+    Vector3.Angle(interceptor.GetVelocity(), directionToThreat) * Mathf.Deg2Rad;
+
+// The fractional speed is the product of the fractional speed after traveling the distance
+// and of the fractional speed after turning.
+float fractionalSpeed = Mathf.Exp(
+    -((distanceToThreat + angleToThreat * minTurningRadius) / distanceTimeConstant +
+      angleToThreat / angleTimeConstant));
+float cost = (float)interceptor.GetSpeed() / fractionalSpeed;
+```
+
+Cost-based assignment schemes can be formulated as integer linear programming (ILP) problems that optimize over boolean variables $x_{mt}$ representing whether missile $m$ is assigned to threat $t$.
+Currently, the simulator uses [Google's OR-Tools](https://developers.google.com/optimization) to solve these ILP problems.
+
+#### Cover Assignment
+
+In the cover assignment scheme, the constraints ensure that at least one interceptor is assigned to every threat to guarantee coverage over all threats.
+
+The objective is as follows:
+$$
+\min_{x_{mt}, 0 \leq m \leq M - 1, 0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} \sum_{t = 0}^{T - 1} \text{Cost}(m, t)x_{mt}, x_{mt} \in \{0, 1\}
+$$
+
+The following constraint ensures that each interceptor only pursues one threat.
+$$
+\forall 0 \leq m \leq M - 1, \sum_{t = 0}^{T - 1} x_{mt} = 1
+$$
+
+The following constraint ensures that at least one interceptor is assigned to every threat.
+$$
+\forall 0 \leq t \leq T - 1, \sum_{m = 0}^{M - 1} x_{mt} \geq 1
+$$
+
+One issue with the cover assignment is that the resulting distribution of interceptors may be uneven.
+
+#### Even Assignment
+
+The even assignment guarantees that the interceptors are evenly distributed among the threats.
+$$
+\min_{x_{mt}, 0 \leq m \leq M - 1, 0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} \sum_{t = 0}^{T - 1} \text{Cost}(m, t)x_{mt}, x_{mt} \in \{0, 1\}
+$$
+$$
+\forall 0 \leq m \leq M - 1, \sum_{t = 0}^{T - 1} x_{mt} = 1
+$$
+
+The following constraint is added to ensure even coverage.
+$$
+\max_{0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} x_{mt} - \min_{0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} x_{mt} \leq 1
+$$
+
+The even assignment is used by the current version of the simulator.
+
+#### Weighted Even Assignment
+
+Instead of evenly distributing the interceptors among all threats, a more optimal assignment should take into consideration the threat level of each threat.
+We propose a weighted even assignment, where $w_t$ represents a mitigation factor, i.e., the reduction of the threat level through an additional assigned interceptor.
+For example, a supersonic threat will have a lower $w_t$ than a quadcopter and should be assigned more interceptors to achieve the same kill probability as that of the quadcopter.
+
+$$
+\min_{x_{mt}, 0 \leq m \leq M - 1, 0 \leq t \leq T - 1} \sum_{m = 0}^{M - 1} \sum_{t = 0}^{T - 1} \text{Cost}(m, t)x_{mt}, x_{mt} \in \{0, 1\}
+$$
+$$
+\forall 0 \leq m \leq M - 1, \sum_{t = 0}^{T - 1} x_{mt} = 1
+$$
+
+The following constraint is modified to reflect the mitigation factors of different threats.
+$$
+\max_{0 \leq t \leq T - 1} w_t \sum_{m = 0}^{M - 1} x_{mt} - \min_{0 \leq t \leq T - 1} w_t \sum_{m = 0}^{M - 1} x_{mt} \leq 1
+$$
+
+## Controls
 
 **Proportional Navigation**
 
-![Proportional Navigation](./images/proportional_navigation.png){width=60%}
+![Proportional navigation](./images/proportional_navigation.png){width=60%}
 
 Using the fact that constant bearing decreasing range (CBDR) leads to a collision, we apply an acceleration normal to the velocity vector to correct for any bearing drift.
 In the simulator, proportional navigation follows the simple control law:
@@ -153,8 +368,8 @@ However, simply using true proportional navigation as a guidance law leads to so
    }
    ```
 2. **Spiral behavior**:
-   If the target is at a near-constant ${90}^\circ$ bearing from the agent, the agent may end up in a spiral encircling the target because $\vec{\lambda}$ is roughly constant and so $\|\dot{\vec{\lambda}}\| \approx 0$.
-   To overcome this limitation, the agent will apply a higher navigation gain if the target bearing is within $\pm {10}^\circ$ of ${90}^\circ$.
+   If the target is at an approximately 90° bearing from the agent, the agent may end up in a spiral encircling the target because $\vec{\lambda}$ is roughly constant and so $\|\dot{\vec{\lambda}}\| \approx 0$.
+   To overcome this limitation, the agent will apply a higher navigation gain if the target bearing is within ±10° of 90°.
    ```csharp
    // Handle the case of the spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees.
    if (Mathf.Abs(Mathf.Abs(sensorOutput.position.azimuth) - Mathf.PI / 2) < 0.2f ||
@@ -207,25 +422,14 @@ if (sinkRate > 0 && timeToGround < timeToTarget) {
 }
 ```
 
-### Interceptor Assignment
+## Threat
 
-**Threat-Based Assignment**
+### Kill Probability
 
-![Threat-based assignment](./images/threat_based_assignment.png){width=40%}
-
-When submunitions are dispensed (e.g., micromissiles from Hydra-70s), they are assigned a threat to intercept.
-The assignment algorithm prefers assigning an interceptor to each threat before doubling up on previously assigned threats.
-
-Given the list of threats, the simulator first sorts the threats as follows:
-1. Sorting (descending) by the number of already assigned interceptors
-2. Sorting (ascending) by threat value, where the threat value of a threat is given by:
-   $$
-   V_{threat} = \frac{\|\vec{v}(t)\|}{\|\vec{p}(t)\|},
-   $$
-   where $\|v_t\|$ is the threat's speed and $\vec{p}(t)$ is the threat's position vector, assuming that the asset is at the origin.
-After sorting the threats, we simply assign interceptors down the list.
-
-Note that this algorithm may not be optimal but is a good starting point.
+To model non-idealities and noise in the sensing and guidance systems, each threat is assigned a hit radius and a kill probability.
+Whenever an interceptor is within the hit radius of the threat, the simulator treats it as an intercept, where the interceptor has collided with the threat.
+However, the simulator does not automatically assume that the threat as destroyed; instead, the kill probability determines whether the threat is destroyed.
+Unlike threats, interceptors are always destroyed during an intercept.
 
 ### Intercept Evasion
 
@@ -271,3 +475,18 @@ if (sinkRate > 0 && altitude < groundProximityThreshold) {
   normalAccelerationDirection = Vector3.Lerp(normalAccelerationDirection, bestHorizontalDirection + transform.up * 5f, blendFactor).normalized;
   }
 ```
+
+### Automatic Re-Clustering and Re-Assignment
+
+Since threats can sometimes successfully evade the interceptors, the IADS must be prepared to handle cases of missed intercepts.
+The simulator currently implements automatic re-clustering of missed or escaping threats as well as automatic re-assignment of missed interceptors.
+- **Re-clustering**:
+  Since interceptors are unpropelled in their midcourse phase, once the threat speed is greater than the interceptor speed, the threat can evade the assigned interceptor.
+  Every 5 seconds, the IADS checks whether any threat has escaped the assigned interceptors and places the escaping threats back into the clustering queue.
+  Every 2 seconds, the IADS will process the clustering queue and, if necessary, launch additional interceptors.
+- **Re-assignment**:
+  Re-assigning a new threat to an interceptor can happen in two ways:
+  1. The assigned threat has already been intercepted by another interceptor.
+  2. The assigned threat has escaped the interceptor and is located behind the interceptor, such that it would be ineffective for the interceptor to perform a 180 degree turn.
+  In these cases, the interceptor will be placed onto a queue containing all interceptors to be assigned a threat.
+  At the end of the update, all interceptors in the queue will be assigned according to the assignment scheme, possibly doubling up on some threats.

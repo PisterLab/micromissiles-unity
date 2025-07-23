@@ -26,7 +26,7 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 ## Mac
 
 1. Download the tarball file for Darwin: `micromissiles-<version>-darwin-x86_64.tar.gz`.
-2. Untar the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin-x86_64`.
+2. Extract the tarball. The tarball should contain a single directory called `micromissiles-<version>-darwin-x86_64`.
 3. In the `micromissiles-<version>-darwin-x86_64` directory, run the app file.
 4. If you get a warning that Apple cannot check the application for malicious software:
      * Open `System Preferences`.
@@ -36,13 +36,13 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 ## Linux
 
 1. Download the tarball file for Linux: `micromissiles-<version>-linux-x86_64.tar.gz`.
-2. Untar the tarball.
+2. Extract the tarball.
 3. Run the `micromissiles-<version>-StandaloneLinux64` executable.
 
 # Next Steps
 
 - To get started with Unity development, see the [**Development Guide**](https://pisterlab.github.io/micromissiles-unity/Development_Guide.html)
-- To learn how to build and develop the C++ plugins, see the [**C++ Plugins Guide**](https://pisterlab.github.io/micromissiles-unity/Cpp_Plugins_Guide.html)
+- To learn how to build and develop the C++ plugins, see the [**Plugins Guide**](https://pisterlab.github.io/micromissiles-unity/Plugins_Guide.html)
 - To navigate and interact with the simulation, see the [**Keybinds and Controls**](https://pisterlab.github.io/micromissiles-unity/Keybinds_and_Controls.html)
-- To configure simulation settings, see the [**Simulation Configuration Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Config_Guide.html)
+- To configure simulation settings, see the [**Simulation Configuration Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Configuration_Guide.html)
 - To analyze simulation logs, see the [**Simulation Logging Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Logging.html)
