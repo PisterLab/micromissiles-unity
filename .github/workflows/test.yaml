@@ -1,34 +1,38 @@
 name: Test
 
 on:
-    pull_request:
-      branches:
-        - master
-    schedule:
-      - cron: '0 2 * * *'  # Runs at 2 AM UTC every day.
-    workflow_dispatch:  # Allow manual triggering.
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: '0 2 * * *'  # Runs at 2 AM UTC every day.
+  workflow_dispatch:  # Allow manual triggering.
 
 jobs:
-  testPlugins:
+  test-plugins:
     name: Test plugins
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: false
-      - uses: bazel-contrib/setup-bazel@0.14.0
+
+      - name: Set up Bazel
+        uses: bazel-contrib/setup-bazel@0.15.0
         with:
           bazelisk-cache: true
           disk-cache: ${{ github.workflow }}
           repository-cache: true
+
       - name: Test plugins
         working-directory: plugins
         run: bazel test --test_output=errors //...
 
-  testAllModes:
+  test-all-modes:
     name: Test in ${{ matrix.testMode }}
     runs-on: ubuntu-latest
-    needs: testPlugins
+    needs: test-plugins
     strategy:
       fail-fast: false
       matrix:
@@ -37,8 +41,6 @@ jobs:
           - editmode
     steps:
       - uses: actions/checkout@v4
-        with:
-          lfs: true
 
       - uses: actions/cache@v4
         with:
@@ -61,25 +63,16 @@ jobs:
           checkName: ${{ matrix.testMode }} Test Results
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+bamlab.*'
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Test results for ${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.artifactsPath }}
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: Coverage results for ${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.coveragePath }}
-
-      - name: Deploy coverage report
-        if: always()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ steps.tests.outputs.coveragePath }}
-          destination_dir: coverage/${{ matrix.testMode }}
-          allow_empty_commit: true
-          keep_files: true
-          force_orphan: false
