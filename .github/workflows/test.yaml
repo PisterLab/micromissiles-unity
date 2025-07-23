@@ -32,7 +32,7 @@ jobs:
   test-all-modes:
     name: Test in ${{ matrix.testMode }}
     runs-on: ubuntu-latest
-    needs: testPlugins
+    needs: test-plugins
     strategy:
       fail-fast: false
       matrix:
