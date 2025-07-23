@@ -1,13 +1,9 @@
 name: Documentation
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-  workflow_dispatch:  # Allow manual triggering.
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
 
 jobs:
   build-deploy:
@@ -16,19 +12,27 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '24'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Build documentation
         run: npm run docs:build
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          path: coverage
+          pattern: Coverage results for *
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
