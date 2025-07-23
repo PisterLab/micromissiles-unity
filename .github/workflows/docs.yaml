@@ -9,15 +9,12 @@ on:
       - master
   workflow_dispatch:  # Allow manual triggering.
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 jobs:
-  build:
-    name: Build documentation
+  build-deploy:
+    name: Build and deploy documentation
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,21 +30,9 @@ jobs:
       - name: Build documentation
         run: npm run docs:build
 
-  deploy:
-    name: Deploy documentation
-    needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-    runs-on: ubuntu-latest
-    steps:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/.vitepress/dist
-          allow_empty_commit: true
-          keep_files: true
-          force_orphan: false
