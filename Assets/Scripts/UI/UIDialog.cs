@@ -15,7 +15,7 @@ public class UIDialog : MonoBehaviour {
   [SerializeField]
   private RectTransform contentHandle;
 
-  /// TABS
+  // TABS
   [SerializeField]
   private float _tabWidth = 15f;
   [SerializeField]
@@ -23,7 +23,7 @@ public class UIDialog : MonoBehaviour {
   // List of dialog tabs
   private List<GameObject> dialogTabs;
 
-  /// ENTRIES
+  // ENTRIES
   private List<UISelectableEntry> entries;
 
   [SerializeField]
@@ -83,23 +83,17 @@ public class UIDialog : MonoBehaviour {
     return _tabHeight;
   }
 
-  /// <summary>
-  /// Returns the height of the dialog title bar
-  /// </summary>
+  // Returns the height of the dialog title bar
   public float GetTitleBarHeight() {
     return dialogTitleHandle.rectTransform.sizeDelta.y;
   }
 
-  /// <summary>
-  /// Adds a new tab to the dialog, when clicked it will call the given callback
-  /// </summary>
+  // Adds a new tab to the dialog, when clicked it will call the given callback
   public void AddDialogTab(string tabName, Action onClick) {
     dialogTabs.Add(AddTabButton(tabName, onClick));
   }
 
-  /// <summary>
-  /// Add the tab button to the right of the existing tabs
-  /// </summary>
+  // Add the tab button to the right of the existing tabs
   private GameObject AddTabButton(string tabName, Action onClick) {
     GameObject tabButton = new GameObject("TabButton", typeof(RectTransform));
 
@@ -132,9 +126,7 @@ public class UIDialog : MonoBehaviour {
     return tabButton;
   }
 
-  /// <summary>
-  /// Add text as a child of the tab's button object
-  /// </summary>
+  // Add text as a child of the tab's button object
   private void AddTabText(string tabName, GameObject tabButton) {
     GameObject tabText = new GameObject("TabText", typeof(RectTransform));
 
@@ -184,9 +176,7 @@ public class UIDialog : MonoBehaviour {
       entries.Clear();
   }
 
-  /// <summary>
-  /// Clears, sets, and prints the dialog entries in the order they were added
-  /// </summary>
+  // Clears, sets, and prints the dialog entries in the order they were added
   public virtual void SetDialogEntries(List<UISelectableEntry> entries) {
     this.entries = entries;
     // calculate total height of the content
