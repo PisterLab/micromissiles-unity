@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/24/2025 - 00:16:00 |
+| Generated on: | 07/24/2025 - 00:16:11 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 113 |
 | Files: | 90 |
-| Covered lines: | 2526 |
-| Uncovered lines: | 3582 |
-| Coverable lines: | 6108 |
-| Total lines: | 11004 |
-| Line coverage: | 41.3% (2526 of 6108) |
+| Covered lines: | 2528 |
+| Uncovered lines: | 3584 |
+| Coverable lines: | 6112 |
+| Total lines: | 11001 |
+| Line coverage: | 41.3% (2528 of 6112) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 344 |
@@ -19,10 +19,10 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1198**|**3456**|**4654**|**10133**|**25.7%**|**0**|**0**|****|**199**|**688**|**28.9%**|
+|**bamlab.micromissiles**|**1198**|**3457**|**4655**|**10137**|**25.7%**|**0**|**0**|****|**199**|**688**|**28.9%**|
 |Agent|88|72|160|292|55%|0|0||18|35|51.4%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
-|AirborneAgent|82|28|110|174|74.5%|0|0||13|16|81.2%|
+|AirborneAgent|82|27|109|173|75.2%|0|0||13|16|81.2%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
 |AttackBehavior|11|3|14|51|78.5%|0|0||2|3|66.6%|
 |CameraController|0|347|347|565|0%|0|0||0|36|0%|
@@ -38,7 +38,7 @@
 |DynamicAgentConfig|0|3|3|143|0%|0|0||0|1|0%|
 |FixedWingThreat|50|15|65|120|76.9%|0|0||6|9|66.6%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
-|IADS|0|286|286|491|0%|0|0||0|31|0%|
+|IADS|0|287|287|493|0%|0|0||0|31|0%|
 |IAssignment|11|0|11|42|100%|0|0||3|3|100%|
 |IClusterer|6|4|10|56|60%|0|0||3|4|75%|
 |IController|7|7|14|30|50%|0|0||2|4|50%|
@@ -48,11 +48,11 @@
 |ILaunchAnglePlanner|10|0|10|83|100%|0|0||2|2|100%|
 |ILaunchPlanner|4|0|4|98|100%|0|0||1|1|100%|
 |InputManager|0|174|174|234|0%|0|0||0|15|0%|
-|Interceptor|8|149|157|243|5%|0|0||2|17|11.7%|
+|Interceptor|8|149|157|242|5%|0|0||2|17|11.7%|
 |InterceptorData|0|19|19|99|0%|0|0||0|4|0%|
 |InterceptorOrigin|5|64|69|136|7.2%|0|0||1|13|7.6%|
 |InterceptorOriginConfig|25|39|64|193|39%|0|0||6|10|60%|
-|InterceptorOriginReference|0|22|22|55|0%|0|0||0|6|0%|
+|InterceptorOriginReference|0|22|22|56|0%|0|0||0|6|0%|
 |Interpolator2DDataPoint|15|1|16|86|93.7%|0|0||4|5|80%|
 |IPredictor|3|0|3|37|100%|0|0||1|1|100%|
 |ISizeAndRadiusConstrainedClusterer|6|4|10|56|60%|0|0||2|2|100%|
@@ -78,10 +78,10 @@
 |RotaryWingThreat|17|26|43|76|39.5%|0|0||2|8|25%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|
 |Sensor|3|0|3|25|100%|0|0||1|1|100%|
-|Ship|0|27|27|47|0%|0|0||0|3|0%|
-|ShoreBattery|0|26|26|48|0%|0|0||0|3|0%|
-|SimManager|106|310|416|659|25.4%|0|0||10|51|19.6%|
-|SimMonitor|0|169|169|255|0%|0|0||0|20|0%|
+|Ship|0|27|27|46|0%|0|0||0|3|0%|
+|ShoreBattery|0|26|26|46|0%|0|0||0|3|0%|
+|SimManager|106|311|417|661|25.4%|0|0||10|51|19.6%|
+|SimMonitor|0|169|169|256|0%|0|0||0|20|0%|
 |SimulationConfig|6|0|6|143|100%|0|0||1|1|100%|
 |SpriteManager|0|8|8|98|0%|0|0||0|1|0%|
 |StaticAgentConfig|14|0|14|65|100%|0|0||5|5|100%|
@@ -99,18 +99,18 @@
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|29|0%|0|0||0|4|0%|
-|UIManager|0|170|170|262|0%|0|0||0|30|0%|
+|UIManager|0|170|170|265|0%|0|0||0|30|0%|
 |UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
 |UIWindow|0|58|58|96|0%|0|0||0|9|0%|
 |Utilities|3|6|9|17|33.3%|0|0||1|3|33.3%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
 |WaypointController|9|0|9|22|100%|0|0||2|2|100%|
-|**bamlab.test**|**55**|**13**|**68**|**119**|**80.8%**|**0**|**0**|****|**10**|**12**|**83.3%**|
-|AgentTestBase|23|0|23|43|100%|0|0||4|4|100%|
+|**bamlab.test**|**55**|**13**|**68**|**118**|**80.8%**|**0**|**0**|****|**10**|**12**|**83.3%**|
+|AgentTestBase|23|0|23|41|100%|0|0||4|4|100%|
 |SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
-|TestBase|32|2|34|51|94.1%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**1273**|**64**|**1337**|**3425**|**95.2%**|**0**|**0**|****|**135**|**140**|**96.4%**|
-|AgentTests|73|7|80|208|91.2%|0|0||7|7|100%|
+|TestBase|32|2|34|52|94.1%|0|0||6|6|100%|
+|**bamlab.test.editmode**|**1275**|**65**|**1340**|**3413**|**95.1%**|**0**|**0**|****|**135**|**140**|**96.4%**|
+|AgentTests|75|8|83|202|90.3%|0|0||7|7|100%|
 |AgglomerativeClustererTest|42|0|42|69|100%|0|0||6|6|100%|
 |ClusterTest|74|0|74|99|100%|0|0||8|8|100%|
 |ConstrainedKMeansClustererTest|35|0|35|150|100%|0|0||6|6|100%|
@@ -124,7 +124,7 @@
 |LaunchAngleDataInterpolatorTest|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTest|28|0|28|42|100%|0|0||4|4|100%|
 |MaxSpeedAssignmentTest|107|0|107|181|100%|0|0||5|5|100%|
-|MockNonFlyingAgent|0|8|8|208|0%|0|0||0|1|0%|
+|MockNonFlyingAgent|0|8|8|202|0%|0|0||0|1|0%|
 |MockPredictor|18|6|24|280|75%|0|0||4|6|66.6%|
 |NearestNeighborInterpolator2DTest|56|0|56|107|100%|0|0||7|7|100%|
 |OriginAwareLaunchPlanningTest|102|0|102|280|100%|0|0||10|10|100%|
