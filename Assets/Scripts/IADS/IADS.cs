@@ -75,7 +75,7 @@ public class IADS : MonoBehaviour {
 
     // Assign any interceptors that are no longer assigned to any threat.
     AssignInterceptorToThreat(
-        _assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
+        _assignableInterceptors.Where(interceptor => !interceptor.IsTerminated()).ToList());
   }
 
   private void RegisterSimulationStarted() {
@@ -156,8 +156,7 @@ public class IADS : MonoBehaviour {
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Store origin reference for capacity management
-        interceptor.gameObject.AddComponent<InterceptorOriginReference>().SetOrigin(
-            selectedOrigin.GetOriginConfig());
+        interceptor.gameObject.AddComponent<InterceptorOriginReference>().SetOrigin(selectedOrigin);
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;
@@ -188,18 +187,14 @@ public class IADS : MonoBehaviour {
   // Uses the configured assignment strategy and accounts for origin capabilities.
   // Returns the runtime origin object, not just the configuration.
   private InterceptorOrigin SelectOriginForThreat(Vector3 threatPosition, string interceptorType) {
-    var strategy = SimManager.Instance.SimulationConfig.origin_assignment_strategy;
+    var availableOrigins = SimManager.Instance.GetOrigins()
+      .Where(o => o.SupportsInterceptorType(interceptorType) && o.HasCapacity())
+      .ToList();
 
-    // Check for manual origin assignment in swarm configuration
-    string manualOriginId = null;
-    var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
-    if (swarmConfigs.Count > 0 && !string.IsNullOrEmpty(swarmConfigs[0].origin_id)) {
-      manualOriginId = swarmConfigs[0].origin_id;
-      strategy = OriginAssignmentStrategy.MANUAL;
-    }
-
-    return SimManager.Instance.OriginManager.SelectOriginObject(threatPosition, interceptorType,
-                                                                strategy, manualOriginId);
+    if (availableOrigins.Count == 0) return null;
+    
+    // For now, use a simple "closest" strategy.
+    return availableOrigins.OrderBy(o => o.GetDistanceToTarget(threatPosition)).FirstOrDefault();
   }
 
   // Creates an initial state for an interceptor based on the selected origin and launch plan.

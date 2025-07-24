@@ -3,14 +3,18 @@ using UnityEngine;
 // Runtime representation of an interceptor origin in the simulation.
 // This component manages the actual GameObject state and provides access to current
 // position/velocity. The associated InterceptorOriginConfig provides the static configuration data.
-public class InterceptorOrigin : MonoBehaviour {
+public class InterceptorOrigin : Agent {
   private InterceptorOriginConfig _originConfig;
   private Vector3 _startPosition;
   private float _startTime;
-  private Rigidbody _rigidbody;
 
   // Gets the unique identifier for this origin.
   public string OriginId => _originConfig?.id ?? "Unknown";
+
+  // Override IsAssignable to indicate origins are not assignable as targets
+  public override bool IsAssignable() {
+    return false;
+  }
 
   // Sets the origin configuration for this GameObject.
   // Parameters:
@@ -19,31 +23,12 @@ public class InterceptorOrigin : MonoBehaviour {
     _originConfig = config;
     _startPosition = transform.position;
     _startTime = Time.time;
-    _rigidbody = GetComponent<Rigidbody>();
   }
 
   // Gets the origin configuration.
   // Returns: The origin configuration
   public InterceptorOriginConfig GetOriginConfig() {
     return _originConfig;
-  }
-
-  // Gets the current position of this origin in world space.
-  // This is the actual GameObject position, not a calculated value.
-  // Returns: Current position
-  public Vector3 GetPosition() {
-    return transform.position;
-  }
-
-  // Gets the current velocity of this origin.
-  // For static origins, returns Vector3.zero.
-  // For moving origins, returns the actual Rigidbody velocity.
-  // Returns: Current velocity
-  public Vector3 GetVelocity() {
-    if (_rigidbody != null && !_rigidbody.isKinematic) {
-      return _rigidbody.linearVelocity;
-    }
-    return Vector3.zero;
   }
 
   // Gets the distance from this origin to a target position.
@@ -85,16 +70,14 @@ public class InterceptorOrigin : MonoBehaviour {
     _originConfig?.ReleaseInterceptor();
   }
 
-  void Update() {
-    // Update the displayed name or other visual elements if needed
-    if (_originConfig != null) {
-      // No longer need drift detection since we use actual GameObject positions
-      // The position is always accurate because we read it directly from the transform
-    }
+  protected override void Start() {
+    base.Start();
+    _startPosition = transform.position;
+    _startTime = Time.time;
   }
 
   // Called when the origin is selected in the editor or for debugging.
-  void OnDrawGizmosSelected() {
+  protected virtual void OnDrawGizmosSelected() {
     if (_originConfig != null) {
       // Draw capacity indicator
       Gizmos.color = HasCapacity() ? Color.green : Color.red;
@@ -134,7 +117,7 @@ public class InterceptorOrigin : MonoBehaviour {
   }
 
   // Draws gizmos for all origins, even when not selected.
-  void OnDrawGizmos() {
+  protected virtual void OnDrawGizmos() {
     if (_originConfig != null) {
       // Draw a simple marker for the origin
       Gizmos.color = HasCapacity() ? Color.green : Color.red;

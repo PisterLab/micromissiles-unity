@@ -24,15 +24,18 @@ public abstract class AgentTestBase : TestBase {
   }
 
   protected Interceptor CreateTestInterceptor(DynamicAgentConfig config) {
-    Interceptor interceptor =
-        InvokePrivateMethod<Interceptor>(simManager, "CreateInterceptor", config);
+    Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, new InitialState {
+      position = Vector3.zero,
+      velocity = Vector3.zero,
+      rotation = Vector3.zero
+    });
     InvokePrivateMethod(interceptor, "Start");
     InvokePrivateMethod(interceptor.gameObject.GetComponent<Sensor>(), "Start");
     return interceptor;
   }
 
   protected Threat CreateTestThreat(DynamicAgentConfig config) {
-    Threat threat = InvokePrivateMethod<Threat>(simManager, "CreateThreat", config);
+    Threat threat = SimManager.Instance.CreateThreat(config);
     InvokePrivateMethod(threat, "Start");
     InvokePrivateMethod(threat.gameObject.GetComponent<Sensor>(), "Start");
     return threat;

@@ -6,19 +6,19 @@ using UnityEngine;
 // This component is automatically attached to interceptors when they are launched
 // and handles origin capacity release when the interceptor is destroyed.
 public class InterceptorOriginReference : MonoBehaviour {
-  private InterceptorOriginConfig _origin;
+  private InterceptorOrigin _origin;
   private bool _capacityReleased = false;
 
   // Sets the origin reference for this interceptor.
   // This should be called immediately after the interceptor is created.
   //   origin: The origin this interceptor was launched from
-  public void SetOrigin(InterceptorOriginConfig origin) {
+  public void SetOrigin(InterceptorOrigin origin) {
     _origin = origin;
   }
 
   // Gets the origin this interceptor was launched from.
   // Returns: Origin configuration, or null if not set
-  public InterceptorOriginConfig GetOrigin() {
+  public InterceptorOrigin GetOrigin() {
     return _origin;
   }
 
@@ -30,8 +30,8 @@ public class InterceptorOriginReference : MonoBehaviour {
       _origin.ReleaseInterceptor();
       _capacityReleased = true;
 
-      Debug.Log($"Released interceptor capacity back to origin {_origin.id}. " +
-                $"Available capacity: {_origin.GetAvailableCapacity()}/{_origin.max_interceptors}");
+      Debug.Log($"Released interceptor capacity back to origin {_origin.OriginId}. " +
+                $"Available capacity: {_origin.GetAvailableCapacity()}/{_origin.GetOriginConfig().max_interceptors}");
     }
   }
 
@@ -48,8 +48,8 @@ public class InterceptorOriginReference : MonoBehaviour {
       return "InterceptorOriginReference[No Origin Set]";
     }
 
-    return $"InterceptorOriginReference[{_origin.id}] - " +
-           $"Capacity: {_origin.GetAvailableCapacity()}/{_origin.max_interceptors}, " +
+    return $"InterceptorOriginReference[{_origin.OriginId}] - " +
+           $"Capacity: {_origin.GetAvailableCapacity()}/{_origin.GetOriginConfig().max_interceptors}, " +
            $"Released: {_capacityReleased}";
   }
 }

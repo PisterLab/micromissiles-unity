@@ -159,7 +159,7 @@ public class UIManager : MonoBehaviour {
   private void UpdateSwarmPanel() {
     string agentPanelText = "";
     foreach (Agent agent in SimManager.Instance.GetActiveAgents()) {
-      string jobText = agent.name + "| Phase: " + agent.GetFlightPhase().ToString();
+      string jobText = agent.name + "| Phase: " + (agent is AirborneAgent airborneAgent ? airborneAgent.GetFlightPhase().ToString() : "N/A");
       agentPanelText += jobText + "\n";
     }
     SetAgentPanelText(agentPanelText);

@@ -24,6 +24,11 @@ public class InterceptorOriginConfig {
   // Used for manual assignment and tracking.
   public string id;
 
+  // Type of origin platform, determines which prefab to instantiate.
+  // Examples: "Ship", "ShoreBattery", "MobileLauncher"
+  // If not specified, defaults to velocity-based detection for backward compatibility.
+  public string type;
+
   // Initial position of the origin at simulation start (in world coordinates).
   // For moving origins, this represents the starting position.
   public Vector3 initial_position;
@@ -185,4 +190,4 @@ public enum OriginAssignmentStrategy {
   // Use manually specified origin assignments from configuration.
   // Allows precise control over interceptor deployment.
   MANUAL
-}
+} 
