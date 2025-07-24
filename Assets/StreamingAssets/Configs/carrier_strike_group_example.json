@@ -4,6 +4,7 @@
   "interceptor_origins": [
     {
       "id": "CVN-68-Nimitz",
+      "type": "Ship",
       "initial_position": { "x": 0, "y": 0, "z": 5000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 24,
@@ -15,6 +16,7 @@
     },
     {
       "id": "DDG-51-Burke-1",
+      "type": "Ship",
       "initial_position": { "x": -2000, "y": 0, "z": 4000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 8,
@@ -26,6 +28,7 @@
     },
     {
       "id": "DDG-51-Burke-2", 
+      "type": "Ship",
       "initial_position": { "x": 2000, "y": 0, "z": 4000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 8,
@@ -37,6 +40,7 @@
     },
     {
       "id": "CG-47-Ticonderoga",
+      "type": "Ship",
       "initial_position": { "x": 3000, "y": 0, "z": 6000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 12,
@@ -48,6 +52,7 @@
     },
     {
       "id": "Aegis-Ashore-Guam",
+      "type": "ShoreBattery",
       "initial_position": { "x": 15000, "y": 100, "z": 0 },
       "velocity": { "x": 0, "y": 0, "z": 0 },
       "max_interceptors": 48,

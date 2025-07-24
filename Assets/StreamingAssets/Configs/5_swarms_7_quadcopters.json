@@ -4,6 +4,7 @@
   "interceptor_origins": [
     {
       "id": "Default-Origin",
+      "type": "ShoreBattery",
       "initial_position": { "x": 0, "y": 0, "z": 0 },
       "velocity": { "x": 0, "y": 0, "z": 0 },
       "max_interceptors": 100,

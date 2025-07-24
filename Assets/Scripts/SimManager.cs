@@ -203,15 +203,13 @@ public class SimManager : MonoBehaviour {
   }
 
   private InterceptorOrigin CreateOrigin(InterceptorOriginConfig config) {
-    // Determine prefab name from type field, with fallback to velocity-based detection
-    string prefabName;
-    if (!string.IsNullOrEmpty(config.type)) {
-      prefabName = config.type;
-    } else {
-      // Backward compatibility: determine type based on velocity
-      bool isShip = config.velocity.magnitude > 0.1f;
-      prefabName = isShip ? "Ship" : "ShoreBattery";
+    // Require the type field to be specified
+    if (string.IsNullOrEmpty(config.type)) {
+      Debug.LogError($"Origin '{config.id}' is missing required 'type' field. Please specify the origin type (e.g., 'Ship', 'ShoreBattery').");
+      return null;
     }
+    
+    string prefabName = config.type;
 
     // Create initial state from config
     InitialState initialState = new InitialState();
