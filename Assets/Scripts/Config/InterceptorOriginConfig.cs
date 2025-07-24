@@ -190,4 +190,4 @@ public enum OriginAssignmentStrategy {
   // Use manually specified origin assignments from configuration.
   // Allows precise control over interceptor deployment.
   MANUAL
-} 
+}

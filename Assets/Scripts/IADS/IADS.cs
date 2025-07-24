@@ -187,12 +187,14 @@ public class IADS : MonoBehaviour {
   // Uses the configured assignment strategy and accounts for origin capabilities.
   // Returns the runtime origin object, not just the configuration.
   private InterceptorOrigin SelectOriginForThreat(Vector3 threatPosition, string interceptorType) {
-    var availableOrigins = SimManager.Instance.GetOrigins()
-      .Where(o => o.SupportsInterceptorType(interceptorType) && o.HasCapacity())
-      .ToList();
+    var availableOrigins =
+        SimManager.Instance.GetOrigins()
+            .Where(o => o.SupportsInterceptorType(interceptorType) && o.HasCapacity())
+            .ToList();
 
-    if (availableOrigins.Count == 0) return null;
-    
+    if (availableOrigins.Count == 0)
+      return null;
+
     // For now, use a simple "closest" strategy.
     return availableOrigins.OrderBy(o => o.GetDistanceToTarget(threatPosition)).FirstOrDefault();
   }

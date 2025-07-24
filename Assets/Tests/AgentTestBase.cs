@@ -24,11 +24,9 @@ public abstract class AgentTestBase : TestBase {
   }
 
   protected Interceptor CreateTestInterceptor(DynamicAgentConfig config) {
-    Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, new InitialState {
-      position = Vector3.zero,
-      velocity = Vector3.zero,
-      rotation = Vector3.zero
-    });
+    Interceptor interceptor = SimManager.Instance.CreateInterceptor(
+        config, new InitialState { position = Vector3.zero, velocity = Vector3.zero,
+                                   rotation = Vector3.zero });
     InvokePrivateMethod(interceptor, "Start");
     InvokePrivateMethod(interceptor.gameObject.GetComponent<Sensor>(), "Start");
     return interceptor;

@@ -30,8 +30,9 @@ public class InterceptorOriginReference : MonoBehaviour {
       _origin.ReleaseInterceptor();
       _capacityReleased = true;
 
-      Debug.Log($"Released interceptor capacity back to origin {_origin.OriginId}. " +
-                $"Available capacity: {_origin.GetAvailableCapacity()}/{_origin.GetOriginConfig().max_interceptors}");
+      Debug.Log(
+          $"Released interceptor capacity back to origin {_origin.OriginId}. " +
+          $"Available capacity: {_origin.GetAvailableCapacity()}/{_origin.GetOriginConfig().max_interceptors}");
     }
   }
 

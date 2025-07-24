@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Interceptor : AirborneAgent {
-
   [SerializeField]
   private float _navigationGain = 3f;  // Typically 3-5.
 

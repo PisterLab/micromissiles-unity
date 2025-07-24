@@ -205,10 +205,11 @@ public class SimManager : MonoBehaviour {
   private InterceptorOrigin CreateOrigin(InterceptorOriginConfig config) {
     // Require the type field to be specified
     if (string.IsNullOrEmpty(config.type)) {
-      Debug.LogError($"Origin '{config.id}' is missing required 'type' field. Please specify the origin type (e.g., 'Ship', 'ShoreBattery').");
+      Debug.LogError(
+          $"Origin '{config.id}' is missing required 'type' field. Please specify the origin type (e.g., 'Ship', 'ShoreBattery').");
       return null;
     }
-    
+
     string prefabName = config.type;
 
     // Create initial state from config
@@ -218,14 +219,15 @@ public class SimManager : MonoBehaviour {
 
     // Create the origin GameObject
     GameObject originObject = CreateAgent(null, initialState, prefabName);
-    if (originObject == null) return null;
+    if (originObject == null)
+      return null;
 
     InterceptorOrigin origin = originObject.GetComponent<InterceptorOrigin>();
     _originObjects.Add(origin);
-    
+
     // Set the origin configuration
     origin.SetOriginConfig(config);
-    
+
     int originId = _originObjects.Count;
     originObject.name = $"{config.id}_Origin_{originId}";
 

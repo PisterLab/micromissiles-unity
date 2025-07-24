@@ -20,7 +20,7 @@ public abstract class AirborneAgent : Agent {
 
   [SerializeField]
   protected float _speed;
-  
+
   [SerializeField]
   protected double _timeSinceBoost = 0;
   [SerializeField]
@@ -52,12 +52,12 @@ public abstract class AirborneAgent : Agent {
   public override bool IsTerminated() {
     return _flightPhase == FlightPhase.TERMINATED;
   }
-  
+
   public override void TerminateAgent() {
     if (_flightPhase != FlightPhase.TERMINATED) {
       _flightPhase = FlightPhase.TERMINATED;
       SetPosition(Vector3.zero);
-      base.TerminateAgent(); // This will handle UnassignTarget() and OnTerminated event
+      base.TerminateAgent();  // This will handle UnassignTarget() and OnTerminated event
     }
   }
 
@@ -119,14 +119,13 @@ public abstract class AirborneAgent : Agent {
 
   protected virtual void AlignWithVelocity() {
     Vector3 velocity = GetVelocity();
-    if (velocity.magnitude > 0.1f)
-    {
+    if (velocity.magnitude > 0.1f) {
       Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
       transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation,
                                                     10000f * Time.fixedDeltaTime);
     }
   }
-  
+
   protected Vector3 CalculateAcceleration(Vector3 accelerationInput) {
     Vector3 gravity = Physics.gravity;
     float airDrag = CalculateDrag();
@@ -171,4 +170,4 @@ public abstract class AirborneAgent : Agent {
     var flowSpeed = GetSpeed();
     return 0.5 * airDensity * (flowSpeed * flowSpeed);
   }
-} 
+}

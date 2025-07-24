@@ -9,7 +9,7 @@ public abstract class Agent : MonoBehaviour {
   protected Agent _target;
   [SerializeField]
   protected Agent _targetModel;
-  
+
   public StaticAgentConfig staticAgentConfig;
   public DynamicAgentConfig dynamicAgentConfig;
 
@@ -27,7 +27,7 @@ public abstract class Agent : MonoBehaviour {
   public event InterceptMissEventHandler OnInterceptMiss;
   public event ThreatHitEventHandler OnThreatHit;
   public event ThreatMissEventHandler OnThreatMiss;
-  
+
   public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
     dynamicAgentConfig = config;
   }
@@ -124,7 +124,7 @@ public abstract class Agent : MonoBehaviour {
     }
     TerminateAgent();
   }
-  
+
   public Vector3 GetPosition() {
     return transform.position;
   }
