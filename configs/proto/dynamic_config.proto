@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package micromissiles;
+
+import "configs/proto/sensor.proto";
+
+// Controller type enumeration.
+enum ControllerType {
+  PROPORTIONAL_NAVIGATION = 0;
+  AUGMENTED_PROPORTIONAL_NAVIGATION = 1;
+}
+
+// Flight configuration.
+message FlightConfig {
+  // Controller type.
+  ControllerType type = 1;
+}
+
+// Dynamic configuration.
+message DynamicConfig {
+  // Flight configuration.
+  FlightConfig flight_config = 1;
+
+  // Sensor configuration.
+  SensorConfig sensor_config = 2;
+}
