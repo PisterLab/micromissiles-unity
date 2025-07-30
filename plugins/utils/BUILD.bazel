@@ -1,0 +1,24 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "protobuf",
+    hdrs = ["protobuf.h"],
+    deps = [
+        "@abseil-cpp//absl/strings:str_format",
+        "@protobuf",
+    ],
+)
+
+cc_test(
+    name = "protobuf_test",
+    srcs = ["protobuf_test.cc"],
+    data = ["//configs/interceptors"],
+    deps = [
+        ":protobuf",
+        "//configs/proto:static_config_cc_proto",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
