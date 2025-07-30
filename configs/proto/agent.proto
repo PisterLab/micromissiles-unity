@@ -13,8 +13,8 @@ enum InterceptorType {
 
 // Threat type enumeration.
 enum ThreatType {
-  DRONE = 0;
-  MISSILE = 1;
+  QUADCOPTER = 0;
+  UCAV = 1;
 }
 
 // Flight phase enumeration.
@@ -35,7 +35,7 @@ message AgentConfig {
     uint32 num_submunitions = 1;
 
     // Agent configuration.
-    AgentConfig agent_config = 3;
+    AgentConfig agent_config = 2;
   }
 
   // Agent type.

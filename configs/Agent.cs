@@ -35,14 +35,15 @@ namespace Micromissiles {
             "c3NpbGVzLkR5bmFtaWNDb25maWcSSgoTc3VibXVuaXRpb25zX2NvbmZpZxgG",
             "IAEoCzItLm1pY3JvbWlzc2lsZXMuQWdlbnRDb25maWcuU3VibXVuaXRpb25z",
             "Q29uZmlnGmAKElN1Ym11bml0aW9uc0NvbmZpZxIYChBudW1fc3VibXVuaXRp",
-            "b25zGAEgASgNEjAKDGFnZW50X2NvbmZpZxgDIAEoCzIaLm1pY3JvbWlzc2ls",
+            "b25zGAEgASgNEjAKDGFnZW50X2NvbmZpZxgCIAEoCzIaLm1pY3JvbWlzc2ls",
             "ZXMuQWdlbnRDb25maWdCDAoKdHlwZV9vbmVvZiJYChBBZ2VudFN3YXJtQ29u",
             "ZmlnEhIKCm51bV9hZ2VudHMYASABKA0SMAoMYWdlbnRfY29uZmlnGAIgASgL",
             "MhoubWljcm9taXNzaWxlcy5BZ2VudENvbmZpZyoxCg9JbnRlcmNlcHRvclR5",
-            "cGUSEAoMTUlDUk9NSVNTSUxFEAASDAoISFlEUkFfNzAQASokCgpUaHJlYXRU",
-            "eXBlEgkKBURST05FEAASCwoHTUlTU0lMRRABKmEKC0ZsaWdodFBoYXNlEg8K",
-            "C0lOSVRJQUxJWkVEEAASCQoFUkVBRFkQARIJCgVCT09TVBACEg0KCU1JRENP",
-            "VVJTRRADEgwKCFRFUk1JTkFMEAQSDgoKVEVSTUlOQVRFRBAFYgZwcm90bzM="));
+            "cGUSEAoMTUlDUk9NSVNTSUxFEAASDAoISFlEUkFfNzAQASomCgpUaHJlYXRU",
+            "eXBlEg4KClFVQURDT1BURVIQABIICgRVQ0FWEAEqYQoLRmxpZ2h0UGhhc2US",
+            "DwoLSU5JVElBTElaRUQQABIJCgVSRUFEWRABEgkKBUJPT1NUEAISDQoJTUlE",
+            "Q09VUlNFEAMSDAoIVEVSTUlOQUwQBBIOCgpURVJNSU5BVEVEEAViBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Micromissiles.DynamicConfigReflection.Descriptor, global::Micromissiles.StateReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.InterceptorType), typeof(global::Micromissiles.ThreatType), typeof(global::Micromissiles.FlightPhase), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -66,8 +67,8 @@ namespace Micromissiles {
   /// Threat type enumeration.
   /// </summary>
   public enum ThreatType {
-    [pbr::OriginalName("DRONE")] Drone = 0,
-    [pbr::OriginalName("MISSILE")] Missile = 1,
+    [pbr::OriginalName("QUADCOPTER")] Quadcopter = 0,
+    [pbr::OriginalName("UCAV")] Ucav = 1,
   }
 
   /// <summary>
@@ -182,7 +183,7 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::Micromissiles.ThreatType ThreatType {
-      get { return HasThreatType ? (global::Micromissiles.ThreatType) typeOneof_ : global::Micromissiles.ThreatType.Drone; }
+      get { return HasThreatType ? (global::Micromissiles.ThreatType) typeOneof_ : global::Micromissiles.ThreatType.Quadcopter; }
       set {
         typeOneof_ = value;
         typeOneofCase_ = TypeOneofOneofCase.ThreatType;
@@ -658,7 +659,7 @@ namespace Micromissiles {
         }
 
         /// <summary>Field number for the "agent_config" field.</summary>
-        public const int AgentConfigFieldNumber = 3;
+        public const int AgentConfigFieldNumber = 2;
         private global::Micromissiles.AgentConfig agentConfig_;
         /// <summary>
         /// Agent configuration.
@@ -721,7 +722,7 @@ namespace Micromissiles {
             output.WriteUInt32(NumSubmunitions);
           }
           if (agentConfig_ != null) {
-            output.WriteRawTag(26);
+            output.WriteRawTag(18);
             output.WriteMessage(AgentConfig);
           }
           if (_unknownFields != null) {
@@ -739,7 +740,7 @@ namespace Micromissiles {
             output.WriteUInt32(NumSubmunitions);
           }
           if (agentConfig_ != null) {
-            output.WriteRawTag(26);
+            output.WriteRawTag(18);
             output.WriteMessage(AgentConfig);
           }
           if (_unknownFields != null) {
@@ -802,7 +803,7 @@ namespace Micromissiles {
                 NumSubmunitions = input.ReadUInt32();
                 break;
               }
-              case 26: {
+              case 18: {
                 if (agentConfig_ == null) {
                   AgentConfig = new global::Micromissiles.AgentConfig();
                 }
@@ -832,7 +833,7 @@ namespace Micromissiles {
                 NumSubmunitions = input.ReadUInt32();
                 break;
               }
-              case 26: {
+              case 18: {
                 if (agentConfig_ == null) {
                   AgentConfig = new global::Micromissiles.AgentConfig();
                 }

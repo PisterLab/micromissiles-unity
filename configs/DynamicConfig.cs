@@ -25,17 +25,20 @@ namespace Micromissiles {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiJjb25maWdzL3Byb3RvL2R5bmFtaWNfY29uZmlnLnByb3RvEg1taWNyb21p",
-            "c3NpbGVzGhpjb25maWdzL3Byb3RvL3NlbnNvci5wcm90byI7CgxGbGlnaHRD",
-            "b25maWcSKwoEdHlwZRgBIAEoDjIdLm1pY3JvbWlzc2lsZXMuQ29udHJvbGxl",
-            "clR5cGUidwoNRHluYW1pY0NvbmZpZxIyCg1mbGlnaHRfY29uZmlnGAEgASgL",
-            "MhsubWljcm9taXNzaWxlcy5GbGlnaHRDb25maWcSMgoNc2Vuc29yX2NvbmZp",
-            "ZxgCIAEoCzIbLm1pY3JvbWlzc2lsZXMuU2Vuc29yQ29uZmlnKlQKDkNvbnRy",
-            "b2xsZXJUeXBlEhsKF1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAASJQohQVVH",
-            "TUVOVEVEX1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAFiBnByb3RvMw=="));
+            "c3NpbGVzGhpjb25maWdzL3Byb3RvL3NlbnNvci5wcm90byK4AQoMRmxpZ2h0",
+            "Q29uZmlnEjEKCmNvbnRyb2xsZXIYASABKA4yHS5taWNyb21pc3NpbGVzLkNv",
+            "bnRyb2xsZXJUeXBlEjoKB2V2YXNpb24YAiABKAsyKS5taWNyb21pc3NpbGVz",
+            "LkZsaWdodENvbmZpZy5FdmFzaW9uQ29uZmlnGjkKDUV2YXNpb25Db25maWcS",
+            "DwoHZW5hYmxlZBgBIAEoCBIXCg9yYW5nZV90aHJlc2hvbGQYAiABKAIidwoN",
+            "RHluYW1pY0NvbmZpZxIyCg1mbGlnaHRfY29uZmlnGAEgASgLMhsubWljcm9t",
+            "aXNzaWxlcy5GbGlnaHRDb25maWcSMgoNc2Vuc29yX2NvbmZpZxgCIAEoCzIb",
+            "Lm1pY3JvbWlzc2lsZXMuU2Vuc29yQ29uZmlnKlQKDkNvbnRyb2xsZXJUeXBl",
+            "EhsKF1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAASJQohQVVHTUVOVEVEX1BS",
+            "T1BPUlRJT05BTF9OQVZJR0FUSU9OEAFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Micromissiles.SensorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.ControllerType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.FlightConfig), global::Micromissiles.FlightConfig.Parser, new[]{ "Type" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.FlightConfig), global::Micromissiles.FlightConfig.Parser, new[]{ "Controller", "Evasion" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.FlightConfig.Types.EvasionConfig), global::Micromissiles.FlightConfig.Types.EvasionConfig.Parser, new[]{ "Enabled", "RangeThreshold" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.DynamicConfig), global::Micromissiles.DynamicConfig.Parser, new[]{ "FlightConfig", "SensorConfig" }, null, null, null, null)
           }));
     }
@@ -92,7 +95,8 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FlightConfig(FlightConfig other) : this() {
-      type_ = other.type_;
+      controller_ = other.controller_;
+      evasion_ = other.evasion_ != null ? other.evasion_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -102,18 +106,33 @@ namespace Micromissiles {
       return new FlightConfig(this);
     }
 
-    /// <summary>Field number for the "type" field.</summary>
-    public const int TypeFieldNumber = 1;
-    private global::Micromissiles.ControllerType type_ = global::Micromissiles.ControllerType.ProportionalNavigation;
+    /// <summary>Field number for the "controller" field.</summary>
+    public const int ControllerFieldNumber = 1;
+    private global::Micromissiles.ControllerType controller_ = global::Micromissiles.ControllerType.ProportionalNavigation;
     /// <summary>
     /// Controller type.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Micromissiles.ControllerType Type {
-      get { return type_; }
+    public global::Micromissiles.ControllerType Controller {
+      get { return controller_; }
       set {
-        type_ = value;
+        controller_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "evasion" field.</summary>
+    public const int EvasionFieldNumber = 2;
+    private global::Micromissiles.FlightConfig.Types.EvasionConfig evasion_;
+    /// <summary>
+    /// Evasion configuration.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Micromissiles.FlightConfig.Types.EvasionConfig Evasion {
+      get { return evasion_; }
+      set {
+        evasion_ = value;
       }
     }
 
@@ -132,7 +151,8 @@ namespace Micromissiles {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Type != other.Type) return false;
+      if (Controller != other.Controller) return false;
+      if (!object.Equals(Evasion, other.Evasion)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -140,7 +160,8 @@ namespace Micromissiles {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::Micromissiles.ControllerType.ProportionalNavigation) hash ^= Type.GetHashCode();
+      if (Controller != global::Micromissiles.ControllerType.ProportionalNavigation) hash ^= Controller.GetHashCode();
+      if (evasion_ != null) hash ^= Evasion.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -159,9 +180,13 @@ namespace Micromissiles {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::Micromissiles.ControllerType.ProportionalNavigation) {
+      if (Controller != global::Micromissiles.ControllerType.ProportionalNavigation) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Type);
+        output.WriteEnum((int) Controller);
+      }
+      if (evasion_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Evasion);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -173,9 +198,13 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::Micromissiles.ControllerType.ProportionalNavigation) {
+      if (Controller != global::Micromissiles.ControllerType.ProportionalNavigation) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Type);
+        output.WriteEnum((int) Controller);
+      }
+      if (evasion_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Evasion);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -187,8 +216,11 @@ namespace Micromissiles {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::Micromissiles.ControllerType.ProportionalNavigation) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      if (Controller != global::Micromissiles.ControllerType.ProportionalNavigation) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Controller);
+      }
+      if (evasion_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Evasion);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -202,8 +234,14 @@ namespace Micromissiles {
       if (other == null) {
         return;
       }
-      if (other.Type != global::Micromissiles.ControllerType.ProportionalNavigation) {
-        Type = other.Type;
+      if (other.Controller != global::Micromissiles.ControllerType.ProportionalNavigation) {
+        Controller = other.Controller;
+      }
+      if (other.evasion_ != null) {
+        if (evasion_ == null) {
+          Evasion = new global::Micromissiles.FlightConfig.Types.EvasionConfig();
+        }
+        Evasion.MergeFrom(other.Evasion);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -225,7 +263,14 @@ namespace Micromissiles {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::Micromissiles.ControllerType) input.ReadEnum();
+            Controller = (global::Micromissiles.ControllerType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            if (evasion_ == null) {
+              Evasion = new global::Micromissiles.FlightConfig.Types.EvasionConfig();
+            }
+            input.ReadMessage(Evasion);
             break;
           }
         }
@@ -248,13 +293,272 @@ namespace Micromissiles {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::Micromissiles.ControllerType) input.ReadEnum();
+            Controller = (global::Micromissiles.ControllerType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            if (evasion_ == null) {
+              Evasion = new global::Micromissiles.FlightConfig.Types.EvasionConfig();
+            }
+            input.ReadMessage(Evasion);
             break;
           }
         }
       }
     }
     #endif
+
+    #region Nested types
+    /// <summary>Container for nested types declared in the FlightConfig message type.</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static partial class Types {
+      /// <summary>
+      /// Evasion configuration.
+      /// </summary>
+      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+      public sealed partial class EvasionConfig : pb::IMessage<EvasionConfig>
+      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          , pb::IBufferMessage
+      #endif
+      {
+        private static readonly pb::MessageParser<EvasionConfig> _parser = new pb::MessageParser<EvasionConfig>(() => new EvasionConfig());
+        private pb::UnknownFieldSet _unknownFields;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pb::MessageParser<EvasionConfig> Parser { get { return _parser; } }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public static pbr::MessageDescriptor Descriptor {
+          get { return global::Micromissiles.FlightConfig.Descriptor.NestedTypes[0]; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        pbr::MessageDescriptor pb::IMessage.Descriptor {
+          get { return Descriptor; }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public EvasionConfig() {
+          OnConstruction();
+        }
+
+        partial void OnConstruction();
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public EvasionConfig(EvasionConfig other) : this() {
+          enabled_ = other.enabled_;
+          rangeThreshold_ = other.rangeThreshold_;
+          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public EvasionConfig Clone() {
+          return new EvasionConfig(this);
+        }
+
+        /// <summary>Field number for the "enabled" field.</summary>
+        public const int EnabledFieldNumber = 1;
+        private bool enabled_;
+        /// <summary>
+        /// If true, evasion is enabled.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Enabled {
+          get { return enabled_; }
+          set {
+            enabled_ = value;
+          }
+        }
+
+        /// <summary>Field number for the "range_threshold" field.</summary>
+        public const int RangeThresholdFieldNumber = 2;
+        private float rangeThreshold_;
+        /// <summary>
+        /// Range threshold in m at which the agent should evade.
+        /// </summary>
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public float RangeThreshold {
+          get { return rangeThreshold_; }
+          set {
+            rangeThreshold_ = value;
+          }
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override bool Equals(object other) {
+          return Equals(other as EvasionConfig);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public bool Equals(EvasionConfig other) {
+          if (ReferenceEquals(other, null)) {
+            return false;
+          }
+          if (ReferenceEquals(other, this)) {
+            return true;
+          }
+          if (Enabled != other.Enabled) return false;
+          if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RangeThreshold, other.RangeThreshold)) return false;
+          return Equals(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override int GetHashCode() {
+          int hash = 1;
+          if (Enabled != false) hash ^= Enabled.GetHashCode();
+          if (RangeThreshold != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RangeThreshold);
+          if (_unknownFields != null) {
+            hash ^= _unknownFields.GetHashCode();
+          }
+          return hash;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public override string ToString() {
+          return pb::JsonFormatter.ToDiagnosticString(this);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void WriteTo(pb::CodedOutputStream output) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          output.WriteRawMessage(this);
+        #else
+          if (Enabled != false) {
+            output.WriteRawTag(8);
+            output.WriteBool(Enabled);
+          }
+          if (RangeThreshold != 0F) {
+            output.WriteRawTag(21);
+            output.WriteFloat(RangeThreshold);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(output);
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+          if (Enabled != false) {
+            output.WriteRawTag(8);
+            output.WriteBool(Enabled);
+          }
+          if (RangeThreshold != 0F) {
+            output.WriteRawTag(21);
+            output.WriteFloat(RangeThreshold);
+          }
+          if (_unknownFields != null) {
+            _unknownFields.WriteTo(ref output);
+          }
+        }
+        #endif
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public int CalculateSize() {
+          int size = 0;
+          if (Enabled != false) {
+            size += 1 + 1;
+          }
+          if (RangeThreshold != 0F) {
+            size += 1 + 4;
+          }
+          if (_unknownFields != null) {
+            size += _unknownFields.CalculateSize();
+          }
+          return size;
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(EvasionConfig other) {
+          if (other == null) {
+            return;
+          }
+          if (other.Enabled != false) {
+            Enabled = other.Enabled;
+          }
+          if (other.RangeThreshold != 0F) {
+            RangeThreshold = other.RangeThreshold;
+          }
+          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+        }
+
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public void MergeFrom(pb::CodedInputStream input) {
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+          input.ReadRawMessage(this);
+        #else
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+                break;
+              case 8: {
+                Enabled = input.ReadBool();
+                break;
+              }
+              case 21: {
+                RangeThreshold = input.ReadFloat();
+                break;
+              }
+            }
+          }
+        #endif
+        }
+
+        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+          uint tag;
+          while ((tag = input.ReadTag()) != 0) {
+          if ((tag & 7) == 4) {
+            // Abort on any end group tag.
+            return;
+          }
+          switch(tag) {
+              default:
+                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+                break;
+              case 8: {
+                Enabled = input.ReadBool();
+                break;
+              }
+              case 21: {
+                RangeThreshold = input.ReadFloat();
+                break;
+              }
+            }
+          }
+        }
+        #endif
+
+      }
+
+    }
+    #endregion
 
   }
 

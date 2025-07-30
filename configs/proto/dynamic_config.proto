@@ -12,8 +12,20 @@ enum ControllerType {
 
 // Flight configuration.
 message FlightConfig {
+  // Evasion configuration.
+  message EvasionConfig {
+    // If true, evasion is enabled.
+    bool enabled = 1;
+
+    // Range threshold in m at which the agent should evade.
+    float range_threshold = 2;
+  }
+
   // Controller type.
-  ControllerType type = 1;
+  ControllerType controller = 1;
+
+  // Evasion configuration.
+  EvasionConfig evasion = 2;
 }
 
 // Dynamic configuration.
