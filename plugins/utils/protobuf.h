@@ -11,7 +11,7 @@
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "google/protobuf/text_format.h"
 
-namespace utils {
+namespace protobuf {
 
 // Load the Protobuf text file.
 template <typename T>
@@ -31,4 +31,4 @@ T LoadProtobufTextFile(const std::string& file) {
   return message;
 }
 
-}  // namespace utils
+}  // namespace protobuf

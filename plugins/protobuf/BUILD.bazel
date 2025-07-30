@@ -3,6 +3,21 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
+    name = "protobuf_plugin",
+    srcs = ["protobuf_plugin.cc"],
+    data = [
+        "//configs/interceptors",
+        "//configs/simulations",
+        "//configs/threats",
+    ],
+    deps = [
+        ":protobuf",
+        "//configs/proto:simulator_config_cc_proto",
+        "//configs/proto:static_config_cc_proto",
+    ],
+)
+
+cc_library(
     name = "protobuf",
     hdrs = ["protobuf.h"],
     deps = [

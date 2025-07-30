@@ -24,8 +24,20 @@ cc_shared_library(
     deps = ["//example:example_plugin"],
 )
 
+cc_shared_library(
+    name = "protobuf",
+    features = select({
+        "@platforms//os:windows": ["windows_export_all_symbols"],
+        "//conditions:default": [],
+    }),
+    deps = ["//protobuf:protobuf_plugin"],
+)
+
 pkg_tar(
     name = "plugins",
-    srcs = [":assignment"],
+    srcs = [
+        ":assignment",
+        ":protobuf",
+    ],
     extension = ".tar.gz",
 )
