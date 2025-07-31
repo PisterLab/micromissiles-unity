@@ -3,7 +3,7 @@ repos:
     rev: v19.1.7
     hooks:
       - id: clang-format
-        exclude: ^configs/.*\.cs$  # Exclude generated Protobuf .cs files.
+        exclude: ^Assets/Scripts/Protobuf/.*\.cs$  # Exclude generated Protobuf .cs files.
   - repo: https://github.com/keith/pre-commit-buildifier
     rev: 8.0.1
     hooks:
