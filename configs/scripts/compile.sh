@@ -12,13 +12,13 @@ OUTPUT_DIR="${2:-$WORKSPACE/Assets/Scripts/Protobuf}"
 
 # Check if protoc is installed.
 if ! command -v protoc &> /dev/null; then
-  echo "Error: protoc is not installed."
+  echo "Error: protoc is not installed." >&2
   exit 1
 fi
 
 # Check if the input directory exists.
 if [ ! -d "$INPUT_DIR" ]; then
-  echo "Error: Input directory does not exist: $INPUT_DIR."
+  echo "Error: Input directory does not exist: $INPUT_DIR." >&2
   exit 1
 fi
 
@@ -29,9 +29,6 @@ fi
 
 # Compile all .proto files in the input directory.
 echo "Compiling .proto files from $INPUT_DIR to $OUTPUT_DIR."
-protoc \
-  --proto_path="$WORKSPACE" \
-  --csharp_out="$OUTPUT_DIR" \
-  "$INPUT_DIR"/*.proto
+find "$INPUT_DIR" -name '*.proto' -exec protoc --proto_path="$WORKSPACE" --csharp_out="$OUTPUT_DIR" {} +
 
 echo "Protobuf compilation completed."

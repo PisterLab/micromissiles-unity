@@ -17,14 +17,16 @@ namespace protobuf {
 template <typename T>
 T LoadProtobufTextFile(const std::string& file) {
   std::ifstream ifs(file);
-  std::stringstream buffer;
-  buffer << ifs.rdbuf();
+  if (!ifs.is_open()) {
+    throw std::runtime_error(
+        absl::StrFormat("Failed to open the Protobuf text file: %s.", file));
+  }
+  google::protobuf::io::IstreamInputStream file_stream(&ifs);
   T message;
-  if (!google::protobuf::TextFormat::ParseFromString(buffer.str(), &message)) {
+  if (!google::protobuf::TextFormat::Parse(&file_stream, &message)) {
     throw std::runtime_error(
         absl::StrFormat("Failed to parse the Protobuf text file: %s.", file));
   }
-  ifs.close();
   return message;
 }
 

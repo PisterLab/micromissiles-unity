@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-public class Protobuf {
+public static class Protobuf {
   // Load a static configuration from a Protobuf text file to binary format and return the length of
   // the serialized message.
   [DllImport("protobuf")]
