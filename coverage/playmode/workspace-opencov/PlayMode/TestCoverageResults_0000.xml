@@ -66,14 +66,14 @@
         <File uid="57" fullPath="/github/workspace/Assets/Scripts/Utils/Interpolator2D.cs" />
         <File uid="58" fullPath="/github/workspace/Assets/Scripts/Utils/KDTree.cs" />
         <File uid="59" fullPath="/github/workspace/Assets/Scripts/Utils/PriorityQueue.cs" />
-        <File uid="60" fullPath="/github/workspace/Assets/Scripts/Protobuf/Agent.cs" />
-        <File uid="61" fullPath="/github/workspace/Assets/Scripts/Protobuf/Coordinates.cs" />
-        <File uid="62" fullPath="/github/workspace/Assets/Scripts/Protobuf/DynamicConfig.cs" />
-        <File uid="63" fullPath="/github/workspace/Assets/Scripts/Protobuf/Sensor.cs" />
-        <File uid="64" fullPath="/github/workspace/Assets/Scripts/Protobuf/SimulatorConfig.cs" />
-        <File uid="65" fullPath="/github/workspace/Assets/Scripts/Protobuf/State.cs" />
-        <File uid="66" fullPath="/github/workspace/Assets/Scripts/Protobuf/StaticConfig.cs" />
-        <File uid="67" fullPath="/github/workspace/Assets/Scripts/Protobuf/Transformation.cs" />
+        <File uid="60" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/Agent.cs" />
+        <File uid="61" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/Coordinates.cs" />
+        <File uid="62" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/DynamicConfig.cs" />
+        <File uid="63" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/Sensor.cs" />
+        <File uid="64" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/SimulatorConfig.cs" />
+        <File uid="65" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/State.cs" />
+        <File uid="66" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/StaticConfig.cs" />
+        <File uid="67" fullPath="/github/workspace/Assets/Scripts/Generated/Protobuf/Transformation.cs" />
         <File uid="68" fullPath="/github/workspace/Assets/Scripts/Config/StaticConfig.cs" />
       </Files>
       <Classes>
