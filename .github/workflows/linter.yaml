@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jidicula/clang-format-action@v4.13.0
+      - uses: jidicula/clang-format-action@v4.15.0
         with:
-          clang-format-version: 19
+          clang-format-version: 20
           check-path: '.'
           fallback-style: 'Google'
-          include-regex: '^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cs|cu))$'
+          exclude-regex: '^Assets\/Scripts\/Generated\/.*'
 
   buildifier:
     name: Run buildifier

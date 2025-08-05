@@ -8,7 +8,7 @@ WORKSPACE=$(git rev-parse --show-toplevel)
 
 # Default directories.
 INPUT_DIR="${1:-$WORKSPACE/configs/proto}"
-OUTPUT_DIR="${2:-$WORKSPACE/Assets/Scripts/Protobuf}"
+OUTPUT_DIR="${2:-$WORKSPACE/Assets/Scripts/Generated/Protobuf}"
 
 # Check if protoc is installed.
 if ! command -v protoc &> /dev/null; then
