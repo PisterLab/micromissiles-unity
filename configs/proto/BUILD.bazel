@@ -50,9 +50,19 @@ cc_proto_library(
 )
 
 proto_library(
+    name = "simulation_config_proto",
+    srcs = ["simulation_config.proto"],
+    deps = [":agent_proto"],
+)
+
+cc_proto_library(
+    name = "simulation_config_cc_proto",
+    deps = [":simulation_config_proto"],
+)
+
+proto_library(
     name = "simulator_config_proto",
     srcs = ["simulator_config.proto"],
-    deps = [":agent_proto"],
 )
 
 cc_proto_library(

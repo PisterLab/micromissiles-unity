@@ -176,23 +176,23 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableTelemetryLogging) {
       InitializeTelemetryLogFiles();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
     }
-    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
       InitializeEventLogFiles();
     }
   }
 
   private void RegisterSimulationEnded() {
-    if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);
       CloseTelemetryLogFiles();
       StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
           _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
     }
-    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
       WriteEventsToFile();
     }
   }
@@ -204,13 +204,13 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterNewThreat(Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
       RegisterNewAgent(threat, "NEW_THREAT");
     }
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
-    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
       RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
       interceptor.OnInterceptMiss += RegisterInterceptorMiss;
       interceptor.OnInterceptHit += RegisterInterceptorHit;
@@ -226,13 +226,13 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, true);
     }
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableEventLogging) {
+    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, false);
     }
   }

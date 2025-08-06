@@ -12,6 +12,7 @@ cc_library(
     ],
     deps = [
         ":protobuf",
+        "//configs/proto:simulation_config_cc_proto",
         "//configs/proto:simulator_config_cc_proto",
         "//configs/proto:static_config_cc_proto",
     ],

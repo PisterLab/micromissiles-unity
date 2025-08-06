@@ -8,7 +8,7 @@ using UnityEngine;
 /// Implements the Singleton pattern to ensure only one instance exists.
 /// </summary>
 public class SimManager : MonoBehaviour {
-  public SimulatorConfig simulatorConfig;
+  public Micromissiles.SimulatorConfig simulatorConfig;
 
   /// <summary>
   /// Singleton instance of SimManager.
@@ -155,7 +155,7 @@ public class SimManager : MonoBehaviour {
 
   public void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
-    // Time.fixedDeltaTime is derived from simulator.json.
+    // Time.fixedDeltaTime is derived from the simulator configuration.
     Time.maximumDeltaTime = Time.fixedDeltaTime * 3;
   }
 
@@ -175,7 +175,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void ResumeSimulation() {
-    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.PhysicsUpdateRate);
     SetTimeScale(SimulationConfig.timeScale);
     _isSimulationPaused = false;
   }
@@ -188,7 +188,7 @@ public class SimManager : MonoBehaviour {
     if (!IsSimulationPaused()) {
       // If the simulation was not paused, we need to update the time scale.
       SetTimeScale(SimulationConfig.timeScale);
-      Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.physicsUpdateRate);
+      Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.PhysicsUpdateRate);
       // If the simulation WAS paused, then ResumeSimulation will handle updating the time scale and
       // fixed delta time from the newly loaded config files.
     }
@@ -594,14 +594,4 @@ public class SimManager : MonoBehaviour {
   public void QuitSimulation() {
     Application.Quit();
   }
-}
-
-[System.Serializable]
-public class SimulatorConfig {
-  public bool enableTelemetryLogging;
-  public bool enableEventLogging;
-  public bool enableMissileTrailEffect;
-  public bool enableExplosionEffect;
-  public int physicsUpdateRate;
-  public bool persistentFlightTrails;
 }

@@ -41,10 +41,10 @@ public class ParticleManager : MonoBehaviour {
     _missileExplosionPool = new Queue<GameObject>();
     _hitMarkerList = new List<GameObject>();
 
-    if (SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
+    if (SimManager.Instance.simulatorConfig.EnableMissileTrailEffect) {
       InitializeMissileTrailParticlePool();
     }
-    if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
+    if (SimManager.Instance.simulatorConfig.EnableExplosionEffect) {
       InitializeMissileExplosionParticlePool();
     }
 
@@ -103,13 +103,13 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void RegisterAgentTerminated(Agent agent) {
-    if (SimManager.Instance.simulatorConfig.persistentFlightTrails) {
+    if (SimManager.Instance.simulatorConfig.PersistentFlightTrails) {
       CommandeerAgentTrailRenderer(agent);
     }
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.enableExplosionEffect) {
+    if (SimManager.Instance.simulatorConfig.EnableExplosionEffect) {
       PlayMissileExplosion(interceptor.transform.position);
     }
     GameObject hitMarkerObject = SpawnHitMarker(interceptor.transform.position);
@@ -245,7 +245,7 @@ public class ParticleManager : MonoBehaviour {
   /// <returns></returns>
   public GameObject RequestMissileTrailParticle() {
     if (_missileTrailPool.Count > 0 &&
-        SimManager.Instance.simulatorConfig.enableMissileTrailEffect) {
+        SimManager.Instance.simulatorConfig.EnableMissileTrailEffect) {
       GameObject trail = _missileTrailPool.Dequeue();
 
       return trail;

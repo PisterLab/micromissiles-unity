@@ -1,9 +1,21 @@
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 
 public static class ConfigLoader {
+  // Maximum serialized length of a Protobuf message.
+  // This value is estimated and can be increased if necessary.
+  private const int MaxProtobufSerializedLength = 1024;
+
+  // Static buffer for the serialized Protobuf message.
+  private static readonly byte[] _protobufSerializedBuffer = new byte[MaxProtobufSerializedLength];
+
+  public static string GetStreamingAssetsFilePath(string relativePath) {
+    return Path.Combine(Application.streamingAssetsPath, relativePath);
+  }
+
   public static string LoadFromStreamingAssets(string relativePath) {
     string filePath = Path.Combine(Application.streamingAssetsPath, relativePath);
 
@@ -61,10 +73,18 @@ public static class ConfigLoader {
         });
   }
 
-  public static SimulatorConfig LoadSimulatorConfig() {
-    string relativePath = "simulator.json";  // Path relative to StreamingAssets
-    string fileContent = LoadFromStreamingAssets(relativePath);
-    return JsonConvert.DeserializeObject<SimulatorConfig>(fileContent);
+  public static unsafe Micromissiles.SimulatorConfig LoadSimulatorConfig() {
+    // The path is relative to Assets/StreamingAssets.
+    string relativePath = "simulator.pbtxt";
+    string streamingAssetsPath = GetStreamingAssetsFilePath(relativePath);
+
+    int serializedLength = 0;
+    fixed(void* bufferPtr = _protobufSerializedBuffer) {
+      serializedLength = Protobuf.Protobuf_SimulatorConfig_LoadToBinary(
+          streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
+    }
+    return Micromissiles.SimulatorConfig.Parser.ParseFrom(_protobufSerializedBuffer, 0,
+                                                          serializedLength);
   }
 
   public static void PrintSimulationConfig(SimulationConfig config) {

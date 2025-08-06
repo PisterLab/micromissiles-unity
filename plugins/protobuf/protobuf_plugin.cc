@@ -5,6 +5,7 @@
 
 #include <cstring>
 
+#include "configs/proto/simulation_config.pb.h"
 #include "configs/proto/simulator_config.pb.h"
 #include "configs/proto/static_config.pb.h"
 #include "protobuf/protobuf.h"
@@ -25,5 +26,6 @@
 
 extern "C" {
 DEFINE_PROTOBUF_LOADER(StaticConfig);
+DEFINE_PROTOBUF_LOADER(SimulationConfig);
 DEFINE_PROTOBUF_LOADER(SimulatorConfig);
 }
