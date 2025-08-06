@@ -38,10 +38,8 @@ public class UIWindow : MonoBehaviour {
     isOpen = false;
   }
 
-  /// <summary>
-  /// Called when the UIWindow component is created in the editor
-  /// We will use it to configure the image component
-  /// </summary>
+  // Called when the UIWindow component is created in the editor
+  // We will use it to configure the image component
   private void Reset() {
     // 18 16 28 125
     GetComponent<Image>().color = new Color32(18, 16, 28, 125);
@@ -74,9 +72,7 @@ public class UIWindow : MonoBehaviour {
     windowTitleHandle.rectTransform.SetRight(30);  // Give spacing to the close button
   }
 
-  /// <summary>
-  /// Create the close [x] button in the top right corner of the window
-  /// </summary>
+  // Create the close [x] button in the top right corner of the window
   private void CreateCloseButton() {
     closeButton = new GameObject("CloseButton", typeof(RectTransform));
     RectTransform buttonTransform = closeButton.GetComponent<RectTransform>();

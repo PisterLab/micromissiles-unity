@@ -27,8 +27,16 @@ public abstract class TestBase {
   private FieldInfo GetFieldInfo(object obj, string fieldName) {
     var type = obj.GetType();
     var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
+
+    // If not found in the immediate type, search the inheritance hierarchy
+    while (field == null && type.BaseType != null) {
+      type = type.BaseType;
+      field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
+    }
+
     if (field == null) {
-      throw new Exception($"Field '{fieldName}' not found in type '{type.FullName}'.");
+      throw new Exception(
+          $"Field '{fieldName}' not found in type hierarchy of '{obj.GetType().FullName}'.");
     }
     return field;
   }
