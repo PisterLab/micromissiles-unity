@@ -25,7 +25,7 @@
   }
 
 extern "C" {
-DEFINE_PROTOBUF_LOADER(StaticConfig);
 DEFINE_PROTOBUF_LOADER(SimulationConfig);
 DEFINE_PROTOBUF_LOADER(SimulatorConfig);
+DEFINE_PROTOBUF_LOADER(StaticConfig);
 }
