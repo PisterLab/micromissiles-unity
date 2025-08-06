@@ -46,7 +46,7 @@ jobs:
   buildForAllSupportedPlatforms:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
-    needs: buildPlugins
+    needs: build-plugins
     strategy:
       fail-fast: false
       matrix:
