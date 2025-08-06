@@ -17,7 +17,7 @@ public static class ConfigLoader {
   }
 
   public static string LoadFromStreamingAssets(string relativePath) {
-    string filePath = Path.Combine(Application.streamingAssetsPath, relativePath);
+    string filePath = GetStreamingAssetsFilePath(relativePath);
 
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_IOS
     if (!filePath.StartsWith("file://")) {
