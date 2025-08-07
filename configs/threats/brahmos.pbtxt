@@ -1,0 +1,42 @@
+name: "BrahMos"
+type: FIXED_WING_THREAT
+cost: 100000
+acceleration_config {
+  max_forward_acceleration: 30
+  max_reference_normal_acceleration: 15
+  reference_speed: 960.4
+}
+body_config {
+  mass: 3000
+  cross_sectional_area: 0.352
+  fin_area: 1.2
+  body_area: 17.7
+}
+hit_config {
+  hit_radius: 4
+  kill_probability: 0.9
+}
+power_table {
+  power: IDLE
+  speed: 0
+}
+power_table {
+  power: LOW
+  speed: 480
+}
+power_table {
+  power: CRUISE
+  speed: 960.4
+}
+power_table {
+  power: MIL
+  speed: 990
+}
+power_table {
+  power: MAX
+  speed: 1029
+}
+visualization_config {
+  symbol_present: "hostile_missile_cruise_present"
+  symbol_destroyed: "hostile_missile_cruise_destroyed"
+}

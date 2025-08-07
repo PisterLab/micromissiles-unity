@@ -1,4 +1,5 @@
 name: "Micromissile"
+type: MISSILE_INTERCEPTOR
 cost: 2000
 acceleration_config {
   max_forward_acceleration: 0

@@ -1,4 +1,5 @@
 name: "Quadcopter"
+type: ROTARY_WING_THREAT
 cost: 1000
 acceleration_config {
   max_forward_acceleration: 50

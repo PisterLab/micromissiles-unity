@@ -2,6 +2,19 @@ syntax = "proto3";
 
 package micromissiles;
 
+// Agent type enumeration.
+enum Type {
+  INVALID = 0;
+
+  // Interceptor types.
+  CARRIER_INTERCEPTOR = 1;
+  MISSILE_INTERCEPTOR = 2;
+
+  // Threat types.
+  FIXED_WING_THREAT = 3;
+  ROTARY_WING_THREAT = 4;
+}
+
 // Power enumeration.
 enum Power {
   IDLE = 0;
@@ -97,30 +110,33 @@ message StaticConfig {
   // Agent name.
   string name = 1;
 
+  // Agent type. The agent type determines the class to be instantiated.
+  Type type = 2;
+
   // Unit cost.
-  float cost = 2;
+  float cost = 3;
 
   // Acceleration configuration.
-  AccelerationConfig acceleration_config = 3;
+  AccelerationConfig acceleration_config = 4;
 
   // Boost configuration.
-  BoostConfig boost_config = 4;
+  BoostConfig boost_config = 5;
 
   // Lift and drag configuration.
-  LiftDragConfig lift_drag_config = 5;
+  LiftDragConfig lift_drag_config = 6;
 
   // Body configuration.
-  BodyConfig body_config = 6;
+  BodyConfig body_config = 7;
 
   // Hit configuration.
-  HitConfig hit_config = 7;
+  HitConfig hit_config = 8;
 
   // Controller configuration.
-  ControllerConfig controller_config = 8;
+  ControllerConfig controller_config = 9;
 
   // Power table.
-  repeated PowerTableEntry power_table = 9;
+  repeated PowerTableEntry power_table = 10;
 
   // Visualization configuration.
-  VisualizationConfig visualization_config = 10;
+  VisualizationConfig visualization_config = 11;
 }

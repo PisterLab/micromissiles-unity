@@ -39,22 +39,26 @@ namespace Micromissiles {
             "dGhyZXNob2xkGAEgASgCIkUKD1Bvd2VyVGFibGVFbnRyeRIjCgVwb3dlchgB",
             "IAEoDjIULm1pY3JvbWlzc2lsZXMuUG93ZXISDQoFc3BlZWQYAiABKAIiRwoT",
             "VmlzdWFsaXphdGlvbkNvbmZpZxIWCg5zeW1ib2xfcHJlc2VudBgBIAEoCRIY",
-            "ChBzeW1ib2xfZGVzdHJveWVkGAIgASgJIuYDCgxTdGF0aWNDb25maWcSDAoE",
-            "bmFtZRgBIAEoCRIMCgRjb3N0GAIgASgCEj4KE2FjY2VsZXJhdGlvbl9jb25m",
-            "aWcYAyABKAsyIS5taWNyb21pc3NpbGVzLkFjY2VsZXJhdGlvbkNvbmZpZxIw",
-            "Cgxib29zdF9jb25maWcYBCABKAsyGi5taWNyb21pc3NpbGVzLkJvb3N0Q29u",
-            "ZmlnEjcKEGxpZnRfZHJhZ19jb25maWcYBSABKAsyHS5taWNyb21pc3NpbGVz",
-            "LkxpZnREcmFnQ29uZmlnEi4KC2JvZHlfY29uZmlnGAYgASgLMhkubWljcm9t",
-            "aXNzaWxlcy5Cb2R5Q29uZmlnEiwKCmhpdF9jb25maWcYByABKAsyGC5taWNy",
-            "b21pc3NpbGVzLkhpdENvbmZpZxI6ChFjb250cm9sbGVyX2NvbmZpZxgIIAEo",
-            "CzIfLm1pY3JvbWlzc2lsZXMuQ29udHJvbGxlckNvbmZpZxIzCgtwb3dlcl90",
-            "YWJsZRgJIAMoCzIeLm1pY3JvbWlzc2lsZXMuUG93ZXJUYWJsZUVudHJ5EkAK",
-            "FHZpc3VhbGl6YXRpb25fY29uZmlnGAogASgLMiIubWljcm9taXNzaWxlcy5W",
-            "aXN1YWxpemF0aW9uQ29uZmlnKjgKBVBvd2VyEggKBElETEUQABIHCgNMT1cQ",
-            "ARIKCgZDUlVJU0UQAhIHCgNNSUwQAxIHCgNNQVgQBGIGcHJvdG8z"));
+            "ChBzeW1ib2xfZGVzdHJveWVkGAIgASgJIokECgxTdGF0aWNDb25maWcSDAoE",
+            "bmFtZRgBIAEoCRIhCgR0eXBlGAIgASgOMhMubWljcm9taXNzaWxlcy5UeXBl",
+            "EgwKBGNvc3QYAyABKAISPgoTYWNjZWxlcmF0aW9uX2NvbmZpZxgEIAEoCzIh",
+            "Lm1pY3JvbWlzc2lsZXMuQWNjZWxlcmF0aW9uQ29uZmlnEjAKDGJvb3N0X2Nv",
+            "bmZpZxgFIAEoCzIaLm1pY3JvbWlzc2lsZXMuQm9vc3RDb25maWcSNwoQbGlm",
+            "dF9kcmFnX2NvbmZpZxgGIAEoCzIdLm1pY3JvbWlzc2lsZXMuTGlmdERyYWdD",
+            "b25maWcSLgoLYm9keV9jb25maWcYByABKAsyGS5taWNyb21pc3NpbGVzLkJv",
+            "ZHlDb25maWcSLAoKaGl0X2NvbmZpZxgIIAEoCzIYLm1pY3JvbWlzc2lsZXMu",
+            "SGl0Q29uZmlnEjoKEWNvbnRyb2xsZXJfY29uZmlnGAkgASgLMh8ubWljcm9t",
+            "aXNzaWxlcy5Db250cm9sbGVyQ29uZmlnEjMKC3Bvd2VyX3RhYmxlGAogAygL",
+            "Mh4ubWljcm9taXNzaWxlcy5Qb3dlclRhYmxlRW50cnkSQAoUdmlzdWFsaXph",
+            "dGlvbl9jb25maWcYCyABKAsyIi5taWNyb21pc3NpbGVzLlZpc3VhbGl6YXRp",
+            "b25Db25maWcqdAoEVHlwZRILCgdJTlZBTElEEAASFwoTQ0FSUklFUl9JTlRF",
+            "UkNFUFRPUhABEhcKE01JU1NJTEVfSU5URVJDRVBUT1IQAhIVChFGSVhFRF9X",
+            "SU5HX1RIUkVBVBADEhYKElJPVEFSWV9XSU5HX1RIUkVBVBAEKjgKBVBvd2Vy",
+            "EggKBElETEUQABIHCgNMT1cQARIKCgZDUlVJU0UQAhIHCgNNSUwQAxIHCgNN",
+            "QVgQBGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.Power), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.Type), typeof(global::Micromissiles.Power), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AccelerationConfig), global::Micromissiles.AccelerationConfig.Parser, new[]{ "MaxForwardAcceleration", "MaxReferenceNormalAcceleration", "ReferenceSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.BoostConfig), global::Micromissiles.BoostConfig.Parser, new[]{ "BoostTime", "BoostAcceleration" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.LiftDragConfig), global::Micromissiles.LiftDragConfig.Parser, new[]{ "LiftCoefficient", "DragCoefficient", "LiftDragRatio" }, null, null, null, null),
@@ -63,13 +67,30 @@ namespace Micromissiles {
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.ControllerConfig), global::Micromissiles.ControllerConfig.Parser, new[]{ "ProportionalNavigationRangeThreshold" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.PowerTableEntry), global::Micromissiles.PowerTableEntry.Parser, new[]{ "Power", "Speed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.VisualizationConfig), global::Micromissiles.VisualizationConfig.Parser, new[]{ "SymbolPresent", "SymbolDestroyed" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.StaticConfig), global::Micromissiles.StaticConfig.Parser, new[]{ "Name", "Cost", "AccelerationConfig", "BoostConfig", "LiftDragConfig", "BodyConfig", "HitConfig", "ControllerConfig", "PowerTable", "VisualizationConfig" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.StaticConfig), global::Micromissiles.StaticConfig.Parser, new[]{ "Name", "Type", "Cost", "AccelerationConfig", "BoostConfig", "LiftDragConfig", "BodyConfig", "HitConfig", "ControllerConfig", "PowerTable", "VisualizationConfig" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Enums
+  /// <summary>
+  /// Agent type enumeration.
+  /// </summary>
+  public enum Type {
+    [pbr::OriginalName("INVALID")] Invalid = 0,
+    /// <summary>
+    /// Interceptor types.
+    /// </summary>
+    [pbr::OriginalName("CARRIER_INTERCEPTOR")] CarrierInterceptor = 1,
+    [pbr::OriginalName("MISSILE_INTERCEPTOR")] MissileInterceptor = 2,
+    /// <summary>
+    /// Threat types.
+    /// </summary>
+    [pbr::OriginalName("FIXED_WING_THREAT")] FixedWingThreat = 3,
+    [pbr::OriginalName("ROTARY_WING_THREAT")] RotaryWingThreat = 4,
+  }
+
   /// <summary>
   /// Power enumeration.
   /// </summary>
@@ -2195,6 +2216,7 @@ namespace Micromissiles {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public StaticConfig(StaticConfig other) : this() {
       name_ = other.name_;
+      type_ = other.type_;
       cost_ = other.cost_;
       accelerationConfig_ = other.accelerationConfig_ != null ? other.accelerationConfig_.Clone() : null;
       boostConfig_ = other.boostConfig_ != null ? other.boostConfig_.Clone() : null;
@@ -2228,8 +2250,23 @@ namespace Micromissiles {
       }
     }
 
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 2;
+    private global::Micromissiles.Type type_ = global::Micromissiles.Type.Invalid;
+    /// <summary>
+    /// Agent type. The agent type determines the class to be instantiated.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Micromissiles.Type Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
     /// <summary>Field number for the "cost" field.</summary>
-    public const int CostFieldNumber = 2;
+    public const int CostFieldNumber = 3;
     private float cost_;
     /// <summary>
     /// Unit cost.
@@ -2244,7 +2281,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "acceleration_config" field.</summary>
-    public const int AccelerationConfigFieldNumber = 3;
+    public const int AccelerationConfigFieldNumber = 4;
     private global::Micromissiles.AccelerationConfig accelerationConfig_;
     /// <summary>
     /// Acceleration configuration.
@@ -2259,7 +2296,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "boost_config" field.</summary>
-    public const int BoostConfigFieldNumber = 4;
+    public const int BoostConfigFieldNumber = 5;
     private global::Micromissiles.BoostConfig boostConfig_;
     /// <summary>
     /// Boost configuration.
@@ -2274,7 +2311,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "lift_drag_config" field.</summary>
-    public const int LiftDragConfigFieldNumber = 5;
+    public const int LiftDragConfigFieldNumber = 6;
     private global::Micromissiles.LiftDragConfig liftDragConfig_;
     /// <summary>
     /// Lift and drag configuration.
@@ -2289,7 +2326,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "body_config" field.</summary>
-    public const int BodyConfigFieldNumber = 6;
+    public const int BodyConfigFieldNumber = 7;
     private global::Micromissiles.BodyConfig bodyConfig_;
     /// <summary>
     /// Body configuration.
@@ -2304,7 +2341,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "hit_config" field.</summary>
-    public const int HitConfigFieldNumber = 7;
+    public const int HitConfigFieldNumber = 8;
     private global::Micromissiles.HitConfig hitConfig_;
     /// <summary>
     /// Hit configuration.
@@ -2319,7 +2356,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "controller_config" field.</summary>
-    public const int ControllerConfigFieldNumber = 8;
+    public const int ControllerConfigFieldNumber = 9;
     private global::Micromissiles.ControllerConfig controllerConfig_;
     /// <summary>
     /// Controller configuration.
@@ -2334,9 +2371,9 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "power_table" field.</summary>
-    public const int PowerTableFieldNumber = 9;
+    public const int PowerTableFieldNumber = 10;
     private static readonly pb::FieldCodec<global::Micromissiles.PowerTableEntry> _repeated_powerTable_codec
-        = pb::FieldCodec.ForMessage(74, global::Micromissiles.PowerTableEntry.Parser);
+        = pb::FieldCodec.ForMessage(82, global::Micromissiles.PowerTableEntry.Parser);
     private readonly pbc::RepeatedField<global::Micromissiles.PowerTableEntry> powerTable_ = new pbc::RepeatedField<global::Micromissiles.PowerTableEntry>();
     /// <summary>
     /// Power table.
@@ -2348,7 +2385,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "visualization_config" field.</summary>
-    public const int VisualizationConfigFieldNumber = 10;
+    public const int VisualizationConfigFieldNumber = 11;
     private global::Micromissiles.VisualizationConfig visualizationConfig_;
     /// <summary>
     /// Visualization configuration.
@@ -2378,6 +2415,7 @@ namespace Micromissiles {
         return true;
       }
       if (Name != other.Name) return false;
+      if (Type != other.Type) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Cost, other.Cost)) return false;
       if (!object.Equals(AccelerationConfig, other.AccelerationConfig)) return false;
       if (!object.Equals(BoostConfig, other.BoostConfig)) return false;
@@ -2395,6 +2433,7 @@ namespace Micromissiles {
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (Type != global::Micromissiles.Type.Invalid) hash ^= Type.GetHashCode();
       if (Cost != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Cost);
       if (accelerationConfig_ != null) hash ^= AccelerationConfig.GetHashCode();
       if (boostConfig_ != null) hash ^= BoostConfig.GetHashCode();
@@ -2426,37 +2465,41 @@ namespace Micromissiles {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
+      if (Type != global::Micromissiles.Type.Invalid) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Type);
+      }
       if (Cost != 0F) {
-        output.WriteRawTag(21);
+        output.WriteRawTag(29);
         output.WriteFloat(Cost);
       }
       if (accelerationConfig_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(AccelerationConfig);
       }
       if (boostConfig_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(BoostConfig);
       }
       if (liftDragConfig_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(LiftDragConfig);
       }
       if (bodyConfig_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(BodyConfig);
       }
       if (hitConfig_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteMessage(HitConfig);
       }
       if (controllerConfig_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteMessage(ControllerConfig);
       }
       powerTable_.WriteTo(output, _repeated_powerTable_codec);
       if (visualizationConfig_ != null) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(90);
         output.WriteMessage(VisualizationConfig);
       }
       if (_unknownFields != null) {
@@ -2473,37 +2516,41 @@ namespace Micromissiles {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
+      if (Type != global::Micromissiles.Type.Invalid) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) Type);
+      }
       if (Cost != 0F) {
-        output.WriteRawTag(21);
+        output.WriteRawTag(29);
         output.WriteFloat(Cost);
       }
       if (accelerationConfig_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(AccelerationConfig);
       }
       if (boostConfig_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(BoostConfig);
       }
       if (liftDragConfig_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(LiftDragConfig);
       }
       if (bodyConfig_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(BodyConfig);
       }
       if (hitConfig_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteMessage(HitConfig);
       }
       if (controllerConfig_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteMessage(ControllerConfig);
       }
       powerTable_.WriteTo(ref output, _repeated_powerTable_codec);
       if (visualizationConfig_ != null) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(90);
         output.WriteMessage(VisualizationConfig);
       }
       if (_unknownFields != null) {
@@ -2518,6 +2565,9 @@ namespace Micromissiles {
       int size = 0;
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (Type != global::Micromissiles.Type.Invalid) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (Cost != 0F) {
         size += 1 + 4;
@@ -2558,6 +2608,9 @@ namespace Micromissiles {
       }
       if (other.Name.Length != 0) {
         Name = other.Name;
+      }
+      if (other.Type != global::Micromissiles.Type.Invalid) {
+        Type = other.Type;
       }
       if (other.Cost != 0F) {
         Cost = other.Cost;
@@ -2628,57 +2681,61 @@ namespace Micromissiles {
             Name = input.ReadString();
             break;
           }
-          case 21: {
+          case 16: {
+            Type = (global::Micromissiles.Type) input.ReadEnum();
+            break;
+          }
+          case 29: {
             Cost = input.ReadFloat();
             break;
           }
-          case 26: {
+          case 34: {
             if (accelerationConfig_ == null) {
               AccelerationConfig = new global::Micromissiles.AccelerationConfig();
             }
             input.ReadMessage(AccelerationConfig);
             break;
           }
-          case 34: {
+          case 42: {
             if (boostConfig_ == null) {
               BoostConfig = new global::Micromissiles.BoostConfig();
             }
             input.ReadMessage(BoostConfig);
             break;
           }
-          case 42: {
+          case 50: {
             if (liftDragConfig_ == null) {
               LiftDragConfig = new global::Micromissiles.LiftDragConfig();
             }
             input.ReadMessage(LiftDragConfig);
             break;
           }
-          case 50: {
+          case 58: {
             if (bodyConfig_ == null) {
               BodyConfig = new global::Micromissiles.BodyConfig();
             }
             input.ReadMessage(BodyConfig);
             break;
           }
-          case 58: {
+          case 66: {
             if (hitConfig_ == null) {
               HitConfig = new global::Micromissiles.HitConfig();
             }
             input.ReadMessage(HitConfig);
             break;
           }
-          case 66: {
+          case 74: {
             if (controllerConfig_ == null) {
               ControllerConfig = new global::Micromissiles.ControllerConfig();
             }
             input.ReadMessage(ControllerConfig);
             break;
           }
-          case 74: {
+          case 82: {
             powerTable_.AddEntriesFrom(input, _repeated_powerTable_codec);
             break;
           }
-          case 82: {
+          case 90: {
             if (visualizationConfig_ == null) {
               VisualizationConfig = new global::Micromissiles.VisualizationConfig();
             }
@@ -2708,57 +2765,61 @@ namespace Micromissiles {
             Name = input.ReadString();
             break;
           }
-          case 21: {
+          case 16: {
+            Type = (global::Micromissiles.Type) input.ReadEnum();
+            break;
+          }
+          case 29: {
             Cost = input.ReadFloat();
             break;
           }
-          case 26: {
+          case 34: {
             if (accelerationConfig_ == null) {
               AccelerationConfig = new global::Micromissiles.AccelerationConfig();
             }
             input.ReadMessage(AccelerationConfig);
             break;
           }
-          case 34: {
+          case 42: {
             if (boostConfig_ == null) {
               BoostConfig = new global::Micromissiles.BoostConfig();
             }
             input.ReadMessage(BoostConfig);
             break;
           }
-          case 42: {
+          case 50: {
             if (liftDragConfig_ == null) {
               LiftDragConfig = new global::Micromissiles.LiftDragConfig();
             }
             input.ReadMessage(LiftDragConfig);
             break;
           }
-          case 50: {
+          case 58: {
             if (bodyConfig_ == null) {
               BodyConfig = new global::Micromissiles.BodyConfig();
             }
             input.ReadMessage(BodyConfig);
             break;
           }
-          case 58: {
+          case 66: {
             if (hitConfig_ == null) {
               HitConfig = new global::Micromissiles.HitConfig();
             }
             input.ReadMessage(HitConfig);
             break;
           }
-          case 66: {
+          case 74: {
             if (controllerConfig_ == null) {
               ControllerConfig = new global::Micromissiles.ControllerConfig();
             }
             input.ReadMessage(ControllerConfig);
             break;
           }
-          case 74: {
+          case 82: {
             powerTable_.AddEntriesFrom(ref input, _repeated_powerTable_codec);
             break;
           }
-          case 82: {
+          case 90: {
             if (visualizationConfig_ == null) {
               VisualizationConfig = new global::Micromissiles.VisualizationConfig();
             }
