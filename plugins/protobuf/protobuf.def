@@ -1,0 +1,3 @@
+EXPORTS
+    Protobuf_StaticConfig_LoadToBinary
+    Protobuf_SimulatorConfig_LoadToBinary
