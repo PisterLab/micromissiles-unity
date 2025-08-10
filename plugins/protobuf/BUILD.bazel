@@ -2,6 +2,8 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "cc_test")
 
 package(default_visibility = ["//visibility:public"])
 
+exports_files(["protobuf.def"])
+
 cc_library(
     name = "protobuf_plugin",
     srcs = ["protobuf_plugin.cc"],
