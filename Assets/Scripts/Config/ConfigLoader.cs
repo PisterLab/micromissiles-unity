@@ -9,6 +9,9 @@ public static class ConfigLoader {
   // This value is estimated and can be increased if necessary.
   private const int MaxProtobufSerializedLength = 1024;
 
+  // Relative path to the default simulator configuration.
+  private const string SimulatorConfigRelativePath = "simulator.pbtxt";
+
   public static string GetStreamingAssetsFilePath(string relativePath) {
     return Path.Combine(Application.streamingAssetsPath, relativePath);
   }
@@ -70,16 +73,15 @@ public static class ConfigLoader {
         });
   }
 
-  public static unsafe Micromissiles.SimulatorConfig LoadSimulatorConfig() {
-    // The path is relative to Assets/StreamingAssets.
-    string relativePath = "simulator.pbtxt";
-    string streamingAssetsPath = GetStreamingAssetsFilePath(relativePath);
-
+  public static Micromissiles.SimulatorConfig LoadSimulatorConfig() {
+    string streamingAssetsPath = GetStreamingAssetsFilePath(SimulatorConfigRelativePath);
     byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
     int serializedLength = 0;
-    fixed(void* bufferPtr = serializedBuffer) {
-      serializedLength = Protobuf.Protobuf_SimulatorConfig_LoadToBinary(
-          streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
+    unsafe {
+      fixed(void* bufferPtr = serializedBuffer) {
+        serializedLength = Protobuf.Protobuf_SimulatorConfig_LoadToBinary(
+            streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
+      }
     }
     return Micromissiles.SimulatorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
   }
