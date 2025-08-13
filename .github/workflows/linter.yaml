@@ -15,10 +15,8 @@ jobs:
       - name: Run clang-format
         uses: jidicula/clang-format-action@v4.13.0
         with:
-          clang-format-version: 19
-          check-path: '.'
+          clang-format-version: 20
           fallback-style: 'Google'
-          include-regex: '^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cs|cu))$'
 
   buildifier:
     name: Run buildifier
