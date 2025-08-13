@@ -6,5 +6,8 @@ DerivePointerAlignment: false
 Language: CSharp
 ColumnLimit: 100
 ---
+Language: JavaScript
+DisableFormat: true
+---
 Language: Json
 DisableFormat: true
