@@ -59,7 +59,7 @@ public class FixedWingThreat : Threat {
   private void UpdateWaypointAndPower() {
     // Get the next waypoint and power setting from the attack behavior.
     // TODO: Implement support for sensors to update the track on the target position.
-    (_currentWaypoint, _currentPowerSetting) =
+    (_currentWaypoint, _currentPower) =
         _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
 

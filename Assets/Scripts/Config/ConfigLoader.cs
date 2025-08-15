@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,6 +12,23 @@ public static class ConfigLoader {
 
   // Relative path to the default simulator configuration.
   private const string SimulatorConfigRelativePath = "simulator.pbtxt";
+
+  // Map from the interceptor type to the static configuration file.
+  private static readonly Dictionary<Micromissiles.InterceptorType, string>
+      InterceptorStaticConfigMap = new() {
+        { Micromissiles.InterceptorType.Hydra70, "hydra70.pbtxt" },
+        { Micromissiles.InterceptorType.Micromissile, "micromissiles.pbtxt" },
+      };
+
+  // Map from the threat type to the static configuration file.
+  private static readonly Dictionary<Micromissiles.ThreatType, string> ThreatStaticConfigMap =
+      new() {
+        { Micromissiles.ThreatType.Quadcopter, "quadcopter.pbtxt" },
+        { Micromissiles.ThreatType.Ucav, "ucav.pbtxt" },
+        { Micromissiles.ThreatType.Brahmos, "brahmos.pbtxt" },
+        { Micromissiles.ThreatType.Ascm, "ascm.pbtxt" },
+        { Micromissiles.ThreatType.Fateh110B, "fateh_110b.pbtxt" },
+      };
 
   public static string GetStreamingAssetsFilePath(string relativePath) {
     return Path.Combine(Application.streamingAssetsPath, relativePath);
@@ -41,8 +59,8 @@ public static class ConfigLoader {
     return www.downloadHandler.text;
   }
 
-  public static SimulationConfig LoadSimulationConfig(string configFileName) {
-    string relativePath = Path.Combine("Configs", configFileName);
+  public static SimulationConfig LoadSimulationConfig(string configFile) {
+    string relativePath = Path.Combine("Configs", configFile);
     string fileContent = LoadFromStreamingAssets(relativePath);
 
     if (string.IsNullOrEmpty(fileContent)) {
@@ -54,23 +72,8 @@ public static class ConfigLoader {
         JsonConvert.DeserializeObject<SimulationConfig>(fileContent, new JsonSerializerSettings {
           Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
         });
-    UIManager.Instance.LogActionMessage($"[SIM] Loaded SimulationConfig: {configFileName}.");
+    UIManager.Instance.LogActionMessage($"[SIM] Loaded SimulationConfig: {configFile}.");
     return config;
-  }
-
-  public static StaticAgentConfig LoadStaticAgentConfig(string configFileName) {
-    string relativePath = Path.Combine("Configs/Models", configFileName);
-    string fileContent = LoadFromStreamingAssets(relativePath);
-
-    if (string.IsNullOrEmpty(fileContent)) {
-      Debug.LogError($"Failed to load StaticAgentConfig from {relativePath}");
-      return null;
-    }
-
-    return JsonConvert.DeserializeObject<StaticAgentConfig>(
-        fileContent, new JsonSerializerSettings {
-          Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
-        });
   }
 
   public static Micromissiles.SimulatorConfig LoadSimulatorConfig() {
@@ -83,93 +86,39 @@ public static class ConfigLoader {
             streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
       }
     }
-    return Micromissiles.SimulatorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    var message =
+        Micromissiles.SimulatorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    ProtobufInitializer.Initialize(message);
+    return message;
   }
 
-  public static void PrintSimulationConfig(SimulationConfig config) {
-    if (config == null) {
-      Debug.Log("SimulationConfig is null");
-      return;
+  public static Micromissiles.StaticConfig LoadStaticConfig(
+      Micromissiles.InterceptorType interceptorType) {
+    return InterceptorStaticConfigMap.TryGetValue(interceptorType, out var configFile)
+               ? LoadStaticConfig(configFile)
+               : new Micromissiles.StaticConfig();
+  }
+
+  public static Micromissiles.StaticConfig LoadStaticConfig(Micromissiles.ThreatType threatType) {
+    return ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)
+               ? LoadStaticConfig(configFile)
+               : new Micromissiles.StaticConfig();
+  }
+
+  public static Micromissiles.StaticConfig LoadStaticConfig(string configFile) {
+    string modelPath = Path.Combine("Configs/Models", configFile);
+    string streamingAssetsPath = GetStreamingAssetsFilePath(modelPath);
+    byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
+    int serializedLength = 0;
+    unsafe {
+      fixed(void* bufferPtr = serializedBuffer) {
+        serializedLength = Protobuf.Protobuf_StaticConfig_LoadToBinary(
+            streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
+      }
     }
-
-    Debug.Log("SimulationConfig:");
-    Debug.Log($"Time Scale: {config.timeScale}");
-
-    Debug.Log("Interceptor Swarm Configurations:");
-    for (int i = 0; i < config.interceptor_swarm_configs.Count; ++i) {
-      PrintSwarmConfig(config.interceptor_swarm_configs[i], $"Interceptor Swarm {i + 1}");
-    }
-
-    Debug.Log("Threat Swarm Configurations:");
-    for (int i = 0; i < config.threat_swarm_configs.Count; ++i) {
-      PrintSwarmConfig(config.threat_swarm_configs[i], $"Threat Swarm {i + 1}");
-    }
-  }
-
-  private static void PrintSwarmConfig(SwarmConfig swarmConfig, string swarmName) {
-    Debug.Log($"{swarmName}:");
-    Debug.Log($"  Number of Agents: {swarmConfig.num_agents}");
-    PrintDynamicAgentConfig(swarmConfig.dynamic_agent_config);
-  }
-
-  private static void PrintDynamicAgentConfig(DynamicAgentConfig dynamicAgentConfig) {
-    Debug.Log("  Agent Configuration:");
-    Debug.Log($"    Interceptor Model: {dynamicAgentConfig.agent_model}");
-    Debug.Log($"    Threat Model: {dynamicAgentConfig.agent_model}");
-    PrintInitialState(dynamicAgentConfig.initial_state);
-    PrintStandardDeviation(dynamicAgentConfig.standard_deviation);
-    PrintDynamicConfig(dynamicAgentConfig.dynamic_config);
-    PrintPlottingConfig(dynamicAgentConfig.plotting_config);
-    PrintSubmunitionsConfig(dynamicAgentConfig.submunitions_config);
-  }
-
-  private static void PrintInitialState(InitialState initialState) {
-    Debug.Log("    Initial State:");
-    Debug.Log($"      Position: {initialState.position}");
-    Debug.Log($"      Rotation: {initialState.rotation}");
-    Debug.Log($"      Velocity: {initialState.velocity}");
-  }
-
-  private static void PrintStandardDeviation(StandardDeviation standardDeviation) {
-    Debug.Log("    Standard Deviation:");
-    Debug.Log($"      Position: {standardDeviation.position}");
-    Debug.Log($"      Velocity: {standardDeviation.velocity}");
-  }
-
-  private static void PrintDynamicConfig(DynamicConfig dynamicConfig) {
-    Debug.Log("    Dynamic Configuration:");
-    Debug.Log($"      Launch Time: {dynamicConfig.launch_config.launch_time}");
-    Debug.Log($"      Sensor Type: {dynamicConfig.sensor_config.type}");
-    Debug.Log($"      Sensor Frequency: {dynamicConfig.sensor_config.frequency}");
-  }
-
-  private static void PrintPlottingConfig(PlottingConfig plottingConfig) {
-    Debug.Log("    Plotting Configuration:");
-    Debug.Log($"      Color: {plottingConfig.color}");
-    Debug.Log($"      Line Style: {plottingConfig.linestyle}");
-    Debug.Log($"      Marker: {plottingConfig.marker}");
-  }
-
-  private static void PrintSubmunitionsConfig(SubmunitionsConfig submunitionsConfig) {
-    if (submunitionsConfig == null) {
-      Debug.Log("    Submunitions Configuration: None");
-      return;
-    }
-
-    Debug.Log("    Submunitions Configuration:");
-    Debug.Log($"      Number of Submunitions: {submunitionsConfig.num_submunitions}");
-    Debug.Log($"      Dispense Time: {submunitionsConfig.dispense_time}");
-    PrintSubmunitionDynamicAgentConfig(submunitionsConfig.dynamic_agent_config);
-  }
-
-  private static void PrintSubmunitionDynamicAgentConfig(
-      SubmunitionDynamicAgentConfig agentConfig) {
-    Debug.Log("      Submunition Agent Configuration:");
-    Debug.Log($"        Interceptor Model: {agentConfig.agent_model}");
-    Debug.Log($"        Threat Model: {agentConfig.agent_model}");
-    PrintInitialState(agentConfig.initial_state);
-    PrintStandardDeviation(agentConfig.standard_deviation);
-    PrintDynamicConfig(agentConfig.dynamic_config);
-    PrintPlottingConfig(agentConfig.plotting_config);
+    var message =
+        Micromissiles.StaticConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    ProtobufInitializer.Initialize(message);
+    return message;
   }
 }

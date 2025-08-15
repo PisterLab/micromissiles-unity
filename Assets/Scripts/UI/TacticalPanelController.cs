@@ -135,7 +135,7 @@ public class TacticalPanelController : MonoBehaviour {
     TacticalSymbol tacticalSymbol = symbolObj.GetComponent<TacticalSymbol>();
 
     // Set common properties
-    tacticalSymbol.SetSprite(trackFile.Agent.staticAgentConfig.symbolPresent);
+    tacticalSymbol.SetSprite(trackFile.Agent.staticConfig.VisualizationConfig.SymbolPresent);
     tacticalSymbol.SetDirectionArrowRotation(
         Mathf.Atan2(trackFile.Agent.GetVelocity().z, trackFile.Agent.GetVelocity().x) *
         Mathf.Rad2Deg);
@@ -144,7 +144,7 @@ public class TacticalPanelController : MonoBehaviour {
 
     // Set type-specific properties
     if (trackFile is ThreatData) {
-      tacticalSymbol.SetType(trackFile.Agent.staticAgentConfig.agentClass.ToString());
+      tacticalSymbol.SetType(trackFile.Agent.staticConfig.AgentType.ToString());
     } else if (trackFile is InterceptorData) {
       tacticalSymbol.SetType("Interceptor");
     }

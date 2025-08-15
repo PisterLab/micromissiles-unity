@@ -57,7 +57,7 @@ public class ThreatTests : AgentTestBase {
     // Load configurations using ConfigLoader
     // Create dynamic configurations for threats
     var ucavConfig = new DynamicAgentConfig {
-      agent_model = "ucav.json", attack_behavior = "test_direct_attack.json",
+      agent_model = "ucav.pbtxt", attack_behavior = "test_direct_attack.json",
       initial_state = new InitialState { position = new Vector3(2000, 100, 4000),
                                          rotation = new Vector3(90, 0, 0),
                                          velocity = new Vector3(-50, 0, -100) },
@@ -70,7 +70,7 @@ public class ThreatTests : AgentTestBase {
     };
 
     var quadcopterConfig = new DynamicAgentConfig {
-      agent_model = "quadcopter.json", attack_behavior = "test_direct_attack.json",
+      agent_model = "quadcopter.pbtxt", attack_behavior = "test_direct_attack.json",
       initial_state =
           new InitialState { position = new Vector3(0, 600, 6000), rotation = new Vector3(90, 0, 0),
                              velocity = new Vector3(0, 0, -50) },
@@ -119,7 +119,7 @@ public class ThreatTests : AgentTestBase {
     try {
       // Act
       DynamicAgentConfig config = new DynamicAgentConfig {
-        agent_model = "ucav.json", attack_behavior = "test_direct_attack.json",
+        agent_model = "ucav.pbtxt", attack_behavior = "test_direct_attack.json",
         initial_state = new InitialState(), standard_deviation = new StandardDeviation(),
         dynamic_config = new DynamicConfig()
       };
@@ -152,11 +152,11 @@ public class ThreatTests : AgentTestBase {
 
       Assert.AreEqual(5000f, dttWaypoints[0].distance);
       Assert.AreEqual(100f, dttWaypoints[0].altitude);
-      Assert.AreEqual(PowerSetting.MAX, dttWaypoints[0].power);
+      Assert.AreEqual(Micromissiles.Power.Max, dttWaypoints[0].power);
 
       Assert.AreEqual(10000f, dttWaypoints[1].distance);
       Assert.AreEqual(500f, dttWaypoints[1].altitude);
-      Assert.AreEqual(PowerSetting.MIL, dttWaypoints[1].power);
+      Assert.AreEqual(Micromissiles.Power.Mil, dttWaypoints[1].power);
 
       // Check targetVelocity
       Vector3 targetVelocity = directAttackBehavior.targetVelocity;
@@ -241,17 +241,17 @@ public class ThreatTests : AgentTestBase {
 
   private class MockAttackBehavior : AttackBehavior {
     private Vector3 waypoint;
-    private PowerSetting powerSetting;
+    private Micromissiles.Power power;
 
-    public MockAttackBehavior(Vector3 waypoint, PowerSetting powerSetting) {
+    public MockAttackBehavior(Vector3 waypoint, Micromissiles.Power power) {
       this.waypoint = waypoint;
-      this.powerSetting = powerSetting;
+      this.power = power;
       this.name = "MockAttackBehavior";
     }
 
-    public override (Vector3, PowerSetting)
+    public override (Vector3, Micromissiles.Power)
         GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
-      return (waypoint, powerSetting);
+      return (waypoint, power);
     }
   }
 
@@ -266,13 +266,13 @@ public class ThreatTests : AgentTestBase {
     rotaryWingThreat.SetPosition(initialPosition);
     SetPrivateField(rotaryWingThreat, "_currentWaypoint", waypoint);
     rotaryWingThreat.SetVelocity(initialVelocity);
-    SetPrivateField(rotaryWingThreat, "_currentPowerSetting", PowerSetting.MIL);
+    SetPrivateField(rotaryWingThreat, "_currentPower", Micromissiles.Power.Mil);
 
-    // Assume PowerTableLookup returns 50 for PowerSetting.MIL
-    // Assert that its true using PowerTableLookup
-    float powerSetting =
-        InvokePrivateMethod<float>(rotaryWingThreat, "PowerTableLookup", PowerSetting.MIL);
-    Assert.AreEqual(desiredSpeed, powerSetting);
+    // Assume that LookupPowerTable returns 50 for MIL.
+    // Assert that it is true using LookupPowerTable.
+    float power =
+        InvokePrivateMethod<float>(rotaryWingThreat, "LookupPowerTable", Micromissiles.Power.Mil);
+    Assert.AreEqual(desiredSpeed, power);
 
     // Act
     Vector3 accelerationInput =

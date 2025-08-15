@@ -6,8 +6,8 @@ using UnityEngine;
 // speed by defining a cost of the assignment equal to the speed lost for the maneuver.
 public class MaxSpeedAssignment : IAssignment {
   // Assign a target to each interceptor that has not been assigned a target yet.
-  public unsafe IEnumerable<IAssignment.AssignmentItem> Assign(
-      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
+  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
+                                                        in IReadOnlyList<Threat> threats) {
     List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
 
     List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
@@ -30,11 +30,11 @@ public class MaxSpeedAssignment : IAssignment {
 
       // The speed decays exponentially with the travelled distance and with the bearing change.
       float distanceTimeConstant =
-          2 * interceptor.staticAgentConfig.bodyConfig.mass /
+          2 * interceptor.staticConfig.BodyConfig.Mass /
           ((float)Constants.CalculateAirDensityAtAltitude(interceptor.GetPosition().y) *
-           interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
-           interceptor.staticAgentConfig.bodyConfig.crossSectionalArea);
-      float angleTimeConstant = interceptor.staticAgentConfig.liftDragConfig.liftDragRatio;
+           interceptor.staticConfig.LiftDragConfig.DragCoefficient *
+           interceptor.staticConfig.BodyConfig.CrossSectionalArea);
+      float angleTimeConstant = interceptor.staticConfig.LiftDragConfig.LiftDragRatio;
       // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
       float minTurningRadius = (float)(interceptor.GetVelocity().sqrMagnitude /
                                        interceptor.CalculateMaxNormalAcceleration());
@@ -60,11 +60,13 @@ public class MaxSpeedAssignment : IAssignment {
     int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
     int[] assignedThreatIndices = new int[assignableInterceptors.Count];
     int numAssignments = 0;
-    fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
-        fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
-      numAssignments = Assignment.Assignment_EvenAssignment_Assign(
-          assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
-          (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr);
+    unsafe {
+      fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
+          fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
+        numAssignments = Assignment.Assignment_EvenAssignment_Assign(
+            assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
+            (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr);
+      }
     }
     for (int i = 0; i < numAssignments; ++i) {
       int interceptorIndex = assignedInterceptorIndices[i];

@@ -9,11 +9,11 @@ public class DirectAttackBehavior : AttackBehavior {
 
   // Returns the next waypoint for the threat to navigate to.
   // In addition, return the power setting to use toward the waypoint.
-  public override (Vector3 waypointPosition, PowerSetting power)
+  public override (Vector3 waypointPosition, Micromissiles.Power power)
       GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
     if (flightPlan.waypoints == null || flightPlan.waypoints.Count == 0) {
       // If no waypoints are defined, directly target the target position.
-      return (targetPosition, PowerSetting.MAX);
+      return (targetPosition, Micromissiles.Power.Max);
     }
 
     Vector3 directionToTarget = targetPosition - currentPosition;
@@ -29,19 +29,23 @@ public class DirectAttackBehavior : AttackBehavior {
     }
 
     Vector3 waypointPosition;
-    PowerSetting power;
+    Micromissiles.Power power;
 
     if (currentWaypointIndex == flightPlan.waypoints.Count - 1 &&
         distanceToTarget < flightPlan.waypoints[currentWaypointIndex].distance) {
       // This is the last waypoint, so target the final position.
       waypointPosition = targetPosition;
-      power = flightPlan.waypoints[0].power;
+      // TODO(titan): Replace with the actual power flightPlan.waypoints[0].power after the attack
+      // behavior proto has been implemented.
+      power = Micromissiles.Power.Mil;
     } else {
       // There is a next waypoint.
       DTTWaypoint nextWaypoint = flightPlan.waypoints[currentWaypointIndex + 1];
       waypointPosition = targetPosition + directionToTarget.normalized * nextWaypoint.distance;
       waypointPosition.y = nextWaypoint.altitude;
-      power = nextWaypoint.power;
+      // TODO(titan): Replace with the actual power nextWaypoint.power after the attack behavior
+      // proto has been implemented.
+      power = Micromissiles.Power.Mil;
     }
 
     return (waypointPosition, power);
@@ -66,7 +70,7 @@ public class DirectAttackBehavior : AttackBehavior {
 public class DTTWaypoint : Waypoint {
   public float distance;
   public float altitude;
-  public PowerSetting power;
+  public Micromissiles.Power power;
 }
 
 public class DTTFlightPlan : FlightPlan {

@@ -8,6 +8,15 @@ using UnityEngine;
 /// Implements the Singleton pattern to ensure only one instance exists.
 /// </summary>
 public class SimManager : MonoBehaviour {
+  // Map from the agent type to the prefab class name.
+  private static readonly Dictionary<Micromissiles.AgentType, string> AgentTypePrefabMap = new() {
+    { Micromissiles.AgentType.CarrierInterceptor, "CarrierInterceptor" },
+    { Micromissiles.AgentType.MissileInterceptor, "MissileInterceptor" },
+    { Micromissiles.AgentType.FixedWingThreat, "FixedWingThreat" },
+    { Micromissiles.AgentType.RotaryWingThreat, "RotaryWingThreat" },
+
+  };
+
   public Micromissiles.SimulatorConfig simulatorConfig;
 
   /// <summary>
@@ -327,7 +336,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    _costDestroyedThreats += threat.staticAgentConfig.unitCost;
+    _costDestroyedThreats += threat.staticConfig.Cost;
     if (interceptor is Interceptor missileComponent) {
       _activeInterceptors.Remove(missileComponent);
     }
@@ -385,17 +394,15 @@ public class SimManager : MonoBehaviour {
   /// <param name="initialState">Initial state of the interceptor.</param>
   /// <returns>The created Interceptor instance, or null if creation failed.</returns>
   public Interceptor CreateInterceptor(DynamicAgentConfig config, InitialState initialState) {
-    string interceptorModelFile = config.agent_model;
-    interceptorModelFile = "Interceptors/" + interceptorModelFile;
-    StaticAgentConfig interceptorStaticAgentConfig =
-        ConfigLoader.LoadStaticAgentConfig(interceptorModelFile);
-    string agentClass = interceptorStaticAgentConfig.agentClass;
-    // The interceptor class corresponds to the Prefab that must exist in the Resources/Prefabs
-    // folder.
-    GameObject interceptorObject = CreateAgent(config, initialState, agentClass);
-
-    if (interceptorObject == null)
+    string modelFile = config.agent_model;
+    Micromissiles.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
+    GameObject interceptorObject = null;
+    if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
+      interceptorObject = CreateAgent(config, initialState, prefab);
+    }
+    if (interceptorObject == null) {
       return null;
+    }
 
     // Interceptor-specific logic.
     switch (config.dynamic_config.sensor_config.type) {
@@ -412,7 +419,7 @@ public class SimManager : MonoBehaviour {
     _activeInterceptors.Add(interceptor);
 
     // Set the static agent config.
-    interceptor.SetStaticAgentConfig(interceptorStaticAgentConfig);
+    interceptor.SetStaticConfig(staticConfig);
 
     // Subscribe events.
     interceptor.OnInterceptHit += RegisterInterceptorHit;
@@ -420,10 +427,10 @@ public class SimManager : MonoBehaviour {
 
     // Assign a unique and simple ID.
     int interceptorId = _interceptorObjects.Count;
-    interceptorObject.name = $"{interceptorStaticAgentConfig.name}_Interceptor_{interceptorId}";
+    interceptorObject.name = $"{staticConfig.Name}_Interceptor_{interceptorId}";
 
     // Add the interceptor's unit cost to the total cost.
-    _costLaunchedInterceptors += interceptorStaticAgentConfig.unitCost;
+    _costLaunchedInterceptors += staticConfig.Cost;
 
     // Let listeners know a new interceptor has been created.
     OnNewInterceptor?.Invoke(interceptor);
@@ -437,21 +444,21 @@ public class SimManager : MonoBehaviour {
   /// <param name="config">Configuration settings for the threat.</param>
   /// <returns>The created Threat instance, or null if creation failed.</returns>
   private Threat CreateThreat(DynamicAgentConfig config) {
-    string threatModelFile = config.agent_model;
-    threatModelFile = "Threats/" + threatModelFile;
-    StaticAgentConfig threatStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(threatModelFile);
-    string agentClass = threatStaticAgentConfig.agentClass;
-    // The threat class corresponds to the Prefab that must exist in the Resources/Prefabs folder.
-    GameObject threatObject = CreateRandomAgent(config, agentClass);
-
-    if (threatObject == null)
+    string modelFile = config.agent_model;
+    Micromissiles.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
+    GameObject threatObject = null;
+    if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
+      threatObject = CreateRandomAgent(config, prefab);
+    }
+    if (threatObject == null) {
       return null;
+    }
 
     Threat threat = threatObject.GetComponent<Threat>();
     _threatObjects.Add(threat);
 
     // Set the static agent config.
-    threat.SetStaticAgentConfig(threatStaticAgentConfig);
+    threat.SetStaticConfig(staticConfig);
 
     // Set the attack behavior.
     AttackBehavior attackBehavior = LoadAttackBehavior(config);
@@ -463,7 +470,7 @@ public class SimManager : MonoBehaviour {
 
     // Assign a unique and simple ID.
     int threatId = _threatObjects.Count;
-    threatObject.name = $"{threatStaticAgentConfig.name}_Threat_{threatId}";
+    threatObject.name = $"{staticConfig.Name}_Threat_{threatId}";
 
     // Let listeners know that a new threat has been created.
     OnNewThreat?.Invoke(threat);

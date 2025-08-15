@@ -13,9 +13,9 @@ public class AttackBehavior {
   public FlightPlan flightPlan;
   // Returns the next waypoint for the threat to navigate to
   // In addition, return the power setting to use toward the waypoint
-  public virtual (Vector3 waypointPosition, PowerSetting power)
+  public virtual (Vector3 waypointPosition, Micromissiles.Power power)
       GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
-    return (targetPosition, PowerSetting.IDLE);
+    return (targetPosition, Micromissiles.Power.Idle);
   }
 
   protected static string ResolveBehaviorPath(string json) {
@@ -41,7 +41,7 @@ public class AttackBehavior {
 [System.Serializable]
 public class VectorWaypoint : Waypoint {
   public Vector3 waypointPosition;
-  public PowerSetting power;
+  public Micromissiles.Power power;
 }
 
 [System.Serializable]

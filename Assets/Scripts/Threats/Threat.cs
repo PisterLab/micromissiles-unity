@@ -7,7 +7,7 @@ public abstract class Threat : Agent {
   [SerializeField]
   protected Vector3 _currentWaypoint;
   [SerializeField]
-  protected PowerSetting _currentPowerSetting;
+  protected Micromissiles.Power _currentPower;
 
   protected SensorOutput _sensorOutput;
   protected Sensor _sensor;
@@ -23,22 +23,14 @@ public abstract class Threat : Agent {
                                                    attackBehavior.targetVelocity);
   }
 
-  protected float PowerTableLookup(PowerSetting powerSetting) {
-    switch (powerSetting) {
-      case PowerSetting.IDLE:
-        return staticAgentConfig.powerTable.IDLE;
-      case PowerSetting.LOW:
-        return staticAgentConfig.powerTable.LOW;
-      case PowerSetting.CRUISE:
-        return staticAgentConfig.powerTable.CRUISE;
-      case PowerSetting.MIL:
-        return staticAgentConfig.powerTable.MIL;
-      case PowerSetting.MAX:
-        return staticAgentConfig.powerTable.MAX;
-      default:
-        Debug.LogError("Invalid power setting.");
-        return 0f;
+  protected float LookupPowerTable(Micromissiles.Power power) {
+    foreach (var entry in staticConfig.PowerTable) {
+      if (entry.Power == power) {
+        return entry.Speed;
+      }
     }
+    Debug.LogError($"Invalid power setting: {power}.");
+    return 0f;
   }
 
   public override bool IsAssignable() {
@@ -58,7 +50,7 @@ public abstract class Threat : Agent {
     Vector3 transformVelocity = GetVelocity();
 
     // Get the target speed for the current power setting.
-    float targetSpeed = PowerTableLookup(_currentPowerSetting);
+    float targetSpeed = LookupPowerTable(_currentPower);
 
     // Calculate the current speed.
     float currentSpeed = transformVelocity.magnitude;
@@ -131,8 +123,8 @@ public abstract class Threat : Agent {
     Vector3 transformPosition = GetPosition();
     Vector3 interceptorPosition = interceptor.GetPosition();
 
-    // Set power setting to maximum.
-    _currentPowerSetting = PowerSetting.MAX;
+    // Set power to maximum.
+    _currentPower = Micromissiles.Power.Max;
 
     // Evade the interceptor by changing the velocity to be normal to the interceptor's velocity.
     Vector3 normalVelocity = Vector3.ProjectOnPlane(transformVelocity, interceptorVelocity);
