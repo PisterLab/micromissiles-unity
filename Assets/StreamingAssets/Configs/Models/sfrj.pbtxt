@@ -1,5 +1,5 @@
 name: "Solid Fuel Ramjet"
-type: CARRIER_INTERCEPTOR
+agent_type: CARRIER_INTERCEPTOR
 cost: 100000
 acceleration_config {
   max_forward_acceleration: 0

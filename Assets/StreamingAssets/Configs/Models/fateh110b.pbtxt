@@ -1,5 +1,5 @@
 name: "Fateh 110B"
-type: FIXED_WING_THREAT
+agent_type: FIXED_WING_THREAT
 cost: 200000
 acceleration_config {
   max_forward_acceleration: 0

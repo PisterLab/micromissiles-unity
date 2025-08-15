@@ -1,17 +1,20 @@
-name: "Anti-Ship Cruise Missile"
-type: FIXED_WING_THREAT
-cost: 30000
+name: "BrahMos"
+agent_type: FIXED_WING_THREAT
+cost: 100000
 acceleration_config {
-  max_forward_acceleration: 1
-  max_reference_normal_acceleration: 10
-  reference_speed: 300
+  max_forward_acceleration: 30
+  max_reference_normal_acceleration: 15
+  reference_speed: 960.4
 }
 body_config {
-  mass: 10
+  mass: 3000
+  cross_sectional_area: 0.352
+  fin_area: 1.2
+  body_area: 17.7
 }
 hit_config {
-  hit_radius: 1
-  kill_probability: 0.8
+  hit_radius: 4
+  kill_probability: 0.9
 }
 power_table {
   power: IDLE
@@ -19,19 +22,19 @@ power_table {
 }
 power_table {
   power: LOW
-  speed: 40
+  speed: 480
 }
 power_table {
   power: CRUISE
-  speed: 300
+  speed: 960.4
 }
 power_table {
   power: MIL
-  speed: 300
+  speed: 990
 }
 power_table {
   power: MAX
-  speed: 300
+  speed: 1029
 }
 visualization_config {
   symbol_present: "hostile_missile_cruise_present"
