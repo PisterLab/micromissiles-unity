@@ -7,14 +7,19 @@ import "configs/proto/state.proto";
 
 // Interceptor type enumeration.
 enum InterceptorType {
-  MICROMISSILE = 0;
+  INVALID_INTERCEPTOR = 0;
   HYDRA_70 = 1;
+  MICROMISSILE = 2;
 }
 
 // Threat type enumeration.
 enum ThreatType {
-  QUADCOPTER = 0;
-  UCAV = 1;
+  INVALID_THREAT = 0;
+  QUADCOPTER = 1;
+  UCAV = 2;
+  BRAHMOS = 3;
+  ASCM = 4;
+  FATEH_110B = 5;
 }
 
 // Flight phase enumeration.
@@ -44,19 +49,21 @@ message AgentConfig {
     InterceptorType interceptor_type = 1;
     // Threat type.
     ThreatType threat_type = 2;
+    // Custom configuration.
+    string config = 3;
   }
 
   // Initial state.
-  State initial_state = 3;
+  State initial_state = 4;
 
   // Initial state standard deviation to randomize the state variables.
-  State standard_deviation = 4;
+  State standard_deviation = 5;
 
   // Dynamic configuration.
-  DynamicConfig dynamic_config = 5;
+  DynamicConfig dynamic_config = 6;
 
   // Submunitions configuration.
-  SubmunitionsConfig submunitions_config = 6;
+  SubmunitionsConfig submunitions_config = 7;
 }
 
 // Agent swarm configuration.

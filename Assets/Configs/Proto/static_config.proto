@@ -3,8 +3,8 @@ syntax = "proto3";
 package micromissiles;
 
 // Agent type enumeration.
-enum Type {
-  INVALID = 0;
+enum AgentType {
+  INVALID_TYPE = 0;
 
   // Interceptor types.
   CARRIER_INTERCEPTOR = 1;
@@ -111,7 +111,7 @@ message StaticConfig {
   string name = 1;
 
   // Agent type. The agent type determines the class to be instantiated.
-  Type type = 2;
+  AgentType agent_type = 2;
 
   // Unit cost.
   float cost = 3;

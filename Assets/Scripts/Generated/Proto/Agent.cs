@@ -26,28 +26,30 @@ namespace Micromissiles {
           string.Concat(
             "Chljb25maWdzL3Byb3RvL2FnZW50LnByb3RvEg1taWNyb21pc3NpbGVzGiJj",
             "b25maWdzL3Byb3RvL2R5bmFtaWNfY29uZmlnLnByb3RvGhljb25maWdzL3By",
-            "b3RvL3N0YXRlLnByb3RvIswDCgtBZ2VudENvbmZpZxI6ChBpbnRlcmNlcHRv",
+            "b3RvL3N0YXRlLnByb3RvIt4DCgtBZ2VudENvbmZpZxI6ChBpbnRlcmNlcHRv",
             "cl90eXBlGAEgASgOMh4ubWljcm9taXNzaWxlcy5JbnRlcmNlcHRvclR5cGVI",
             "ABIwCgt0aHJlYXRfdHlwZRgCIAEoDjIZLm1pY3JvbWlzc2lsZXMuVGhyZWF0",
-            "VHlwZUgAEisKDWluaXRpYWxfc3RhdGUYAyABKAsyFC5taWNyb21pc3NpbGVz",
-            "LlN0YXRlEjAKEnN0YW5kYXJkX2RldmlhdGlvbhgEIAEoCzIULm1pY3JvbWlz",
-            "c2lsZXMuU3RhdGUSNAoOZHluYW1pY19jb25maWcYBSABKAsyHC5taWNyb21p",
-            "c3NpbGVzLkR5bmFtaWNDb25maWcSSgoTc3VibXVuaXRpb25zX2NvbmZpZxgG",
-            "IAEoCzItLm1pY3JvbWlzc2lsZXMuQWdlbnRDb25maWcuU3VibXVuaXRpb25z",
-            "Q29uZmlnGmAKElN1Ym11bml0aW9uc0NvbmZpZxIYChBudW1fc3VibXVuaXRp",
-            "b25zGAEgASgNEjAKDGFnZW50X2NvbmZpZxgCIAEoCzIaLm1pY3JvbWlzc2ls",
-            "ZXMuQWdlbnRDb25maWdCDAoKdHlwZV9vbmVvZiJYChBBZ2VudFN3YXJtQ29u",
-            "ZmlnEhIKCm51bV9hZ2VudHMYASABKA0SMAoMYWdlbnRfY29uZmlnGAIgASgL",
-            "MhoubWljcm9taXNzaWxlcy5BZ2VudENvbmZpZyoxCg9JbnRlcmNlcHRvclR5",
-            "cGUSEAoMTUlDUk9NSVNTSUxFEAASDAoISFlEUkFfNzAQASomCgpUaHJlYXRU",
-            "eXBlEg4KClFVQURDT1BURVIQABIICgRVQ0FWEAEqYQoLRmxpZ2h0UGhhc2US",
-            "DwoLSU5JVElBTElaRUQQABIJCgVSRUFEWRABEgkKBUJPT1NUEAISDQoJTUlE",
-            "Q09VUlNFEAMSDAoIVEVSTUlOQUwQBBIOCgpURVJNSU5BVEVEEAViBnByb3Rv",
-            "Mw=="));
+            "VHlwZUgAEhAKBmNvbmZpZxgDIAEoCUgAEisKDWluaXRpYWxfc3RhdGUYBCAB",
+            "KAsyFC5taWNyb21pc3NpbGVzLlN0YXRlEjAKEnN0YW5kYXJkX2RldmlhdGlv",
+            "bhgFIAEoCzIULm1pY3JvbWlzc2lsZXMuU3RhdGUSNAoOZHluYW1pY19jb25m",
+            "aWcYBiABKAsyHC5taWNyb21pc3NpbGVzLkR5bmFtaWNDb25maWcSSgoTc3Vi",
+            "bXVuaXRpb25zX2NvbmZpZxgHIAEoCzItLm1pY3JvbWlzc2lsZXMuQWdlbnRD",
+            "b25maWcuU3VibXVuaXRpb25zQ29uZmlnGmAKElN1Ym11bml0aW9uc0NvbmZp",
+            "ZxIYChBudW1fc3VibXVuaXRpb25zGAEgASgNEjAKDGFnZW50X2NvbmZpZxgC",
+            "IAEoCzIaLm1pY3JvbWlzc2lsZXMuQWdlbnRDb25maWdCDAoKdHlwZV9vbmVv",
+            "ZiJYChBBZ2VudFN3YXJtQ29uZmlnEhIKCm51bV9hZ2VudHMYASABKA0SMAoM",
+            "YWdlbnRfY29uZmlnGAIgASgLMhoubWljcm9taXNzaWxlcy5BZ2VudENvbmZp",
+            "ZypKCg9JbnRlcmNlcHRvclR5cGUSFwoTSU5WQUxJRF9JTlRFUkNFUFRPUhAA",
+            "EgwKCEhZRFJBXzcwEAESEAoMTUlDUk9NSVNTSUxFEAIqYQoKVGhyZWF0VHlw",
+            "ZRISCg5JTlZBTElEX1RIUkVBVBAAEg4KClFVQURDT1BURVIQARIICgRVQ0FW",
+            "EAISCwoHQlJBSE1PUxADEggKBEFTQ00QBBIOCgpGQVRFSF8xMTBCEAUqYQoL",
+            "RmxpZ2h0UGhhc2USDwoLSU5JVElBTElaRUQQABIJCgVSRUFEWRABEgkKBUJP",
+            "T1NUEAISDQoJTUlEQ09VUlNFEAMSDAoIVEVSTUlOQUwQBBIOCgpURVJNSU5B",
+            "VEVEEAViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Micromissiles.DynamicConfigReflection.Descriptor, global::Micromissiles.StateReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.InterceptorType), typeof(global::Micromissiles.ThreatType), typeof(global::Micromissiles.FlightPhase), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AgentConfig), global::Micromissiles.AgentConfig.Parser, new[]{ "InterceptorType", "ThreatType", "InitialState", "StandardDeviation", "DynamicConfig", "SubmunitionsConfig" }, new[]{ "TypeOneof" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AgentConfig.Types.SubmunitionsConfig), global::Micromissiles.AgentConfig.Types.SubmunitionsConfig.Parser, new[]{ "NumSubmunitions", "AgentConfig" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AgentConfig), global::Micromissiles.AgentConfig.Parser, new[]{ "InterceptorType", "ThreatType", "Config", "InitialState", "StandardDeviation", "DynamicConfig", "SubmunitionsConfig" }, new[]{ "TypeOneof" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AgentConfig.Types.SubmunitionsConfig), global::Micromissiles.AgentConfig.Types.SubmunitionsConfig.Parser, new[]{ "NumSubmunitions", "AgentConfig" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AgentSwarmConfig), global::Micromissiles.AgentSwarmConfig.Parser, new[]{ "NumAgents", "AgentConfig" }, null, null, null, null)
           }));
     }
@@ -59,16 +61,21 @@ namespace Micromissiles {
   /// Interceptor type enumeration.
   /// </summary>
   public enum InterceptorType {
-    [pbr::OriginalName("MICROMISSILE")] Micromissile = 0,
+    [pbr::OriginalName("INVALID_INTERCEPTOR")] InvalidInterceptor = 0,
     [pbr::OriginalName("HYDRA_70")] Hydra70 = 1,
+    [pbr::OriginalName("MICROMISSILE")] Micromissile = 2,
   }
 
   /// <summary>
   /// Threat type enumeration.
   /// </summary>
   public enum ThreatType {
-    [pbr::OriginalName("QUADCOPTER")] Quadcopter = 0,
-    [pbr::OriginalName("UCAV")] Ucav = 1,
+    [pbr::OriginalName("INVALID_THREAT")] InvalidThreat = 0,
+    [pbr::OriginalName("QUADCOPTER")] Quadcopter = 1,
+    [pbr::OriginalName("UCAV")] Ucav = 2,
+    [pbr::OriginalName("BRAHMOS")] Brahmos = 3,
+    [pbr::OriginalName("ASCM")] Ascm = 4,
+    [pbr::OriginalName("FATEH_110B")] Fateh110B = 5,
   }
 
   /// <summary>
@@ -135,6 +142,9 @@ namespace Micromissiles {
         case TypeOneofOneofCase.ThreatType:
           ThreatType = other.ThreatType;
           break;
+        case TypeOneofOneofCase.Config:
+          Config = other.Config;
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -154,7 +164,7 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::Micromissiles.InterceptorType InterceptorType {
-      get { return HasInterceptorType ? (global::Micromissiles.InterceptorType) typeOneof_ : global::Micromissiles.InterceptorType.Micromissile; }
+      get { return HasInterceptorType ? (global::Micromissiles.InterceptorType) typeOneof_ : global::Micromissiles.InterceptorType.InvalidInterceptor; }
       set {
         typeOneof_ = value;
         typeOneofCase_ = TypeOneofOneofCase.InterceptorType;
@@ -183,7 +193,7 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::Micromissiles.ThreatType ThreatType {
-      get { return HasThreatType ? (global::Micromissiles.ThreatType) typeOneof_ : global::Micromissiles.ThreatType.Quadcopter; }
+      get { return HasThreatType ? (global::Micromissiles.ThreatType) typeOneof_ : global::Micromissiles.ThreatType.InvalidThreat; }
       set {
         typeOneof_ = value;
         typeOneofCase_ = TypeOneofOneofCase.ThreatType;
@@ -204,8 +214,37 @@ namespace Micromissiles {
       }
     }
 
+    /// <summary>Field number for the "config" field.</summary>
+    public const int ConfigFieldNumber = 3;
+    /// <summary>
+    /// Custom configuration.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Config {
+      get { return HasConfig ? (string) typeOneof_ : ""; }
+      set {
+        typeOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        typeOneofCase_ = TypeOneofOneofCase.Config;
+      }
+    }
+    /// <summary>Gets whether the "config" field is set</summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool HasConfig {
+      get { return typeOneofCase_ == TypeOneofOneofCase.Config; }
+    }
+    /// <summary> Clears the value of the oneof if it's currently set to "config" </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearConfig() {
+      if (HasConfig) {
+        ClearTypeOneof();
+      }
+    }
+
     /// <summary>Field number for the "initial_state" field.</summary>
-    public const int InitialStateFieldNumber = 3;
+    public const int InitialStateFieldNumber = 4;
     private global::Micromissiles.State initialState_;
     /// <summary>
     /// Initial state.
@@ -220,7 +259,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "standard_deviation" field.</summary>
-    public const int StandardDeviationFieldNumber = 4;
+    public const int StandardDeviationFieldNumber = 5;
     private global::Micromissiles.State standardDeviation_;
     /// <summary>
     /// Initial state standard deviation to randomize the state variables.
@@ -235,7 +274,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "dynamic_config" field.</summary>
-    public const int DynamicConfigFieldNumber = 5;
+    public const int DynamicConfigFieldNumber = 6;
     private global::Micromissiles.DynamicConfig dynamicConfig_;
     /// <summary>
     /// Dynamic configuration.
@@ -250,7 +289,7 @@ namespace Micromissiles {
     }
 
     /// <summary>Field number for the "submunitions_config" field.</summary>
-    public const int SubmunitionsConfigFieldNumber = 6;
+    public const int SubmunitionsConfigFieldNumber = 7;
     private global::Micromissiles.AgentConfig.Types.SubmunitionsConfig submunitionsConfig_;
     /// <summary>
     /// Submunitions configuration.
@@ -270,6 +309,7 @@ namespace Micromissiles {
       None = 0,
       InterceptorType = 1,
       ThreatType = 2,
+      Config = 3,
     }
     private TypeOneofOneofCase typeOneofCase_ = TypeOneofOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -302,6 +342,7 @@ namespace Micromissiles {
       }
       if (InterceptorType != other.InterceptorType) return false;
       if (ThreatType != other.ThreatType) return false;
+      if (Config != other.Config) return false;
       if (!object.Equals(InitialState, other.InitialState)) return false;
       if (!object.Equals(StandardDeviation, other.StandardDeviation)) return false;
       if (!object.Equals(DynamicConfig, other.DynamicConfig)) return false;
@@ -316,6 +357,7 @@ namespace Micromissiles {
       int hash = 1;
       if (HasInterceptorType) hash ^= InterceptorType.GetHashCode();
       if (HasThreatType) hash ^= ThreatType.GetHashCode();
+      if (HasConfig) hash ^= Config.GetHashCode();
       if (initialState_ != null) hash ^= InitialState.GetHashCode();
       if (standardDeviation_ != null) hash ^= StandardDeviation.GetHashCode();
       if (dynamicConfig_ != null) hash ^= DynamicConfig.GetHashCode();
@@ -347,20 +389,24 @@ namespace Micromissiles {
         output.WriteRawTag(16);
         output.WriteEnum((int) ThreatType);
       }
-      if (initialState_ != null) {
+      if (HasConfig) {
         output.WriteRawTag(26);
+        output.WriteString(Config);
+      }
+      if (initialState_ != null) {
+        output.WriteRawTag(34);
         output.WriteMessage(InitialState);
       }
       if (standardDeviation_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(StandardDeviation);
       }
       if (dynamicConfig_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(DynamicConfig);
       }
       if (submunitionsConfig_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(SubmunitionsConfig);
       }
       if (_unknownFields != null) {
@@ -381,20 +427,24 @@ namespace Micromissiles {
         output.WriteRawTag(16);
         output.WriteEnum((int) ThreatType);
       }
-      if (initialState_ != null) {
+      if (HasConfig) {
         output.WriteRawTag(26);
+        output.WriteString(Config);
+      }
+      if (initialState_ != null) {
+        output.WriteRawTag(34);
         output.WriteMessage(InitialState);
       }
       if (standardDeviation_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(StandardDeviation);
       }
       if (dynamicConfig_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(DynamicConfig);
       }
       if (submunitionsConfig_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(SubmunitionsConfig);
       }
       if (_unknownFields != null) {
@@ -412,6 +462,9 @@ namespace Micromissiles {
       }
       if (HasThreatType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ThreatType);
+      }
+      if (HasConfig) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Config);
       }
       if (initialState_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(InitialState);
@@ -468,6 +521,9 @@ namespace Micromissiles {
         case TypeOneofOneofCase.ThreatType:
           ThreatType = other.ThreatType;
           break;
+        case TypeOneofOneofCase.Config:
+          Config = other.Config;
+          break;
       }
 
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -500,27 +556,31 @@ namespace Micromissiles {
             break;
           }
           case 26: {
+            Config = input.ReadString();
+            break;
+          }
+          case 34: {
             if (initialState_ == null) {
               InitialState = new global::Micromissiles.State();
             }
             input.ReadMessage(InitialState);
             break;
           }
-          case 34: {
+          case 42: {
             if (standardDeviation_ == null) {
               StandardDeviation = new global::Micromissiles.State();
             }
             input.ReadMessage(StandardDeviation);
             break;
           }
-          case 42: {
+          case 50: {
             if (dynamicConfig_ == null) {
               DynamicConfig = new global::Micromissiles.DynamicConfig();
             }
             input.ReadMessage(DynamicConfig);
             break;
           }
-          case 50: {
+          case 58: {
             if (submunitionsConfig_ == null) {
               SubmunitionsConfig = new global::Micromissiles.AgentConfig.Types.SubmunitionsConfig();
             }
@@ -557,27 +617,31 @@ namespace Micromissiles {
             break;
           }
           case 26: {
+            Config = input.ReadString();
+            break;
+          }
+          case 34: {
             if (initialState_ == null) {
               InitialState = new global::Micromissiles.State();
             }
             input.ReadMessage(InitialState);
             break;
           }
-          case 34: {
+          case 42: {
             if (standardDeviation_ == null) {
               StandardDeviation = new global::Micromissiles.State();
             }
             input.ReadMessage(StandardDeviation);
             break;
           }
-          case 42: {
+          case 50: {
             if (dynamicConfig_ == null) {
               DynamicConfig = new global::Micromissiles.DynamicConfig();
             }
             input.ReadMessage(DynamicConfig);
             break;
           }
-          case 50: {
+          case 58: {
             if (submunitionsConfig_ == null) {
               SubmunitionsConfig = new global::Micromissiles.AgentConfig.Types.SubmunitionsConfig();
             }

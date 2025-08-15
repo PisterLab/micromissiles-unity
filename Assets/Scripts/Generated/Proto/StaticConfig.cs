@@ -39,26 +39,26 @@ namespace Micromissiles {
             "dGhyZXNob2xkGAEgASgCIkUKD1Bvd2VyVGFibGVFbnRyeRIjCgVwb3dlchgB",
             "IAEoDjIULm1pY3JvbWlzc2lsZXMuUG93ZXISDQoFc3BlZWQYAiABKAIiRwoT",
             "VmlzdWFsaXphdGlvbkNvbmZpZxIWCg5zeW1ib2xfcHJlc2VudBgBIAEoCRIY",
-            "ChBzeW1ib2xfZGVzdHJveWVkGAIgASgJIokECgxTdGF0aWNDb25maWcSDAoE",
-            "bmFtZRgBIAEoCRIhCgR0eXBlGAIgASgOMhMubWljcm9taXNzaWxlcy5UeXBl",
-            "EgwKBGNvc3QYAyABKAISPgoTYWNjZWxlcmF0aW9uX2NvbmZpZxgEIAEoCzIh",
-            "Lm1pY3JvbWlzc2lsZXMuQWNjZWxlcmF0aW9uQ29uZmlnEjAKDGJvb3N0X2Nv",
-            "bmZpZxgFIAEoCzIaLm1pY3JvbWlzc2lsZXMuQm9vc3RDb25maWcSNwoQbGlm",
-            "dF9kcmFnX2NvbmZpZxgGIAEoCzIdLm1pY3JvbWlzc2lsZXMuTGlmdERyYWdD",
-            "b25maWcSLgoLYm9keV9jb25maWcYByABKAsyGS5taWNyb21pc3NpbGVzLkJv",
-            "ZHlDb25maWcSLAoKaGl0X2NvbmZpZxgIIAEoCzIYLm1pY3JvbWlzc2lsZXMu",
-            "SGl0Q29uZmlnEjoKEWNvbnRyb2xsZXJfY29uZmlnGAkgASgLMh8ubWljcm9t",
-            "aXNzaWxlcy5Db250cm9sbGVyQ29uZmlnEjMKC3Bvd2VyX3RhYmxlGAogAygL",
-            "Mh4ubWljcm9taXNzaWxlcy5Qb3dlclRhYmxlRW50cnkSQAoUdmlzdWFsaXph",
-            "dGlvbl9jb25maWcYCyABKAsyIi5taWNyb21pc3NpbGVzLlZpc3VhbGl6YXRp",
-            "b25Db25maWcqdAoEVHlwZRILCgdJTlZBTElEEAASFwoTQ0FSUklFUl9JTlRF",
-            "UkNFUFRPUhABEhcKE01JU1NJTEVfSU5URVJDRVBUT1IQAhIVChFGSVhFRF9X",
-            "SU5HX1RIUkVBVBADEhYKElJPVEFSWV9XSU5HX1RIUkVBVBAEKjgKBVBvd2Vy",
-            "EggKBElETEUQABIHCgNMT1cQARIKCgZDUlVJU0UQAhIHCgNNSUwQAxIHCgNN",
-            "QVgQBGIGcHJvdG8z"));
+            "ChBzeW1ib2xfZGVzdHJveWVkGAIgASgJIpQECgxTdGF0aWNDb25maWcSDAoE",
+            "bmFtZRgBIAEoCRIsCgphZ2VudF90eXBlGAIgASgOMhgubWljcm9taXNzaWxl",
+            "cy5BZ2VudFR5cGUSDAoEY29zdBgDIAEoAhI+ChNhY2NlbGVyYXRpb25fY29u",
+            "ZmlnGAQgASgLMiEubWljcm9taXNzaWxlcy5BY2NlbGVyYXRpb25Db25maWcS",
+            "MAoMYm9vc3RfY29uZmlnGAUgASgLMhoubWljcm9taXNzaWxlcy5Cb29zdENv",
+            "bmZpZxI3ChBsaWZ0X2RyYWdfY29uZmlnGAYgASgLMh0ubWljcm9taXNzaWxl",
+            "cy5MaWZ0RHJhZ0NvbmZpZxIuCgtib2R5X2NvbmZpZxgHIAEoCzIZLm1pY3Jv",
+            "bWlzc2lsZXMuQm9keUNvbmZpZxIsCgpoaXRfY29uZmlnGAggASgLMhgubWlj",
+            "cm9taXNzaWxlcy5IaXRDb25maWcSOgoRY29udHJvbGxlcl9jb25maWcYCSAB",
+            "KAsyHy5taWNyb21pc3NpbGVzLkNvbnRyb2xsZXJDb25maWcSMwoLcG93ZXJf",
+            "dGFibGUYCiADKAsyHi5taWNyb21pc3NpbGVzLlBvd2VyVGFibGVFbnRyeRJA",
+            "ChR2aXN1YWxpemF0aW9uX2NvbmZpZxgLIAEoCzIiLm1pY3JvbWlzc2lsZXMu",
+            "VmlzdWFsaXphdGlvbkNvbmZpZyp+CglBZ2VudFR5cGUSEAoMSU5WQUxJRF9U",
+            "WVBFEAASFwoTQ0FSUklFUl9JTlRFUkNFUFRPUhABEhcKE01JU1NJTEVfSU5U",
+            "RVJDRVBUT1IQAhIVChFGSVhFRF9XSU5HX1RIUkVBVBADEhYKElJPVEFSWV9X",
+            "SU5HX1RIUkVBVBAEKjgKBVBvd2VyEggKBElETEUQABIHCgNMT1cQARIKCgZD",
+            "UlVJU0UQAhIHCgNNSUwQAxIHCgNNQVgQBGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.Type), typeof(global::Micromissiles.Power), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Micromissiles.AgentType), typeof(global::Micromissiles.Power), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.AccelerationConfig), global::Micromissiles.AccelerationConfig.Parser, new[]{ "MaxForwardAcceleration", "MaxReferenceNormalAcceleration", "ReferenceSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.BoostConfig), global::Micromissiles.BoostConfig.Parser, new[]{ "BoostTime", "BoostAcceleration" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.LiftDragConfig), global::Micromissiles.LiftDragConfig.Parser, new[]{ "LiftCoefficient", "DragCoefficient", "LiftDragRatio" }, null, null, null, null),
@@ -67,7 +67,7 @@ namespace Micromissiles {
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.ControllerConfig), global::Micromissiles.ControllerConfig.Parser, new[]{ "ProportionalNavigationRangeThreshold" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.PowerTableEntry), global::Micromissiles.PowerTableEntry.Parser, new[]{ "Power", "Speed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.VisualizationConfig), global::Micromissiles.VisualizationConfig.Parser, new[]{ "SymbolPresent", "SymbolDestroyed" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.StaticConfig), global::Micromissiles.StaticConfig.Parser, new[]{ "Name", "Type", "Cost", "AccelerationConfig", "BoostConfig", "LiftDragConfig", "BodyConfig", "HitConfig", "ControllerConfig", "PowerTable", "VisualizationConfig" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.StaticConfig), global::Micromissiles.StaticConfig.Parser, new[]{ "Name", "AgentType", "Cost", "AccelerationConfig", "BoostConfig", "LiftDragConfig", "BodyConfig", "HitConfig", "ControllerConfig", "PowerTable", "VisualizationConfig" }, null, null, null, null)
           }));
     }
     #endregion
@@ -77,8 +77,8 @@ namespace Micromissiles {
   /// <summary>
   /// Agent type enumeration.
   /// </summary>
-  public enum Type {
-    [pbr::OriginalName("INVALID")] Invalid = 0,
+  public enum AgentType {
+    [pbr::OriginalName("INVALID_TYPE")] InvalidType = 0,
     /// <summary>
     /// Interceptor types.
     /// </summary>
@@ -2216,7 +2216,7 @@ namespace Micromissiles {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public StaticConfig(StaticConfig other) : this() {
       name_ = other.name_;
-      type_ = other.type_;
+      agentType_ = other.agentType_;
       cost_ = other.cost_;
       accelerationConfig_ = other.accelerationConfig_ != null ? other.accelerationConfig_.Clone() : null;
       boostConfig_ = other.boostConfig_ != null ? other.boostConfig_.Clone() : null;
@@ -2250,18 +2250,18 @@ namespace Micromissiles {
       }
     }
 
-    /// <summary>Field number for the "type" field.</summary>
-    public const int TypeFieldNumber = 2;
-    private global::Micromissiles.Type type_ = global::Micromissiles.Type.Invalid;
+    /// <summary>Field number for the "agent_type" field.</summary>
+    public const int AgentTypeFieldNumber = 2;
+    private global::Micromissiles.AgentType agentType_ = global::Micromissiles.AgentType.InvalidType;
     /// <summary>
     /// Agent type. The agent type determines the class to be instantiated.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Micromissiles.Type Type {
-      get { return type_; }
+    public global::Micromissiles.AgentType AgentType {
+      get { return agentType_; }
       set {
-        type_ = value;
+        agentType_ = value;
       }
     }
 
@@ -2415,7 +2415,7 @@ namespace Micromissiles {
         return true;
       }
       if (Name != other.Name) return false;
-      if (Type != other.Type) return false;
+      if (AgentType != other.AgentType) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Cost, other.Cost)) return false;
       if (!object.Equals(AccelerationConfig, other.AccelerationConfig)) return false;
       if (!object.Equals(BoostConfig, other.BoostConfig)) return false;
@@ -2433,7 +2433,7 @@ namespace Micromissiles {
     public override int GetHashCode() {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (Type != global::Micromissiles.Type.Invalid) hash ^= Type.GetHashCode();
+      if (AgentType != global::Micromissiles.AgentType.InvalidType) hash ^= AgentType.GetHashCode();
       if (Cost != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Cost);
       if (accelerationConfig_ != null) hash ^= AccelerationConfig.GetHashCode();
       if (boostConfig_ != null) hash ^= BoostConfig.GetHashCode();
@@ -2465,9 +2465,9 @@ namespace Micromissiles {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (Type != global::Micromissiles.Type.Invalid) {
+      if (AgentType != global::Micromissiles.AgentType.InvalidType) {
         output.WriteRawTag(16);
-        output.WriteEnum((int) Type);
+        output.WriteEnum((int) AgentType);
       }
       if (Cost != 0F) {
         output.WriteRawTag(29);
@@ -2516,9 +2516,9 @@ namespace Micromissiles {
         output.WriteRawTag(10);
         output.WriteString(Name);
       }
-      if (Type != global::Micromissiles.Type.Invalid) {
+      if (AgentType != global::Micromissiles.AgentType.InvalidType) {
         output.WriteRawTag(16);
-        output.WriteEnum((int) Type);
+        output.WriteEnum((int) AgentType);
       }
       if (Cost != 0F) {
         output.WriteRawTag(29);
@@ -2566,8 +2566,8 @@ namespace Micromissiles {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
-      if (Type != global::Micromissiles.Type.Invalid) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      if (AgentType != global::Micromissiles.AgentType.InvalidType) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) AgentType);
       }
       if (Cost != 0F) {
         size += 1 + 4;
@@ -2609,8 +2609,8 @@ namespace Micromissiles {
       if (other.Name.Length != 0) {
         Name = other.Name;
       }
-      if (other.Type != global::Micromissiles.Type.Invalid) {
-        Type = other.Type;
+      if (other.AgentType != global::Micromissiles.AgentType.InvalidType) {
+        AgentType = other.AgentType;
       }
       if (other.Cost != 0F) {
         Cost = other.Cost;
@@ -2682,7 +2682,7 @@ namespace Micromissiles {
             break;
           }
           case 16: {
-            Type = (global::Micromissiles.Type) input.ReadEnum();
+            AgentType = (global::Micromissiles.AgentType) input.ReadEnum();
             break;
           }
           case 29: {
@@ -2766,7 +2766,7 @@ namespace Micromissiles {
             break;
           }
           case 16: {
-            Type = (global::Micromissiles.Type) input.ReadEnum();
+            AgentType = (global::Micromissiles.AgentType) input.ReadEnum();
             break;
           }
           case 29: {
