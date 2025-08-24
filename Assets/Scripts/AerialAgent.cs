@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class AirborneAgent : Agent {
+public abstract class AerialAgent : Agent {
   // In the initialized phase, the agent is subject to no forces.
   // In the ready phase, the agent is subject to gravity and drag with zero input acceleration.
   public enum FlightPhase { INITIALIZED, READY, BOOST, MIDCOURSE, TERMINAL, TERMINATED }

@@ -112,7 +112,7 @@ public class SimMonitor : MonoBehaviour {
 
       int agentID = agent.GetInstanceID();
       int flightPhase =
-          agent is AirborneAgent airborneAgent ? (int)airborneAgent.GetFlightPhase() : -1;
+          agent is AerialAgent aerialAgent ? (int)aerialAgent.GetFlightPhase() : -1;
       byte agentType = (byte)(agent is Threat ? 0 : 1);
 
       // Write telemetry data directly to the binary file

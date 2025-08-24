@@ -1,31 +1,31 @@
 using NUnit.Framework;
 using UnityEngine;
 
-// Unit tests for origin-aware launch planning functionality.
-// Tests that launch planning algorithms correctly account for interceptor origins
+// Unit tests for launcher-aware launch planning functionality.
+// Tests that launch planning algorithms correctly account for launcher positions
 // rather than assuming launch from (0,0,0).
 //
 // KEY PRINCIPLE: The intercept position should be where both interceptor and target meet.
 // For successful intercepts, this should be very close to the predicted target position.
-// Origin-aware planning ensures interceptors launch from the correct starting position
+// Launcher-aware planning ensures interceptors launch from the correct starting position
 // to reach this intercept point.
 [TestFixture]
-public class OriginAwareLaunchPlanningTest : TestBase {
-  private InterceptorOriginConfig _staticOrigin;
-  private InterceptorOriginConfig _movingOrigin;
+public class LauncherAwareLaunchPlanningTest : TestBase {
+  private LauncherConfig _staticLauncher;
+  private LauncherConfig _movingLauncher;
   private MockPredictor _mockPredictor;
   private MockLaunchAnglePlanner _mockLaunchAnglePlanner;
 
   [SetUp]
   public void SetUp() {
     // Set up test origins
-    _staticOrigin = new InterceptorOriginConfig {
+    _staticOrigin = new LauncherConfig {
       id = "Static-Test-Origin", initial_position = new Vector3(1000, 0, 2000),
       velocity = Vector3.zero, max_interceptors = 10,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
     };
 
-    _movingOrigin = new InterceptorOriginConfig {
+    _movingOrigin = new LauncherConfig {
       id = "Moving-Test-Origin", initial_position = new Vector3(500, 0, 1000),
       velocity = new Vector3(0, 0, -10),  // Moving 10 m/s in -Z direction
       max_interceptors = 5,
@@ -37,8 +37,8 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockLaunchAnglePlanner = new MockLaunchAnglePlanner();
   }
 
-  // Helper method to create a mock InterceptorOrigin for testing
-  private InterceptorOrigin CreateMockOriginObject(InterceptorOriginConfig config,
+  // Helper method to create a mock Launcher for testing
+  private Launcher CreateMockOriginObject(LauncherConfig config,
                                                    float currentTime = 0f) {
     // Create a GameObject to serve as the mock origin object
     GameObject mockOriginGameObject = new GameObject($"Mock_{config.id}");
@@ -47,9 +47,9 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     Vector3 currentPosition = config.initial_position + config.velocity * currentTime;
     mockOriginGameObject.transform.position = currentPosition;
 
-    // Add the InterceptorOrigin component
-    InterceptorOrigin originObject = mockOriginGameObject.AddComponent<InterceptorOrigin>();
-    originObject.SetOriginConfig(config);
+    // Add the Launcher component
+    Launcher originObject = mockOriginGameObject.AddComponent<Launcher>();
+    originObject.SetLauncherConfig(config);
 
     return originObject;
   }
@@ -69,7 +69,7 @@ public class OriginAwareLaunchPlanningTest : TestBase {
         45f, 10f);  // 45 degree launch angle, 10 second time-to-intercept
 
     // Plan launch from static origin using mock origin object
-    InterceptorOrigin staticOriginObject = CreateMockOriginObject(_staticOrigin);
+    Launcher staticOriginObject = CreateMockOriginObject(_staticOrigin);
     LaunchPlan plan = planner.Plan(staticOriginObject);
 
     Assert.AreEqual(
@@ -91,7 +91,7 @@ public class OriginAwareLaunchPlanningTest : TestBase {
 
     // Plan launch from moving origin at t=10 seconds using mock origin object
     float planningTime = 10f;
-    InterceptorOrigin movingOriginObject = CreateMockOriginObject(_movingOrigin, planningTime);
+    Launcher movingOriginObject = CreateMockOriginObject(_movingOrigin, planningTime);
     LaunchPlan plan = planner.Plan(movingOriginObject);
 
     Assert.IsNotNull(plan);
@@ -170,7 +170,7 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     Vector3 threatInitialPos = new Vector3(0, 0, 2000);
     Vector3 threatVelocity = new Vector3(0, 0, -100);  // Threat moving toward (0,0,0)
 
-    var origin = new InterceptorOriginConfig {
+    var origin = new LauncherConfig {
       id = "Behind-Threat-Origin", initial_position = originPosition, velocity = Vector3.zero,
       max_interceptors = 1,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
@@ -180,7 +180,7 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockLaunchAnglePlanner.SetMockResponse(45f, 5f);
 
     // Use mock origin object instead of config and time
-    InterceptorOrigin originObject = CreateMockOriginObject(origin);
+    Launcher originObject = CreateMockOriginObject(origin);
     LaunchPlan plan = planner.Plan(originObject);
 
     // Should return NoLaunch because interceptor would be launched backwards
@@ -216,7 +216,7 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     Vector3 threatInitialPos = new Vector3(4000, 0, 8000);
     Vector3 threatVelocity = new Vector3(0, 0, -80);
 
-    var origin = new InterceptorOriginConfig {
+    var origin = new LauncherConfig {
       id = "Convergence-Test-Origin", initial_position = originPosition, velocity = Vector3.zero,
       max_interceptors = 1,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
@@ -226,7 +226,7 @@ public class OriginAwareLaunchPlanningTest : TestBase {
     _mockLaunchAnglePlanner.SetMockConvergentResponse();  // Make it converge after a few iterations
 
     // Use mock origin object instead of config and time
-    InterceptorOrigin originObject = CreateMockOriginObject(origin);
+    Launcher originObject = CreateMockOriginObject(origin);
     LaunchPlan plan = planner.Plan(originObject);
 
     Assert.IsNotNull(plan);

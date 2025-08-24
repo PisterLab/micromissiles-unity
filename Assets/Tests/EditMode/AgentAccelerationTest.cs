@@ -72,8 +72,8 @@ public class AgentTests : AgentTestBase {
     Assert.AreEqual(2000f, storedInitialVelocity.magnitude, 100f,
                     "Stored initial velocity should match configured velocity");
 
-    threat.SetFlightPhase(AirborneAgent.FlightPhase.INITIALIZED);
-    threat.SetFlightPhase(AirborneAgent.FlightPhase.BOOST);
+    threat.SetFlightPhase(AerialAgent.FlightPhase.INITIALIZED);
+    threat.SetFlightPhase(AerialAgent.FlightPhase.BOOST);
     Vector3 finalVelocity = threat.GetVelocity();
 
     Assert.Greater(finalVelocity.magnitude, 1900f,
@@ -83,13 +83,13 @@ public class AgentTests : AgentTestBase {
   }
 
   [Test]
-  public void AirborneAgent_GetAcceleration_ReturnsCalculatedAcceleration() {
+  public void AerialAgent_GetAcceleration_ReturnsCalculatedAcceleration() {
     var rigidbody = testThreat.GetComponent<Rigidbody>();
     if (rigidbody == null) {
       rigidbody = testThreat.gameObject.AddComponent<Rigidbody>();
     }
 
-    testThreat.SetFlightPhase(AirborneAgent.FlightPhase.MIDCOURSE);
+    testThreat.SetFlightPhase(AerialAgent.FlightPhase.MIDCOURSE);
 
     testThreat.dynamicAgentConfig = new DynamicAgentConfig {
       agent_model = "brahmos.json", attack_behavior = "brahmos_direct_attack.json",
@@ -122,16 +122,16 @@ public class AgentTests : AgentTestBase {
   }
 
   [Test]
-  public void AirborneAgents_GetAcceleration_ReturnsStoredValue() {
-    var airborneAgents = new List<AirborneAgent> { testThreat, testInterceptor };
+  public void AerialAgents_GetAcceleration_ReturnsStoredValue() {
+    var aerialAgents = new List<AerialAgent> { testThreat, testInterceptor };
 
-    foreach (var agent in airborneAgents) {
+    foreach (var agent in aerialAgents) {
       var rigidbody = agent.GetComponent<Rigidbody>();
       if (rigidbody == null) {
         rigidbody = agent.gameObject.AddComponent<Rigidbody>();
       }
 
-      agent.SetFlightPhase(AirborneAgent.FlightPhase.MIDCOURSE);
+      agent.SetFlightPhase(AerialAgent.FlightPhase.MIDCOURSE);
 
       Vector3 testAcceleration = new Vector3(25f, -9.8f, 10f);
       SetPrivateField(agent, "_acceleration", testAcceleration);
@@ -157,7 +157,7 @@ public class AgentTests : AgentTestBase {
         threatRb = testThreat.gameObject.AddComponent<Rigidbody>();
       }
 
-      testThreat.SetFlightPhase(AirborneAgent.FlightPhase.MIDCOURSE);
+      testThreat.SetFlightPhase(AerialAgent.FlightPhase.MIDCOURSE);
 
       Vector3 testAcceleration = new Vector3(50f, -9.8f, 20f);
       SetPrivateField(testThreat, "_acceleration", testAcceleration);
@@ -166,7 +166,7 @@ public class AgentTests : AgentTestBase {
       Vector3 platformAcceleration = mockPlatform.GetAcceleration();
 
       Assert.IsTrue(IsAccelerationPhysicallyReasonable(flyingAcceleration, testThreat),
-                    "AirborneAgent should provide physics-based acceleration");
+                    "AerialAgent should provide physics-based acceleration");
 
       Assert.AreEqual(Vector3.zero, platformAcceleration,
                       "Platform agents should have zero acceleration");

@@ -36,13 +36,13 @@ public class ConfigTest : TestBase {
           if (agent is Interceptor interceptor) {
             // All interceptors start in INITIALIZED phase
             Assert.AreEqual(
-                AirborneAgent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
+                AerialAgent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
                 "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused");
 
           } else if (agent is Threat threat) {
             // All threats start in INITIALIZED phase
             Assert.AreEqual(
-                AirborneAgent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
+                AerialAgent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
                 "All THREAT agents should be in the INITIALIZED flight phase after loading while paused");
           }
         }

@@ -146,17 +146,17 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public virtual void SetInitialVelocity(Vector3 velocity) {
-    // Default implementation for InterceptorOrigin - just set velocity directly
+    // Default implementation for Launcher - just set velocity directly
     SetVelocity(velocity);
   }
 
   public virtual Vector3 GetAcceleration() {
-    // This will need to be revisited as it was moved to AirborneAgent
+    // This will need to be revisited as it was moved to AerialAgent
     return Vector3.zero;
   }
 
   public void SetAcceleration(Vector3 acceleration) {
-    // This will need to be revisited as it was moved to AirborneAgent
+    // This will need to be revisited as it was moved to AerialAgent
   }
 
   public Transformation GetRelativeTransformation(Agent target) {

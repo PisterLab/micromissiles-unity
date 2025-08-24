@@ -35,17 +35,17 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // This implementation accounts for the interceptor's starting position and the origin's
   // current location (including movement for naval assets).
   // Returns: Launch plan with timing and angle information
-  public override LaunchPlan Plan(InterceptorOrigin origin) {
-    // Get the current origin position (accounts for moving origins)
-    Vector3 originPosition = origin.GetPosition();
-    return Plan(originPosition);
+  public override LaunchPlan Plan(Launcher launcher) {
+    // Get the current launcher position (accounts for moving launchers)
+    Vector3 launcherPosition = launcher.GetPosition();
+    return Plan(launcherPosition);
   }
 
-  // Origin-aware implementation for non-zero origins.
+  // Launcher-aware implementation for non-zero launchers.
   // This implementation properly accounts for interceptor starting position.
   //   originPosition: The position from which the interceptor will be launched
   // Returns: Launch plan with timing and angle information
-  private LaunchPlan Plan(Vector3 originPosition) {
+  public LaunchPlan Plan(Vector3 originPosition) {
     PredictorState initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;
 

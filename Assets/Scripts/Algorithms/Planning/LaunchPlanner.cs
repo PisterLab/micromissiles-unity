@@ -94,5 +94,5 @@ public abstract class ILaunchPlanner {
   // intercept trajectories and launch angles.
   //   origin: Interceptor origin object
   // Returns: Launch plan with timing and angle information
-  public abstract LaunchPlan Plan(InterceptorOrigin origin);
+  public abstract LaunchPlan Plan(Launcher launcher);
 }

@@ -1,8 +1,8 @@
 using UnityEngine;
 
 // Represents a shore-based interceptor launch installation.
-// Shore batteries are static interceptor origins with typically higher capacity.
-public class ShoreBattery : InterceptorOrigin {
+// Shore batteries are static launchers with typically higher capacity.
+public class ShoreBattery : Launcher {
   protected override void Start() {
     base.Start();
 
@@ -19,13 +19,13 @@ public class ShoreBattery : InterceptorOrigin {
     base.OnDrawGizmosSelected();
 
     // Draw coverage radius indicator
-    var config = GetOriginConfig();
+    var config = GetLauncherConfig();
     if (config != null) {
       Gizmos.color = new Color(0, 1, 0, 0.1f);  // Transparent green
 
       // Typical engagement range visualization (example: 100km)
-      float engagementRange = 100000f;  // 100km in meters
-      Gizmos.DrawWireSphere(transform.position, engagementRange);
+      const float EngagementRange = 100000f;  // 100km in meters
+      Gizmos.DrawWireSphere(transform.position, EngagementRange);
 
       // Draw ground installation marker
       Gizmos.color = new Color(0.5f, 0.5f, 0.5f, 0.8f);  // Gray

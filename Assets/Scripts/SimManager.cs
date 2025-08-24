@@ -26,9 +26,9 @@ public class SimManager : MonoBehaviour {
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
-  // List of instantiated interceptor origin GameObjects.
+  // List of instantiated launcher GameObjects.
   // Each GameObject represents a launch platform (ship, shore battery, etc.)
-  private List<InterceptorOrigin> _originObjects = new List<InterceptorOrigin>();
+  private List<Launcher> _launcherObjects = new List<Launcher>();
 
   // Inclusive of all, including submunitions swarms.
   // The boolean indicates whether the agent is active (true) or inactive (false).
@@ -186,8 +186,8 @@ public class SimManager : MonoBehaviour {
     }
 
     // Create origins based on the configuration
-    foreach (var originConfig in SimulationConfig.interceptor_origins) {
-      CreateOrigin(originConfig);
+    foreach (var launcherConfig in SimulationConfig.interceptorOrigins) {
+      CreateLauncher(launcherConfig);
     }
 
     // Create targets based on the configuration.
@@ -202,11 +202,11 @@ public class SimManager : MonoBehaviour {
     }
   }
 
-  private InterceptorOrigin CreateOrigin(InterceptorOriginConfig config) {
+  private Launcher CreateLauncher(LauncherConfig config) {
     // Require the type field to be specified
     if (string.IsNullOrEmpty(config.type)) {
       Debug.LogError(
-          $"Origin '{config.id}' is missing required 'type' field. Please specify the origin type (e.g., 'Ship', 'ShoreBattery').");
+          $"Launcher '{config.id}' is missing required 'type' field. Please specify the launcher type (e.g., 'Ship', 'ShoreBattery').");
       return null;
     }
 
@@ -217,21 +217,21 @@ public class SimManager : MonoBehaviour {
     initialState.position = config.initial_position;
     initialState.velocity = config.velocity;
 
-    // Create the origin GameObject
-    GameObject originObject = CreateAgent(null, initialState, prefabName);
-    if (originObject == null)
+    // Create the launcher GameObject
+    GameObject launcherObject = CreateAgent(null, initialState, prefabName);
+    if (launcherObject == null)
       return null;
 
-    InterceptorOrigin origin = originObject.GetComponent<InterceptorOrigin>();
-    _originObjects.Add(origin);
+    Launcher launcher = launcherObject.GetComponent<Launcher>();
+    _launcherObjects.Add(launcher);
 
-    // Set the origin configuration
-    origin.SetOriginConfig(config);
+    // Set the launcher configuration
+    launcher.SetLauncherConfig(config);
 
-    int originId = _originObjects.Count;
-    originObject.name = $"{config.id}_Origin_{originId}";
+    int launcherId = _launcherObjects.Count;
+    launcherObject.name = $"{config.id}_Launcher_{launcherId}";
 
-    return origin;
+    return launcher;
   }
 
   public void AddInterceptorSwarm(List<Agent> swarm) {
@@ -597,9 +597,9 @@ public class SimManager : MonoBehaviour {
     }
 
     // Clear origin GameObjects
-    foreach (var originObject in _originObjects) {
-      if (originObject != null) {
-        Destroy(originObject.gameObject);
+    foreach (var launcherObject in _launcherObjects) {
+      if (launcherObject != null) {
+        Destroy(launcherObject.gameObject);
       }
     }
 
@@ -608,7 +608,7 @@ public class SimManager : MonoBehaviour {
     _threatObjects.Clear();
     _dummyAgentObjects.Clear();
     _dummyAgentTable.Clear();
-    _originObjects.Clear();
+    _launcherObjects.Clear();
     _interceptorSwarms.Clear();
     _submunitionsSwarms.Clear();
     _threatSwarms.Clear();
@@ -634,15 +634,15 @@ public class SimManager : MonoBehaviour {
   // Updates moving interceptor origins to ensure they maintain their prescribed velocity.
   // Also updates origin manager's internal position tracking.
   private void UpdateMovingOrigins() {
-    foreach (var origin in _originObjects) {
+    foreach (var origin in _launcherObjects) {
       if (origin != null) {
         // The movement logic is now handled within the Ship/ShoreBattery classes.
       }
     }
   }
 
-  public List<InterceptorOrigin> GetOrigins() {
-    return _originObjects;
+  public List<Launcher> GetLaunchers() {
+    return _launcherObjects;
   }
 
   public void QuitSimulation() {

@@ -3,15 +3,15 @@ using NUnit.Framework;
 using UnityEngine;
 using Newtonsoft.Json;
 
-// Unit tests for InterceptorOriginConfig and related origin management functionality.
+// Unit tests for LauncherConfig and related origin management functionality.
 // These tests follow Test Driven Development principles and should initially fail
 // until the corresponding implementation is completed.
 [TestFixture]
-public class InterceptorOriginConfigTest : TestBase {
+public class LauncherTest : TestBase {
   [Test]
-  public void TestInterceptorOriginConfig_SupportsInterceptorType() {
+  public void TestLauncher_SupportsInterceptorType() {
     // Test interceptor type compatibility checking
-    var origin = new InterceptorOriginConfig {
+    var origin = new LauncherConfig {
       id = "Multi-Role-Platform", initial_position = Vector3.zero, velocity = Vector3.zero,
       max_interceptors = 15,
       interceptor_types = new List<string> { "hydra70.json", "micromissile.json", "patriot.json" }
@@ -25,9 +25,9 @@ public class InterceptorOriginConfigTest : TestBase {
   }
 
   [Test]
-  public void TestInterceptorOriginConfig_HasCapacity() {
+  public void TestLauncher_HasCapacity() {
     // Test capacity management for interceptor allocation
-    var origin = new InterceptorOriginConfig {
+    var origin = new LauncherConfig {
       id = "Limited-Capacity-Origin", initial_position = Vector3.zero, velocity = Vector3.zero,
       max_interceptors = 5, interceptor_types = new List<string> { "hydra70.json" }
     };
@@ -56,10 +56,10 @@ public class InterceptorOriginConfigTest : TestBase {
   }
 
   [Test]
-  public void TestInterceptorOriginConfig_ReleaseInterceptor() {
+  public void TestLauncher_ReleaseInterceptor() {
     // Test releasing interceptors back to the pool
     var origin =
-        new InterceptorOriginConfig { id = "Release-Test-Origin", initial_position = Vector3.zero,
+        new LauncherConfig { id = "Release-Test-Origin", initial_position = Vector3.zero,
                                       velocity = Vector3.zero, max_interceptors = 3,
                                       interceptor_types = new List<string> { "hydra70.json" } };
 
@@ -85,22 +85,22 @@ public class InterceptorOriginConfigTest : TestBase {
   }
 
   [Test]
-  public void TestOriginAssignmentStrategy_Enum() {
-    // Test that OriginAssignmentStrategy enum values are properly defined
+  public void TestLauncherAssignmentStrategy_Enum() {
+    // Test that LauncherAssignmentStrategy enum values are properly defined
     Assert.IsTrue(
-        System.Enum.IsDefined(typeof(OriginAssignmentStrategy), OriginAssignmentStrategy.CLOSEST));
-    Assert.IsTrue(System.Enum.IsDefined(typeof(OriginAssignmentStrategy),
-                                        OriginAssignmentStrategy.LOAD_BALANCED));
-    Assert.IsTrue(System.Enum.IsDefined(typeof(OriginAssignmentStrategy),
-                                        OriginAssignmentStrategy.CAPABILITY_BASED));
+        System.Enum.IsDefined(typeof(LauncherAssignmentStrategy), LauncherAssignmentStrategy.CLOSEST));
+    Assert.IsTrue(System.Enum.IsDefined(typeof(LauncherAssignmentStrategy),
+                                        LauncherAssignmentStrategy.LOAD_BALANCED));
+    Assert.IsTrue(System.Enum.IsDefined(typeof(LauncherAssignmentStrategy),
+                                        LauncherAssignmentStrategy.CAPABILITY_BASED));
     Assert.IsTrue(
-        System.Enum.IsDefined(typeof(OriginAssignmentStrategy), OriginAssignmentStrategy.MANUAL));
+        System.Enum.IsDefined(typeof(LauncherAssignmentStrategy), LauncherAssignmentStrategy.MANUAL));
   }
 
   [Test]
-  public void TestInterceptorOriginConfig_JsonSerialization() {
-    // Test that InterceptorOriginConfig can be properly serialized/deserialized
-    var originalOrigin = new InterceptorOriginConfig {
+  public void TestLauncher_JsonSerialization() {
+    // Test that LauncherConfig can be properly serialized/deserialized
+    var originalOrigin = new LauncherConfig {
       id = "Serialization-Test", initial_position = new Vector3(1000, 500, 2000),
       velocity = new Vector3(5, 0, -10), max_interceptors = 25,
       interceptor_types = new List<string> { "test1.json", "test2.json" }
@@ -117,7 +117,7 @@ public class InterceptorOriginConfigTest : TestBase {
     Assert.IsNotEmpty(json);
 
     // Deserialize from JSON
-    var deserializedOrigin = JsonConvert.DeserializeObject<InterceptorOriginConfig>(json, settings);
+    var deserializedOrigin = JsonConvert.DeserializeObject<LauncherConfig>(json, settings);
 
     // Verify all properties are correctly deserialized
     Assert.AreEqual(originalOrigin.id, deserializedOrigin.id);

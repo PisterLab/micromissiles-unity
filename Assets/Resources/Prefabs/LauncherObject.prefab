@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 3547159942466674479}
   - component: {fileID: 8542820995296674965}
   m_Layer: 0
-  m_Name: InterceptorOriginObject
+  m_Name: LauncherObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,8 +1,8 @@
 using UnityEngine;
 
 // Represents a naval vessel capable of launching interceptors.
-// Ships are mobile interceptor origins that can move across the water surface.
-public class Ship : InterceptorOrigin {
+// Ships are mobile launchers that can move across the water surface.
+public class Ship : Launcher {
   protected override void Start() {
     base.Start();
 
@@ -19,7 +19,7 @@ public class Ship : InterceptorOrigin {
     base.FixedUpdate();
 
     // Ships maintain constant velocity from their configuration
-    var config = GetOriginConfig();
+    var config = GetLauncherConfig();
     if (config != null && config.velocity.magnitude > 0) {
       // Maintain configured velocity
       SetVelocity(config.velocity);
