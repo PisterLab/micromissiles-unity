@@ -123,7 +123,7 @@ public class IADS : MonoBehaviour {
       Launcher selectedLauncher = SelectLauncherForThreat(threatPosition, config.agent_model);
       if (selectedLauncher == null) {
         Debug.LogWarning(
-            $"No suitable launcher available for interceptor type {config.agent_model} against threat at {threatPosition}");
+            $"No suitable launcher available for interceptor type {config.agent_model} against threat at {threatPosition}.");
         continue;
       }
 
@@ -141,7 +141,7 @@ public class IADS : MonoBehaviour {
         // Allocate capacity from the selected launcher
         if (!selectedLauncher.AllocateInterceptor()) {
           Debug.LogWarning(
-              $"Failed to allocate interceptor from launcher {selectedLauncher.LauncherId} - capacity exhausted");
+              $"Failed to allocate interceptor from launcher {selectedLauncher.LauncherId} - capacity exhausted.");
           continue;
         }
 
@@ -174,11 +174,11 @@ public class IADS : MonoBehaviour {
   private DynamicAgentConfig GetInterceptorConfig() {
     var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
     if (swarmConfigs == null || swarmConfigs.Count == 0) {
-      Debug.LogError("No interceptor swarm configurations available");
+      Debug.LogError("No interceptor swarm configurations available.");  
       return null;
     }
 
-    // For now, use the first configuration. Future  could implement
+    // For now, use the first configuration. Future work could implement  
     // more sophisticated configuration selection based on threat characteristics.
     return swarmConfigs[0].dynamic_agent_config;
   }
@@ -187,6 +187,7 @@ public class IADS : MonoBehaviour {
   // Uses the configured assignment strategy and accounts for launcher capabilities.
   // Returns the runtime launcher object, not just the configuration.
   private Launcher SelectLauncherForThreat(Vector3 threatPosition, string interceptorType) {
+    // TODO: Implement the launcher assignment strategy.
     var availableLaunchers =
         SimManager.Instance.GetLaunchers()
             .Where(l => l.SupportsInterceptorType(interceptorType) && l.HasCapacity())

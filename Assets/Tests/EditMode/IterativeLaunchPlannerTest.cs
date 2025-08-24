@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 // Tests for the iterative launch planner algorithm.
 //
-// KEY PRINCIPLE: In a successful intercept scenario, the final intercept position
+// In a successful intercept scenario, the final intercept position
 // should equal (or be very close to) the predicted target position. Both the
 // interceptor and target arrive at the same point at the same time.
 // The interpolation table provides launch parameters (angle, time) to achieve this.
@@ -145,8 +145,6 @@ public class IterativeLaunchPlannerTest {
         $"TestNoLaunchTooFarFromInterceptPoint: ShouldLaunch={plan.ShouldLaunch}, Angle={plan.LaunchAngle}, Position={plan.InterceptPosition}");
     Assert.IsFalse(plan.ShouldLaunch);
   }
-
-  // ========== NEW BACKWARDS/SIDEWAYS LAUNCH PREVENTION TESTS ==========
 
   [Test]
   public void TestNoLaunchThreatBehindOrigin() {

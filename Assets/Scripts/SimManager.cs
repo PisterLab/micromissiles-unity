@@ -213,9 +213,10 @@ public class SimManager : MonoBehaviour {
     string prefabName = config.type;
 
     // Create initial state from config
-    InitialState initialState = new InitialState();
-    initialState.position = config.initial_position;
-    initialState.velocity = config.velocity;
+    InitialState initialState = new InitialState {
+      position = config.initial_position,
+      velocity = config.velocity
+    };
 
     // Create the launcher GameObject
     GameObject launcherObject = CreateAgent(null, initialState, prefabName);
@@ -622,22 +623,9 @@ public class SimManager : MonoBehaviour {
   void FixedUpdate() {
     if (!_isSimulationPaused && _elapsedSimulationTime < SimulationConfig.endTime) {
       _elapsedSimulationTime += Time.deltaTime;
-
-      // Update moving origins to ensure they maintain velocity
-      UpdateMovingOrigins();
     } else if (_elapsedSimulationTime >= SimulationConfig.endTime) {
       RestartSimulation();
       Debug.Log("Simulation completed.");
-    }
-  }
-
-  // Updates moving interceptor origins to ensure they maintain their prescribed velocity.
-  // Also updates origin manager's internal position tracking.
-  private void UpdateMovingOrigins() {
-    foreach (var origin in _launcherObjects) {
-      if (origin != null) {
-        // The movement logic is now handled within the Ship/ShoreBattery classes.
-      }
     }
   }
 

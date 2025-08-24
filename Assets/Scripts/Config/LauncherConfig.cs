@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 //
 // A launcher represents a platform capable of launching interceptors,
 // such as:
-// - Naval vessels (aircraft carriers, destroyers, cruisers)
-// - Shore-based installations (Aegis Ashore, Patriot batteries)
-// - Mobile platforms (TEL vehicles)
+// - Naval vessels (e.g. aircraft carriers, destroyers, cruisers)
+// - Shore-based installations (e.g. Aegis Ashore, Patriot batteries)
+// - Mobile platforms (e.g. transporter erector launcher (TEL) vehicles)
 //
 // Each launcher has:
 // - A unique identifier for reference

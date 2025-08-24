@@ -90,9 +90,9 @@ public class Launcher : Agent {
 
         // Draw movement trail
         Gizmos.color = Color.cyan;
-        Vector3 startPos = _startPosition;
+        Vector3 startPosition = _startPosition;
         Vector3 currentPos = transform.position;
-        Gizmos.DrawLine(startPos, currentPos);
+        Gizmos.DrawLine(startPosition, currentPos);
 
         // Draw predicted future position using actual velocity
         Gizmos.color = Color.yellow;
