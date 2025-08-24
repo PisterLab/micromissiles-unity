@@ -152,7 +152,8 @@ public class IADS : MonoBehaviour {
             $"[IADS] Launching interceptor from {selectedLauncher.LauncherId} at elevation {plan.LaunchAngle} degrees.");
 
         // Create a new interceptor with launcher-aware initial state
-        InitialState initialState = CreateInitialStateFromLauncher(selectedLauncher, plan, Time.time);
+        InitialState initialState =
+            CreateInitialStateFromLauncher(selectedLauncher, plan, Time.time);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Store launcher reference for capacity management
@@ -174,11 +175,11 @@ public class IADS : MonoBehaviour {
   private DynamicAgentConfig GetInterceptorConfig() {
     var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
     if (swarmConfigs == null || swarmConfigs.Count == 0) {
-      Debug.LogError("No interceptor swarm configurations available.");  
+      Debug.LogError("No interceptor swarm configurations available.");
       return null;
     }
 
-    // For now, use the first configuration. Future work could implement  
+    // For now, use the first configuration. Future work could implement
     // more sophisticated configuration selection based on threat characteristics.
     return swarmConfigs[0].dynamic_agent_config;
   }

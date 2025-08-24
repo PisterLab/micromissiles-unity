@@ -24,7 +24,7 @@ public class LaunchPlan {
   }
 
   // Gets the normalized launch vector from the interceptor origin.
-  // This vector represents the direction in which the interceptor should be launched.  
+  // This vector represents the direction in which the interceptor should be launched.
   // Parameters:
   //   originPosition: Position of the interceptor origin (default: Vector3.zero)
   // Returns: Normalized launch direction vector

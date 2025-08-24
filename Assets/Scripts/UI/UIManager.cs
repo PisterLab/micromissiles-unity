@@ -161,8 +161,7 @@ public class UIManager : MonoBehaviour {
     foreach (Agent agent in SimManager.Instance.GetActiveAgents()) {
       string jobText =
           agent.name + "| Phase: " +
-          (agent is AerialAgent aerialAgent ? aerialAgent.GetFlightPhase().ToString()
-                                            : "N/A");
+          (agent is AerialAgent aerialAgent ? aerialAgent.GetFlightPhase().ToString() : "N/A");
       agentPanelText += jobText + "\n";
     }
     SetAgentPanelText(agentPanelText);

@@ -37,8 +37,8 @@ public class IterativeLaunchPlannerTest {
     // Create a mock origin config for testing at the default position
     LauncherConfig origin =
         new LauncherConfig { id = "default-test-origin", initial_position = Vector3.zero,
-                                      velocity = Vector3.zero, max_interceptors = 100,
-                                      interceptor_types = new List<string> { "test.json" } };
+                             velocity = Vector3.zero, max_interceptors = 100,
+                             interceptor_types = new List<string> { "test.json" } };
 
     // Create mock origin object for testing
     GameObject mockOriginGameObject = new GameObject("Mock_default-test-origin");
@@ -227,8 +227,8 @@ public class IterativeLaunchPlannerTest {
     // Create a mock origin config for testing
     LauncherConfig origin =
         new LauncherConfig { id = "test-origin", initial_position = new Vector3(50, 0, 0),
-                                      velocity = Vector3.zero, max_interceptors = 10,
-                                      interceptor_types = new List<string> { "test.json" } };
+                             velocity = Vector3.zero, max_interceptors = 10,
+                             interceptor_types = new List<string> { "test.json" } };
 
     // Create mock origin object for testing instead of using old Plan signature
     GameObject mockOriginGameObject = new GameObject("Mock_test-origin");

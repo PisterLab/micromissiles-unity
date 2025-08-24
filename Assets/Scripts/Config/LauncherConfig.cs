@@ -119,9 +119,10 @@ public class LauncherConfig {
   /// <returns>New launcher config with randomized position and velocity</returns>
   public LauncherConfig CreateRandomizedVersion() {
     var randomizedConfig =
-        new LauncherConfig { id = $"{id}-{Guid.NewGuid().ToString()[..8]}", max_interceptors = max_interceptors,
-                            interceptor_types = new List<string>(interceptor_types),
-                            standard_deviation = standard_deviation };
+        new LauncherConfig { id = $"{id}-{Guid.NewGuid().ToString()[..8]}",
+                             max_interceptors = max_interceptors,
+                             interceptor_types = new List<string>(interceptor_types),
+                             standard_deviation = standard_deviation };
 
     // Apply randomization to position
     if (standard_deviation?.position != null) {

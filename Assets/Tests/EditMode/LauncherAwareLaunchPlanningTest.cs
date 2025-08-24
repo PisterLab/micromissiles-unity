@@ -38,8 +38,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
   }
 
   // Helper method to create a mock Launcher for testing
-  private Launcher CreateMockOriginObject(LauncherConfig config,
-                                                   float currentTime = 0f) {
+  private Launcher CreateMockOriginObject(LauncherConfig config, float currentTime = 0f) {
     // Create a GameObject to serve as the mock origin object
     GameObject mockOriginGameObject = new GameObject($"Mock_{config.id}");
 
@@ -171,11 +170,11 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
     Vector3 threatInitialPos = new Vector3(0, 0, 2000);
     Vector3 threatVelocity = new Vector3(0, 0, -100);  // Threat moving toward (0,0,0)
 
-    var origin = new LauncherConfig {
-      id = "Behind-Threat-Launcher", initial_position = originPosition, velocity = Vector3.zero,
-      max_interceptors = 1,
-      interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
-    };
+    var origin =
+        new LauncherConfig { id = "Behind-Threat-Launcher", initial_position = originPosition,
+                             velocity = Vector3.zero, max_interceptors = 1,
+                             interceptor_types =
+                                 new System.Collections.Generic.List<string> { "test.json" } };
 
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
     _mockLaunchAnglePlanner.SetMockResponse(45f, 5f);
@@ -217,11 +216,11 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
     Vector3 threatInitialPos = new Vector3(4000, 0, 8000);
     Vector3 threatVelocity = new Vector3(0, 0, -80);
 
-    var origin = new LauncherConfig {
-      id = "Convergence-Test-Launcher", initial_position = originPosition, velocity = Vector3.zero,
-      max_interceptors = 1,
-      interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
-    };
+    var origin =
+        new LauncherConfig { id = "Convergence-Test-Launcher", initial_position = originPosition,
+                             velocity = Vector3.zero, max_interceptors = 1,
+                             interceptor_types =
+                                 new System.Collections.Generic.List<string> { "test.json" } };
 
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
     _mockLaunchAnglePlanner.SetMockConvergentResponse();  // Make it converge after a few iterations

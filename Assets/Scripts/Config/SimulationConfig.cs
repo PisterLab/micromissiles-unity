@@ -15,7 +15,8 @@ public class SimulationConfig {
   public List<LauncherConfig> launchers = new List<LauncherConfig>();
 
   [Header("Launcher Assignment Strategy")]
-  public LauncherAssignmentStrategy launcher_assignment_strategy = LauncherAssignmentStrategy.CLOSEST;
+  public LauncherAssignmentStrategy launcher_assignment_strategy =
+      LauncherAssignmentStrategy.CLOSEST;
 
   [Header("Interceptor Swarm Configurations")]
   public List<SwarmConfig> interceptor_swarm_configs = new List<SwarmConfig>();

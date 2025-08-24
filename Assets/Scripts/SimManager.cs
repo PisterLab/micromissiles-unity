@@ -213,10 +213,8 @@ public class SimManager : MonoBehaviour {
     string prefabName = config.type;
 
     // Create initial state from config
-    InitialState initialState = new InitialState {
-      position = config.initial_position,
-      velocity = config.velocity
-    };
+    InitialState initialState =
+        new InitialState { position = config.initial_position, velocity = config.velocity };
 
     // Create the launcher GameObject
     GameObject launcherObject = CreateAgent(null, initialState, prefabName);
