@@ -1,7 +1,7 @@
 {
   "endTime": 300,
   "timeScale": 1,
-  "interceptor_origins": [
+  "launchers": [
     {
       "id": "CVN-68-Nimitz",
       "type": "Ship",
@@ -63,7 +63,7 @@
       }
     }
   ],
-  "origin_assignment_strategy": "CLOSEST",
+  "launcher_assignment_strategy": "CLOSEST",
   "interceptor_swarm_configs": [
     {
       "dynamic_agent_config": {

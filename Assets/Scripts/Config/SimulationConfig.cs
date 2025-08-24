@@ -12,10 +12,10 @@ public class SimulationConfig {
   public float endTime = 300f;  // 5 minutes by default
 
   [Header("Launchers")]
-  public List<LauncherConfig> interceptorOrigins = new List<LauncherConfig>();
+  public List<LauncherConfig> launchers = new List<LauncherConfig>();
 
   [Header("Launcher Assignment Strategy")]
-  public LauncherAssignmentStrategy launcherAssignmentStrategy = LauncherAssignmentStrategy.CLOSEST;
+  public LauncherAssignmentStrategy launcher_assignment_strategy = LauncherAssignmentStrategy.CLOSEST;
 
   [Header("Interceptor Swarm Configurations")]
   public List<SwarmConfig> interceptor_swarm_configs = new List<SwarmConfig>();

@@ -72,7 +72,7 @@ public interface ILaunchAnglePlanner {
   // Convert from a 3D vector to a 2D direction that ignores the azimuth.
   // This method now supports origin-relative calculations.
   //   targetPosition: Target position
-  //   originPosition: Origin position (default: Vector3.zero)
+  //   originPosition: Launcher position (default: Vector3.zero)
   // Returns: 2D direction vector (horizontal distance, altitude)
   protected static Vector2 ConvertToDirection(Vector3 targetPosition,
                                               Vector3 originPosition = default(Vector3)) {

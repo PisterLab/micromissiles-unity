@@ -186,7 +186,7 @@ public class SimManager : MonoBehaviour {
     }
 
     // Create origins based on the configuration
-    foreach (var launcherConfig in SimulationConfig.interceptorOrigins) {
+    foreach (var launcherConfig in SimulationConfig.launchers) {
       CreateLauncher(launcherConfig);
     }
 

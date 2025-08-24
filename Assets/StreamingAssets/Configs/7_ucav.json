@@ -1,9 +1,9 @@
 {
   "endTime": 300,
   "timeScale": 1,
-  "interceptor_origins": [
+  "launchers": [
     {
-      "id": "Default-Origin",
+      "id": "Default-Launcher",
       "type": "ShoreBattery",
       "initial_position": { "x": 0, "y": 0, "z": 0 },
       "velocity": { "x": 0, "y": 0, "z": 0 },

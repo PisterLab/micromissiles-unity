@@ -28,7 +28,7 @@ public class LauncherTest : TestBase {
   public void TestLauncher_HasCapacity() {
     // Test capacity management for interceptor allocation
     var origin = new LauncherConfig {
-      id = "Limited-Capacity-Origin", initial_position = Vector3.zero, velocity = Vector3.zero,
+      id = "Limited-Capacity-Launcher", initial_position = Vector3.zero, velocity = Vector3.zero,
       max_interceptors = 5, interceptor_types = new List<string> { "hydra70.json" }
     };
 
@@ -59,7 +59,7 @@ public class LauncherTest : TestBase {
   public void TestLauncher_ReleaseInterceptor() {
     // Test releasing interceptors back to the pool
     var origin =
-        new LauncherConfig { id = "Release-Test-Origin", initial_position = Vector3.zero,
+        new LauncherConfig { id = "Release-Test-Launcher", initial_position = Vector3.zero,
                                       velocity = Vector3.zero, max_interceptors = 3,
                                       interceptor_types = new List<string> { "hydra70.json" } };
 

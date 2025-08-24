@@ -19,14 +19,14 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
   [SetUp]
   public void SetUp() {
     // Set up test origins
-    _staticOrigin = new LauncherConfig {
-      id = "Static-Test-Origin", initial_position = new Vector3(1000, 0, 2000),
+    _staticLauncher = new LauncherConfig {
+      id = "Static-Test-Launcher", initial_position = new Vector3(1000, 0, 2000),
       velocity = Vector3.zero, max_interceptors = 10,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
     };
 
-    _movingOrigin = new LauncherConfig {
-      id = "Moving-Test-Origin", initial_position = new Vector3(500, 0, 1000),
+    _movingLauncher = new LauncherConfig {
+      id = "Moving-Test-Launcher", initial_position = new Vector3(500, 0, 1000),
       velocity = new Vector3(0, 0, -10),  // Moving 10 m/s in -Z direction
       max_interceptors = 5,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
@@ -49,6 +49,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
 
     // Add the Launcher component
     Launcher originObject = mockOriginGameObject.AddComponent<Launcher>();
+    mockOriginGameObject.AddComponent<Rigidbody>();
     originObject.SetLauncherConfig(config);
 
     return originObject;
@@ -69,7 +70,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
         45f, 10f);  // 45 degree launch angle, 10 second time-to-intercept
 
     // Plan launch from static origin using mock origin object
-    Launcher staticOriginObject = CreateMockOriginObject(_staticOrigin);
+    Launcher staticOriginObject = CreateMockOriginObject(_staticLauncher);
     LaunchPlan plan = planner.Plan(staticOriginObject);
 
     Assert.AreEqual(
@@ -91,7 +92,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
 
     // Plan launch from moving origin at t=10 seconds using mock origin object
     float planningTime = 10f;
-    Launcher movingOriginObject = CreateMockOriginObject(_movingOrigin, planningTime);
+    Launcher movingOriginObject = CreateMockOriginObject(_movingLauncher, planningTime);
     LaunchPlan plan = planner.Plan(movingOriginObject);
 
     Assert.IsNotNull(plan);
@@ -166,12 +167,12 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
     var planner = new IterativeLaunchPlanner(_mockLaunchAnglePlanner, _mockPredictor);
 
     // Set up a scenario where interceptor would be launched backwards if origin is ignored
-    Vector3 originPosition = new Vector3(0, 0, 1000);  // Origin behind the threat's target
+    Vector3 originPosition = new Vector3(0, 0, 1000);  // Launcher behind the threat's target
     Vector3 threatInitialPos = new Vector3(0, 0, 2000);
     Vector3 threatVelocity = new Vector3(0, 0, -100);  // Threat moving toward (0,0,0)
 
     var origin = new LauncherConfig {
-      id = "Behind-Threat-Origin", initial_position = originPosition, velocity = Vector3.zero,
+      id = "Behind-Threat-Launcher", initial_position = originPosition, velocity = Vector3.zero,
       max_interceptors = 1,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
     };
@@ -217,7 +218,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
     Vector3 threatVelocity = new Vector3(0, 0, -80);
 
     var origin = new LauncherConfig {
-      id = "Convergence-Test-Origin", initial_position = originPosition, velocity = Vector3.zero,
+      id = "Convergence-Test-Launcher", initial_position = originPosition, velocity = Vector3.zero,
       max_interceptors = 1,
       interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
     };

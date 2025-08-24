@@ -44,6 +44,7 @@ public class IterativeLaunchPlannerTest {
     GameObject mockOriginGameObject = new GameObject("Mock_default-test-origin");
     mockOriginGameObject.transform.position = origin.initial_position;
     Launcher originObject = mockOriginGameObject.AddComponent<Launcher>();
+    mockOriginGameObject.AddComponent<Rigidbody>();
     originObject.SetLauncherConfig(origin);
 
     return originObject;
@@ -235,6 +236,7 @@ public class IterativeLaunchPlannerTest {
     GameObject mockOriginGameObject = new GameObject("Mock_test-origin");
     mockOriginGameObject.transform.position = origin.initial_position;
     Launcher originObject = mockOriginGameObject.AddComponent<Launcher>();
+    mockOriginGameObject.AddComponent<Rigidbody>();
     originObject.SetLauncherConfig(origin);
 
     LaunchPlan plan = planner.Plan(originObject);
