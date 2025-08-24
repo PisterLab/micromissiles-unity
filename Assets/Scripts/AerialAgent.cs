@@ -19,9 +19,6 @@ public abstract class AerialAgent : Agent {
   protected Vector3 _dragAcceleration;
 
   [SerializeField]
-  protected float _speed;
-
-  [SerializeField]
   protected double _timeSinceBoost = 0;
   [SerializeField]
   protected double _timeInPhase = 0;
@@ -75,7 +72,6 @@ public abstract class AerialAgent : Agent {
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
-    _speed = (float)GetSpeed();
     if (_flightPhase != FlightPhase.INITIALIZED && _flightPhase != FlightPhase.READY) {
       _timeSinceBoost += Time.fixedDeltaTime;
     }

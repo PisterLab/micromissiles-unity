@@ -32,7 +32,7 @@ public class IterativeLaunchPlannerTest {
 
   private static ILaunchAnglePlanner _launchAnglePlanner = new DummyLaunchAngleDataInterpolator();
 
-  // Creates a default Launcher at (0,0,0) for backward compatibility testing.
+  // Creates a default Launcher at (0,0,0)
   public static Launcher CreateDefaultOrigin() {
     // Create a mock origin config for testing at the default position
     LauncherConfig origin =

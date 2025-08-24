@@ -5,7 +5,7 @@ using UnityEngine;
 // Tests that launch planning algorithms correctly account for launcher positions
 // rather than assuming launch from (0,0,0).
 //
-// KEY PRINCIPLE: The intercept position should be where both interceptor and target meet.
+// The intercept position should be where both interceptor and target meet.
 // For successful intercepts, this should be very close to the predicted target position.
 // Launcher-aware planning ensures interceptors launch from the correct starting position
 // to reach this intercept point.
@@ -65,8 +65,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
 
     // Set up mock launch angle planner to return reasonable values
-    _mockLaunchAnglePlanner.SetMockResponse(
-        45f, 10f);  // 45 degree launch angle, 10 second time-to-intercept
+    _mockLaunchAnglePlanner.SetMockResponse(launchAngle: 45f, timeToPosition: 10f);
 
     // Plan launch from static origin using mock origin object
     Launcher staticOriginObject = CreateMockOriginObject(_staticLauncher);
