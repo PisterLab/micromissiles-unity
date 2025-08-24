@@ -33,16 +33,16 @@ public class ConfigTest : TestBase {
       if (isPaused) {
         List<Agent> agents = SimManager.Instance.GetActiveAgents();
         foreach (Agent agent in agents) {
-          if (agent is Interceptor) {
+          if (agent is Interceptor interceptor) {
             // All interceptors start in INITIALIZED phase
             Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
+                AerialAgent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
                 "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused");
 
-          } else if (agent is Threat) {
+          } else if (agent is Threat threat) {
             // All threats start in INITIALIZED phase
             Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
+                AerialAgent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
                 "All THREAT agents should be in the INITIALIZED flight phase after loading while paused");
           }
         }
