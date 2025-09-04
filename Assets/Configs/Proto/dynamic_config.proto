@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package micromissiles;
 
-import "configs/proto/sensor.proto";
+import "Proto/sensor.proto";
 
 // Controller type enumeration.
 enum ControllerType {

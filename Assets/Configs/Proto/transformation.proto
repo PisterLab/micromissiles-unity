@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package micromissiles;
 
-import "configs/proto/coordinates.proto";
+import "Proto/coordinates.proto";
 
 // Relative transformation between two agents.
 message Transformation {

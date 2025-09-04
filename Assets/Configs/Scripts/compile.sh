@@ -7,7 +7,7 @@ set -e
 WORKSPACE=$(git rev-parse --show-toplevel)
 
 # Default directories.
-INPUT_DIR="${1:-$WORKSPACE/plugins/configs/proto}"
+INPUT_DIR="${1:-$WORKSPACE/Assets/Configs/Proto}"
 OUTPUT_DIR="${2:-$WORKSPACE/Assets/Scripts/Generated/Proto}"
 
 # Check if protoc is installed.
@@ -29,6 +29,6 @@ fi
 
 # Compile all .proto files in the input directory.
 echo "Compiling .proto files from $INPUT_DIR to $OUTPUT_DIR."
-find "$INPUT_DIR/" -name '*.proto' -exec protoc --proto_path="$WORKSPACE/plugins" --csharp_out="$OUTPUT_DIR" {} +
+find "$INPUT_DIR/" -name '*.proto' -exec protoc --proto_path="$WORKSPACE/Assets/Configs" --csharp_out="$OUTPUT_DIR" {} +
 
 echo "Protobuf compilation completed."

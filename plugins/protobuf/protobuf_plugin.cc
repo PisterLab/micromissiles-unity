@@ -5,9 +5,9 @@
 
 #include <cstring>
 
-#include "configs/proto/simulation_config.pb.h"
-#include "configs/proto/simulator_config.pb.h"
-#include "configs/proto/static_config.pb.h"
+#include "Proto/simulation_config.pb.h"
+#include "Proto/simulator_config.pb.h"
+#include "Proto/static_config.pb.h"
 #include "protobuf/protobuf.h"
 
 // Macro to define a function to load a Protobuf message from a text file to

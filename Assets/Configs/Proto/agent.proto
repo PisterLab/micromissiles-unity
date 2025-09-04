@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package micromissiles;
 
-import "configs/proto/dynamic_config.proto";
-import "configs/proto/state.proto";
+import "Proto/dynamic_config.proto";
+import "Proto/state.proto";
 
 // Interceptor type enumeration.
 enum InterceptorType {

@@ -72,5 +72,15 @@ bazel_dep(
 )
 local_path_override(
     module_name = "micromissiles-configs",
+    path = "../Assets/Configs",
+)
+
+# Configurations data.
+bazel_dep(
+    name = "micromissiles-configs-data",
+    version = "",
+)
+local_path_override(
+    module_name = "micromissiles-configs-data",
     path = "../Assets/StreamingAssets/Configs",
 )
