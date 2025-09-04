@@ -94,15 +94,21 @@ public static class ConfigLoader {
 
   public static Micromissiles.StaticConfig LoadStaticConfig(
       Micromissiles.InterceptorType interceptorType) {
-    return InterceptorStaticConfigMap.TryGetValue(interceptorType, out var configFile)
-               ? LoadStaticConfig(configFile)
-               : new Micromissiles.StaticConfig();
+    if (InterceptorStaticConfigMap.TryGetValue(interceptorType, out var configFile)) {
+      return LoadStaticConfig(configFile);
+    }
+    var config = new Micromissiles.StaticConfig();
+    ProtobufInitializer.Initialize(config);
+    return config;
   }
 
   public static Micromissiles.StaticConfig LoadStaticConfig(Micromissiles.ThreatType threatType) {
-    return ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)
-               ? LoadStaticConfig(configFile)
-               : new Micromissiles.StaticConfig();
+    if (ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)) {
+      LoadStaticConfig(configFile);
+    }
+    var config = new Micromissiles.StaticConfig();
+    ProtobufInitializer.Initialize(config);
+    return config;
   }
 
   public static Micromissiles.StaticConfig LoadStaticConfig(string configFile) {

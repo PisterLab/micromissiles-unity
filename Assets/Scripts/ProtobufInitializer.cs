@@ -3,7 +3,7 @@ using Google.Protobuf.Reflection;
 using System;
 using System.Collections;
 
-// In the generated C# Protobuf code, messages are nullable reference types, so accessing missing
+// In the generated Protobuf C# code, messages are nullable reference types, so accessing missing
 // message fields returns null. The Protobuf initializer iterates through all message fields and
 // replaces any null message fields with empty Protobuf messages.
 public static class ProtobufInitializer {
@@ -25,8 +25,9 @@ public static class ProtobufInitializer {
 
       // Handle repeated message fields.
       if (field.IsRepeated) {
-        // Repeated message fields default to empty lists; nothing to do here
-        foreach (var item in (IEnumerable)value) Initialize(item as IMessage);
+        foreach (var item in (IEnumerable)value) {
+          Initialize(item as IMessage);
+        }
         continue;
       }
 
