@@ -13,7 +13,8 @@ namespace protobuf {
 namespace {
 
 TEST(ProtobufTest, LoadProtobufTextFileTest) {
-  const std::string kStaticConfigFile = "configs/models/micromissile.pbtxt";
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs+/Models/micromissile.pbtxt";
   const auto static_config =
       LoadProtobufTextFile<micromissiles::StaticConfig>(kStaticConfigFile);
   EXPECT_TRUE(static_config.has_acceleration_config());
@@ -24,7 +25,8 @@ TEST(ProtobufTest, LoadProtobufTextFileTest) {
 }
 
 TEST(ProtobufTest, SerializeToBufferTest) {
-  const std::string kStaticConfigFile = "configs/models/micromissile.pbtxt";
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs+/Models/micromissile.pbtxt";
   const auto static_config =
       LoadProtobufTextFile<micromissiles::StaticConfig>(kStaticConfigFile);
   std::vector<uint8_t> buffer(1024);
@@ -33,7 +35,8 @@ TEST(ProtobufTest, SerializeToBufferTest) {
 }
 
 TEST(ProtobufTest, SerializeToBufferInsufficientSizeTest) {
-  const std::string kStaticConfigFile = "configs/models/micromissile.pbtxt";
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs+/Models/micromissile.pbtxt";
   const auto static_config =
       LoadProtobufTextFile<micromissiles::StaticConfig>(kStaticConfigFile);
   std::vector<uint8_t> buffer(1);

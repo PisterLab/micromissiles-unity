@@ -64,3 +64,13 @@ http_archive(
     strip_prefix = "or-tools-{}".format(ORTOOLS_VERSION),
     url = "https://github.com/google/or-tools/archive/refs/tags/v{}.tar.gz".format(ORTOOLS_VERSION),
 )
+
+# Configurations.
+bazel_dep(
+    name = "micromissiles-configs",
+    version = "",
+)
+local_path_override(
+    module_name = "micromissiles-configs",
+    path = "../Assets/StreamingAssets/Configs",
+)

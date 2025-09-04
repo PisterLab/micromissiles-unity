@@ -8,8 +8,8 @@ cc_library(
     name = "protobuf_plugin",
     srcs = ["protobuf_plugin.cc"],
     data = [
-        "//configs/models",
-        "//configs/simulations",
+        "@micromissiles-configs//Models:models",
+        "@micromissiles-configs//Simulations:simulations",
     ],
     deps = [
         ":protobuf",
@@ -31,7 +31,7 @@ cc_library(
 cc_test(
     name = "protobuf_test",
     srcs = ["protobuf_test.cc"],
-    data = ["//configs/models"],
+    data = ["@micromissiles-configs//Models:models"],
     deps = [
         ":protobuf",
         "//configs/proto:static_config_cc_proto",
