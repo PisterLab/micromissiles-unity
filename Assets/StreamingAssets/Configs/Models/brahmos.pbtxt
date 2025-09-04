@@ -6,6 +6,9 @@ acceleration_config {
   max_reference_normal_acceleration: 15
   reference_speed: 960.4
 }
+lift_drag_config {
+  lift_drag_ratio: 5
+}
 body_config {
   mass: 3000
   cross_sectional_area: 0.352
