@@ -5,6 +5,10 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 public class MaxSpeedAssignmentTest {
+  public static Micromissiles.StaticConfig LoadStaticConfig() {
+    return ConfigLoader.LoadStaticConfig("micromissile.pbtxt");
+  }
+
   [Test]
   public void AssignNoInterceptors() {
     // Define the assignment.
@@ -48,14 +52,11 @@ public class MaxSpeedAssignmentTest {
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
-    interceptor1.staticConfig = new Micromissiles.StaticConfig();
-    ProtobufInitializer.Initialize(interceptor1.staticConfig);
+    interceptor1.staticConfig = LoadStaticConfig();
     Interceptor interceptor2 = new GameObject("Interceptor 2").AddComponent<MissileInterceptor>();
-    interceptor2.staticConfig = new Micromissiles.StaticConfig();
-    ProtobufInitializer.Initialize(interceptor2.staticConfig);
+    interceptor2.staticConfig = LoadStaticConfig();
     Interceptor interceptor3 = new GameObject("Interceptor 3").AddComponent<MissileInterceptor>();
-    interceptor3.staticConfig = new Micromissiles.StaticConfig();
-    ProtobufInitializer.Initialize(interceptor3.staticConfig);
+    interceptor3.staticConfig = LoadStaticConfig();
 
     // Add rigid body components to interceptors to set their velocities.
     Rigidbody interceptorRb1 = interceptor1.gameObject.AddComponent<Rigidbody>();
@@ -117,14 +118,11 @@ public class MaxSpeedAssignmentTest {
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
-    interceptor1.staticConfig = new Micromissiles.StaticConfig();
-    ProtobufInitializer.Initialize(interceptor1.staticConfig);
+    interceptor1.staticConfig = LoadStaticConfig();
     Interceptor interceptor2 = new GameObject("Interceptor 2").AddComponent<MissileInterceptor>();
-    interceptor2.staticConfig = new Micromissiles.StaticConfig();
-    ProtobufInitializer.Initialize(interceptor2.staticConfig);
+    interceptor2.staticConfig = LoadStaticConfig();
     Interceptor interceptor3 = new GameObject("Interceptor 3").AddComponent<MissileInterceptor>();
-    interceptor3.staticConfig = new Micromissiles.StaticConfig();
-    ProtobufInitializer.Initialize(interceptor3.staticConfig);
+    interceptor3.staticConfig = LoadStaticConfig();
 
     // Add rigid body components to interceptors to set their velocities.
     Rigidbody interceptorRb1 = interceptor1.gameObject.AddComponent<Rigidbody>();
