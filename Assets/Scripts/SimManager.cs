@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class SimManager : MonoBehaviour {
   // Map from the agent type to the prefab class name.
+  // The prefab class must exist in the Resources/Prefabs directory.
   private static readonly Dictionary<Micromissiles.AgentType, string> AgentTypePrefabMap = new() {
     { Micromissiles.AgentType.CarrierInterceptor, "CarrierInterceptor" },
     { Micromissiles.AgentType.MissileInterceptor, "MissileInterceptor" },
