@@ -10,15 +10,15 @@ using UnityEngine;
 public class SimManager : MonoBehaviour {
   // Map from the agent type to the prefab class name.
   // The prefab class must exist in the Resources/Prefabs directory.
-  private static readonly Dictionary<Micromissiles.AgentType, string> AgentTypePrefabMap = new() {
-    { Micromissiles.AgentType.CarrierInterceptor, "CarrierInterceptor" },
-    { Micromissiles.AgentType.MissileInterceptor, "MissileInterceptor" },
-    { Micromissiles.AgentType.FixedWingThreat, "FixedWingThreat" },
-    { Micromissiles.AgentType.RotaryWingThreat, "RotaryWingThreat" },
+  private static readonly Dictionary<Configs.AgentType, string> AgentTypePrefabMap = new() {
+    { Configs.AgentType.CarrierInterceptor, "CarrierInterceptor" },
+    { Configs.AgentType.MissileInterceptor, "MissileInterceptor" },
+    { Configs.AgentType.FixedWingThreat, "FixedWingThreat" },
+    { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
 
   };
 
-  public Micromissiles.SimulatorConfig simulatorConfig;
+  public Configs.SimulatorConfig simulatorConfig;
 
   /// <summary>
   /// Singleton instance of SimManager.
@@ -396,7 +396,7 @@ public class SimManager : MonoBehaviour {
   /// <returns>The created Interceptor instance, or null if creation failed.</returns>
   public Interceptor CreateInterceptor(DynamicAgentConfig config, InitialState initialState) {
     string modelFile = config.agent_model;
-    Micromissiles.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
     GameObject interceptorObject = null;
     if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
       interceptorObject = CreateAgent(config, initialState, prefab);
@@ -446,7 +446,7 @@ public class SimManager : MonoBehaviour {
   /// <returns>The created Threat instance, or null if creation failed.</returns>
   private Threat CreateThreat(DynamicAgentConfig config) {
     string modelFile = config.agent_model;
-    Micromissiles.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
     GameObject threatObject = null;
     if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
       threatObject = CreateRandomAgent(config, prefab);

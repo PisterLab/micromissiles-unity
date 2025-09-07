@@ -5,23 +5,22 @@
 
 #include <cstring>
 
-#include "Proto/simulation_config.pb.h"
-#include "Proto/simulator_config.pb.h"
-#include "Proto/static_config.pb.h"
+#include "Configs/simulation_config.pb.h"
+#include "Configs/simulator_config.pb.h"
+#include "Configs/static_config.pb.h"
 #include "protobuf/protobuf.h"
 
-// Macro to define a function to load a Protobuf message from a text file to
-// binary format and serialize it to a buffer. The function returns the length
-// of the serialized message.
-#define DEFINE_PROTOBUF_LOADER(Message)                                 \
-  int Protobuf_##Message##_LoadToBinary(const char* file, void* buffer, \
-                                        const int size) {               \
-    const auto message =                                                \
-        protobuf::LoadProtobufTextFile<micromissiles::Message>(         \
-            std::string(file));                                         \
-    const auto serialized_length =                                      \
-        protobuf::SerializeToBuffer(message, buffer, size);             \
-    return static_cast<int>(serialized_length);                         \
+// Macro to define a function to load a Protobuf configuration message from a
+// text file to binary format and serialize it to a buffer. The function returns
+// the length of the serialized message.
+#define DEFINE_PROTOBUF_LOADER(Message)                                      \
+  int Protobuf_##Message##_LoadToBinary(const char* file, void* buffer,      \
+                                        const int size) {                    \
+    const auto message =                                                     \
+        protobuf::LoadProtobufTextFile<configs::Message>(std::string(file)); \
+    const auto serialized_length =                                           \
+        protobuf::SerializeToBuffer(message, buffer, size);                  \
+    return static_cast<int>(serialized_length);                              \
   }
 
 extern "C" {

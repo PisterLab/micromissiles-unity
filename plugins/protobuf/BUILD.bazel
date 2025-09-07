@@ -13,9 +13,9 @@ cc_library(
     ],
     deps = [
         ":protobuf",
-        "@micromissiles-configs//Proto:simulation_config_cc_proto",
-        "@micromissiles-configs//Proto:simulator_config_cc_proto",
-        "@micromissiles-configs//Proto:static_config_cc_proto",
+        "@micromissiles-proto//Configs:simulation_config_cc_proto",
+        "@micromissiles-proto//Configs:simulator_config_cc_proto",
+        "@micromissiles-proto//Configs:static_config_cc_proto",
     ],
 )
 
@@ -36,6 +36,6 @@ cc_test(
         ":protobuf",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
-        "@micromissiles-configs//Proto:static_config_cc_proto",
+        "@micromissiles-proto//Configs:static_config_cc_proto",
     ],
 )

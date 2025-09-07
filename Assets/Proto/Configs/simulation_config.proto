@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package configs;
+
+import "Configs/agent.proto";
+
+// Simulation configuration.
+message SimulationConfig {
+  // End time in seconds.
+  float end_time = 1;
+
+  // Time scale.
+  float time_scale = 2;
+
+  // Interceptor swarm configurations.
+  repeated AgentSwarmConfig interceptor_swarm_configs = 3;
+
+  // Threat swarm configurations.
+  repeated AgentSwarmConfig threat_swarm_configs = 4;
+}

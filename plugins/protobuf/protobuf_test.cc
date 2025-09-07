@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "Proto/static_config.pb.h"
+#include "Configs/static_config.pb.h"
 
 namespace protobuf {
 namespace {
@@ -16,7 +16,7 @@ TEST(ProtobufTest, LoadProtobufTextFileTest) {
   const std::string kStaticConfigFile =
       "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   const auto static_config =
-      LoadProtobufTextFile<micromissiles::StaticConfig>(kStaticConfigFile);
+      LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile);
   EXPECT_TRUE(static_config.has_acceleration_config());
   EXPECT_TRUE(static_config.has_boost_config());
   EXPECT_TRUE(static_config.has_lift_drag_config());
@@ -28,7 +28,7 @@ TEST(ProtobufTest, SerializeToBufferTest) {
   const std::string kStaticConfigFile =
       "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   const auto static_config =
-      LoadProtobufTextFile<micromissiles::StaticConfig>(kStaticConfigFile);
+      LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile);
   std::vector<uint8_t> buffer(1024);
   EXPECT_NO_THROW(
       SerializeToBuffer(static_config, buffer.data(), buffer.size()));
@@ -38,7 +38,7 @@ TEST(ProtobufTest, SerializeToBufferInsufficientSizeTest) {
   const std::string kStaticConfigFile =
       "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   const auto static_config =
-      LoadProtobufTextFile<micromissiles::StaticConfig>(kStaticConfigFile);
+      LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile);
   std::vector<uint8_t> buffer(1);
   EXPECT_THROW(SerializeToBuffer(static_config, buffer.data(), buffer.size()),
                std::runtime_error);

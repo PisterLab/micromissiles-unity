@@ -34,7 +34,7 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected double _timeInPhase = 0;
 
-  public Micromissiles.StaticConfig staticConfig;
+  public Configs.StaticConfig staticConfig;
   public DynamicAgentConfig dynamicAgentConfig;
 
   // Define delegates.
@@ -83,7 +83,7 @@ public abstract class Agent : MonoBehaviour {
     dynamicAgentConfig = config;
   }
 
-  public virtual void SetStaticConfig(Micromissiles.StaticConfig config) {
+  public virtual void SetStaticConfig(Configs.StaticConfig config) {
     staticConfig = config;
     GetComponent<Rigidbody>().mass = staticConfig.BodyConfig.Mass;
   }

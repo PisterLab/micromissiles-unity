@@ -14,21 +14,20 @@ public static class ConfigLoader {
   private const string SimulatorConfigRelativePath = "simulator.pbtxt";
 
   // Map from the interceptor type to the static configuration file.
-  private static readonly Dictionary<Micromissiles.InterceptorType, string>
-      InterceptorStaticConfigMap = new() {
-        { Micromissiles.InterceptorType.Hydra70, "hydra70.pbtxt" },
-        { Micromissiles.InterceptorType.Micromissile, "micromissiles.pbtxt" },
+  private static readonly Dictionary<Configs.InterceptorType, string> InterceptorStaticConfigMap =
+      new() {
+        { Configs.InterceptorType.Hydra70, "hydra70.pbtxt" },
+        { Configs.InterceptorType.Micromissile, "micromissiles.pbtxt" },
       };
 
   // Map from the threat type to the static configuration file.
-  private static readonly Dictionary<Micromissiles.ThreatType, string> ThreatStaticConfigMap =
-      new() {
-        { Micromissiles.ThreatType.Quadcopter, "quadcopter.pbtxt" },
-        { Micromissiles.ThreatType.Ucav, "ucav.pbtxt" },
-        { Micromissiles.ThreatType.Brahmos, "brahmos.pbtxt" },
-        { Micromissiles.ThreatType.Ascm, "ascm.pbtxt" },
-        { Micromissiles.ThreatType.Fateh110B, "fateh_110b.pbtxt" },
-      };
+  private static readonly Dictionary<Configs.ThreatType, string> ThreatStaticConfigMap = new() {
+    { Configs.ThreatType.Quadcopter, "quadcopter.pbtxt" },
+    { Configs.ThreatType.Ucav, "ucav.pbtxt" },
+    { Configs.ThreatType.Brahmos, "brahmos.pbtxt" },
+    { Configs.ThreatType.Ascm, "ascm.pbtxt" },
+    { Configs.ThreatType.Fateh110B, "fateh_110b.pbtxt" },
+  };
 
   public static string GetStreamingAssetsFilePath(string relativePath) {
     return Path.Combine(Application.streamingAssetsPath, relativePath);
@@ -76,7 +75,7 @@ public static class ConfigLoader {
     return config;
   }
 
-  public static Micromissiles.SimulatorConfig LoadSimulatorConfig() {
+  public static Configs.SimulatorConfig LoadSimulatorConfig() {
     string streamingAssetsPath = GetStreamingAssetsFilePath(SimulatorConfigRelativePath);
     byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
     int serializedLength = 0;
@@ -86,32 +85,30 @@ public static class ConfigLoader {
             streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
       }
     }
-    var message =
-        Micromissiles.SimulatorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    var message = Configs.SimulatorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
     ProtobufInitializer.Initialize(message);
     return message;
   }
 
-  public static Micromissiles.StaticConfig LoadStaticConfig(
-      Micromissiles.InterceptorType interceptorType) {
+  public static Configs.StaticConfig LoadStaticConfig(Configs.InterceptorType interceptorType) {
     if (InterceptorStaticConfigMap.TryGetValue(interceptorType, out var configFile)) {
       return LoadStaticConfig(configFile);
     }
-    var config = new Micromissiles.StaticConfig();
+    var config = new Configs.StaticConfig();
     ProtobufInitializer.Initialize(config);
     return config;
   }
 
-  public static Micromissiles.StaticConfig LoadStaticConfig(Micromissiles.ThreatType threatType) {
+  public static Configs.StaticConfig LoadStaticConfig(Configs.ThreatType threatType) {
     if (ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)) {
       LoadStaticConfig(configFile);
     }
-    var config = new Micromissiles.StaticConfig();
+    var config = new Configs.StaticConfig();
     ProtobufInitializer.Initialize(config);
     return config;
   }
 
-  public static Micromissiles.StaticConfig LoadStaticConfig(string configFile) {
+  public static Configs.StaticConfig LoadStaticConfig(string configFile) {
     string modelPath = Path.Combine("Configs/Models", configFile);
     string streamingAssetsPath = GetStreamingAssetsFilePath(modelPath);
     byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
@@ -122,8 +119,7 @@ public static class ConfigLoader {
             streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
       }
     }
-    var message =
-        Micromissiles.StaticConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    var message = Configs.StaticConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
     ProtobufInitializer.Initialize(message);
     return message;
   }

@@ -19,6 +19,6 @@ repos:
     hooks:
       - id: protoc-cs
         name: protoc-cs
-        entry: Assets/Configs/Scripts/compile.sh
+        entry: Assets/Proto/Scripts/compile.sh
         language: script
         pass_filenames: false

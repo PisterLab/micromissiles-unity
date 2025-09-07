@@ -1,6 +1,0 @@
-module(name = "micromissiles-configs")
-
-bazel_dep(
-    name = "protobuf",
-    version = "31.1",
-)

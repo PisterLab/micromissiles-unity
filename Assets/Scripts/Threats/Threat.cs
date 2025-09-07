@@ -7,7 +7,7 @@ public abstract class Threat : Agent {
   [SerializeField]
   protected Vector3 _currentWaypoint;
   [SerializeField]
-  protected Micromissiles.Power _currentPower;
+  protected Configs.Power _currentPower;
 
   protected SensorOutput _sensorOutput;
   protected Sensor _sensor;
@@ -23,7 +23,7 @@ public abstract class Threat : Agent {
                                                    attackBehavior.targetVelocity);
   }
 
-  protected float LookupPowerTable(Micromissiles.Power power) {
+  protected float LookupPowerTable(Configs.Power power) {
     foreach (var entry in staticConfig.PowerTable) {
       if (entry.Power == power) {
         return entry.Speed;
@@ -124,7 +124,7 @@ public abstract class Threat : Agent {
     Vector3 interceptorPosition = interceptor.GetPosition();
 
     // Set power to maximum.
-    _currentPower = Micromissiles.Power.Max;
+    _currentPower = Configs.Power.Max;
 
     // Evade the interceptor by changing the velocity to be normal to the interceptor's velocity.
     Vector3 normalVelocity = Vector3.ProjectOnPlane(transformVelocity, interceptorVelocity);

@@ -67,12 +67,12 @@ http_archive(
 
 # Configurations.
 bazel_dep(
-    name = "micromissiles-configs",
+    name = "micromissiles-proto",
     version = "",
 )
 local_path_override(
-    module_name = "micromissiles-configs",
-    path = "../Assets/Configs",
+    module_name = "micromissiles-proto",
+    path = "../Assets/Proto",
 )
 
 # Configurations data.

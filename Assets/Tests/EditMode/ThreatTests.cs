@@ -152,11 +152,11 @@ public class ThreatTests : AgentTestBase {
 
       Assert.AreEqual(5000f, dttWaypoints[0].distance);
       Assert.AreEqual(100f, dttWaypoints[0].altitude);
-      Assert.AreEqual(Micromissiles.Power.Max, dttWaypoints[0].power);
+      Assert.AreEqual(Configs.Power.Max, dttWaypoints[0].power);
 
       Assert.AreEqual(10000f, dttWaypoints[1].distance);
       Assert.AreEqual(500f, dttWaypoints[1].altitude);
-      Assert.AreEqual(Micromissiles.Power.Mil, dttWaypoints[1].power);
+      Assert.AreEqual(Configs.Power.Mil, dttWaypoints[1].power);
 
       // Check targetVelocity
       Vector3 targetVelocity = directAttackBehavior.targetVelocity;
@@ -241,15 +241,15 @@ public class ThreatTests : AgentTestBase {
 
   private class MockAttackBehavior : AttackBehavior {
     private Vector3 waypoint;
-    private Micromissiles.Power power;
+    private Configs.Power power;
 
-    public MockAttackBehavior(Vector3 waypoint, Micromissiles.Power power) {
+    public MockAttackBehavior(Vector3 waypoint, Configs.Power power) {
       this.waypoint = waypoint;
       this.power = power;
       this.name = "MockAttackBehavior";
     }
 
-    public override (Vector3, Micromissiles.Power)
+    public override (Vector3, Configs.Power)
         GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
       return (waypoint, power);
     }
@@ -266,12 +266,12 @@ public class ThreatTests : AgentTestBase {
     rotaryWingThreat.SetPosition(initialPosition);
     SetPrivateField(rotaryWingThreat, "_currentWaypoint", waypoint);
     rotaryWingThreat.SetVelocity(initialVelocity);
-    SetPrivateField(rotaryWingThreat, "_currentPower", Micromissiles.Power.Mil);
+    SetPrivateField(rotaryWingThreat, "_currentPower", Configs.Power.Mil);
 
     // Assume that LookupPowerTable returns 50 for MIL.
     // Assert that it is true using LookupPowerTable.
     float power =
-        InvokePrivateMethod<float>(rotaryWingThreat, "LookupPowerTable", Micromissiles.Power.Mil);
+        InvokePrivateMethod<float>(rotaryWingThreat, "LookupPowerTable", Configs.Power.Mil);
     Assert.AreEqual(desiredSpeed, power);
 
     // Act
