@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Agent : MonoBehaviour {
   // In the initialized phase, the agent is subject to no forces.
   // In the ready phase, the agent is subject to gravity and drag with zero input acceleration.
+  // TODO(titan): Replace this enumeration with the Protobuf enumeration.
   public enum FlightPhase { INITIALIZED, READY, BOOST, MIDCOURSE, TERMINAL, TERMINATED }
 
   [SerializeField]
