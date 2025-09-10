@@ -32,7 +32,7 @@ interceptor_swarm_configs {
 threat_swarm_configs {
   num_agents: 7
   agent_config {
-    threat_type: QUADCOPTER
+    threat_type: UCAV
     attack_behavior_type: DEFAULT_DIRECT_ATTACK
     initial_state {
       position {

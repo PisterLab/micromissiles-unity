@@ -1,0 +1,246 @@
+end_time: 300
+time_scale: 1
+interceptor_swarm_configs {
+  agent_config {
+    interceptor_type: HYDRA_70
+    dynamic_config {
+      flight_config {
+        controller_type: PROPORTIONAL_NAVIGATION
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+    submunitions_config {
+      num_submunitions: 7
+      agent_config: {
+        interceptor_type: MICROMISSILE
+        dynamic_config {
+          flight_config {
+            controller_type: PROPORTIONAL_NAVIGATION
+          }
+          sensor_config {
+            type: IDEAL
+            frequency: 100
+          }
+        }
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    threat_type: QUADCOPTER
+    attack_behavior_type: DEFAULT_DIRECT_ATTACK
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 8000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 1000
+        y: 200
+        z: 100
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+            enabled: true
+            range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    threat_type: QUADCOPTER
+    attack_behavior_type: DEFAULT_DIRECT_ATTACK
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 9000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 1000
+        y: 200
+        z: 100
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+            enabled: true
+            range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    threat_type: QUADCOPTER
+    attack_behavior_type: DEFAULT_DIRECT_ATTACK
+    initial_state {
+      position {
+        x: 0
+        y: 1200
+        z: 10000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 1000
+        y: 200
+        z: 100
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+            enabled: true
+            range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    threat_type: QUADCOPTER
+    attack_behavior_type: DEFAULT_DIRECT_ATTACK
+    initial_state {
+      position {
+        x: 0
+        y: 1200
+        z: 11000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 1000
+        y: 200
+        z: 100
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+            enabled: true
+            range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    threat_type: QUADCOPTER
+    attack_behavior_type: DEFAULT_DIRECT_ATTACK
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 12000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 1000
+        y: 200
+        z: 100
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+            enabled: true
+            range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
