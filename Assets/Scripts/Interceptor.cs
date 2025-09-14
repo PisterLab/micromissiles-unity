@@ -98,10 +98,21 @@ public class Interceptor : Agent {
     // }
 
     IController controller;
-    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
-      controller = new ApnController(this, _navigationGain);
-    } else {
-      controller = new PnController(this, _navigationGain);
+    switch (agentConfig.DynamicConfig.FlightConfig.ControllerType) {
+      case Configs.ControllerType.ProportionalNavigation: {
+        controller = new PnController(this, _navigationGain);
+        break;
+      }
+      case Configs.ControllerType.AugmentedProportionalNavigation: {
+        controller = new ApnController(this, _navigationGain);
+        break;
+      }
+      default: {
+        Debug.LogError(
+            $"Controller type {agentConfig.DynamicConfig.FlightConfig.ControllerType.ToString()} not found.");
+        controller = new PnController(this, _navigationGain);
+        break;
+      }
     }
     accelerationInput = controller.Plan();
 
@@ -113,7 +124,7 @@ public class Interceptor : Agent {
 
   private void UpdateTargetModel(double deltaTime) {
     _elapsedTime += deltaTime;
-    float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+    float sensorUpdatePeriod = 1f / agentConfig.DynamicConfig.SensorConfig.Frequency;
     if (_elapsedTime >= sensorUpdatePeriod) {
       // TODO: Implement guidance filter to estimate state from the sensor output.
       // For now, we'll use the threat's actual state.

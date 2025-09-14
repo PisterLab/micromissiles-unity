@@ -102,7 +102,7 @@ public abstract class Threat : Agent {
   }
 
   protected bool ShouldEvade() {
-    if (!dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
+    if (!agentConfig.DynamicConfig.FlightConfig.EvasionConfig.Enabled) {
       return false;
     }
 
@@ -112,7 +112,7 @@ public abstract class Threat : Agent {
     }
 
     float evasionRangeThreshold =
-        dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
+        agentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
     SensorOutput sensorOutput = _sensor.Sense(closestInterceptor);
     return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }

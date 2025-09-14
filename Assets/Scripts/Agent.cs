@@ -36,7 +36,7 @@ public abstract class Agent : MonoBehaviour {
   protected double _timeInPhase = 0;
 
   public Configs.StaticConfig staticConfig;
-  public DynamicAgentConfig dynamicAgentConfig;
+  public Configs.AgentConfig agentConfig;
 
   // Define delegates.
   public delegate void TerminatedEventHandler(Agent agent);
@@ -80,8 +80,8 @@ public abstract class Agent : MonoBehaviour {
     return _flightPhase == FlightPhase.TERMINATED;
   }
 
-  public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    dynamicAgentConfig = config;
+  public virtual void SetAgentConfig(Configs.AgentConfig config) {
+    agentConfig = config;
   }
 
   public virtual void SetStaticConfig(Configs.StaticConfig config) {

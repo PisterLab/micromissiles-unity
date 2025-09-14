@@ -116,7 +116,7 @@ public class UIManager : MonoBehaviour {
 
   private void PopulateConfigDropdown() {
     _configDropdown.ClearOptions();
-    string configPath = Path.Combine(Application.streamingAssetsPath, "Configs");
+    string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs");
     string[] configFiles = Directory.GetFiles(configPath, "*.json");
 
     List<string> configFileNames = new List<string>();

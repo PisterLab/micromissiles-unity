@@ -14,10 +14,10 @@ public class ConfigTest : TestBase {
 
   [UnityTest]
   public IEnumerator TestAllConfigFilesLoad() {
-    string configPath = Path.Combine(Application.streamingAssetsPath, "Configs");
+    string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs");
     string[] jsonFiles = Directory.GetFiles(configPath, "*.json");
 
-    Assert.IsTrue(jsonFiles.Length > 0, "No JSON files found in the Configs directory");
+    Assert.IsTrue(jsonFiles.Length > 0, "No JSON files found in the configuration directory.");
 
     bool isPaused = false;
     double epsilon = 0.0002;
@@ -37,28 +37,29 @@ public class ConfigTest : TestBase {
             // All interceptors start in INITIALIZED phase
             Assert.AreEqual(
                 Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
-                "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused");
+                "All interceptors should be in the INITIALIZED flight phase after loading while paused.");
 
           } else if (agent is Threat) {
             // All threats start in INITIALIZED phase
             Assert.AreEqual(
                 Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
-                "All THREAT agents should be in the INITIALIZED flight phase after loading while paused");
+                "All threats should be in the INITIALIZED flight phase after loading while paused.");
           }
         }
-        Assert.LessOrEqual(Mathf.Abs(Time.fixedDeltaTime), epsilon,
-                           "Fixed delta time should be approximately 0 after loading while paused");
+        Assert.LessOrEqual(
+            Mathf.Abs(Time.fixedDeltaTime), epsilon,
+            "Fixed delta time should be approximately 0 after loading while paused.");
         Assert.LessOrEqual(Mathf.Abs(Time.timeScale), epsilon,
-                           "Time scale should be approximately 0 after loading while paused");
+                           "Time scale should be approximately 0 after loading while paused.");
         Assert.IsFalse(elapsedTime > 0 + epsilon,
-                       "Simulation time should not have advanced after loading while paused");
+                       "Simulation time should not have advanced after loading while paused.");
       } else {
         Assert.IsTrue(elapsedTime > 0 + epsilon,
-                      "Simulation time should have advanced after loading while not paused");
+                      "Simulation time should have advanced after loading while not paused.");
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime -
-                      (1.0f / SimManager.Instance.simulatorConfig.PhysicsUpdateRate)),
-            epsilon, "Physics update rate should be 1 / simulatorConfig.PhysicsUpdateRate");
+                      (1.0f / SimManager.Instance.SimulatorConfig.PhysicsUpdateRate)),
+            epsilon, "Physics update rate should be 1 / SimulatorConfig.PhysicsUpdateRate.");
       }
 
       if (isPaused) {
@@ -66,7 +67,7 @@ public class ConfigTest : TestBase {
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
         Assert.IsTrue(SimManager.Instance.GetElapsedSimulationTime() > 0 + epsilon,
-                      "Simulation time should have advanced after resuming");
+                      "Simulation time should have advanced after resuming.");
       }
     }
   }

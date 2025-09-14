@@ -5,7 +5,7 @@ using UnityEngine;
 // given by (x, y).
 // In polar coordinates, the angle is measured in degrees from the x-axis counterclockwise to the
 // y-axis. The coordinates are given by (r, theta).
-public class Coordinates2 {
+public static class Coordinates2 {
   public static Vector2 ConvertCartesianToPolar(in Vector2 cartesian) {
     float r = cartesian.magnitude;
     float theta = Mathf.Atan2(cartesian.y, cartesian.x) * Mathf.Rad2Deg;
@@ -33,7 +33,7 @@ public class Coordinates2 {
 // are given by (r, azimuth, elevation).
 // In cylindrical coordinates, the azimuth is measured in degrees from the z-axis clockwise to the
 // x-axis. The coordinates are given by (r, azimuth, height).
-public class Coordinates3 {
+public static class Coordinates3 {
   public static Vector3 ConvertCartesianToSpherical(in Vector3 cartesian) {
     float r = cartesian.magnitude;
     float azimuth = Mathf.Atan2(cartesian.x, cartesian.z) * Mathf.Rad2Deg;
@@ -76,5 +76,18 @@ public class Coordinates3 {
   }
   public static Vector3 ConvertCylindricalToCartesian(float r, float azimuth, float height) {
     return ConvertCylindricalToCartesian(new Vector3(r, azimuth, height));
+  }
+
+  public static Vector3 FromProto(in Simulation.CartesianCoordinates coordinates) {
+    return new Vector3(coordinates.X, coordinates.Y, coordinates.Z);
+  }
+
+  public static Simulation.CartesianCoordinates ToProto(in Vector3 cartesian) {
+    Simulation.CartesianCoordinates coordinates = new Simulation.CartesianCoordinates();
+    ProtobufInitializer.Initialize(coordinates);
+    coordinates.X = cartesian.x;
+    coordinates.Y = cartesian.y;
+    coordinates.Z = cartesian.z;
+    return coordinates;
   }
 }

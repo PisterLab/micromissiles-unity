@@ -34,11 +34,11 @@ public class CarrierInterceptor : Interceptor {
 
   private void SpawnSubmunitions() {
     List<Interceptor> submunitions = new List<Interceptor>();
-    for (int i = 0; i < dynamicAgentConfig.submunitions_config.num_submunitions; ++i) {
-      DynamicAgentConfig convertedConfig = DynamicAgentConfig.FromSubmunitionDynamicAgentConfig(
-          dynamicAgentConfig.submunitions_config.dynamic_agent_config);
-      InitialState initialState = new InitialState();
-      initialState.position = transform.position;
+    for (int i = 0; i < agentConfig.SubmunitionsConfig.NumSubmunitions; ++i) {
+      Configs.AgentConfig submunitionsConfig = agentConfig.SubmunitionsConfig.AgentConfig;
+      Simulation.State initialState = new Simulation.State();
+      ProtobufInitializer.Initialize(initialState);
+      initialState.Position = Coordinates3.ToProto(transform.position);
 
       // Fan the submunitions radially outwards by 60 degrees from the carrier interceptor's
       // velocity vector.
@@ -46,15 +46,14 @@ public class CarrierInterceptor : Interceptor {
       Vector3 velocity = GetComponent<Rigidbody>().linearVelocity;
       Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
       Vector3 lateralDirection =
-          Quaternion.AngleAxis(i * 360 / dynamicAgentConfig.submunitions_config.num_submunitions,
-                               velocity) *
+          Quaternion.AngleAxis(i * 360 / agentConfig.SubmunitionsConfig.NumSubmunitions, velocity) *
           perpendicularDirection;
-      initialState.velocity = Vector3.RotateTowards(
+      initialState.Velocity = Coordinates3.ToProto(Vector3.RotateTowards(
           velocity, lateralDirection, maxRadiansDelta: SubmunitionsAngularDeviation,
-          maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation));
+          maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation)));
 
       Interceptor submunition =
-          SimManager.Instance.CreateInterceptor(convertedConfig, initialState);
+          SimManager.Instance.CreateInterceptor(submunitionsConfig, initialState);
       submunition.SetFlightPhase(FlightPhase.READY);
       // Launch the submunitions with the same velocity as the carrier interceptor's.
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);
