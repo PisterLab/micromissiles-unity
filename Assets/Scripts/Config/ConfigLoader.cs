@@ -101,7 +101,7 @@ public static class ConfigLoader {
 
   public static Configs.StaticConfig LoadStaticConfig(Configs.ThreatType threatType) {
     if (ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)) {
-      LoadStaticConfig(configFile);
+      return LoadStaticConfig(configFile);
     }
     var config = new Configs.StaticConfig();
     ProtobufInitializer.Initialize(config);
