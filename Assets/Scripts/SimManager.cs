@@ -15,7 +15,14 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.MissileInterceptor, "MissileInterceptor" },
     { Configs.AgentType.FixedWingThreat, "FixedWingThreat" },
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
+  };
 
+  // Map from the attack behavior type to the attack behavior configuration file.
+  // TODO(titan): Replace the JSON files with Protobuf text format.
+  private static readonly Dictionary<Configs.AttackBehaviorType, string> AttackBehaviorMap = new() {
+    { Configs.AttackBehaviorType.DefaultDirectAttack, "default_direct_attack.json" },
+    { Configs.AttackBehaviorType.BrahmosDirectAttack, "brahmos_direct_attack.json" },
+    { Configs.AttackBehaviorType.Fateh110BDirectAttack, "fateh110b_direct_attack.json" },
   };
 
   /// <summary>
@@ -362,16 +369,24 @@ public class SimManager : MonoBehaviour {
   }
 
   private AttackBehavior LoadAttackBehavior(Configs.AgentConfig config) {
-    // TODO(titan): Load the attack behavior based on the enumeration as well.
-    string threatBehaviorFile = config.AttackBehavior;
-    AttackBehavior attackBehavior = AttackBehavior.FromJson(threatBehaviorFile);
-    switch (attackBehavior.attackBehaviorType) {
-      case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK:
-        return DirectAttackBehavior.FromJson(threatBehaviorFile);
-      default:
-        Debug.LogError($"Attack behavior type '{attackBehavior.attackBehaviorType}' not found.");
-        return null;
+    AttackBehavior attackBehavior = null;
+    switch (config.AttackBehaviorOneofCase) {
+      case Configs.AgentConfig.AttackBehaviorOneofOneofCase.AttackBehaviorType: {
+        if (AttackBehaviorMap.ContainsKey(config.AttackBehaviorType)) {
+          attackBehavior = AttackBehavior.FromJson(AttackBehaviorMap[config.AttackBehaviorType]);
+        }
+        break;
+      }
+      case Configs.AgentConfig.AttackBehaviorOneofOneofCase.AttackBehavior: {
+        attackBehavior = AttackBehavior.FromJson(config.AttackBehavior);
+        break;
+      }
+      default: {
+        Debug.LogError($"Attack behavior type or configuration was not specified.");
+        break;
+      }
     }
+    return attackBehavior;
   }
 
   public Agent CreateDummyAgent(Vector3 position, Vector3 velocity) {
@@ -397,6 +412,10 @@ public class SimManager : MonoBehaviour {
   /// <param name="initialState">Initial state of the interceptor.</param>
   /// <returns>The created Interceptor instance, or null if creation failed.</returns>
   public Interceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
+    if (config == null) {
+      return null;
+    }
+
     // Load the static configuration for the interceptor.
     Configs.StaticConfig staticConfig = null;
     switch (config.TypeOneofCase) {
@@ -469,6 +488,10 @@ public class SimManager : MonoBehaviour {
   /// <param name="config">Threat configuration.</param>
   /// <returns>The created Threat instance, or null if creation failed.</returns>
   private Threat CreateThreat(Configs.AgentConfig config) {
+    if (config == null) {
+      return null;
+    }
+
     // Load the static configuration for the threat.
     Configs.StaticConfig staticConfig = null;
     switch (config.TypeOneofCase) {
@@ -561,6 +584,10 @@ public class SimManager : MonoBehaviour {
   /// <param name="prefabName">Name of the prefab to instantiate.</param>
   /// <returns>The created GameObject instance, or null if creation failed.</returns>
   public GameObject CreateRandomAgent(Configs.AgentConfig config, string prefabName) {
+    if (config == null) {
+      return null;
+    }
+
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
     if (prefab == null) {
       Debug.LogError($"Prefab {prefabName} not found in Resources/Prefabs directory.");
@@ -569,7 +596,6 @@ public class SimManager : MonoBehaviour {
 
     // Randomize the initial state.
     Simulation.State initialState = new Simulation.State();
-    ProtobufInitializer.Initialize(initialState);
 
     // Randomize the position.
     Vector3 positionNoise = Utilities.GenerateRandomNoise(config.StandardDeviation.Position);

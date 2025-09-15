@@ -76,7 +76,6 @@ public class ThreatTests : AgentTestBase {
                 },
           }
     };
-    ProtobufInitializer.Initialize(ucavConfig);
 
     var quadcopterConfig = new Configs.AgentConfig() {
       ThreatType = Configs.ThreatType.Quadcopter, AttackBehavior = "test_direct_attack.json",
@@ -99,7 +98,6 @@ public class ThreatTests : AgentTestBase {
                 },
           }
     };
-    ProtobufInitializer.Initialize(quadcopterConfig);
 
     Agent threatAgent = CreateTestThreat(ucavConfig);
     Assert.IsNotNull(threatAgent);
@@ -140,7 +138,6 @@ public class ThreatTests : AgentTestBase {
         ThreatType = Configs.ThreatType.Ucav,
         AttackBehavior = "test_direct_attack.json",
       };
-      ProtobufInitializer.Initialize(config);
 
       Threat threat = CreateTestThreat(config);
       Assert.IsNotNull(threat, "Threat should not be null.");

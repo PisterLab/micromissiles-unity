@@ -12,7 +12,6 @@ public abstract class AgentTestBase : TestBase {
     var simManagerGameObject = new GameObject("SimManager");
     simManager = simManagerGameObject.AddComponent<SimManager>();
     simManager.SimulationConfig = new Configs.SimulationConfig();
-    ProtobufInitializer.Initialize(simManager.SimulationConfig);
     SimManager.Instance = simManager;
   }
 

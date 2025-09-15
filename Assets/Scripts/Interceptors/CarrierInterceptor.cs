@@ -37,7 +37,6 @@ public class CarrierInterceptor : Interceptor {
     for (int i = 0; i < agentConfig.SubmunitionsConfig.NumSubmunitions; ++i) {
       Configs.AgentConfig submunitionsConfig = agentConfig.SubmunitionsConfig.AgentConfig;
       Simulation.State initialState = new Simulation.State();
-      ProtobufInitializer.Initialize(initialState);
       initialState.Position = Coordinates3.ToProto(transform.position);
 
       // Fan the submunitions radially outwards by 60 degrees from the carrier interceptor's

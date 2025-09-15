@@ -121,9 +121,10 @@ public class IADS : MonoBehaviour {
 
         // Create a new interceptor.
         Configs.AgentConfig config =
-            SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs[0].AgentConfig;
+            SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs.Count > 0
+                ? SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs[0].AgentConfig
+                : null;
         Simulation.State initialState = new Simulation.State();
-        ProtobufInitializer.Initialize(initialState);
 
         // Set the initial position, which defaults to the origin.
         initialState.Position = Coordinates3.ToProto(Vector3.zero);

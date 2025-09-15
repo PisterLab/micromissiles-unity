@@ -83,11 +83,10 @@ public static class Coordinates3 {
   }
 
   public static Simulation.CartesianCoordinates ToProto(in Vector3 cartesian) {
-    Simulation.CartesianCoordinates coordinates = new Simulation.CartesianCoordinates();
-    ProtobufInitializer.Initialize(coordinates);
-    coordinates.X = cartesian.x;
-    coordinates.Y = cartesian.y;
-    coordinates.Z = cartesian.z;
-    return coordinates;
+    return new Simulation.CartesianCoordinates() {
+      X = cartesian.x,
+      Y = cartesian.y,
+      Z = cartesian.z,
+    };
   }
 }
