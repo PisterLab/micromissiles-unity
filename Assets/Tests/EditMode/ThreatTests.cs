@@ -131,71 +131,6 @@ public class ThreatTests : AgentTestBase {
   }
 
   [Test]
-  public void TestDirectAttack_LoadedCorrectly() {
-    // Arrange
-    try {
-      var config = new Configs.AgentConfig() {
-        ThreatType = Configs.ThreatType.Ucav,
-        AttackBehavior = "test_direct_attack.json",
-      };
-
-      Threat threat = CreateTestThreat(config);
-      Assert.IsNotNull(threat, "Threat should not be null.");
-
-      AttackBehavior attackBehavior = GetPrivateField<AttackBehavior>(threat, "_attackBehavior");
-      Assert.IsNotNull(attackBehavior, "Attack behavior should not be null.");
-      Assert.AreEqual("TestDirectAttack", attackBehavior.name);
-      Assert.AreEqual(AttackBehavior.AttackBehaviorType.DIRECT_ATTACK,
-                      attackBehavior.attackBehaviorType);
-
-      Assert.IsTrue(attackBehavior is DirectAttackBehavior,
-                    "Attack behavior should be a DirectAttackBehavior.");
-      DirectAttackBehavior directAttackBehavior = (DirectAttackBehavior)attackBehavior;
-
-      Vector3 targetPosition = directAttackBehavior.targetPosition;
-      Assert.AreEqual(new Vector3(0.01f, 0, 0), targetPosition);
-
-      DTTFlightPlan flightPlan = directAttackBehavior.flightPlan;
-      Assert.IsNotNull(flightPlan, "Flight plan should not be null.");
-      Assert.AreEqual("DistanceToTarget", flightPlan.type);
-
-      List<DTTWaypoint> dttWaypoints = flightPlan.waypoints;
-      Assert.IsNotNull(dttWaypoints, "Waypoints should not be null.");
-      Assert.AreEqual(2, dttWaypoints.Count, "There should be 2 waypoints.");
-
-      Assert.AreEqual(5000f, dttWaypoints[0].distance);
-      Assert.AreEqual(100f, dttWaypoints[0].altitude);
-      Assert.AreEqual(Configs.Power.Max, dttWaypoints[0].power);
-
-      Assert.AreEqual(10000f, dttWaypoints[1].distance);
-      Assert.AreEqual(500f, dttWaypoints[1].altitude);
-      Assert.AreEqual(Configs.Power.Mil, dttWaypoints[1].power);
-
-      // Check the target velocity.
-      Vector3 targetVelocity = directAttackBehavior.targetVelocity;
-      Assert.AreEqual(new Vector3(0.0001f, 0f, 0f), targetVelocity,
-                      "Target velocity should match the config.");
-
-      // Check the target collider size.
-      Vector3 targetColliderSize = directAttackBehavior.targetColliderSize;
-      Assert.AreEqual(new Vector3(20f, 20f, 20f), targetColliderSize,
-                      "Target collider size should match the config.");
-
-      // Check the target position.
-      Assert.AreEqual(0.01f, targetPosition.x, 0.0001f, "Target position X should be 0.01.");
-      Assert.AreEqual(0f, targetPosition.y, 0.0001f, "Target position Y should be 0.");
-      Assert.AreEqual(0f, targetPosition.z, 0.0001f, "Target position Z should be 0.");
-
-      GameObject.DestroyImmediate(simManager.gameObject);
-    } catch (AssertionException e) {
-      throw new AssertionException(
-          e.Message + "\n" + "This test likely failed because you have edited " +
-          "the test string at the top of the test. Please update the test with the new values.\n" +
-          "If you need to change the test values, please update the test string at the top of the test.");
-    }
-  }
-
-  [Test]
   public void Threat_IsNotAssignable() {
     Assert.IsFalse(_fixedWingThreat.IsAssignable());
     Assert.IsFalse(_rotaryWingThreat.IsAssignable());
@@ -310,5 +245,62 @@ public class ThreatTests : AgentTestBase {
                     "Acceleration magnitude should match expected.");
     Assert.AreEqual(expectedAcceleration.normalized, accelerationInput.normalized,
                     "Acceleration direction should be towards waypoint.");
+  }
+
+  [Test]
+  public void AttackBehavior_LoadedCorrectly() {
+    try {
+      AttackBehavior attackBehavior =
+          GetPrivateField<AttackBehavior>(_fixedWingThreat, "_attackBehavior");
+      Assert.IsNotNull(attackBehavior, "Attack behavior should not be null.");
+      Assert.AreEqual("TestDirectAttack", attackBehavior.name);
+      Assert.AreEqual(AttackBehavior.AttackBehaviorType.DIRECT_ATTACK,
+                      attackBehavior.attackBehaviorType);
+
+      Assert.IsTrue(attackBehavior is DirectAttackBehavior,
+                    "Attack behavior should be a DirectAttackBehavior.");
+      DirectAttackBehavior directAttackBehavior = (DirectAttackBehavior)attackBehavior;
+
+      Vector3 targetPosition = directAttackBehavior.targetPosition;
+      Assert.AreEqual(new Vector3(0.01f, 0, 0), targetPosition);
+
+      DTTFlightPlan flightPlan = directAttackBehavior.flightPlan;
+      Assert.IsNotNull(flightPlan, "Flight plan should not be null.");
+      Assert.AreEqual("DistanceToTarget", flightPlan.type);
+
+      List<DTTWaypoint> dttWaypoints = flightPlan.waypoints;
+      Assert.IsNotNull(dttWaypoints, "Waypoints should not be null.");
+      Assert.AreEqual(2, dttWaypoints.Count, "There should be 2 waypoints.");
+
+      Assert.AreEqual(5000f, dttWaypoints[0].distance);
+      Assert.AreEqual(100f, dttWaypoints[0].altitude);
+      Assert.AreEqual(Configs.Power.Max, dttWaypoints[0].power);
+
+      Assert.AreEqual(10000f, dttWaypoints[1].distance);
+      Assert.AreEqual(500f, dttWaypoints[1].altitude);
+      Assert.AreEqual(Configs.Power.Mil, dttWaypoints[1].power);
+
+      // Check the target velocity.
+      Vector3 targetVelocity = directAttackBehavior.targetVelocity;
+      Assert.AreEqual(new Vector3(0.0001f, 0f, 0f), targetVelocity,
+                      "Target velocity should match the config.");
+
+      // Check the target collider size.
+      Vector3 targetColliderSize = directAttackBehavior.targetColliderSize;
+      Assert.AreEqual(new Vector3(20f, 20f, 20f), targetColliderSize,
+                      "Target collider size should match the config.");
+
+      // Check the target position.
+      Assert.AreEqual(0.01f, targetPosition.x, 0.0001f, "Target position X should be 0.01.");
+      Assert.AreEqual(0f, targetPosition.y, 0.0001f, "Target position Y should be 0.");
+      Assert.AreEqual(0f, targetPosition.z, 0.0001f, "Target position Z should be 0.");
+
+      GameObject.DestroyImmediate(simManager.gameObject);
+    } catch (AssertionException e) {
+      throw new AssertionException(
+          e.Message + "\n" + "This test likely failed because you have edited " +
+          "the test string at the top of the test. Please update the test with the new values.\n" +
+          "If you need to change the test values, please update the test string at the top of the test.");
+    }
   }
 }
