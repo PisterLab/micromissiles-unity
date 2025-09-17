@@ -386,6 +386,9 @@ public class SimManager : MonoBehaviour {
         return null;
       }
     }
+    if (string.IsNullOrEmpty(threatBehaviorFile)) {
+      return null;
+    }
     AttackBehavior attackBehavior = AttackBehavior.FromJson(threatBehaviorFile);
     switch (attackBehavior.attackBehaviorType) {
       case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK: {
