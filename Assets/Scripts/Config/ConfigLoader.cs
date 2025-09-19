@@ -17,7 +17,7 @@ public static class ConfigLoader {
   private static readonly Dictionary<Configs.InterceptorType, string> InterceptorStaticConfigMap =
       new() {
         { Configs.InterceptorType.Hydra70, "hydra70.pbtxt" },
-        { Configs.InterceptorType.Micromissile, "micromissiles.pbtxt" },
+        { Configs.InterceptorType.Micromissile, "micromissile.pbtxt" },
       };
 
   // Map from the threat type to the static configuration file.
@@ -34,45 +34,39 @@ public static class ConfigLoader {
   }
 
   public static string LoadFromStreamingAssets(string relativePath) {
-    string filePath = GetStreamingAssetsFilePath(relativePath);
+    string streamingAssetsPath = GetStreamingAssetsFilePath(relativePath);
 
 #if UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX || UNITY_STANDALONE_LINUX || UNITY_EDITOR_LINUX || UNITY_IOS
-    if (!filePath.StartsWith("file://")) {
-      filePath = "file://" + filePath;
+    if (!streamingAssetsPath.StartsWith("file://")) {
+      streamingAssetsPath = "file://" + streamingAssetsPath;
     }
 #endif
 
-    UnityWebRequest www = UnityWebRequest.Get(filePath);
+    UnityWebRequest www = UnityWebRequest.Get(streamingAssetsPath);
     www.SendWebRequest();
 
-    // Wait for the request to complete
-    while (!www.isDone) {
-      // You might want to yield return null here if this is called from a coroutine
-    }
-
+    while (!www.isDone) {}
     if (www.result != UnityWebRequest.Result.Success) {
-      Debug.LogError($"Error loading file at {filePath}: {www.error}");
+      Debug.LogError($"Error loading {streamingAssetsPath}: {www.error}.");
       return null;
     }
-
     return www.downloadHandler.text;
   }
 
-  public static SimulationConfig LoadSimulationConfig(string configFile) {
-    string relativePath = Path.Combine("Configs", configFile);
-    string fileContent = LoadFromStreamingAssets(relativePath);
-
-    if (string.IsNullOrEmpty(fileContent)) {
-      Debug.LogError($"Failed to load SimulationConfig from {relativePath}");
-      return null;
+  public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {
+    string configPath = Path.Combine("Configs/Simulations", configFile);
+    string streamingAssetsPath = GetStreamingAssetsFilePath(configPath);
+    byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
+    int serializedLength = 0;
+    unsafe {
+      fixed(void* bufferPtr = serializedBuffer) {
+        serializedLength = Protobuf.Protobuf_SimulationConfig_LoadToBinary(
+            streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
+      }
     }
-
-    SimulationConfig config =
-        JsonConvert.DeserializeObject<SimulationConfig>(fileContent, new JsonSerializerSettings {
-          Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
-        });
-    UIManager.Instance.LogActionMessage($"[SIM] Loaded SimulationConfig: {configFile}.");
-    return config;
+    var message = Configs.SimulationConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    UIManager.Instance.LogActionMessage($"[SIM] Loaded simulation config: {configFile}.");
+    return message;
   }
 
   public static Configs.SimulatorConfig LoadSimulatorConfig() {
@@ -86,7 +80,6 @@ public static class ConfigLoader {
       }
     }
     var message = Configs.SimulatorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
-    ProtobufInitializer.Initialize(message);
     return message;
   }
 
@@ -94,18 +87,14 @@ public static class ConfigLoader {
     if (InterceptorStaticConfigMap.TryGetValue(interceptorType, out var configFile)) {
       return LoadStaticConfig(configFile);
     }
-    var config = new Configs.StaticConfig();
-    ProtobufInitializer.Initialize(config);
-    return config;
+    return new Configs.StaticConfig();
   }
 
   public static Configs.StaticConfig LoadStaticConfig(Configs.ThreatType threatType) {
     if (ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)) {
       return LoadStaticConfig(configFile);
     }
-    var config = new Configs.StaticConfig();
-    ProtobufInitializer.Initialize(config);
-    return config;
+    return new Configs.StaticConfig();
   }
 
   public static Configs.StaticConfig LoadStaticConfig(string configFile) {
@@ -119,8 +108,6 @@ public static class ConfigLoader {
             streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
       }
     }
-    var message = Configs.StaticConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
-    ProtobufInitializer.Initialize(message);
-    return message;
+    return Configs.StaticConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
   }
 }

@@ -11,7 +11,7 @@ public abstract class AgentTestBase : TestBase {
     // Initialize SimManager
     var simManagerGameObject = new GameObject("SimManager");
     simManager = simManagerGameObject.AddComponent<SimManager>();
-    simManager.SimulationConfig = new SimulationConfig();
+    simManager.SimulationConfig = new Configs.SimulationConfig();
     SimManager.Instance = simManager;
   }
 
@@ -23,7 +23,7 @@ public abstract class AgentTestBase : TestBase {
     }
   }
 
-  protected Interceptor CreateTestInterceptor(DynamicAgentConfig config) {
+  protected Interceptor CreateTestInterceptor(Configs.AgentConfig config) {
     Interceptor interceptor =
         InvokePrivateMethod<Interceptor>(simManager, "CreateInterceptor", config);
     InvokePrivateMethod(interceptor, "Start");
@@ -31,7 +31,7 @@ public abstract class AgentTestBase : TestBase {
     return interceptor;
   }
 
-  protected Threat CreateTestThreat(DynamicAgentConfig config) {
+  protected Threat CreateTestThreat(Configs.AgentConfig config) {
     Threat threat = InvokePrivateMethod<Threat>(simManager, "CreateThreat", config);
     InvokePrivateMethod(threat, "Start");
     InvokePrivateMethod(threat.gameObject.GetComponent<Sensor>(), "Start");

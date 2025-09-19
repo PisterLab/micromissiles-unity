@@ -7,6 +7,10 @@ public static class Utilities {
                        Random.Range(-standardDeviation.z, standardDeviation.z));
   }
 
+  public static Vector3 GenerateRandomNoise(Simulation.CartesianCoordinates standardDeviation) {
+    return GenerateRandomNoise(Coordinates3.FromProto(standardDeviation));
+  }
+
   public static float ConvertMpsToKnots(float mps) {
     return mps * 1.94384f;
   }

@@ -30,11 +30,11 @@ public class MaxSpeedAssignment : IAssignment {
 
       // The speed decays exponentially with the travelled distance and with the bearing change.
       float distanceTimeConstant =
-          2 * interceptor.staticConfig.BodyConfig.Mass /
+          2 * (interceptor.staticConfig.BodyConfig?.Mass ?? 0) /
           ((float)Constants.CalculateAirDensityAtAltitude(interceptor.GetPosition().y) *
-           interceptor.staticConfig.LiftDragConfig.DragCoefficient *
-           interceptor.staticConfig.BodyConfig.CrossSectionalArea);
-      float angleTimeConstant = interceptor.staticConfig.LiftDragConfig.LiftDragRatio;
+           (interceptor.staticConfig.LiftDragConfig?.DragCoefficient ?? 0) *
+           (interceptor.staticConfig.BodyConfig?.CrossSectionalArea ?? 0));
+      float angleTimeConstant = interceptor.staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
       // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
       float minTurningRadius = (float)(interceptor.GetVelocity().sqrMagnitude /
                                        interceptor.CalculateMaxNormalAcceleration());

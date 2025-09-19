@@ -14,6 +14,16 @@ cc_proto_library(
 )
 
 proto_library(
+    name = "flight_phase_proto",
+    srcs = ["flight_phase.proto"],
+)
+
+cc_proto_library(
+    name = "flight_phase_cc_proto",
+    deps = [":flight_phase_proto"],
+)
+
+proto_library(
     name = "sensor_proto",
     srcs = ["sensor.proto"],
     deps = [":coordinates_proto"],

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package configs;
+
+import "Configs/agent_config.proto";
+
+// Swarm configuration.
+message SwarmConfig {
+  // Number of agents.
+  uint32 num_agents = 1;
+
+  // Agent configuration.
+  AgentConfig agent_config = 2;
+}

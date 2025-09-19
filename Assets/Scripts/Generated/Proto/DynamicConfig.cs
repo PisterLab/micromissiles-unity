@@ -25,19 +25,20 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChxDb25maWdzL2R5bmFtaWNfY29uZmlnLnByb3RvEgdjb25maWdzGhdTaW11",
-            "bGF0aW9uL3NlbnNvci5wcm90byKsAQoMRmxpZ2h0Q29uZmlnEisKCmNvbnRy",
-            "b2xsZXIYASABKA4yFy5jb25maWdzLkNvbnRyb2xsZXJUeXBlEjQKB2V2YXNp",
-            "b24YAiABKAsyIy5jb25maWdzLkZsaWdodENvbmZpZy5FdmFzaW9uQ29uZmln",
-            "GjkKDUV2YXNpb25Db25maWcSDwoHZW5hYmxlZBgBIAEoCBIXCg9yYW5nZV90",
-            "aHJlc2hvbGQYAiABKAIibgoNRHluYW1pY0NvbmZpZxIsCg1mbGlnaHRfY29u",
-            "ZmlnGAEgASgLMhUuY29uZmlncy5GbGlnaHRDb25maWcSLwoNc2Vuc29yX2Nv",
-            "bmZpZxgCIAEoCzIYLnNpbXVsYXRpb24uU2Vuc29yQ29uZmlnKlQKDkNvbnRy",
-            "b2xsZXJUeXBlEhsKF1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAASJQohQVVH",
-            "TUVOVEVEX1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAFiBnByb3RvMw=="));
+            "bGF0aW9uL3NlbnNvci5wcm90byK4AQoMRmxpZ2h0Q29uZmlnEjAKD2NvbnRy",
+            "b2xsZXJfdHlwZRgBIAEoDjIXLmNvbmZpZ3MuQ29udHJvbGxlclR5cGUSOwoO",
+            "ZXZhc2lvbl9jb25maWcYAiABKAsyIy5jb25maWdzLkZsaWdodENvbmZpZy5F",
+            "dmFzaW9uQ29uZmlnGjkKDUV2YXNpb25Db25maWcSDwoHZW5hYmxlZBgBIAEo",
+            "CBIXCg9yYW5nZV90aHJlc2hvbGQYAiABKAIibgoNRHluYW1pY0NvbmZpZxIs",
+            "Cg1mbGlnaHRfY29uZmlnGAEgASgLMhUuY29uZmlncy5GbGlnaHRDb25maWcS",
+            "LwoNc2Vuc29yX2NvbmZpZxgCIAEoCzIYLnNpbXVsYXRpb24uU2Vuc29yQ29u",
+            "ZmlnKlQKDkNvbnRyb2xsZXJUeXBlEhsKF1BST1BPUlRJT05BTF9OQVZJR0FU",
+            "SU9OEAASJQohQVVHTUVOVEVEX1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAFi",
+            "BnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Simulation.SensorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.ControllerType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig), global::Configs.FlightConfig.Parser, new[]{ "Controller", "Evasion" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig.Types.EvasionConfig), global::Configs.FlightConfig.Types.EvasionConfig.Parser, new[]{ "Enabled", "RangeThreshold" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig), global::Configs.FlightConfig.Parser, new[]{ "ControllerType", "EvasionConfig" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig.Types.EvasionConfig), global::Configs.FlightConfig.Types.EvasionConfig.Parser, new[]{ "Enabled", "RangeThreshold" }, null, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.DynamicConfig), global::Configs.DynamicConfig.Parser, new[]{ "FlightConfig", "SensorConfig" }, null, null, null, null)
           }));
     }
@@ -94,8 +95,8 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public FlightConfig(FlightConfig other) : this() {
-      controller_ = other.controller_;
-      evasion_ = other.evasion_ != null ? other.evasion_.Clone() : null;
+      controllerType_ = other.controllerType_;
+      evasionConfig_ = other.evasionConfig_ != null ? other.evasionConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -105,33 +106,33 @@ namespace Configs {
       return new FlightConfig(this);
     }
 
-    /// <summary>Field number for the "controller" field.</summary>
-    public const int ControllerFieldNumber = 1;
-    private global::Configs.ControllerType controller_ = global::Configs.ControllerType.ProportionalNavigation;
+    /// <summary>Field number for the "controller_type" field.</summary>
+    public const int ControllerTypeFieldNumber = 1;
+    private global::Configs.ControllerType controllerType_ = global::Configs.ControllerType.ProportionalNavigation;
     /// <summary>
     /// Controller type.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.ControllerType Controller {
-      get { return controller_; }
+    public global::Configs.ControllerType ControllerType {
+      get { return controllerType_; }
       set {
-        controller_ = value;
+        controllerType_ = value;
       }
     }
 
-    /// <summary>Field number for the "evasion" field.</summary>
-    public const int EvasionFieldNumber = 2;
-    private global::Configs.FlightConfig.Types.EvasionConfig evasion_;
+    /// <summary>Field number for the "evasion_config" field.</summary>
+    public const int EvasionConfigFieldNumber = 2;
+    private global::Configs.FlightConfig.Types.EvasionConfig evasionConfig_;
     /// <summary>
     /// Evasion configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.FlightConfig.Types.EvasionConfig Evasion {
-      get { return evasion_; }
+    public global::Configs.FlightConfig.Types.EvasionConfig EvasionConfig {
+      get { return evasionConfig_; }
       set {
-        evasion_ = value;
+        evasionConfig_ = value;
       }
     }
 
@@ -150,8 +151,8 @@ namespace Configs {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Controller != other.Controller) return false;
-      if (!object.Equals(Evasion, other.Evasion)) return false;
+      if (ControllerType != other.ControllerType) return false;
+      if (!object.Equals(EvasionConfig, other.EvasionConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -159,8 +160,8 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Controller != global::Configs.ControllerType.ProportionalNavigation) hash ^= Controller.GetHashCode();
-      if (evasion_ != null) hash ^= Evasion.GetHashCode();
+      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) hash ^= ControllerType.GetHashCode();
+      if (evasionConfig_ != null) hash ^= EvasionConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -179,13 +180,13 @@ namespace Configs {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Controller != global::Configs.ControllerType.ProportionalNavigation) {
+      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Controller);
+        output.WriteEnum((int) ControllerType);
       }
-      if (evasion_ != null) {
+      if (evasionConfig_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(Evasion);
+        output.WriteMessage(EvasionConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -197,13 +198,13 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Controller != global::Configs.ControllerType.ProportionalNavigation) {
+      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
         output.WriteRawTag(8);
-        output.WriteEnum((int) Controller);
+        output.WriteEnum((int) ControllerType);
       }
-      if (evasion_ != null) {
+      if (evasionConfig_ != null) {
         output.WriteRawTag(18);
-        output.WriteMessage(Evasion);
+        output.WriteMessage(EvasionConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -215,11 +216,11 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Controller != global::Configs.ControllerType.ProportionalNavigation) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Controller);
+      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ControllerType);
       }
-      if (evasion_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Evasion);
+      if (evasionConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(EvasionConfig);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -233,14 +234,14 @@ namespace Configs {
       if (other == null) {
         return;
       }
-      if (other.Controller != global::Configs.ControllerType.ProportionalNavigation) {
-        Controller = other.Controller;
+      if (other.ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
+        ControllerType = other.ControllerType;
       }
-      if (other.evasion_ != null) {
-        if (evasion_ == null) {
-          Evasion = new global::Configs.FlightConfig.Types.EvasionConfig();
+      if (other.evasionConfig_ != null) {
+        if (evasionConfig_ == null) {
+          EvasionConfig = new global::Configs.FlightConfig.Types.EvasionConfig();
         }
-        Evasion.MergeFrom(other.Evasion);
+        EvasionConfig.MergeFrom(other.EvasionConfig);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -262,14 +263,14 @@ namespace Configs {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Controller = (global::Configs.ControllerType) input.ReadEnum();
+            ControllerType = (global::Configs.ControllerType) input.ReadEnum();
             break;
           }
           case 18: {
-            if (evasion_ == null) {
-              Evasion = new global::Configs.FlightConfig.Types.EvasionConfig();
+            if (evasionConfig_ == null) {
+              EvasionConfig = new global::Configs.FlightConfig.Types.EvasionConfig();
             }
-            input.ReadMessage(Evasion);
+            input.ReadMessage(EvasionConfig);
             break;
           }
         }
@@ -292,14 +293,14 @@ namespace Configs {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Controller = (global::Configs.ControllerType) input.ReadEnum();
+            ControllerType = (global::Configs.ControllerType) input.ReadEnum();
             break;
           }
           case 18: {
-            if (evasion_ == null) {
-              Evasion = new global::Configs.FlightConfig.Types.EvasionConfig();
+            if (evasionConfig_ == null) {
+              EvasionConfig = new global::Configs.FlightConfig.Types.EvasionConfig();
             }
-            input.ReadMessage(Evasion);
+            input.ReadMessage(EvasionConfig);
             break;
           }
         }

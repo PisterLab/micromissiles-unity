@@ -22,10 +22,10 @@ message FlightConfig {
   }
 
   // Controller type.
-  ControllerType controller = 1;
+  ControllerType controller_type = 1;
 
   // Evasion configuration.
-  EvasionConfig evasion = 2;
+  EvasionConfig evasion_config = 2;
 }
 
 // Dynamic configuration.

@@ -135,7 +135,7 @@ public class TacticalPanelController : MonoBehaviour {
     TacticalSymbol tacticalSymbol = symbolObj.GetComponent<TacticalSymbol>();
 
     // Set common properties
-    tacticalSymbol.SetSprite(trackFile.Agent.staticConfig.VisualizationConfig.SymbolPresent);
+    tacticalSymbol.SetSprite(trackFile.Agent.staticConfig.VisualizationConfig?.SymbolPresent);
     tacticalSymbol.SetDirectionArrowRotation(
         Mathf.Atan2(trackFile.Agent.GetVelocity().z, trackFile.Agent.GetVelocity().x) *
         Mathf.Rad2Deg);

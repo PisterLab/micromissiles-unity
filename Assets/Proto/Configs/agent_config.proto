@@ -22,14 +22,12 @@ enum ThreatType {
   FATEH_110B = 5;
 }
 
-// Flight phase enumeration.
-enum FlightPhase {
-  INITIALIZED = 0;
-  READY = 1;
-  BOOST = 2;
-  MIDCOURSE = 3;
-  TERMINAL = 4;
-  TERMINATED = 5;
+// Attack behavior enumeration.
+enum AttackBehaviorType {
+  INVALID_ATTACK = 0;
+  DEFAULT_DIRECT_ATTACK = 1;
+  BRAHMOS_DIRECT_ATTACK = 2;
+  FATEH_110B_DIRECT_ATTACK = 3;
 }
 
 // Agent configuration.
@@ -47,30 +45,32 @@ message AgentConfig {
   oneof type_oneof {
     // Interceptor type.
     InterceptorType interceptor_type = 1;
+
     // Threat type.
     ThreatType threat_type = 2;
+
     // Custom configuration.
     string config = 3;
   }
 
+  // Attack behavior.
+  oneof attack_behavior_oneof {
+    // Attack behavior type.
+    AttackBehaviorType attack_behavior_type = 4;
+
+    // Custom attack behavior.
+    string attack_behavior = 5;
+  }
+
   // Initial state.
-  simulation.State initial_state = 4;
+  simulation.State initial_state = 6;
 
   // Initial state standard deviation to randomize the state variables.
-  simulation.State standard_deviation = 5;
+  simulation.State standard_deviation = 7;
 
   // Dynamic configuration.
-  DynamicConfig dynamic_config = 6;
+  DynamicConfig dynamic_config = 8;
 
   // Submunitions configuration.
-  SubmunitionsConfig submunitions_config = 7;
-}
-
-// Agent swarm configuration.
-message AgentSwarmConfig {
-  // Number of agents.
-  uint32 num_agents = 1;
-
-  // Agent configuration.
-  AgentConfig agent_config = 2;
+  SubmunitionsConfig submunitions_config = 9;
 }
