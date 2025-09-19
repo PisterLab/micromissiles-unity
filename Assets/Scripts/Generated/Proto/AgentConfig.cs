@@ -26,57 +26,29 @@ namespace Configs {
           string.Concat(
             "ChpDb25maWdzL2FnZW50X2NvbmZpZy5wcm90bxIHY29uZmlncxocQ29uZmln",
             "cy9keW5hbWljX2NvbmZpZy5wcm90bxoWU2ltdWxhdGlvbi9zdGF0ZS5wcm90",
-            "byKrBAoLQWdlbnRDb25maWcSNAoQaW50ZXJjZXB0b3JfdHlwZRgBIAEoDjIY",
-            "LmNvbmZpZ3MuSW50ZXJjZXB0b3JUeXBlSAASKgoLdGhyZWF0X3R5cGUYAiAB",
-            "KA4yEy5jb25maWdzLlRocmVhdFR5cGVIABIQCgZjb25maWcYAyABKAlIABI7",
-            "ChRhdHRhY2tfYmVoYXZpb3JfdHlwZRgEIAEoDjIbLmNvbmZpZ3MuQXR0YWNr",
-            "QmVoYXZpb3JUeXBlSAESGQoPYXR0YWNrX2JlaGF2aW9yGAUgASgJSAESKAoN",
-            "aW5pdGlhbF9zdGF0ZRgGIAEoCzIRLnNpbXVsYXRpb24uU3RhdGUSLQoSc3Rh",
-            "bmRhcmRfZGV2aWF0aW9uGAcgASgLMhEuc2ltdWxhdGlvbi5TdGF0ZRIuCg5k",
-            "eW5hbWljX2NvbmZpZxgIIAEoCzIWLmNvbmZpZ3MuRHluYW1pY0NvbmZpZxJE",
-            "ChNzdWJtdW5pdGlvbnNfY29uZmlnGAkgASgLMicuY29uZmlncy5BZ2VudENv",
-            "bmZpZy5TdWJtdW5pdGlvbnNDb25maWcaWgoSU3VibXVuaXRpb25zQ29uZmln",
-            "EhgKEG51bV9zdWJtdW5pdGlvbnMYASABKA0SKgoMYWdlbnRfY29uZmlnGAIg",
-            "ASgLMhQuY29uZmlncy5BZ2VudENvbmZpZ0IMCgp0eXBlX29uZW9mQhcKFWF0",
-            "dGFja19iZWhhdmlvcl9vbmVvZipKCg9JbnRlcmNlcHRvclR5cGUSFwoTSU5W",
-            "QUxJRF9JTlRFUkNFUFRPUhAAEgwKCEhZRFJBXzcwEAESEAoMTUlDUk9NSVNT",
-            "SUxFEAIqYQoKVGhyZWF0VHlwZRISCg5JTlZBTElEX1RIUkVBVBAAEg4KClFV",
-            "QURDT1BURVIQARIICgRVQ0FWEAISCwoHQlJBSE1PUxADEggKBEFTQ00QBBIO",
-            "CgpGQVRFSF8xMTBCEAUqfAoSQXR0YWNrQmVoYXZpb3JUeXBlEhIKDklOVkFM",
-            "SURfQVRUQUNLEAASGQoVREVGQVVMVF9ESVJFQ1RfQVRUQUNLEAESGQoVQlJB",
-            "SE1PU19ESVJFQ1RfQVRUQUNLEAISHAoYRkFURUhfMTEwQl9ESVJFQ1RfQVRU",
-            "QUNLEANiBnByb3RvMw=="));
+            "byK+AwoLQWdlbnRDb25maWcSEwoLY29uZmlnX2ZpbGUYASABKAkSOwoUYXR0",
+            "YWNrX2JlaGF2aW9yX3R5cGUYAiABKA4yGy5jb25maWdzLkF0dGFja0JlaGF2",
+            "aW9yVHlwZUgAEhkKD2F0dGFja19iZWhhdmlvchgDIAEoCUgAEigKDWluaXRp",
+            "YWxfc3RhdGUYBCABKAsyES5zaW11bGF0aW9uLlN0YXRlEi0KEnN0YW5kYXJk",
+            "X2RldmlhdGlvbhgFIAEoCzIRLnNpbXVsYXRpb24uU3RhdGUSLgoOZHluYW1p",
+            "Y19jb25maWcYBiABKAsyFi5jb25maWdzLkR5bmFtaWNDb25maWcSRAoTc3Vi",
+            "bXVuaXRpb25zX2NvbmZpZxgHIAEoCzInLmNvbmZpZ3MuQWdlbnRDb25maWcu",
+            "U3VibXVuaXRpb25zQ29uZmlnGloKElN1Ym11bml0aW9uc0NvbmZpZxIYChBu",
+            "dW1fc3VibXVuaXRpb25zGAEgASgNEioKDGFnZW50X2NvbmZpZxgCIAEoCzIU",
+            "LmNvbmZpZ3MuQWdlbnRDb25maWdCFwoVYXR0YWNrX2JlaGF2aW9yX29uZW9m",
+            "KnwKEkF0dGFja0JlaGF2aW9yVHlwZRISCg5JTlZBTElEX0FUVEFDSxAAEhkK",
+            "FURFRkFVTFRfRElSRUNUX0FUVEFDSxABEhkKFUJSQUhNT1NfRElSRUNUX0FU",
+            "VEFDSxACEhwKGEZBVEVIXzExMEJfRElSRUNUX0FUVEFDSxADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.DynamicConfigReflection.Descriptor, global::Simulation.StateReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.InterceptorType), typeof(global::Configs.ThreatType), typeof(global::Configs.AttackBehaviorType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig), global::Configs.AgentConfig.Parser, new[]{ "InterceptorType", "ThreatType", "Config", "AttackBehaviorType", "AttackBehavior", "InitialState", "StandardDeviation", "DynamicConfig", "SubmunitionsConfig" }, new[]{ "TypeOneof", "AttackBehaviorOneof" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig.Types.SubmunitionsConfig), global::Configs.AgentConfig.Types.SubmunitionsConfig.Parser, new[]{ "NumSubmunitions", "AgentConfig" }, null, null, null, null)})
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.AttackBehaviorType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig), global::Configs.AgentConfig.Parser, new[]{ "ConfigFile", "AttackBehaviorType", "AttackBehavior", "InitialState", "StandardDeviation", "DynamicConfig", "SubmunitionsConfig" }, new[]{ "AttackBehaviorOneof" }, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig.Types.SubmunitionsConfig), global::Configs.AgentConfig.Types.SubmunitionsConfig.Parser, new[]{ "NumSubmunitions", "AgentConfig" }, null, null, null, null)})
           }));
     }
     #endregion
 
   }
   #region Enums
-  /// <summary>
-  /// Interceptor type enumeration.
-  /// </summary>
-  public enum InterceptorType {
-    [pbr::OriginalName("INVALID_INTERCEPTOR")] InvalidInterceptor = 0,
-    [pbr::OriginalName("HYDRA_70")] Hydra70 = 1,
-    [pbr::OriginalName("MICROMISSILE")] Micromissile = 2,
-  }
-
-  /// <summary>
-  /// Threat type enumeration.
-  /// </summary>
-  public enum ThreatType {
-    [pbr::OriginalName("INVALID_THREAT")] InvalidThreat = 0,
-    [pbr::OriginalName("QUADCOPTER")] Quadcopter = 1,
-    [pbr::OriginalName("UCAV")] Ucav = 2,
-    [pbr::OriginalName("BRAHMOS")] Brahmos = 3,
-    [pbr::OriginalName("ASCM")] Ascm = 4,
-    [pbr::OriginalName("FATEH_110B")] Fateh110B = 5,
-  }
-
   /// <summary>
   /// Attack behavior enumeration.
   /// </summary>
@@ -128,22 +100,11 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AgentConfig(AgentConfig other) : this() {
+      configFile_ = other.configFile_;
       initialState_ = other.initialState_ != null ? other.initialState_.Clone() : null;
       standardDeviation_ = other.standardDeviation_ != null ? other.standardDeviation_.Clone() : null;
       dynamicConfig_ = other.dynamicConfig_ != null ? other.dynamicConfig_.Clone() : null;
       submunitionsConfig_ = other.submunitionsConfig_ != null ? other.submunitionsConfig_.Clone() : null;
-      switch (other.TypeOneofCase) {
-        case TypeOneofOneofCase.InterceptorType:
-          InterceptorType = other.InterceptorType;
-          break;
-        case TypeOneofOneofCase.ThreatType:
-          ThreatType = other.ThreatType;
-          break;
-        case TypeOneofOneofCase.Config:
-          Config = other.Config;
-          break;
-      }
-
       switch (other.AttackBehaviorOneofCase) {
         case AttackBehaviorOneofOneofCase.AttackBehaviorType:
           AttackBehaviorType = other.AttackBehaviorType;
@@ -162,95 +123,23 @@ namespace Configs {
       return new AgentConfig(this);
     }
 
-    /// <summary>Field number for the "interceptor_type" field.</summary>
-    public const int InterceptorTypeFieldNumber = 1;
+    /// <summary>Field number for the "config_file" field.</summary>
+    public const int ConfigFileFieldNumber = 1;
+    private string configFile_ = "";
     /// <summary>
-    /// Interceptor type.
+    /// Configuration file.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.InterceptorType InterceptorType {
-      get { return HasInterceptorType ? (global::Configs.InterceptorType) typeOneof_ : global::Configs.InterceptorType.InvalidInterceptor; }
+    public string ConfigFile {
+      get { return configFile_; }
       set {
-        typeOneof_ = value;
-        typeOneofCase_ = TypeOneofOneofCase.InterceptorType;
-      }
-    }
-    /// <summary>Gets whether the "interceptor_type" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasInterceptorType {
-      get { return typeOneofCase_ == TypeOneofOneofCase.InterceptorType; }
-    }
-    /// <summary> Clears the value of the oneof if it's currently set to "interceptor_type" </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearInterceptorType() {
-      if (HasInterceptorType) {
-        ClearTypeOneof();
-      }
-    }
-
-    /// <summary>Field number for the "threat_type" field.</summary>
-    public const int ThreatTypeFieldNumber = 2;
-    /// <summary>
-    /// Threat type.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.ThreatType ThreatType {
-      get { return HasThreatType ? (global::Configs.ThreatType) typeOneof_ : global::Configs.ThreatType.InvalidThreat; }
-      set {
-        typeOneof_ = value;
-        typeOneofCase_ = TypeOneofOneofCase.ThreatType;
-      }
-    }
-    /// <summary>Gets whether the "threat_type" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasThreatType {
-      get { return typeOneofCase_ == TypeOneofOneofCase.ThreatType; }
-    }
-    /// <summary> Clears the value of the oneof if it's currently set to "threat_type" </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearThreatType() {
-      if (HasThreatType) {
-        ClearTypeOneof();
-      }
-    }
-
-    /// <summary>Field number for the "config" field.</summary>
-    public const int ConfigFieldNumber = 3;
-    /// <summary>
-    /// Custom configuration.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Config {
-      get { return HasConfig ? (string) typeOneof_ : ""; }
-      set {
-        typeOneof_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        typeOneofCase_ = TypeOneofOneofCase.Config;
-      }
-    }
-    /// <summary>Gets whether the "config" field is set</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool HasConfig {
-      get { return typeOneofCase_ == TypeOneofOneofCase.Config; }
-    }
-    /// <summary> Clears the value of the oneof if it's currently set to "config" </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearConfig() {
-      if (HasConfig) {
-        ClearTypeOneof();
+        configFile_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "attack_behavior_type" field.</summary>
-    public const int AttackBehaviorTypeFieldNumber = 4;
+    public const int AttackBehaviorTypeFieldNumber = 2;
     /// <summary>
     /// Attack behavior type.
     /// </summary>
@@ -279,7 +168,7 @@ namespace Configs {
     }
 
     /// <summary>Field number for the "attack_behavior" field.</summary>
-    public const int AttackBehaviorFieldNumber = 5;
+    public const int AttackBehaviorFieldNumber = 3;
     /// <summary>
     /// Custom attack behavior.
     /// </summary>
@@ -308,7 +197,7 @@ namespace Configs {
     }
 
     /// <summary>Field number for the "initial_state" field.</summary>
-    public const int InitialStateFieldNumber = 6;
+    public const int InitialStateFieldNumber = 4;
     private global::Simulation.State initialState_;
     /// <summary>
     /// Initial state.
@@ -323,7 +212,7 @@ namespace Configs {
     }
 
     /// <summary>Field number for the "standard_deviation" field.</summary>
-    public const int StandardDeviationFieldNumber = 7;
+    public const int StandardDeviationFieldNumber = 5;
     private global::Simulation.State standardDeviation_;
     /// <summary>
     /// Initial state standard deviation to randomize the state variables.
@@ -338,7 +227,7 @@ namespace Configs {
     }
 
     /// <summary>Field number for the "dynamic_config" field.</summary>
-    public const int DynamicConfigFieldNumber = 8;
+    public const int DynamicConfigFieldNumber = 6;
     private global::Configs.DynamicConfig dynamicConfig_;
     /// <summary>
     /// Dynamic configuration.
@@ -353,7 +242,7 @@ namespace Configs {
     }
 
     /// <summary>Field number for the "submunitions_config" field.</summary>
-    public const int SubmunitionsConfigFieldNumber = 9;
+    public const int SubmunitionsConfigFieldNumber = 7;
     private global::Configs.AgentConfig.Types.SubmunitionsConfig submunitionsConfig_;
     /// <summary>
     /// Submunitions configuration.
@@ -367,34 +256,12 @@ namespace Configs {
       }
     }
 
-    private object typeOneof_;
-    /// <summary>Enum of possible cases for the "type_oneof" oneof.</summary>
-    public enum TypeOneofOneofCase {
-      None = 0,
-      InterceptorType = 1,
-      ThreatType = 2,
-      Config = 3,
-    }
-    private TypeOneofOneofCase typeOneofCase_ = TypeOneofOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public TypeOneofOneofCase TypeOneofCase {
-      get { return typeOneofCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearTypeOneof() {
-      typeOneofCase_ = TypeOneofOneofCase.None;
-      typeOneof_ = null;
-    }
-
     private object attackBehaviorOneof_;
     /// <summary>Enum of possible cases for the "attack_behavior_oneof" oneof.</summary>
     public enum AttackBehaviorOneofOneofCase {
       None = 0,
-      AttackBehaviorType = 4,
-      AttackBehavior = 5,
+      AttackBehaviorType = 2,
+      AttackBehavior = 3,
     }
     private AttackBehaviorOneofOneofCase attackBehaviorOneofCase_ = AttackBehaviorOneofOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -425,16 +292,13 @@ namespace Configs {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (InterceptorType != other.InterceptorType) return false;
-      if (ThreatType != other.ThreatType) return false;
-      if (Config != other.Config) return false;
+      if (ConfigFile != other.ConfigFile) return false;
       if (AttackBehaviorType != other.AttackBehaviorType) return false;
       if (AttackBehavior != other.AttackBehavior) return false;
       if (!object.Equals(InitialState, other.InitialState)) return false;
       if (!object.Equals(StandardDeviation, other.StandardDeviation)) return false;
       if (!object.Equals(DynamicConfig, other.DynamicConfig)) return false;
       if (!object.Equals(SubmunitionsConfig, other.SubmunitionsConfig)) return false;
-      if (TypeOneofCase != other.TypeOneofCase) return false;
       if (AttackBehaviorOneofCase != other.AttackBehaviorOneofCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -443,16 +307,13 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (HasInterceptorType) hash ^= InterceptorType.GetHashCode();
-      if (HasThreatType) hash ^= ThreatType.GetHashCode();
-      if (HasConfig) hash ^= Config.GetHashCode();
+      if (ConfigFile.Length != 0) hash ^= ConfigFile.GetHashCode();
       if (HasAttackBehaviorType) hash ^= AttackBehaviorType.GetHashCode();
       if (HasAttackBehavior) hash ^= AttackBehavior.GetHashCode();
       if (initialState_ != null) hash ^= InitialState.GetHashCode();
       if (standardDeviation_ != null) hash ^= StandardDeviation.GetHashCode();
       if (dynamicConfig_ != null) hash ^= DynamicConfig.GetHashCode();
       if (submunitionsConfig_ != null) hash ^= SubmunitionsConfig.GetHashCode();
-      hash ^= (int) typeOneofCase_;
       hash ^= (int) attackBehaviorOneofCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -472,40 +333,32 @@ namespace Configs {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (HasInterceptorType) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) InterceptorType);
-      }
-      if (HasThreatType) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) ThreatType);
-      }
-      if (HasConfig) {
-        output.WriteRawTag(26);
-        output.WriteString(Config);
+      if (ConfigFile.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ConfigFile);
       }
       if (HasAttackBehaviorType) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(16);
         output.WriteEnum((int) AttackBehaviorType);
       }
       if (HasAttackBehavior) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(26);
         output.WriteString(AttackBehavior);
       }
       if (initialState_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(34);
         output.WriteMessage(InitialState);
       }
       if (standardDeviation_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(42);
         output.WriteMessage(StandardDeviation);
       }
       if (dynamicConfig_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(50);
         output.WriteMessage(DynamicConfig);
       }
       if (submunitionsConfig_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(58);
         output.WriteMessage(SubmunitionsConfig);
       }
       if (_unknownFields != null) {
@@ -518,40 +371,32 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (HasInterceptorType) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) InterceptorType);
-      }
-      if (HasThreatType) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) ThreatType);
-      }
-      if (HasConfig) {
-        output.WriteRawTag(26);
-        output.WriteString(Config);
+      if (ConfigFile.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(ConfigFile);
       }
       if (HasAttackBehaviorType) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(16);
         output.WriteEnum((int) AttackBehaviorType);
       }
       if (HasAttackBehavior) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(26);
         output.WriteString(AttackBehavior);
       }
       if (initialState_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(34);
         output.WriteMessage(InitialState);
       }
       if (standardDeviation_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(42);
         output.WriteMessage(StandardDeviation);
       }
       if (dynamicConfig_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(50);
         output.WriteMessage(DynamicConfig);
       }
       if (submunitionsConfig_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(58);
         output.WriteMessage(SubmunitionsConfig);
       }
       if (_unknownFields != null) {
@@ -564,14 +409,8 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (HasInterceptorType) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) InterceptorType);
-      }
-      if (HasThreatType) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ThreatType);
-      }
-      if (HasConfig) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Config);
+      if (ConfigFile.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ConfigFile);
       }
       if (HasAttackBehaviorType) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) AttackBehaviorType);
@@ -603,6 +442,9 @@ namespace Configs {
       if (other == null) {
         return;
       }
+      if (other.ConfigFile.Length != 0) {
+        ConfigFile = other.ConfigFile;
+      }
       if (other.initialState_ != null) {
         if (initialState_ == null) {
           InitialState = new global::Simulation.State();
@@ -627,18 +469,6 @@ namespace Configs {
         }
         SubmunitionsConfig.MergeFrom(other.SubmunitionsConfig);
       }
-      switch (other.TypeOneofCase) {
-        case TypeOneofOneofCase.InterceptorType:
-          InterceptorType = other.InterceptorType;
-          break;
-        case TypeOneofOneofCase.ThreatType:
-          ThreatType = other.ThreatType;
-          break;
-        case TypeOneofOneofCase.Config:
-          Config = other.Config;
-          break;
-      }
-
       switch (other.AttackBehaviorOneofCase) {
         case AttackBehaviorOneofOneofCase.AttackBehaviorType:
           AttackBehaviorType = other.AttackBehaviorType;
@@ -667,51 +497,41 @@ namespace Configs {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            typeOneof_ = input.ReadEnum();
-            typeOneofCase_ = TypeOneofOneofCase.InterceptorType;
+          case 10: {
+            ConfigFile = input.ReadString();
             break;
           }
           case 16: {
-            typeOneof_ = input.ReadEnum();
-            typeOneofCase_ = TypeOneofOneofCase.ThreatType;
-            break;
-          }
-          case 26: {
-            Config = input.ReadString();
-            break;
-          }
-          case 32: {
             attackBehaviorOneof_ = input.ReadEnum();
             attackBehaviorOneofCase_ = AttackBehaviorOneofOneofCase.AttackBehaviorType;
             break;
           }
-          case 42: {
+          case 26: {
             AttackBehavior = input.ReadString();
             break;
           }
-          case 50: {
+          case 34: {
             if (initialState_ == null) {
               InitialState = new global::Simulation.State();
             }
             input.ReadMessage(InitialState);
             break;
           }
-          case 58: {
+          case 42: {
             if (standardDeviation_ == null) {
               StandardDeviation = new global::Simulation.State();
             }
             input.ReadMessage(StandardDeviation);
             break;
           }
-          case 66: {
+          case 50: {
             if (dynamicConfig_ == null) {
               DynamicConfig = new global::Configs.DynamicConfig();
             }
             input.ReadMessage(DynamicConfig);
             break;
           }
-          case 74: {
+          case 58: {
             if (submunitionsConfig_ == null) {
               SubmunitionsConfig = new global::Configs.AgentConfig.Types.SubmunitionsConfig();
             }
@@ -737,51 +557,41 @@ namespace Configs {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            typeOneof_ = input.ReadEnum();
-            typeOneofCase_ = TypeOneofOneofCase.InterceptorType;
+          case 10: {
+            ConfigFile = input.ReadString();
             break;
           }
           case 16: {
-            typeOneof_ = input.ReadEnum();
-            typeOneofCase_ = TypeOneofOneofCase.ThreatType;
-            break;
-          }
-          case 26: {
-            Config = input.ReadString();
-            break;
-          }
-          case 32: {
             attackBehaviorOneof_ = input.ReadEnum();
             attackBehaviorOneofCase_ = AttackBehaviorOneofOneofCase.AttackBehaviorType;
             break;
           }
-          case 42: {
+          case 26: {
             AttackBehavior = input.ReadString();
             break;
           }
-          case 50: {
+          case 34: {
             if (initialState_ == null) {
               InitialState = new global::Simulation.State();
             }
             input.ReadMessage(InitialState);
             break;
           }
-          case 58: {
+          case 42: {
             if (standardDeviation_ == null) {
               StandardDeviation = new global::Simulation.State();
             }
             input.ReadMessage(StandardDeviation);
             break;
           }
-          case 66: {
+          case 50: {
             if (dynamicConfig_ == null) {
               DynamicConfig = new global::Configs.DynamicConfig();
             }
             input.ReadMessage(DynamicConfig);
             break;
           }
-          case 74: {
+          case 58: {
             if (submunitionsConfig_ == null) {
               SubmunitionsConfig = new global::Configs.AgentConfig.Types.SubmunitionsConfig();
             }
