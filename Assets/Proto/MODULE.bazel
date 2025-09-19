@@ -1,0 +1,6 @@
+module(name = "micromissiles-proto")
+
+bazel_dep(
+    name = "protobuf",
+    version = "31.1",
+)

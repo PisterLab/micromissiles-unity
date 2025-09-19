@@ -49,7 +49,7 @@ public class Interceptor : Agent {
 
     // Calculate the boost acceleration.
     float boostAcceleration =
-        (float)(staticAgentConfig.boostConfig.boostAcceleration * Constants.kGravity);
+        (float)(staticConfig.BoostConfig.BoostAcceleration * Constants.kGravity);
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add the PN acceleration to the boost acceleration.
@@ -135,7 +135,7 @@ public class Interceptor : Agent {
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null &&
         _target == otherAgent as Threat) {
       // Check kill probability before marking as hit.
-      float killProbability = otherAgent.staticAgentConfig.hitConfig.killProbability;
+      float killProbability = otherAgent.staticConfig.HitConfig.KillProbability;
 
       if (Random.value <= killProbability) {
         // Mark both this agent and the other agent as hit.
@@ -173,9 +173,9 @@ public class Interceptor : Agent {
         float duration = particleSystem.main.duration;
 
         // Extend the duration of the missile trail effect to be the same as the boost time.
-        if (duration < staticAgentConfig.boostConfig.boostTime) {
+        if (duration < staticConfig.BoostConfig.BoostTime) {
           ParticleSystem.MainModule mainModule = particleSystem.main;
-          mainModule.duration = staticAgentConfig.boostConfig.boostTime;
+          mainModule.duration = staticConfig.BoostConfig.BoostTime;
         }
 
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));

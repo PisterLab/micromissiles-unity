@@ -9,10 +9,11 @@ if ! command -v "$CLANG_FORMAT" &> /dev/null; then
     exit 1
 fi
 
-# 1) Format all .cs and .json files in Assets/
+# 1) Format all .cs and .json files in Assets/, excluding Scripts/Generated
 echo "Formatting Unity Assets..."
 cd Assets
-find . -type f \( -name "*.cs" -o -name "*.json" \) \
+find . -type d -path "./Scripts/Generated" -prune -o \
+  -type f \( -name "*.cs" -o -name "*.json" \) \
   -exec "$CLANG_FORMAT" -i -style=file {} +
 cd ..
 
