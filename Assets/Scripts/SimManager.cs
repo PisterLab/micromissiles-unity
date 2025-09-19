@@ -621,9 +621,6 @@ public class SimManager : MonoBehaviour {
   void FixedUpdate() {
     if (!_isSimulationPaused && _elapsedSimulationTime < SimulationConfig.endTime) {
       _elapsedSimulationTime += Time.deltaTime;
-
-      // Update moving origins to ensure they maintain velocity
-      UpdateMovingOrigins();
     } else if (_elapsedSimulationTime >= SimulationConfig.endTime) {
       RestartSimulation();
       Debug.Log("Simulation completed.");
@@ -637,9 +634,6 @@ public class SimManager : MonoBehaviour {
   public void QuitSimulation() {
     Application.Quit();
   }
-
-  // Gets the interceptor origin manager for external access (e.g., IADS).
-  public InterceptorOriginManager OriginManager => _originManager;
 }
 
 [System.Serializable]
