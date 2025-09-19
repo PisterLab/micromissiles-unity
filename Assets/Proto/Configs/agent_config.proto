@@ -5,14 +5,6 @@ package configs;
 import "Configs/dynamic_config.proto";
 import "Simulation/state.proto";
 
-// Attack behavior enumeration.
-enum AttackBehaviorType {
-  INVALID_ATTACK = 0;
-  DEFAULT_DIRECT_ATTACK = 1;
-  BRAHMOS_DIRECT_ATTACK = 2;
-  FATEH_110B_DIRECT_ATTACK = 3;
-}
-
 // Agent configuration.
 message AgentConfig {
   // Submunitions configuration.
@@ -27,24 +19,18 @@ message AgentConfig {
   // Configuration file.
   string config_file = 1;
 
-  // Attack behavior.
-  oneof attack_behavior_oneof {
-    // Attack behavior type.
-    AttackBehaviorType attack_behavior_type = 2;
-
-    // Custom attack behavior.
-    string attack_behavior = 3;
-  }
+  // Attack behavior configuration file.
+  string attack_behavior_config_file = 2;
 
   // Initial state.
-  simulation.State initial_state = 4;
+  simulation.State initial_state = 3;
 
   // Initial state standard deviation to randomize the state variables.
-  simulation.State standard_deviation = 5;
+  simulation.State standard_deviation = 4;
 
   // Dynamic configuration.
-  DynamicConfig dynamic_config = 6;
+  DynamicConfig dynamic_config = 5;
 
   // Submunitions configuration.
-  SubmunitionsConfig submunitions_config = 7;
+  SubmunitionsConfig submunitions_config = 6;
 }

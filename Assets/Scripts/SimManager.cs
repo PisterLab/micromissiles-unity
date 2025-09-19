@@ -17,14 +17,6 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
   };
 
-  // Map from the attack behavior type to the attack behavior configuration file.
-  // TODO(titan): Replace the JSON files with Protobuf text format.
-  private static readonly Dictionary<Configs.AttackBehaviorType, string> AttackBehaviorMap = new() {
-    { Configs.AttackBehaviorType.DefaultDirectAttack, "default_direct_attack.json" },
-    { Configs.AttackBehaviorType.BrahmosDirectAttack, "brahmos_direct_attack.json" },
-    { Configs.AttackBehaviorType.Fateh110BDirectAttack, "fateh110b_direct_attack.json" },
-  };
-
   /// <summary>
   /// Singleton instance of SimManager.
   /// </summary>
@@ -369,30 +361,14 @@ public class SimManager : MonoBehaviour {
   }
 
   private AttackBehavior LoadAttackBehavior(Configs.AgentConfig config) {
-    string threatBehaviorFile = null;
-    switch (config.AttackBehaviorOneofCase) {
-      case Configs.AgentConfig.AttackBehaviorOneofOneofCase.AttackBehaviorType: {
-        if (AttackBehaviorMap.ContainsKey(config.AttackBehaviorType)) {
-          threatBehaviorFile = AttackBehaviorMap[config.AttackBehaviorType];
-        }
-        break;
-      }
-      case Configs.AgentConfig.AttackBehaviorOneofOneofCase.AttackBehavior: {
-        threatBehaviorFile = config.AttackBehavior;
-        break;
-      }
-      default: {
-        Debug.LogError($"Attack behavior type or configuration was not specified.");
-        return null;
-      }
-    }
-    if (string.IsNullOrEmpty(threatBehaviorFile)) {
+    string attackBehaviorConfigFile = config.AttackBehaviorConfigFile;
+    if (string.IsNullOrEmpty(attackBehaviorConfigFile)) {
       return null;
     }
-    AttackBehavior attackBehavior = AttackBehavior.FromJson(threatBehaviorFile);
+    AttackBehavior attackBehavior = AttackBehavior.FromJson(attackBehaviorConfigFile);
     switch (attackBehavior.attackBehaviorType) {
       case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK: {
-        return DirectAttackBehavior.FromJson(threatBehaviorFile);
+        return DirectAttackBehavior.FromJson(attackBehaviorConfigFile);
       }
       default: {
         Debug.LogError($"Attack behavior type or configuration was not specified.");
@@ -429,21 +405,7 @@ public class SimManager : MonoBehaviour {
     }
 
     // Load the static configuration for the interceptor.
-    Configs.StaticConfig staticConfig = null;
-    switch (config.TypeOneofCase) {
-      case Configs.AgentConfig.TypeOneofOneofCase.InterceptorType: {
-        staticConfig = ConfigLoader.LoadStaticConfig(config.InterceptorType);
-        break;
-      }
-      case Configs.AgentConfig.TypeOneofOneofCase.Config: {
-        staticConfig = ConfigLoader.LoadStaticConfig(config.Config);
-        break;
-      }
-      default: {
-        Debug.LogError($"Interceptor type or configuration was not specified.");
-        break;
-      }
-    }
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(config.ConfigFile);
     if (staticConfig == null) {
       return null;
     }
@@ -505,21 +467,7 @@ public class SimManager : MonoBehaviour {
     }
 
     // Load the static configuration for the threat.
-    Configs.StaticConfig staticConfig = null;
-    switch (config.TypeOneofCase) {
-      case Configs.AgentConfig.TypeOneofOneofCase.ThreatType: {
-        staticConfig = ConfigLoader.LoadStaticConfig(config.ThreatType);
-        break;
-      }
-      case Configs.AgentConfig.TypeOneofOneofCase.Config: {
-        staticConfig = ConfigLoader.LoadStaticConfig(config.Config);
-        break;
-      }
-      default: {
-        Debug.LogError($"Threat type or configuration was not specified.");
-        break;
-      }
-    }
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(config.ConfigFile);
     if (staticConfig == null) {
       return null;
     }

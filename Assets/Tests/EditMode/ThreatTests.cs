@@ -56,7 +56,7 @@ public class ThreatTests : AgentTestBase {
     File.WriteAllText(attackConfigPath, TestDirectAttackJson);
 
     var ucavConfig = new Configs.AgentConfig() {
-      ThreatType = Configs.ThreatType.Ucav, AttackBehavior = "test_direct_attack.json",
+      ConfigFile = "ucav.pbtxt", AttackBehaviorConfigFile = "test_direct_attack.json",
       InitialState =
           new Simulation.State() {
             Position = new Simulation.CartesianCoordinates() { X = 2000, Y = 100, Z = 4000 },
@@ -78,7 +78,7 @@ public class ThreatTests : AgentTestBase {
     };
 
     var quadcopterConfig = new Configs.AgentConfig() {
-      ThreatType = Configs.ThreatType.Quadcopter, AttackBehavior = "test_direct_attack.json",
+      ConfigFile = "quadcopter.pbtxt", AttackBehaviorConfigFile = "test_direct_attack.json",
       InitialState =
           new Simulation.State() {
             Position = new Simulation.CartesianCoordinates() { X = 0, Y = 600, Z = 6000 },
