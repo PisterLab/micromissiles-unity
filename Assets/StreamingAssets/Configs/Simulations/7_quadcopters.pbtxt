@@ -2,7 +2,7 @@ end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
   agent_config {
-    interceptor_type: HYDRA_70
+    config_file: "hydra70.pbtxt"
     dynamic_config {
       flight_config {
         controller: PROPORTIONAL_NAVIGATION
@@ -15,7 +15,7 @@ interceptor_swarm_configs {
     submunitions_config {
       num_submunitions: 7
       agent_config: {
-        interceptor_type: MICROMISSILE
+        config_file: "micromissile.pbtxt"
         dynamic_config {
           flight_config {
             controller: PROPORTIONAL_NAVIGATION
@@ -32,7 +32,7 @@ interceptor_swarm_configs {
 threat_swarm_configs {
   num_agents: 7
   agent_config {
-    threat_type: QUADCOPTER
+    config_file: "quadcopter.pbtxt"
     initial_state {
       position {
         x: 0

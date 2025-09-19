@@ -13,22 +13,6 @@ public static class ConfigLoader {
   // Relative path to the default simulator configuration.
   private const string SimulatorConfigRelativePath = "simulator.pbtxt";
 
-  // Map from the interceptor type to the static configuration file.
-  private static readonly Dictionary<Configs.InterceptorType, string> InterceptorStaticConfigMap =
-      new() {
-        { Configs.InterceptorType.Hydra70, "hydra70.pbtxt" },
-        { Configs.InterceptorType.Micromissile, "micromissiles.pbtxt" },
-      };
-
-  // Map from the threat type to the static configuration file.
-  private static readonly Dictionary<Configs.ThreatType, string> ThreatStaticConfigMap = new() {
-    { Configs.ThreatType.Quadcopter, "quadcopter.pbtxt" },
-    { Configs.ThreatType.Ucav, "ucav.pbtxt" },
-    { Configs.ThreatType.Brahmos, "brahmos.pbtxt" },
-    { Configs.ThreatType.Ascm, "ascm.pbtxt" },
-    { Configs.ThreatType.Fateh110B, "fateh_110b.pbtxt" },
-  };
-
   public static string GetStreamingAssetsFilePath(string relativePath) {
     return Path.Combine(Application.streamingAssetsPath, relativePath);
   }
@@ -90,27 +74,9 @@ public static class ConfigLoader {
     return message;
   }
 
-  public static Configs.StaticConfig LoadStaticConfig(Configs.InterceptorType interceptorType) {
-    if (InterceptorStaticConfigMap.TryGetValue(interceptorType, out var configFile)) {
-      return LoadStaticConfig(configFile);
-    }
-    var config = new Configs.StaticConfig();
-    ProtobufInitializer.Initialize(config);
-    return config;
-  }
-
-  public static Configs.StaticConfig LoadStaticConfig(Configs.ThreatType threatType) {
-    if (ThreatStaticConfigMap.TryGetValue(threatType, out var configFile)) {
-      return LoadStaticConfig(configFile);
-    }
-    var config = new Configs.StaticConfig();
-    ProtobufInitializer.Initialize(config);
-    return config;
-  }
-
   public static Configs.StaticConfig LoadStaticConfig(string configFile) {
-    string modelPath = Path.Combine("Configs/Models", configFile);
-    string streamingAssetsPath = GetStreamingAssetsFilePath(modelPath);
+    string configPath = Path.Combine("Configs/Models", configFile);
+    string streamingAssetsPath = GetStreamingAssetsFilePath(configPath);
     byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
     int serializedLength = 0;
     unsafe {
