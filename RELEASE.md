@@ -12,7 +12,7 @@ Download and extract the archive corresponding to your platform from the binarie
 ## Mac
 
 1. Download the tarball for Darwin.
-2. Untar the tarball and run the app file.
+2. Extract the tarball and run the app file.
 3. If you get a warning that Apple cannot check the application for malicious software:
      * Open `System Preferences`.
      * Navigate to `Privacy & Security`.
@@ -21,4 +21,4 @@ Download and extract the archive corresponding to your platform from the binarie
 ## Linux
 
 1. Download the tarball for Linux.
-2. Untar the tarball and run the executable.
+2. Extract the tarball and run the executable.

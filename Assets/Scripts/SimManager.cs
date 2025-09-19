@@ -26,13 +26,9 @@ public class SimManager : MonoBehaviour {
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
 
-  // Manager for interceptor origins and assignment strategies.
-  // Handles origin selection and capacity management.
-  private InterceptorOriginManager _originManager;
-
-  // List of instantiated interceptor origin GameObjects.
+  // List of instantiated launcher GameObjects.
   // Each GameObject represents a launch platform (ship, shore battery, etc.)
-  private List<GameObject> _originObjects = new List<GameObject>();
+  private List<Launcher> _launcherObjects = new List<Launcher>();
 
   // Inclusive of all, including submunitions swarms.
   // The boolean indicates whether the agent is active (true) or inactive (false).
@@ -189,8 +185,10 @@ public class SimManager : MonoBehaviour {
       // fixed delta time from the newly loaded config files.
     }
 
-    // Initialize interceptor origins first, before creating threats
-    InitializeOrigins();
+    // Create origins based on the configuration
+    foreach (var launcherConfig in SimulationConfig.launchers) {
+      CreateLauncher(launcherConfig);
+    }
 
     // Create targets based on the configuration.
     List<Agent> targets = new List<Agent>();
@@ -204,126 +202,35 @@ public class SimManager : MonoBehaviour {
     }
   }
 
-  // Initializes the interceptor origin manager and spawns origin GameObjects.
-  // Creates a default origin at (0,0,0) if no origins are configured for backward compatibility.
-  private void InitializeOrigins() {
-    if (SimulationConfig.interceptor_origins == null ||
-        SimulationConfig.interceptor_origins.Count == 0) {
-      // Create default origin for backward compatibility
-      var defaultOrigin = new InterceptorOriginConfig {
-        id = "Default-Origin", initial_position = Vector3.zero, velocity = Vector3.zero,
-        max_interceptors = 100,  // Large capacity for backward compatibility
-        interceptor_types =
-            new List<string> { "hydra70.json", "micromissile.json" }  // Common types
-      };
-
-      var origins = new List<InterceptorOriginConfig> { defaultOrigin };
-      _originManager = new InterceptorOriginManager(origins);
-
-      Debug.LogWarning(
-          "No interceptor origins configured. Using default origin at (0,0,0) for backward compatibility.");
-    } else {
-      // Create randomized versions of origins for formation spread
-      var randomizedOrigins = new List<InterceptorOriginConfig>();
-      foreach (var originConfig in SimulationConfig.interceptor_origins) {
-        var randomizedOrigin = originConfig.CreateRandomizedVersion();
-        randomizedOrigins.Add(randomizedOrigin);
-
-        Debug.Log(
-            $"Origin {originConfig.id}: Original pos={originConfig.initial_position}, " +
-            $"Randomized pos={randomizedOrigin.initial_position}, " +
-            $"Original vel={originConfig.velocity}, Randomized vel={randomizedOrigin.velocity}");
-      }
-
-      _originManager = new InterceptorOriginManager(randomizedOrigins);
-
-      // Validate configuration
-      var validationErrors = _originManager.ValidateConfiguration();
-      if (validationErrors.Count > 0) {
-        Debug.LogError("Interceptor origin configuration errors:\n" +
-                       string.Join("\n", validationErrors));
-      }
-
-      Debug.Log(
-          $"Initialized {SimulationConfig.interceptor_origins.Count} interceptor origins " +
-          $"with randomization using {SimulationConfig.origin_assignment_strategy} strategy.");
+  private Launcher CreateLauncher(LauncherConfig config) {
+    // Require the type field to be specified
+    if (string.IsNullOrEmpty(config.type)) {
+      Debug.LogError(
+          $"Launcher '{config.id}' is missing required 'type' field. Please specify the launcher type (e.g., 'Ship', 'ShoreBattery').");
+      return null;
     }
 
-    // Create GameObjects for each origin
-    CreateOriginGameObjects();
-  }
+    string prefabName = config.type;
 
-  // Creates GameObjects for each configured interceptor origin.
-  // These represent the physical launch platforms in the simulation.
-  private void CreateOriginGameObjects() {
-    GameObject originPrefab = Resources.Load<GameObject>("Prefabs/InterceptorOriginObject");
-    if (originPrefab == null) {
-      Debug.LogError("InterceptorOriginObject prefab not found in Resources/Prefabs folder.");
-      return;
-    }
+    // Create initial state from config
+    InitialState initialState =
+        new InitialState { position = config.initial_position, velocity = config.velocity };
 
-    var allOrigins = _originManager.GetAllOrigins();
-    foreach (var originConfig in allOrigins) {
-      // Instantiate the origin GameObject at its randomized position
-      GameObject originObject =
-          Instantiate(originPrefab, originConfig.initial_position, Quaternion.identity);
-      originObject.name = $"Origin_{originConfig.id}";
+    // Create the launcher GameObject
+    GameObject launcherObject = CreateAgent(null, initialState, prefabName);
+    if (launcherObject == null)
+      return null;
 
-      // Add a component to track the origin configuration
-      var originComponent = originObject.GetComponent<InterceptorOrigin>();
-      if (originComponent == null) {
-        originComponent = originObject.AddComponent<InterceptorOrigin>();
-      }
-      originComponent.SetOriginConfig(originConfig);
+    Launcher launcher = launcherObject.GetComponent<Launcher>();
+    _launcherObjects.Add(launcher);
 
-      // Register the runtime object with the origin manager
-      _originManager.RegisterOriginObject(originComponent);
+    // Set the launcher configuration
+    launcher.SetLauncherConfig(config);
 
-      // Configure the existing rigidbody (prefab should have one)
-      var rigidbody = originObject.GetComponent<Rigidbody>();
-      if (rigidbody == null) {
-        Debug.LogError(
-            $"InterceptorOriginObject prefab for {originConfig.id} does not have a Rigidbody component!");
-        rigidbody = originObject.AddComponent<Rigidbody>();
-      }
+    int launcherId = _launcherObjects.Count;
+    launcherObject.name = $"{config.id}_Launcher_{launcherId}";
 
-      // Set up movement for moving origins
-      if (originConfig.velocity.magnitude > 0) {
-        // Configure rigidbody for movement (override prefab kinematic setting)
-        rigidbody.isKinematic = false;  // Allow physics movement
-        rigidbody.mass = 1000f;         // Heavy mass for naval vessels
-        rigidbody.useGravity = false;   // Origins don't fall
-        rigidbody.constraints = RigidbodyConstraints.FreezeRotation;  // Don't rotate
-        rigidbody.linearDamping = 0f;    // No velocity damping for constant speed
-        rigidbody.angularDamping = 10f;  // High rotational damping
-
-        // Set initial velocity
-        rigidbody.linearVelocity = originConfig.velocity;
-
-        // Orient the object to face the movement direction
-        if (originConfig.velocity.magnitude > 0.1f) {
-          Quaternion targetRotation =
-              Quaternion.LookRotation(originConfig.velocity.normalized, Vector3.up);
-          originObject.transform.rotation = targetRotation;
-        }
-
-        Debug.Log(
-            $"Moving origin '{originConfig.id}' set up with velocity {originConfig.velocity} " +
-            $"(magnitude: {originConfig.velocity.magnitude} m/s), isKinematic: {rigidbody.isKinematic}");
-      } else {
-        // For static origins, keep them kinematic (as set in prefab)
-        rigidbody.isKinematic = true;  // Ensure static
-        rigidbody.useGravity = false;
-        rigidbody.linearVelocity = Vector3.zero;
-
-        Debug.Log(
-            $"Static origin '{originConfig.id}' set up at {originConfig.initial_position}, isKinematic: {rigidbody.isKinematic}");
-      }
-
-      _originObjects.Add(originObject);
-    }
-
-    Debug.Log($"Created {allOrigins.Count} origin GameObjects in simulation");
+    return launcher;
   }
 
   public void AddInterceptorSwarm(List<Agent> swarm) {
@@ -556,7 +463,7 @@ public class SimManager : MonoBehaviour {
   // Parameters:
   //   config: Configuration settings for the threat.
   // Returns: The created Threat instance, or null if creation failed.
-  private Threat CreateThreat(DynamicAgentConfig config) {
+  public Threat CreateThreat(DynamicAgentConfig config) {
     string threatModelFile = config.agent_model;
     threatModelFile = "Threats/" + threatModelFile;
     StaticAgentConfig threatStaticAgentConfig = ConfigLoader.LoadStaticAgentConfig(threatModelFile);
@@ -616,7 +523,9 @@ public class SimManager : MonoBehaviour {
     Quaternion targetRotation = Quaternion.LookRotation(velocityDirection, Vector3.up);
     agentObject.transform.rotation = targetRotation;
 
-    agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
+    if (config != null) {
+      agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
+    }
     return agentObject;
   }
 
@@ -687,9 +596,9 @@ public class SimManager : MonoBehaviour {
     }
 
     // Clear origin GameObjects
-    foreach (var originObject in _originObjects) {
-      if (originObject != null) {
-        Destroy(originObject);
+    foreach (var launcherObject in _launcherObjects) {
+      if (launcherObject != null) {
+        Destroy(launcherObject.gameObject);
       }
     }
 
@@ -698,15 +607,10 @@ public class SimManager : MonoBehaviour {
     _threatObjects.Clear();
     _dummyAgentObjects.Clear();
     _dummyAgentTable.Clear();
-    _originObjects.Clear();
+    _launcherObjects.Clear();
     _interceptorSwarms.Clear();
     _submunitionsSwarms.Clear();
     _threatSwarms.Clear();
-
-    // Reset the origin manager's assignment counters
-    if (_originManager != null) {
-      _originManager.ResetAssignmentCounters();
-    }
 
     OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
     OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
@@ -726,35 +630,8 @@ public class SimManager : MonoBehaviour {
     }
   }
 
-  // Updates moving interceptor origins to ensure they maintain their prescribed velocity.
-  // Also updates origin manager's internal position tracking.
-  private void UpdateMovingOrigins() {
-    if (_originManager == null)
-      return;
-
-    var allOrigins = _originManager.GetAllOrigins();
-    for (int i = 0; i < allOrigins.Count && i < _originObjects.Count; i++) {
-      var originConfig = allOrigins[i];
-      var originObject = _originObjects[i];
-
-      if (originObject == null || originConfig.velocity.magnitude <= 0)
-        continue;
-
-      var rigidbody = originObject.GetComponent<Rigidbody>();
-      if (rigidbody != null && !rigidbody.isKinematic) {
-        // Ensure velocity is maintained (corrects for any physics drift)
-        Vector3 currentVelocity = rigidbody.linearVelocity;
-        Vector3 targetVelocity = originConfig.velocity;
-
-        // If velocity has drifted significantly, correct it
-        if (Vector3.Distance(currentVelocity, targetVelocity) > 0.5f) {
-          rigidbody.linearVelocity = targetVelocity;
-
-          Debug.Log($"Corrected velocity for origin {originConfig.id}: " +
-                    $"was {currentVelocity}, corrected to {targetVelocity}");
-        }
-      }
-    }
+  public List<Launcher> GetLaunchers() {
+    return _launcherObjects;
   }
 
   public void QuitSimulation() {

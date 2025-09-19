@@ -1,13 +1,9 @@
 name: Linter
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-  workflow_dispatch:
+  pull_request:  # Run on all branches.
+  push:  # Run on all branches and tags.
+  workflow_dispatch:  # Allow manual triggering.
 
 jobs:
   clang-format:
@@ -15,22 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: jidicula/clang-format-action@v4.13.0
+
+      - name: Run clang-format
+        uses: jidicula/clang-format-action@v4.13.0
         with:
-          clang-format-version: 19
-          check-path: '.'
+          clang-format-version: 20
           fallback-style: 'Google'
-          include-regex: '^.*\.((((c|C)(c|pp|xx|\+\+)?$)|((h|H)h?(pp|xx|\+\+)?$))|(ino|pde|proto|cs|cu))$'
 
   buildifier:
     name: Run buildifier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install buildifier
         run: |
           curl -L -o /usr/local/bin/buildifier https://github.com/bazelbuild/buildtools/releases/download/v6.4.0/buildifier-linux-amd64
           chmod +x /usr/local/bin/buildifier
+
       - name: Run buildifier
         run: |
           find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -mode=check

@@ -1,11 +1,12 @@
-import os
-import glob
 import argparse
+import glob
+import os
 import platform
-import pandas as pd
+
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import pandas as pd
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def get_logs_directory():
@@ -15,9 +16,11 @@ def get_logs_directory():
         )
     elif platform.system() == "Darwin":
         return os.path.expanduser(
-            "~/Library/Application Support/BAMLAB/micromissiles/Telemetry/Logs")
+            "~/Library/Application Support/BAMLAB/micromissiles/Telemetry/Logs"
+        )
     else:
-        raise NotImplementedError(f"Unsupported platform: {platform.system()}.")
+        raise NotImplementedError(
+            f"Unsupported platform: {platform.system()}.")
 
 
 def find_latest_file(directory, file_pattern):

@@ -4,27 +4,27 @@ on:
   workflow_run:
     workflows: [Build]
     types: [completed]
-    branches-ignore:
-      - release
 
 jobs:
   release:
     name: Create release
     runs-on: ubuntu-latest
     if: |
+      github.event.workflow_run.event == 'push' &&
       github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event != 'schedule'
+      startsWith(github.event.workflow_run.head_branch, 'refs/tags/v')
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
-          fetch-depth: 0
-          lfs: false
+          fetch-tags: true
+
       - name: Get latest tag
         id: get_latest_tag
         run: |
           latest_tag=$(git describe --tags --abbrev=0)
           echo "LATEST_TAG=${latest_tag}" >> $GITHUB_OUTPUT
+
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -36,12 +36,14 @@ jobs:
           body_path: RELEASE.md
           draft: false
           prerelease: false
+
       - uses: actions/download-artifact@v4
         with:
           path: build
           merge-multiple: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
+
       - name: Upload Windows release assets
         uses: actions/upload-release-asset@v1
         env:
@@ -51,6 +53,7 @@ jobs:
           asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-windows-x86_64.zip
           asset_path: build/build-StandaloneWindows64.zip
           asset_content_type: application/zip
+
       - name: Upload Darwin release assets
         uses: actions/upload-release-asset@v1
         env:
@@ -60,6 +63,7 @@ jobs:
           asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-darwin-x86_64.tar.gz
           asset_path: build/build-StandaloneOSX.tar.gz
           asset_content_type: application/gzip
+
       - name: Upload Linux release assets
         uses: actions/upload-release-asset@v1
         env:
@@ -69,6 +73,7 @@ jobs:
           asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-linux-x86_64.tar.gz
           asset_path: build/build-StandaloneLinux64.tar.gz
           asset_content_type: application/gzip
+
       - name: Upload Windows plugins
         uses: actions/upload-release-asset@v1
         env:
@@ -78,6 +83,7 @@ jobs:
           asset_name: micromissiles-plugins-${{ github.event.workflow_run.head_branch }}-windows-x86_64.tar.gz
           asset_path: build/plugins-windows-latest.tar.gz
           asset_content_type: application/gzip
+
       - name: Upload Darwin plugins
         uses: actions/upload-release-asset@v1
         env:
@@ -87,6 +93,7 @@ jobs:
           asset_name: micromissiles-plugins-${{ github.event.workflow_run.head_branch }}-darwin-x86_64.tar.gz
           asset_path: build/plugins-macos-latest.tar.gz
           asset_content_type: application/gzip
+
       - name: Upload Linux plugins
         uses: actions/upload-release-asset@v1
         env:

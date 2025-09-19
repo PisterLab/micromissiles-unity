@@ -42,21 +42,13 @@ public struct LaunchAngleDataPoint {
   }
 }
 
-// The launch angle planner interface defines methods for calculating optimal launch angles
-// and intercept positions.
+// The launch angle planner interface defines methods for calculating optimal launch angles,
+// time-to-intercept, and intercept positions.
 public interface ILaunchAnglePlanner {
   // Calculate the optimal launch angle and time-to-target for a given input.
   //   input: Launch angle input parameters
   // Returns: Launch angle output with timing information
   public LaunchAngleOutput Plan(in LaunchAngleInput input);
-
-  // Calculate launch parameters for a target position from the default origin (0,0,0).
-  // Maintained for backward compatibility.
-  //   position: Target position
-  // Returns: Launch angle output
-  public LaunchAngleOutput Plan(Vector3 position) {
-    return Plan(position, Vector3.zero);
-  }
 
   // Calculate launch parameters for a target position from a specific origin.
   // This method accounts for the distance and direction from origin to target.
@@ -80,7 +72,7 @@ public interface ILaunchAnglePlanner {
   // Convert from a 3D vector to a 2D direction that ignores the azimuth.
   // This method now supports origin-relative calculations.
   //   targetPosition: Target position
-  //   originPosition: Origin position (default: Vector3.zero)
+  //   originPosition: Launcher position (default: Vector3.zero)
   // Returns: 2D direction vector (horizontal distance, altitude)
   protected static Vector2 ConvertToDirection(Vector3 targetPosition,
                                               Vector3 originPosition = default(Vector3)) {

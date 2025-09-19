@@ -1,34 +1,28 @@
-name: Deploy Documentation
+name: Documentation
 
 on:
+  pull_request:  # Run on all branches.
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
-  workflow_dispatch:  # Allows manual triggering.
-
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+  workflow_run:
+    workflows: [Test]
+    types: [completed]
+    branches: [master]
 
 jobs:
   build-deploy:
+    name: Build and deploy documentation
+    runs-on: ubuntu-latest
     permissions:
       contents: write
-      pages: write
-      id-token: write
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'  # Use Node.js 18
+          node-version: '24'
 
       - name: Install dependencies
         run: npm ci
@@ -36,11 +30,24 @@ jobs:
       - name: Build documentation
         run: npm run docs:build
 
-      - name: Deploy documentation
+      - name: Download coverage report
+        if: github.event_name == 'workflow_run'
+        uses: actions/download-artifact@v4
+        with:
+          path: coverage
+          pattern: Coverage results for *
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+        continue-on-error: true
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
+        if: |
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_branch == 'master' &&
+          github.event.workflow_run.conclusion == 'success'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/.vitepress/dist
-          allow_empty_commit: true
-          keep_files: true
-          force_orphan: false
