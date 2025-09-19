@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json;
 
 public static class ConfigLoader {
   // Maximum serialized length of a Protobuf message.
