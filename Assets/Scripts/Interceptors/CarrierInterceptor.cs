@@ -33,6 +33,10 @@ public class CarrierInterceptor : Interceptor {
   }
 
   private void SpawnSubmunitions() {
+    if (agentConfig.SubmunitionsConfig == null) {
+      return;
+    }
+
     List<Interceptor> submunitions = new List<Interceptor>();
     for (int i = 0; i < agentConfig.SubmunitionsConfig.NumSubmunitions; ++i) {
       Configs.AgentConfig submunitionsConfig = agentConfig.SubmunitionsConfig.AgentConfig;
