@@ -18,6 +18,20 @@ cc_proto_library(
 )
 
 proto_library(
+    name = "attack_behavior_config_proto",
+    srcs = ["attack_behavior_config.proto"],
+    deps = [
+        ":static_config_proto",
+        "//Simulation:coordinates_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "attack_behavior_config_cc_proto",
+    deps = [":attack_behavior_config_proto"],
+)
+
+proto_library(
     name = "dynamic_config_proto",
     srcs = ["dynamic_config.proto"],
     deps = ["//Simulation:sensor_proto"],

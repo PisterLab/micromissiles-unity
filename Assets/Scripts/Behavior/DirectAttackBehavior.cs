@@ -1,78 +1,44 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 public class DirectAttackBehavior : AttackBehavior {
-  public new DTTFlightPlan flightPlan;
+  public DirectAttackBehavior(in Configs.AttackBehaviorConfig config) : base(config) {}
 
-  // Returns the next waypoint for the threat to navigate to.
-  // In addition, return the power setting to use toward the waypoint.
-  public override (Vector3 waypointPosition, Configs.Power power)
+  // Return the next waypoint for the threat to navigate to and the power setting to use towards the
+  // waypoint.
+  public virtual (Vector3 waypointPosition, Configs.Power power)
       GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
-    if (flightPlan.waypoints == null || flightPlan.waypoints.Count == 0) {
+    if (FlightPlan.Waypoints.Count == 0) {
       // If no waypoints are defined, directly target the target position.
-      return (targetPosition, Configs.Power.Max);
+      return (TargetPosition, Configs.Power.Max);
     }
 
-    Vector3 directionToTarget = targetPosition - currentPosition;
+    Vector3 directionToTarget = TargetPosition - currentPosition;
     float distanceToTarget = directionToTarget.magnitude;
 
     // Find the current waypoint based on the distance to target.
-    int currentWaypointIndex = 0;
-    for (int i = 0; i < flightPlan.waypoints.Count; ++i) {
-      if (distanceToTarget > flightPlan.waypoints[i].distance) {
+    int waypointIndex = 0;
+    for (int i = 0; i < FlightPlan.Waypoints.Count; ++i) {
+      if (distanceToTarget > FlightPlan.Waypoints[i].Distance) {
         break;
       }
-      currentWaypointIndex = i;
+      waypointIndex = i;
     }
 
-    Vector3 waypointPosition;
-    Configs.Power power;
-
-    if (currentWaypointIndex == flightPlan.waypoints.Count - 1 &&
-        distanceToTarget < flightPlan.waypoints[currentWaypointIndex].distance) {
+    Vector3 waypointPosition = TargetPosition;
+    Configs.Power power = Configs.Power.Idle;
+    if (waypointIndex == FlightPlan.Waypoints.Count - 1 &&
+        distanceToTarget < FlightPlan.Waypoints[waypointIndex].Distance) {
       // This is the last waypoint, so target the final position.
-      waypointPosition = targetPosition;
-      // TODO(titan): Replace with the actual power flightPlan.waypoints[0].power after the attack
-      // behavior proto has been implemented.
-      power = Configs.Power.Mil;
+      waypointPosition = TargetPosition;
+      power = FlightPlan.Waypoints[0].Power;
     } else {
       // There is a next waypoint.
-      DTTWaypoint nextWaypoint = flightPlan.waypoints[currentWaypointIndex + 1];
-      waypointPosition = targetPosition + directionToTarget.normalized * nextWaypoint.distance;
-      waypointPosition.y = nextWaypoint.altitude;
-      // TODO(titan): Replace with the actual power nextWaypoint.power after the attack behavior
-      // proto has been implemented.
-      power = Configs.Power.Mil;
+      var nextWaypoint = FlightPlan.Waypoints[waypointIndex + 1];
+      waypointPosition = TargetPosition + directionToTarget.normalized * nextWaypoint.Distance;
+      waypointPosition.y = nextWaypoint.Altitude;
+      power = nextWaypoint.Power;
     }
 
     return (waypointPosition, power);
   }
-
-  public new static DirectAttackBehavior FromJson(string json) {
-    string resolvedPath = ResolveBehaviorPath(json);
-  string fileContent = ConfigLoader.LoadFromStreamingAssets(resolvedPath);
-  DirectAttackBehavior behavior = JsonConvert.DeserializeObject<DirectAttackBehavior>(
-      fileContent, new JsonSerializerSettings { Converters = { new StringEnumConverter() } });
-
-  // Sort waypoints in ascending order based on distance.
-  if (behavior.flightPlan != null && behavior.flightPlan.waypoints != null) {
-    behavior.flightPlan.waypoints.Sort((a, b) => a.distance.CompareTo(b.distance));
-  }
-
-  return behavior;
-}
-}
-
-[System.Serializable]
-public class DTTWaypoint : Waypoint {
-  public float distance;
-  public float altitude;
-  public Configs.Power power;
-}
-
-public class DTTFlightPlan : FlightPlan {
-  public List<DTTWaypoint> waypoints;
 }

@@ -9,40 +9,38 @@ public class ThreatTests : AgentTestBase {
   private FixedWingThreat _fixedWingThreat;
   private RotaryWingThreat _rotaryWingThreat;
 
-  private const string TestDirectAttackJson =
+  private const string TestDirectAttackPbtxt =
       @"
     {
-        ""name"": ""TestDirectAttack"",
-        ""attackBehaviorType"": ""DIRECT_ATTACK"",
-        ""targetPosition"": {
-            ""x"": 0.01,
-            ""y"": 0.0,
-            ""z"": 0.0
-        },
-        ""targetVelocity"": {
-            ""x"": 0.0001,
-            ""y"": 0.0,
-            ""z"": 0.0
-        },
-        ""targetColliderSize"": {
-            ""x"": 20.0,
-            ""y"": 20.0,
-            ""z"": 20.0
-        },
-        ""flightPlan"": {
-            ""type"": ""DistanceToTarget"",
-            ""waypoints"": [
-                {
-                    ""distance"": 10000.0,
-                    ""altitude"": 500.0,
-                    ""power"": ""MIL""
-                },
-                {
-                    ""distance"": 5000.0,
-                    ""altitude"": 100.0,
-                    ""power"": ""MAX""
-                }
-            ]
+        name: ""Test Direct Attack"",
+        type: DIRECT_ATTACK,
+        target_position {
+          x: 0.01
+          y: 0
+          z: 0
+        }
+        target_velocity {
+          x: 0.0001
+          y: 0
+          z: 0
+        }
+        target_collider_size {
+          x: 20
+          y: 20
+          z: 20
+        }
+        flight_plan {
+          type: DISTANCE_TO_TARGET
+          waypoints {
+            distance: 10000
+            altitude: 500
+            power: MIL
+          }
+          waypoints {
+            distance: 5000
+            altitude: 100
+            power: MAX
+          }
         }
     }
     ";
@@ -50,13 +48,13 @@ public class ThreatTests : AgentTestBase {
   public override void Setup() {
     base.Setup();
     // Write the hard-coded attack behavior to a file.
-    string attackConfigPath =
-        ConfigLoader.GetStreamingAssetsFilePath("Configs/Behaviors/Attack/test_direct_attack.json");
+    string attackConfigPath = ConfigLoader.GetStreamingAssetsFilePath(
+        "Configs/Behaviors/Attack/test_direct_attack.pbtxt");
     Directory.CreateDirectory(Path.GetDirectoryName(attackConfigPath));
-    File.WriteAllText(attackConfigPath, TestDirectAttackJson);
+    File.WriteAllText(attackConfigPath, TestDirectAttackPbtxt);
 
     var ucavConfig = new Configs.AgentConfig() {
-      ConfigFile = "ucav.pbtxt", AttackBehaviorConfigFile = "test_direct_attack.json",
+      ConfigFile = "ucav.pbtxt", AttackBehaviorConfigFile = "test_direct_attack.pbtxt",
       InitialState =
           new Simulation.State() {
             Position = new Simulation.CartesianCoordinates() { X = 2000, Y = 100, Z = 4000 },
@@ -78,7 +76,7 @@ public class ThreatTests : AgentTestBase {
     };
 
     var quadcopterConfig = new Configs.AgentConfig() {
-      ConfigFile = "quadcopter.pbtxt", AttackBehaviorConfigFile = "test_direct_attack.json",
+      ConfigFile = "quadcopter.pbtxt", AttackBehaviorConfigFile = "test_direct_attack.pbtxt",
       InitialState =
           new Simulation.State() {
             Position = new Simulation.CartesianCoordinates() { X = 0, Y = 600, Z = 6000 },
@@ -115,8 +113,8 @@ public class ThreatTests : AgentTestBase {
   public override void Teardown() {
     base.Teardown();
     // Delete the attack configuration file.
-    string attackConfigPath =
-        ConfigLoader.GetStreamingAssetsFilePath("Configs/Behaviors/Attack/test_direct_attack.json");
+    string attackConfigPath = ConfigLoader.GetStreamingAssetsFilePath(
+        "Configs/Behaviors/Attack/test_direct_attack.pbtxt");
     if (File.Exists(attackConfigPath)) {
       File.Delete(attackConfigPath);
     }
@@ -143,9 +141,8 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(_fixedWingThreat, "CalculateAccelerationInput");
     float maxForwardAcceleration = _fixedWingThreat.CalculateMaxForwardAcceleration();
     const float epsilon = 1e-5f;
-    Assert.LessOrEqual(
-        (Vector3.Project(acceleration, _fixedWingThreat.transform.forward)).magnitude,
-        maxForwardAcceleration + epsilon);
+    Assert.LessOrEqual(Vector3.Project(acceleration, _fixedWingThreat.transform.forward).magnitude,
+                       maxForwardAcceleration + epsilon);
   }
 
   [Test]
@@ -157,7 +154,7 @@ public class ThreatTests : AgentTestBase {
     const float epsilon = 1e-5f;
     Assert.LessOrEqual(
         acceleration.magnitude, maxNormalAcceleration + epsilon,
-        $"Acceleration magnitude {acceleration.magnitude} should be less than or equal to max normal acceleration {maxNormalAcceleration}.");
+        $"Acceleration magnitude {acceleration.magnitude} should be less than or equal to the maximum normal acceleration {maxNormalAcceleration}.");
   }
 
   [Test]
@@ -167,9 +164,8 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(_rotaryWingThreat, "CalculateAccelerationToWaypoint");
     float maxForwardAcceleration = _rotaryWingThreat.CalculateMaxForwardAcceleration();
     const float epsilon = 1e-5f;
-    Assert.LessOrEqual(
-        (Vector3.Project(acceleration, _fixedWingThreat.transform.forward)).magnitude,
-        maxForwardAcceleration + epsilon);
+    Assert.LessOrEqual(Vector3.Project(acceleration, _fixedWingThreat.transform.forward).magnitude,
+                       maxForwardAcceleration + epsilon);
   }
 
   [Test]
@@ -185,23 +181,7 @@ public class ThreatTests : AgentTestBase {
 
     Assert.LessOrEqual(
         normalComponent.magnitude, maxNormalAcceleration + epsilon,
-        $"Normal acceleration magnitude {normalComponent.magnitude} should be less than or equal to max normal acceleration {maxNormalAcceleration}.");
-  }
-
-  private class MockAttackBehavior : AttackBehavior {
-    private Vector3 waypoint;
-    private Configs.Power power;
-
-    public MockAttackBehavior(Vector3 waypoint, Configs.Power power) {
-      this.waypoint = waypoint;
-      this.power = power;
-      this.name = "MockAttackBehavior";
-    }
-
-    public override (Vector3, Configs.Power)
-        GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
-      return (waypoint, power);
-    }
+        $"Normal acceleration magnitude {normalComponent.magnitude} should be less than or equal to the maximum normal acceleration {maxNormalAcceleration}.");
   }
 
   [Test]
@@ -253,40 +233,39 @@ public class ThreatTests : AgentTestBase {
       AttackBehavior attackBehavior =
           GetPrivateField<AttackBehavior>(_fixedWingThreat, "_attackBehavior");
       Assert.IsNotNull(attackBehavior, "Attack behavior should not be null.");
-      Assert.AreEqual("TestDirectAttack", attackBehavior.name);
-      Assert.AreEqual(AttackBehavior.AttackBehaviorType.DIRECT_ATTACK,
-                      attackBehavior.attackBehaviorType);
+      Assert.AreEqual("Test Direct Attack", attackBehavior.Name);
+      Assert.AreEqual(Configs.AttackType.DirectAttack, attackBehavior.Type);
 
       Assert.IsTrue(attackBehavior is DirectAttackBehavior,
                     "Attack behavior should be a DirectAttackBehavior.");
       DirectAttackBehavior directAttackBehavior = (DirectAttackBehavior)attackBehavior;
 
-      Vector3 targetPosition = directAttackBehavior.targetPosition;
+      Vector3 targetPosition = directAttackBehavior.TargetPosition;
       Assert.AreEqual(new Vector3(0.01f, 0, 0), targetPosition);
 
-      DTTFlightPlan flightPlan = directAttackBehavior.flightPlan;
-      Assert.IsNotNull(flightPlan, "Flight plan should not be null.");
-      Assert.AreEqual("DistanceToTarget", flightPlan.type);
+      Assert.IsNotNull(attackBehavior.FlightPlan, "Flight plan should not be null.");
+      Assert.AreEqual(Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
+                      attackBehavior.FlightPlan.Type);
 
-      List<DTTWaypoint> dttWaypoints = flightPlan.waypoints;
-      Assert.IsNotNull(dttWaypoints, "Waypoints should not be null.");
-      Assert.AreEqual(2, dttWaypoints.Count, "There should be 2 waypoints.");
+      List<Waypoint> waypoints = attackBehavior.FlightPlan.Waypoints;
+      Assert.IsNotNull(waypoints, "Waypoints should not be null.");
+      Assert.AreEqual(2, waypoints.Count, "There should be 2 waypoints.");
 
-      Assert.AreEqual(5000f, dttWaypoints[0].distance);
-      Assert.AreEqual(100f, dttWaypoints[0].altitude);
-      Assert.AreEqual(Configs.Power.Max, dttWaypoints[0].power);
+      Assert.AreEqual(5000f, waypoints[0].Distance);
+      Assert.AreEqual(100f, waypoints[0].Altitude);
+      Assert.AreEqual(Configs.Power.Max, waypoints[0].Power);
 
-      Assert.AreEqual(10000f, dttWaypoints[1].distance);
-      Assert.AreEqual(500f, dttWaypoints[1].altitude);
-      Assert.AreEqual(Configs.Power.Mil, dttWaypoints[1].power);
+      Assert.AreEqual(10000f, waypoints[1].Distance);
+      Assert.AreEqual(500f, waypoints[1].Altitude);
+      Assert.AreEqual(Configs.Power.Mil, waypoints[1].Power);
 
       // Check the target velocity.
-      Vector3 targetVelocity = directAttackBehavior.targetVelocity;
+      Vector3 targetVelocity = directAttackBehavior.TargetVelocity;
       Assert.AreEqual(new Vector3(0.0001f, 0f, 0f), targetVelocity,
                       "Target velocity should match the config.");
 
       // Check the target collider size.
-      Vector3 targetColliderSize = directAttackBehavior.targetColliderSize;
+      Vector3 targetColliderSize = directAttackBehavior.TargetColliderSize;
       Assert.AreEqual(new Vector3(20f, 20f, 20f), targetColliderSize,
                       "Target collider size should match the config.");
 

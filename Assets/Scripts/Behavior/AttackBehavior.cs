@@ -1,51 +1,42 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 public class AttackBehavior {
-  public string name;
-  public AttackBehaviorType attackBehaviorType;
+  private Configs.AttackBehaviorConfig _config;
 
-  public Vector3 targetPosition;
-  public Vector3 targetVelocity;
-  public Vector3 targetColliderSize;
-  public FlightPlan flightPlan;
-  // Returns the next waypoint for the threat to navigate to
-  // In addition, return the power setting to use toward the waypoint
+  public string Name {
+    get { return _config.Name; }
+  }
+
+  public Configs.AttackType Type {
+    get { return _config.Type; }
+  }
+
+  public Vector3 TargetPosition {
+    get { return Coordinates3.FromProto(_config.TargetPosition); }
+  }
+
+  public Vector3 TargetVelocity {
+    get { return Coordinates3.FromProto(_config.TargetVelocity); }
+  }
+
+  public Vector3 TargetColliderSize {
+    get { return Coordinates3.FromProto(_config.TargetColliderSize); }
+  }
+
+  public FlightPlan FlightPlan {
+    get { return new FlightPlan(_config.FlightPlan); }
+  }
+
+  public AttackBehavior(in Configs.AttackBehaviorConfig config) {
+    _config = config;
+  }
+
+  // Return the next waypoint for the threat to navigate to and the power setting to use towards the
+  // waypoint.
   public virtual (Vector3 waypointPosition, Configs.Power power)
       GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
     return (targetPosition, Configs.Power.Idle);
   }
-
-  protected static string ResolveBehaviorPath(string json) {
-    // Append "Configs/Behaviors/Attack/" to the json path if it's not already there
-    if (!json.StartsWith("Configs/Behaviors/Attack/")) {
-      json = "Configs/Behaviors/Attack/" + json;
-    }
-    return json;
-  }
-
-  public static AttackBehavior FromJson(string json) {
-    string resolvedPath = ResolveBehaviorPath(json);
-    string fileContent = ConfigLoader.LoadFromStreamingAssets(resolvedPath);
-    return JsonConvert.DeserializeObject<AttackBehavior>(fileContent, new JsonSerializerSettings {
-      Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
-    });
-  }
-
-  [JsonConverter(typeof(StringEnumConverter))]
-  public enum AttackBehaviorType { DIRECT_ATTACK, PREPLANNED_ATTACK, SLALOM_ATTACK }
-}
-
-[System.Serializable]
-public class VectorWaypoint : Waypoint {
-  public Vector3 waypointPosition;
-  public Configs.Power power;
-}
-
-[System.Serializable]
-public class Waypoint {}
-public class FlightPlan {
-  public string type;
 }

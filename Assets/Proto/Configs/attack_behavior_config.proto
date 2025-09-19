@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package configs;
+
+import "Simulation/coordinates.proto";
+import "Configs/static_config.proto";
+
+// Attack type enumeration.
+enum AttackType {
+  INVALID_ATTACK = 0;
+  DIRECT_ATTACK = 1;
+  PREPLANNED_ATTACK = 2;
+  SLALOM_ATTACK = 3;
+}
+
+// Attack behavior configuration.
+message AttackBehaviorConfig {
+  // Flight plan type enumeration.
+  enum FlightPlanType {
+    INVALID_FLIGHT_PLAN = 0;
+    DISTANCE_TO_TARGET = 1;
+  }
+
+  // Flight plan.
+  message FlightPlan {
+    message Waypoint {
+      // Distance.
+      float distance = 1;
+
+      // Altitude.
+      float altitude = 2;
+
+      // Power.
+      Power power = 3;
+    }
+
+    // Flight plan type.
+    FlightPlanType type = 1;
+
+    // Waypoints.
+    repeated Waypoint waypoints = 2;
+  }
+
+  // Attack behavior name.
+  string name = 1;
+
+  // Attack type.
+  AttackType type = 2;
+
+  // Target position.
+  simulation.CartesianCoordinates target_position = 3;
+
+  // Target velocity.
+  simulation.CartesianCoordinates target_velocity = 4;
+
+  // Target collider size.
+  simulation.CartesianCoordinates target_collider_size = 5;
+
+  // Flight plan.
+  FlightPlan flight_plan = 6;
+}
