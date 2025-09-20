@@ -27,8 +27,8 @@ public class DirectAttackBehavior : AttackBehavior {
     Vector3 waypointPosition = targetPosition;
     Configs.Power power = Configs.Power.Idle;
     if (waypointIndex == FlightPlan.Waypoints.Count) {
-      // This is the last waypoint, so target the final position with the second-to-last waypoint
-      // power.
+      // This is the last waypoint, so target the final position with the last waypoint's power
+      // setting.
       waypointPosition = targetPosition;
       power = FlightPlan.Waypoints[FlightPlan.Waypoints.Count - 1].Power;
       return (waypointPosition, power);

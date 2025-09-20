@@ -96,8 +96,8 @@ public class ThreatTests : AgentTestBase {
   public override void Teardown() {
     base.Teardown();
     // Delete the attack configuration file.
-    string attackConfigPath = ConfigLoader.GetStreamingAssetsFilePath(
-        "Configs/Behaviors/Attack/test_direct_attack.pbtxt");
+    string attackConfigPath =
+        ConfigLoader.GetStreamingAssetsFilePath("Configs/Attacks/test_direct_attack.pbtxt");
     if (File.Exists(attackConfigPath)) {
       File.Delete(attackConfigPath);
     }

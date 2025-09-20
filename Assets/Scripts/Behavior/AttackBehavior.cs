@@ -17,7 +17,7 @@ public class AttackBehavior {
     get { return new FlightPlan(_config.FlightPlan); }
   }
 
-  public AttackBehavior(in Configs.AttackBehaviorConfig config) {
+  public AttackBehavior(Configs.AttackBehaviorConfig config) {
     _config = config;
   }
 
