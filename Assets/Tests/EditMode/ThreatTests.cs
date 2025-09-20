@@ -11,45 +11,43 @@ public class ThreatTests : AgentTestBase {
 
   private const string TestDirectAttackPbtxt =
       @"
-    {
-        name: ""Test Direct Attack"",
-        type: DIRECT_ATTACK,
-        target_position {
-          x: 0.01
-          y: 0
-          z: 0
+      name: ""Test Direct Attack""
+      type: DIRECT_ATTACK
+      target_position {
+        x: 0.01
+        y: 0
+        z: 0
+      }
+      target_velocity {
+        x: 0.0001
+        y: 0
+        z: 0
+      }
+      target_collider_size {
+        x: 20
+        y: 20
+        z: 20
+      }
+      flight_plan {
+        type: DISTANCE_TO_TARGET
+        waypoints {
+          distance: 10000
+          altitude: 500
+          power: MIL
         }
-        target_velocity {
-          x: 0.0001
-          y: 0
-          z: 0
+        waypoints {
+          distance: 5000
+          altitude: 100
+          power: MAX
         }
-        target_collider_size {
-          x: 20
-          y: 20
-          z: 20
-        }
-        flight_plan {
-          type: DISTANCE_TO_TARGET
-          waypoints {
-            distance: 10000
-            altitude: 500
-            power: MIL
-          }
-          waypoints {
-            distance: 5000
-            altitude: 100
-            power: MAX
-          }
-        }
-    }
+      }
     ";
 
   public override void Setup() {
     base.Setup();
     // Write the hard-coded attack behavior to a file.
-    string attackConfigPath = ConfigLoader.GetStreamingAssetsFilePath(
-        "Configs/Behaviors/Attack/test_direct_attack.pbtxt");
+    string attackConfigPath =
+        ConfigLoader.GetStreamingAssetsFilePath("Configs/Attacks/test_direct_attack.pbtxt");
     Directory.CreateDirectory(Path.GetDirectoryName(attackConfigPath));
     File.WriteAllText(attackConfigPath, TestDirectAttackPbtxt);
 
