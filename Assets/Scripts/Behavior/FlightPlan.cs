@@ -10,9 +10,9 @@ public class FlightPlan {
 
   public List<Waypoint> Waypoints {
     get {
-      // Sort waypoints in ascending order based on distance.
+      // Sort waypoints in descending order based on distance.
       return _flightPlan.Waypoints.Select(waypoint => new Waypoint(waypoint))
-          .OrderBy(waypoint => waypoint.Distance)
+          .OrderBy(waypoint => -waypoint.Distance)
           .ToList();
     }
   }

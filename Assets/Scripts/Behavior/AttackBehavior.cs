@@ -13,18 +13,6 @@ public class AttackBehavior {
     get { return _config.Type; }
   }
 
-  public Vector3 TargetPosition {
-    get { return Coordinates3.FromProto(_config.TargetPosition); }
-  }
-
-  public Vector3 TargetVelocity {
-    get { return Coordinates3.FromProto(_config.TargetVelocity); }
-  }
-
-  public Vector3 TargetColliderSize {
-    get { return Coordinates3.FromProto(_config.TargetColliderSize); }
-  }
-
   public FlightPlan FlightPlan {
     get { return new FlightPlan(_config.FlightPlan); }
   }

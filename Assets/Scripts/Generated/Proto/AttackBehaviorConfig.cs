@@ -25,28 +25,23 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiRDb25maWdzL2F0dGFja19iZWhhdmlvcl9jb25maWcucHJvdG8SB2NvbmZp",
-            "Z3MaHFNpbXVsYXRpb24vY29vcmRpbmF0ZXMucHJvdG8aG0NvbmZpZ3Mvc3Rh",
-            "dGljX2NvbmZpZy5wcm90byLfBAoUQXR0YWNrQmVoYXZpb3JDb25maWcSDAoE",
-            "bmFtZRgBIAEoCRIhCgR0eXBlGAIgASgOMhMuY29uZmlncy5BdHRhY2tUeXBl",
-            "EjkKD3RhcmdldF9wb3NpdGlvbhgDIAEoCzIgLnNpbXVsYXRpb24uQ2FydGVz",
-            "aWFuQ29vcmRpbmF0ZXMSOQoPdGFyZ2V0X3ZlbG9jaXR5GAQgASgLMiAuc2lt",
-            "dWxhdGlvbi5DYXJ0ZXNpYW5Db29yZGluYXRlcxI+ChR0YXJnZXRfY29sbGlk",
-            "ZXJfc2l6ZRgFIAEoCzIgLnNpbXVsYXRpb24uQ2FydGVzaWFuQ29vcmRpbmF0",
-            "ZXMSPQoLZmxpZ2h0X3BsYW4YBiABKAsyKC5jb25maWdzLkF0dGFja0JlaGF2",
-            "aW9yQ29uZmlnLkZsaWdodFBsYW4a3QEKCkZsaWdodFBsYW4SOgoEdHlwZRgB",
-            "IAEoDjIsLmNvbmZpZ3MuQXR0YWNrQmVoYXZpb3JDb25maWcuRmxpZ2h0UGxh",
-            "blR5cGUSRAoJd2F5cG9pbnRzGAIgAygLMjEuY29uZmlncy5BdHRhY2tCZWhh",
-            "dmlvckNvbmZpZy5GbGlnaHRQbGFuLldheXBvaW50Gk0KCFdheXBvaW50EhAK",
-            "CGRpc3RhbmNlGAEgASgCEhAKCGFsdGl0dWRlGAIgASgCEh0KBXBvd2VyGAMg",
-            "ASgOMg4uY29uZmlncy5Qb3dlciJBCg5GbGlnaHRQbGFuVHlwZRIXChNJTlZB",
-            "TElEX0ZMSUdIVF9QTEFOEAASFgoSRElTVEFOQ0VfVE9fVEFSR0VUEAEqXQoK",
-            "QXR0YWNrVHlwZRISCg5JTlZBTElEX0FUVEFDSxAAEhEKDURJUkVDVF9BVFRB",
-            "Q0sQARIVChFQUkVQTEFOTkVEX0FUVEFDSxACEhEKDVNMQUxPTV9BVFRBQ0sQ",
-            "A2IGcHJvdG8z"));
+            "Z3MaG0NvbmZpZ3Mvc3RhdGljX2NvbmZpZy5wcm90byKpAwoUQXR0YWNrQmVo",
+            "YXZpb3JDb25maWcSDAoEbmFtZRgBIAEoCRIhCgR0eXBlGAIgASgOMhMuY29u",
+            "Zmlncy5BdHRhY2tUeXBlEj0KC2ZsaWdodF9wbGFuGAMgASgLMiguY29uZmln",
+            "cy5BdHRhY2tCZWhhdmlvckNvbmZpZy5GbGlnaHRQbGFuGt0BCgpGbGlnaHRQ",
+            "bGFuEjoKBHR5cGUYASABKA4yLC5jb25maWdzLkF0dGFja0JlaGF2aW9yQ29u",
+            "ZmlnLkZsaWdodFBsYW5UeXBlEkQKCXdheXBvaW50cxgCIAMoCzIxLmNvbmZp",
+            "Z3MuQXR0YWNrQmVoYXZpb3JDb25maWcuRmxpZ2h0UGxhbi5XYXlwb2ludBpN",
+            "CghXYXlwb2ludBIQCghkaXN0YW5jZRgBIAEoAhIQCghhbHRpdHVkZRgCIAEo",
+            "AhIdCgVwb3dlchgDIAEoDjIOLmNvbmZpZ3MuUG93ZXIiQQoORmxpZ2h0UGxh",
+            "blR5cGUSFwoTSU5WQUxJRF9GTElHSFRfUExBThAAEhYKEkRJU1RBTkNFX1RP",
+            "X1RBUkdFVBABKl0KCkF0dGFja1R5cGUSEgoOSU5WQUxJRF9BVFRBQ0sQABIR",
+            "Cg1ESVJFQ1RfQVRUQUNLEAESFQoRUFJFUExBTk5FRF9BVFRBQ0sQAhIRCg1T",
+            "TEFMT01fQVRUQUNLEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Simulation.CoordinatesReflection.Descriptor, global::Configs.StaticConfigReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.AttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig), global::Configs.AttackBehaviorConfig.Parser, new[]{ "Name", "Type", "TargetPosition", "TargetVelocity", "TargetColliderSize", "FlightPlan" }, null, new[]{ typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlanType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlan), global::Configs.AttackBehaviorConfig.Types.FlightPlan.Parser, new[]{ "Type", "Waypoints" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint), global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint.Parser, new[]{ "Distance", "Altitude", "Power" }, null, null, null, null)})})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig), global::Configs.AttackBehaviorConfig.Parser, new[]{ "Name", "Type", "FlightPlan" }, null, new[]{ typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlanType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlan), global::Configs.AttackBehaviorConfig.Types.FlightPlan.Parser, new[]{ "Type", "Waypoints" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint), global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint.Parser, new[]{ "Distance", "Altitude", "Power" }, null, null, null, null)})})
           }));
     }
     #endregion
@@ -106,9 +101,6 @@ namespace Configs {
     public AttackBehaviorConfig(AttackBehaviorConfig other) : this() {
       name_ = other.name_;
       type_ = other.type_;
-      targetPosition_ = other.targetPosition_ != null ? other.targetPosition_.Clone() : null;
-      targetVelocity_ = other.targetVelocity_ != null ? other.targetVelocity_.Clone() : null;
-      targetColliderSize_ = other.targetColliderSize_ != null ? other.targetColliderSize_.Clone() : null;
       flightPlan_ = other.flightPlan_ != null ? other.flightPlan_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -149,53 +141,8 @@ namespace Configs {
       }
     }
 
-    /// <summary>Field number for the "target_position" field.</summary>
-    public const int TargetPositionFieldNumber = 3;
-    private global::Simulation.CartesianCoordinates targetPosition_;
-    /// <summary>
-    /// Target position.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Simulation.CartesianCoordinates TargetPosition {
-      get { return targetPosition_; }
-      set {
-        targetPosition_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "target_velocity" field.</summary>
-    public const int TargetVelocityFieldNumber = 4;
-    private global::Simulation.CartesianCoordinates targetVelocity_;
-    /// <summary>
-    /// Target velocity.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Simulation.CartesianCoordinates TargetVelocity {
-      get { return targetVelocity_; }
-      set {
-        targetVelocity_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "target_collider_size" field.</summary>
-    public const int TargetColliderSizeFieldNumber = 5;
-    private global::Simulation.CartesianCoordinates targetColliderSize_;
-    /// <summary>
-    /// Target collider size.
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Simulation.CartesianCoordinates TargetColliderSize {
-      get { return targetColliderSize_; }
-      set {
-        targetColliderSize_ = value;
-      }
-    }
-
     /// <summary>Field number for the "flight_plan" field.</summary>
-    public const int FlightPlanFieldNumber = 6;
+    public const int FlightPlanFieldNumber = 3;
     private global::Configs.AttackBehaviorConfig.Types.FlightPlan flightPlan_;
     /// <summary>
     /// Flight plan.
@@ -226,9 +173,6 @@ namespace Configs {
       }
       if (Name != other.Name) return false;
       if (Type != other.Type) return false;
-      if (!object.Equals(TargetPosition, other.TargetPosition)) return false;
-      if (!object.Equals(TargetVelocity, other.TargetVelocity)) return false;
-      if (!object.Equals(TargetColliderSize, other.TargetColliderSize)) return false;
       if (!object.Equals(FlightPlan, other.FlightPlan)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -239,9 +183,6 @@ namespace Configs {
       int hash = 1;
       if (Name.Length != 0) hash ^= Name.GetHashCode();
       if (Type != global::Configs.AttackType.InvalidAttack) hash ^= Type.GetHashCode();
-      if (targetPosition_ != null) hash ^= TargetPosition.GetHashCode();
-      if (targetVelocity_ != null) hash ^= TargetVelocity.GetHashCode();
-      if (targetColliderSize_ != null) hash ^= TargetColliderSize.GetHashCode();
       if (flightPlan_ != null) hash ^= FlightPlan.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -269,20 +210,8 @@ namespace Configs {
         output.WriteRawTag(16);
         output.WriteEnum((int) Type);
       }
-      if (targetPosition_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(TargetPosition);
-      }
-      if (targetVelocity_ != null) {
-        output.WriteRawTag(34);
-        output.WriteMessage(TargetVelocity);
-      }
-      if (targetColliderSize_ != null) {
-        output.WriteRawTag(42);
-        output.WriteMessage(TargetColliderSize);
-      }
       if (flightPlan_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(26);
         output.WriteMessage(FlightPlan);
       }
       if (_unknownFields != null) {
@@ -303,20 +232,8 @@ namespace Configs {
         output.WriteRawTag(16);
         output.WriteEnum((int) Type);
       }
-      if (targetPosition_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(TargetPosition);
-      }
-      if (targetVelocity_ != null) {
-        output.WriteRawTag(34);
-        output.WriteMessage(TargetVelocity);
-      }
-      if (targetColliderSize_ != null) {
-        output.WriteRawTag(42);
-        output.WriteMessage(TargetColliderSize);
-      }
       if (flightPlan_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(26);
         output.WriteMessage(FlightPlan);
       }
       if (_unknownFields != null) {
@@ -334,15 +251,6 @@ namespace Configs {
       }
       if (Type != global::Configs.AttackType.InvalidAttack) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
-      }
-      if (targetPosition_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TargetPosition);
-      }
-      if (targetVelocity_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TargetVelocity);
-      }
-      if (targetColliderSize_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TargetColliderSize);
       }
       if (flightPlan_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(FlightPlan);
@@ -364,24 +272,6 @@ namespace Configs {
       }
       if (other.Type != global::Configs.AttackType.InvalidAttack) {
         Type = other.Type;
-      }
-      if (other.targetPosition_ != null) {
-        if (targetPosition_ == null) {
-          TargetPosition = new global::Simulation.CartesianCoordinates();
-        }
-        TargetPosition.MergeFrom(other.TargetPosition);
-      }
-      if (other.targetVelocity_ != null) {
-        if (targetVelocity_ == null) {
-          TargetVelocity = new global::Simulation.CartesianCoordinates();
-        }
-        TargetVelocity.MergeFrom(other.TargetVelocity);
-      }
-      if (other.targetColliderSize_ != null) {
-        if (targetColliderSize_ == null) {
-          TargetColliderSize = new global::Simulation.CartesianCoordinates();
-        }
-        TargetColliderSize.MergeFrom(other.TargetColliderSize);
       }
       if (other.flightPlan_ != null) {
         if (flightPlan_ == null) {
@@ -417,27 +307,6 @@ namespace Configs {
             break;
           }
           case 26: {
-            if (targetPosition_ == null) {
-              TargetPosition = new global::Simulation.CartesianCoordinates();
-            }
-            input.ReadMessage(TargetPosition);
-            break;
-          }
-          case 34: {
-            if (targetVelocity_ == null) {
-              TargetVelocity = new global::Simulation.CartesianCoordinates();
-            }
-            input.ReadMessage(TargetVelocity);
-            break;
-          }
-          case 42: {
-            if (targetColliderSize_ == null) {
-              TargetColliderSize = new global::Simulation.CartesianCoordinates();
-            }
-            input.ReadMessage(TargetColliderSize);
-            break;
-          }
-          case 50: {
             if (flightPlan_ == null) {
               FlightPlan = new global::Configs.AttackBehaviorConfig.Types.FlightPlan();
             }
@@ -472,27 +341,6 @@ namespace Configs {
             break;
           }
           case 26: {
-            if (targetPosition_ == null) {
-              TargetPosition = new global::Simulation.CartesianCoordinates();
-            }
-            input.ReadMessage(TargetPosition);
-            break;
-          }
-          case 34: {
-            if (targetVelocity_ == null) {
-              TargetVelocity = new global::Simulation.CartesianCoordinates();
-            }
-            input.ReadMessage(TargetVelocity);
-            break;
-          }
-          case 42: {
-            if (targetColliderSize_ == null) {
-              TargetColliderSize = new global::Simulation.CartesianCoordinates();
-            }
-            input.ReadMessage(TargetColliderSize);
-            break;
-          }
-          case 50: {
             if (flightPlan_ == null) {
               FlightPlan = new global::Configs.AttackBehaviorConfig.Types.FlightPlan();
             }

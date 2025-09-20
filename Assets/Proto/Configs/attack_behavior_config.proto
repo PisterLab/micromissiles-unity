@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package configs;
 
-import "Simulation/coordinates.proto";
 import "Configs/static_config.proto";
 
 // Attack type enumeration.
@@ -47,15 +46,6 @@ message AttackBehaviorConfig {
   // Attack type.
   AttackType type = 2;
 
-  // Target position.
-  simulation.CartesianCoordinates target_position = 3;
-
-  // Target velocity.
-  simulation.CartesianCoordinates target_velocity = 4;
-
-  // Target collider size.
-  simulation.CartesianCoordinates target_collider_size = 5;
-
   // Flight plan.
-  FlightPlan flight_plan = 6;
+  FlightPlan flight_plan = 3;
 }

@@ -9,36 +9,35 @@ public class DirectAttackBehavior : AttackBehavior {
       GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
     if (FlightPlan.Waypoints.Count == 0) {
       // If no waypoints are defined, directly target the target position.
-      return (TargetPosition, Configs.Power.Max);
+      return (targetPosition, Configs.Power.Max);
     }
 
-    Vector3 directionToTarget = TargetPosition - currentPosition;
+    Vector3 directionToTarget = targetPosition - currentPosition;
     float distanceToTarget = directionToTarget.magnitude;
 
-    // Find the current waypoint based on the distance to target.
+    // Find the index of the first waypoint whose position is closer to the target than the current
+    // position.
     int waypointIndex = 0;
-    for (int i = 0; i < FlightPlan.Waypoints.Count; ++i) {
-      if (distanceToTarget > FlightPlan.Waypoints[i].Distance) {
+    for (waypointIndex = 0; waypointIndex < FlightPlan.Waypoints.Count; ++waypointIndex) {
+      if (distanceToTarget > FlightPlan.Waypoints[waypointIndex].Distance) {
         break;
       }
-      waypointIndex = i;
     }
 
-    Vector3 waypointPosition = TargetPosition;
+    Vector3 waypointPosition = targetPosition;
     Configs.Power power = Configs.Power.Idle;
-    if (waypointIndex == FlightPlan.Waypoints.Count - 1 &&
-        distanceToTarget < FlightPlan.Waypoints[waypointIndex].Distance) {
-      // This is the last waypoint, so target the final position.
-      waypointPosition = TargetPosition;
-      power = FlightPlan.Waypoints[0].Power;
-    } else {
-      // There is a next waypoint.
-      var nextWaypoint = FlightPlan.Waypoints[waypointIndex + 1];
-      waypointPosition = TargetPosition + directionToTarget.normalized * nextWaypoint.Distance;
-      waypointPosition.y = nextWaypoint.Altitude;
-      power = nextWaypoint.Power;
+    if (waypointIndex == FlightPlan.Waypoints.Count) {
+      // This is the last waypoint, so target the final position with the second-to-last waypoint
+      // power.
+      waypointPosition = targetPosition;
+      power = FlightPlan.Waypoints[FlightPlan.Waypoints.Count - 1].Power;
+      return (waypointPosition, power);
     }
-
+    // There is a next waypoint.
+    var waypoint = FlightPlan.Waypoints[waypointIndex];
+    waypointPosition = targetPosition - directionToTarget.normalized * waypoint.Distance;
+    waypointPosition.y = waypoint.Altitude;
+    power = waypoint.Power;
     return (waypointPosition, power);
   }
 }

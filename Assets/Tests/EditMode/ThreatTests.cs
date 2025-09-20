@@ -13,21 +13,6 @@ public class ThreatTests : AgentTestBase {
       @"
       name: ""Test Direct Attack""
       type: DIRECT_ATTACK
-      target_position {
-        x: 0.01
-        y: 0
-        z: 0
-      }
-      target_velocity {
-        x: 0.0001
-        y: 0
-        z: 0
-      }
-      target_collider_size {
-        x: 20
-        y: 20
-        z: 20
-      }
       flight_plan {
         type: DISTANCE_TO_TARGET
         waypoints {
@@ -238,9 +223,6 @@ public class ThreatTests : AgentTestBase {
                     "Attack behavior should be a DirectAttackBehavior.");
       DirectAttackBehavior directAttackBehavior = (DirectAttackBehavior)attackBehavior;
 
-      Vector3 targetPosition = directAttackBehavior.TargetPosition;
-      Assert.AreEqual(new Vector3(0.01f, 0, 0), targetPosition);
-
       Assert.IsNotNull(attackBehavior.FlightPlan, "Flight plan should not be null.");
       Assert.AreEqual(Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
                       attackBehavior.FlightPlan.Type);
@@ -249,28 +231,13 @@ public class ThreatTests : AgentTestBase {
       Assert.IsNotNull(waypoints, "Waypoints should not be null.");
       Assert.AreEqual(2, waypoints.Count, "There should be 2 waypoints.");
 
-      Assert.AreEqual(5000f, waypoints[0].Distance);
-      Assert.AreEqual(100f, waypoints[0].Altitude);
-      Assert.AreEqual(Configs.Power.Max, waypoints[0].Power);
+      Assert.AreEqual(10000f, waypoints[0].Distance);
+      Assert.AreEqual(500f, waypoints[0].Altitude);
+      Assert.AreEqual(Configs.Power.Mil, waypoints[0].Power);
 
-      Assert.AreEqual(10000f, waypoints[1].Distance);
-      Assert.AreEqual(500f, waypoints[1].Altitude);
-      Assert.AreEqual(Configs.Power.Mil, waypoints[1].Power);
-
-      // Check the target velocity.
-      Vector3 targetVelocity = directAttackBehavior.TargetVelocity;
-      Assert.AreEqual(new Vector3(0.0001f, 0f, 0f), targetVelocity,
-                      "Target velocity should match the config.");
-
-      // Check the target collider size.
-      Vector3 targetColliderSize = directAttackBehavior.TargetColliderSize;
-      Assert.AreEqual(new Vector3(20f, 20f, 20f), targetColliderSize,
-                      "Target collider size should match the config.");
-
-      // Check the target position.
-      Assert.AreEqual(0.01f, targetPosition.x, 0.0001f, "Target position X should be 0.01.");
-      Assert.AreEqual(0f, targetPosition.y, 0.0001f, "Target position Y should be 0.");
-      Assert.AreEqual(0f, targetPosition.z, 0.0001f, "Target position Z should be 0.");
+      Assert.AreEqual(5000f, waypoints[1].Distance);
+      Assert.AreEqual(100f, waypoints[1].Altitude);
+      Assert.AreEqual(Configs.Power.Max, waypoints[1].Power);
 
       GameObject.DestroyImmediate(simManager.gameObject);
     } catch (AssertionException e) {
