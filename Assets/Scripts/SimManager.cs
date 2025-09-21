@@ -141,7 +141,7 @@ public class SimManager : MonoBehaviour {
   }
 
   void Awake() {
-    // Ensure only one instance of SimManager exists
+    // Ensure that only one instance of SimManager exists.
     if (Instance == null) {
       Instance = this;
       DontDestroyOnLoad(gameObject);
