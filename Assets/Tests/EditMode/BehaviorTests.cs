@@ -6,19 +6,17 @@ public class BehaviorTests : TestBase {
   [Test]
   public void TestDirectAttackBehaviorFactoryUsesOverride() {
     var config = new Configs.AttackBehaviorConfig() {
-      Name = "Sample Attack",
-      Type = Configs.AttackType.DirectAttack,
+      Name = "Sample Attack", Type = Configs.AttackType.DirectAttack,
       FlightPlan =
           new Configs.AttackBehaviorConfig.Types.FlightPlan() {
             Type = Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
-            Waypoints =
-                { new List<Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint>() {
-                  new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
-                    Distance = 1000,
-                    Altitude = 100,
-                    Power = Configs.Power.Cruise,
-                  }
-                } }
+            Waypoints = { new List<Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint>() {
+              new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
+                Distance = 1000,
+                Altitude = 100,
+                Power = Configs.Power.Cruise,
+              }
+            } }
           }
     };
 
