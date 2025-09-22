@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AttackBehavior {
+public abstract class AttackBehavior {
   private Configs.AttackBehaviorConfig _config;
 
   public string Name {
@@ -23,8 +23,6 @@ public class AttackBehavior {
 
   // Return the next waypoint for the threat to navigate to and the power setting to use towards the
   // waypoint.
-  public virtual (Vector3 waypointPosition, Configs.Power power)
-      GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
-    return (targetPosition, Configs.Power.Idle);
-  }
+  public abstract (Vector3 waypointPosition, Configs.Power power)
+      GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition);
 }

@@ -5,7 +5,7 @@ public class DirectAttackBehavior : AttackBehavior {
 
   // Return the next waypoint for the threat to navigate to and the power setting to use towards the
   // waypoint.
-  public virtual (Vector3 waypointPosition, Configs.Power power)
+  public override (Vector3 waypointPosition, Configs.Power power)
       GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
     if (FlightPlan.Waypoints.Count == 0) {
       // If no waypoints are defined, directly target the target position.

@@ -4,6 +4,35 @@ using System.Collections.Generic;
 
 public class BehaviorTests : TestBase {
   [Test]
+  public void TestDirectAttackBehaviorFactoryUsesOverride() {
+    var config = new Configs.AttackBehaviorConfig() {
+      Name = "Sample Attack",
+      Type = Configs.AttackType.DirectAttack,
+      FlightPlan =
+          new Configs.AttackBehaviorConfig.Types.FlightPlan() {
+            Type = Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
+            Waypoints =
+                { new List<Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint>() {
+                  new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
+                    Distance = 1000,
+                    Altitude = 100,
+                    Power = Configs.Power.Cruise,
+                  }
+                } }
+          }
+    };
+
+    AttackBehavior attackBehavior = AttackBehaviorFactory.Create(config);
+    Assert.IsNotNull(attackBehavior);
+
+    Vector3 currentPosition = new Vector3(-100, 0, 0);
+    Vector3 targetPosition = new Vector3(0, 0, 0);
+    var result = attackBehavior.GetNextWaypoint(currentPosition, targetPosition);
+
+    Assert.AreEqual(Configs.Power.Cruise, result.power);
+  }
+
+  [Test]
   public void TestDirectAttackBehaviorWaypoints() {
     // Create a sample direct attack behavior.
     DirectAttackBehavior attackBehavior =
