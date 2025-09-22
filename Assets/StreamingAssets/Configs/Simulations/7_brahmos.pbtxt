@@ -33,7 +33,7 @@ threat_swarm_configs {
   num_agents: 7
   agent_config {
     config_file: "brahmos.pbtxt"
-    attack_behavior_config_file: "brahmos_direct_attack.json"
+    attack_behavior_config_file: "brahmos_direct_attack.pbtxt"
     initial_state {
       position {
         x: 0

@@ -33,7 +33,7 @@ threat_swarm_configs {
   num_agents: 7
   agent_config {
     config_file: "quadcopter.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.json"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
         x: 0
@@ -76,7 +76,7 @@ threat_swarm_configs {
   num_agents: 8
   agent_config {
     config_file: "ucav.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.json"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
         x: -3000
@@ -119,7 +119,7 @@ threat_swarm_configs {
   num_agents: 7
   agent_config {
     config_file: "ucav.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.json"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
         x: 3000

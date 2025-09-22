@@ -1,0 +1,20 @@
+name: "Default Direct Attack"
+type: DIRECT_ATTACK
+flight_plan {
+  type: DISTANCE_TO_TARGET
+  waypoints {
+    distance: 10000
+    altitude: 500
+    power: MIL
+  }
+  waypoints {
+    distance: 4000
+    altitude: 500
+    power: MIL
+  }
+  waypoints {
+    distance: 2000
+    altitude: 100
+    power: MAX
+  }
+}

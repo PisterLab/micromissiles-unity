@@ -1,0 +1,15 @@
+name: "Fateh 110B Direct Attack"
+type: DIRECT_ATTACK
+flight_plan {
+  type: DISTANCE_TO_TARGET
+  waypoints {
+    distance: 20
+    altitude: 0
+    power: MAX
+  }
+  waypoints {
+    distance: 10
+    altitude: 0
+    power: MAX
+  }
+}
