@@ -65,7 +65,7 @@ public static class ConfigLoader {
         continue;
       }
       Debug.Log($"Failed to load the Protobuf text file {relativePath} with status code {status}.");
-      return new T();
+      return default;
     }
   }
 

@@ -24,18 +24,18 @@ namespace Plugin {
     static StatusReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChNQbHVnaW4vc3RhdHVzLnByb3RvEgZwbHVnaW4iNwoGU3RhdHVzEhwKBGNv",
-            "ZGUYASABKAsyDi5wbHVnaW4uU3RhdHVzEg8KB21lc3NhZ2UYAiABKAkqtAMK",
-            "ClN0YXR1c0NvZGUSDQoJU1RBVFVTX09LEAASFAoQU1RBVFVTX0NBTkNFTExF",
-            "RBABEhIKDlNUQVRVU19VTktOT1dOEAISGwoXU1RBVFVTX0lOVkFMSURfQVJH",
-            "VU1FTlQQAxIcChhTVEFUVVNfREVBRExJTkVfRVhDRUVERUQQBBIUChBTVEFU",
-            "VVNfTk9UX0ZPVU5EEAUSGQoVU1RBVFVTX0FMUkVBRFlfRVhJU1RTEAYSHAoY",
-            "U1RBVFVTX1BFUk1JU1NJT05fREVOSUVEEAcSGgoWU1RBVFVTX1VOQVVUSEVO",
-            "VElDQVRFRBAIEh0KGVNUQVRVU19SRVNPVVJDRV9FWEhBVVNURUQQCRIeChpT",
-            "VEFUVVNfRkFJTEVEX1BSRUNPTkRJVElPThAKEhIKDlNUQVRVU19BQk9SVEVE",
-            "EAsSFwoTU1RBVFVTX09VVF9PRl9SQU5HRRAMEhgKFFNUQVRVU19VTklNUExF",
-            "TUVOVEVEEA0SEwoPU1RBVFVTX0lOVEVSTkFMEA4SFgoSU1RBVFVTX1VOQVZB",
-            "SUxBQkxFEA8SFAoQU1RBVFVTX0RBVEFfTE9TUxAQYgZwcm90bzM="));
+            "ChNQbHVnaW4vc3RhdHVzLnByb3RvEgZwbHVnaW4iOwoGU3RhdHVzEiAKBGNv",
+            "ZGUYASABKA4yEi5wbHVnaW4uU3RhdHVzQ29kZRIPCgdtZXNzYWdlGAIgASgJ",
+            "KrQDCgpTdGF0dXNDb2RlEg0KCVNUQVRVU19PSxAAEhQKEFNUQVRVU19DQU5D",
+            "RUxMRUQQARISCg5TVEFUVVNfVU5LTk9XThACEhsKF1NUQVRVU19JTlZBTElE",
+            "X0FSR1VNRU5UEAMSHAoYU1RBVFVTX0RFQURMSU5FX0VYQ0VFREVEEAQSFAoQ",
+            "U1RBVFVTX05PVF9GT1VORBAFEhkKFVNUQVRVU19BTFJFQURZX0VYSVNUUxAG",
+            "EhwKGFNUQVRVU19QRVJNSVNTSU9OX0RFTklFRBAHEhoKFlNUQVRVU19VTkFV",
+            "VEhFTlRJQ0FURUQQCBIdChlTVEFUVVNfUkVTT1VSQ0VfRVhIQVVTVEVEEAkS",
+            "HgoaU1RBVFVTX0ZBSUxFRF9QUkVDT05ESVRJT04QChISCg5TVEFUVVNfQUJP",
+            "UlRFRBALEhcKE1NUQVRVU19PVVRfT0ZfUkFOR0UQDBIYChRTVEFUVVNfVU5J",
+            "TVBMRU1FTlRFRBANEhMKD1NUQVRVU19JTlRFUk5BTBAOEhYKElNUQVRVU19V",
+            "TkFWQUlMQUJMRRAPEhQKEFNUQVRVU19EQVRBX0xPU1MQEGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Plugin.StatusCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -110,7 +110,7 @@ namespace Plugin {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public Status(Status other) : this() {
-      code_ = other.code_ != null ? other.code_.Clone() : null;
+      code_ = other.code_;
       message_ = other.message_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -123,13 +123,13 @@ namespace Plugin {
 
     /// <summary>Field number for the "code" field.</summary>
     public const int CodeFieldNumber = 1;
-    private global::Plugin.Status code_;
+    private global::Plugin.StatusCode code_ = global::Plugin.StatusCode.StatusOk;
     /// <summary>
     /// Status code.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Plugin.Status Code {
+    public global::Plugin.StatusCode Code {
       get { return code_; }
       set {
         code_ = value;
@@ -166,7 +166,7 @@ namespace Plugin {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(Code, other.Code)) return false;
+      if (Code != other.Code) return false;
       if (Message != other.Message) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -175,7 +175,7 @@ namespace Plugin {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (code_ != null) hash ^= Code.GetHashCode();
+      if (Code != global::Plugin.StatusCode.StatusOk) hash ^= Code.GetHashCode();
       if (Message.Length != 0) hash ^= Message.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -195,9 +195,9 @@ namespace Plugin {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (code_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Code);
+      if (Code != global::Plugin.StatusCode.StatusOk) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Code);
       }
       if (Message.Length != 0) {
         output.WriteRawTag(18);
@@ -213,9 +213,9 @@ namespace Plugin {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (code_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Code);
+      if (Code != global::Plugin.StatusCode.StatusOk) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Code);
       }
       if (Message.Length != 0) {
         output.WriteRawTag(18);
@@ -231,8 +231,8 @@ namespace Plugin {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (code_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Code);
+      if (Code != global::Plugin.StatusCode.StatusOk) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Code);
       }
       if (Message.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Message);
@@ -249,11 +249,8 @@ namespace Plugin {
       if (other == null) {
         return;
       }
-      if (other.code_ != null) {
-        if (code_ == null) {
-          Code = new global::Plugin.Status();
-        }
-        Code.MergeFrom(other.Code);
+      if (other.Code != global::Plugin.StatusCode.StatusOk) {
+        Code = other.Code;
       }
       if (other.Message.Length != 0) {
         Message = other.Message;
@@ -277,11 +274,8 @@ namespace Plugin {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            if (code_ == null) {
-              Code = new global::Plugin.Status();
-            }
-            input.ReadMessage(Code);
+          case 8: {
+            Code = (global::Plugin.StatusCode) input.ReadEnum();
             break;
           }
           case 18: {
@@ -307,11 +301,8 @@ namespace Plugin {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            if (code_ == null) {
-              Code = new global::Plugin.Status();
-            }
-            input.ReadMessage(Code);
+          case 8: {
+            Code = (global::Plugin.StatusCode) input.ReadEnum();
             break;
           }
           case 18: {
