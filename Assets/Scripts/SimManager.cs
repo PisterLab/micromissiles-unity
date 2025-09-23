@@ -141,7 +141,7 @@ public class SimManager : MonoBehaviour {
   }
 
   void Awake() {
-    // Ensure only one instance of SimManager exists
+    // Ensure that only one instance of SimManager exists.
     if (Instance == null) {
       Instance = this;
       DontDestroyOnLoad(gameObject);
@@ -419,8 +419,7 @@ public class SimManager : MonoBehaviour {
         break;
       }
       default: {
-        Debug.LogError(
-            $"Sensor type {config.DynamicConfig.SensorConfig.Type.ToString()} not found.");
+        Debug.LogError($"Sensor type {config.DynamicConfig.SensorConfig.Type} not found.");
         break;
       }
     }
