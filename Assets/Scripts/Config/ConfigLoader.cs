@@ -37,41 +37,36 @@ public static class ConfigLoader {
     }
   }
 
-  private static T LoadProtobufConfig<T>(string relativePath,
-                                         Func<string, IntPtr, int, int> loadFunction)
+  private static T LoadProtobufConfig<T>(
+      string relativePath, Func<string, IntPtr, int, IntPtr, Plugin.StatusCode> loadFunction)
       where T : Google.Protobuf.IMessage<T>, new() {
     string streamingAssetsPath = GetStreamingAssetsFilePath(relativePath);
 
-    try {
-      byte[] buffer = null;
-      int bufferSize = InitialMaxProtobufSerializedLength;
-      int serializedLength = 0;
-      while (true) {
-        buffer = new byte[bufferSize];
-        unsafe {
-          fixed(void* bufferPtr = buffer) {
-            serializedLength = loadFunction(streamingAssetsPath, (IntPtr)bufferPtr, bufferSize);
-          }
+    byte[] buffer = null;
+    int bufferSize = InitialMaxProtobufSerializedLength;
+    int serializedLength = 0;
+    Plugin.StatusCode status = Plugin.StatusCode.StatusOk;
+    while (true) {
+      buffer = new byte[bufferSize];
+      unsafe {
+        int* serializedLengthPtr = &serializedLength;
+        fixed(void* bufferPtr = buffer) {
+          status = loadFunction(streamingAssetsPath, (IntPtr)bufferPtr, bufferSize,
+                                (IntPtr)serializedLengthPtr);
         }
-        if (serializedLength <= bufferSize) {
-          break;
-        }
+      }
+      if (status == Plugin.StatusCode.StatusOk) {
+        return new Google.Protobuf.MessageParser<T>(() => new T())
+            .ParseFrom(buffer, 0, serializedLength);
+      }
+      if (status == Plugin.StatusCode.StatusFailedPrecondition) {
         // Double the maximum serialized length and try again.
         bufferSize *= 2;
+        continue;
       }
-
-      return new Google.Protobuf.MessageParser<T>(() => new T())
-          .ParseFrom(buffer, 0, serializedLength);
-    } catch (FileNotFoundException e) {
-      Debug.LogError($"Protobuf configuration file {relativePath} not found: {e}.");
-    } catch (Google.Protobuf.InvalidProtocolBufferException e) {
-      Debug.LogError($"Invalid Protub configuration file {relativePath}: {e}");
-    } catch (IOException e) {
-      Debug.LogError($"IO error while loading Protobuf configuration file {relativePath}: {e}.");
-    } catch (Exception e) {
-      Debug.LogError($"Unexpected error while loading Protobuf configuration {relativePath}: {e}.");
+      Debug.Log($"Failed to load the Protobuf text file {relativePath} with status code {status}.");
+      return new T();
     }
-    return default;
   }
 
   public static Configs.AttackBehaviorConfig LoadAttackBehaviorConfig(string configFile) {

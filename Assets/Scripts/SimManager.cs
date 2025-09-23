@@ -419,8 +419,7 @@ public class SimManager : MonoBehaviour {
         break;
       }
       default: {
-        Debug.LogError(
-            $"Sensor type {config.DynamicConfig.SensorConfig.Type.ToString()} not found.");
+        Debug.LogError($"Sensor type {config.DynamicConfig.SensorConfig.Type} not found.");
         break;
       }
     }

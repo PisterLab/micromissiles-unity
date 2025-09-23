@@ -109,7 +109,7 @@ public class Interceptor : Agent {
       }
       default: {
         Debug.LogError(
-            $"Controller type {agentConfig.DynamicConfig.FlightConfig.ControllerType.ToString()} not found.");
+            $"Controller type {agentConfig.DynamicConfig.FlightConfig.ControllerType} not found.");
         controller = new PnController(this, _navigationGain);
         break;
       }
