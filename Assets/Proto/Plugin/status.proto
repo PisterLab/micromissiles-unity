@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package plugin;
+
+// Status enumeration.
+enum StatusCode {
+  STATUS_OK = 0;
+  STATUS_CANCELLED = 1;
+  STATUS_UNKNOWN = 2;
+  STATUS_INVALID_ARGUMENT = 3;
+  STATUS_DEADLINE_EXCEEDED = 4;
+  STATUS_NOT_FOUND = 5;
+  STATUS_ALREADY_EXISTS = 6;
+  STATUS_PERMISSION_DENIED = 7;
+  STATUS_UNAUTHENTICATED = 8;
+  STATUS_RESOURCE_EXHAUSTED = 9;
+  STATUS_FAILED_PRECONDITION = 10;
+  STATUS_ABORTED = 11;
+  STATUS_OUT_OF_RANGE = 12;
+  STATUS_UNIMPLEMENTED = 13;
+  STATUS_INTERNAL = 14;
+  STATUS_UNAVAILABLE = 15;
+  STATUS_DATA_LOSS = 16;
+}
+
+// Status.
+message Status {
+  // Status code.
+  Status code = 1;
+
+  // Status message.
+  string message = 2;
+}
