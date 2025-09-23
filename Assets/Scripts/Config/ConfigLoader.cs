@@ -30,7 +30,7 @@ public static class ConfigLoader {
       while (!www.isDone) {}
 
       if (www.result != UnityWebRequest.Result.Success) {
-        Debug.LogError($"Error loading {streamingAssetsPath}: {www.error}.");
+        Debug.LogError($"Failed to load {streamingAssetsPath}: {www.error}.");
         return null;
       }
       return www.downloadHandler.text;
