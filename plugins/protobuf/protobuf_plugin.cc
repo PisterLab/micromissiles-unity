@@ -24,7 +24,7 @@
     if (status != plugin::STATUS_OK) {                                         \
       return status;                                                           \
     }                                                                          \
-    *serialized_length = message.ByteSizeLong();                               \
+    *serialized_length = static_cast<int>(message.ByteSizeLong());             \
     return plugin::STATUS_OK;                                                  \
   }                                                                            \
   plugin::StatusCode Protobuf_##Message##_LoadToBinary(                        \
