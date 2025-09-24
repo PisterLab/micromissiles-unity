@@ -5,10 +5,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public static class ConfigLoader {
-  // Initial maximum serialized length of a Protobuf message.
-  // This value is estimated and is increased if necessary.
-  private const int InitialMaxProtobufSerializedLength = 1024;
-
   // Relative path to the default simulator configuration.
   private const string SimulatorConfigRelativePath = "simulator.pbtxt";
 
