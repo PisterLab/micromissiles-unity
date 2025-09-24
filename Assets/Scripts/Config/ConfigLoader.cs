@@ -38,46 +38,52 @@ public static class ConfigLoader {
   }
 
   private static T LoadProtobufConfig<T>(
-      string relativePath, Func<string, IntPtr, int, IntPtr, Plugin.StatusCode> loadFunction)
+      string relativePath, Func<string, IntPtr, Plugin.StatusCode> serializedLengthFunction,
+      Func<string, IntPtr, int, IntPtr, Plugin.StatusCode> loadFunction)
       where T : Google.Protobuf.IMessage<T>, new() {
     string streamingAssetsPath = GetStreamingAssetsFilePath(relativePath);
 
-    byte[] buffer = null;
-    int bufferSize = InitialMaxProtobufSerializedLength;
+    // Determine the length of the serialized Protobuf message.
     int serializedLength = 0;
     Plugin.StatusCode status = Plugin.StatusCode.StatusOk;
-    while (true) {
-      buffer = new byte[bufferSize];
-      unsafe {
-        int* serializedLengthPtr = &serializedLength;
-        fixed(void* bufferPtr = buffer) {
-          status = loadFunction(streamingAssetsPath, (IntPtr)bufferPtr, bufferSize,
-                                (IntPtr)serializedLengthPtr);
-        }
+    unsafe {
+      int* serializedLengthPtr = &serializedLength;
+      status = serializedLengthFunction(streamingAssetsPath, (IntPtr)serializedLengthPtr);
+    }
+    if (status != Plugin.StatusCode.StatusOk) {
+      Debug.Log(
+          $"Failed to get the length of the serialized message from the Protobuf text file {relativePath} with status code {status}.");
+      return default;
+    }
+
+    // Load the Protobuf message to binary format.
+    byte[] buffer = new byte[serializedLength];
+    unsafe {
+      int* serializedLengthPtr = &serializedLength;
+      fixed(void* bufferPtr = buffer) {
+        status = loadFunction(streamingAssetsPath, (IntPtr)bufferPtr, serializedLength,
+                              (IntPtr)serializedLengthPtr);
       }
-      if (status == Plugin.StatusCode.StatusOk) {
-        return new Google.Protobuf.MessageParser<T>(() => new T())
-            .ParseFrom(buffer, 0, serializedLength);
-      }
-      if (status == Plugin.StatusCode.StatusFailedPrecondition) {
-        // Double the maximum serialized length and try again.
-        bufferSize *= 2;
-        continue;
-      }
+    }
+    if (status != Plugin.StatusCode.StatusOk) {
       Debug.Log($"Failed to load the Protobuf text file {relativePath} with status code {status}.");
       return default;
     }
+    return new Google.Protobuf.MessageParser<T>(() => new T())
+        .ParseFrom(buffer, 0, serializedLength);
   }
 
   public static Configs.AttackBehaviorConfig LoadAttackBehaviorConfig(string configFile) {
     return LoadProtobufConfig<Configs.AttackBehaviorConfig>(
         Path.Combine("Configs/Attacks", configFile),
+        Protobuf.Protobuf_AttackBehaviorConfig_GetSerializedLength,
         Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary);
   }
 
   public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {
     var config = LoadProtobufConfig<Configs.SimulationConfig>(
         Path.Combine("Configs/Simulations", configFile),
+        Protobuf.Protobuf_SimulationConfig_GetSerializedLength,
         Protobuf.Protobuf_SimulationConfig_LoadToBinary);
     if (config != null) {
       UIManager.Instance.LogActionMessage($"[SIM] Loaded simulation configuration: {configFile}.");
@@ -87,11 +93,14 @@ public static class ConfigLoader {
 
   public static Configs.SimulatorConfig LoadSimulatorConfig() {
     return LoadProtobufConfig<Configs.SimulatorConfig>(
-        SimulatorConfigRelativePath, Protobuf.Protobuf_SimulatorConfig_LoadToBinary);
+        SimulatorConfigRelativePath, Protobuf.Protobuf_SimulatorConfig_GetSerializedLength,
+        Protobuf.Protobuf_SimulatorConfig_LoadToBinary);
   }
 
   public static Configs.StaticConfig LoadStaticConfig(string configFile) {
-    return LoadProtobufConfig<Configs.StaticConfig>(Path.Combine("Configs/Models", configFile),
-                                                    Protobuf.Protobuf_StaticConfig_LoadToBinary);
+    return LoadProtobufConfig<Configs.StaticConfig>(
+        Path.Combine("Configs/Models", configFile),
+        Protobuf.Protobuf_StaticConfig_GetSerializedLength,
+        Protobuf.Protobuf_StaticConfig_LoadToBinary);
   }
 }

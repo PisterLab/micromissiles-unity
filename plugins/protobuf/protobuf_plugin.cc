@@ -16,6 +16,17 @@
 // Macro to define a function to load a Protobuf configuration message from a
 // text file to binary format and serialize it to a buffer.
 #define DEFINE_PROTOBUF_LOADER(Message)                                        \
+  plugin::StatusCode Protobuf_##Message##_GetSerializedLength(                 \
+      const char* file, int* serialized_length) {                              \
+    configs::Message message;                                                  \
+    const auto status = protobuf::LoadProtobufTextFile<configs::Message>(      \
+        std::string(file), &message);                                          \
+    if (status != plugin::STATUS_OK) {                                         \
+      return status;                                                           \
+    }                                                                          \
+    *serialized_length = message.ByteSizeLong();                               \
+    return plugin::STATUS_OK;                                                  \
+  }                                                                            \
   plugin::StatusCode Protobuf_##Message##_LoadToBinary(                        \
       const char* file, void* buffer, const int size,                          \
       int* serialized_length) {                                                \
