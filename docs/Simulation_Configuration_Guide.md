@@ -522,7 +522,7 @@ The default models provided can be customized to suit your simulation goals.
 
 - **`name`**: Name of the agent.
 - **`agent_type`**: Agent type, which determines the class to be instantiated (e.g., `MISSILE_INTERCEPTOR` or `FIXED_WING_THREAT`).
-- **`cst`**: Cost per unit. This is used in calculating the costs of all interceptors and threats in a simulation.
+- **`cost`**: Cost per unit. This is used in calculating the costs of all interceptors and threats in a simulation.
 - **`acceleration_config`**: Acceleration parameters.
 - **`boost_config`**: Boost phase characteristics.
 - **`lift_drag_config`**: Aerodynamic properties.
