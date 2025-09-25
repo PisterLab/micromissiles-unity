@@ -128,7 +128,7 @@ The simulation configurations are defined in Protobuf text format files that spe
 
 A simple simulation with one interceptor type (Hydra 70) launched against seven quadcopter threats.
 
-```
+```textproto
 end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
@@ -227,7 +227,7 @@ threat_swarm_configs {
 A complex scenario that involves multiple swarms of supersonic cruise missiles that are spaced 5 km apart.
 This scenario demonstrates how the IADS will stagger the interceptor launch times to defeat the layered threat swarms.
 
-```
+```textproto
 end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
@@ -490,7 +490,7 @@ threat_swarm_configs {
 
    To introduce a new interceptor or threat swarm (or an additional salvo), create a new entry in `interceptor_swarm_configs` or `threat_swarm_configs`.
 
-   ```
+   ```textproto
    # Previous interceptor_swarm_configs entries.
    interceptor_swarm_configs {
      agent_config {
@@ -553,7 +553,7 @@ These files serve as templates of archetypes and can be tweaked to modify the be
 
 #### Example 1: `hydra70.pbtxt` (Carrier Interceptor)
 
-```
+```textproto
 name: "Hydra 70"
 agent_type: CARRIER_INTERCEPTOR
 cost: 30000
@@ -614,7 +614,7 @@ This configuration represents a Hydra 70 carrier interceptor:
 
 #### Example 2: `quadcopter.pbtxt` (RotaryWingThreat)
 
-```
+```textproto
 name: "Quadcopter"
 agent_type: ROTARY_WING_THREAT
 cost: 1000
@@ -727,7 +727,7 @@ Key components include:
 
 #### Example: `default_direct_attack.pbtxt`
 
-```
+```textproto
 name: "Default Direct Attack"
 type: DIRECT_ATTACK
 flight_plan {
@@ -773,7 +773,7 @@ This creates a phased attack profile where threats:
 ### Common Configuration Errors
 
 1. **Missing Referenced Files**
-```
+```textproto
 agent_config {
   config_file: "missing_static_config.pbtxt"
   attack_behavior_config: "missing_attack_behavior.pbtxt"
@@ -782,7 +782,7 @@ agent_config {
 **Solution**: Ensure that all referenced files exist in the correct directories.
 
 2. **Invalid Parameter Values**
-```
+```textproto
 time_scale: -1  // Error: Must be positive.
 end_time: 0.    // Error: Must be greater than 0.
 ```
