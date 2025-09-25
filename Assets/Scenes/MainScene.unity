@@ -4425,7 +4425,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Simulation configuration files are stored in the "_Data/StreamingAssets/Configs/Simulations/"
+  m_text: Simulation config files are stored in the "*_Data/StreamingAssets/Configs/Simulations/"
     folder. Loading the config will restart the active simulation.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}

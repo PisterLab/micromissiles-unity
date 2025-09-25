@@ -707,7 +707,7 @@ To define a new interceptor or threat model:
 
 3. **Reference the New Model** in your simulation configuration files.
 
-### Relevant C# Scripts
+### Protobuf Definition
 
 The [`Assets/Proto/Configs/static_config.proto`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Proto/Configs/static_config.proto) file defines the static config proto message that is used to parse the static agent configuration files in Protobuf text format as well as other useful enumerations.
 
