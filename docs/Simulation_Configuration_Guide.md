@@ -776,7 +776,7 @@ This creates a phased attack profile where threats:
 ```textproto
 agent_config {
   config_file: "missing_static_config.pbtxt"
-  attack_behavior_config: "missing_attack_behavior.pbtxt"
+  attack_behavior_config_file: "missing_attack_behavior.pbtxt"
 }
 ```
 **Solution**: Ensure that all referenced files exist in the correct directories.
