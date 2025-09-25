@@ -5,9 +5,10 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "vitepress": "^1.6.4",
+    "vitepress": "2.0.0-alpha.12",
     "vitepress-plugin-codeblocks-fold": "^1.2.35",
-    "vue": "^3.x.x"
+    "vue": "^3.5.18",
+    "oxc-minify": "^0.82.1"
   },
   "devDependencies": {
     "markdown-it-mathjax3": "^4.3.2"
