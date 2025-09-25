@@ -52,16 +52,16 @@ Configs/
 │
 ├── Models/
 │   ├── Interceptors
-│   │   ├── hydra70.pbtxt                    # Carrier rocket
-│   │   ├── micromissile.pbtxt               # Main micromissile interceptor
-│   │   └── sfrj.pbtxt                       # Solid fuel ramjet carrier missile
+│   │  ├── hydra70.pbtxt                     # Carrier rocket
+│   │  ├── micromissile.pbtxt                # Main micromissile interceptor
+│   │  └── sfrj.pbtxt                        # Solid fuel ramjet carrier missile
 │   │
 │   └── Threats
-│       ├── ascm.pbtxt                       # Anti-ship cruise missile
-│       ├── brahmos.pbtxt                    # Supersonic cruise missile
-│       ├── fateh110b.pbtxt                  # Tactical ballistic missile
-│       ├── quadcopter.pbtxt                 # Simple quadcopter drone
-│       └── ucav.pbtxt                       # Simple fixed-wing combat drone
+│      ├── ascm.pbtxt                        # Anti-ship cruise missile
+│      ├── brahmos.pbtxt                     # Supersonic cruise missile
+│      ├── fateh110b.pbtxt                   # Tactical ballistic missile
+│      ├── quadcopter.pbtxt                  # Simple quadcopter drone
+│      └── ucav.pbtxt                        # Simple fixed-wing combat drone
 │
 └── Attacks/
     ├── default_direct_attack.pbtxt          # Standard attack profile
