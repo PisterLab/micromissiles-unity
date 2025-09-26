@@ -1,22 +1,20 @@
-@import url("unity-theme://default");
-
+@import url("project://database/Assets/UI%20Toolkit/MainOverlayTheme.uss?fileID=4413694071827464959&guid=b9bc3d0910a9ce041b701ed976901e57&type=3#default");
 * {
     -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
-    color: #ffffff;
+    color: rgb(255, 255, 255);
 }
 
-/* Global background */
 VisualElement {
-    background-color: #1a1a1a;
+    background-color: rgb(26, 26, 26);
 }
 
 Button {
     -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
-    background-color: #2a2a2a;
-    border-color: #4a4a4a;
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
     border-width: 1px;
     border-radius: 0;
-    color: #ffffff;
+    color: rgb(255, 255, 255);
     font-size: 14px;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -26,61 +24,88 @@ Button {
 }
 
 Button:hover {
-    background-color: #363636;
-    border-color: #00d4ff;
+    background-color: rgb(54, 54, 54);
+    border-color: rgb(0, 212, 255);
 }
 
 Button:active {
-    background-color: #00d4ff;
-    color: #1a1a1a;
+    background-color: rgb(0, 212, 255);
+    color: rgb(26, 26, 26);
 }
 
-/* Labels */
 Label {
-    color: #ffffff;
+    color: rgb(255, 255, 255);
     font-size: 14px;
 }
 
-TextField, IntegerField, FloatField {
-    background-color: #2a2a2a;
-    border-color: #4a4a4a;
+TextField {
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
     border-width: 1px;
     border-radius: 0;
-    color: #ffffff;
+    color: rgb(255, 255, 255);
     padding-left: 8px;
     padding-right: 8px;
 }
 
-TextField:focus, IntegerField:focus, FloatField:focus {
-    border-color: #00d4ff;
+IntegerField {
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
+    border-width: 1px;
+    border-radius: 0;
+    color: rgb(255, 255, 255);
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
+FloatField {
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
+    border-width: 0px;
+    border-radius: 0px;
+    color: rgb(255, 255, 255);
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+TextField:focus {
+    border-color: rgb(0, 212, 255);
+}
+
+IntegerField:focus {
+    border-color: rgb(0, 212, 255);
+}
+
+FloatField:focus {
+    border-color: rgb(0, 212, 255);
+}
+
+
 ScrollView {
-    background-color: #1a1a1a;
+    background-color: rgb(26, 26, 26);
 }
 
 .unity-scroller {
-    background-color: #2a2a2a;
-    border-color: #4a4a4a;
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
 }
 
 .unity-scroller__slider {
-    background-color: #4a4a4a;
+    background-color: rgb(74, 74, 74);
     border-radius: 0;
 }
 
 .unity-scroller__slider:hover {
-    background-color: #5a5a5a;
+    background-color: rgb(90, 90, 90);
 }
 
-/* Main overlay container */
 .OverlayVE {
-    background-color: #1a1a1a;
+    background-color: rgb(26, 26, 26);
 }
 
 .ButtonContainer {
-    background-color: #2a2a2a;
-    border-color: #4a4a4a;
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
     border-width: 1px;
     border-radius: 0;
     padding-top: 12px;
@@ -95,11 +120,11 @@ ScrollView {
 
 .ButtonContainer Button {
     -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
-    background-color: #363636;
-    border-color: #4a4a4a;
+    background-color: rgb(54, 54, 54);
+    border-color: rgb(74, 74, 74);
     border-width: 1px;
     border-radius: 0;
-    color: #ffffff;
+    color: rgb(255, 255, 255);
     font-size: 14px;
     height: 24px;
     margin-top: 3px;
@@ -114,20 +139,20 @@ ScrollView {
 }
 
 .ButtonContainer Button:hover {
-    background-color: #4a4a4a;
-    border-color: #00d4ff;
-    color: #ffffff;
+    background-color: rgb(74, 74, 74);
+    border-color: rgb(0, 212, 255);
+    color: rgb(255, 255, 255);
 }
 
 .ButtonContainer Button:active {
-    background-color: #00d4ff;
-    border-color: #00d4ff;
-    color: #1a1a1a;
+    background-color: rgb(0, 212, 255);
+    border-color: rgb(0, 212, 255);
+    color: rgb(26, 26, 26);
 }
 
 #TimeControlPanel {
-    background-color: #2a2a2a;
-    border-color: #4a4a4a;
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
     border-width: 1px;
     border-radius: 0;
     padding-top: 8px;
@@ -136,20 +161,51 @@ ScrollView {
     padding-left: 8px;
 }
 
-/* Simulation time label */
+.unity-base-text-field__input {
+    color: rgb(255, 255, 255) !important;
+    background-color: rgb(42, 42, 42) !important;
+}
+
+.unity-text-input {
+    background-color: rgb(42, 42, 42) !important;
+    color: rgb(255, 255, 255) !important;
+    border-radius: 0px !important;
+    border-width: 0px !important;
+}
+
+FloatField .unity-text-input {
+    background-color: rgb(42, 42, 42) !important;
+    color: rgb(255, 255, 255) !important;
+    border-radius: 0px !important;
+    border-width: 0px !important;
+}
+
+#unity-text-input {
+    background-color: rgb(42, 42, 42) !important;
+    color: rgb(255, 255, 255) !important;
+    border-radius: 0px !important;
+    border-width: 0px !important;
+}
+
+.unity-text-input > .unity-text-element,
+#unity-text-input > .unity-text-element {
+    background-color: rgb(42, 42, 42) !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+
 #SimTimeLabel {
     -unity-font-definition: url("project://database/Assets/Fonts/Roboto/Roboto_Condensed-Regular.ttf?fileID=12800000&guid=779f171e6b914754db77215d3190f7a1&type=3#Roboto_Condensed-Regular");
     font-size: 16px;
-    color: #00d4ff;
+    color: rgb(0, 212, 255);
     -unity-font-style: bold;
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
-/* Message list container with sharp edges */
 #MessageListContainer {
-    background-color: #2a2a2a;
-    border-color: #4a4a4a;
+    background-color: rgb(42, 42, 42);
+    border-color: rgb(74, 74, 74);
     border-width: 1px;
     border-radius: 0;
     margin-top: 4px;
@@ -158,7 +214,6 @@ ScrollView {
     margin-left: 4px;
 }
 
-/* ListView styling */
 ListView {
     background-color: transparent;
     border-width: 0;
@@ -172,10 +227,3 @@ ListView {
     padding-bottom: 1px;
 }
 
-.unity-list-view__item:hover {
-    background-color: #363636;
-}
-
-.unity-list-view__item:selected {
-    background-color: #00d4ff;
-}

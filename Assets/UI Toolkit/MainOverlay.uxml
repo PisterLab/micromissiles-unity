@@ -13,18 +13,14 @@
             </ui:VisualElement>
             <ui:VisualElement name="Column2" class="ButtonContainer" style="flex-grow: 1;">
                 <ui:Button text="Clear Markers" name="ClearMarkersButton" />
-                <ui:Button text="Button" />
             </ui:VisualElement>
-            <ui:VisualElement name="Column3" class="ButtonContainer" style="flex-grow: 1;">
-                <ui:Button text="Button" />
-                <ui:Button text="Button" />
-            </ui:VisualElement>
+            <ui:VisualElement name="Column3" class="ButtonContainer" style="flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement style="flex-grow: 0; visibility: visible; flex-direction: column; width: 20%;">
-            <ui:VisualElement name="TimeControlPanel" style="flex-grow: 1; background-color: rgba(190, 190, 190, 0.36); flex-direction: column;">
+            <ui:VisualElement name="TimeControlPanel" style="flex-grow: 1; background-color: rgba(42, 42, 42, 0.36); flex-direction: column; padding-top: 1px; padding-right: 1px; padding-bottom: 1px; padding-left: 1px; margin-top: 4px; margin-right: 4px; margin-bottom: 4px; margin-left: 4px;">
                 <ui:VisualElement style="flex-grow: 0; flex-direction: row;">
                     <ui:Button text="-" />
-                    <ui:FloatField value="1.0" />
+                    <ui:FloatField value="1.0" style="border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; -unity-font-style: normal;" />
                     <ui:Button text="+" />
                     <ui:Label text="Current Simulation Time&#x9;" name="SimTimeLabel" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/Roboto/Roboto_SemiCondensed-Regular.ttf?fileID=12800000&amp;guid=35c7960788f99e449897e1901e108b12&amp;type=3#Roboto_SemiCondensed-Regular&quot;); -unity-font-style: normal; font-size: 16px; color: rgb(255, 255, 255); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
                 </ui:VisualElement>
