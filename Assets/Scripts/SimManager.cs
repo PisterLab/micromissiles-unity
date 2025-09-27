@@ -670,7 +670,11 @@ public class SimManager : MonoBehaviour {
     if (autoRestartOnEnd) {
       RestartSimulation();
     } else {
-      _isSimulationPaused = true;
+      // Ensure the simulation actually pauses (freeze time and physics)
+      // instead of only toggling the internal flag. This prevents agents
+      // from continuing to update when running in batch mode where
+      // auto-restart is disabled and an external runner sequences runs.
+      PauseSimulation();
     }
   }
 

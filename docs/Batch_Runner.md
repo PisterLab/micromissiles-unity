@@ -12,6 +12,9 @@ This guide walks through the batch execution workflow for micromissiles-unity an
 - Deterministic per-run seeding, optional JSON overrides, and per-run logs with metadata.
 - Integrates with downstream analysis such as `Tools/aggregate_runs.py`.
 
+### Build Prerequisite
+Batch execution operates on a standalone player, so compile the project before invoking batch mode. Use the helper script `Tools/build_standalone.py` to mirror the CI build: it detects installed Unity editors, optionally compiles native plugins, and produces packaged binaries under `build/`. Once the target player is generated, launch it with the CLI flags described below (for example, `./build/StandaloneLinux64/micromissiles.x86_64 --batchConfig ...`).
+
 ## CLI Flags (Player or Editor `-executeMethod`)
 - `--batchConfig <path>`: JSON file describing the batch (see schema below).
 - `--config <nameOrPath>`: Single config file (StreamingAssets/Configs relative name or absolute path).
