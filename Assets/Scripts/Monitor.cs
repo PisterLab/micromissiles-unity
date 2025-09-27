@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
+using Newtonsoft.Json;
 
 public class SimMonitor : MonoBehaviour {
   private const float _updateRate = 0.1f;  // 100 Hz
@@ -13,6 +14,7 @@ public class SimMonitor : MonoBehaviour {
   private Coroutine _monitorRoutine;
 
   private string _sessionDirectory;
+  private string _metaPath;
 
   private FileStream _telemetryFileStream;
   private BinaryWriter _telemetryBinaryWriter;
@@ -43,8 +45,10 @@ public class SimMonitor : MonoBehaviour {
 
   private void InitializeSessionDirectory() {
     string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-    _sessionDirectory = Application.persistentDataPath + $"\\Telemetry\\Logs\\{timestamp}";
+    _sessionDirectory =
+        Path.Combine(Application.persistentDataPath, "Telemetry", "Logs", timestamp);
     Directory.CreateDirectory(_sessionDirectory);
+    _metaPath = Path.Combine(_sessionDirectory, "run_meta.json");
     Debug.Log($"Monitoring simulation logs to {_sessionDirectory}");
   }
 
@@ -176,6 +180,20 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
+    // When running in batch mode, redirect logs and emit run metadata.
+    if (RunContext.IsActive) {
+      _sessionDirectory =
+          Path.Combine(Application.persistentDataPath, "Telemetry", "Logs",
+                       RunContext.BatchId ?? "batch_unknown", RunContext.RunId ?? "run_unknown");
+      Directory.CreateDirectory(_sessionDirectory);
+      _metaPath = Path.Combine(_sessionDirectory, "run_meta.json");
+    }
+
+    if (RunContext.IsActive) {
+      WriteRunMeta(false);
+      Debug.Log($"[Monitor] Batch session directory: {_sessionDirectory}");
+    }
+
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       InitializeTelemetryLogFiles();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
@@ -186,6 +204,9 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationEnded() {
+    if (RunContext.ConsumeEndEventSuppressionIfNeeded()) {
+      return;
+    }
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);
       CloseTelemetryLogFiles();
@@ -194,6 +215,10 @@ public class SimMonitor : MonoBehaviour {
     }
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       WriteEventsToFile();
+    }
+    if (RunContext.IsActive) {
+      RunContext.MarkRunEnded();
+      WriteRunMeta(true);
     }
   }
 
@@ -251,5 +276,27 @@ public class SimMonitor : MonoBehaviour {
   private void OnDestroy() {
     CloseTelemetryLogFiles();
     WriteEventsToFile();
+  }
+
+  private void WriteRunMeta(bool finalize) {
+    try {
+      var meta = new Dictionary<string, object> {
+        { "batchId", RunContext.BatchId },
+        { "runId", RunContext.RunId },
+        { "runIndex", RunContext.RunIndex },
+        { "seed", RunContext.Seed },
+        { "configName", RunContext.ConfigName },
+        { "overridesFingerprint", RunContext.OverridesFingerprint },
+        { "labels", RunContext.Labels },
+        { "startedUtc", RunContext.StartedUtc },
+        { "endedUtc", finalize ? (object)(RunContext.EndedUtc ?? DateTime.UtcNow) : null },
+        { "version", RunContext.Version },
+        { "platform", RunContext.Platform }
+      };
+      string json = JsonConvert.SerializeObject(meta, Formatting.Indented);
+      File.WriteAllText(_metaPath, json);
+    } catch (Exception e) {
+      Debug.LogWarning($"[Monitor] Failed to write run_meta.json: {e.Message}");
+    }
   }
 }

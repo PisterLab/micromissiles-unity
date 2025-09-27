@@ -1,0 +1,12 @@
+{
+  "batchId": "sample_quad_repl",
+  "config": "../7_quadcopters.json",
+  "runs": 3,
+  "seed": 100,
+  "seedStride": 1,
+  "labels": { "example": "true", "scenario": "quadcopters" },
+  "overrides": {
+    "timeScale": 5,
+    "endTime": 60
+  }
+}
