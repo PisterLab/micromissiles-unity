@@ -12,6 +12,7 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Simulator Overview", link: "/Simulator_Overview" },
+      { text: "Batch Runner", link: "/Batch_Runner" },
       { text: "Development Guide", link: "/Development_Guide" },
     ],
 
@@ -23,6 +24,7 @@ export default defineConfig({
           { text: "Keybinds and Controls", link: "/Keybinds_and_Controls" },
           { text: "Simulation Configuration Guide", link: "/Simulation_Configuration_Guide" },
           { text: "Simulation Logging", link: "/Simulation_Logging" },
+          { text: "Batch Simulation Runner", link: "/Batch_Runner" },
           { text: "Coverage Reports",
             items: [
               { text: "EditMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/editmode/Report/index.html" },
