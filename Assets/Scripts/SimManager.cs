@@ -361,7 +361,6 @@ public class SimManager : MonoBehaviour {
         CameraController.Instance.FollowNextThreatSwarm();
       }
     }
-
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
@@ -680,8 +679,7 @@ public class SimManager : MonoBehaviour {
       threat.OnTerminated -= OnThreatTerminated;
     }
     _totalThreatsTerminated++;
-    if (!_hasSignaledSimulationEnd &&
-        _totalThreatsSpawned > 0 &&
+    if (!_hasSignaledSimulationEnd && _totalThreatsSpawned > 0 &&
         _totalThreatsTerminated >= _totalThreatsSpawned) {
       HandleSimulationCompleted();
     }

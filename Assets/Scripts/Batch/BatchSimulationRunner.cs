@@ -460,8 +460,7 @@ public class BatchSimulationRunner : MonoBehaviour {
 
   private RunSpec CreateRunSpec(string configInput, int runIndex, int seed,
                                 IDictionary<string, string> labels,
-                                IDictionary<string, JToken> overrides,
-                                string baseDirectory) {
+                                IDictionary<string, JToken> overrides, string baseDirectory) {
     string resolved = ResolveConfigPath(configInput, baseDirectory);
     if (string.IsNullOrEmpty(resolved)) {
       Debug.LogError(
@@ -469,16 +468,15 @@ public class BatchSimulationRunner : MonoBehaviour {
       return null;
     }
 
-    var spec = new RunSpec {
-      ConfigPath = resolved,
-      FriendlyName = Path.GetFileName(resolved),
-      Seed = seed,
-      RunIndex = runIndex,
-      Labels = labels != null ? new Dictionary<string, string>(labels) :
-                                new Dictionary<string, string>(),
-      Overrides = overrides != null ? new Dictionary<string, JToken>(overrides) :
-                                      new Dictionary<string, JToken>()
-    };
+    var spec =
+        new RunSpec { ConfigPath = resolved,
+                      FriendlyName = Path.GetFileName(resolved),
+                      Seed = seed,
+                      RunIndex = runIndex,
+                      Labels = labels != null ? new Dictionary<string, string>(labels)
+                                              : new Dictionary<string, string>(),
+                      Overrides = overrides != null ? new Dictionary<string, JToken>(overrides)
+                                                    : new Dictionary<string, JToken>() };
     return spec;
   }
 
@@ -490,7 +488,8 @@ public class BatchSimulationRunner : MonoBehaviour {
     if (Path.IsPathRooted(userPath)) {
       candidate = userPath;
     } else {
-      string baseDir = !string.IsNullOrEmpty(baseDirectory) ? baseDirectory : Directory.GetCurrentDirectory();
+      string baseDir =
+          !string.IsNullOrEmpty(baseDirectory) ? baseDirectory : Directory.GetCurrentDirectory();
       candidate = Path.GetFullPath(Path.Combine(baseDir, userPath));
     }
 
