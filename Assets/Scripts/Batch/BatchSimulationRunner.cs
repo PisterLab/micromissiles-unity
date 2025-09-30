@@ -15,7 +15,6 @@ using UnityEngine;
 public class BatchSimulationRunner : MonoBehaviour {
   private readonly List<RunSpec> _runs = new List<RunSpec>();
   private int _currentIndex = -1;
-  private bool _autoQuit = true;
   private bool _waitingForEnd = false;
   private bool _ignoreNextEndEvent = false;
   private string _batchId;
@@ -89,9 +88,6 @@ public class BatchSimulationRunner : MonoBehaviour {
       if (SimManager.Instance != null) {
         SimManager.Instance.autoRestartOnEnd = false;
       }
-
-      _autoQuit = !(GetArgValue(args, "--autoQuit") is string s &&
-                    s.Equals("false", StringComparison.OrdinalIgnoreCase));
 
       // Labels from CLI (flat JSON object string)
       var labels = ParseLabelsJson(GetArgValue(args, "--labels"));
@@ -307,9 +303,7 @@ public class BatchSimulationRunner : MonoBehaviour {
     _currentIndex++;
     if (_currentIndex >= _runs.Count) {
       Debug.Log($"[BatchRunner] Completed batch '{_batchId}' with {_runs.Count} runs.");
-      if (_autoQuit) {
-        Application.Quit();
-      }
+      Application.Quit();
       return;
     }
 
@@ -493,6 +487,23 @@ public class BatchSimulationRunner : MonoBehaviour {
       candidate = Path.GetFullPath(Path.Combine(baseDir, userPath));
     }
 
-    return File.Exists(candidate) ? candidate : null;
+    if (File.Exists(candidate)) {
+      return candidate;
+    }
+
+    // Fallback to StreamingAssets/Configs for callers that only pass config filenames.
+    try {
+      var streamingConfigs = Path.Combine(Application.streamingAssetsPath ?? string.Empty, "Configs");
+      if (!string.IsNullOrEmpty(streamingConfigs)) {
+        var streamingCandidate = Path.GetFullPath(Path.Combine(streamingConfigs, userPath));
+        if (File.Exists(streamingCandidate)) {
+          return streamingCandidate;
+        }
+      }
+    } catch (Exception ex) {
+      Debug.LogWarning($"[BatchRunner] Failed StreamingAssets fallback for '{userPath}': {ex.Message}");
+    }
+
+    return null;
   }
 }

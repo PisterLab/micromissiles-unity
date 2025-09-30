@@ -24,13 +24,12 @@ Batch execution operates on a standalone player, so compile the project before i
 - `--labels <json>`: Flat JSON object of string labels to tag all runs.
 - `--overrides <json>`: Flat JSON of SelectToken paths to values (e.g., `{ "timeScale": 0.1 }`).
 - `--batchId <string>`: Optional batch identifier. If omitted, one is generated.
-- `--autoQuit <true|false>`: Quit the player after finishing (default true).
 - `--labels <json>` and per-run labels surface inside telemetry metadata. See [Simulation Logging](./Simulation_Logging.md#batch-run-metadata) for field details.
 
 ## Notes on Paths
 - `--batchConfig` accepts absolute paths or paths relative to the working directory used to launch the player/editor.
 - Paths declared inside a batch JSON (such as `runs[].config`) are resolved relative to the location of that batch JSON. This keeps runs portable when the whole `StreamingAssets/Configs` tree ships with the build.
-- For the single-config mode (`--config`), supply an absolute path or a path relative to the working directory (e.g., `./micromissiles_Data/StreamingAssets/Configs/7_quadcopters.json`).
+- For the single-config mode (`--config`), you can pass either an absolute path, a path relative to the working directory (e.g., `./micromissiles_Data/StreamingAssets/Configs/7_quadcopters.json`), or just the filename if it lives under `StreamingAssets/Configs/` (e.g., `--config 7_quadcopters.json`).
 - `-logFile` is handled by Unity. Relative paths are resolved from the current working directory.
 
 ## Examples

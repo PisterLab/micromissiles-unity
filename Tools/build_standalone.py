@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simplified local build helper for micromissiles-unity.
+"""Local build helper for micromissiles-unity.
 
 This script prompts for a Unity editor installation and builds the standalone
 player for the current operating system. Build output is written to
