@@ -42,17 +42,17 @@ Batch execution operates on a standalone player, so compile the project before i
 
 ```powershell
 cd .\Build
-.\micromissiles.exe --batchConfig ".\micromissiles_Data\StreamingAssets\Configs\Batches\sample_batch.json" -batchmode -nographics -logFile - 2>&1 | Tee-Object -FilePath .\batch_stdout.log
+.\micromissiles.exe --batchConfig ".\micromissiles_Data\StreamingAssets\Configs\Batches\sample_batch.json" -batchmode -nographics -logFile micromissiles.log
 ```
 
 #### macOS / Linux (Bash)
 
 ```bash
 cd Build
-./micromissiles --batchConfig "./micromissiles_Data/StreamingAssets/Configs/Batches/sample_batch.json" -batchmode -nographics -logFile - 2>&1 | tee ./batch_stdout.log
+./micromissiles --batchConfig "./micromissiles_Data/StreamingAssets/Configs/Batches/sample_batch.json" -batchmode -nographics -logFile micromissiles.log
 ```
 
-Both commands stream Unity’s log to stdout (`-logFile -`) and simultaneously tee the output to `batch_stdout.log` for later inspection.
+Both commands stream Unity’s log to stdout (`-logFile -`) and write the output to `micromissiles.log` for later inspection.
 
 ## Batch File Schema (flexible)
 - Replicated form:
