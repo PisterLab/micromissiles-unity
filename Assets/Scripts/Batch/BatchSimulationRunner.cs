@@ -16,8 +16,8 @@ public class BatchSimulationRunner : MonoBehaviour {
   private readonly List<RunSpec> _runs = new List<RunSpec>();
   private int _currentIndex = -1;
   private bool _waitingForEnd = false;
-  private bool _ignoreNextEndEvent = false;
   private string _batchId;
+  public static bool IsBatchRequested { get; private set; }
 
   private static readonly JsonSerializer _jsonSerializer =
       new JsonSerializer { Converters = { new StringEnumConverter() } };
@@ -31,6 +31,17 @@ public class BatchSimulationRunner : MonoBehaviour {
     public IDictionary<string, string> Labels = new Dictionary<string, string>();
     // Overrides via SelectToken path => value JToken
     public IDictionary<string, JToken> Overrides = new Dictionary<string, JToken>();
+  }
+
+  [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+  private static void Preflight() {
+    try {
+      var args = Environment.GetCommandLineArgs();
+      IsBatchRequested = IsBatchModeRequested(args);
+    } catch (Exception ex) {
+      Debug.LogWarning($"[BatchRunner] Preflight failed: {ex.Message}");
+      IsBatchRequested = false;
+    }
   }
 
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -321,6 +332,7 @@ public class BatchSimulationRunner : MonoBehaviour {
 
       string configJson = File.ReadAllText(spec.ConfigPath);
       string friendlyName = spec.FriendlyName ?? Path.GetFileName(spec.ConfigPath);
+      Debug.Log($"[BatchRunner] Starting run {spec.RunIndex} seed={spec.Seed} config={friendlyName}");
 
       var patched = ApplyOverrides(configJson, spec.Overrides, out var fingerprint);
       var cfg = DeserializeSimulationConfig(patched);
@@ -340,12 +352,9 @@ public class BatchSimulationRunner : MonoBehaviour {
 
       RunContext.SetForRun(_batchId, runId, spec.RunIndex, spec.Seed, friendlyName, fingerprint,
                            spec.Labels, version, platform);
-      RunContext.SuppressNextEndEventOnce();
 
-      // We expect RestartSimulation() inside LoadNewConfig to emit an end event for the previous
-      // scene. Ignore that once per run.
-      _ignoreNextEndEvent = true;
-      _waitingForEnd = true;
+      // Wait for the new run's OnSimulationStarted before considering end events.
+      _waitingForEnd = false;
 
       if (SimManager.Instance != null) {
         SimManager.Instance.autoRestartOnEnd = false;
@@ -363,14 +372,11 @@ public class BatchSimulationRunner : MonoBehaviour {
   }
 
   private void OnSimulationStarted() {
-    // No-op for now; presence helps confirm that the next end event is the real end.
+    // Now the run is live; the next end event is the real one.
+    _waitingForEnd = true;
   }
 
   private void OnSimulationEnded() {
-    if (_ignoreNextEndEvent) {
-      _ignoreNextEndEvent = false;
-      return;
-    }
     if (!_waitingForEnd)
       return;
     _waitingForEnd = false;
@@ -382,8 +388,10 @@ public class BatchSimulationRunner : MonoBehaviour {
     try {
       // Mark end in context (SimMonitor will also finalize run_meta.json)
       RunContext.MarkRunEnded();
-      yield return null;
+      // Use realtime wait so we do not depend on Time.timeScale.
+      yield return new WaitForSecondsRealtime(0.01f);
     } finally {
+      Debug.Log($"[BatchRunner] Run {_currentIndex} ended; advancing to next.");
       AdvanceToNextRun();
     }
   }

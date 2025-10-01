@@ -144,8 +144,12 @@ public class SimManager : MonoBehaviour {
   void Start() {
     if (Instance == this) {
       _isSimulationPaused = false;
-      StartSimulation();
-      ResumeSimulation();
+      // When batch is requested, the BatchSimulationRunner will drive config loading and run
+      // sequencing. Avoid auto-starting a default simulation which can cause early activity.
+      if (!(BatchSimulationRunner.IsBatchRequested)) {
+        StartSimulation();
+        ResumeSimulation();
+      }
     }
   }
 
@@ -165,7 +169,7 @@ public class SimManager : MonoBehaviour {
     // Invoke the simulation started event to let listeners know to invoke their own handler
     // behavior.
     UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
-    OnSimulationStarted?.Invoke();
+    SafeInvokeSimulationStarted();
   }
 
   public void PauseSimulation() {
@@ -597,12 +601,35 @@ public class SimManager : MonoBehaviour {
     }
 
     _hasSignaledSimulationEnd = true;
-    OnSimulationEnded?.Invoke();
+    SafeInvokeSimulationEnded();
     Debug.Log("Simulation completed.");
   }
 
+  private void SafeInvokeSimulationStarted() {
+    var handlers = OnSimulationStarted;
+    if (handlers == null) return;
+    foreach (var d in handlers.GetInvocationList()) {
+      try {
+        ((SimulationEventHandler)d)();
+      } catch (System.Exception ex) {
+        Debug.LogError($"[SimManager] OnSimulationStarted handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
+      }
+    }
+  }
+
+  private void SafeInvokeSimulationEnded() {
+    var handlers = OnSimulationEnded;
+    if (handlers == null) return;
+    foreach (var d in handlers.GetInvocationList()) {
+      try {
+        ((SimulationEventHandler)d)();
+      } catch (System.Exception ex) {
+        Debug.LogError($"[SimManager] OnSimulationEnded handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
+      }
+    }
+  }
+
   public void RestartSimulation() {
-    SignalSimulationEnded();
     if (UIManager.Instance != null) {
       UIManager.Instance.LogActionMessage("[SIM] Simulation restarted.");
     }

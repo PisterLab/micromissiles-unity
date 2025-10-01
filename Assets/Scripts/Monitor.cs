@@ -32,9 +32,7 @@ public class SimMonitor : MonoBehaviour {
     public string Details;
   }
 
-  private void Awake() {
-    InitializeSessionDirectory();
-  }
+  private void Awake() {}
 
   private void Start() {
     SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
@@ -44,12 +42,14 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void InitializeSessionDirectory() {
-    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-    _sessionDirectory =
-        Path.Combine(Application.persistentDataPath, "Telemetry", "Logs", timestamp);
-    Directory.CreateDirectory(_sessionDirectory);
-    _metaPath = Path.Combine(_sessionDirectory, "run_meta.json");
-    Debug.Log($"Monitoring simulation logs to {_sessionDirectory}");
+    if (!RunContext.IsActive) {
+      string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+      _sessionDirectory =
+          Path.Combine(Application.persistentDataPath, "Telemetry", "Logs", timestamp);
+      Directory.CreateDirectory(_sessionDirectory);
+      _metaPath = Path.Combine(_sessionDirectory, "run_meta.json");
+      Debug.Log($"Monitoring simulation logs to {_sessionDirectory}");
+    }
   }
 
   private void InitializeTelemetryLogFiles() {
@@ -180,13 +180,16 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    // When running in batch mode, redirect logs and emit run metadata.
+    // Ensure session directory is initialized for either batch or standalone.
     if (RunContext.IsActive) {
+      // When running in batch mode, redirect logs and emit run metadata.
       _sessionDirectory =
           Path.Combine(Application.persistentDataPath, "Telemetry", "Logs",
                        RunContext.BatchId ?? "batch_unknown", RunContext.RunId ?? "run_unknown");
       Directory.CreateDirectory(_sessionDirectory);
       _metaPath = Path.Combine(_sessionDirectory, "run_meta.json");
+    } else {
+      InitializeSessionDirectory();
     }
 
     if (RunContext.IsActive) {
@@ -194,9 +197,16 @@ public class SimMonitor : MonoBehaviour {
       Debug.Log($"[Monitor] Batch session directory: {_sessionDirectory}");
     }
 
+    if (RunContext.IsActive && !SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
+      Debug.Log("[Monitor] Telemetry disabled by simulator.json; enabling for batch run.");
+      SimManager.Instance.simulatorConfig.enableTelemetryLogging = true;
+    }
+
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       InitializeTelemetryLogFiles();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
+    } else {
+      Debug.Log("[Monitor] Telemetry logging is disabled for this run.");
     }
     if (SimManager.Instance.simulatorConfig.enableEventLogging) {
       InitializeEventLogFiles();
@@ -204,9 +214,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationEnded() {
-    if (RunContext.ConsumeEndEventSuppressionIfNeeded()) {
-      return;
-    }
     if (SimManager.Instance.simulatorConfig.enableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);
       CloseTelemetryLogFiles();
