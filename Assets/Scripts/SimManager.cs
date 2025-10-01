@@ -15,6 +15,8 @@ public class SimManager : MonoBehaviour {
   [SerializeField]
   public SimulationConfig SimulationConfig;
 
+  public bool autoRestartOnEnd = true;
+
   private string _defaultConfig = "7_quadcopters.json";
 
   private List<Interceptor> _activeInterceptors = new List<Interceptor>();
@@ -48,6 +50,9 @@ public class SimManager : MonoBehaviour {
   private Dictionary<List<(Agent, bool)>, List<(Agent, bool)>> _submunitionInterceptorSwarmMap =
       new Dictionary<List<(Agent, bool)>, List<(Agent, bool)>>();
 
+  private int _totalThreatsSpawned = 0;
+  private int _totalThreatsTerminated = 0;
+
   // Events to subscribe to for changes in each of the swarm tables.
   public delegate void SwarmEventHandler(List<List<(Agent, bool)>> swarm);
   public event SwarmEventHandler OnInterceptorSwarmChanged;
@@ -57,6 +62,7 @@ public class SimManager : MonoBehaviour {
 
   private float _elapsedSimulationTime = 0f;
   private bool _isSimulationPaused = false;
+  private bool _hasSignaledSimulationEnd = false;
 
   private float _costLaunchedInterceptors = 0f;
   private float _costDestroyedThreats = 0f;
@@ -138,8 +144,12 @@ public class SimManager : MonoBehaviour {
   void Start() {
     if (Instance == this) {
       _isSimulationPaused = false;
-      StartSimulation();
-      ResumeSimulation();
+      // When batch is requested, the BatchSimulationRunner will drive config loading and run
+      // sequencing. Avoid auto-starting a default simulation which can cause early activity.
+      if (!(BatchSimulationRunner.IsBatchRequested)) {
+        StartSimulation();
+        ResumeSimulation();
+      }
     }
   }
 
@@ -152,12 +162,14 @@ public class SimManager : MonoBehaviour {
   }
 
   public void StartSimulation() {
+    _hasSignaledSimulationEnd = false;
     InitializeSimulation();
+    ResumeSimulation();
 
     // Invoke the simulation started event to let listeners know to invoke their own handler
     // behavior.
     UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
-    OnSimulationStarted?.Invoke();
+    SafeInvokeSimulationStarted();
   }
 
   public void PauseSimulation() {
@@ -476,6 +488,8 @@ public class SimManager : MonoBehaviour {
 
     Threat threat = threatObject.GetComponent<Threat>();
     _threatObjects.Add(threat);
+    _totalThreatsSpawned++;
+    threat.OnTerminated += OnThreatTerminated;
 
     // Set the static agent config.
     threat.SetStaticAgentConfig(threatStaticAgentConfig);
@@ -555,21 +569,74 @@ public class SimManager : MonoBehaviour {
   }
 
   public void LoadNewConfig(string configFileName) {
-    this.SimulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
-    // Reload the simulator config
-    this.simulatorConfig = ConfigLoader.LoadSimulatorConfig();
-    if (SimulationConfig != null) {
-      Debug.Log($"Loaded new configuration: {configFileName}.");
-      RestartSimulation();
+    var config = ConfigLoader.LoadSimulationConfig(configFileName);
+    if (config != null) {
+      LoadNewConfig(config, configFileName);
     } else {
       Debug.LogError($"Failed to load configuration: {configFileName}.");
     }
   }
 
+  public void LoadNewConfig(SimulationConfig config, string nameForUI = null) {
+    if (config == null) {
+      Debug.LogError("LoadNewConfig received a null SimulationConfig.");
+      return;
+    }
+
+    SimulationConfig = config;
+    simulatorConfig = ConfigLoader.LoadSimulatorConfig();
+    if (!string.IsNullOrEmpty(nameForUI)) {
+      Debug.Log($"Loaded new configuration: {nameForUI}.");
+      if (UIManager.Instance != null) {
+        UIManager.Instance.LogActionMessage($"[SIM] Loaded SimulationConfig: {nameForUI}.");
+      }
+    }
+
+    RestartSimulation();
+  }
+
+  private void SignalSimulationEnded() {
+    if (_hasSignaledSimulationEnd) {
+      return;
+    }
+
+    _hasSignaledSimulationEnd = true;
+    SafeInvokeSimulationEnded();
+    Debug.Log("Simulation completed.");
+  }
+
+  private void SafeInvokeSimulationStarted() {
+    var handlers = OnSimulationStarted;
+    if (handlers == null)
+      return;
+    foreach (var d in handlers.GetInvocationList()) {
+      try {
+        ((SimulationEventHandler)d)();
+      } catch (System.Exception ex) {
+        Debug.LogError(
+            $"[SimManager] OnSimulationStarted handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
+      }
+    }
+  }
+
+  private void SafeInvokeSimulationEnded() {
+    var handlers = OnSimulationEnded;
+    if (handlers == null)
+      return;
+    foreach (var d in handlers.GetInvocationList()) {
+      try {
+        ((SimulationEventHandler)d)();
+      } catch (System.Exception ex) {
+        Debug.LogError(
+            $"[SimManager] OnSimulationEnded handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
+      }
+    }
+  }
+
   public void RestartSimulation() {
-    OnSimulationEnded?.Invoke();
-    Debug.Log("Simulation ended.");
-    UIManager.Instance.LogActionMessage("[SIM] Simulation restarted.");
+    if (UIManager.Instance != null) {
+      UIManager.Instance.LogActionMessage("[SIM] Simulation restarted.");
+    }
     // Reset the simulation time.
     _elapsedSimulationTime = 0f;
     _isSimulationPaused = IsSimulationPaused();
@@ -585,6 +652,7 @@ public class SimManager : MonoBehaviour {
 
     foreach (var threat in _threatObjects) {
       if (threat != null) {
+        threat.OnTerminated -= OnThreatTerminated;
         Destroy(threat.gameObject);
       }
     }
@@ -611,6 +679,8 @@ public class SimManager : MonoBehaviour {
     _interceptorSwarms.Clear();
     _submunitionsSwarms.Clear();
     _threatSwarms.Clear();
+    _totalThreatsSpawned = 0;
+    _totalThreatsTerminated = 0;
 
     OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
     OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
@@ -622,8 +692,31 @@ public class SimManager : MonoBehaviour {
     if (!_isSimulationPaused && _elapsedSimulationTime < SimulationConfig.endTime) {
       _elapsedSimulationTime += Time.deltaTime;
     } else if (_elapsedSimulationTime >= SimulationConfig.endTime) {
+      HandleSimulationCompleted();
+    }
+  }
+
+  private void HandleSimulationCompleted() {
+    SignalSimulationEnded();
+    if (autoRestartOnEnd) {
       RestartSimulation();
-      Debug.Log("Simulation completed.");
+    } else {
+      // Ensure the simulation actually pauses (freeze time and physics)
+      // instead of only toggling the internal flag. This prevents agents
+      // from continuing to update when running in batch mode where
+      // auto-restart is disabled and an external runner sequences runs.
+      PauseSimulation();
+    }
+  }
+
+  private void OnThreatTerminated(Agent agent) {
+    if (agent is Threat threat) {
+      threat.OnTerminated -= OnThreatTerminated;
+    }
+    _totalThreatsTerminated++;
+    if (!_hasSignaledSimulationEnd && _totalThreatsSpawned > 0 &&
+        _totalThreatsTerminated >= _totalThreatsSpawned) {
+      HandleSimulationCompleted();
     }
   }
 

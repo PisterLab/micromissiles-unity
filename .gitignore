@@ -81,3 +81,12 @@ Telemetry/Logs/
 
 # Node.
 node_modules/
+
+# venv.
+.venv/
+
+# batchwrap.
+.batch/
+
+# batchwrap.
+batchwrap/

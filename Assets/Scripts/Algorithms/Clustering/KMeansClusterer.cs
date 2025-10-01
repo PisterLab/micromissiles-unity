@@ -12,23 +12,39 @@ public class KMeansClusterer : IClusterer {
 
   // Maximum number of iterations.
   private int _maxIterations = 20;
+  private System.Random _random;
 
   public KMeansClusterer(List<GameObject> objects, int k, int maxIterations = 20) : base(objects) {
     _k = k;
     _maxIterations = maxIterations;
+    _random = RunContext.SystemRandom ?? new System.Random();
   }
   public KMeansClusterer(List<Agent> agents, int k, int maxIterations = 20) : base(agents) {
     _k = k;
     _maxIterations = maxIterations;
+    _random = RunContext.SystemRandom ?? new System.Random();
+  }
+
+  public KMeansClusterer(List<GameObject> objects, int k, System.Random rng, int maxIterations = 20)
+      : base(objects) {
+    _k = k;
+    _maxIterations = maxIterations;
+    _random = rng ?? (RunContext.SystemRandom ?? new System.Random());
+  }
+
+  public KMeansClusterer(List<Agent> agents, int k, System.Random rng, int maxIterations = 20)
+      : base(agents) {
+    _k = k;
+    _maxIterations = maxIterations;
+    _random = rng ?? (RunContext.SystemRandom ?? new System.Random());
   }
 
   // Cluster the game objects.
   public override void Cluster() {
     // Initialize the clusters with centroids located at random game objects.
     // Perform Fisher-Yates shuffling to find k random game objects.
-    System.Random random = new System.Random();
     for (int i = _objects.Count - 1; i >= _objects.Count - _k; --i) {
-      int j = random.Next(i + 1);
+      int j = _random.Next(i + 1);
       (_objects[i], _objects[j]) = (_objects[j], _objects[i]);
     }
     for (int i = _objects.Count - 1; i >= _objects.Count - _k; --i) {
@@ -45,7 +61,7 @@ public class KMeansClusterer : IClusterer {
       for (int clusterIndex = 0; clusterIndex < _clusters.Count; ++clusterIndex) {
         Cluster newCluster;
         if (_clusters[clusterIndex].IsEmpty()) {
-          int objectIndex = random.Next(_objects.Count);
+          int objectIndex = _random.Next(_objects.Count);
           newCluster = new Cluster(_objects[objectIndex]);
         } else {
           newCluster = new Cluster(_clusters[clusterIndex].Centroid());
