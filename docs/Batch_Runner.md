@@ -98,5 +98,3 @@ Consult [Simulation Logging](./Simulation_Logging.md#persistent-storage-layout) 
 ## Determinism
 - Unity RNG is seeded via `Random.InitState(seed)` and a shared `System.Random` is available as `RunContext.SystemRandom`.
 - `KMeansClusterer` now accepts the seeded RNG implicitly via `RunContext` for stable clustering.
-
-For additional implementation context, refer to the design notes in [`BATCH_INVOC_DESIGN_DOC.md`](../BATCH_INVOC_DESIGN_DOC.md).
