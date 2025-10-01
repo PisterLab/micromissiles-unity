@@ -607,24 +607,28 @@ public class SimManager : MonoBehaviour {
 
   private void SafeInvokeSimulationStarted() {
     var handlers = OnSimulationStarted;
-    if (handlers == null) return;
+    if (handlers == null)
+      return;
     foreach (var d in handlers.GetInvocationList()) {
       try {
         ((SimulationEventHandler)d)();
       } catch (System.Exception ex) {
-        Debug.LogError($"[SimManager] OnSimulationStarted handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
+        Debug.LogError(
+            $"[SimManager] OnSimulationStarted handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
       }
     }
   }
 
   private void SafeInvokeSimulationEnded() {
     var handlers = OnSimulationEnded;
-    if (handlers == null) return;
+    if (handlers == null)
+      return;
     foreach (var d in handlers.GetInvocationList()) {
       try {
         ((SimulationEventHandler)d)();
       } catch (System.Exception ex) {
-        Debug.LogError($"[SimManager] OnSimulationEnded handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
+        Debug.LogError(
+            $"[SimManager] OnSimulationEnded handler {d.Method.DeclaringType}.{d.Method.Name} threw: {ex}");
       }
     }
   }

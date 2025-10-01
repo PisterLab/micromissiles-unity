@@ -332,7 +332,8 @@ public class BatchSimulationRunner : MonoBehaviour {
 
       string configJson = File.ReadAllText(spec.ConfigPath);
       string friendlyName = spec.FriendlyName ?? Path.GetFileName(spec.ConfigPath);
-      Debug.Log($"[BatchRunner] Starting run {spec.RunIndex} seed={spec.Seed} config={friendlyName}");
+      Debug.Log(
+          $"[BatchRunner] Starting run {spec.RunIndex} seed={spec.Seed} config={friendlyName}");
 
       var patched = ApplyOverrides(configJson, spec.Overrides, out var fingerprint);
       var cfg = DeserializeSimulationConfig(patched);
@@ -501,7 +502,8 @@ public class BatchSimulationRunner : MonoBehaviour {
 
     // Fallback to StreamingAssets/Configs for callers that only pass config filenames.
     try {
-      var streamingConfigs = Path.Combine(Application.streamingAssetsPath ?? string.Empty, "Configs");
+      var streamingConfigs =
+          Path.Combine(Application.streamingAssetsPath ?? string.Empty, "Configs");
       if (!string.IsNullOrEmpty(streamingConfigs)) {
         var streamingCandidate = Path.GetFullPath(Path.Combine(streamingConfigs, userPath));
         if (File.Exists(streamingCandidate)) {
@@ -509,7 +511,8 @@ public class BatchSimulationRunner : MonoBehaviour {
         }
       }
     } catch (Exception ex) {
-      Debug.LogWarning($"[BatchRunner] Failed StreamingAssets fallback for '{userPath}': {ex.Message}");
+      Debug.LogWarning(
+          $"[BatchRunner] Failed StreamingAssets fallback for '{userPath}': {ex.Message}");
     }
 
     return null;
