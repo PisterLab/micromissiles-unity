@@ -59,9 +59,43 @@ def collect_hit_positions(csv_path: Path):
     return positions
 
 
+def collect_interceptor_launches(csv_path: Path):
+    """Collect NEW_INTERCEPTOR event positions, separated by type.
+    
+    Returns:
+        hydra_positions: List of (x, y, z) for Hydra 70 interceptors
+        micro_positions: List of (x, y, z) for Micromissile interceptors
+    """
+    hydra_positions = []
+    micro_positions = []
+    
+    with csv_path.open("r", newline="") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            evt = (row.get("Event") or "").strip().upper()
+            if evt == "NEW_INTERCEPTOR":
+                details = (row.get("Details") or "").strip()
+                try:
+                    x = float(row.get("PositionX", 0))
+                    y = float(row.get("PositionY", 0))
+                    z = float(row.get("PositionZ", 0))
+                    
+                    # Check interceptor type from Details field
+                    if "Hydra 70" in details or "Hydra70" in details:
+                        hydra_positions.append((x, y, z))
+                    elif "Micromissile_Interceptor" in details:
+                        micro_positions.append((x, y, z))
+                except (ValueError, TypeError):
+                    continue
+    
+    return hydra_positions, micro_positions
+
+
 def aggregate_batch_hits(batch_dir: Path):
-    """Aggregate all hit positions from all runs in a batch."""
-    all_positions = []
+    """Aggregate all hit positions and interceptor launches from all runs in a batch."""
+    all_hit_positions = []
+    all_hydra_positions = []
+    all_micro_positions = []
     run_count = 0
     hit_count = 0
     miss_count = 0
@@ -79,15 +113,20 @@ def aggregate_batch_hits(batch_dir: Path):
         run_count += 1
         for csv_path in event_files:
             # Collect hit positions
-            positions = collect_hit_positions(csv_path)
-            all_positions.extend(positions)
+            hit_positions = collect_hit_positions(csv_path)
+            all_hit_positions.extend(hit_positions)
+            
+            # Collect interceptor launch positions
+            hydra_positions, micro_positions = collect_interceptor_launches(csv_path)
+            all_hydra_positions.extend(hydra_positions)
+            all_micro_positions.extend(micro_positions)
             
             # Also count hits and misses for statistics
             hits, misses = count_events(csv_path)
             hit_count += hits
             miss_count += misses
     
-    return all_positions, run_count, hit_count, miss_count
+    return all_hit_positions, all_hydra_positions, all_micro_positions, run_count, hit_count, miss_count
 
 
 def aggregate_all(logs_root: Path):
@@ -107,47 +146,114 @@ def aggregate_all(logs_root: Path):
     return batch_stats
 
 
-def plot_hit_heatmap(positions, batch_id, bins=50):
-    """Create a 2D heat map of hit positions (X-Z plane)."""
-    if not positions:
-        print("No hit positions to plot.")
+def plot_hit_heatmap(hit_positions, hydra_positions, micro_positions, batch_id, bins=50):
+    """Create a 2x2 grid: 3 separate heat maps + 1 combined scatter plot."""
+    
+    # Check if we have any data to plot
+    has_data = bool(hit_positions or hydra_positions or micro_positions)
+    if not has_data:
+        print("No positions to plot.")
         return
     
-    positions = np.array(positions)
-    x = positions[:, 0]
-    z = positions[:, 2]  # Use Z for the Y-axis in the plot
+    # Convert to numpy arrays (handle empty lists)
+    hit_arr = np.array(hit_positions) if hit_positions else np.zeros((0, 3))
+    hydra_arr = np.array(hydra_positions) if hydra_positions else np.zeros((0, 3))
+    micro_arr = np.array(micro_positions) if micro_positions else np.zeros((0, 3))
     
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
+    # Determine common bounds for all data
+    all_x = []
+    all_z = []
+    if len(hit_arr) > 0:
+        all_x.extend(hit_arr[:, 0])
+        all_z.extend(hit_arr[:, 2])
+    if len(hydra_arr) > 0:
+        all_x.extend(hydra_arr[:, 0])
+        all_z.extend(hydra_arr[:, 2])
+    if len(micro_arr) > 0:
+        all_x.extend(micro_arr[:, 0])
+        all_z.extend(micro_arr[:, 2])
     
-    # 2D Histogram (Heat map)
-    h, xedges, yedges = np.histogram2d(x, z, bins=bins)
-    h = h.T  # Transpose for correct orientation
+    if not all_x or not all_z:
+        print("Insufficient data to plot.")
+        return
     
-    # Plot heat map
-    extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-    im = ax1.imshow(h, extent=extent, origin='lower', cmap='hot', 
-                    aspect='auto', interpolation='bilinear')
-    ax1.set_xlabel('X Position (m)', fontsize=12)
-    ax1.set_ylabel('Z Position (m)', fontsize=12)
-    ax1.set_title(f'Hit Heat Map (XZ Plane) - {batch_id}\n{len(positions)} total hits', 
-                  fontsize=14, fontweight='bold')
+    # Create common bin edges
+    xmin, xmax = min(all_x), max(all_x)
+    zmin, zmax = min(all_z), max(all_z)
+    pad_x = (xmax - xmin) * 0.05 if xmax > xmin else 1.0
+    pad_z = (zmax - zmin) * 0.05 if zmax > zmin else 1.0
+    xedges = np.linspace(xmin - pad_x, xmax + pad_x, bins + 1)
+    zedges = np.linspace(zmin - pad_z, zmax + pad_z, bins + 1)
+    extent = [xedges[0], xedges[-1], zedges[0], zedges[-1]]
+    
+    # Create histograms for each type
+    h_hits = np.zeros((bins, bins))
+    h_hydra = np.zeros((bins, bins))
+    h_micro = np.zeros((bins, bins))
+    
+    if len(hit_arr) > 0:
+        h_hits, _, _ = np.histogram2d(hit_arr[:, 0], hit_arr[:, 2], bins=[xedges, zedges])
+        h_hits = h_hits.T
+    
+    if len(hydra_arr) > 0:
+        h_hydra, _, _ = np.histogram2d(hydra_arr[:, 0], hydra_arr[:, 2], bins=[xedges, zedges])
+        h_hydra = h_hydra.T
+    
+    if len(micro_arr) > 0:
+        h_micro, _, _ = np.histogram2d(micro_arr[:, 0], micro_arr[:, 2], bins=[xedges, zedges])
+        h_micro = h_micro.T
+    
+    # Create simple 2x2 subplot grid
+    fig, axes = plt.subplots(2, 2, figsize=(14, 11))
+    ax1, ax2, ax3, ax4 = axes.flatten()
+    
+    # Top-left: Hit heat map
+    if np.any(h_hits > 0):
+        im1 = ax1.imshow(h_hits, extent=extent, origin='lower', cmap='hot',
+                        aspect='auto', interpolation='bilinear')
+        plt.colorbar(im1, ax=ax1)
+    ax1.set_xlabel('X (m)')
+    ax1.set_ylabel('Z (m)')
+    ax1.set_title(f'Intercepts (n={len(hit_positions)})')
     ax1.grid(True, alpha=0.3)
     
-    cbar = plt.colorbar(im, ax=ax1)
-    cbar.set_label('Number of Hits', fontsize=11)
-    
-    # Scatter plot with altitude color-coding
-    y = positions[:, 1]
-    scatter = ax2.scatter(x, z, c=y, cmap='viridis', alpha=0.6, s=20)
-    ax2.set_xlabel('X Position (m)', fontsize=12)
-    ax2.set_ylabel('Z Position (m)', fontsize=12)
-    ax2.set_title(f'Hit Positions (colored by altitude)\n{batch_id}', 
-                  fontsize=14, fontweight='bold')
+    # Top-right: Hydra 70 heat map
+    if np.any(h_hydra > 0):
+        im2 = ax2.imshow(h_hydra, extent=extent, origin='lower', cmap='Greens',
+                        aspect='auto', interpolation='bilinear')
+        plt.colorbar(im2, ax=ax2)
+    ax2.set_xlabel('X (m)')
+    ax2.set_ylabel('Z (m)')
+    ax2.set_title(f'Hydra 70 Launches (n={len(hydra_positions)})')
     ax2.grid(True, alpha=0.3)
     
-    cbar2 = plt.colorbar(scatter, ax=ax2)
-    cbar2.set_label('Y Position (Altitude, m)', fontsize=11)
+    # Bottom-left: Micromissile heat map
+    if np.any(h_micro > 0):
+        im3 = ax3.imshow(h_micro, extent=extent, origin='lower', cmap='viridis',
+                        aspect='auto', interpolation='bilinear')
+        plt.colorbar(im3, ax=ax3)
+    ax3.set_xlabel('X (m)')
+    ax3.set_ylabel('Z (m)')
+    ax3.set_title(f'Micromissile Dispense Points (n={len(micro_positions)})')
+    ax3.grid(True, alpha=0.3)
     
+    # Bottom-right: Combined scatter plot
+    if len(micro_arr) > 0:
+        ax4.scatter(micro_arr[:, 0], micro_arr[:, 2], c='blue', alpha=0.3, s=5, label='Micromissile Dispense Points')
+    if len(hydra_arr) > 0:
+        ax4.scatter(hydra_arr[:, 0], hydra_arr[:, 2], c='cyan', alpha=0.6, s=20, marker='s', label='Hydra 70 Launches')
+    if len(hit_arr) > 0:
+        ax4.scatter(hit_arr[:, 0], hit_arr[:, 2], c='red', alpha=0.7, s=30, marker='*', label='Intercepts')
+    ax4.set_xlabel('X (m)')
+    ax4.set_ylabel('Z (m)')
+    ax4.set_title('Combined')
+    ax4.set_xlim(extent[0], extent[1])
+    ax4.set_ylim(extent[2], extent[3])
+    ax4.grid(True, alpha=0.3)
+    ax4.legend()
+    
+    plt.suptitle(f'{batch_id}: {len(hit_positions)} hits, {len(hydra_positions)} Hydra, {len(micro_positions)} Micro', 
+                 fontsize=11)
     plt.tight_layout()
     plt.show()
 
@@ -193,7 +299,7 @@ Examples:
         print(f"Analyzing batch: {args.batch_id}")
         print(f"Batch directory: {batch_dir}\n")
         
-        positions, run_count, hit_count, miss_count = aggregate_batch_hits(batch_dir)
+        hit_positions, hydra_positions, micro_positions, run_count, hit_count, miss_count = aggregate_batch_hits(batch_dir)
         
         if run_count == 0:
             print(f"No run directories found in {batch_dir}")
@@ -203,18 +309,21 @@ Examples:
         rate = (hit_count / total) if total else 0.0
         
         print(f"Batch: {args.batch_id}")
-        print(f"  Runs analyzed      : {run_count}")
-        print(f"  Interceptor hits   : {hit_count}")
-        print(f"  Interceptor misses : {miss_count}")
-        print(f"  Hit rate           : {rate:.2%}")
-        print(f"  Hit positions      : {len(positions)}")
+        print(f"  Runs analyzed        : {run_count}")
+        print(f"  Interceptor hits     : {hit_count}")
+        print(f"  Interceptor misses   : {miss_count}")
+        print(f"  Hit rate             : {rate:.2%}")
+        print(f"  Hit positions        : {len(hit_positions)}")
+        print(f"  Hydra 70 launches    : {len(hydra_positions)}")
+        print(f"  Micromissile launches: {len(micro_positions)}")
         
         # Plot heat map
-        if not args.no_plot and positions:
-            print(f"\nGenerating heat map with {args.bins} bins...")
-            plot_hit_heatmap(positions, args.batch_id, bins=args.bins)
-        elif not positions:
-            print("\nNo hit positions found to plot.")
+        has_data = bool(hit_positions or hydra_positions or micro_positions)
+        if not args.no_plot and has_data:
+            print(f"\nGenerating composite heat map with {args.bins} bins...")
+            plot_hit_heatmap(hit_positions, hydra_positions, micro_positions, args.batch_id, bins=args.bins)
+        elif not has_data:
+            print("\nNo positions found to plot.")
         
         return 0
 
