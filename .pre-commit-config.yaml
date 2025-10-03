@@ -3,10 +3,15 @@ repos:
     rev: v19.1.7
     hooks:
       - id: clang-format
+        exclude: ^Assets/Scripts/Generated/.*  # Exclude generated files.
   - repo: https://github.com/keith/pre-commit-buildifier
     rev: 8.0.1
     hooks:
       - id: buildifier
-        files: ^plugins/.*\.(bazel|bzl|BUILD)$  # Only apply to Bazel files in plugins directory
+        files: ^plugins/.*\.(bazel|bzl|BUILD)$  # Only apply to Bazel files in the plugins directory.
       - id: buildifier-lint
-        files: ^plugins/.*\.(bazel|bzl|BUILD)$  # Only apply to Bazel files in plugins directory
+        files: ^plugins/.*\.(bazel|bzl|BUILD)$  # Only apply to Bazel files in the plugins directory.
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck

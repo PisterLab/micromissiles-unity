@@ -1,0 +1,93 @@
+load("@protobuf//bazel:cc_proto_library.bzl", "cc_proto_library")
+load("@protobuf//bazel:proto_library.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+proto_library(
+    name = "agent_proto",
+    srcs = ["agent.proto"],
+    deps = [
+        ":dynamic_config_proto",
+        ":state_proto",
+    ],
+)
+
+cc_proto_library(
+    name = "agent_cc_proto",
+    deps = [":agent_proto"],
+)
+
+proto_library(
+    name = "coordinates_proto",
+    srcs = ["coordinates.proto"],
+)
+
+cc_proto_library(
+    name = "coordinates_cc_proto",
+    deps = [":coordinates_proto"],
+)
+
+proto_library(
+    name = "dynamic_config_proto",
+    srcs = ["dynamic_config.proto"],
+    deps = [":sensor_proto"],
+)
+
+cc_proto_library(
+    name = "dynamic_config_cc_proto",
+    deps = [":dynamic_config_proto"],
+)
+
+proto_library(
+    name = "sensor_proto",
+    srcs = ["sensor.proto"],
+    deps = [":coordinates_proto"],
+)
+
+cc_proto_library(
+    name = "sensor_cc_proto",
+    deps = [":sensor_proto"],
+)
+
+proto_library(
+    name = "simulator_config_proto",
+    srcs = ["simulator_config.proto"],
+    deps = [":agent_proto"],
+)
+
+cc_proto_library(
+    name = "simulator_config_cc_proto",
+    deps = [":simulator_config_proto"],
+)
+
+proto_library(
+    name = "state_proto",
+    srcs = ["state.proto"],
+    deps = [":coordinates_proto"],
+)
+
+cc_proto_library(
+    name = "state_cc_proto",
+    deps = [":state_proto"],
+)
+
+proto_library(
+    name = "static_config_proto",
+    srcs = ["static_config.proto"],
+)
+
+cc_proto_library(
+    name = "static_config_cc_proto",
+    deps = [":static_config_proto"],
+)
+
+proto_library(
+    name = "transformation_proto",
+    srcs = ["transformation.proto"],
+    deps = [":coordinates_proto"],
+)
+
+cc_proto_library(
+    name = "transformation_cc_proto",
+    deps = [":transformation_proto"],
+)

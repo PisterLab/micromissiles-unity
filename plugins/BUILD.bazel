@@ -17,15 +17,35 @@ cc_shared_library(
 
 cc_shared_library(
     name = "example",
-    features = select({
-        "@platforms//os:windows": ["windows_export_all_symbols"],
+    additional_linker_inputs = select({
+        "@platforms//os:windows": ["//example:example.def"],
         "//conditions:default": [],
+    }),
+    win_def_file = select({
+        "@platforms//os:windows": "//example:example.def",
+        "//conditions:default": None,
     }),
     deps = ["//example:example_plugin"],
 )
 
+cc_shared_library(
+    name = "protobuf",
+    additional_linker_inputs = select({
+        "@platforms//os:windows": ["//protobuf:protobuf.def"],
+        "//conditions:default": [],
+    }),
+    win_def_file = select({
+        "@platforms//os:windows": "//protobuf:protobuf.def",
+        "//conditions:default": None,
+    }),
+    deps = ["//protobuf:protobuf_plugin"],
+)
+
 pkg_tar(
     name = "plugins",
-    srcs = [":assignment"],
+    srcs = [
+        ":assignment",
+        ":protobuf",
+    ],
     extension = ".tar.gz",
 )
