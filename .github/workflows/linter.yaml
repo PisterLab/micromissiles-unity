@@ -1,12 +1,8 @@
 name: Linter
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+  pull_request:  # Run on all branches.
+  push:  # Run on all branches and tags.
   workflow_dispatch:  # Allow manual triggering.
 
 jobs:
