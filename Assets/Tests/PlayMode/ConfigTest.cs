@@ -57,8 +57,8 @@ public class ConfigTest : TestBase {
                       "Simulation time should have advanced after loading while not paused");
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime -
-                      (1.0f / SimManager.Instance.simulatorConfig.physicsUpdateRate)),
-            epsilon, "Physics update rate should be 1 / simulatorConfig.physicsUpdateRate");
+                      (1.0f / SimManager.Instance.simulatorConfig.PhysicsUpdateRate)),
+            epsilon, "Physics update rate should be 1 / simulatorConfig.PhysicsUpdateRate");
       }
 
       if (isPaused) {

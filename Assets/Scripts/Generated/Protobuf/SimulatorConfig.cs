@@ -25,16 +25,16 @@ namespace Micromissiles {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiRjb25maWdzL3Byb3RvL3NpbXVsYXRvcl9jb25maWcucHJvdG8SDW1pY3Jv",
-            "bWlzc2lsZXMaGWNvbmZpZ3MvcHJvdG8vYWdlbnQucHJvdG8iugEKD1NpbXVs",
-            "YXRvckNvbmZpZxIQCghlbmRfdGltZRgBIAEoAhISCgp0aW1lX3NjYWxlGAIg",
-            "ASgCEkIKGWludGVyY2VwdG9yX3N3YXJtX2NvbmZpZ3MYAyADKAsyHy5taWNy",
-            "b21pc3NpbGVzLkFnZW50U3dhcm1Db25maWcSPQoUdGhyZWF0X3N3YXJtX2Nv",
-            "bmZpZ3MYBCADKAsyHy5taWNyb21pc3NpbGVzLkFnZW50U3dhcm1Db25maWdi",
-            "BnByb3RvMw=="));
+            "bWlzc2lsZXMi1gEKD1NpbXVsYXRvckNvbmZpZxIgChhlbmFibGVfdGVsZW1l",
+            "dHJ5X2xvZ2dpbmcYASABKAgSHAoUZW5hYmxlX2V2ZW50X2xvZ2dpbmcYAiAB",
+            "KAgSIwobZW5hYmxlX21pc3NpbGVfdHJhaWxfZWZmZWN0GAMgASgIEh8KF2Vu",
+            "YWJsZV9leHBsb3Npb25fZWZmZWN0GAQgASgIEhsKE3BoeXNpY3NfdXBkYXRl",
+            "X3JhdGUYBSABKAISIAoYcGVyc2lzdGVudF9mbGlnaHRfdHJhaWxzGAYgASgI",
+            "YgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Micromissiles.AgentReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.SimulatorConfig), global::Micromissiles.SimulatorConfig.Parser, new[]{ "EndTime", "TimeScale", "InterceptorSwarmConfigs", "ThreatSwarmConfigs" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Micromissiles.SimulatorConfig), global::Micromissiles.SimulatorConfig.Parser, new[]{ "EnableTelemetryLogging", "EnableEventLogging", "EnableMissileTrailEffect", "EnableExplosionEffect", "PhysicsUpdateRate", "PersistentFlightTrails" }, null, null, null, null)
           }));
     }
     #endregion
@@ -79,10 +79,12 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SimulatorConfig(SimulatorConfig other) : this() {
-      endTime_ = other.endTime_;
-      timeScale_ = other.timeScale_;
-      interceptorSwarmConfigs_ = other.interceptorSwarmConfigs_.Clone();
-      threatSwarmConfigs_ = other.threatSwarmConfigs_.Clone();
+      enableTelemetryLogging_ = other.enableTelemetryLogging_;
+      enableEventLogging_ = other.enableEventLogging_;
+      enableMissileTrailEffect_ = other.enableMissileTrailEffect_;
+      enableExplosionEffect_ = other.enableExplosionEffect_;
+      physicsUpdateRate_ = other.physicsUpdateRate_;
+      persistentFlightTrails_ = other.persistentFlightTrails_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -92,62 +94,94 @@ namespace Micromissiles {
       return new SimulatorConfig(this);
     }
 
-    /// <summary>Field number for the "end_time" field.</summary>
-    public const int EndTimeFieldNumber = 1;
-    private float endTime_;
+    /// <summary>Field number for the "enable_telemetry_logging" field.</summary>
+    public const int EnableTelemetryLoggingFieldNumber = 1;
+    private bool enableTelemetryLogging_;
     /// <summary>
-    /// End time in seconds.
+    /// Enable telemetry logging.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float EndTime {
-      get { return endTime_; }
+    public bool EnableTelemetryLogging {
+      get { return enableTelemetryLogging_; }
       set {
-        endTime_ = value;
+        enableTelemetryLogging_ = value;
       }
     }
 
-    /// <summary>Field number for the "time_scale" field.</summary>
-    public const int TimeScaleFieldNumber = 2;
-    private float timeScale_;
+    /// <summary>Field number for the "enable_event_logging" field.</summary>
+    public const int EnableEventLoggingFieldNumber = 2;
+    private bool enableEventLogging_;
     /// <summary>
-    /// Time scale.
+    /// Enable event logging.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float TimeScale {
-      get { return timeScale_; }
+    public bool EnableEventLogging {
+      get { return enableEventLogging_; }
       set {
-        timeScale_ = value;
+        enableEventLogging_ = value;
       }
     }
 
-    /// <summary>Field number for the "interceptor_swarm_configs" field.</summary>
-    public const int InterceptorSwarmConfigsFieldNumber = 3;
-    private static readonly pb::FieldCodec<global::Micromissiles.AgentSwarmConfig> _repeated_interceptorSwarmConfigs_codec
-        = pb::FieldCodec.ForMessage(26, global::Micromissiles.AgentSwarmConfig.Parser);
-    private readonly pbc::RepeatedField<global::Micromissiles.AgentSwarmConfig> interceptorSwarmConfigs_ = new pbc::RepeatedField<global::Micromissiles.AgentSwarmConfig>();
+    /// <summary>Field number for the "enable_missile_trail_effect" field.</summary>
+    public const int EnableMissileTrailEffectFieldNumber = 3;
+    private bool enableMissileTrailEffect_;
     /// <summary>
-    /// Interceptor swarm configurations.
+    /// Enable missile trail effect.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Micromissiles.AgentSwarmConfig> InterceptorSwarmConfigs {
-      get { return interceptorSwarmConfigs_; }
+    public bool EnableMissileTrailEffect {
+      get { return enableMissileTrailEffect_; }
+      set {
+        enableMissileTrailEffect_ = value;
+      }
     }
 
-    /// <summary>Field number for the "threat_swarm_configs" field.</summary>
-    public const int ThreatSwarmConfigsFieldNumber = 4;
-    private static readonly pb::FieldCodec<global::Micromissiles.AgentSwarmConfig> _repeated_threatSwarmConfigs_codec
-        = pb::FieldCodec.ForMessage(34, global::Micromissiles.AgentSwarmConfig.Parser);
-    private readonly pbc::RepeatedField<global::Micromissiles.AgentSwarmConfig> threatSwarmConfigs_ = new pbc::RepeatedField<global::Micromissiles.AgentSwarmConfig>();
+    /// <summary>Field number for the "enable_explosion_effect" field.</summary>
+    public const int EnableExplosionEffectFieldNumber = 4;
+    private bool enableExplosionEffect_;
     /// <summary>
-    /// Threat swarm configurations.
+    /// Enable explosion effect.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Micromissiles.AgentSwarmConfig> ThreatSwarmConfigs {
-      get { return threatSwarmConfigs_; }
+    public bool EnableExplosionEffect {
+      get { return enableExplosionEffect_; }
+      set {
+        enableExplosionEffect_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "physics_update_rate" field.</summary>
+    public const int PhysicsUpdateRateFieldNumber = 5;
+    private float physicsUpdateRate_;
+    /// <summary>
+    /// Physics update rate in Hz.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float PhysicsUpdateRate {
+      get { return physicsUpdateRate_; }
+      set {
+        physicsUpdateRate_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "persistent_flight_trails" field.</summary>
+    public const int PersistentFlightTrailsFieldNumber = 6;
+    private bool persistentFlightTrails_;
+    /// <summary>
+    /// Persistent flight trails.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool PersistentFlightTrails {
+      get { return persistentFlightTrails_; }
+      set {
+        persistentFlightTrails_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -165,10 +199,12 @@ namespace Micromissiles {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(EndTime, other.EndTime)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(TimeScale, other.TimeScale)) return false;
-      if(!interceptorSwarmConfigs_.Equals(other.interceptorSwarmConfigs_)) return false;
-      if(!threatSwarmConfigs_.Equals(other.threatSwarmConfigs_)) return false;
+      if (EnableTelemetryLogging != other.EnableTelemetryLogging) return false;
+      if (EnableEventLogging != other.EnableEventLogging) return false;
+      if (EnableMissileTrailEffect != other.EnableMissileTrailEffect) return false;
+      if (EnableExplosionEffect != other.EnableExplosionEffect) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PhysicsUpdateRate, other.PhysicsUpdateRate)) return false;
+      if (PersistentFlightTrails != other.PersistentFlightTrails) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -176,10 +212,12 @@ namespace Micromissiles {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (EndTime != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(EndTime);
-      if (TimeScale != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(TimeScale);
-      hash ^= interceptorSwarmConfigs_.GetHashCode();
-      hash ^= threatSwarmConfigs_.GetHashCode();
+      if (EnableTelemetryLogging != false) hash ^= EnableTelemetryLogging.GetHashCode();
+      if (EnableEventLogging != false) hash ^= EnableEventLogging.GetHashCode();
+      if (EnableMissileTrailEffect != false) hash ^= EnableMissileTrailEffect.GetHashCode();
+      if (EnableExplosionEffect != false) hash ^= EnableExplosionEffect.GetHashCode();
+      if (PhysicsUpdateRate != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PhysicsUpdateRate);
+      if (PersistentFlightTrails != false) hash ^= PersistentFlightTrails.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -198,16 +236,30 @@ namespace Micromissiles {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (EndTime != 0F) {
-        output.WriteRawTag(13);
-        output.WriteFloat(EndTime);
+      if (EnableTelemetryLogging != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(EnableTelemetryLogging);
       }
-      if (TimeScale != 0F) {
-        output.WriteRawTag(21);
-        output.WriteFloat(TimeScale);
+      if (EnableEventLogging != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(EnableEventLogging);
       }
-      interceptorSwarmConfigs_.WriteTo(output, _repeated_interceptorSwarmConfigs_codec);
-      threatSwarmConfigs_.WriteTo(output, _repeated_threatSwarmConfigs_codec);
+      if (EnableMissileTrailEffect != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(EnableMissileTrailEffect);
+      }
+      if (EnableExplosionEffect != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(EnableExplosionEffect);
+      }
+      if (PhysicsUpdateRate != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(PhysicsUpdateRate);
+      }
+      if (PersistentFlightTrails != false) {
+        output.WriteRawTag(48);
+        output.WriteBool(PersistentFlightTrails);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -218,16 +270,30 @@ namespace Micromissiles {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EndTime != 0F) {
-        output.WriteRawTag(13);
-        output.WriteFloat(EndTime);
+      if (EnableTelemetryLogging != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(EnableTelemetryLogging);
       }
-      if (TimeScale != 0F) {
-        output.WriteRawTag(21);
-        output.WriteFloat(TimeScale);
+      if (EnableEventLogging != false) {
+        output.WriteRawTag(16);
+        output.WriteBool(EnableEventLogging);
       }
-      interceptorSwarmConfigs_.WriteTo(ref output, _repeated_interceptorSwarmConfigs_codec);
-      threatSwarmConfigs_.WriteTo(ref output, _repeated_threatSwarmConfigs_codec);
+      if (EnableMissileTrailEffect != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(EnableMissileTrailEffect);
+      }
+      if (EnableExplosionEffect != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(EnableExplosionEffect);
+      }
+      if (PhysicsUpdateRate != 0F) {
+        output.WriteRawTag(45);
+        output.WriteFloat(PhysicsUpdateRate);
+      }
+      if (PersistentFlightTrails != false) {
+        output.WriteRawTag(48);
+        output.WriteBool(PersistentFlightTrails);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -238,14 +304,24 @@ namespace Micromissiles {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (EndTime != 0F) {
+      if (EnableTelemetryLogging != false) {
+        size += 1 + 1;
+      }
+      if (EnableEventLogging != false) {
+        size += 1 + 1;
+      }
+      if (EnableMissileTrailEffect != false) {
+        size += 1 + 1;
+      }
+      if (EnableExplosionEffect != false) {
+        size += 1 + 1;
+      }
+      if (PhysicsUpdateRate != 0F) {
         size += 1 + 4;
       }
-      if (TimeScale != 0F) {
-        size += 1 + 4;
+      if (PersistentFlightTrails != false) {
+        size += 1 + 1;
       }
-      size += interceptorSwarmConfigs_.CalculateSize(_repeated_interceptorSwarmConfigs_codec);
-      size += threatSwarmConfigs_.CalculateSize(_repeated_threatSwarmConfigs_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -258,14 +334,24 @@ namespace Micromissiles {
       if (other == null) {
         return;
       }
-      if (other.EndTime != 0F) {
-        EndTime = other.EndTime;
+      if (other.EnableTelemetryLogging != false) {
+        EnableTelemetryLogging = other.EnableTelemetryLogging;
       }
-      if (other.TimeScale != 0F) {
-        TimeScale = other.TimeScale;
+      if (other.EnableEventLogging != false) {
+        EnableEventLogging = other.EnableEventLogging;
       }
-      interceptorSwarmConfigs_.Add(other.interceptorSwarmConfigs_);
-      threatSwarmConfigs_.Add(other.threatSwarmConfigs_);
+      if (other.EnableMissileTrailEffect != false) {
+        EnableMissileTrailEffect = other.EnableMissileTrailEffect;
+      }
+      if (other.EnableExplosionEffect != false) {
+        EnableExplosionEffect = other.EnableExplosionEffect;
+      }
+      if (other.PhysicsUpdateRate != 0F) {
+        PhysicsUpdateRate = other.PhysicsUpdateRate;
+      }
+      if (other.PersistentFlightTrails != false) {
+        PersistentFlightTrails = other.PersistentFlightTrails;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -285,20 +371,28 @@ namespace Micromissiles {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 13: {
-            EndTime = input.ReadFloat();
+          case 8: {
+            EnableTelemetryLogging = input.ReadBool();
             break;
           }
-          case 21: {
-            TimeScale = input.ReadFloat();
+          case 16: {
+            EnableEventLogging = input.ReadBool();
             break;
           }
-          case 26: {
-            interceptorSwarmConfigs_.AddEntriesFrom(input, _repeated_interceptorSwarmConfigs_codec);
+          case 24: {
+            EnableMissileTrailEffect = input.ReadBool();
             break;
           }
-          case 34: {
-            threatSwarmConfigs_.AddEntriesFrom(input, _repeated_threatSwarmConfigs_codec);
+          case 32: {
+            EnableExplosionEffect = input.ReadBool();
+            break;
+          }
+          case 45: {
+            PhysicsUpdateRate = input.ReadFloat();
+            break;
+          }
+          case 48: {
+            PersistentFlightTrails = input.ReadBool();
             break;
           }
         }
@@ -320,20 +414,28 @@ namespace Micromissiles {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 13: {
-            EndTime = input.ReadFloat();
+          case 8: {
+            EnableTelemetryLogging = input.ReadBool();
             break;
           }
-          case 21: {
-            TimeScale = input.ReadFloat();
+          case 16: {
+            EnableEventLogging = input.ReadBool();
             break;
           }
-          case 26: {
-            interceptorSwarmConfigs_.AddEntriesFrom(ref input, _repeated_interceptorSwarmConfigs_codec);
+          case 24: {
+            EnableMissileTrailEffect = input.ReadBool();
             break;
           }
-          case 34: {
-            threatSwarmConfigs_.AddEntriesFrom(ref input, _repeated_threatSwarmConfigs_codec);
+          case 32: {
+            EnableExplosionEffect = input.ReadBool();
+            break;
+          }
+          case 45: {
+            PhysicsUpdateRate = input.ReadFloat();
+            break;
+          }
+          case 48: {
+            PersistentFlightTrails = input.ReadBool();
             break;
           }
         }
