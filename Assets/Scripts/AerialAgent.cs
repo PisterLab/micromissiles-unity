@@ -53,8 +53,8 @@ public abstract class AerialAgent : Agent {
   public override void TerminateAgent() {
     if (_flightPhase != FlightPhase.TERMINATED) {
       _flightPhase = FlightPhase.TERMINATED;
-      SetPosition(Vector3.zero);
       base.TerminateAgent();  // This will handle UnassignTarget() and OnTerminated event
+      SetPosition(Vector3.zero);
     }
   }
 
