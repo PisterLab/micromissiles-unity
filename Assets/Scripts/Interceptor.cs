@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interceptor : Agent {
+public class Interceptor : AerialAgent {
   [SerializeField]
   private float _navigationGain = 3f;  // Typically 3-5.
 
