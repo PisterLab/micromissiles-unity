@@ -220,7 +220,8 @@ public class IADS : MonoBehaviour {
   }
 
   public bool ShouldLaunchSubmunitions(Interceptor carrier) {
-    if (!HasClusterAssignment(carrier)) return false;
+    if (!HasClusterAssignment(carrier))
+      return false;
     // The carrier interceptor will spawn submunitions when any target is greater than 30 degrees
     // away from the carrier interceptor's current velocity or when any threat is within 500 meters
     // of the interceptor.
@@ -272,10 +273,12 @@ public class IADS : MonoBehaviour {
   // Releases interceptors from clusters that only contain destroyed threats.
   private void CleanupDestroyedClusters() {
     foreach (Cluster cluster in _threatClusters) {
-      if (!IsClusterFullyTerminated(cluster)) continue;
+      if (!IsClusterFullyTerminated(cluster))
+        continue;
 
       IReadOnlyList<Interceptor> assigned = _threatClusterMap[cluster].AssignedInterceptors;
-      if (assigned.Count == 0) continue;
+      if (assigned.Count == 0)
+        continue;
 
       foreach (Interceptor interceptor in assigned.ToList()) {
         ReleaseInterceptorFromCluster(cluster, interceptor);

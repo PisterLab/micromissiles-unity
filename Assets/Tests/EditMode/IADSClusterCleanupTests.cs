@@ -16,37 +16,36 @@ public class IADSClusterCleanupTests : AgentTestBase {
   [TearDown]
   public override void Teardown() {
     base.Teardown();
-    if (iads != null) GameObject.DestroyImmediate(iads.gameObject);
+    if (iads != null)
+      GameObject.DestroyImmediate(iads.gameObject);
   }
 
   private DynamicAgentConfig ThreatCfg() => new DynamicAgentConfig {
-    agent_model = "brahmos.pbtxt",
-    attack_behavior = "brahmos_direct_attack.json",
+    agent_model = "brahmos.pbtxt", attack_behavior = "brahmos_direct_attack.json",
     initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.zero },
     standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
-    dynamic_config = new DynamicConfig {
-      sensor_config = new SensorConfig { type = SensorType.IDEAL, frequency = 10 }
-    }
+    dynamic_config = new DynamicConfig { sensor_config = new SensorConfig { type = SensorType.IDEAL,
+                                                                            frequency = 10 } }
   };
 
   private DynamicAgentConfig CarrierCfg() => new DynamicAgentConfig {
     agent_model = "hydra70.pbtxt",
     initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.forward * 50 },
     standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
-    dynamic_config = new DynamicConfig {
-      sensor_config = new SensorConfig { type = SensorType.IDEAL, frequency = 10 },
-      flight_config = new FlightConfig { augmentedPnEnabled = false }
-    }
+    dynamic_config =
+        new DynamicConfig { sensor_config = new SensorConfig { type = SensorType.IDEAL,
+                                                               frequency = 10 },
+                            flight_config = new FlightConfig { augmentedPnEnabled = false } }
   };
 
   private DynamicAgentConfig MissileCfg() => new DynamicAgentConfig {
     agent_model = "micromissile.pbtxt",
     initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.forward * 50 },
     standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
-    dynamic_config = new DynamicConfig {
-      sensor_config = new SensorConfig { type = SensorType.IDEAL, frequency = 10 },
-      flight_config = new FlightConfig { augmentedPnEnabled = false }
-    }
+    dynamic_config =
+        new DynamicConfig { sensor_config = new SensorConfig { type = SensorType.IDEAL,
+                                                               frequency = 10 },
+                            flight_config = new FlightConfig { augmentedPnEnabled = false } }
   };
 
   private (Cluster, ThreatClusterData) MakeClusterWithThreats(params Threat[] threats) {
@@ -85,4 +84,3 @@ public class IADSClusterCleanupTests : AgentTestBase {
                    "Carriers without cluster mapping should not launch submunitions.");
   }
 }
-
