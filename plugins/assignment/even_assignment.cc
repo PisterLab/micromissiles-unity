@@ -7,6 +7,8 @@
 #include "ortools/sat/cp_model.h"
 #include "ortools/sat/cp_model.pb.h"
 #include "ortools/sat/cp_model_solver.h"
+#include "ortools/sat/model.h"
+#include "ortools/sat/sat_parameters.pb.h"
 
 namespace assignment {
 
@@ -54,14 +56,22 @@ std::vector<Assignment::AssignmentItem> EvenAssignment::Assign() const {
   operations_research::sat::DoubleLinearExpr total_cost;
   for (int i = 0; i < num_agents_; ++i) {
     for (int j = 0; j < num_tasks_; ++j) {
-      total_cost = total_cost.AddTerm(x[i][j], costs_[i][j]);
+      total_cost.AddTerm(x[i][j], costs_[i][j]);
     }
   }
   cp_model.Minimize(total_cost);
 
+  // Set the solver parameters.
+  operations_research::sat::Model model;
+  operations_research::sat::SatParameters params;
+  params.set_log_search_progress(true);
+  params.set_cp_model_presolve(false);
+  params.set_num_workers(1);
+  model.Add(operations_research::sat::NewSatParameters(params));
+
   // Solve the assignment problem.
   const operations_research::sat::CpSolverResponse response =
-      Solve(cp_model.Build());
+      operations_research::sat::SolveCpModel(cp_model.Build(), &model);
 
   // Check the feasibility of the solution.
   if (response.status() ==
