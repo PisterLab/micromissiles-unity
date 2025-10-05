@@ -8,7 +8,7 @@
       "initial_position": { "x": 0, "y": 0, "z": 5000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 24,
-      "interceptor_types": ["hydra70.json"],
+      "interceptor_types": ["hydra70.pbtxt"],
       "standard_deviation": {
         "position": { "x": 50, "y": 5, "z": 100 },
         "velocity": { "x": 1, "y": 0, "z": 2 }
@@ -20,19 +20,19 @@
       "initial_position": { "x": -2000, "y": 0, "z": 4000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 8,
-      "interceptor_types": ["hydra70.json", "sfrj.json"],
+      "interceptor_types": ["hydra70.pbtxt", "sfrj.pbtxt"],
       "standard_deviation": {
         "position": { "x": 100, "y": 5, "z": 150 },
         "velocity": { "x": 1, "y": 0, "z": 1 }
       }
     },
     {
-      "id": "DDG-51-Burke-2", 
+      "id": "DDG-51-Burke-2",
       "type": "Ship",
       "initial_position": { "x": 2000, "y": 0, "z": 4000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 8,
-      "interceptor_types": ["hydra70.json", "sfrj.json"],
+      "interceptor_types": ["hydra70.pbtxt", "sfrj.pbtxt"],
       "standard_deviation": {
         "position": { "x": 100, "y": 0, "z": 150 },
         "velocity": { "x": 1, "y": 0, "z": 1 }
@@ -44,7 +44,7 @@
       "initial_position": { "x": 3000, "y": 0, "z": 6000 },
       "velocity": { "x": 0, "y": 0, "z": -12 },
       "max_interceptors": 12,
-      "interceptor_types": ["hydra70.json", "sfrj.json"],
+      "interceptor_types": ["hydra70.pbtxt", "sfrj.pbtxt"],
       "standard_deviation": {
         "position": { "x": 75, "y": 0, "z": 125 },
         "velocity": { "x": 1, "y": 0, "z": 1.5 }
@@ -56,7 +56,7 @@
       "initial_position": { "x": 15000, "y": 100, "z": 0 },
       "velocity": { "x": 0, "y": 0, "z": 0 },
       "max_interceptors": 48,
-      "interceptor_types": ["hydra70.json", "sfrj.json", "patriot.json"],
+      "interceptor_types": ["hydra70.pbtxt", "sfrj.pbtxt", "patriot.pbtxt"],
       "standard_deviation": {
         "position": { "x": 200, "y": 0, "z": 200 },
         "velocity": { "x": 0, "y": 0, "z": 0 }
@@ -67,7 +67,7 @@
   "interceptor_swarm_configs": [
     {
       "dynamic_agent_config": {
-        "agent_model": "hydra70.json",
+        "agent_model": "hydra70.pbtxt",
         "dynamic_config": {
           "sensor_config": {
             "type": "IDEAL",
@@ -80,7 +80,7 @@
         "submunitions_config": {
           "num_submunitions": 7,
           "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
+            "agent_model": "micromissile.pbtxt",
             "dynamic_config": {
               "sensor_config": {
                 "type": "IDEAL",
@@ -99,7 +99,7 @@
     {
       "num_agents": 22,
       "dynamic_agent_config": {
-        "agent_model": "brahmos.json",
+        "agent_model": "brahmos.pbtxt",
         "attack_behavior": "brahmos_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 50, "z": 40000 },

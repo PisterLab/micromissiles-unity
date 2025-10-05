@@ -12,7 +12,7 @@ public class AgentTests : AgentTestBase {
     base.Setup();
 
     var threatConfig = new DynamicAgentConfig {
-      agent_model = "brahmos.json", attack_behavior = "brahmos_direct_attack.json",
+      agent_model = "brahmos.pbtxt", attack_behavior = "brahmos_direct_attack.json",
       initial_state = new InitialState { position = new Vector3(0, 50, 1000),
                                          velocity = new Vector3(0, 0, -100) },
       standard_deviation =
@@ -25,7 +25,7 @@ public class AgentTests : AgentTestBase {
     testThreat = CreateTestThreat(threatConfig);
 
     var interceptorConfig = new DynamicAgentConfig {
-      agent_model = "hydra70.json",
+      agent_model = "hydra70.pbtxt",
       initial_state =
           new InitialState { position = new Vector3(100, 0, 0), velocity = new Vector3(-10, 0, 0) },
       standard_deviation =
@@ -49,7 +49,7 @@ public class AgentTests : AgentTestBase {
   [Test]
   public void CreateThreat_ProperlyStoresInitialVelocity() {
     var threatConfig = new DynamicAgentConfig {
-      agent_model = "brahmos.json", attack_behavior = "brahmos_direct_attack.json",
+      agent_model = "brahmos.pbtxt", attack_behavior = "brahmos_direct_attack.json",
       initial_state = new InitialState { position = new Vector3(0, 50, 40000),
                                          velocity = new Vector3(0, 0, -2000f) },
       standard_deviation =
@@ -92,7 +92,7 @@ public class AgentTests : AgentTestBase {
     testThreat.SetFlightPhase(AerialAgent.FlightPhase.MIDCOURSE);
 
     testThreat.dynamicAgentConfig = new DynamicAgentConfig {
-      agent_model = "brahmos.json", attack_behavior = "brahmos_direct_attack.json",
+      agent_model = "brahmos.pbtxt", attack_behavior = "brahmos_direct_attack.json",
       initial_state = new InitialState { position = testThreat.GetPosition(),
                                          velocity = testThreat.GetVelocity() },
       standard_deviation =

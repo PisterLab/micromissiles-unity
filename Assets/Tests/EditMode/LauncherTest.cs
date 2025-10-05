@@ -11,17 +11,17 @@ public class LauncherTest : TestBase {
   [Test]
   public void TestLauncher_SupportsInterceptorType() {
     // Test interceptor type compatibility checking
-    var origin = new LauncherConfig {
-      id = "Multi-Role-Platform", initial_position = Vector3.zero, velocity = Vector3.zero,
-      max_interceptors = 15,
-      interceptor_types = new List<string> { "hydra70.json", "micromissile.json", "patriot.json" }
-    };
+    var origin = new LauncherConfig { id = "Multi-Role-Platform", initial_position = Vector3.zero,
+                                      velocity = Vector3.zero, max_interceptors = 15,
+                                      interceptor_types =
+                                          new List<string> { "hydra70.pbtxt", "micromissile.pbtxt",
+                                                             "patriot.pbtxt" } };
 
-    Assert.IsTrue(origin.SupportsInterceptorType("hydra70.json"));
-    Assert.IsTrue(origin.SupportsInterceptorType("micromissile.json"));
-    Assert.IsTrue(origin.SupportsInterceptorType("patriot.json"));
-    Assert.IsFalse(origin.SupportsInterceptorType("sm2.json"));
-    Assert.IsFalse(origin.SupportsInterceptorType("nonexistent.json"));
+    Assert.IsTrue(origin.SupportsInterceptorType("hydra70.pbtxt"));
+    Assert.IsTrue(origin.SupportsInterceptorType("micromissile.pbtxt"));
+    Assert.IsTrue(origin.SupportsInterceptorType("patriot.pbtxt"));
+    Assert.IsFalse(origin.SupportsInterceptorType("sm2.pbtxt"));
+    Assert.IsFalse(origin.SupportsInterceptorType("nonexistent.pbtxt"));
   }
 
   [Test]
@@ -30,7 +30,7 @@ public class LauncherTest : TestBase {
     var origin =
         new LauncherConfig { id = "Limited-Capacity-Launcher", initial_position = Vector3.zero,
                              velocity = Vector3.zero, max_interceptors = 5,
-                             interceptor_types = new List<string> { "hydra70.json" } };
+                             interceptor_types = new List<string> { "hydra70.pbtxt" } };
 
     // Initially should have full capacity
     Assert.IsTrue(origin.HasCapacity());
@@ -60,7 +60,7 @@ public class LauncherTest : TestBase {
     // Test releasing interceptors back to the pool
     var origin = new LauncherConfig { id = "Release-Test-Launcher", initial_position = Vector3.zero,
                                       velocity = Vector3.zero, max_interceptors = 3,
-                                      interceptor_types = new List<string> { "hydra70.json" } };
+                                      interceptor_types = new List<string> { "hydra70.pbtxt" } };
 
     // Allocate all capacity
     origin.AllocateInterceptor();
@@ -99,11 +99,11 @@ public class LauncherTest : TestBase {
   [Test]
   public void TestLauncher_JsonSerialization() {
     // Test that LauncherConfig can be properly serialized/deserialized
-    var originalOrigin =
-        new LauncherConfig { id = "Serialization-Test",
-                             initial_position = new Vector3(1000, 500, 2000),
-                             velocity = new Vector3(5, 0, -10), max_interceptors = 25,
-                             interceptor_types = new List<string> { "test1.json", "test2.json" } };
+    var originalOrigin = new LauncherConfig {
+      id = "Serialization-Test", initial_position = new Vector3(1000, 500, 2000),
+      velocity = new Vector3(5, 0, -10), max_interceptors = 25,
+      interceptor_types = new List<string> { "test1.pbtxt", "test2.pbtxt" }
+    };
 
     // Configure JsonSerializerSettings to handle Unity Vector3 circular references
     var settings = new JsonSerializerSettings {

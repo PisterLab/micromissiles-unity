@@ -22,14 +22,14 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
     _staticLauncher = new LauncherConfig {
       id = "Static-Test-Launcher", initial_position = new Vector3(1000, 0, 2000),
       velocity = Vector3.zero, max_interceptors = 10,
-      interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
+      interceptor_types = new System.Collections.Generic.List<string> { "test.pbtxt" }
     };
 
     _movingLauncher = new LauncherConfig {
       id = "Moving-Test-Launcher", initial_position = new Vector3(500, 0, 1000),
       velocity = new Vector3(0, 0, -10),  // Moving 10 m/s in -Z direction
       max_interceptors = 5,
-      interceptor_types = new System.Collections.Generic.List<string> { "test.json" }
+      interceptor_types = new System.Collections.Generic.List<string> { "test.pbtxt" }
     };
 
     // Set up mock components
@@ -173,7 +173,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
         new LauncherConfig { id = "Behind-Threat-Launcher", initial_position = originPosition,
                              velocity = Vector3.zero, max_interceptors = 1,
                              interceptor_types =
-                                 new System.Collections.Generic.List<string> { "test.json" } };
+                                 new System.Collections.Generic.List<string> { "test.pbtxt" } };
 
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
     _mockLaunchAnglePlanner.SetMockResponse(45f, 5f);
@@ -219,7 +219,7 @@ public class LauncherAwareLaunchPlanningTest : TestBase {
         new LauncherConfig { id = "Convergence-Test-Launcher", initial_position = originPosition,
                              velocity = Vector3.zero, max_interceptors = 1,
                              interceptor_types =
-                                 new System.Collections.Generic.List<string> { "test.json" } };
+                                 new System.Collections.Generic.List<string> { "test.pbtxt" } };
 
     _mockPredictor.SetThreatTrajectory(threatInitialPos, threatVelocity);
     _mockLaunchAnglePlanner.SetMockConvergentResponse();  // Make it converge after a few iterations
