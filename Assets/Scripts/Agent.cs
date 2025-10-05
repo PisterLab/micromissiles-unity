@@ -71,11 +71,11 @@ public abstract class Agent : MonoBehaviour {
     return _flightPhase;
   }
 
-  public bool HasLaunched() {
+  public bool IsInitialized() {
     return _flightPhase != FlightPhase.INITIALIZED;
   }
 
-  public bool HasTerminated() {
+  public bool IsTerminated() {
     return _flightPhase == FlightPhase.TERMINATED;
   }
 
@@ -116,10 +116,6 @@ public abstract class Agent : MonoBehaviour {
     }
     _target = null;
     _targetModel = null;
-  }
-
-  public bool IsTerminated() {
-    return _flightPhase == FlightPhase.TERMINATED;
   }
 
   public void AddInterceptor(Agent interceptor) {

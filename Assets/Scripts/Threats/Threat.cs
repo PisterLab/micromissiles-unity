@@ -90,7 +90,7 @@ public abstract class Threat : Agent {
     Agent closestInterceptor = null;
     float minDistance = float.MaxValue;
     foreach (var interceptor in _interceptors) {
-      if (!interceptor.HasTerminated()) {
+      if (!interceptor.IsTerminated()) {
         SensorOutput sensorOutput = _sensor.Sense(interceptor);
         if (sensorOutput.position.range < minDistance) {
           closestInterceptor = interceptor;
