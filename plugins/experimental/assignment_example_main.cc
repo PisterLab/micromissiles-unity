@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
 
   // Solve.
   const operations_research::sat::CpSolverResponse response =
-      Solve(cp_model.Build());
+      operations_research::sat::Solve(cp_model.Build());
 
   // Print solution.
   if (response.status() ==

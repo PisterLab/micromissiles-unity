@@ -8,18 +8,19 @@
 #include <cstdint>
 #include <vector>
 
-#include "assignment/assignment.h"
+#include "assignment/cp_assignment.h"
+#include "ortools/sat/cp_model.h"
 
 namespace assignment {
 
 // Weighted even assignment.
-class WeightedEvenAssignment : public Assignment {
+class WeightedEvenAssignment : public CpAssignment {
  public:
   WeightedEvenAssignment(const int num_agents, const int num_tasks,
                          std::vector<std::vector<double>> costs,
                          std::vector<double> weights,
                          const int64_t weight_scaling_factor)
-      : Assignment(num_agents, num_tasks, std::move(costs)),
+      : CpAssignment(num_agents, num_tasks, std::move(costs)),
         weights_(std::move(weights)),
         weight_scaling_factor_(weight_scaling_factor) {
     ValidateWeights();
@@ -28,8 +29,11 @@ class WeightedEvenAssignment : public Assignment {
   WeightedEvenAssignment(const WeightedEvenAssignment&) = default;
   WeightedEvenAssignment& operator=(const WeightedEvenAssignment&) = default;
 
-  // Assign the agents to the tasks.
-  std::vector<AssignmentItem> Assign() const override;
+ protected:
+  // Define the constraints of the assignment problem.
+  void DefineConstraints(
+      const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
+      operations_research::sat::CpModelBuilder* cp_model) const override;
 
  private:
   // Validate the task weights.

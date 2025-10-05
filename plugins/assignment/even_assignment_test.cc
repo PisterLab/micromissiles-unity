@@ -5,8 +5,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "assignment/assignment.h"
-
 namespace assignment {
 namespace {
 
