@@ -1,8 +1,10 @@
 name: Documentation
 
 on:
-  pull_request:
-    branches: [master]
+  pull_request:  # Run on all branches.
+  push:
+    branches:
+      - master
   workflow_run:
     workflows: [Test]
     types: [completed]
@@ -41,7 +43,11 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'master'
+        if: |
+          github.event_name == 'workflow_run' &&
+          github.event.workflow_run.event == 'push' &&
+          github.event.workflow_run.head_branch == 'master' &&
+          github.event.workflow_run.conclusion == 'success'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/.vitepress/dist

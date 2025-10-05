@@ -33,15 +33,36 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
                                  timeToPosition: interpolatedDataPoint.Data[1]);
   }
 
-  // Get the intercept position.
-  public Vector3 GetInterceptPosition(Vector3 position) {
-    Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(position);
+  // Get the intercept position for a target from a specific origin.
+  // This accounts for the interceptor's starting position when calculating intercept geometry.
+  //   targetPosition: Target position
+  //   originPosition: Interceptor origin position
+  // Returns: Calculated intercept position
+  public Vector3 GetInterceptPosition(Vector3 targetPosition, Vector3 originPosition) {
+    Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(targetPosition, originPosition);
+
+    if (_interpolator == null) {
+      InitInterpolator();
+    }
+
     Interpolator2DDataPoint interpolatedDataPoint =
         _interpolator.Interpolate(direction[0], direction[1]);
-    Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(position);
-    return Coordinates3.ConvertCylindricalToCartesian(r: interpolatedDataPoint.Coordinates[0],
-                                                      azimuth: cylindricalPosition.y,
-                                                      height: interpolatedDataPoint.Coordinates[1]);
+
+    if (interpolatedDataPoint == null || interpolatedDataPoint.Data == null ||
+        interpolatedDataPoint.Data.Count < 2) {
+      throw new InvalidOperationException("Interpolator returned invalid data.");
+    }
+
+    // Convert relative position to cylindrical coordinates
+    Vector3 relativePosition = targetPosition - originPosition;
+    Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(relativePosition);
+
+    // Calculate intercept position relative to origin, then add origin offset
+    Vector3 relativeInterceptPosition = Coordinates3.ConvertCylindricalToCartesian(
+        r: interpolatedDataPoint.Coordinates[0], azimuth: cylindricalPosition.y,
+        height: cylindricalPosition.z);
+
+    return originPosition + relativeInterceptPosition;
   }
 }
 

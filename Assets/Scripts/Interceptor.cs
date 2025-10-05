@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interceptor : Agent {
+public class Interceptor : AerialAgent {
   [SerializeField]
   private float _navigationGain = 3f;  // Typically 3-5.
 
@@ -79,12 +79,12 @@ public class Interceptor : Agent {
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();
 
     if (!HasAssignedTarget()) {
-      // Counter gravity if possible.
-      accelerationInput =
-          (float)Constants.kGravity / Vector3.Dot(transform.up, Vector3.up) * transform.up;
-      accelerationInput = Vector3.ClampMagnitude(accelerationInput, maxNormalAcceleration);
-      _accelerationInput = accelerationInput;
-      return accelerationInput;
+      // No assigned target: do not generate control input.
+      // Gravity and drag are applied centrally in AerialAgent.CalculateAcceleration,
+      // so returning zero here ensures idle missiles/carriers still experience gravity
+      // and do not artificially hover.
+      _accelerationInput = Vector3.zero;
+      return _accelerationInput;
     }
 
     UpdateTargetModel(deltaTime);
@@ -112,8 +112,19 @@ public class Interceptor : Agent {
   }
 
   private void UpdateTargetModel(double deltaTime) {
+    // Skip if target/model/sensor is unavailable. This prevents null dereferences
+    // during phases before assignment or when configs are incomplete.
+    if (_targetModel == null || _target == null) {
+      return;
+    }
+
+    var sensorConfig = dynamicAgentConfig?.dynamic_config?.sensor_config;
+    if (sensorConfig == null || sensorConfig.frequency <= 0f) {
+      return;
+    }
+
     _elapsedTime += deltaTime;
-    float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+    float sensorUpdatePeriod = 1f / sensorConfig.frequency;
     if (_elapsedTime >= sensorUpdatePeriod) {
       // TODO: Implement guidance filter to estimate state from the sensor output.
       // For now, we'll use the threat's actual state.
