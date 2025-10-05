@@ -73,7 +73,7 @@ public class IADS : MonoBehaviour {
 
     // Assign any interceptors that are no longer assigned to any threat.
     AssignInterceptorToThreat(
-        _assignableInterceptors.Where(interceptor => !interceptor.HasTerminated()).ToList());
+        _assignableInterceptors.Where(interceptor => !interceptor.IsTerminated()).ToList());
   }
 
   private void RegisterSimulationStarted() {

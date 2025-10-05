@@ -143,9 +143,8 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(_fixedWingThreat, "CalculateAccelerationInput");
     float maxForwardAcceleration = _fixedWingThreat.CalculateMaxForwardAcceleration();
     const float epsilon = 1e-5f;
-    Assert.LessOrEqual(
-        (Vector3.Project(acceleration, _fixedWingThreat.transform.forward)).magnitude,
-        maxForwardAcceleration + epsilon);
+    Assert.LessOrEqual(Vector3.Project(acceleration, _fixedWingThreat.transform.forward).magnitude,
+                       maxForwardAcceleration + epsilon);
   }
 
   [Test]
@@ -167,9 +166,8 @@ public class ThreatTests : AgentTestBase {
         InvokePrivateMethod<Vector3>(_rotaryWingThreat, "CalculateAccelerationToWaypoint");
     float maxForwardAcceleration = _rotaryWingThreat.CalculateMaxForwardAcceleration();
     const float epsilon = 1e-5f;
-    Assert.LessOrEqual(
-        (Vector3.Project(acceleration, _fixedWingThreat.transform.forward)).magnitude,
-        maxForwardAcceleration + epsilon);
+    Assert.LessOrEqual(Vector3.Project(acceleration, _fixedWingThreat.transform.forward).magnitude,
+                       maxForwardAcceleration + epsilon);
   }
 
   [Test]

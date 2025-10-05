@@ -17,7 +17,6 @@ public class TacticalSymbol : MonoBehaviour {
 
   private SpriteManager _spriteManager;
 
-  // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Awake() {
     _spriteManager = new SpriteManager();
     _uniqueDesignatorText.text = "";
@@ -80,7 +79,6 @@ public class TacticalSymbol : MonoBehaviour {
     }
   }
 
-  // Update is called once per frame
   void Update() {}
 }
 

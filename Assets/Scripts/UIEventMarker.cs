@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 
 public class UIEventMarker : MonoBehaviour {
-  // Start is called once before the first execution of Update after the MonoBehaviour is created
   private TextMeshProUGUI _text;
 
   void Awake() {
@@ -22,7 +21,6 @@ public class UIEventMarker : MonoBehaviour {
     _text.color = Color.red;
   }
 
-  // Update is called once per frame
   void LateUpdate() {
     transform.LookAt(Camera.main.transform);
   }
