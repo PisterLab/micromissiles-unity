@@ -44,7 +44,7 @@ public class LauncherConfig {
 
   // List of interceptor model files that this launcher can launch.
   // Different platforms support different interceptor types.
-  // Examples: ["sm2.json", "sm6.json"] for destroyers, ["hydra70.json"] for aircraft.
+  // Examples: ["sm2.pbtxt", "sm6.pbtxt"] for destroyers, ["hydra70.pbtxt"] for aircraft.
   public List<string> interceptor_types;
 
   // Standard deviation for randomizing initial position and velocity.

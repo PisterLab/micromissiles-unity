@@ -10,7 +10,7 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected Agent _targetModel;
 
-  public StaticAgentConfig staticAgentConfig;
+  public Configs.StaticConfig staticConfig;
   public DynamicAgentConfig dynamicAgentConfig;
 
   // Define delegates.
@@ -32,9 +32,9 @@ public abstract class Agent : MonoBehaviour {
     dynamicAgentConfig = config;
   }
 
-  public virtual void SetStaticAgentConfig(StaticAgentConfig config) {
-    staticAgentConfig = config;
-    GetComponent<Rigidbody>().mass = staticAgentConfig.bodyConfig.mass;
+  public virtual void SetStaticConfig(Configs.StaticConfig config) {
+    staticConfig = config;
+    GetComponent<Rigidbody>().mass = staticConfig.BodyConfig.Mass;
   }
 
   public virtual bool IsAssignable() {

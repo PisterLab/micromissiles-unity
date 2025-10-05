@@ -1,0 +1,73 @@
+end_time: 300
+time_scale: 1
+interceptor_swarm_configs {
+  agent_config {
+    config_file: "hydra70.pbtxt"
+    dynamic_config {
+      flight_config {
+        controller: PROPORTIONAL_NAVIGATION
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+    submunitions_config {
+      num_submunitions: 7
+      agent_config: {
+        config_file: "micromissile.pbtxt"
+        dynamic_config {
+          flight_config {
+            controller: PROPORTIONAL_NAVIGATION
+          }
+          sensor_config {
+            type: IDEAL
+            frequency: 100
+          }
+        }
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    config_file: "quadcopter.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 6000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 1000
+        y: 200
+        z: 100
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion {
+            enabled: true
+            range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}

@@ -8,13 +8,13 @@
       "initial_position": { "x": 0, "y": 0, "z": 0 },
       "velocity": { "x": 0, "y": 0, "z": 0 },
       "max_interceptors": 100,
-      "interceptor_types": ["hydra70.json", "micromissile.json"]
+      "interceptor_types": ["hydra70.pbtxt", "micromissile.pbtxt"]
     }
   ],
   "interceptor_swarm_configs": [
     {
       "dynamic_agent_config": {
-        "agent_model": "hydra70.json",
+        "agent_model": "hydra70.pbtxt",
         "dynamic_config": {
           "sensor_config": {
             "type": "IDEAL",
@@ -27,7 +27,7 @@
         "submunitions_config": {
           "num_submunitions": 7,
           "dynamic_agent_config": {
-            "agent_model": "micromissile.json",
+            "agent_model": "micromissile.pbtxt",
             "dynamic_config": {
               "sensor_config": {
                 "type": "IDEAL",
@@ -46,7 +46,7 @@
     {
       "num_agents": 7,
       "dynamic_agent_config": {
-        "agent_model": "quadcopter.json",
+        "agent_model": "quadcopter.pbtxt",
         "attack_behavior": "default_direct_attack.json",
         "initial_state": {
           "position": { "x": 0, "y": 800, "z": 6000 },

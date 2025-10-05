@@ -5,12 +5,8 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 public class MaxSpeedAssignmentTest {
-  public static StaticAgentConfig CreateStaticAgentConfig() {
-    StaticAgentConfig config = new StaticAgentConfig();
-    config.accelerationConfig = new StaticAgentConfig.AccelerationConfig();
-    config.bodyConfig = new StaticAgentConfig.BodyConfig();
-    config.liftDragConfig = new StaticAgentConfig.LiftDragConfig();
-    return config;
+  public static Configs.StaticConfig LoadStaticConfig() {
+    return ConfigLoader.LoadStaticConfig("micromissile.pbtxt");
   }
 
   [Test]
@@ -56,11 +52,11 @@ public class MaxSpeedAssignmentTest {
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
-    interceptor1.staticAgentConfig = CreateStaticAgentConfig();
+    interceptor1.staticConfig = LoadStaticConfig();
     Interceptor interceptor2 = new GameObject("Interceptor 2").AddComponent<MissileInterceptor>();
-    interceptor2.staticAgentConfig = CreateStaticAgentConfig();
+    interceptor2.staticConfig = LoadStaticConfig();
     Interceptor interceptor3 = new GameObject("Interceptor 3").AddComponent<MissileInterceptor>();
-    interceptor3.staticAgentConfig = CreateStaticAgentConfig();
+    interceptor3.staticConfig = LoadStaticConfig();
 
     // Add rigid body components to interceptors to set their velocities.
     Rigidbody interceptorRb1 = interceptor1.gameObject.AddComponent<Rigidbody>();
@@ -122,11 +118,11 @@ public class MaxSpeedAssignmentTest {
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
-    interceptor1.staticAgentConfig = CreateStaticAgentConfig();
+    interceptor1.staticConfig = LoadStaticConfig();
     Interceptor interceptor2 = new GameObject("Interceptor 2").AddComponent<MissileInterceptor>();
-    interceptor2.staticAgentConfig = CreateStaticAgentConfig();
+    interceptor2.staticConfig = LoadStaticConfig();
     Interceptor interceptor3 = new GameObject("Interceptor 3").AddComponent<MissileInterceptor>();
-    interceptor3.staticAgentConfig = CreateStaticAgentConfig();
+    interceptor3.staticConfig = LoadStaticConfig();
 
     // Add rigid body components to interceptors to set their velocities.
     Rigidbody interceptorRb1 = interceptor1.gameObject.AddComponent<Rigidbody>();

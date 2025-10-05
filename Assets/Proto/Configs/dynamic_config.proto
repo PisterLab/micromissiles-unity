@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package configs;
+
+import "Simulation/sensor.proto";
+
+// Controller type enumeration.
+enum ControllerType {
+  PROPORTIONAL_NAVIGATION = 0;
+  AUGMENTED_PROPORTIONAL_NAVIGATION = 1;
+}
+
+// Flight configuration.
+message FlightConfig {
+  // Evasion configuration.
+  message EvasionConfig {
+    // If true, evasion is enabled.
+    bool enabled = 1;
+
+    // Range threshold in m at which the agent should evade.
+    float range_threshold = 2;
+  }
+
+  // Controller type.
+  ControllerType controller = 1;
+
+  // Evasion configuration.
+  EvasionConfig evasion = 2;
+}
+
+// Dynamic configuration.
+message DynamicConfig {
+  // Flight configuration.
+  FlightConfig flight_config = 1;
+
+  // Sensor configuration.
+  simulation.SensorConfig sensor_config = 2;
+}
