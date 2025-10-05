@@ -1,16 +1,6 @@
 {
   "endTime": 300,
   "timeScale": 1,
-  "launchers": [
-    {
-      "id": "Default-Launcher",
-      "type": "ShoreBattery",
-      "initial_position": { "x": 0, "y": 0, "z": 0 },
-      "velocity": { "x": 0, "y": 0, "z": 0 },
-      "max_interceptors": 100,
-      "interceptor_types": ["hydra70.pbtxt", "micromissile.pbtxt"]
-    }
-  ],
   "interceptor_swarm_configs": [
     {
       "dynamic_agent_config": {

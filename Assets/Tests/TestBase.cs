@@ -28,7 +28,7 @@ public abstract class TestBase {
     var type = obj.GetType();
     var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
 
-    // If not found in the immediate type, search the inheritance hierarchy
+    // If not found in the immediate type, search the inheritance hierarchy.
     while (field == null && type.BaseType != null) {
       type = type.BaseType;
       field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);

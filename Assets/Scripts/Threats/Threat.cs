@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// An abstract class for all threats.
-public abstract class Threat : AerialAgent {
+public abstract class Threat : Agent {
   protected AttackBehavior _attackBehavior;
   [SerializeField]
   protected Vector3 _currentWaypoint;
@@ -91,7 +90,7 @@ public abstract class Threat : AerialAgent {
     Agent closestInterceptor = null;
     float minDistance = float.MaxValue;
     foreach (var interceptor in _interceptors) {
-      if (!interceptor.IsTerminated()) {
+      if (!interceptor.HasTerminated()) {
         SensorOutput sensorOutput = _sensor.Sense(interceptor);
         if (sensorOutput.position.range < minDistance) {
           closestInterceptor = interceptor;

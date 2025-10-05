@@ -111,7 +111,7 @@ public class SimMonitor : MonoBehaviour {
       Vector3 vel = agent.GetVelocity();  // Ensure GetVelocity() doesn't allocate
 
       int agentID = agent.GetInstanceID();
-      int flightPhase = agent is AerialAgent aerialAgent ? (int)aerialAgent.GetFlightPhase() : -1;
+      int flightPhase = (int)agent.GetFlightPhase();
       byte agentType = (byte)(agent is Threat ? 0 : 1);
 
       // Write telemetry data directly to the binary file

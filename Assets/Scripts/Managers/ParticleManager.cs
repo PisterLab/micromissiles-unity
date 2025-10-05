@@ -156,9 +156,8 @@ public class ParticleManager : MonoBehaviour {
     _hitMarkerList.Clear();
   }
 
-  // Returns a missile explosion particle prefab from the pool and plays it at the specified
-  // location. If the pool is empty, it returns null.
-
+  /// Returns a missile explosion particle prefab from the pool and plays it at the specified
+  /// location. If the pool is empty, it returns null.
   public GameObject PlayMissileExplosion(Vector3 position) {
     if (_missileExplosionPool.Count > 0) {
       GameObject explosion = _missileExplosionPool.Dequeue();
@@ -236,9 +235,7 @@ public class ParticleManager : MonoBehaviour {
     }
   }
 
-  // Returns a missile trail particle prefab from the pool.
-  // If the pool is empty, it returns null
-  // Returns:
+  /// Returns a missile trail particle prefab from the pool. If the pool is empty, it returns null.
   public GameObject RequestMissileTrailParticle() {
     if (_missileTrailPool.Count > 0 &&
         SimManager.Instance.simulatorConfig.EnableMissileTrailEffect) {

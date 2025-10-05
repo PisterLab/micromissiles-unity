@@ -1,11 +1,11 @@
 using NUnit.Framework;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Collections;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
+
 public class ConfigTest : TestBase {
   [OneTimeSetUp]
   public void LoadScene() {
@@ -17,7 +17,7 @@ public class ConfigTest : TestBase {
     string configPath = Path.Combine(Application.streamingAssetsPath, "Configs");
     string[] jsonFiles = Directory.GetFiles(configPath, "*.json");
 
-    Assert.IsTrue(jsonFiles.Length > 0, "No JSON files found in the Configs directory");
+    Assert.IsTrue(jsonFiles.Length > 0, "No JSON files found in the Configs directory.");
 
     bool isPaused = false;
     double epsilon = 0.0002;
@@ -34,31 +34,32 @@ public class ConfigTest : TestBase {
         List<Agent> agents = SimManager.Instance.GetActiveAgents();
         foreach (Agent agent in agents) {
           if (agent is Interceptor interceptor) {
-            // All interceptors start in INITIALIZED phase
+            // All interceptors start in the INITIALIZED phase.
             Assert.AreEqual(
-                AerialAgent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
-                "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused");
+                Agent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
+                "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused.");
 
           } else if (agent is Threat threat) {
-            // All threats start in INITIALIZED phase
+            // All threats start in the INITIALIZED phase.
             Assert.AreEqual(
-                AerialAgent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
-                "All THREAT agents should be in the INITIALIZED flight phase after loading while paused");
+                Agent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
+                "All THREAT agents should be in the INITIALIZED flight phase after loading while paused.");
           }
         }
-        Assert.LessOrEqual(Mathf.Abs(Time.fixedDeltaTime), epsilon,
-                           "Fixed delta time should be approximately 0 after loading while paused");
+        Assert.LessOrEqual(
+            Mathf.Abs(Time.fixedDeltaTime), epsilon,
+            "Fixed delta time should be approximately 0 after loading while paused.");
         Assert.LessOrEqual(Mathf.Abs(Time.timeScale), epsilon,
-                           "Time scale should be approximately 0 after loading while paused");
+                           "Time scale should be approximately 0 after loading while paused.");
         Assert.IsFalse(elapsedTime > 0 + epsilon,
-                       "Simulation time should not have advanced after loading while paused");
+                       "Simulation time should not have advanced after loading while paused.");
       } else {
         Assert.IsTrue(elapsedTime > 0 + epsilon,
-                      "Simulation time should have advanced after loading while not paused");
+                      "Simulation time should have advanced after loading while not paused.");
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime -
                       (1.0f / SimManager.Instance.simulatorConfig.PhysicsUpdateRate)),
-            epsilon, "Physics update rate should be 1 / simulatorConfig.PhysicsUpdateRate");
+            epsilon, "Physics update rate should be 1 / simulatorConfig.PhysicsUpdateRate.");
       }
 
       if (isPaused) {
@@ -66,7 +67,7 @@ public class ConfigTest : TestBase {
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
         Assert.IsTrue(SimManager.Instance.GetElapsedSimulationTime() > 0 + epsilon,
-                      "Simulation time should have advanced after resuming");
+                      "Simulation time should have advanced after resuming.");
       }
     }
   }
