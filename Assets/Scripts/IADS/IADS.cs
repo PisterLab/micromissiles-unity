@@ -6,7 +6,6 @@ using System.Linq;
 using UnityEngine;
 
 // Integrated Air Defense System.
-// Manages launchers, threat clustering, and launch coordination.
 public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
 
@@ -18,7 +17,6 @@ public class IADS : MonoBehaviour {
   private ILaunchAnglePlanner _launchAnglePlanner =
       new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignment _assignmentScheme = new MaxSpeedAssignment();
-
   private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
@@ -94,8 +92,6 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  // Checks each threat cluster and launches interceptors as needed.
-  // Now supports origin-aware launch planning with configurable assignment strategies.
   private void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
@@ -109,55 +105,31 @@ public class IADS : MonoBehaviour {
         continue;
       }
 
-      // Get the cluster's centroid position for origin selection
-      Vector3 threatPosition = _threatClusterMap[cluster].Centroid.transform.position;
-
-      // Get the interceptor configuration for this launch
-      DynamicAgentConfig config = GetInterceptorConfig();
-      if (config == null) {
-        Debug.LogWarning("No interceptor configuration available for launch.");
-        continue;
-      }
-
-      // Select appropriate launcher based on strategy
-      Launcher selectedLauncher = SelectLauncherForThreat(threatPosition, config.agent_model);
-      if (selectedLauncher == null) {
-        Debug.LogWarning(
-            $"No suitable launcher available for interceptor type {config.agent_model} against threat at {threatPosition}.");
-        continue;
-      }
-
       // Create a predictor to track the cluster's centroid.
       IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
 
-      // Create a launcher-aware launch planner.
+      // Create a launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-
-      // Use the runtime object directly for planning
-      LaunchPlan plan = planner.Plan(selectedLauncher);
+      LaunchPlan plan = planner.Plan();
 
       // Check whether an interceptor should be launched.
       if (plan.ShouldLaunch) {
-        // Allocate capacity from the selected launcher
-        if (!selectedLauncher.AllocateInterceptor()) {
-          Debug.LogWarning(
-              $"Failed to allocate interceptor from launcher {selectedLauncher.LauncherId} - capacity exhausted.");
-          continue;
-        }
-
         Debug.Log(
-            $"Launching interceptor from {selectedLauncher.LauncherId} at {selectedLauncher.GetPosition()} " +
-            $"with elevation {plan.LaunchAngle} degrees to intercept at {plan.InterceptPosition}.");
+            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
         UIManager.Instance.LogActionMessage(
-            $"[IADS] Launching interceptor from {selectedLauncher.LauncherId} at elevation {plan.LaunchAngle} degrees.");
+            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
 
-        // Create a new interceptor with launcher-aware initial state
-        InitialState initialState =
-            CreateInitialStateFromLauncher(selectedLauncher, plan, Time.time);
+        // Create a new interceptor.
+        DynamicAgentConfig config =
+            SimManager.Instance.SimulationConfig.interceptor_swarm_configs[0].dynamic_agent_config;
+        InitialState initialState = new InitialState();
+
+        // Set the initial position, which defaults to the origin.
+        initialState.position = Vector3.zero;
+
+        // Set the initial velocity to point along the launch vector.
+        initialState.velocity = plan.GetNormalizedLaunchVector() * 1e-3f;
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
-
-        // Store launcher reference for capacity management
-        interceptor.gameObject.AddComponent<LauncherReference>().SetLauncher(selectedLauncher);
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;
@@ -168,52 +140,6 @@ public class IADS : MonoBehaviour {
         SimManager.Instance.AddInterceptorSwarm(new List<Agent> { interceptor as Agent });
       }
     }
-  }
-
-  // Gets the interceptor configuration for launching.
-  // Supports manual launcher assignment from swarm configuration.
-  private DynamicAgentConfig GetInterceptorConfig() {
-    var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
-    if (swarmConfigs == null || swarmConfigs.Count == 0) {
-      Debug.LogError("No interceptor swarm configurations available.");
-      return null;
-    }
-
-    // For now, use the first configuration. Future work could implement
-    // more sophisticated configuration selection based on threat characteristics.
-    return swarmConfigs[0].dynamic_agent_config;
-  }
-
-  // Selects the most appropriate launcher for engaging a threat.
-  // Uses the configured assignment strategy and accounts for launcher capabilities.
-  // Returns the runtime launcher object, not just the configuration.
-  private Launcher SelectLauncherForThreat(Vector3 threatPosition, string interceptorType) {
-    // TODO: Implement the launcher assignment strategy.
-    var availableLaunchers =
-        SimManager.Instance.GetLaunchers()
-            .Where(l => l.SupportsInterceptorType(interceptorType) && l.HasCapacity())
-            .ToList();
-
-    if (availableLaunchers.Count == 0)
-      return null;
-
-    // For now, use a simple "closest" strategy.
-    return availableLaunchers.OrderBy(l => l.GetDistanceToTarget(threatPosition)).FirstOrDefault();
-  }
-
-  // Creates an initial state for an interceptor based on the selected launcher and launch plan.
-  // Uses the runtime launcher object to get actual position.
-  private InitialState CreateInitialStateFromLauncher(Launcher launcher, LaunchPlan plan,
-                                                      float currentTime) {
-    // Use the actual GameObject position from runtime object
-    Vector3 launcherPosition = launcher.GetPosition();
-
-    InitialState initialState =
-        new InitialState { position = launcherPosition,
-                           velocity = plan.GetNormalizedLaunchVector(launcherPosition) * 1e-3f,
-                           rotation = Vector3.zero };
-
-    return initialState;
   }
 
   public bool ShouldLaunchSubmunitions(Interceptor carrier) {

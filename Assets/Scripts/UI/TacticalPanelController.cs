@@ -164,9 +164,7 @@ public class TacticalPanelController : MonoBehaviour {
         $"{Utilities.ConvertMetersToFeet(trackFile.Agent.transform.position.y):F0}ft");
   }
 
-  // Updates the position of a symbol based on the threat's real-world position.
-  //   symbolObj: The symbol GameObject to update.
-  //   threatPosition: The real-world position of the threat.
+  /// Updates the position of a symbol based on the threat's real-world position.
   private void UpdateSymbolPosition(GameObject symbolObj, Vector3 threatPosition) {
     if (_polarGridGraphic == null) {
       Debug.LogError("TacticalPolarGridGraphic reference is missing.");
@@ -233,8 +231,7 @@ public class TacticalPanelController : MonoBehaviour {
     Pan(delta);
   }
 
-  // Adjusts the radar scale by the specified amount.
-  //   amount: The amount to adjust the radar scale.
+  /// Adjusts the radar scale by the specified amount.
   private void AdjustRadarScale(float amount) {
     Vector3 newScale = _radarUIGroupRectTransform.localScale + new Vector3(amount, amount, 0f);
 

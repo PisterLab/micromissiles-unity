@@ -10,13 +10,11 @@ public class FixedWingThreat : Threat {
   private double _elapsedTime = 0;
   private Rigidbody _rigidbody;
 
-  // Start is called before the first frame update.
   protected override void Start() {
     base.Start();
     _rigidbody = GetComponent<Rigidbody>();
   }
 
-  // Update is called once per frame.
   protected override void FixedUpdate() {
     base.FixedUpdate();
   }

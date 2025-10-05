@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// An abstract class for all threats.
-public abstract class Threat : AerialAgent {
+public abstract class Threat : Agent {
   protected AttackBehavior _attackBehavior;
   [SerializeField]
   protected Vector3 _currentWaypoint;
