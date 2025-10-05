@@ -73,6 +73,9 @@ public class IADS : MonoBehaviour {
       _threatClusterMap[cluster].UpdateCentroid();
     }
 
+    // Detach interceptors assigned to fully-destroyed clusters.
+    CleanupDestroyedClusters();
+
     // Assign any interceptors that are no longer assigned to any threat.
     AssignInterceptorToThreat(
         _assignableInterceptors.Where(interceptor => !interceptor.IsTerminated()).ToList());
@@ -217,6 +220,7 @@ public class IADS : MonoBehaviour {
   }
 
   public bool ShouldLaunchSubmunitions(Interceptor carrier) {
+    if (!HasClusterAssignment(carrier)) return false;
     // The carrier interceptor will spawn submunitions when any target is greater than 30 degrees
     // away from the carrier interceptor's current velocity or when any threat is within 500 meters
     // of the interceptor.
@@ -253,6 +257,42 @@ public class IADS : MonoBehaviour {
       }
     }
     return false;
+  }
+
+  // Returns true if all threats in the cluster are terminated.
+  private bool IsClusterFullyTerminated(Cluster cluster) {
+    return cluster.Threats.All(threat => threat.IsTerminated());
+  }
+
+  // True if an interceptor still has a valid cluster assignment.
+  private bool HasClusterAssignment(Interceptor interceptor) {
+    return _interceptorClusterMap.ContainsKey(interceptor);
+  }
+
+  // Releases interceptors from clusters that only contain destroyed threats.
+  private void CleanupDestroyedClusters() {
+    foreach (Cluster cluster in _threatClusters) {
+      if (!IsClusterFullyTerminated(cluster)) continue;
+
+      IReadOnlyList<Interceptor> assigned = _threatClusterMap[cluster].AssignedInterceptors;
+      if (assigned.Count == 0) continue;
+
+      foreach (Interceptor interceptor in assigned.ToList()) {
+        ReleaseInterceptorFromCluster(cluster, interceptor);
+      }
+    }
+  }
+
+  // Detach a single interceptor from a cluster and decide its next action.
+  private void ReleaseInterceptorFromCluster(Cluster cluster, Interceptor interceptor) {
+    _threatClusterMap[cluster].RemoveInterceptor(interceptor);
+    _interceptorClusterMap.Remove(interceptor);
+
+    if (interceptor is CarrierInterceptor) {
+      interceptor.UnassignTarget();
+      return;
+    }
+    RequestAssignInterceptorToThreat(interceptor);
   }
 
   public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {
