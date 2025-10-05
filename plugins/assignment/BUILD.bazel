@@ -16,8 +16,7 @@ cc_library(
     srcs = ["cover_assignment.cc"],
     hdrs = ["cover_assignment.h"],
     deps = [
-        ":assignment",
-        "//base:logging",
+        ":cp_assignment",
         "@ortools//ortools/sat:cp_model",
     ],
 )
@@ -26,10 +25,20 @@ cc_test(
     name = "cover_assignment_test",
     srcs = ["cover_assignment_test.cc"],
     deps = [
-        ":assignment",
         ":cover_assignment",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "cp_assignment",
+    srcs = ["cp_assignment.cc"],
+    hdrs = ["cp_assignment.h"],
+    deps = [
+        ":assignment",
+        "//base:logging",
+        "@ortools//ortools/sat:cp_model",
     ],
 )
 
@@ -38,8 +47,7 @@ cc_library(
     srcs = ["even_assignment.cc"],
     hdrs = ["even_assignment.h"],
     deps = [
-        ":assignment",
-        "//base:logging",
+        ":cp_assignment",
         "@ortools//ortools/sat:cp_model",
     ],
 )
@@ -48,7 +56,6 @@ cc_test(
     name = "even_assignment_test",
     srcs = ["even_assignment_test.cc"],
     deps = [
-        ":assignment",
         ":even_assignment",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
@@ -60,8 +67,7 @@ cc_library(
     srcs = ["weighted_even_assignment.cc"],
     hdrs = ["weighted_even_assignment.h"],
     deps = [
-        ":assignment",
-        "//base:logging",
+        ":cp_assignment",
         "@abseil-cpp//absl/strings:str_format",
         "@ortools//ortools/sat:cp_model",
     ],
@@ -71,7 +77,6 @@ cc_test(
     name = "weighted_even_assignment_test",
     srcs = ["weighted_even_assignment_test.cc"],
     deps = [
-        ":assignment",
         ":weighted_even_assignment",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
