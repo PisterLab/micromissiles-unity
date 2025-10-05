@@ -62,7 +62,7 @@ std::vector<Assignment::AssignmentItem> CpAssignment::Assign() const {
   // Check the feasibility of the solution.
   if (response.status() ==
       operations_research::sat::CpSolverStatus::INFEASIBLE) {
-    LOG(ERROR) << "Cover assignment problem is infeasible.";
+    LOG(ERROR) << "Assignment problem is infeasible.";
     return std::vector<AssignmentItem>();
   }
 

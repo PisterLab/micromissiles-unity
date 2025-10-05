@@ -68,6 +68,7 @@ cc_library(
     hdrs = ["weighted_even_assignment.h"],
     deps = [
         ":cp_assignment",
+        "@abseil-cpp//absl/strings:str_format",
         "@ortools//ortools/sat:cp_model",
     ],
 )

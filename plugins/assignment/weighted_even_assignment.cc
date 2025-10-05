@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "absl/strings/str_format.h"
 #include "ortools/sat/cp_model.h"
 
 namespace assignment {
