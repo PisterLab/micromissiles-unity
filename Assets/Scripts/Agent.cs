@@ -72,11 +72,11 @@ public abstract class Agent : MonoBehaviour {
     return _flightPhase;
   }
 
-  public bool HasLaunched() {
+  public bool IsInitialized() {
     return _flightPhase != FlightPhase.INITIALIZED;
   }
 
-  public bool HasTerminated() {
+  public bool IsTerminated() {
     return _flightPhase == FlightPhase.TERMINATED;
   }
 
@@ -117,10 +117,6 @@ public abstract class Agent : MonoBehaviour {
     }
     _target = null;
     _targetModel = null;
-  }
-
-  public bool IsTerminated() {
-    return _flightPhase == FlightPhase.TERMINATED;
   }
 
   public void AddInterceptor(Agent interceptor) {
@@ -342,10 +338,8 @@ public abstract class Agent : MonoBehaviour {
 
   protected virtual void Awake() {}
 
-  // Start is called before the first frame update
   protected virtual void Start() {}
 
-  // Update is called once per frame
   protected virtual void FixedUpdate() {
     _speed = (float)GetSpeed();
     if (_flightPhase != FlightPhase.INITIALIZED && _flightPhase != FlightPhase.READY) {
@@ -391,12 +385,12 @@ public abstract class Agent : MonoBehaviour {
 
   protected virtual void AlignWithVelocity() {
     Vector3 velocity = GetVelocity();
-    if (velocity.magnitude > 0.1f)  // Only align if we have significant velocity
-    {
-      // Create a rotation with forward along velocity and up along world up
+    // Only align if we have significant velocity.
+    if (velocity.magnitude > 0.1f) {
+      // Create a rotation with forward along velocity and up along world up.
       Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
 
-      // Smoothly rotate towards the target rotation
+      // Smoothly rotate towards the target rotation.
       transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation,
                                                     10000f * Time.fixedDeltaTime);
     }
@@ -408,7 +402,7 @@ public abstract class Agent : MonoBehaviour {
     float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
     float dragAcceleration = -(airDrag + liftInducedDrag);
 
-    // Project the drag acceleration onto the forward direction
+    // Project the drag acceleration onto the forward direction.
     Vector3 dragAccelerationAlongRoll = dragAcceleration * transform.forward;
     _dragAcceleration = dragAccelerationAlongRoll;
 
