@@ -15,24 +15,24 @@
 namespace protobuf {
 namespace {
 
-TEST(ProtobufTest, LoadProtobufTextAttackBehaviorConfigFileTest) {
+TEST(ProtobufTest, LoadProtobufTextFileAttackBehaviorConfig) {
   const std::string kAttackBehaviorConfigFile =
       "../micromissiles-configs-data+/Attacks/default_direct_attack.pbtxt";
   configs::AttackBehaviorConfig attack_behavior_config;
-  const auto status = LoadProtobufTextFile<configs::AttackBehaviorConfig>(
-      kAttackBehaviorConfigFile, &attack_behavior_config);
-  EXPECT_EQ(status, plugin::STATUS_OK);
+  EXPECT_EQ(LoadProtobufTextFile<configs::AttackBehaviorConfig>(
+                kAttackBehaviorConfigFile, &attack_behavior_config),
+            plugin::STATUS_OK);
   EXPECT_TRUE(attack_behavior_config.has_flight_plan());
   EXPECT_EQ(attack_behavior_config.flight_plan().waypoints().size(), 3);
 }
 
-TEST(ProtobufTest, LoadProtobufTextStaticConfigFileTest) {
+TEST(ProtobufTest, LoadProtobufTextFileStaticConfig) {
   const std::string kStaticConfigFile =
       "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   configs::StaticConfig static_config;
-  const auto status = LoadProtobufTextFile<configs::StaticConfig>(
-      kStaticConfigFile, &static_config);
-  EXPECT_EQ(status, plugin::STATUS_OK);
+  EXPECT_EQ(LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile,
+                                                        &static_config),
+            plugin::STATUS_OK);
   EXPECT_TRUE(static_config.has_acceleration_config());
   EXPECT_TRUE(static_config.has_boost_config());
   EXPECT_TRUE(static_config.has_lift_drag_config());
@@ -40,48 +40,83 @@ TEST(ProtobufTest, LoadProtobufTextStaticConfigFileTest) {
   EXPECT_FALSE(static_config.has_hit_config());
 }
 
-TEST(ProtobufTest, LoadProtobufTextSimulationConfigFileTest) {
+TEST(ProtobufTest, LoadProtobufTextFileSimulationConfig) {
   const std::string kSimulationConfigFile =
       "../micromissiles-configs-data+/Simulations/7_quadcopters.pbtxt";
   configs::SimulationConfig simulation_config;
-  const auto status = LoadProtobufTextFile<configs::SimulationConfig>(
-      kSimulationConfigFile, &simulation_config);
-  EXPECT_EQ(status, plugin::STATUS_OK);
+  EXPECT_EQ(LoadProtobufTextFile<configs::SimulationConfig>(
+                kSimulationConfigFile, &simulation_config),
+            plugin::STATUS_OK);
   EXPECT_EQ(simulation_config.interceptor_swarm_configs().size(), 1);
   EXPECT_EQ(simulation_config.threat_swarm_configs().size(), 1);
 }
 
-TEST(ProtobufTest, LoadProtobufTextInvalidFileTest) {
+TEST(ProtobufTest, LoadProtobufTextFileNullMessage) {
   const std::string kSimulationConfigFile =
-      "../micromissiles-configs-data+/Simulations/invalid.pbtxt";
-  configs::SimulationConfig simulation_config;
-  const auto status = LoadProtobufTextFile<configs::SimulationConfig>(
-      kSimulationConfigFile, &simulation_config);
-  EXPECT_NE(status, plugin::STATUS_OK);
+      "../micromissiles-configs-data+/Simulations/7_quadcopters.pbtxt";
+  EXPECT_NE(LoadProtobufTextFile<configs::SimulationConfig>(
+                kSimulationConfigFile, nullptr),
+            plugin::STATUS_OK);
 }
 
-TEST(ProtobufTest, SerializeToBufferTest) {
+TEST(ProtobufTest, LoadProtobufTextFileNotFound) {
+  const std::string kSimulationConfigFile =
+      "../micromissiles-configs-data+/Simulations/nonexistent.pbtxt";
+  configs::SimulationConfig simulation_config;
+  EXPECT_NE(LoadProtobufTextFile<configs::SimulationConfig>(
+                kSimulationConfigFile, &simulation_config),
+            plugin::STATUS_OK);
+}
+
+TEST(ProtobufTest, SerializeToBuffer) {
   const std::string kStaticConfigFile =
       "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   configs::StaticConfig static_config;
-  const auto load_status = LoadProtobufTextFile<configs::StaticConfig>(
-      kStaticConfigFile, &static_config);
-  EXPECT_EQ(load_status, plugin::STATUS_OK);
+  ASSERT_EQ(LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile,
+                                                        &static_config),
+            plugin::STATUS_OK);
   std::vector<uint8_t> buffer(1024);
   std::size_t serialized_length = 0;
-  const auto serialize_status = SerializeToBuffer(
-      static_config, buffer.data(), buffer.size(), &serialized_length);
-  EXPECT_EQ(serialize_status, plugin::STATUS_OK);
+  EXPECT_EQ(SerializeToBuffer(static_config, buffer.data(), buffer.size(),
+                              &serialized_length),
+            plugin::STATUS_OK);
   EXPECT_EQ(serialized_length, static_config.ByteSizeLong());
 }
 
-TEST(ProtobufTest, SerializeToBufferInsufficientSizeTest) {
+TEST(ProtobufTest, SerializeToBufferNullBuffer) {
   const std::string kStaticConfigFile =
       "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   configs::StaticConfig static_config;
-  const auto load_status = LoadProtobufTextFile<configs::StaticConfig>(
-      kStaticConfigFile, &static_config);
-  EXPECT_EQ(load_status, plugin::STATUS_OK);
+  ASSERT_EQ(LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile,
+                                                        &static_config),
+            plugin::STATUS_OK);
+  std::vector<uint8_t> buffer(1024);
+  std::size_t serialized_length = 0;
+  EXPECT_NE(SerializeToBuffer(static_config, nullptr, buffer.size(),
+                              &serialized_length),
+            plugin::STATUS_OK);
+}
+
+TEST(ProtobufTest, SerializeToBufferNullSerializedLength) {
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs-data+/Models/micromissile.pbtxt";
+  configs::StaticConfig static_config;
+  ASSERT_EQ(LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile,
+                                                        &static_config),
+            plugin::STATUS_OK);
+  std::vector<uint8_t> buffer(1024);
+  EXPECT_NE(
+      SerializeToBuffer(static_config, buffer.data(), buffer.size(), nullptr),
+      plugin::STATUS_OK);
+}
+
+TEST(ProtobufTest, SerializeToBufferInsufficientSize) {
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs-data+/Models/micromissile.pbtxt";
+  configs::StaticConfig static_config;
+  ASSERT_EQ(LoadProtobufTextFile<configs::StaticConfig>(kStaticConfigFile,
+                                                        &static_config),
+            plugin::STATUS_OK);
   std::vector<uint8_t> buffer(1);
   std::size_t serialized_length = 0;
   EXPECT_NE(SerializeToBuffer(static_config, buffer.data(), buffer.size(),
