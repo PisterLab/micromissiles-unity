@@ -9,18 +9,17 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(UIElementDragger))]
 [RequireComponent(typeof(Image))]
 public class UIWindow : MonoBehaviour {
-  // Window title
+  // Window title.
   [SerializeField]
   private string windowTitle = "Window";
 
-  // Close button
+  // Close button.
   private GameObject closeButton;
   [SerializeField]
   private CloseButtonCallback closeButtonCallback;
   [Serializable]
   private enum CloseButtonCallback { CLOSE_WINDOW, TOGGLE_WINDOW }
 
-  // IsOpen property
   private bool isOpen;
   private void OnEnable() {
     isOpen = true;
@@ -38,12 +37,9 @@ public class UIWindow : MonoBehaviour {
     isOpen = false;
   }
 
-  /// <summary>
-  /// Called when the UIWindow component is created in the editor
-  /// We will use it to configure the image component
-  /// </summary>
+  /// Called when the UIWindow component is created in the editor.
+  /// This is used to configure the image component.
   private void Reset() {
-    // 18 16 28 125
     GetComponent<Image>().color = new Color32(18, 16, 28, 125);
   }
 
@@ -74,22 +70,20 @@ public class UIWindow : MonoBehaviour {
     windowTitleHandle.rectTransform.SetRight(30);  // Give spacing to the close button
   }
 
-  /// <summary>
-  /// Create the close [x] button in the top right corner of the window
-  /// </summary>
+  /// Create the close [x] button in the top right corner of the window.
   private void CreateCloseButton() {
     closeButton = new GameObject("CloseButton", typeof(RectTransform));
     RectTransform buttonTransform = closeButton.GetComponent<RectTransform>();
     buttonTransform.SetParent(transform);
-    // anchor top right
+    // Anchor top right.
     buttonTransform.anchorMin = new Vector2(1, 1);
     buttonTransform.anchorMax = new Vector2(1, 1);
     buttonTransform.pivot = new Vector2(1, 1);
-    // position top right
+    // Position top right.
     buttonTransform.anchoredPosition = new Vector2(0, 0);
-    // size
+    // Size.
     buttonTransform.sizeDelta = new Vector2(30, 30);
-    // add button component
+    // Add button component.
     TextMeshProUGUI textbox = closeButton.AddComponent<TextMeshProUGUI>();
     textbox.text = "X";
     textbox.font = UIManager.Instance.GlobalFont;

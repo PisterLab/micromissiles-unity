@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -37,6 +36,32 @@ public static class ConfigLoader {
     }
   }
 
+  public static Configs.AttackBehaviorConfig LoadAttackBehaviorConfig(string configFile) {
+    return LoadProtobufConfig<Configs.AttackBehaviorConfig>(
+        Path.Combine("Configs/Attacks", configFile),
+        Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary);
+  }
+
+  public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {
+    var config = LoadProtobufConfig<Configs.SimulationConfig>(
+        Path.Combine("Configs/Simulations", configFile),
+        Protobuf.Protobuf_SimulationConfig_LoadToBinary);
+    if (config != null) {
+      UIManager.Instance.LogActionMessage($"[SIM] Loaded simulation configuration: {configFile}.");
+    }
+    return config;
+  }
+
+  public static Configs.SimulatorConfig LoadSimulatorConfig() {
+    return LoadProtobufConfig<Configs.SimulatorConfig>(
+        SimulatorConfigRelativePath, Protobuf.Protobuf_SimulatorConfig_LoadToBinary);
+  }
+
+  public static Configs.StaticConfig LoadStaticConfig(string configFile) {
+    return LoadProtobufConfig<Configs.StaticConfig>(Path.Combine("Configs/Models", configFile),
+                                                    Protobuf.Protobuf_StaticConfig_LoadToBinary);
+  }
+
   private static T LoadProtobufConfig<T>(
       string relativePath, Func<string, IntPtr, int, IntPtr, Plugin.StatusCode> loadFunction)
       where T : Google.Protobuf.IMessage<T>, new() {
@@ -67,31 +92,5 @@ public static class ConfigLoader {
       Debug.Log($"Failed to load the Protobuf text file {relativePath} with status code {status}.");
       return default;
     }
-  }
-
-  public static Configs.AttackBehaviorConfig LoadAttackBehaviorConfig(string configFile) {
-    return LoadProtobufConfig<Configs.AttackBehaviorConfig>(
-        Path.Combine("Configs/Attacks", configFile),
-        Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary);
-  }
-
-  public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {
-    var config = LoadProtobufConfig<Configs.SimulationConfig>(
-        Path.Combine("Configs/Simulations", configFile),
-        Protobuf.Protobuf_SimulationConfig_LoadToBinary);
-    if (config != null) {
-      UIManager.Instance.LogActionMessage($"[SIM] Loaded simulation configuration: {configFile}.");
-    }
-    return config;
-  }
-
-  public static Configs.SimulatorConfig LoadSimulatorConfig() {
-    return LoadProtobufConfig<Configs.SimulatorConfig>(
-        SimulatorConfigRelativePath, Protobuf.Protobuf_SimulatorConfig_LoadToBinary);
-  }
-
-  public static Configs.StaticConfig LoadStaticConfig(string configFile) {
-    return LoadProtobufConfig<Configs.StaticConfig>(Path.Combine("Configs/Models", configFile),
-                                                    Protobuf.Protobuf_StaticConfig_LoadToBinary);
   }
 }

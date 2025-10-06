@@ -5,22 +5,26 @@
 
 #include <vector>
 
-#include "assignment/assignment.h"
+#include "assignment/cp_assignment.h"
+#include "ortools/sat/cp_model.h"
 
 namespace assignment {
 
 // Even assignment.
-class EvenAssignment : public Assignment {
+class EvenAssignment : public CpAssignment {
  public:
   EvenAssignment(const int num_agents, const int num_tasks,
                  std::vector<std::vector<double>> costs)
-      : Assignment(num_agents, num_tasks, std::move(costs)) {}
+      : CpAssignment(num_agents, num_tasks, std::move(costs)) {}
 
   EvenAssignment(const EvenAssignment&) = default;
   EvenAssignment& operator=(const EvenAssignment&) = default;
 
-  // Assign the agents to the tasks.
-  std::vector<AssignmentItem> Assign() const override;
+ protected:
+  // Define the constraints of the assignment problem.
+  void DefineConstraints(
+      const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
+      operations_research::sat::CpModelBuilder* cp_model) const override;
 };
 
 }  // namespace assignment
