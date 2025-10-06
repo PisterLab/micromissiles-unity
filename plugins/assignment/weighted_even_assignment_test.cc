@@ -102,5 +102,48 @@ TEST(WeightedEvenAssignmentTest, AssignFewer) {
   }
 }
 
+TEST(WeightedEvenAssignmentTest, AssignInvalidCostsNumAgents) {
+  constexpr int kNumAgents = 2;
+  constexpr int kNumTasks = 3;
+  const std::vector<std::vector<double>> costs{
+      {3, 0, 2},
+      {4, 2, 3},
+      {4, 2, 3},
+  };
+  const std::vector<double> weights{1, 1, 1};
+  WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
+                                    /*weighted_scaling_factor=*/1);
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
+}
+
+TEST(WeightedEvenAssignmentTest, AssignInvalidCostsNumTasks) {
+  constexpr int kNumAgents = 2;
+  constexpr int kNumTasks = 3;
+  const std::vector<std::vector<double>> costs{
+      {3, 0, 2},
+      {4, 2, 3, 4},
+  };
+  const std::vector<double> weights{1, 1, 1};
+  WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
+                                    /*weighted_scaling_factor=*/1);
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
+}
+
+TEST(WeightedEvenAssignmentTest, AssignInvalidWeights) {
+  constexpr int kNumAgents = 2;
+  constexpr int kNumTasks = 3;
+  const std::vector<std::vector<double>> costs{
+      {3, 0, 2},
+      {4, 2, 3},
+  };
+  const std::vector<double> weights{1, 1, 1, 2};
+  WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
+                                    /*weighted_scaling_factor=*/1);
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
+}
+
 }  // namespace
 }  // namespace assignment

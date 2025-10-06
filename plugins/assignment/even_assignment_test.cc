@@ -74,5 +74,30 @@ TEST(EvenAssignmentTest, AssignFewer) {
   }
 }
 
+TEST(EvenAssignmentTest, AssignInvalidCostsNumAgents) {
+  constexpr int kNumAgents = 2;
+  constexpr int kNumTasks = 3;
+  const std::vector<std::vector<double>> costs{
+      {3, 0, 2},
+      {4, 2, 3},
+      {4, 2, 3},
+  };
+  EvenAssignment assignment(kNumAgents, kNumTasks, costs);
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
+}
+
+TEST(EvenAssignmentTest, AssignInvalidCostsNumTasks) {
+  constexpr int kNumAgents = 2;
+  constexpr int kNumTasks = 3;
+  const std::vector<std::vector<double>> costs{
+      {3, 0, 2},
+      {4, 2, 3, 4},
+  };
+  EvenAssignment assignment(kNumAgents, kNumTasks, costs);
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
+}
+
 }  // namespace
 }  // namespace assignment
