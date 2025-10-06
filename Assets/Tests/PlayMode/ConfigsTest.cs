@@ -1,11 +1,10 @@
 using NUnit.Framework;
+using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
-using System.Collections;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
 
 public class ConfigsTest : TestBase {
   [OneTimeSetUp]
@@ -34,16 +33,16 @@ public class ConfigsTest : TestBase {
       if (isPaused) {
         List<Agent> agents = SimManager.Instance.GetActiveAgents();
         foreach (Agent agent in agents) {
-          if (agent is Interceptor) {
-            // All interceptors start in INITIALIZED phase
+          if (agent is Interceptor interceptor) {
+            // All interceptors start in the INITIALIZED phase.
             Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
+                Agent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
                 "All interceptors should be in the INITIALIZED flight phase after loading while paused.");
 
-          } else if (agent is Threat) {
-            // All threats start in INITIALIZED phase
+          } else if (agent is Threat threat) {
+            // All threats start in the INITIALIZED phase.
             Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, agent.GetFlightPhase(),
+                Agent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
                 "All threats should be in the INITIALIZED flight phase after loading while paused.");
           }
         }

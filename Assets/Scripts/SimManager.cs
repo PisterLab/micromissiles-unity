@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-/// <summary>
-/// Manages the simulation by handling missiles, targets, and their assignments.
-/// Implements the Singleton pattern to ensure only one instance exists.
-/// </summary>
+// Manages the simulation by handling missiles, targets, and their assignments.
+// Implements the Singleton pattern to ensure only one instance exists.
 public class SimManager : MonoBehaviour {
   // Map from the agent type to the prefab class name.
   // The prefab class must exist in the Resources/Prefabs directory.
@@ -17,20 +15,14 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
   };
 
-  /// <summary>
-  /// Singleton instance of SimManager.
-  /// </summary>
+  // Singleton instance of SimManager.
   public static SimManager Instance { get; set; }
 
-  /// <summary>
-  /// Simulation configuration.
-  /// </summary>
+  // Simulation configuration.
   [SerializeField]
   public Configs.SimulationConfig SimulationConfig;
 
-  /// <summary>
-  /// Simulator configuration.
-  /// </summary>
+  // Simulator configuration.
   public Configs.SimulatorConfig SimulatorConfig;
 
   private const string _defaultConfig = "7_quadcopters.pbtxt";
@@ -83,26 +75,17 @@ public class SimManager : MonoBehaviour {
   public delegate void NewInterceptorEventHandler(Interceptor interceptor);
   public event NewInterceptorEventHandler OnNewInterceptor;
 
-  /// <summary>
-  /// Gets the elapsed simulation time.
-  /// </summary>
-  /// <returns>The elapsed time in seconds.</returns>
+  // Returns the elapsed simulation time in seconds.
   public double GetElapsedSimulationTime() {
     return _elapsedSimulationTime;
   }
 
-  /// <summary>
-  /// Gets the total cost of launched interceptors.
-  /// </summary>
-  /// <returns>The total cost of launched interceptors.</returns>
+  // Returns the total cost of launched interceptors.
   public double GetCostLaunchedInterceptors() {
     return _costLaunchedInterceptors;
   }
 
-  /// <summary>
-  /// Gets the total cost of destroyed threats.
-  /// </summary>
-  /// <returns>The total cost of destroyed threats.</returns>
+  // Returns the total cost of destroyed threats.
   public double GetCostDestroyedThreats() {
     return _costDestroyedThreats;
   }
@@ -386,12 +369,8 @@ public class SimManager : MonoBehaviour {
     return dummyAgentObject.GetComponent<Agent>();
   }
 
-  /// <summary>
-  /// Creates a interceptor based on the provided configuration.
-  /// </summary>
-  /// <param name="config">Interceptor configuration.</param>
-  /// <param name="initialState">Initial state of the interceptor.</param>
-  /// <returns>The created Interceptor instance, or null if creation failed.</returns>
+  // Creates a interceptor based on the provided configuration.
+  // Returns the created interceptor instance, or null if creation failed.
   public Interceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
     if (config == null) {
       return null;
@@ -429,7 +408,7 @@ public class SimManager : MonoBehaviour {
     _interceptorObjects.Add(interceptor);
     _activeInterceptors.Add(interceptor);
 
-    // Set the static agent config.
+    // Set the static configuration.
     interceptor.SetStaticConfig(staticConfig);
 
     // Subscribe events.
@@ -449,12 +428,9 @@ public class SimManager : MonoBehaviour {
     return interceptor;
   }
 
-  /// <summary>
-  /// Creates a threat based on the provided configuration.
-  /// </summary>
-  /// <param name="config">Threat configuration.</param>
-  /// <returns>The created Threat instance, or null if creation failed.</returns>
-  private Threat CreateThreat(Configs.AgentConfig config) {
+  // Creates a threat based on the provided configuration.
+  // Returns the created threat instance, or null if creation failed.
+  public Threat CreateThreat(Configs.AgentConfig config) {
     if (config == null) {
       return null;
     }
@@ -477,7 +453,7 @@ public class SimManager : MonoBehaviour {
     Threat threat = threatObject.GetComponent<Threat>();
     _threatObjects.Add(threat);
 
-    // Set the static agent config.
+    // Set the static configuration.
     threat.SetStaticConfig(staticConfig);
 
     // Set the attack behavior.
@@ -498,13 +474,8 @@ public class SimManager : MonoBehaviour {
     return threatObject.GetComponent<Threat>();
   }
 
-  /// <summary>
-  /// Creates a agent based on the provided configuration and prefab name.
-  /// </summary>
-  /// <param name="config">Agent configuration.</param>
-  /// <param name="initialState">Initial state of the agent.</param>
-  /// <param name="prefabName">Name of the prefab to instantiate.</param>
-  /// <returns>The created GameObject instance, or null if creation failed.</returns>
+  // Creates a agent based on the provided configuration and prefab name.
+  // Returns the created GameObject instance, or null if creation failed.
   public GameObject CreateAgent(Configs.AgentConfig config, Simulation.State initialState,
                                 string prefabName) {
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
@@ -530,12 +501,8 @@ public class SimManager : MonoBehaviour {
     return agentObject;
   }
 
-  /// <summary>
-  /// Creates a random agent based on the provided configuration and prefab name.
-  /// </summary>
-  /// <param name="config">Agent configuration.</param>
-  /// <param name="prefabName">Name of the prefab to instantiate.</param>
-  /// <returns>The created GameObject instance, or null if creation failed.</returns>
+  // Creates a random agent based on the provided configuration and prefab name.
+  // Returns the created GameObject instance, or null if creation failed.
   public GameObject CreateRandomAgent(Configs.AgentConfig config, string prefabName) {
     if (config == null) {
       return null;
