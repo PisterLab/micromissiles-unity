@@ -5,6 +5,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Plugin/status.pb.h"
+#include "assignment/assignment.h"
+
 namespace assignment {
 namespace {
 
@@ -18,7 +21,8 @@ TEST(WeightedEvenAssignmentTest, AssignUnique) {
   const std::vector<double> weights{1, 1, 1, 1};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/1);
-  const auto assignments = assignment.Assign();
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
   std::unordered_map<int, int> expected_assignments{
       {0, 3}, {1, 2}, {2, 1}, {3, 0}, {4, 0},
   };
@@ -39,7 +43,8 @@ TEST(WeightedEvenAssignmentTest, AssignMultiple) {
   const std::vector<double> weights{1, 1};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/1);
-  const auto assignments = assignment.Assign();
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
   std::unordered_map<int, int> expected_assignments{
       {0, 0}, {1, 1}, {2, 0}, {3, 1}, {4, 1},
   };
@@ -60,7 +65,8 @@ TEST(WeightedEvenAssignmentTest, AssignWeighted) {
   const std::vector<double> weights{1, 0.5};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/2);
-  const auto assignments = assignment.Assign();
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
   std::unordered_map<int, int> expected_assignments{
       {0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 0}, {5, 0},
   };
@@ -82,7 +88,8 @@ TEST(WeightedEvenAssignmentTest, AssignFewer) {
   const std::vector<double> weights{1, 1, 1};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/1);
-  const auto assignments = assignment.Assign();
+  std::vector<Assignment::AssignmentItem> assignments;
+  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
   std::unordered_map<int, int> expected_assignments{
       {0, 1},
       {1, 2},

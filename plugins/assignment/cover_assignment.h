@@ -5,6 +5,7 @@
 
 #include <vector>
 
+#include "Plugin/status.pb.h"
 #include "assignment/cp_assignment.h"
 #include "ortools/sat/cp_model.h"
 
@@ -22,7 +23,7 @@ class CoverAssignment : public CpAssignment {
 
  protected:
   // Define the constraints of the assignment problem.
-  void DefineConstraints(
+  plugin::StatusCode DefineConstraints(
       const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
       operations_research::sat::CpModelBuilder* cp_model) const override;
 };

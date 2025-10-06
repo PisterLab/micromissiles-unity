@@ -2,17 +2,23 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <stdexcept>
+#include <iostream>
 #include <vector>
 
-#include "absl/strings/str_format.h"
+#include "Plugin/status.pb.h"
 #include "ortools/sat/cp_model.h"
 
 namespace assignment {
 
-void WeightedEvenAssignment::DefineConstraints(
+plugin::StatusCode WeightedEvenAssignment::DefineConstraints(
     const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
     operations_research::sat::CpModelBuilder* cp_model) const {
+  // Validate the weights.
+  const auto validate_status = ValidateWeights();
+  if (validate_status != plugin::STATUS_OK) {
+    return validate_status;
+  }
+
   // Minimum and maximum number of assigned agents for a task.
   auto min_task_assignments = operations_research::sat::LinearExpr(
       cp_model->NewIntVar({0, num_agents_}));
@@ -37,16 +43,18 @@ void WeightedEvenAssignment::DefineConstraints(
   cp_model->AddMaxEquality(max_task_assignments, task_sums);
   cp_model->AddLessOrEqual(max_task_assignments - min_task_assignments,
                            weight_scaling_factor_);
+  return plugin::STATUS_OK;
 }
 
-void WeightedEvenAssignment::ValidateWeights() const {
+plugin::StatusCode WeightedEvenAssignment::ValidateWeights() const {
   // Validate the size of the weights.
   if (weights_.size() != static_cast<std::size_t>(num_tasks_)) {
-    throw std::invalid_argument(
-        absl::StrFormat("The number of task weights does not match the number "
-                        "of tasks: %d vs. %d.",
-                        weights_.size(), num_tasks_));
+    std::cerr
+        << "The number of task weights does not match the number of tasks: "
+        << weights_.size() << " vs. " << num_tasks_ << ".";
+    return plugin::STATUS_INVALID_ARGUMENT;
   }
+  return plugin::STATUS_OK;
 }
 
 }  // namespace assignment
