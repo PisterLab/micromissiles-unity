@@ -17,7 +17,7 @@ cc_library(
     hdrs = ["cover_assignment.h"],
     deps = [
         ":cp_assignment",
-        "@ortools//ortools/sat:cp_model",
+        "@or-tools//ortools/sat:cp_model",
     ],
 )
 
@@ -38,7 +38,7 @@ cc_library(
     deps = [
         ":assignment",
         "//base:logging",
-        "@ortools//ortools/sat:cp_model",
+        "@or-tools//ortools/sat:cp_model",
     ],
 )
 
@@ -48,7 +48,7 @@ cc_library(
     hdrs = ["even_assignment.h"],
     deps = [
         ":cp_assignment",
-        "@ortools//ortools/sat:cp_model",
+        "@or-tools//ortools/sat:cp_model",
     ],
 )
 
@@ -69,7 +69,7 @@ cc_library(
     deps = [
         ":cp_assignment",
         "@abseil-cpp//absl/strings:str_format",
-        "@ortools//ortools/sat:cp_model",
+        "@or-tools//ortools/sat:cp_model",
     ],
 )
 
