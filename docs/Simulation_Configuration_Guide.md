@@ -784,7 +784,7 @@ agent_config {
 2. **Invalid Parameter Values**
 ```textproto
 time_scale: -1  // Error: Must be positive.
-end_time: 0.    // Error: Must be greater than 0.
+end_time: 0     // Error: Must be greater than 0.
 ```
 **Solution**: Check the parameter constraints in the sections below.
 
