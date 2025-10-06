@@ -6,234 +6,156 @@ using System.Linq;
 public class CameraController : MonoBehaviour {
 #region Singleton
 
-  /// <summary>
-  /// Singleton instance of the CameraController.
-  /// </summary>
+  // Singleton instance of the camera controller.
   public static CameraController Instance { get; private set; }
 
 #endregion
 
 #region Camera Settings
 
-  /// <summary>
-  /// Determines if mouse input is active for camera control.
-  /// </summary>
+  // Determines if mouse input is active for camera control.
   public bool mouseActive = true;
 
-  /// <summary>
-  /// Locks user input for camera control.
-  /// </summary>
+  // Locks user input for camera control.
   public bool lockUserInput = false;
 
-  /// <summary>
-  /// Normal speed of camera movement.
-  /// </summary>
+  // Normal speed of camera movement.
   [SerializeField]
   private float _cameraSpeedNormal = 100.0f;
 
-  /// <summary>
-  /// Maximum speed of camera movement.
-  /// </summary>
+  // Maximum speed of camera movement.
   [SerializeField]
   private float _cameraSpeedMax = 1000.0f;
 
-  /// <summary>
-  /// Current speed of camera movement.
-  /// </summary>
+  // Current speed of camera movement.
   private float _cameraSpeed;
 
-  /// <summary>
-  /// Horizontal rotation speed.
-  /// </summary>
+  // Horizontal rotation speed.
   public float _speedH = 2.0f;
 
-  /// <summary>
-  /// Vertical rotation speed.
-  /// </summary>
+  // Vertical rotation speed.
   public float _speedV = 2.0f;
 
-  /// <summary>
-  /// Current yaw angle of the camera.
-  /// </summary>
+  // Current yaw angle of the camera.
   private float _yaw = 0.0f;
 
-  /// <summary>
-  /// Current pitch angle of the camera.
-  /// </summary>
+  // Current pitch angle of the camera.
   private float _pitch = 0.0f;
 
 #endregion
 
 #region Orbit Settings
 
-  /// <summary>
-  /// Determines if the camera should auto-rotate.
-  /// </summary>
+  // Determines if the camera should auto-rotate.
   public bool _autoRotate = false;
 
-  /// <summary>
-  /// Threat transform for orbit rotation.
-  /// </summary>
+  // Threat transform for orbit rotation.
   public Transform target;
 
-  /// <summary>
-  /// Distance from the camera to the orbit target.
-  /// </summary>
+  // Distance from the camera to the orbit target.
   [SerializeField]
   private float _orbitDistance = 5.0f;
 
-  /// <summary>
-  /// Horizontal orbit rotation speed.
-  /// </summary>
+  // Horizontal orbit rotation speed.
   [SerializeField]
   private float _orbitXSpeed = 120.0f;
 
-  /// <summary>
-  /// Vertical orbit rotation speed.
-  /// </summary>
+  // Vertical orbit rotation speed.
   [SerializeField]
   private float _orbitYSpeed = 120.0f;
 
-  /// <summary>
-  /// Speed of camera zoom.
-  /// </summary>
+  // Speed of camera zoom.
   [SerializeField]
   private float _zoomSpeed = 500.0f;
 
-  /// <summary>
-  /// Minimum vertical angle limit for orbit.
-  /// </summary>
+  // Minimum vertical angle limit for orbit.
   public float orbitYMinLimit = -20f;
 
-  /// <summary>
-  /// Maximum vertical angle limit for orbit.
-  /// </summary>
+  // Maximum vertical angle limit for orbit.
   public float orbitYMaxLimit = 80f;
 
-  /// <summary>
-  /// Minimum distance for orbit.
-  /// </summary>
+  // Minimum distance for orbit.
   private float _orbitDistanceMin = 10f;
 
-  /// <summary>
-  /// Maximum distance for orbit.
-  /// </summary>
+  // Maximum distance for orbit.
   [SerializeField]
   private float _orbitDistanceMax = 20000f;
 
-  /// <summary>
-  /// Current horizontal orbit angle.
-  /// </summary>
+  // Current horizontal orbit angle.
   private float _orbitX = 0.0f;
 
-  /// <summary>
-  /// Current vertical orbit angle.
-  /// </summary>
+  // Current vertical orbit angle.
   private float _orbitY = 0.0f;
 
 #endregion
 
 #region Rendering
 
-  /// <summary>
-  /// Renderer for the orbit target.
-  /// </summary>
+  // Renderer for the orbit target.
   public Renderer targetRenderer;
 
-  /// <summary>
-  /// Renderer for the floor.
-  /// </summary>
+  // Renderer for the floor.
   public Renderer floorRenderer;
 
-  /// <summary>
-  /// Alpha value for material transparency.
-  /// </summary>
+  // Alpha value for material transparency.
   public float matAlpha;
 
 #endregion
 
 #region Autoplay Settings
 
-  /// <summary>
-  /// Speed of camera movement during autoplay.
-  /// </summary>
+  // Speed of camera movement during autoplay.
   public float autoplayCamSpeed = 2f;
 
-  /// <summary>
-  /// Duration of horizontal auto-rotation.
-  /// </summary>
+  // Duration of horizontal auto-rotation.
   public float xAutoRotateTime = 5f;
 
-  /// <summary>
-  /// Duration of vertical auto-rotation.
-  /// </summary>
+  // Duration of vertical auto-rotation.
   public float yAutoRotateTime = 5f;
 
-  /// <summary>
-  /// Coroutine for autoplay functionality.
-  /// </summary>
+  // Coroutine for autoplay functionality.
   private Coroutine autoplayRoutine;
 
 #endregion
 
 #region Camera Presets
 
-  /// <summary>
-  /// Represents a preset camera position and rotation.
-  /// </summary>
+  // Represents a preset camera position and rotation.
   [System.Serializable]
   public struct CameraPreset {
     public Vector3 position;
     public Quaternion rotation;
   }
 
-  /// <summary>
-  /// Preset camera position for key 4.
-  /// </summary>
+  // Preset camera position for key 4.
   CameraPreset fourPos = new CameraPreset();
 
-  /// <summary>
-  /// Preset camera position for key 5.
-  /// </summary>
+  // Preset camera position for key 5.
   CameraPreset fivePos = new CameraPreset();
 
-  /// <summary>
-  /// Preset camera position for key 6.
-  /// </summary>
+  // Preset camera position for key 6.
   CameraPreset sixPos = new CameraPreset();
 
 #endregion
 
 #region Movement
 
-  /// <summary>
-  /// Mapping of translation inputs to movement vectors.
-  /// </summary>
+  // Mapping of translation inputs to movement vectors.
   private Dictionary<TranslationInput, Vector3> _translationInputToVectorMap;
 
-  /// <summary>
-  /// Forward movement vector.
-  /// </summary>
+  // Forward movement vector.
   Vector3 wVector = Vector3.forward;
 
-  /// <summary>
-  /// Left movement vector.
-  /// </summary>
+  // Left movement vector.
   Vector3 aVector = Vector3.left;
 
-  /// <summary>
-  /// Backward movement vector.
-  /// </summary>
+  // Backward movement vector.
   Vector3 sVector = Vector3.back;
 
-  /// <summary>
-  /// Right movement vector.
-  /// </summary>
+  // Right movement vector.
   Vector3 dVector = Vector3.right;
 
-  /// <summary>
-  /// Angle between forward vector and camera direction.
-  /// </summary>
+  // Angle between forward vector and camera direction.
   public float forwardToCameraAngle;
 
   public CameraMode cameraMode = CameraMode.FREE;
@@ -313,7 +235,6 @@ public class CameraController : MonoBehaviour {
     _currentInterpolationSpeed = _defaultInterpolationSpeed;
   }
 
-  // Start is called before the first frame update
   void Start() {
     fourPos.position = new Vector3(0, 0, 0);
     fourPos.rotation = Quaternion.Euler(0, 0, 0);

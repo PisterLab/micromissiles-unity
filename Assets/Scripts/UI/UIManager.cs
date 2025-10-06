@@ -46,9 +46,7 @@ public class UIManager : MonoBehaviour {
 
   private UIMode curMode = UIMode.THREE_DIMENSIONAL;
 
-  // Start is called before the first frame update
   void Awake() {
-    // singleton
     if (Instance == null)
       Instance = this;
     else
@@ -59,8 +57,6 @@ public class UIManager : MonoBehaviour {
     SetUIMode(UIMode.THREE_DIMENSIONAL);
     _configSelectorPanel.SetActive(false);
     SetupConfigSelectorPanel();
-    // inputManager = InputManager.Instance;
-    // worldManager = WorldManager.Instance;
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
@@ -72,10 +68,10 @@ public class UIManager : MonoBehaviour {
   }
 
   public void LogAction(string message, Color color) {
-    // Shift existing messages to older slots with faded colors
+    // Shift existing messages to older slots with faded colors.
     pppppActionMessageTextHandle.text = ppppActionMessageTextHandle.text;
     pppppActionMessageTextHandle.color =
-        ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 75%
+        ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 20%.
 
     ppppActionMessageTextHandle.text = ppActionMessageTextHandle.text;
     ppppActionMessageTextHandle.color = ppActionMessageTextHandle.color * 0.85f;
@@ -86,7 +82,7 @@ public class UIManager : MonoBehaviour {
     pActionMessageTextHandle.text = actionMessageTextHandle.text;
     pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.9f;
 
-    // Set new message
+    // Set new message.
     actionMessageTextHandle.text = message;
     actionMessageTextHandle.color = color;
   }
@@ -129,9 +125,6 @@ public class UIManager : MonoBehaviour {
     string selectedConfig = _configDropdown.options[_configDropdown.value].text;
     SimManager.Instance.LoadNewConfig(selectedConfig);
     _configSelectorPanel.SetActive(false);
-    // if(!InputManager.Instance.mouseActive){
-    //     InputManager.Instance.mouseActive = true;
-    // }
   }
 
   public void ToggleUIMode() {
@@ -171,7 +164,7 @@ public class UIManager : MonoBehaviour {
     float expectedSimTimeAdvance = Time.unscaledDeltaTime * Time.timeScale;
     float actualSimTimeAdvance = Time.deltaTime;
 
-    // Allow a small epsilon to account for floating-point precision errors
+    // Allow a small epsilon to account for floating-point precision errors.
     if (actualSimTimeAdvance < expectedSimTimeAdvance - 0.001f) {
       simTimeText.text += "\nThrottling time to meet physics rate";
     }
@@ -251,7 +244,6 @@ public class UIManager : MonoBehaviour {
     UpdateSummaryText();
   }
 
-  // Update is called once per frame
   void Update() {
     // UpdateSwarmPanel();
     UpdateSimTimeText();
