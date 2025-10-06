@@ -538,7 +538,7 @@ Key components include:
 
 - **`name`**: Name of the attack behavior.
 - **`attackBehaviorType`**: Type of attack (e.g., `DIRECT_ATTACK`). Must correspond to a valid and implemented attack behavior archetype.
-- **`targetPosition`**: Coordinates of the initial target position. The threat will seek to destroy this target. Often this represents the "carrier" that is being defended.
+- **`targetPosition`**: Coordinates of the initial target position. The threat will seek to destroy this target. Often, this represents the "carrier" that is being defended.
 - **`targetVelocity`**: Target's initial velocity (if applicable).
 - **`flightPlan`**: Defines waypoints and strategies for the threat's attack.
 

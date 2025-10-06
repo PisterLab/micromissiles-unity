@@ -7,11 +7,22 @@
 #include <string>
 #include <vector>
 
+#include "Configs/attack_behavior_config.pb.h"
 #include "Configs/simulation_config.pb.h"
 #include "Configs/static_config.pb.h"
 
 namespace protobuf {
 namespace {
+
+TEST(ProtobufTest, LoadProtobufTextAttackBehaviorConfigFileTest) {
+  const std::string kAttackBehaviorConfigFile =
+      "../micromissiles-configs-data+/Attacks/default_direct_attack.pbtxt";
+  const auto attack_behavior_config =
+      LoadProtobufTextFile<configs::AttackBehaviorConfig>(
+          kAttackBehaviorConfigFile);
+  EXPECT_TRUE(attack_behavior_config.has_flight_plan());
+  EXPECT_EQ(attack_behavior_config.flight_plan().waypoints().size(), 3);
+}
 
 TEST(ProtobufTest, LoadProtobufTextStaticConfigFileTest) {
   const std::string kStaticConfigFile =

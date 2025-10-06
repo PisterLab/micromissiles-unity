@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json;
 
 public static class ConfigLoader {
   // Maximum serialized length of a Protobuf message.
@@ -34,6 +33,22 @@ public static class ConfigLoader {
       return null;
     }
     return www.downloadHandler.text;
+  }
+
+  public static Configs.AttackBehaviorConfig LoadAttackBehaviorConfig(string configFile) {
+    string configPath = Path.Combine("Configs/Attacks", configFile);
+    string streamingAssetsPath = GetStreamingAssetsFilePath(configPath);
+    byte[] serializedBuffer = new byte[MaxProtobufSerializedLength];
+    int serializedLength = 0;
+    unsafe {
+      fixed(void* bufferPtr = serializedBuffer) {
+        serializedLength = Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary(
+            streamingAssetsPath, (IntPtr)bufferPtr, MaxProtobufSerializedLength);
+      }
+    }
+    var message =
+        Configs.AttackBehaviorConfig.Parser.ParseFrom(serializedBuffer, 0, serializedLength);
+    return message;
   }
 
   public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {

@@ -348,16 +348,9 @@ public class SimManager : MonoBehaviour {
     if (string.IsNullOrEmpty(attackBehaviorConfigFile)) {
       return null;
     }
-    AttackBehavior attackBehavior = AttackBehavior.FromJson(attackBehaviorConfigFile);
-    switch (attackBehavior.attackBehaviorType) {
-      case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK: {
-        return DirectAttackBehavior.FromJson(attackBehaviorConfigFile);
-      }
-      default: {
-        Debug.LogError($"Attack behavior type or configuration was not specified.");
-        return null;
-      }
-    }
+    Configs.AttackBehaviorConfig attackBehaviorConfig =
+        ConfigLoader.LoadAttackBehaviorConfig(attackBehaviorConfigFile);
+    return AttackBehaviorFactory.Create(attackBehaviorConfig);
   }
 
   public Agent CreateDummyAgent(Vector3 position, Vector3 velocity) {
