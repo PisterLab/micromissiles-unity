@@ -1,7 +1,5 @@
 module(name = "micromissiles-unity-plugins")
 
-http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 bazel_dep(
     name = "abseil-cpp",
     version = "20250814.1",
