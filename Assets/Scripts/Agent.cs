@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Agent : MonoBehaviour {
   // In the initialized phase, the agent is subject to no forces.
   // In the ready phase, the agent is subject to gravity and drag with zero input acceleration.
+  // TODO(titan): Replace this enumeration with the Protobuf enumeration.
   public enum FlightPhase { INITIALIZED, READY, BOOST, MIDCOURSE, TERMINAL, TERMINATED }
 
   [SerializeField]
@@ -35,7 +36,7 @@ public abstract class Agent : MonoBehaviour {
   protected double _timeInPhase = 0;
 
   public Configs.StaticConfig staticConfig;
-  public DynamicAgentConfig dynamicAgentConfig;
+  public Configs.AgentConfig agentConfig;
 
   // Define delegates.
   public delegate void TerminatedEventHandler(Agent agent);
@@ -79,13 +80,13 @@ public abstract class Agent : MonoBehaviour {
     return _flightPhase == FlightPhase.TERMINATED;
   }
 
-  public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    dynamicAgentConfig = config;
+  public virtual void SetAgentConfig(Configs.AgentConfig config) {
+    agentConfig = config;
   }
 
   public virtual void SetStaticConfig(Configs.StaticConfig config) {
     staticConfig = config;
-    GetComponent<Rigidbody>().mass = staticConfig.BodyConfig.Mass;
+    GetComponent<Rigidbody>().mass = staticConfig.BodyConfig?.Mass ?? 1;
   }
 
   public virtual bool IsAssignable() {
@@ -346,7 +347,7 @@ public abstract class Agent : MonoBehaviour {
     }
     _timeInPhase += Time.fixedDeltaTime;
 
-    var boostTime = staticConfig.BoostConfig.BoostTime;
+    var boostTime = staticConfig.BoostConfig?.BoostTime ?? 0;
     double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
 
     if (_flightPhase == FlightPhase.TERMINATED) {
@@ -409,21 +410,21 @@ public abstract class Agent : MonoBehaviour {
   }
 
   public float CalculateMaxForwardAcceleration() {
-    return staticConfig.AccelerationConfig.MaxForwardAcceleration;
+    return staticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
   }
 
   public float CalculateMaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
-        (float)(staticConfig.AccelerationConfig.MaxReferenceNormalAcceleration *
+        (float)((staticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) *
                 Constants.kGravity);
-    float referenceSpeed = staticConfig.AccelerationConfig.ReferenceSpeed;
+    float referenceSpeed = staticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
     return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
   private float CalculateDrag() {
-    float dragCoefficient = staticConfig.LiftDragConfig.DragCoefficient;
-    float crossSectionalArea = staticConfig.BodyConfig.CrossSectionalArea;
-    float mass = staticConfig.BodyConfig.Mass;
+    float dragCoefficient = staticConfig.LiftDragConfig?.DragCoefficient ?? 0;
+    float crossSectionalArea = staticConfig.BodyConfig?.CrossSectionalArea ?? 0;
+    float mass = staticConfig.BodyConfig?.Mass ?? 1;
     float dynamicPressure = (float)GetDynamicPressure();
     float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
     return dragForce / mass;
@@ -431,7 +432,7 @@ public abstract class Agent : MonoBehaviour {
 
   private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
     float liftAcceleration = Vector3.ProjectOnPlane(accelerationInput, transform.up).magnitude;
-    float liftDragRatio = staticConfig.LiftDragConfig.LiftDragRatio;
+    float liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }
 }

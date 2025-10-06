@@ -41,10 +41,10 @@ public class ParticleManager : MonoBehaviour {
     _missileExplosionPool = new Queue<GameObject>();
     _hitMarkerList = new List<GameObject>();
 
-    if (SimManager.Instance.simulatorConfig.EnableMissileTrailEffect) {
+    if (SimManager.Instance.SimulatorConfig.EnableMissileTrailEffect) {
       InitializeMissileTrailParticlePool();
     }
-    if (SimManager.Instance.simulatorConfig.EnableExplosionEffect) {
+    if (SimManager.Instance.SimulatorConfig.EnableExplosionEffect) {
       InitializeMissileExplosionParticlePool();
     }
 
@@ -103,13 +103,13 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void RegisterAgentTerminated(Agent agent) {
-    if (SimManager.Instance.simulatorConfig.PersistentFlightTrails) {
+    if (SimManager.Instance.SimulatorConfig.PersistentFlightTrails) {
       CommandeerAgentTrailRenderer(agent);
     }
   }
 
   private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.EnableExplosionEffect) {
+    if (SimManager.Instance.SimulatorConfig.EnableExplosionEffect) {
       PlayMissileExplosion(interceptor.transform.position);
     }
     GameObject hitMarkerObject = SpawnHitMarker(interceptor.transform.position);
@@ -238,7 +238,7 @@ public class ParticleManager : MonoBehaviour {
   /// Returns a missile trail particle prefab from the pool. If the pool is empty, it returns null.
   public GameObject RequestMissileTrailParticle() {
     if (_missileTrailPool.Count > 0 &&
-        SimManager.Instance.simulatorConfig.EnableMissileTrailEffect) {
+        SimManager.Instance.SimulatorConfig.EnableMissileTrailEffect) {
       GameObject trail = _missileTrailPool.Dequeue();
 
       return trail;

@@ -32,25 +32,25 @@ interceptor_swarm_configs {
 threat_swarm_configs {
   num_agents: 7
   agent_config {
-    config_file: "quadcopter.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.json"
+    config_file: "brahmos.pbtxt"
+    attack_behavior_config_file: "brahmos_direct_attack.json"
     initial_state {
       position {
         x: 0
-        y: 800
-        z: 6000
+        y: 50
+        z: 40000
       }
       velocity {
         x: 0
         y: 0
-        z: -50
+        z: -800
       }
     }
     standard_deviation {
       position {
-        x: 1000
-        y: 200
-        z: 100
+        x: 3000
+        y: 10
+        z: 200
       }
       velocity {
         x: 0
@@ -62,7 +62,7 @@ threat_swarm_configs {
       flight_config {
         evasion_config {
             enabled: true
-            range_threshold: 1000
+            range_threshold: 2000
         }
       }
       sensor_config {

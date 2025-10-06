@@ -4,8 +4,8 @@ load("@protobuf//bazel:proto_library.bzl", "proto_library")
 package(default_visibility = ["//visibility:public"])
 
 proto_library(
-    name = "agent_proto",
-    srcs = ["agent.proto"],
+    name = "agent_config_proto",
+    srcs = ["agent_config.proto"],
     deps = [
         ":dynamic_config_proto",
         "//Simulation:state_proto",
@@ -13,8 +13,8 @@ proto_library(
 )
 
 cc_proto_library(
-    name = "agent_cc_proto",
-    deps = [":agent_proto"],
+    name = "agent_config_cc_proto",
+    deps = [":agent_config_proto"],
 )
 
 proto_library(
@@ -31,7 +31,7 @@ cc_proto_library(
 proto_library(
     name = "simulation_config_proto",
     srcs = ["simulation_config.proto"],
-    deps = [":agent_proto"],
+    deps = [":swarm_config_proto"],
 )
 
 cc_proto_library(
@@ -57,4 +57,15 @@ proto_library(
 cc_proto_library(
     name = "static_config_cc_proto",
     deps = [":static_config_proto"],
+)
+
+proto_library(
+    name = "swarm_config_proto",
+    srcs = ["swarm_config.proto"],
+    deps = [":agent_config_proto"],
+)
+
+cc_proto_library(
+    name = "swarm_config_cc_proto",
+    deps = [":swarm_config_proto"],
 )

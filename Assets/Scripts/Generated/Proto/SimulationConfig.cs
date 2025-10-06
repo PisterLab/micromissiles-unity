@@ -24,14 +24,14 @@ namespace Configs {
     static SimulationConfigReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch9Db25maWdzL3NpbXVsYXRpb25fY29uZmlnLnByb3RvEgdjb25maWdzGhND",
-            "b25maWdzL2FnZW50LnByb3RvIq8BChBTaW11bGF0aW9uQ29uZmlnEhAKCGVu",
-            "ZF90aW1lGAEgASgCEhIKCnRpbWVfc2NhbGUYAiABKAISPAoZaW50ZXJjZXB0",
-            "b3Jfc3dhcm1fY29uZmlncxgDIAMoCzIZLmNvbmZpZ3MuQWdlbnRTd2FybUNv",
-            "bmZpZxI3ChR0aHJlYXRfc3dhcm1fY29uZmlncxgEIAMoCzIZLmNvbmZpZ3Mu",
-            "QWdlbnRTd2FybUNvbmZpZ2IGcHJvdG8z"));
+            "Ch9Db25maWdzL3NpbXVsYXRpb25fY29uZmlnLnByb3RvEgdjb25maWdzGhpD",
+            "b25maWdzL3N3YXJtX2NvbmZpZy5wcm90byKlAQoQU2ltdWxhdGlvbkNvbmZp",
+            "ZxIQCghlbmRfdGltZRgBIAEoAhISCgp0aW1lX3NjYWxlGAIgASgCEjcKGWlu",
+            "dGVyY2VwdG9yX3N3YXJtX2NvbmZpZ3MYAyADKAsyFC5jb25maWdzLlN3YXJt",
+            "Q29uZmlnEjIKFHRocmVhdF9zd2FybV9jb25maWdzGAQgAygLMhQuY29uZmln",
+            "cy5Td2FybUNvbmZpZ2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Configs.AgentReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Configs.SwarmConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SimulationConfig), global::Configs.SimulationConfig.Parser, new[]{ "EndTime", "TimeScale", "InterceptorSwarmConfigs", "ThreatSwarmConfigs" }, null, null, null, null)
           }));
@@ -123,29 +123,29 @@ namespace Configs {
 
     /// <summary>Field number for the "interceptor_swarm_configs" field.</summary>
     public const int InterceptorSwarmConfigsFieldNumber = 3;
-    private static readonly pb::FieldCodec<global::Configs.AgentSwarmConfig> _repeated_interceptorSwarmConfigs_codec
-        = pb::FieldCodec.ForMessage(26, global::Configs.AgentSwarmConfig.Parser);
-    private readonly pbc::RepeatedField<global::Configs.AgentSwarmConfig> interceptorSwarmConfigs_ = new pbc::RepeatedField<global::Configs.AgentSwarmConfig>();
+    private static readonly pb::FieldCodec<global::Configs.SwarmConfig> _repeated_interceptorSwarmConfigs_codec
+        = pb::FieldCodec.ForMessage(26, global::Configs.SwarmConfig.Parser);
+    private readonly pbc::RepeatedField<global::Configs.SwarmConfig> interceptorSwarmConfigs_ = new pbc::RepeatedField<global::Configs.SwarmConfig>();
     /// <summary>
     /// Interceptor swarm configurations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Configs.AgentSwarmConfig> InterceptorSwarmConfigs {
+    public pbc::RepeatedField<global::Configs.SwarmConfig> InterceptorSwarmConfigs {
       get { return interceptorSwarmConfigs_; }
     }
 
     /// <summary>Field number for the "threat_swarm_configs" field.</summary>
     public const int ThreatSwarmConfigsFieldNumber = 4;
-    private static readonly pb::FieldCodec<global::Configs.AgentSwarmConfig> _repeated_threatSwarmConfigs_codec
-        = pb::FieldCodec.ForMessage(34, global::Configs.AgentSwarmConfig.Parser);
-    private readonly pbc::RepeatedField<global::Configs.AgentSwarmConfig> threatSwarmConfigs_ = new pbc::RepeatedField<global::Configs.AgentSwarmConfig>();
+    private static readonly pb::FieldCodec<global::Configs.SwarmConfig> _repeated_threatSwarmConfigs_codec
+        = pb::FieldCodec.ForMessage(34, global::Configs.SwarmConfig.Parser);
+    private readonly pbc::RepeatedField<global::Configs.SwarmConfig> threatSwarmConfigs_ = new pbc::RepeatedField<global::Configs.SwarmConfig>();
     /// <summary>
     /// Threat swarm configurations.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Configs.AgentSwarmConfig> ThreatSwarmConfigs {
+    public pbc::RepeatedField<global::Configs.SwarmConfig> ThreatSwarmConfigs {
       get { return threatSwarmConfigs_; }
     }
 

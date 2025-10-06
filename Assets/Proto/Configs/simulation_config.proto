@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package configs;
 
-import "Configs/agent.proto";
+import "Configs/swarm_config.proto";
 
 // Simulation configuration.
 message SimulationConfig {
@@ -13,8 +13,8 @@ message SimulationConfig {
   float time_scale = 2;
 
   // Interceptor swarm configurations.
-  repeated AgentSwarmConfig interceptor_swarm_configs = 3;
+  repeated SwarmConfig interceptor_swarm_configs = 3;
 
   // Threat swarm configurations.
-  repeated AgentSwarmConfig threat_swarm_configs = 4;
+  repeated SwarmConfig threat_swarm_configs = 4;
 }

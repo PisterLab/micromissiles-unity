@@ -31,11 +31,15 @@ cc_library(
 cc_test(
     name = "protobuf_test",
     srcs = ["protobuf_test.cc"],
-    data = ["@micromissiles-configs-data//Models:models"],
+    data = [
+        "@micromissiles-configs-data//Models:models",
+        "@micromissiles-configs-data//Simulations:simulations",
+    ],
     deps = [
         ":protobuf",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
+        "@micromissiles-proto//Configs:simulation_config_cc_proto",
         "@micromissiles-proto//Configs:static_config_cc_proto",
     ],
 )

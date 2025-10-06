@@ -6,28 +6,28 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 
-public class ConfigTest : TestBase {
+public class ConfigsTest : TestBase {
   [OneTimeSetUp]
   public void LoadScene() {
     SceneManager.LoadScene("Scenes/MainScene");
   }
 
   [UnityTest]
-  public IEnumerator TestAllConfigFilesLoad() {
-    string configPath = Path.Combine(Application.streamingAssetsPath, "Configs");
-    string[] jsonFiles = Directory.GetFiles(configPath, "*.json");
+  public IEnumerator TestAllSimulationConfigFilesLoad() {
+    string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs/Simulations");
+    string[] configFiles = Directory.GetFiles(configPath, "*.pbtxt");
 
-    Assert.IsTrue(jsonFiles.Length > 0, "No JSON files found in the Configs directory.");
+    Assert.IsTrue(configFiles.Length > 0, "No simulation configuration files found.");
 
     bool isPaused = false;
     double epsilon = 0.0002;
-    for (int i = 0; i < jsonFiles.Length; ++i) {
+    for (int i = 0; i < configFiles.Length; ++i) {
       if (i % 2 == 1) {
         SimManager.Instance.PauseSimulation();
         isPaused = true;
       }
       yield return new WaitForSecondsRealtime(0.1f);
-      SimManager.Instance.LoadNewConfig(jsonFiles[i]);
+      SimManager.Instance.LoadNewConfig(configFiles[i]);
       yield return new WaitForSecondsRealtime(0.1f);
       double elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
       if (isPaused) {
@@ -37,13 +37,13 @@ public class ConfigTest : TestBase {
             // All interceptors start in the INITIALIZED phase.
             Assert.AreEqual(
                 Agent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
-                "All INTERCEPTOR agents should be in the INITIALIZED flight phase after loading while paused.");
+                "All interceptors should be in the INITIALIZED flight phase after loading while paused.");
 
           } else if (agent is Threat threat) {
             // All threats start in the INITIALIZED phase.
             Assert.AreEqual(
                 Agent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
-                "All THREAT agents should be in the INITIALIZED flight phase after loading while paused.");
+                "All threats should be in the INITIALIZED flight phase after loading while paused.");
           }
         }
         Assert.LessOrEqual(
@@ -58,8 +58,8 @@ public class ConfigTest : TestBase {
                       "Simulation time should have advanced after loading while not paused.");
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime -
-                      (1.0f / SimManager.Instance.simulatorConfig.PhysicsUpdateRate)),
-            epsilon, "Physics update rate should be 1 / simulatorConfig.PhysicsUpdateRate.");
+                      (1.0f / SimManager.Instance.SimulatorConfig.PhysicsUpdateRate)),
+            epsilon, "Physics update rate should be 1 / SimulatorConfig.PhysicsUpdateRate.");
       }
 
       if (isPaused) {

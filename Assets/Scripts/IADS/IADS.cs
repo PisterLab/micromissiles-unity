@@ -120,15 +120,17 @@ public class IADS : MonoBehaviour {
             $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
 
         // Create a new interceptor.
-        DynamicAgentConfig config =
-            SimManager.Instance.SimulationConfig.interceptor_swarm_configs[0].dynamic_agent_config;
-        InitialState initialState = new InitialState();
+        Configs.AgentConfig config =
+            SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs.Count > 0
+                ? SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs[0].AgentConfig
+                : null;
+        Simulation.State initialState = new Simulation.State();
 
         // Set the initial position, which defaults to the origin.
-        initialState.position = Vector3.zero;
+        initialState.Position = Coordinates3.ToProto(Vector3.zero);
 
         // Set the initial velocity to point along the launch vector.
-        initialState.velocity = plan.GetNormalizedLaunchVector() * 1e-3f;
+        initialState.Velocity = Coordinates3.ToProto(plan.GetNormalizedLaunchVector() * 1e-3f);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Assign the interceptor to the cluster.

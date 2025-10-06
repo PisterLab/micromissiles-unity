@@ -112,8 +112,8 @@ public class UIManager : MonoBehaviour {
 
   private void PopulateConfigDropdown() {
     _configDropdown.ClearOptions();
-    string configPath = Path.Combine(Application.streamingAssetsPath, "Configs");
-    string[] configFiles = Directory.GetFiles(configPath, "*.json");
+    string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs/Simulations");
+    string[] configFiles = Directory.GetFiles(configPath, "*.pbtxt");
 
     List<string> configFileNames = new List<string>();
     foreach (string configFile in configFiles) {

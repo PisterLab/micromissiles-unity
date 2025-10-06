@@ -32,7 +32,7 @@ interceptor_swarm_configs {
 threat_swarm_configs {
   num_agents: 7
   agent_config {
-    config_file: "quadcopter.pbtxt"
+    config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.json"
     initial_state {
       position {

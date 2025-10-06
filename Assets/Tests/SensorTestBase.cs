@@ -11,7 +11,7 @@ public abstract class SensorTestBase : TestBase {
     // Initialize SimManager
     var simManagerGameObject = new GameObject("SimManager");
     simManager = simManagerGameObject.AddComponent<SimManager>();
-    simManager.SimulationConfig = new SimulationConfig();
+    simManager.SimulationConfig = new Configs.SimulationConfig();
     SimManager.Instance = simManager;
   }
 

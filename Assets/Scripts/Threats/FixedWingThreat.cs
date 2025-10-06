@@ -33,7 +33,7 @@ public class FixedWingThreat : Threat {
       // Update the waypoint and power setting.
       UpdateWaypointAndPower();
 
-      float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+      float sensorUpdatePeriod = 1f / agentConfig.DynamicConfig.SensorConfig.Frequency;
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate the state from sensor output.
         _elapsedTime = 0;
