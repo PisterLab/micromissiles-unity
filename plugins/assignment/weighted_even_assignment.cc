@@ -2,10 +2,10 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <iostream>
 #include <vector>
 
 #include "Plugin/status.pb.h"
+#include "base/logging.h"
 #include "ortools/sat/cp_model.h"
 
 namespace assignment {
@@ -49,7 +49,7 @@ plugin::StatusCode WeightedEvenAssignment::DefineConstraints(
 plugin::StatusCode WeightedEvenAssignment::ValidateWeights() const {
   // Validate the size of the weights.
   if (weights_.size() != static_cast<std::size_t>(num_tasks_)) {
-    std::cerr
+    LOG(ERROR)
         << "The number of task weights does not match the number of tasks: "
         << weights_.size() << " vs. " << num_tasks_ << ".";
     return plugin::STATUS_INVALID_ARGUMENT;

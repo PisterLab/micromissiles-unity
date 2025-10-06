@@ -8,7 +8,10 @@ cc_library(
     name = "assignment",
     srcs = ["assignment.cc"],
     hdrs = ["assignment.h"],
-    deps = ["@micromissiles-proto//Plugin:status_cc_proto"],
+    deps = [
+        "//base:logging",
+        "@micromissiles-proto//Plugin:status_cc_proto",
+    ],
 )
 
 cc_library(
@@ -40,6 +43,7 @@ cc_library(
     hdrs = ["cp_assignment.h"],
     deps = [
         ":assignment",
+        "//base:logging",
         "@micromissiles-proto//Plugin:status_cc_proto",
         "@or-tools//ortools/sat:cp_model",
     ],
@@ -74,6 +78,7 @@ cc_library(
     hdrs = ["weighted_even_assignment.h"],
     deps = [
         ":cp_assignment",
+        "//base:logging",
         "@micromissiles-proto//Plugin:status_cc_proto",
         "@or-tools//ortools/sat:cp_model",
     ],

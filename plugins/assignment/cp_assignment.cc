@@ -4,6 +4,7 @@
 
 #include "Plugin/status.pb.h"
 #include "assignment/assignment.h"
+#include "base/logging.h"
 #include "ortools/sat/cp_model.h"
 #include "ortools/sat/cp_model.pb.h"
 #include "ortools/sat/cp_model_solver.h"
@@ -68,7 +69,7 @@ plugin::StatusCode CpAssignment::AssignImpl(
   // Check the feasibility of the solution.
   if (response.status() ==
       operations_research::sat::CpSolverStatus::INFEASIBLE) {
-    std::cerr << "Assignment problem is infeasible.";
+    LOG(ERROR) << "Assignment problem is infeasible.";
     return plugin::STATUS_INTERNAL;
   }
 

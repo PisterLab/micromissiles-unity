@@ -1,10 +1,10 @@
 #include "assignment/assignment.h"
 
 #include <cstddef>
-#include <iostream>
 #include <vector>
 
 #include "Plugin/status.pb.h"
+#include "base/logging.h"
 
 namespace assignment {
 
@@ -20,18 +20,18 @@ plugin::StatusCode Assignment::Assign(
 plugin::StatusCode Assignment::ValidateCosts() const {
   // Validate the first dimension of the cost matrix.
   if (costs_.size() != static_cast<std::size_t>(num_agents_)) {
-    std::cerr << "The assignment cost matrix has an incorrect number of "
-                 "rows: "
-              << costs_.size() << " vs. " << num_agents_ << ".";
+    LOG(ERROR) << "The assignment cost matrix has an incorrect number of "
+                  "rows: "
+               << costs_.size() << " vs. " << num_agents_ << ".";
     return plugin::STATUS_INVALID_ARGUMENT;
   }
 
   // Validate the second dimension of the cost matrix.
   for (const auto& row : costs_) {
     if (row.size() != static_cast<std::size_t>(num_tasks_)) {
-      std::cerr << "The assignment cost matrix has an incorrect number "
-                   "of columns: "
-                << row.size() << " vs. " << num_tasks_ << ".";
+      LOG(ERROR) << "The assignment cost matrix has an incorrect number "
+                    "of columns: "
+                 << row.size() << " vs. " << num_tasks_ << ".";
       return plugin::STATUS_INVALID_ARGUMENT;
     }
   }
