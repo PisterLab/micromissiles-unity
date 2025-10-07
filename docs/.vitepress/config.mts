@@ -45,7 +45,7 @@ export default defineConfig({
           { text: "Sim Overview", link: "/Simulator_Overview" },
           { text: "Keybinds and Controls", link: "/Keybinds_and_Controls" },
           { text: "Sim Config Guide", link: "/Simulation_Configuration_Guide" },
-          { text: "Simulation Logging", link: "/Simulation_Logging" },
+          { text: "Sim Logging", link: "/Simulation_Logging" },
           { text: "Coverage Reports",
             items: [
               { text: "EditMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/editmode/Report/index.html" },
