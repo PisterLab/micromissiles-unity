@@ -59,18 +59,9 @@ public class MaxSpeedAssignment : IAssignment {
     // Solve the assignment problem.
     int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
     int[] assignedThreatIndices = new int[assignableInterceptors.Count];
-    int numAssignments = 0;
-    Plugin.StatusCode status = Plugin.StatusCode.StatusOk;
-    unsafe {
-      fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
-          fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
-        int* numAssignmentsPtr = &numAssignments;
-        status = Assignment.Assignment_EvenAssignment_Assign(
-            assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
-            (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr,
-            (IntPtr)numAssignmentsPtr);
-      }
-    }
+    Plugin.StatusCode status = Assignment.Assignment_EvenAssignment_Assign(
+        assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
+        assignedInterceptorIndices, assignedThreatIndices, out int numAssignments);
     if (status != Plugin.StatusCode.StatusOk) {
       Debug.Log($"Failed to assign the interceptors to the threats with status code {status}.");
       return assignments;

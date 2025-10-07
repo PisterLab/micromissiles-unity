@@ -115,33 +115,23 @@ The corresponding Unity C# declaration is:
 // Assign the agents to the tasks using an even assignment.
 [DllImport("assignment")]
 public static extern Plugin.StatusCode Assignment_EvenAssignment_Assign(
-   int numAgents, int numTasks, float[] costs, IntPtr assignedAgents, IntPtr assignedTasks,
-   IntPtr numAssignments);
+    int numAgents, int numTasks, float[] costs, int[] assignedAgents, int[] assignedTasks,
+    out int numAssignments);
 ```
 
-Primitive types like `int` can be passed directly between the plugin and Unity while memory buffers require careful handling.
 In this example:
 - `costs` is a float array passed from Unity to the plugin.
 - `assigned_agents`/`assignedAgents` and `assigned_tasks`/`assignedTasks` are integer arrays used as output arguments.
 - `num_assignments`/`numAssignments` is an integer output argument of the plugin.
 
-Since Unity has to provide raw pointers to the plugin, calling plugin functions typically requires an `unsafe` block.
 ```csharp
 // Solve the assignment problem.
 int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
 int[] assignedThreatIndices = new int[assignableInterceptors.Count];
 int numAssignments = 0;
-Plugin.StatusCode status = Plugin.StatusCode.StatusOk;
-unsafe {
-  fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
-      fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
-    int* numAssignmentsPtr = &numAssignments;
-    status = Assignment.Assignment_EvenAssignment_Assign(
-        assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
-        (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr,
-        (IntPtr)numAssignmentsPtr);
-   }
-}
+Plugin.StatusCode status = Assignment.Assignment_EvenAssignment_Assign(
+    assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
+    assignedInterceptorIndices, assignedThreatIndices, out numAssignments);
 ```
 
 After the call, the returned status code should always be checked and logged if necessary.

@@ -4,6 +4,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public static class ConfigLoader {
+  // Delegate for loading from a Protobuf text file and returning the length of the serialized
+  // message as an output argument.
+  private delegate Plugin.StatusCode SerializedProtobufLengthDelegate(string file,
+                                                                      out int serializedLength);
+  // Delegate for loading from a Protobuf text file to binary format and returning the length of the
+  // serialized message as an output argument.
+  private delegate Plugin.StatusCode LoadProtobufDelegate(string file, byte[] buffer,
+                                                          int bufferSize, out int serializedLength);
+
   // Relative path to the default simulator configuration.
   private const string SimulatorConfigRelativePath = "simulator.pbtxt";
 
@@ -63,19 +72,15 @@ public static class ConfigLoader {
         Protobuf.Protobuf_StaticConfig_LoadToBinary);
   }
 
-  private static T LoadProtobufConfig<T>(
-      string relativePath, Func<string, IntPtr, Plugin.StatusCode> serializedLengthFunction,
-      Func<string, IntPtr, int, IntPtr, Plugin.StatusCode> loadFunction)
+  private static T LoadProtobufConfig<T>(string relativePath,
+                                         SerializedProtobufLengthDelegate serializedLengthFunction,
+                                         LoadProtobufDelegate loadFunction)
       where T : Google.Protobuf.IMessage<T>, new() {
     string streamingAssetsPath = GetStreamingAssetsFilePath(relativePath);
 
     // Determine the length of the serialized Protobuf message.
-    int serializedLength = 0;
-    Plugin.StatusCode status = Plugin.StatusCode.StatusOk;
-    unsafe {
-      int* serializedLengthPtr = &serializedLength;
-      status = serializedLengthFunction(streamingAssetsPath, (IntPtr)serializedLengthPtr);
-    }
+    Plugin.StatusCode status =
+        serializedLengthFunction(streamingAssetsPath, out int serializedLength);
     if (status != Plugin.StatusCode.StatusOk) {
       Debug.Log(
           $"Failed to get the length of the serialized message from the Protobuf text file {relativePath} with status code {status}.");
@@ -84,13 +89,7 @@ public static class ConfigLoader {
 
     // Load the Protobuf message to binary format.
     byte[] buffer = new byte[serializedLength];
-    unsafe {
-      int* serializedLengthPtr = &serializedLength;
-      fixed(void* bufferPtr = buffer) {
-        status = loadFunction(streamingAssetsPath, (IntPtr)bufferPtr, serializedLength,
-                              (IntPtr)serializedLengthPtr);
-      }
-    }
+    status = loadFunction(streamingAssetsPath, buffer, serializedLength, out serializedLength);
     if (status != Plugin.StatusCode.StatusOk) {
       Debug.Log($"Failed to load the Protobuf text file {relativePath} with status code {status}.");
       return default;
