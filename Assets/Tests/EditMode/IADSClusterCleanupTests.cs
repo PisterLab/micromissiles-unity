@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Configs;
 
 public class IADSClusterCleanupTests : AgentTestBase {
   private IADS _iads;
@@ -21,32 +22,65 @@ public class IADSClusterCleanupTests : AgentTestBase {
     }
   }
 
-  private DynamicAgentConfig CreateThreatConfig() => new DynamicAgentConfig {
-    agent_model = "brahmos.pbtxt", attack_behavior = "brahmos_direct_attack.json",
-    initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.zero },
-    standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
-    dynamic_config = new DynamicConfig { sensor_config = new SensorConfig { type = SensorType.IDEAL,
-                                                                            frequency = 10 } }
+  private AgentConfig CreateThreatConfig() => new AgentConfig {
+    ConfigFile = "brahmos.pbtxt",
+    AttackBehaviorConfigFile = "brahmos_direct_attack.pbtxt",
+    InitialState = new Simulation.State {
+      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+    },
+    StandardDeviation = new Simulation.State {
+      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+    },
+    DynamicConfig = new DynamicConfig {
+      SensorConfig = new Simulation.SensorConfig {
+        Type = Simulation.SensorType.Ideal,
+        Frequency = 10
+      }
+    }
   };
 
-  private DynamicAgentConfig CreateCarrierConfig() => new DynamicAgentConfig {
-    agent_model = "hydra70.pbtxt",
-    initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.forward * 50 },
-    standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
-    dynamic_config =
-        new DynamicConfig { sensor_config = new SensorConfig { type = SensorType.IDEAL,
-                                                               frequency = 10 },
-                            flight_config = new FlightConfig { augmentedPnEnabled = false } }
+  private AgentConfig CreateCarrierConfig() => new AgentConfig {
+    ConfigFile = "hydra70.pbtxt",
+    InitialState = new Simulation.State {
+      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 50 }
+    },
+    StandardDeviation = new Simulation.State {
+      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+    },
+    DynamicConfig = new DynamicConfig {
+      SensorConfig = new Simulation.SensorConfig {
+        Type = Simulation.SensorType.Ideal,
+        Frequency = 10
+      },
+      FlightConfig = new FlightConfig {
+        ControllerType = ControllerType.ProportionalNavigation
+      }
+    }
   };
 
-  private DynamicAgentConfig CreateMissileConfig() => new DynamicAgentConfig {
-    agent_model = "micromissile.pbtxt",
-    initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.forward * 50 },
-    standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
-    dynamic_config =
-        new DynamicConfig { sensor_config = new SensorConfig { type = SensorType.IDEAL,
-                                                               frequency = 10 },
-                            flight_config = new FlightConfig { augmentedPnEnabled = false } }
+  private AgentConfig CreateMissileConfig() => new AgentConfig {
+    ConfigFile = "micromissile.pbtxt",
+    InitialState = new Simulation.State {
+      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 50 }
+    },
+    StandardDeviation = new Simulation.State {
+      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+    },
+    DynamicConfig = new DynamicConfig {
+      SensorConfig = new Simulation.SensorConfig {
+        Type = Simulation.SensorType.Ideal,
+        Frequency = 10
+      },
+      FlightConfig = new FlightConfig {
+        ControllerType = ControllerType.ProportionalNavigation
+      }
+    }
   };
 
   private (Cluster, ThreatClusterData) MakeClusterWithThreats(params Threat[] threats) {
