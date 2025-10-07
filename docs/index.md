@@ -15,13 +15,13 @@ hero:
       text: CONTRIBUTE
       link: /Development_Guide
 features:
-  - title: Simulator Overview
+  - title: Sim Overview
     details: Explore the simulator architecture and the swarm algorithms currently implemented in the simulator.
     link: /Simulator_Overview
   - title: Keybinds and Controls
     details: Learn how to navigate and interact with the simulation environment using your keyboard and mouse.
     link: /Keybinds_and_Controls
-  - title: Simulation Configuration Guide
+  - title: Sim Config Guide
     details: Explore the different configuration files used in the simulation and how to modify them to customize your engagement scenarios.
     link: /Simulation_Configuration_Guide
   - title: Development Guide
