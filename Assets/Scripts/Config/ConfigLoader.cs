@@ -89,12 +89,11 @@ public static class ConfigLoader {
 
     // Load the Protobuf message to binary format.
     byte[] buffer = new byte[serializedLength];
-    status = loadFunction(streamingAssetsPath, buffer, serializedLength, out serializedLength);
+    status = loadFunction(streamingAssetsPath, buffer, serializedLength, out int loadedLength);
     if (status != Plugin.StatusCode.StatusOk) {
       Debug.Log($"Failed to load the Protobuf text file {relativePath} with status code {status}.");
       return default;
     }
-    return new Google.Protobuf.MessageParser<T>(() => new T())
-        .ParseFrom(buffer, 0, serializedLength);
+    return new Google.Protobuf.MessageParser<T>(() => new T()).ParseFrom(buffer, 0, loadedLength);
   }
 }
