@@ -34,7 +34,7 @@ jobs:
         if: github.event_name == 'workflow_run'
         uses: actions/download-artifact@v4
         with:
-          path: coverage
+          path: docs/.vitepress/dist/coverage
           pattern: Coverage results for *
           merge-multiple: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -50,4 +50,4 @@ jobs:
           github.event.workflow_run.conclusion == 'success'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/.vitepress/dist
+          publish_dir: docs/.vitepress/dist
