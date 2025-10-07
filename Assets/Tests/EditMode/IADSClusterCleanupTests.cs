@@ -4,23 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class IADSClusterCleanupTests : AgentTestBase {
-  private IADS iads;
+  private IADS _iads;
 
   [SetUp]
   public override void Setup() {
     base.Setup();
-    iads = new GameObject("IADS").AddComponent<IADS>();
-    iads.Start();
+    _iads = new GameObject("IADS").AddComponent<IADS>();
+    _iads.Start();
   }
 
   [TearDown]
   public override void Teardown() {
     base.Teardown();
-    if (iads != null)
-      GameObject.DestroyImmediate(iads.gameObject);
+    if (_iads != null) {
+      GameObject.DestroyImmediate(_iads.gameObject);
+    }
   }
 
-  private DynamicAgentConfig ThreatCfg() => new DynamicAgentConfig {
+  private DynamicAgentConfig CreateThreatConfig() => new DynamicAgentConfig {
     agent_model = "brahmos.pbtxt", attack_behavior = "brahmos_direct_attack.json",
     initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.zero },
     standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
@@ -28,7 +29,7 @@ public class IADSClusterCleanupTests : AgentTestBase {
                                                                             frequency = 10 } }
   };
 
-  private DynamicAgentConfig CarrierCfg() => new DynamicAgentConfig {
+  private DynamicAgentConfig CreateCarrierConfig() => new DynamicAgentConfig {
     agent_model = "hydra70.pbtxt",
     initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.forward * 50 },
     standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
@@ -38,7 +39,7 @@ public class IADSClusterCleanupTests : AgentTestBase {
                             flight_config = new FlightConfig { augmentedPnEnabled = false } }
   };
 
-  private DynamicAgentConfig MissileCfg() => new DynamicAgentConfig {
+  private DynamicAgentConfig CreateMissileConfig() => new DynamicAgentConfig {
     agent_model = "micromissile.pbtxt",
     initial_state = new InitialState { position = Vector3.zero, velocity = Vector3.forward * 50 },
     standard_deviation = new StandardDeviation { position = Vector3.zero, velocity = Vector3.zero },
@@ -50,37 +51,38 @@ public class IADSClusterCleanupTests : AgentTestBase {
 
   private (Cluster, ThreatClusterData) MakeClusterWithThreats(params Threat[] threats) {
     var cluster = new Cluster();
-    foreach (var t in threats) cluster.AddObject(t.gameObject);
-    var tcd = new ThreatClusterData(cluster);
+    foreach (var threat in threats) {
+      cluster.AddObject(threat.gameObject);
+    }
+    var threatClusterData = new ThreatClusterData(cluster);
     var clusters = new List<Cluster> { cluster };
-    SetPrivateField(iads, "_threatClusters", clusters);
-    var map = new Dictionary<Cluster, ThreatClusterData> { [cluster] = tcd };
-    SetPrivateField(iads, "_threatClusterMap", map);
-    return (cluster, tcd);
+    SetPrivateField(_iads, "_threatClusters", clusters);
+    var map = new Dictionary<Cluster, ThreatClusterData> { [cluster] = threatClusterData };
+    SetPrivateField(_iads, "_threatClusterMap", map);
+    return (cluster, threatClusterData);
   }
 
   [Test]
   public void Carrier_Unassigned_WhenClusterFullyDestroyed() {
-    var thA = CreateTestThreat(ThreatCfg());
-    var (cluster, tcd) = MakeClusterWithThreats(thA);
+    var threat = CreateTestThreat(CreateThreatConfig());
+    var (cluster, threatClusterData) = MakeClusterWithThreats(threat);
 
-    var carrier = (CarrierInterceptor)CreateTestInterceptor(CarrierCfg());
-    var icm = new Dictionary<Interceptor, Cluster> { [carrier] = cluster };
-    SetPrivateField(iads, "_interceptorClusterMap", icm);
+    var carrier = (CarrierInterceptor)CreateTestInterceptor(CreateCarrierConfig());
+    var interceptorClusterMap = new Dictionary<Interceptor, Cluster> { [carrier] = cluster };
+    SetPrivateField(_iads, "_interceptorClusterMap", interceptorClusterMap);
 
-    carrier.AssignTarget(tcd.Centroid);
-    tcd.AssignInterceptor(carrier);
+    carrier.AssignTarget(threatClusterData.Centroid);
+    threatClusterData.AssignInterceptor(carrier);
 
-    thA.TerminateAgent();
-
-    iads.LateUpdate();
+    threat.TerminateAgent();
+    _iads.LateUpdate();
 
     Assert.IsFalse(carrier.HasAssignedTarget(), "Carrier should be unassigned (ballistic).");
 
-    var map = GetPrivateField<Dictionary<Interceptor, Cluster>>(iads, "_interceptorClusterMap");
+    var map = GetPrivateField<Dictionary<Interceptor, Cluster>>(_iads, "_interceptorClusterMap");
     Assert.IsFalse(map.ContainsKey(carrier), "Carrier should be removed from cluster mapping.");
 
-    Assert.IsFalse(iads.ShouldLaunchSubmunitions(carrier),
+    Assert.IsFalse(_iads.ShouldLaunchSubmunitions(carrier),
                    "Carriers without cluster mapping should not launch submunitions.");
   }
 }

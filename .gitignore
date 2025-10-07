@@ -81,3 +81,8 @@ Telemetry/Logs/
 
 # Node.
 node_modules/
+
+# AI tools
+CURSOR.md
+CLAUDE.md
+AGENTS.md
