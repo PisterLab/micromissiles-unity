@@ -111,7 +111,7 @@ plugin::StatusCode Assignment_EvenAssignment_Assign(
 ```
 
 The corresponding Unity C# declaration is:
-```csharp
+```cs
 // Assign the agents to the tasks using an even assignment.
 [DllImport("assignment")]
 public static extern Plugin.StatusCode Assignment_EvenAssignment_Assign(
@@ -124,7 +124,7 @@ In this example:
 - `assigned_agents`/`assignedAgents` and `assigned_tasks`/`assignedTasks` are integer arrays used as output arguments.
 - `num_assignments`/`numAssignments` is an integer output argument of the plugin.
 
-```csharp
+```cs
 // Solve the assignment problem.
 int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
 int[] assignedThreatIndices = new int[assignableInterceptors.Count];
@@ -135,7 +135,7 @@ Plugin.StatusCode status = Assignment.Assignment_EvenAssignment_Assign(
 ```
 
 After the call, the returned status code should always be checked and logged if necessary.
-```csharp
+```cs
 if (status != Plugin.StatusCode.StatusOk) {
   Debug.Log($"Failed to assign the interceptors to the threats with status code {status}.");
   return assignments;
