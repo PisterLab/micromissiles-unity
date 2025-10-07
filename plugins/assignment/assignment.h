@@ -5,6 +5,8 @@
 #include <utility>
 #include <vector>
 
+#include "Plugin/status.pb.h"
+
 namespace assignment {
 
 // Assignment interface.
@@ -19,19 +21,22 @@ class Assignment {
              std::vector<std::vector<double>> costs)
       : num_agents_(num_agents),
         num_tasks_(num_tasks),
-        costs_(std::move(costs)) {
-    ValidateCosts();
-  }
+        costs_(std::move(costs)) {}
 
   Assignment(const Assignment&) = default;
   Assignment& operator=(const Assignment&) = default;
 
   virtual ~Assignment() = default;
 
-  // Assign the agents to the tasks.
-  virtual std::vector<AssignmentItem> Assign() const = 0;
+  // Assign the agents to the tasks and return the assignments.
+  plugin::StatusCode Assign(std::vector<AssignmentItem>* assignments) const;
 
  protected:
+  // Implementation of assigning the agents to the tasks and returning the
+  // assignments.
+  virtual plugin::StatusCode AssignImpl(
+      std::vector<AssignmentItem>* assignments) const = 0;
+
   // Number of agents.
   int num_agents_ = 0;
 
@@ -43,7 +48,7 @@ class Assignment {
 
  private:
   // Validate the cost matrix.
-  void ValidateCosts() const;
+  plugin::StatusCode ValidateCosts() const;
 };
 
 }  // namespace assignment

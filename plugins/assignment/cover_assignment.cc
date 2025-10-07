@@ -2,11 +2,12 @@
 
 #include <vector>
 
+#include "Plugin/status.pb.h"
 #include "ortools/sat/cp_model.h"
 
 namespace assignment {
 
-void CoverAssignment::DefineConstraints(
+plugin::StatusCode CoverAssignment::DefineConstraints(
     const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
     operations_research::sat::CpModelBuilder* cp_model) const {
   // If there are at least as many agents as tasks, each task is assigned to at
@@ -31,6 +32,7 @@ void CoverAssignment::DefineConstraints(
       cp_model->AddAtMostOne(tasks);
     }
   }
+  return plugin::STATUS_OK;
 }
 
 }  // namespace assignment

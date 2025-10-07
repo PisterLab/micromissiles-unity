@@ -2,11 +2,12 @@
 
 #include <vector>
 
+#include "Plugin/status.pb.h"
 #include "ortools/sat/cp_model.h"
 
 namespace assignment {
 
-void EvenAssignment::DefineConstraints(
+plugin::StatusCode EvenAssignment::DefineConstraints(
     const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
     operations_research::sat::CpModelBuilder* cp_model) const {
   // Minimum and maximum number of assigned agents for a task.
@@ -29,6 +30,7 @@ void EvenAssignment::DefineConstraints(
   cp_model->AddMinEquality(min_task_assignments, task_sums);
   cp_model->AddMaxEquality(max_task_assignments, task_sums);
   cp_model->AddLessOrEqual(max_task_assignments - min_task_assignments, 1);
+  return plugin::STATUS_OK;
 }
 
 }  // namespace assignment

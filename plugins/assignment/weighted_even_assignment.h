@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "Plugin/status.pb.h"
 #include "assignment/cp_assignment.h"
 #include "ortools/sat/cp_model.h"
 
@@ -22,22 +23,20 @@ class WeightedEvenAssignment : public CpAssignment {
                          const int64_t weight_scaling_factor)
       : CpAssignment(num_agents, num_tasks, std::move(costs)),
         weights_(std::move(weights)),
-        weight_scaling_factor_(weight_scaling_factor) {
-    ValidateWeights();
-  }
+        weight_scaling_factor_(weight_scaling_factor) {}
 
   WeightedEvenAssignment(const WeightedEvenAssignment&) = default;
   WeightedEvenAssignment& operator=(const WeightedEvenAssignment&) = default;
 
  protected:
   // Define the constraints of the assignment problem.
-  void DefineConstraints(
+  plugin::StatusCode DefineConstraints(
       const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
       operations_research::sat::CpModelBuilder* cp_model) const override;
 
  private:
   // Validate the task weights.
-  void ValidateWeights() const;
+  plugin::StatusCode ValidateWeights() const;
 
   // Task weights.
   std::vector<double> weights_;

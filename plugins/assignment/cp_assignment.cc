@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Plugin/status.pb.h"
 #include "assignment/assignment.h"
 #include "base/logging.h"
 #include "ortools/sat/cp_model.h"
@@ -12,7 +13,10 @@
 
 namespace assignment {
 
-std::vector<Assignment::AssignmentItem> CpAssignment::Assign() const {
+plugin::StatusCode CpAssignment::AssignImpl(
+    std::vector<AssignmentItem>* assignments) const {
+  assignments->clear();
+
   // Create the constraint programming model.
   operations_research::sat::CpModelBuilder cp_model;
 
@@ -32,7 +36,10 @@ std::vector<Assignment::AssignmentItem> CpAssignment::Assign() const {
   for (int i = 0; i < num_agents_; ++i) {
     cp_model.AddExactlyOne(x[i]);
   }
-  DefineConstraints(x, &cp_model);
+  const auto constraints_status = DefineConstraints(x, &cp_model);
+  if (constraints_status != plugin::STATUS_OK) {
+    return constraints_status;
+  }
 
   // Define the objective function.
   operations_research::sat::DoubleLinearExpr total_cost;
@@ -63,21 +70,20 @@ std::vector<Assignment::AssignmentItem> CpAssignment::Assign() const {
   if (response.status() ==
       operations_research::sat::CpSolverStatus::INFEASIBLE) {
     LOG(ERROR) << "Assignment problem is infeasible.";
-    return std::vector<AssignmentItem>();
+    return plugin::STATUS_INTERNAL;
   }
 
   // Record the assignments.
-  std::vector<AssignmentItem> assignments;
-  assignments.reserve(num_agents_);
+  assignments->reserve(num_agents_);
   for (int i = 0; i < num_agents_; ++i) {
     for (int j = 0; j < num_tasks_; ++j) {
       if (SolutionBooleanValue(response, x[i][j])) {
-        assignments.emplace_back(i, j);
+        assignments->emplace_back(i, j);
         break;
       }
     }
   }
-  return assignments;
+  return plugin::STATUS_OK;
 }
 
 }  // namespace assignment

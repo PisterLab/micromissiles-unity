@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// The maximum speed assignment class assigns interceptors to the targets to maximize the intercept
+// The maximum speed assignment class assigns interceptors to the threats to maximize the intercept
 // speed by defining a cost of the assignment equal to the speed lost for the maneuver.
 public class MaxSpeedAssignment : IAssignment {
-  // Assign a target to each interceptor that has not been assigned a target yet.
+  // Assign a threat to each interceptor that has not been assigned a threat yet.
   public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
                                                         in IReadOnlyList<Threat> threats) {
     List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
@@ -60,14 +60,22 @@ public class MaxSpeedAssignment : IAssignment {
     int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
     int[] assignedThreatIndices = new int[assignableInterceptors.Count];
     int numAssignments = 0;
+    Plugin.StatusCode status = Plugin.StatusCode.StatusOk;
     unsafe {
       fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
           fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
-        numAssignments = Assignment.Assignment_EvenAssignment_Assign(
+        int* numAssignmentsPtr = &numAssignments;
+        status = Assignment.Assignment_EvenAssignment_Assign(
             assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
-            (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr);
+            (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr,
+            (IntPtr)numAssignmentsPtr);
       }
     }
+    if (status != Plugin.StatusCode.StatusOk) {
+      Debug.Log($"Failed to assign the interceptors to the threats with status code {status}.");
+      return assignments;
+    }
+
     for (int i = 0; i < numAssignments; ++i) {
       int interceptorIndex = assignedInterceptorIndices[i];
       int threatIndex = assignedThreatIndices[i];
