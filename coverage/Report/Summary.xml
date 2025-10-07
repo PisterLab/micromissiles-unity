@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/07/2025 - 22:17:52</Generatedon>
+    <Generatedon>10/07/2025 - 22:30:42</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>170</Classes>
     <Files>106</Files>
-    <Coveredlines>2725</Coveredlines>
+    <Coveredlines>2707</Coveredlines>
     <Uncoveredlines>9656</Uncoveredlines>
-    <Coverablelines>12381</Coverablelines>
-    <Totallines>26006</Totallines>
-    <Linecoverage>22</Linecoverage>
+    <Coverablelines>12363</Coverablelines>
+    <Totallines>25995</Totallines>
+    <Linecoverage>21.8</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>469</Coveredmethods>
@@ -18,7 +18,7 @@
     <Methodcoverage>23.6</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="145" coverage="14.5" coveredlines="1638" coverablelines="11224" totallines="92674" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="348" totalmethods="1859" methodcoverage="18.7">
+    <Assembly name="bamlab.micromissiles" classes="145" coverage="14.4" coveredlines="1620" coverablelines="11206" totallines="92663" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="348" totalmethods="1859" methodcoverage="18.7">
       <Class name="Agent" coverage="51.1" coveredlines="131" coverablelines="256" totallines="460" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="26" totalmethods="45" methodcoverage="57.7" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -27,7 +27,7 @@
       <Class name="CameraController" coverage="0" coveredlines="0" coverablelines="347" totallines="564" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="36" methodcoverage="0" />
       <Class name="CarrierInterceptor" coverage="9.3" coveredlines="4" coverablelines="43" totallines="71" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="6" methodcoverage="33.3" />
       <Class name="Cluster" coverage="90.9" coveredlines="60" coverablelines="66" totallines="127" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="16" totalmethods="18" methodcoverage="88.8" />
-      <Class name="ConfigLoader" coverage="70.9" coveredlines="39" coverablelines="55" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="7" methodcoverage="71.4" />
+      <Class name="ConfigLoader" coverage="64.4" coveredlines="29" coverablelines="45" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="7" methodcoverage="71.4" />
       <Class name="Configs.AccelerationConfig" coverage="24.1" coveredlines="30" coverablelines="124" totallines="2839" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="23" methodcoverage="39.1" />
       <Class name="Configs.AgentConfig" coverage="7.8" coveredlines="25" coverablelines="320" totallines="753" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="50" methodcoverage="24" />
       <Class name="Configs.AgentConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="753" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -86,7 +86,7 @@
       <Class name="LaunchAngleOutput" coverage="100" coveredlines="6" coverablelines="6" totallines="63" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="LaunchPlan" coverage="75" coveredlines="12" coverablelines="16" totallines="50" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="7" methodcoverage="85.7" />
       <Class name="LinearExtrapolator" coverage="100" coveredlines="5" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
-      <Class name="MaxSpeedAssignment" coverage="95.8" coveredlines="46" coverablelines="48" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
+      <Class name="MaxSpeedAssignment" coverage="95" coveredlines="38" coverablelines="40" totallines="78" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="Micromissiles.AccelerationConfig" coverage="0" coveredlines="0" coverablelines="124" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
       <Class name="Micromissiles.AgentConfig" coverage="0" coveredlines="0" coverablelines="344" totallines="1112" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="56" methodcoverage="0" />
       <Class name="Micromissiles.AgentReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="1112" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />

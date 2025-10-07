@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/07/2025 - 22:17:52 |
+| Generated on: | 10/07/2025 - 22:30:42 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 170 |
 | Files: | 106 |
-| Covered lines: | 2725 |
+| Covered lines: | 2707 |
 | Uncovered lines: | 9656 |
-| Coverable lines: | 12381 |
-| Total lines: | 26006 |
-| Line coverage: | 22% (2725 of 12381) |
+| Coverable lines: | 12363 |
+| Total lines: | 25995 |
+| Line coverage: | 21.8% (2707 of 12363) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 469 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1638**|**9586**|**11224**|**92674**|**14.5%**|**0**|**0**|****|**348**|**1859**|**18.7%**|
+|**bamlab.micromissiles**|**1620**|**9586**|**11206**|**92663**|**14.4%**|**0**|**0**|****|**348**|**1859**|**18.7%**|
 |Agent|131|125|256|460|51.1%|0|0||26|45|57.7%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -28,7 +28,7 @@
 |CameraController|0|347|347|564|0%|0|0||0|36|0%|
 |CarrierInterceptor|4|39|43|71|9.3%|0|0||2|6|33.3%|
 |Cluster|60|6|66|127|90.9%|0|0||16|18|88.8%|
-|ConfigLoader|39|16|55|101|70.9%|0|0||5|7|71.4%|
+|ConfigLoader|29|16|45|99|64.4%|0|0||5|7|71.4%|
 |Configs.AccelerationConfig|30|94|124|2839|24.1%|0|0||9|23|39.1%|
 |Configs.AgentConfig|25|295|320|753|7.8%|0|0||12|50|24%|
 |Configs.AgentConfigReflection|0|5|5|753|0%|0|0||0|2|0%|
@@ -87,7 +87,7 @@
 |LaunchAngleOutput|6|0|6|63|100%|0|0||3|3|100%|
 |LaunchPlan|12|4|16|50|75%|0|0||6|7|85.7%|
 |LinearExtrapolator|5|0|5|14|100%|0|0||2|2|100%|
-|MaxSpeedAssignment|46|2|48|87|95.8%|0|0||1|1|100%|
+|MaxSpeedAssignment|38|2|40|78|95%|0|0||1|1|100%|
 |Micromissiles.AccelerationConfig|0|124|124|2779|0%|0|0||0|23|0%|
 |Micromissiles.AgentConfig|0|344|344|1112|0%|0|0||0|56|0%|
 |Micromissiles.AgentReflection|0|5|5|1112|0%|0|0||0|2|0%|
