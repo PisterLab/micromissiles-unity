@@ -65,6 +65,9 @@ public class IADS : MonoBehaviour {
   }
 
   public void LateUpdate() {
+    // Detach interceptors assigned to fully-destroyed clusters.
+    CleanupDestroyedClusters();
+
     // Update the cluster centroids.
     foreach (var cluster in _threatClusters) {
       cluster.Recenter();
@@ -145,6 +148,9 @@ public class IADS : MonoBehaviour {
   }
 
   public bool ShouldLaunchSubmunitions(Interceptor carrier) {
+    if (!HasClusterAssignment(carrier)) {
+      return false;
+    }
     // The carrier interceptor will spawn submunitions when any target is greater than 30 degrees
     // away from the carrier interceptor's current velocity or when any threat is within 500 meters
     // of the interceptor.
@@ -181,6 +187,43 @@ public class IADS : MonoBehaviour {
       }
     }
     return false;
+  }
+
+  // True if an interceptor still has a valid cluster assignment.
+  private bool HasClusterAssignment(Interceptor interceptor) {
+    return _interceptorClusterMap.ContainsKey(interceptor);
+  }
+
+  // Releases interceptors from clusters that only contain destroyed threats.
+  private void CleanupDestroyedClusters() {
+    foreach (Cluster cluster in _threatClusters) {
+      if (!cluster.IsFullyTerminated()) {
+        continue;
+      }
+
+      IReadOnlyList<Interceptor> assigned = _threatClusterMap[cluster].AssignedInterceptors;
+      if (assigned.Count == 0) {
+        continue;
+      }
+
+      foreach (Interceptor interceptor in assigned.ToList()) {
+        ReleaseInterceptorFromCluster(cluster, interceptor);
+      }
+    }
+  }
+
+  // Detach a single interceptor from a cluster and decide its next action.
+  // ALL interceptors are queued for reassignment in the hierarchical architecture,
+  // including CarrierInterceptors.
+  private void ReleaseInterceptorFromCluster(Cluster cluster, Interceptor interceptor) {
+    _threatClusterMap[cluster].RemoveInterceptor(interceptor);
+    _interceptorClusterMap.Remove(interceptor);
+    // TODO(titan): During the hierarchical architecture overhaul/refactor, 
+    // we need to properly handle the assignment of CarrierInterceptors at this point.
+    // Since they have been unassigned from their cluster, they will need to be queued for 
+    // a new cluster assignment. Right now they will go for re-assignment but fail
+    // since they return false for IsAssignable().
+    RequestAssignInterceptorToThreat(interceptor);
   }
 
   public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {
