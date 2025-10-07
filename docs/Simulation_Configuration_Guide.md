@@ -2,10 +2,6 @@
 
 In this guide, we will explore the different types of configuration files used in the simulation and how to modify them to customize your simulation scenarios.
 
-## Table of Contents
-
-[[toc]]
-
 ## Introduction
 
 ![Simulation configuration files](./images/agent_configuration_files.png){width=80%}

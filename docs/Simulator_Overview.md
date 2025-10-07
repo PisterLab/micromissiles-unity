@@ -6,10 +6,6 @@ In the initial phase of the project, we have implemented a simple aerodynamic mo
 Both interceptors and threats have perfect knowledge of their opponents at a configurable sensor update rate.
 While the initial positions and velocities of the threats are hard-coded for each engagement scenario, our simulator automatically clusters the threats, predicts their future positions, plans when to automatically launch the interceptors, and assigns a threat to each interceptor to pursue.
 
-## Table of Contents
-
-[[toc]]
-
 ## Introduction
 
 To minimize the engagement cost, maximize the terminal speed and agility, and simultaneously defend against multiple threats, we propose using a hierarchical air defense system (ADS), where cheap, possibly unguided "carrier interceptors" carry multiple smaller, intelligent missile interceptors as submunitions.
