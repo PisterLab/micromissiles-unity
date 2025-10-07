@@ -24,6 +24,7 @@ cc_test(
     ],
     deps = [
         ":protobuf",
+        "@bazel_tools//tools/cpp/runfiles",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
         "@micromissiles-proto//Configs:attack_behavior_config_cc_proto",
