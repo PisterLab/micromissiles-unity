@@ -6,7 +6,7 @@ using System.Linq;
 public class CameraController : MonoBehaviour {
 #region Singleton
 
-  // Singleton instance of the CameraController.
+  // Singleton instance of the camera controller.
   public static CameraController Instance { get; private set; }
 
 #endregion
@@ -235,7 +235,6 @@ public class CameraController : MonoBehaviour {
     _currentInterpolationSpeed = _defaultInterpolationSpeed;
   }
 
-  // Start is called before the first frame update
   void Start() {
     fourPos.position = new Vector3(0, 0, 0);
     fourPos.rotation = Quaternion.Euler(0, 0, 0);

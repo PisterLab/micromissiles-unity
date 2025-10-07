@@ -45,7 +45,7 @@ public class SimMonitor : MonoBehaviour {
     string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
     _sessionDirectory = Application.persistentDataPath + $"\\Telemetry\\Logs\\{timestamp}";
     Directory.CreateDirectory(_sessionDirectory);
-    Debug.Log($"Monitoring simulation logs to {_sessionDirectory}");
+    Debug.Log($"Monitoring simulation logs to {_sessionDirectory}.");
   }
 
   private void InitializeTelemetryLogFiles() {
@@ -111,7 +111,7 @@ public class SimMonitor : MonoBehaviour {
       Vector3 vel = agent.GetVelocity();  // Ensure GetVelocity() doesn't allocate
 
       int agentID = agent.GetInstanceID();
-      int flightPhase = agent is AerialAgent aerialAgent ? (int)aerialAgent.GetFlightPhase() : -1;
+      int flightPhase = (int)agent.GetFlightPhase();
       byte agentType = (byte)(agent is Threat ? 0 : 1);
 
       // Write telemetry data directly to the binary file
@@ -176,23 +176,23 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    if (SimManager.Instance.simulatorConfig.EnableTelemetryLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
       InitializeTelemetryLogFiles();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
     }
-    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       InitializeEventLogFiles();
     }
   }
 
   private void RegisterSimulationEnded() {
-    if (SimManager.Instance.simulatorConfig.EnableTelemetryLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
       StopCoroutine(_monitorRoutine);
       CloseTelemetryLogFiles();
       StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
           _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
     }
-    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       WriteEventsToFile();
     }
   }
@@ -204,13 +204,13 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterNewThreat(Threat threat) {
-    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       RegisterNewAgent(threat, "NEW_THREAT");
     }
   }
 
   public void RegisterNewInterceptor(Interceptor interceptor) {
-    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
       interceptor.OnInterceptMiss += RegisterInterceptorMiss;
       interceptor.OnInterceptHit += RegisterInterceptorHit;
@@ -226,13 +226,13 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, true);
     }
   }
 
   public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    if (SimManager.Instance.simulatorConfig.EnableEventLogging) {
+    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       RegisterInterceptorEvent(interceptor, threat, false);
     }
   }

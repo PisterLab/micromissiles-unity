@@ -13,32 +13,27 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.MissileInterceptor, "MissileInterceptor" },
     { Configs.AgentType.FixedWingThreat, "FixedWingThreat" },
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
-
   };
-
-  public Configs.SimulatorConfig simulatorConfig;
 
   // Singleton instance of SimManager.
   public static SimManager Instance { get; set; }
 
-  // Configuration settings for the simulation.
+  // Simulation configuration.
   [SerializeField]
-  public SimulationConfig SimulationConfig;
+  public Configs.SimulationConfig SimulationConfig;
 
-  private string _defaultConfig = "7_quadcopters.json";
+  // Simulator configuration.
+  public Configs.SimulatorConfig SimulatorConfig;
+
+  private const string _defaultConfig = "7_quadcopters.pbtxt";
 
   private List<Interceptor> _activeInterceptors = new List<Interceptor>();
-
   private List<Interceptor> _interceptorObjects = new List<Interceptor>();
   private List<Threat> _threatObjects = new List<Threat>();
 
   private List<GameObject> _dummyAgentObjects = new List<GameObject>();
   private Dictionary<(Vector3, Vector3), GameObject> _dummyAgentTable =
       new Dictionary<(Vector3, Vector3), GameObject>();
-
-  // List of instantiated launcher GameObjects.
-  // Each GameObject represents a launch platform (ship, shore battery, etc.)
-  private List<Launcher> _launcherObjects = new List<Launcher>();
 
   // Inclusive of all, including submunitions swarms.
   // The boolean indicates whether the agent is active (true) or inactive (false).
@@ -63,7 +58,6 @@ public class SimManager : MonoBehaviour {
   public event SwarmEventHandler OnInterceptorSwarmChanged;
   public event SwarmEventHandler OnSubmunitionsSwarmChanged;
   public event SwarmEventHandler OnThreatSwarmChanged;
-  //////////////////////////////////////////////////////////////////////
 
   private float _elapsedSimulationTime = 0f;
   private bool _isSimulationPaused = false;
@@ -81,20 +75,17 @@ public class SimManager : MonoBehaviour {
   public delegate void NewInterceptorEventHandler(Interceptor interceptor);
   public event NewInterceptorEventHandler OnNewInterceptor;
 
-  // Gets the elapsed simulation time.
-  // Returns: The elapsed time in seconds.
+  // Returns the elapsed simulation time in seconds.
   public double GetElapsedSimulationTime() {
     return _elapsedSimulationTime;
   }
 
-  // Gets the total cost of launched interceptors.
-  // Returns: The total cost of launched interceptors.
+  // Returns the total cost of launched interceptors.
   public double GetCostLaunchedInterceptors() {
     return _costLaunchedInterceptors;
   }
 
-  // Gets the total cost of destroyed threats.
-  // Returns: The total cost of destroyed threats.
+  // Returns the total cost of destroyed threats.
   public double GetCostDestroyedThreats() {
     return _costDestroyedThreats;
   }
@@ -133,7 +124,7 @@ public class SimManager : MonoBehaviour {
   }
 
   void Awake() {
-    // Ensure only one instance of SimManager exists
+    // Ensure that only one instance of SimManager exists.
     if (Instance == null) {
       Instance = this;
       DontDestroyOnLoad(gameObject);
@@ -141,8 +132,7 @@ public class SimManager : MonoBehaviour {
       Destroy(gameObject);
     }
     SimulationConfig = ConfigLoader.LoadSimulationConfig(_defaultConfig);
-    simulatorConfig = ConfigLoader.LoadSimulatorConfig();
-    Debug.Log(SimulationConfig);
+    SimulatorConfig = ConfigLoader.LoadSimulatorConfig();
   }
 
   void Start() {
@@ -177,8 +167,8 @@ public class SimManager : MonoBehaviour {
   }
 
   public void ResumeSimulation() {
-    Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.PhysicsUpdateRate);
-    SetTimeScale(SimulationConfig.timeScale);
+    Time.fixedDeltaTime = (float)(1.0f / SimulatorConfig.PhysicsUpdateRate);
+    SetTimeScale(SimulationConfig.TimeScale);
     _isSimulationPaused = false;
   }
 
@@ -189,58 +179,22 @@ public class SimManager : MonoBehaviour {
   private void InitializeSimulation() {
     if (!IsSimulationPaused()) {
       // If the simulation was not paused, we need to update the time scale.
-      SetTimeScale(SimulationConfig.timeScale);
-      Time.fixedDeltaTime = (float)(1.0f / simulatorConfig.PhysicsUpdateRate);
-      // If the simulation WAS paused, then ResumeSimulation will handle updating the time scale and
-      // fixed delta time from the newly loaded config files.
+      SetTimeScale(SimulationConfig.TimeScale);
+      Time.fixedDeltaTime = (float)(1.0f / SimulatorConfig.PhysicsUpdateRate);
+      // If the simulation was paused, then ResumeSimulation will handle updating the time scale and
+      // fixed delta time from the newly loaded configuration.
     }
 
-    // Create origins based on the configuration
-    foreach (var launcherConfig in SimulationConfig.launchers) {
-      CreateLauncher(launcherConfig);
-    }
-
-    // Create targets based on the configuration.
+    // Create threats based on the configuration.
     List<Agent> targets = new List<Agent>();
-    foreach (var swarmConfig in SimulationConfig.threat_swarm_configs) {
+    foreach (var swarmConfig in SimulationConfig.ThreatSwarmConfigs) {
       List<Agent> swarm = new List<Agent>();
-      for (int i = 0; i < swarmConfig.num_agents; ++i) {
-        Threat threat = CreateThreat(swarmConfig.dynamic_agent_config);
+      for (int i = 0; i < swarmConfig.NumAgents; ++i) {
+        Threat threat = CreateThreat(swarmConfig.AgentConfig);
         swarm.Add(threat);
       }
       AddThreatSwarm(swarm);
     }
-  }
-
-  private Launcher CreateLauncher(LauncherConfig config) {
-    // Require the type field to be specified
-    if (string.IsNullOrEmpty(config.type)) {
-      Debug.LogError(
-          $"Launcher '{config.id}' is missing required 'type' field. Please specify the launcher type (e.g., 'Ship', 'ShoreBattery').");
-      return null;
-    }
-
-    string prefabName = config.type;
-
-    // Create initial state from config
-    InitialState initialState =
-        new InitialState { position = config.initial_position, velocity = config.velocity };
-
-    // Create the launcher GameObject
-    GameObject launcherObject = CreateAgent(null, initialState, prefabName);
-    if (launcherObject == null)
-      return null;
-
-    Launcher launcher = launcherObject.GetComponent<Launcher>();
-    _launcherObjects.Add(launcher);
-
-    // Set the launcher configuration
-    launcher.SetLauncherConfig(config);
-
-    int launcherId = _launcherObjects.Count;
-    launcherObject.name = $"{config.id}_Launcher_{launcherId}";
-
-    return launcher;
   }
 
   public void AddInterceptorSwarm(List<Agent> swarm) {
@@ -389,16 +343,14 @@ public class SimManager : MonoBehaviour {
     DestroyThreatInSwarm(threat);
   }
 
-  private AttackBehavior LoadAttackBehavior(DynamicAgentConfig config) {
-    string threatBehaviorFile = config.attack_behavior;
-    AttackBehavior attackBehavior = AttackBehavior.FromJson(threatBehaviorFile);
-    switch (attackBehavior.attackBehaviorType) {
-      case AttackBehavior.AttackBehaviorType.DIRECT_ATTACK:
-        return DirectAttackBehavior.FromJson(threatBehaviorFile);
-      default:
-        Debug.LogError($"Attack behavior type '{attackBehavior.attackBehaviorType}' not found.");
-        return null;
+  private AttackBehavior LoadAttackBehavior(Configs.AgentConfig config) {
+    string attackBehaviorConfigFile = config.AttackBehaviorConfigFile;
+    if (string.IsNullOrEmpty(attackBehaviorConfigFile)) {
+      return null;
     }
+    Configs.AttackBehaviorConfig attackBehaviorConfig =
+        ConfigLoader.LoadAttackBehaviorConfig(attackBehaviorConfigFile);
+    return AttackBehaviorFactory.Create(attackBehaviorConfig);
   }
 
   public Agent CreateDummyAgent(Vector3 position, Vector3 velocity) {
@@ -418,13 +370,19 @@ public class SimManager : MonoBehaviour {
   }
 
   // Creates a interceptor based on the provided configuration.
-  // Parameters:
-  //   config: Configuration settings for the interceptor.
-  //   initialState: Initial state of the interceptor.
-  // Returns: The created Interceptor instance, or null if creation failed.
-  public Interceptor CreateInterceptor(DynamicAgentConfig config, InitialState initialState) {
-    string modelFile = config.agent_model;
-    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
+  // Returns the created interceptor instance, or null if creation failed.
+  public Interceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
+    if (config == null) {
+      return null;
+    }
+
+    // Load the static configuration for the interceptor.
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(config.ConfigFile);
+    if (staticConfig == null) {
+      return null;
+    }
+
+    // Create an agent corresponding to the interceptor.
     GameObject interceptorObject = null;
     if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
       interceptorObject = CreateAgent(config, initialState, prefab);
@@ -433,21 +391,23 @@ public class SimManager : MonoBehaviour {
       return null;
     }
 
-    // Interceptor-specific logic.
-    switch (config.dynamic_config.sensor_config.type) {
-      case SensorType.IDEAL:
+    // Create a sensor for the interceptor.
+    switch (config.DynamicConfig.SensorConfig.Type) {
+      case Simulation.SensorType.Ideal: {
         interceptorObject.AddComponent<IdealSensor>();
         break;
-      default:
-        Debug.LogError($"Sensor type '{config.dynamic_config.sensor_config.type}' not found.");
+      }
+      default: {
+        Debug.LogError($"Sensor type {config.DynamicConfig.SensorConfig.Type} not found.");
         break;
+      }
     }
 
     Interceptor interceptor = interceptorObject.GetComponent<Interceptor>();
     _interceptorObjects.Add(interceptor);
     _activeInterceptors.Add(interceptor);
 
-    // Set the static agent config.
+    // Set the static configuration.
     interceptor.SetStaticConfig(staticConfig);
 
     // Subscribe events.
@@ -468,12 +428,19 @@ public class SimManager : MonoBehaviour {
   }
 
   // Creates a threat based on the provided configuration.
-  // Parameters:
-  //   config: Configuration settings for the threat.
-  // Returns: The created Threat instance, or null if creation failed.
-  public Threat CreateThreat(DynamicAgentConfig config) {
-    string modelFile = config.agent_model;
-    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(modelFile);
+  // Returns the created threat instance, or null if creation failed.
+  public Threat CreateThreat(Configs.AgentConfig config) {
+    if (config == null) {
+      return null;
+    }
+
+    // Load the static configuration for the threat.
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(config.ConfigFile);
+    if (staticConfig == null) {
+      return null;
+    }
+
+    // Create an agent corresponding to the threat.
     GameObject threatObject = null;
     if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
       threatObject = CreateRandomAgent(config, prefab);
@@ -485,7 +452,7 @@ public class SimManager : MonoBehaviour {
     Threat threat = threatObject.GetComponent<Threat>();
     _threatObjects.Add(threat);
 
-    // Set the static agent config.
+    // Set the static configuration.
     threat.SetStaticConfig(staticConfig);
 
     // Set the attack behavior.
@@ -507,70 +474,69 @@ public class SimManager : MonoBehaviour {
   }
 
   // Creates a agent based on the provided configuration and prefab name.
-  // Parameters:
-  //   config: Configuration settings for the agent.
-  //   initialState: Initial state of the agent.
-  //   prefabName: Name of the prefab to instantiate.
-  // Returns: The created GameObject instance, or null if creation failed.
-  public GameObject CreateAgent(DynamicAgentConfig config, InitialState initialState,
+  // Returns the created GameObject instance, or null if creation failed.
+  public GameObject CreateAgent(Configs.AgentConfig config, Simulation.State initialState,
                                 string prefabName) {
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
     if (prefab == null) {
-      Debug.LogError($"Prefab '{prefabName}' not found in Resources/Prefabs folder.");
+      Debug.LogError($"Prefab {prefabName} not found in Resources/Prefabs directory.");
       return null;
     }
 
     // Set the position.
-    GameObject agentObject = Instantiate(prefab, initialState.position, Quaternion.identity);
+    GameObject agentObject =
+        Instantiate(prefab, Coordinates3.FromProto(initialState.Position), Quaternion.identity);
 
     // Set the velocity. The rigid body is frozen while the agent is in the initialized phase.
-    agentObject.GetComponent<Agent>().SetInitialVelocity(initialState.velocity);
+    agentObject.GetComponent<Agent>().SetInitialVelocity(
+        Coordinates3.FromProto(initialState.Velocity));
 
     // Set the rotation to face the initial velocity.
-    Vector3 velocityDirection = initialState.velocity.normalized;
+    Vector3 velocityDirection = Coordinates3.FromProto(initialState.Velocity).normalized;
     Quaternion targetRotation = Quaternion.LookRotation(velocityDirection, Vector3.up);
     agentObject.transform.rotation = targetRotation;
 
-    if (config != null) {
-      agentObject.GetComponent<Agent>().SetDynamicAgentConfig(config);
-    }
+    agentObject.GetComponent<Agent>().SetAgentConfig(config);
     return agentObject;
   }
 
   // Creates a random agent based on the provided configuration and prefab name.
-  // Parameters:
-  //   config: Configuration settings for the agent.
-  //   prefabName: Name of the prefab to instantiate.
-  // Returns: The created GameObject instance, or null if creation failed.
-  public GameObject CreateRandomAgent(DynamicAgentConfig config, string prefabName) {
+  // Returns the created GameObject instance, or null if creation failed.
+  public GameObject CreateRandomAgent(Configs.AgentConfig config, string prefabName) {
+    if (config == null) {
+      return null;
+    }
+
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
     if (prefab == null) {
-      Debug.LogError($"Prefab '{prefabName}' not found in Resources/Prefabs folder.");
+      Debug.LogError($"Prefab {prefabName} not found in Resources/Prefabs directory.");
       return null;
     }
 
     // Randomize the initial state.
-    InitialState initialState = new InitialState();
+    Simulation.State initialState = new Simulation.State();
 
     // Randomize the position.
-    Vector3 positionNoise = Utilities.GenerateRandomNoise(config.standard_deviation.position);
-    initialState.position = config.initial_state.position + positionNoise;
+    Vector3 positionNoise = Utilities.GenerateRandomNoise(config.StandardDeviation.Position);
+    initialState.Position =
+        Coordinates3.ToProto(Coordinates3.FromProto(config.InitialState.Position) + positionNoise);
 
     // Randomize the velocity.
-    Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.standard_deviation.velocity);
-    initialState.velocity = config.initial_state.velocity + velocityNoise;
+    Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.StandardDeviation.Velocity);
+    initialState.Velocity =
+        Coordinates3.ToProto(Coordinates3.FromProto(config.InitialState.Velocity) + velocityNoise);
     return CreateAgent(config, initialState, prefabName);
   }
 
-  public void LoadNewConfig(string configFileName) {
-    this.SimulationConfig = ConfigLoader.LoadSimulationConfig(configFileName);
-    // Reload the simulator config
-    this.simulatorConfig = ConfigLoader.LoadSimulatorConfig();
+  public void LoadNewConfig(string configFile) {
+    SimulationConfig = ConfigLoader.LoadSimulationConfig(configFile);
+    // Reload the simulator configuration.
+    SimulatorConfig = ConfigLoader.LoadSimulatorConfig();
     if (SimulationConfig != null) {
-      Debug.Log($"Loaded new configuration: {configFileName}.");
+      Debug.Log($"Loaded new configuration: {configFile}.");
       RestartSimulation();
     } else {
-      Debug.LogError($"Failed to load configuration: {configFileName}.");
+      Debug.LogError($"Failed to load configuration: {configFile}.");
     }
   }
 
@@ -603,23 +569,14 @@ public class SimManager : MonoBehaviour {
       }
     }
 
-    // Clear origin GameObjects
-    foreach (var launcherObject in _launcherObjects) {
-      if (launcherObject != null) {
-        Destroy(launcherObject.gameObject);
-      }
-    }
-
     _interceptorObjects.Clear();
     _activeInterceptors.Clear();
     _threatObjects.Clear();
     _dummyAgentObjects.Clear();
     _dummyAgentTable.Clear();
-    _launcherObjects.Clear();
     _interceptorSwarms.Clear();
     _submunitionsSwarms.Clear();
     _threatSwarms.Clear();
-
     OnInterceptorSwarmChanged?.Invoke(_interceptorSwarms);
     OnSubmunitionsSwarmChanged?.Invoke(_submunitionsSwarms);
     OnThreatSwarmChanged?.Invoke(_threatSwarms);
@@ -627,16 +584,12 @@ public class SimManager : MonoBehaviour {
   }
 
   void FixedUpdate() {
-    if (!_isSimulationPaused && _elapsedSimulationTime < SimulationConfig.endTime) {
+    if (!_isSimulationPaused && _elapsedSimulationTime < SimulationConfig.EndTime) {
       _elapsedSimulationTime += Time.deltaTime;
-    } else if (_elapsedSimulationTime >= SimulationConfig.endTime) {
+    } else if (_elapsedSimulationTime >= SimulationConfig.EndTime) {
       RestartSimulation();
       Debug.Log("Simulation completed.");
     }
-  }
-
-  public List<Launcher> GetLaunchers() {
-    return _launcherObjects;
   }
 
   public void QuitSimulation() {

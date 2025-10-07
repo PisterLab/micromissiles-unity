@@ -13,66 +13,46 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // planner do not converge, so we need to limit the number of iterations.
   private const int MaxNumIterations = 10;
 
-  // Convergence threshold in meters. If the intercept position changes by less than this amount
-  // between iterations, the algorithm is considered to have converged. This value was determined
-  // empirically for a NearestNeighborInterpolator2D.
+  // Convergence threshold in meters for the difference vector magnitude. Convergence is declared
+  // when the intercept position has not changed by more than this threshold between iterations.
   private const float ConvergenceThreshold = 10f;
 
-  // Maximum distance in meters between the final intercept position and the predicted target
-  // position. This validates that the solution is physically realistic.
-  //
-  // This threshold is highly dependent on the ILaunchAnglePlanner implementation. The current
-  // value was determined empirically for a NearestNeighborInterpolator2D using the data in
-  // hydra70_launch_angle.csv. It accommodates inaccuracies inherent in a nearest-neighbor search
-  // with non-uniform data granularity. This value may need to be retuned if the interpolation
-  // method or its underlying data source is changed.
-  private const float InterceptPositionThreshold = 100f;
+  // Maximum intercept position threshold in meters to declare convergence. This threshold is used
+  // as a final sanity check to ensure that the predicted target position and intercept position do
+  // not differ by more than this threshold. This threshold should be set depending on the
+  // granularity of the possible intercept positions.
+  private const float InterceptPositionThreshold = 1000f;
 
   public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
       : base(launchAnglePlanner, predictor) {}
 
-  // Plan the launch from a specific interceptor origin.
-  // This implementation accounts for the interceptor's starting position and the origin's
-  // current location (including movement for naval assets).
-  // Returns: Launch plan with timing and angle information
-  public override LaunchPlan Plan(Launcher launcher) {
-    // Get the current launcher position (accounts for moving launchers)
-    Vector3 launcherPosition = launcher.GetPosition();
-    return Plan(launcherPosition);
-  }
-
-  // Launcher-aware implementation for non-zero launchers.
-  // This implementation properly accounts for interceptor starting position.
-  //   originPosition: The position from which the interceptor will be launched
-  // Returns: Launch plan with timing and angle information
-  public LaunchPlan Plan(Vector3 originPosition) {
+  // Plan the launch.
+  public override LaunchPlan Plan() {
     PredictorState initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;
 
     LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
     Vector3 interceptPosition = new Vector3();
-
     for (int i = 0; i < MaxNumIterations; ++i) {
-      // Estimate the time-to-intercept from the current origin position
-      launchAngleOutput = _launchAnglePlanner.Plan(targetPosition, originPosition);
+      // Estimate the time-to-intercept.
+      launchAngleOutput = _launchAnglePlanner.Plan(targetPosition);
       float timeToIntercept = launchAngleOutput.TimeToPosition;
 
-      // Estimate the target position at intercept time
+      // Estimate the target position.
       PredictorState predictedState = _predictor.Predict(timeToIntercept);
       targetPosition = predictedState.Position;
 
-      // Check whether the intercept position has converged
-      Vector3 newInterceptPosition =
-          _launchAnglePlanner.GetInterceptPosition(targetPosition, originPosition);
+      // Check whether the intercept direction has changed, in which case the algorithm has
+      // converged.
+      Vector3 newInterceptPosition = _launchAnglePlanner.GetInterceptPosition(targetPosition);
       if ((interceptPosition - newInterceptPosition).magnitude < ConvergenceThreshold) {
         interceptPosition = newInterceptPosition;
         break;
       }
       interceptPosition = newInterceptPosition;
 
-      // Check that the target is moving towards the intercept position relative to the threat's
-      // initial position. This prevents launching when the threat is moving away from the predicted
-      // intercept.
+      // Check that the target is moving towards the intercept position. Otherwise, the interceptor
+      // should wait to be launched.
       Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
       Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
       if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
@@ -80,41 +60,20 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
       }
     }
 
-    // Check for backwards/sideways launch scenarios using proper geometric analysis.
-    if (IsInvalidLaunchGeometry(originPosition, interceptPosition, initialState)) {
+    // Check that the interceptor is moving towards the target. If the target is moving too fast,
+    // the interceptor might be launched backwards because the intercept position and the predicted
+    // position are behind the asset. In this case, the interceptor should wait to be launched.
+    Vector3 interceptorToInterceptPosition = interceptPosition;
+    Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
+    if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
       return LaunchPlan.NoLaunch;
     }
 
-    // Final validation: ensure intercept and predicted positions are reasonably close
+    // Check that the intercept position and the predicted position are within some threshold
+    // distance of each other.
     if (Vector3.Distance(interceptPosition, targetPosition) < InterceptPositionThreshold) {
       return new LaunchPlan(launchAngleOutput.LaunchAngle, targetPosition);
     }
-
     return LaunchPlan.NoLaunch;
-  }
-
-  // Determines if a launch scenario is geometrically invalid (e.g., into the posterior hemisphere
-  // behind the space between the origin and the threat).
-  //   originPosition: Position from which the interceptor will be launched.
-  //   interceptPosition: Calculated intercept position.
-  //   threatState: Initial state of the threat (position and velocity).
-  // Returns: True if the launch geometry is invalid and should be prevented.
-  private bool IsInvalidLaunchGeometry(Vector3 originPosition, Vector3 interceptPosition,
-                                       PredictorState threatState) {
-    Vector3 originToThreat = threatState.Position - originPosition;
-    Vector3 threatVelocity = threatState.Velocity;
-
-    // A launch is invalid if the threat is moving away from the origin.
-    // A dot product > 0 means the angle between the vector from the origin to the threat
-    // and its velocity is < 90 degrees, indicating it's moving away.
-    if (Vector3.Dot(originToThreat, threatVelocity) > 0.0f) {
-      return true;
-    }
-
-    // A launch is also invalid if the intercept point is "behind" the origin
-    // relative to the threat's direction of approach. "Behind" means the angle
-    // between the vector to the threat and the vector to the intercept point is > 90 degrees.
-    Vector3 originToIntercept = interceptPosition - originPosition;
-    return Vector3.Dot(originToIntercept.normalized, originToThreat.normalized) < 0.0f;
   }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interceptor : AerialAgent {
+public class Interceptor : Agent {
   [SerializeField]
   private float _navigationGain = 3f;  // Typically 3-5.
 
@@ -49,7 +49,7 @@ public class Interceptor : AerialAgent {
 
     // Calculate the boost acceleration.
     float boostAcceleration =
-        (float)(staticConfig.BoostConfig.BoostAcceleration * Constants.kGravity);
+        (float)((staticConfig.BoostConfig?.BoostAcceleration ?? 0) * Constants.kGravity);
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add the PN acceleration to the boost acceleration.
@@ -98,10 +98,21 @@ public class Interceptor : AerialAgent {
     // }
 
     IController controller;
-    if (dynamicAgentConfig.dynamic_config.flight_config.augmentedPnEnabled) {
-      controller = new ApnController(this, _navigationGain);
-    } else {
-      controller = new PnController(this, _navigationGain);
+    switch (agentConfig.DynamicConfig.FlightConfig.ControllerType) {
+      case Configs.ControllerType.ProportionalNavigation: {
+        controller = new PnController(this, _navigationGain);
+        break;
+      }
+      case Configs.ControllerType.AugmentedProportionalNavigation: {
+        controller = new ApnController(this, _navigationGain);
+        break;
+      }
+      default: {
+        Debug.LogError(
+            $"Controller type {agentConfig.DynamicConfig.FlightConfig.ControllerType} not found.");
+        controller = new PnController(this, _navigationGain);
+        break;
+      }
     }
     accelerationInput = controller.Plan();
 
@@ -118,13 +129,13 @@ public class Interceptor : AerialAgent {
       return;
     }
 
-    var sensorConfig = dynamicAgentConfig?.dynamic_config?.sensor_config;
-    if (sensorConfig == null || sensorConfig.frequency <= 0f) {
+    var sensorConfig = agentConfig?.DynamicConfig?.SensorConfig;
+    if (sensorConfig == null || sensorConfig.Frequency <= 0f) {
       return;
     }
 
     _elapsedTime += deltaTime;
-    float sensorUpdatePeriod = 1f / sensorConfig.frequency;
+    float sensorUpdatePeriod = 1f / sensorConfig.Frequency;
     if (_elapsedTime >= sensorUpdatePeriod) {
       // TODO: Implement guidance filter to estimate state from the sensor output.
       // For now, we'll use the threat's actual state.
@@ -146,7 +157,7 @@ public class Interceptor : AerialAgent {
     if (otherAgent != null && otherAgent.GetComponent<Threat>() != null &&
         _target == otherAgent as Threat) {
       // Check kill probability before marking as hit.
-      float killProbability = otherAgent.staticConfig.HitConfig.KillProbability;
+      float killProbability = otherAgent.staticConfig.HitConfig?.KillProbability ?? 0;
 
       if (Random.value <= killProbability) {
         // Mark both this agent and the other agent as hit.
@@ -184,9 +195,9 @@ public class Interceptor : AerialAgent {
         float duration = particleSystem.main.duration;
 
         // Extend the duration of the missile trail effect to be the same as the boost time.
-        if (duration < staticConfig.BoostConfig.BoostTime) {
+        if (duration < (staticConfig.BoostConfig?.BoostTime ?? 0)) {
           ParticleSystem.MainModule mainModule = particleSystem.main;
-          mainModule.duration = staticConfig.BoostConfig.BoostTime;
+          mainModule.duration = staticConfig.BoostConfig?.BoostTime ?? 0;
         }
 
         _returnParticleToManagerCoroutine = StartCoroutine(ReturnParticleToManager(duration * 2f));

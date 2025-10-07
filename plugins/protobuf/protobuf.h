@@ -4,49 +4,49 @@
 
 #include <cstddef>
 #include <fstream>
-#include <stdexcept>
+#include <iostream>
 #include <string>
 
-#include "absl/strings/str_format.h"
+#include "Plugin/status.pb.h"
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "google/protobuf/text_format.h"
 
 namespace protobuf {
 
-// Load the Protobuf text file and return the Protobuf message.
+// Load the Protobuf text file into a Protobuf message.
 template <typename T>
-T LoadProtobufTextFile(const std::string& file) {
+plugin::StatusCode LoadProtobufTextFile(const std::string& file, T* message) {
   std::ifstream ifs(file);
   if (!ifs.is_open()) {
-    throw std::runtime_error(
-        absl::StrFormat("Failed to open the Protobuf text file: %s.", file));
+    std::cerr << "Failed to open the Protobuf text file: " << file << ".";
+    return plugin::STATUS_INVALID_ARGUMENT;
   }
   google::protobuf::io::IstreamInputStream file_stream(&ifs);
-  T message;
-  if (!google::protobuf::TextFormat::Parse(&file_stream, &message)) {
-    throw std::runtime_error(
-        absl::StrFormat("Failed to parse the Protobuf text file: %s.", file));
+  if (!google::protobuf::TextFormat::Parse(&file_stream, message)) {
+    std::cerr << "Failed to parse the Protobuf text file: " << file << ".";
+    return plugin::STATUS_INTERNAL;
   }
-  return message;
+  return plugin::STATUS_OK;
 }
 
 // Serialize the Protobuf message to a buffer and return the length of the
-// serialized message in bytes.
+// serialized message in bytes as an output argument.
 template <typename T>
-std::size_t SerializeToBuffer(const T& message, void* buffer,
-                              const std::size_t size) {
-  const auto message_size = message.ByteSizeLong();
-  if (message_size > size) {
-    throw std::runtime_error(
-        absl::StrFormat("Failed to serialize the Protobuf message to a buffer "
-                        "due to insufficient buffer size: %zu vs. %zu.",
-                        message_size, size));
+plugin::StatusCode SerializeToBuffer(const T& message, void* buffer,
+                                     const std::size_t size,
+                                     std::size_t* serialized_length) {
+  *serialized_length = message.ByteSizeLong();
+  if (*serialized_length > size) {
+    std::cerr << "Failed to serialize the Protobuf message to a buffer due to "
+                 "insufficient buffer size: "
+              << *serialized_length << " vs. " << size << ".";
+    return plugin::STATUS_FAILED_PRECONDITION;
   }
-  if (!message.SerializeToArray(buffer, message_size)) {
-    throw std::runtime_error(
-        "Failed to serialize the Protobuf message to a buffer.");
+  if (!message.SerializeToArray(buffer, *serialized_length)) {
+    std::cerr << "Failed to serialize the Protobuf message to a buffer.";
+    return plugin::STATUS_INTERNAL;
   }
-  return message_size;
+  return plugin::STATUS_OK;
 }
 
 }  // namespace protobuf

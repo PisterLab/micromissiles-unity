@@ -3,6 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Agent : MonoBehaviour {
+  // In the initialized phase, the agent is subject to no forces.
+  // In the ready phase, the agent is subject to gravity and drag with zero input acceleration.
+  // TODO(titan): Replace this enumeration with the Protobuf enumeration.
+  public enum FlightPhase { INITIALIZED, READY, BOOST, MIDCOURSE, TERMINAL, TERMINATED }
+
+  [SerializeField]
+  private FlightPhase _flightPhase = FlightPhase.INITIALIZED;
+
+  [SerializeField]
+  protected Vector3 _velocity;
+
+  [SerializeField]
+  protected Vector3 _acceleration;
+
+  [SerializeField]
+  protected Vector3 _dragAcceleration;
+
+  [SerializeField]
+  protected float _speed;
+
   [SerializeField]
   protected List<Agent> _interceptors = new List<Agent>();
   [SerializeField]
@@ -10,8 +30,13 @@ public abstract class Agent : MonoBehaviour {
   [SerializeField]
   protected Agent _targetModel;
 
+  [SerializeField]
+  protected double _timeSinceBoost = 0;
+  [SerializeField]
+  protected double _timeInPhase = 0;
+
   public Configs.StaticConfig staticConfig;
-  public DynamicAgentConfig dynamicAgentConfig;
+  public Configs.AgentConfig agentConfig;
 
   // Define delegates.
   public delegate void TerminatedEventHandler(Agent agent);
@@ -28,13 +53,40 @@ public abstract class Agent : MonoBehaviour {
   public event ThreatHitEventHandler OnThreatHit;
   public event ThreatMissEventHandler OnThreatMiss;
 
-  public virtual void SetDynamicAgentConfig(DynamicAgentConfig config) {
-    dynamicAgentConfig = config;
+  private Vector3 _initialVelocity;
+
+  public void SetFlightPhase(FlightPhase flightPhase) {
+    _timeInPhase = 0;
+    _flightPhase = flightPhase;
+    if (flightPhase == FlightPhase.INITIALIZED || flightPhase == FlightPhase.TERMINATED) {
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+    } else {
+      GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+    }
+    if (flightPhase == FlightPhase.BOOST) {
+      SetVelocity(GetVelocity() + _initialVelocity);
+    }
+  }
+
+  public FlightPhase GetFlightPhase() {
+    return _flightPhase;
+  }
+
+  public bool IsInitialized() {
+    return _flightPhase != FlightPhase.INITIALIZED;
+  }
+
+  public bool IsTerminated() {
+    return _flightPhase == FlightPhase.TERMINATED;
+  }
+
+  public virtual void SetAgentConfig(Configs.AgentConfig config) {
+    agentConfig = config;
   }
 
   public virtual void SetStaticConfig(Configs.StaticConfig config) {
     staticConfig = config;
-    GetComponent<Rigidbody>().mass = staticConfig.BodyConfig.Mass;
+    GetComponent<Rigidbody>().mass = staticConfig.BodyConfig?.Mass ?? 1;
   }
 
   public virtual bool IsAssignable() {
@@ -67,10 +119,6 @@ public abstract class Agent : MonoBehaviour {
     _targetModel = null;
   }
 
-  public virtual bool IsTerminated() {
-    return !gameObject.activeSelf;
-  }
-
   public void AddInterceptor(Agent interceptor) {
     _interceptors.Add(interceptor);
   }
@@ -85,7 +133,11 @@ public abstract class Agent : MonoBehaviour {
 
   public virtual void TerminateAgent() {
     UnassignTarget();
-    OnTerminated?.Invoke(this);
+    if (_flightPhase != FlightPhase.TERMINATED) {
+      OnTerminated?.Invoke(this);
+    }
+    _flightPhase = FlightPhase.TERMINATED;
+    SetPosition(Vector3.zero);
     gameObject.SetActive(false);
   }
 
@@ -125,6 +177,10 @@ public abstract class Agent : MonoBehaviour {
     TerminateAgent();
   }
 
+  public void SetInitialVelocity(Vector3 velocity) {
+    _initialVelocity = velocity;
+  }
+
   public Vector3 GetPosition() {
     return transform.position;
   }
@@ -145,18 +201,12 @@ public abstract class Agent : MonoBehaviour {
     GetComponent<Rigidbody>().linearVelocity = velocity;
   }
 
-  public virtual void SetInitialVelocity(Vector3 velocity) {
-    // Default implementation for Launcher - just set velocity directly
-    SetVelocity(velocity);
-  }
-
-  public virtual Vector3 GetAcceleration() {
-    // This will need to be revisited as it was moved to AerialAgent
-    return Vector3.zero;
+  public Vector3 GetAcceleration() {
+    return _acceleration;
   }
 
   public void SetAcceleration(Vector3 acceleration) {
-    // This will need to be revisited as it was moved to AerialAgent
+    _acceleration = acceleration;
   }
 
   public Transformation GetRelativeTransformation(Agent target) {
@@ -276,9 +326,115 @@ public abstract class Agent : MonoBehaviour {
     return accelerationTransformation;
   }
 
+  public double GetDynamicPressure() {
+    var airDensity = Constants.CalculateAirDensityAtAltitude(transform.position.y);
+    var flowSpeed = GetSpeed();
+    return 0.5 * airDensity * (flowSpeed * flowSpeed);
+  }
+
+  protected abstract void UpdateReady(double deltaTime);
+  protected abstract void UpdateBoost(double deltaTime);
+  protected abstract void UpdateMidCourse(double deltaTime);
+
   protected virtual void Awake() {}
+
   protected virtual void Start() {}
-  protected virtual void FixedUpdate() {}
+
+  protected virtual void FixedUpdate() {
+    _speed = (float)GetSpeed();
+    if (_flightPhase != FlightPhase.INITIALIZED && _flightPhase != FlightPhase.READY) {
+      _timeSinceBoost += Time.fixedDeltaTime;
+    }
+    _timeInPhase += Time.fixedDeltaTime;
+
+    var boostTime = staticConfig.BoostConfig?.BoostTime ?? 0;
+    double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
+
+    if (_flightPhase == FlightPhase.TERMINATED) {
+      return;
+    }
+    if (_flightPhase == FlightPhase.INITIALIZED || _flightPhase == FlightPhase.READY) {
+      SetFlightPhase(FlightPhase.BOOST);
+    }
+    if (_timeSinceBoost > boostTime && _flightPhase == FlightPhase.BOOST) {
+      SetFlightPhase(FlightPhase.MIDCOURSE);
+    }
+    AlignWithVelocity();
+    switch (_flightPhase) {
+      case FlightPhase.INITIALIZED:
+        break;
+      case FlightPhase.READY:
+        UpdateReady(Time.fixedDeltaTime);
+        break;
+      case FlightPhase.BOOST:
+        UpdateBoost(Time.fixedDeltaTime);
+        break;
+      case FlightPhase.MIDCOURSE:
+      case FlightPhase.TERMINAL:
+        UpdateMidCourse(Time.fixedDeltaTime);
+        break;
+      case FlightPhase.TERMINATED:
+        break;
+    }
+
+    _velocity = GetVelocity();
+    // Store the acceleration because it is set to zero after each simulation step
+    _acceleration =
+        GetComponent<Rigidbody>().GetAccumulatedForce() / GetComponent<Rigidbody>().mass;
+  }
+
+  protected virtual void AlignWithVelocity() {
+    Vector3 velocity = GetVelocity();
+    // Only align if we have significant velocity.
+    if (velocity.magnitude > 0.1f) {
+      // Create a rotation with forward along velocity and up along world up.
+      Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
+
+      // Smoothly rotate towards the target rotation.
+      transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation,
+                                                    10000f * Time.fixedDeltaTime);
+    }
+  }
+
+  protected Vector3 CalculateAcceleration(Vector3 accelerationInput) {
+    Vector3 gravity = Physics.gravity;
+    float airDrag = CalculateDrag();
+    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
+    float dragAcceleration = -(airDrag + liftInducedDrag);
+
+    // Project the drag acceleration onto the forward direction.
+    Vector3 dragAccelerationAlongRoll = dragAcceleration * transform.forward;
+    _dragAcceleration = dragAccelerationAlongRoll;
+
+    return accelerationInput + gravity + dragAccelerationAlongRoll;
+  }
+
+  public float CalculateMaxForwardAcceleration() {
+    return staticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
+  }
+
+  public float CalculateMaxNormalAcceleration() {
+    float maxReferenceNormalAcceleration =
+        (float)((staticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) *
+                Constants.kGravity);
+    float referenceSpeed = staticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
+    return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
+  }
+
+  private float CalculateDrag() {
+    float dragCoefficient = staticConfig.LiftDragConfig?.DragCoefficient ?? 0;
+    float crossSectionalArea = staticConfig.BodyConfig?.CrossSectionalArea ?? 0;
+    float mass = staticConfig.BodyConfig?.Mass ?? 1;
+    float dynamicPressure = (float)GetDynamicPressure();
+    float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
+    return dragForce / mass;
+  }
+
+  private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
+    float liftAcceleration = Vector3.ProjectOnPlane(accelerationInput, transform.up).magnitude;
+    float liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
+    return Mathf.Abs(liftAcceleration / liftDragRatio);
+  }
 }
 
 public class DummyAgent : Agent {
@@ -287,6 +443,18 @@ public class DummyAgent : Agent {
   }
 
   protected override void FixedUpdate() {
-    GetComponent<Rigidbody>().AddForce(GetAcceleration(), ForceMode.Acceleration);
+    GetComponent<Rigidbody>().AddForce(_acceleration, ForceMode.Acceleration);
+  }
+
+  protected override void UpdateReady(double deltaTime) {
+    // Do nothing.
+  }
+
+  protected override void UpdateBoost(double deltaTime) {
+    // Do nothing.
+  }
+
+  protected override void UpdateMidCourse(double deltaTime) {
+    // Do nothing.
   }
 }

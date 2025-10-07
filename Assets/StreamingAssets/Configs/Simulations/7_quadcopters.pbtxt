@@ -5,7 +5,7 @@ interceptor_swarm_configs {
     config_file: "hydra70.pbtxt"
     dynamic_config {
       flight_config {
-        controller: PROPORTIONAL_NAVIGATION
+        controller_type: PROPORTIONAL_NAVIGATION
       }
       sensor_config {
         type: IDEAL
@@ -18,7 +18,7 @@ interceptor_swarm_configs {
         config_file: "micromissile.pbtxt"
         dynamic_config {
           flight_config {
-            controller: PROPORTIONAL_NAVIGATION
+            controller_type: PROPORTIONAL_NAVIGATION
           }
           sensor_config {
             type: IDEAL
@@ -33,6 +33,7 @@ threat_swarm_configs {
   num_agents: 7
   agent_config {
     config_file: "quadcopter.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
         x: 0
@@ -59,7 +60,7 @@ threat_swarm_configs {
     }
     dynamic_config {
       flight_config {
-        evasion {
+        evasion_config {
             enabled: true
             range_threshold: 1000
         }

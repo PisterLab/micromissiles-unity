@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// An abstract class for all threats.
-public abstract class Threat : AerialAgent {
+public abstract class Threat : Agent {
   protected AttackBehavior _attackBehavior;
   [SerializeField]
   protected Vector3 _currentWaypoint;
@@ -20,8 +19,8 @@ public abstract class Threat : AerialAgent {
 
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
-    _target = SimManager.Instance.CreateDummyAgent(attackBehavior.targetPosition,
-                                                   attackBehavior.targetVelocity);
+    // TODO(titan): Set the threat's initial target properly.
+    _target = SimManager.Instance.CreateDummyAgent(Vector3.zero, Vector3.zero);
   }
 
   protected float LookupPowerTable(Configs.Power power) {
@@ -103,7 +102,7 @@ public abstract class Threat : AerialAgent {
   }
 
   protected bool ShouldEvade() {
-    if (!dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
+    if (!agentConfig.DynamicConfig.FlightConfig.EvasionConfig.Enabled) {
       return false;
     }
 
@@ -113,7 +112,7 @@ public abstract class Threat : AerialAgent {
     }
 
     float evasionRangeThreshold =
-        dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
+        agentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
     SensorOutput sensorOutput = _sensor.Sense(closestInterceptor);
     return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }
