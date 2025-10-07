@@ -96,7 +96,20 @@ Instead, plugins should always return a status code that Unity can check and han
 
 The complete list of status codes is defined in [`status.proto`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Proto/Plugin/status.proto) and is adapted from [Google's Abseil status codes](https://github.com/abseil/abseil-cpp/blob/master/absl/status/status.h).
 Defining a Protobuf enumeration for status codes allows both the C++ plugins and the Unity C# code to reference the same set of values.
-For details on the meaning and usage of each status code, refer to the [Abseil status documentation](https://github.com/abseil/abseil-cpp/blob/master/absl/status/status.h).
+
+The most common status codes are given in the table below:
+
+| **Status Code**               | **Description**                                                                |
+|-------------------------------|--------------------------------------------------------------------------------|
+| `STATUS_OK`                   | Returned on success and indicates no error.                                    |
+| `STATUS_INVALID_ARGUMENT`     | Returned when an invalid argument was specified.                               |
+| `STATUS_NOT_FOUND`            | Returned when a resource was not found.                                        |
+| `STATUS_FAILED_PRECONDITION`  | Returned when the arguments are valid but an invariant has not been satisfied. |
+| `STATUS_OUT_OF_RANGE`         | Returned when a resource was accessed past its valid range.                    |
+| `STATUS_UNIMPLEMENTED`        | Returned when the operation has not been implemented.                          |
+| `STATUS_INTERNAL`             | Returned when an internal error occurred during the operation.                 |
+
+For more details on the meaning and usage of each status code, refer to the [Abseil status documentation](https://github.com/abseil/abseil-cpp/blob/master/absl/status/status.h).
 
 ### Example
 
