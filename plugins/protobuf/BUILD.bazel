@@ -5,26 +5,10 @@ package(default_visibility = ["//visibility:public"])
 exports_files(["protobuf.def"])
 
 cc_library(
-    name = "protobuf_plugin",
-    srcs = ["protobuf_plugin.cc"],
-    data = [
-        "@micromissiles-configs-data//Models:models",
-        "@micromissiles-configs-data//Simulations:simulations",
-    ],
-    deps = [
-        ":protobuf",
-        "@micromissiles-proto//Configs:attack_behavior_config_cc_proto",
-        "@micromissiles-proto//Configs:simulation_config_cc_proto",
-        "@micromissiles-proto//Configs:simulator_config_cc_proto",
-        "@micromissiles-proto//Configs:static_config_cc_proto",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-    ],
-)
-
-cc_library(
     name = "protobuf",
     hdrs = ["protobuf.h"],
     deps = [
+        "//base:logging",
         "@micromissiles-proto//Plugin:status_cc_proto",
         "@protobuf",
     ],
@@ -44,6 +28,23 @@ cc_test(
         "@googletest//:gtest_main",
         "@micromissiles-proto//Configs:attack_behavior_config_cc_proto",
         "@micromissiles-proto//Configs:simulation_config_cc_proto",
+        "@micromissiles-proto//Configs:static_config_cc_proto",
+        "@micromissiles-proto//Plugin:status_cc_proto",
+    ],
+)
+
+cc_library(
+    name = "protobuf_plugin",
+    srcs = ["protobuf_plugin.cc"],
+    data = [
+        "@micromissiles-configs-data//Models:models",
+        "@micromissiles-configs-data//Simulations:simulations",
+    ],
+    deps = [
+        ":protobuf",
+        "@micromissiles-proto//Configs:attack_behavior_config_cc_proto",
+        "@micromissiles-proto//Configs:simulation_config_cc_proto",
+        "@micromissiles-proto//Configs:simulator_config_cc_proto",
         "@micromissiles-proto//Configs:static_config_cc_proto",
         "@micromissiles-proto//Plugin:status_cc_proto",
     ],
