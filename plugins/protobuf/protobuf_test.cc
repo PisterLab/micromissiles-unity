@@ -22,8 +22,7 @@ namespace {
 // Return the full runfiles path.
 std::filesystem::path GetRunfilesPath(const std::filesystem::path& file) {
   std::string error;
-  std::unique_ptr<bazel::tools::cpp::runfiles::Runfiles> runfiles(
-      bazel::tools::cpp::runfiles::Runfiles::CreateForTest(&error));
+  auto runfiles = bazel::tools::cpp::runfiles::Runfiles::CreateForTest(&error);
   if (runfiles == nullptr) {
     ADD_FAILURE() << "Runfiles error: " << error << ".";
     return std::filesystem::path();
