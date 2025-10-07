@@ -34,7 +34,7 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Sim Overview", link: "/Simulator_Overview" },
-      { text: "Sim Config Guide", link: "/Simulation_Configuration_Guide"},
+      { text: "Sim Config Guide", link: "/Simulation_Configuration_Guide" },
       { text: "Development Guide", link: "/Development_Guide" },
     ],
 
