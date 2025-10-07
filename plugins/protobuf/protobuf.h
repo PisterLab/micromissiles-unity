@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 
 #include "Plugin/status.pb.h"
 #include "base/logging.h"
@@ -29,7 +30,7 @@ plugin::StatusCode LoadProtobufTextFile(const std::filesystem::path& file,
   std::ifstream ifs(file);
   if (!ifs) {
     LOG(ERROR) << "Failed to open the Protobuf text file: " << file << ".";
-    return plugin::STATUS_INVALID_ARGUMENT;
+    return plugin::STATUS_FAILED_PRECONDITION;
   }
   google::protobuf::io::IstreamInputStream file_stream(&ifs);
   if (!google::protobuf::TextFormat::Parse(&file_stream, message)) {
@@ -55,6 +56,12 @@ plugin::StatusCode SerializeToBuffer(const T& message, void* buffer,
   }
 
   const auto message_size = message.ByteSizeLong();
+  if (message_size >
+      static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+    LOG(ERROR) << "Protobuf message size " << message_size
+               << " exceeds maximum serializable size.";
+    return plugin::STATUS_OUT_OF_RANGE;
+  }
   if (message_size > size) {
     LOG(ERROR) << "Failed to serialize the Protobuf message to a buffer due to "
                   "insufficient buffer size: "

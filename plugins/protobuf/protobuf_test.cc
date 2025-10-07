@@ -4,6 +4,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <filesystem>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -54,18 +56,31 @@ TEST(ProtobufTest, LoadProtobufTextFileSimulationConfig) {
 TEST(ProtobufTest, LoadProtobufTextFileNullMessage) {
   const std::string kSimulationConfigFile =
       "../micromissiles-configs-data+/Simulations/7_quadcopters.pbtxt";
-  EXPECT_NE(LoadProtobufTextFile<configs::SimulationConfig>(
+  EXPECT_EQ(LoadProtobufTextFile<configs::SimulationConfig>(
                 kSimulationConfigFile, nullptr),
-            plugin::STATUS_OK);
+            plugin::STATUS_INVALID_ARGUMENT);
 }
 
 TEST(ProtobufTest, LoadProtobufTextFileNotFound) {
   const std::string kSimulationConfigFile =
       "../micromissiles-configs-data+/Simulations/nonexistent.pbtxt";
   configs::SimulationConfig simulation_config;
-  EXPECT_NE(LoadProtobufTextFile<configs::SimulationConfig>(
+  EXPECT_EQ(LoadProtobufTextFile<configs::SimulationConfig>(
                 kSimulationConfigFile, &simulation_config),
-            plugin::STATUS_OK);
+            plugin::STATUS_NOT_FOUND);
+}
+
+TEST(ProtobufTest, LoadProtobufTextFileInvalid) {
+  const auto kSimulationConfigFile =
+      std::filesystem::temp_directory_path() / "invalid.pbtxt";
+  std::ofstream ofs(kSimulationConfigFile);
+  ofs << "interceptor_swarm_configs { invalid: true }";
+  ofs.close();
+
+  configs::SimulationConfig simulation_config;
+  EXPECT_EQ(LoadProtobufTextFile<configs::SimulationConfig>(
+                kSimulationConfigFile, &simulation_config),
+            plugin::STATUS_INTERNAL);
 }
 
 TEST(ProtobufTest, SerializeToBuffer) {
@@ -92,9 +107,9 @@ TEST(ProtobufTest, SerializeToBufferNullBuffer) {
             plugin::STATUS_OK);
   std::vector<uint8_t> buffer(1024);
   std::size_t serialized_length = 0;
-  EXPECT_NE(SerializeToBuffer(static_config, nullptr, buffer.size(),
+  EXPECT_EQ(SerializeToBuffer(static_config, nullptr, buffer.size(),
                               &serialized_length),
-            plugin::STATUS_OK);
+            plugin::STATUS_INVALID_ARGUMENT);
 }
 
 TEST(ProtobufTest, SerializeToBufferNullSerializedLength) {
@@ -105,9 +120,9 @@ TEST(ProtobufTest, SerializeToBufferNullSerializedLength) {
                                                         &static_config),
             plugin::STATUS_OK);
   std::vector<uint8_t> buffer(1024);
-  EXPECT_NE(
+  EXPECT_EQ(
       SerializeToBuffer(static_config, buffer.data(), buffer.size(), nullptr),
-      plugin::STATUS_OK);
+      plugin::STATUS_INVALID_ARGUMENT);
 }
 
 TEST(ProtobufTest, SerializeToBufferInsufficientSize) {
@@ -119,9 +134,9 @@ TEST(ProtobufTest, SerializeToBufferInsufficientSize) {
             plugin::STATUS_OK);
   std::vector<uint8_t> buffer(1);
   std::size_t serialized_length = 0;
-  EXPECT_NE(SerializeToBuffer(static_config, buffer.data(), buffer.size(),
+  EXPECT_EQ(SerializeToBuffer(static_config, buffer.data(), buffer.size(),
                               &serialized_length),
-            plugin::STATUS_OK);
+            plugin::STATUS_FAILED_PRECONDITION);
 }
 
 }  // namespace
