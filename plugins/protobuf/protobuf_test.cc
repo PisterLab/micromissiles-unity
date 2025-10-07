@@ -24,6 +24,7 @@ std::filesystem::path GetRunfilesPath(const std::filesystem::path& file) {
   std::string error;
   std::unique_ptr<bazel::tools::cpp::runfiles::Runfiles> runfiles(
       bazel::tools::cpp::runfiles::Runfiles::CreateForTest(&error));
+  ASSERT_NE(runfiles, nullptr);
   return std::filesystem::path(runfiles->Rlocation(file.string()));
 }
 
