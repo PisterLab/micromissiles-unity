@@ -1,50 +1,50 @@
 {
-    "m_Id": "Default copy",
-    "m_ParentId": "",
-    "m_Entries": [
+  "m_Id": "Default copy",
+  "m_ParentId": "",
+  "m_Entries": [
+    {
+      "identifier": {
+        "path": "Main Menu/Window/General/Scene"
+      },
+      "combinations": [
         {
-            "identifier": {
-                "path": "Main Menu/Window/General/Scene"
-            },
-            "combinations": [
-                {
-                    "m_KeyCode": 257,
-                    "m_Modifiers": 3
-                }
-            ]
-        },
-        {
-            "identifier": {
-                "path": "Main Menu/Window/General/Game"
-            },
-            "combinations": [
-                {
-                    "m_KeyCode": 258,
-                    "m_Modifiers": 3
-                }
-            ]
-        },
-        {
-            "identifier": {
-                "path": "Main Menu/Window/General/Inspector"
-            },
-            "combinations": [
-                {
-                    "m_KeyCode": 259,
-                    "m_Modifiers": 3
-                }
-            ]
-        },
-        {
-            "identifier": {
-                "path": "Main Menu/Window/General/Hierarchy"
-            },
-            "combinations": [
-                {
-                    "m_KeyCode": 260,
-                    "m_Modifiers": 3
-                }
-            ]
+          "m_KeyCode": 257,
+          "m_Modifiers": 3
         }
-    ]
+      ]
+    },
+    {
+      "identifier": {
+        "path": "Main Menu/Window/General/Game"
+      },
+      "combinations": [
+        {
+          "m_KeyCode": 258,
+          "m_Modifiers": 3
+        }
+      ]
+    },
+    {
+      "identifier": {
+        "path": "Main Menu/Window/General/Inspector"
+      },
+      "combinations": [
+        {
+          "m_KeyCode": 259,
+          "m_Modifiers": 3
+        }
+      ]
+    },
+    {
+      "identifier": {
+        "path": "Main Menu/Window/General/Hierarchy"
+      },
+      "combinations": [
+        {
+          "m_KeyCode": 260,
+          "m_Modifiers": 3
+        }
+      ]
+    }
+  ]
 }
