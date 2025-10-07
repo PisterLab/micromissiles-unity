@@ -4,7 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <filesystem>
+#include <string>
 #include <vector>
 
 #include "Configs/attack_behavior_config.pb.h"
@@ -16,9 +16,8 @@ namespace protobuf {
 namespace {
 
 TEST(ProtobufTest, LoadProtobufTextAttackBehaviorConfigFileTest) {
-  const auto kAttackBehaviorConfigFile =
-      std::filesystem::path("..") / "micromissiles-configs-data+" / "Attacks" /
-      "default_direct_attack.pbtxt";
+  const std::string kAttackBehaviorConfigFile =
+      "../micromissiles-configs-data+/Attacks/default_direct_attack.pbtxt";
   configs::AttackBehaviorConfig attack_behavior_config;
   const auto status = LoadProtobufTextFile<configs::AttackBehaviorConfig>(
       kAttackBehaviorConfigFile, &attack_behavior_config);
@@ -28,9 +27,8 @@ TEST(ProtobufTest, LoadProtobufTextAttackBehaviorConfigFileTest) {
 }
 
 TEST(ProtobufTest, LoadProtobufTextStaticConfigFileTest) {
-  const auto kStaticConfigFile = std::filesystem::path("..") /
-                                 "micromissiles-configs-data+" / "Models" /
-                                 "micromissile.pbtxt";
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   configs::StaticConfig static_config;
   const auto status = LoadProtobufTextFile<configs::StaticConfig>(
       kStaticConfigFile, &static_config);
@@ -43,9 +41,8 @@ TEST(ProtobufTest, LoadProtobufTextStaticConfigFileTest) {
 }
 
 TEST(ProtobufTest, LoadProtobufTextSimulationConfigFileTest) {
-  const auto kSimulationConfigFile = std::filesystem::path("..") /
-                                     "micromissiles-configs-data+" /
-                                     "Simulations" / "7_quadcopters.pbtxt";
+  const std::string kSimulationConfigFile =
+      "../micromissiles-configs-data+/Simulations/7_quadcopters.pbtxt";
   configs::SimulationConfig simulation_config;
   const auto status = LoadProtobufTextFile<configs::SimulationConfig>(
       kSimulationConfigFile, &simulation_config);
@@ -55,9 +52,8 @@ TEST(ProtobufTest, LoadProtobufTextSimulationConfigFileTest) {
 }
 
 TEST(ProtobufTest, LoadProtobufTextInvalidFileTest) {
-  const auto kSimulationConfigFile = std::filesystem::path("..") /
-                                     "micromissiles-configs-data+" /
-                                     "Simulations" / "invalid.pbtxt";
+  const std::string kSimulationConfigFile =
+      "../micromissiles-configs-data+/Simulations/invalid.pbtxt";
   configs::SimulationConfig simulation_config;
   const auto status = LoadProtobufTextFile<configs::SimulationConfig>(
       kSimulationConfigFile, &simulation_config);
@@ -65,9 +61,8 @@ TEST(ProtobufTest, LoadProtobufTextInvalidFileTest) {
 }
 
 TEST(ProtobufTest, SerializeToBufferTest) {
-  const auto kStaticConfigFile = std::filesystem::path("..") /
-                                 "micromissiles-configs-data+" / "Models" /
-                                 "micromissile.pbtxt";
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   configs::StaticConfig static_config;
   const auto load_status = LoadProtobufTextFile<configs::StaticConfig>(
       kStaticConfigFile, &static_config);
@@ -81,9 +76,8 @@ TEST(ProtobufTest, SerializeToBufferTest) {
 }
 
 TEST(ProtobufTest, SerializeToBufferInsufficientSizeTest) {
-  const auto kStaticConfigFile = std::filesystem::path("..") /
-                                 "micromissiles-configs-data+" / "Models" /
-                                 "micromissile.pbtxt";
+  const std::string kStaticConfigFile =
+      "../micromissiles-configs-data+/Models/micromissile.pbtxt";
   configs::StaticConfig static_config;
   const auto load_status = LoadProtobufTextFile<configs::StaticConfig>(
       kStaticConfigFile, &static_config);
