@@ -8,7 +8,7 @@ In this guide, we will explore the different types of configuration files used i
 
 ## Introduction
 
-![Simulation configuration files](./images/agent_configuration_files.png){width=80%}
+![Simulation configuration files](./images/agent_configuration_files.png){width=90%}
 
 You can customize interceptor and threat behaviors, simulation parameters, and more to suit your needs.
 There are three main types of configuration files:
