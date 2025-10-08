@@ -48,8 +48,8 @@ export default defineConfig({
           { text: "Sim Logging", link: "/Simulation_Logging" },
           { text: "Coverage Reports",
             items: [
-              { text: "EditMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/editmode/Report/index.html" },
-              { text: "PlayMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/playmode/Report/index.html" }
+              { text: "EditMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-editmode/Report/index.html" },
+              { text: "PlayMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-playmode/Report/index.html" }
             ]
           },
           { text: "Development Guide", link: "/Development_Guide" },
