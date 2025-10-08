@@ -584,14 +584,14 @@ This configuration represents a Hydra 70 carrier interceptor:
 **Core Parameters:**
 
 - `name: "Hydra 70"` - Name of the interceptor.
-- `agentClass: CARRIER_INTERCEPTOR` - Identifies this as a carrier-type interceptor.
+- `agent_type: CARRIER_INTERCEPTOR` - Identifies this as a carrier-type interceptor.
 - `cost: 30000` - Cost per unit for simulation analysis.
 
 **Performance Characteristics:**
 
 - **Acceleration Settings:**
   - High normal acceleration (300 m/s²) at reference speed.
-  - No forward acceleration (`maxForwardAcceleration: 0`), so relies on initial boost.
+  - No forward acceleration (`max_forward_acceleration: 0`), so relies on initial boost.
   - Reference speed of 1000 m/s for scaling acceleration.
 
 - **Boost Phase:**
@@ -608,7 +608,7 @@ This configuration represents a Hydra 70 carrier interceptor:
   - Small cross-sectional area (0.004 m²).
   - Larger body area (0.12 m²) for stability.
 
-#### Example 2: `quadcopter.pbtxt` (RotaryWingThreat)
+#### Example 2: `quadcopter.pbtxt` (Rotary-Wing Threat)
 
 ```textproto
 name: "Quadcopter"
@@ -659,7 +659,7 @@ This configuration represents a small drone threat:
 
 **Core Parameters:**
 - `name: "Quadcopter"` - Name of the interceptor.
-- `agentClass: ROTARY_WING_THREAT` - Identifies this as a rotary-wing aircraft.
+- `agent_type: ROTARY_WING_THREAT` - Identifies this as a rotary-wing aircraft.
 - `cost: 1000` - Cost per unit for simulation analysis.
 
 **Performance Characteristics:**

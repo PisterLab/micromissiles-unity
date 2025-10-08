@@ -213,15 +213,15 @@ public class IADS : MonoBehaviour {
   }
 
   // Detach a single interceptor from a cluster and decide its next action.
-  // ALL interceptors are queued for reassignment in the hierarchical architecture,
-  // including CarrierInterceptors.
+  // All interceptors are queued for reassignment in the hierarchical architecture,
+  // including carrier interceptors.
   private void ReleaseInterceptorFromCluster(Cluster cluster, Interceptor interceptor) {
     _threatClusterMap[cluster].RemoveInterceptor(interceptor);
     _interceptorClusterMap.Remove(interceptor);
-    // TODO(titan): During the hierarchical architecture overhaul/refactor, 
-    // we need to properly handle the assignment of CarrierInterceptors at this point.
-    // Since they have been unassigned from their cluster, they will need to be queued for 
-    // a new cluster assignment. Right now they will go for re-assignment but fail
+    // TODO(titan): During the hierarchical architecture overhaul/refactor,
+    // we need to properly handle the assignment of carrier interceptors at this point.
+    // Since they have been unassigned from their cluster, they will need to be queued for
+    // a new cluster assignment. Right now, they will go for re-assignment but fail
     // since they return false for IsAssignable().
     RequestAssignInterceptorToThreat(interceptor);
   }
