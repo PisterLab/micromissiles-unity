@@ -4394,7 +4394,7 @@
             <Method visited="false" cyclomaticComplexity="4" nPathComplexity="0" sequenceCoverage="0.0" branchCoverage="0" crapScore="20" isConstructor="false" isStatic="false" isGetter="false" isSetter="false">
               <Summary numSequencePoints="11" visitedSequencePoints="0" numBranchPoints="0" visitedBranchPoints="0" sequenceCoverage="0.0" branchCoverage="0" maxCyclomaticComplexity="4" minCyclomaticComplexity="4" maxCrapScore="20" minCrapScore="20" visitedClasses="0" numClasses="0" visitedMethods="0" numMethods="1" />
               <MetadataToken>100663571</MetadataToken>
-              <Name>System.Void Interceptor::DetatchMissileTrail()</Name>
+              <Name>System.Void Interceptor::DetachMissileTrail()</Name>
               <FileRef uid="32" />
               <SequencePoints>
                 <SequencePoint vc="0" uspid="1869" ordinal="0" offset="0" sl="230" sc="0" el="230" ec="0" bec="0" bev="0" fileid="32" />
