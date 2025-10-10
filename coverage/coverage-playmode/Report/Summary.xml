@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/09/2025 - 16:04:32</Generatedon>
+    <Generatedon>10/10/2025 - 00:48:37</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
-    <Classes>170</Classes>
-    <Files>106</Files>
+    <Classes>169</Classes>
+    <Files>105</Files>
     <Coveredlines>2035</Coveredlines>
-    <Uncoveredlines>10328</Uncoveredlines>
-    <Coverablelines>12363</Coverablelines>
-    <Totallines>25995</Totallines>
+    <Uncoveredlines>10306</Uncoveredlines>
+    <Coverablelines>12341</Coverablelines>
+    <Totallines>25951</Totallines>
     <Linecoverage>16.4</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>410</Coveredmethods>
-    <Totalmethods>1986</Totalmethods>
+    <Totalmethods>1985</Totalmethods>
     <Methodcoverage>20.6</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="145" coverage="17.7" coveredlines="1987" coverablelines="11206" totallines="92663" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="407" totalmethods="1859" methodcoverage="21.8">
+    <Assembly name="bamlab.micromissiles" classes="144" coverage="17.7" coveredlines="1987" coverablelines="11184" totallines="92619" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="407" totalmethods="1858" methodcoverage="21.9">
       <Class name="Agent" coverage="62.1" coveredlines="159" coverablelines="256" totallines="460" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="27" totalmethods="45" methodcoverage="60" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -124,7 +124,6 @@
       <Class name="PnController" coverage="93.5" coveredlines="29" coverablelines="31" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="PredictorState" coverage="0" coveredlines="0" coverablelines="14" totallines="37" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
       <Class name="PriorityQueue[T]" coverage="0" coveredlines="0" coverablelines="37" totallines="59" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
-      <Class name="ProtobufInitializer" coverage="0" coveredlines="0" coverablelines="22" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="RectTransformExtensions" coverage="0" coveredlines="0" coverablelines="12" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
       <Class name="RotaryWingThreat" coverage="76.7" coveredlines="33" coverablelines="43" totallines="74" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="8" methodcoverage="75" />
       <Class name="RoundRobinAssignment" coverage="0" coveredlines="0" coverablelines="18" totallines="46" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />

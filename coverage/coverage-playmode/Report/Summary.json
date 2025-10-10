@@ -1,24 +1,24 @@
 {
   "summary": {
-    "generatedon": "2025-10-09T16:04:32Z",
+    "generatedon": "2025-10-10T00:48:37Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 4,
-    "classes": 170,
-    "files": 106,
+    "classes": 169,
+    "files": 105,
     "coveredlines": 2035,
-    "uncoveredlines": 10328,
-    "coverablelines": 12363,
-    "totallines": 25995,
+    "uncoveredlines": 10306,
+    "coverablelines": 12341,
+    "totallines": 25951,
     "linecoverage": 16.4,
     "coveredbranches": 0,
     "totalbranches": 0,
     "coveredmethods": 410,
-    "totalmethods": 1986,
+    "totalmethods": 1985,
     "methodcoverage": 20.6
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 145, "coverage": 17.7, "coveredlines": 1987, "coverablelines": 11206, "totallines": 92663, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 21.8, "coveredmethods": 407, "totalmethods": 1859, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 144, "coverage": 17.7, "coveredlines": 1987, "coverablelines": 11184, "totallines": 92619, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 21.9, "coveredmethods": 407, "totalmethods": 1858, "classesinassembly": [
         { "name": "Agent", "coverage": 62.1, "coveredlines": 159, "coverablelines": 256, "totallines": 460, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 60, "coveredmethods": 27, "totalmethods": 45 },
         { "name": "AgglomerativeClusterer", "coverage": 98.4, "coveredlines": 63, "coverablelines": 64, "totallines": 101, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
         { "name": "ApnController", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 20, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
@@ -124,7 +124,6 @@
         { "name": "PnController", "coverage": 93.5, "coveredlines": 29, "coverablelines": 31, "totallines": 61, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "PredictorState", "coverage": 0, "coveredlines": 0, "coverablelines": 14, "totallines": 37, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "PriorityQueue[T]", "coverage": 0, "coveredlines": 0, "coverablelines": 37, "totallines": 59, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 7 },
-        { "name": "ProtobufInitializer", "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 44, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "RectTransformExtensions", "coverage": 0, "coveredlines": 0, "coverablelines": 12, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "RotaryWingThreat", "coverage": 76.7, "coveredlines": 33, "coverablelines": 43, "totallines": 74, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 6, "totalmethods": 8 },
         { "name": "RoundRobinAssignment", "coverage": 0, "coveredlines": 0, "coverablelines": 18, "totallines": 46, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },

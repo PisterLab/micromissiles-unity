@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/09/2025 - 16:04:32 |
+| Generated on: | 10/10/2025 - 00:48:37 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 170 |
-| Files: | 106 |
+| Classes: | 169 |
+| Files: | 105 |
 | Covered lines: | 2035 |
-| Uncovered lines: | 10328 |
-| Coverable lines: | 12363 |
-| Total lines: | 25995 |
-| Line coverage: | 16.4% (2035 of 12363) |
+| Uncovered lines: | 10306 |
+| Coverable lines: | 12341 |
+| Total lines: | 25951 |
+| Line coverage: | 16.4% (2035 of 12341) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 410 |
-| Total methods: | 1986 |
-| Method coverage: | 20.6% (410 of 1986) |
+| Total methods: | 1985 |
+| Method coverage: | 20.6% (410 of 1985) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1987**|**9219**|**11206**|**92663**|**17.7%**|**0**|**0**|****|**407**|**1859**|**21.8%**|
+|**bamlab.micromissiles**|**1987**|**9197**|**11184**|**92619**|**17.7%**|**0**|**0**|****|**407**|**1858**|**21.9%**|
 |Agent|159|97|256|460|62.1%|0|0||27|45|60%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -125,7 +125,6 @@
 |PnController|29|2|31|61|93.5%|0|0||2|2|100%|
 |PredictorState|0|14|14|37|0%|0|0||0|6|0%|
 |PriorityQueue[T]|0|37|37|59|0%|0|0||0|7|0%|
-|ProtobufInitializer|0|22|22|44|0%|0|0||0|1|0%|
 |RectTransformExtensions|0|12|12|18|0%|0|0||0|4|0%|
 |RotaryWingThreat|33|10|43|74|76.7%|0|0||6|8|75%|
 |RoundRobinAssignment|0|18|18|46|0%|0|0||0|2|0%|

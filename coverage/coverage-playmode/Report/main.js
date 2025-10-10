@@ -329,7 +329,6 @@ var assemblies = [
       { "name": "PnController", "rp": "bamlab.micromissiles_PnController.html", "cl": 29, "ucl": 2, "cal": 31, "tl": 61, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "PredictorState", "rp": "bamlab.micromissiles_PredictorState.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 37, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "PriorityQueue[T]", "rp": "bamlab.micromissiles_PriorityQueue_T_.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 59, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ProtobufInitializer", "rp": "bamlab.micromissiles_ProtobufInitializer.html", "cl": 0, "ucl": 22, "cal": 22, "tl": 44, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "RectTransformExtensions", "rp": "bamlab.micromissiles_RectTransformExtensions.html", "cl": 0, "ucl": 12, "cal": 12, "tl": 18, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "RotaryWingThreat", "rp": "bamlab.micromissiles_RotaryWingThreat.html", "cl": 33, "ucl": 10, "cal": 43, "tl": 74, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "RoundRobinAssignment", "rp": "bamlab.micromissiles_RoundRobinAssignment.html", "cl": 0, "ucl": 18, "cal": 18, "tl": 46, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -714,13 +713,6 @@ var riskHotspots = [
     ]},
   {
     "assembly": "bamlab.micromissiles", "class": "Micromissiles.State", "reportPath": "bamlab.micromissiles_State.html", "methodName": "System.Void Micromissiles.State.pb::Google.Protobuf.IBufferMessage::InternalMergeFrom(Google.Protobuf.ParseContext&)", "methodShortName": "InternalMergeFrom(...)", "fileIndex": 0, "line": 315,
-    "metrics": [
-      { "value": 9, "exceeded": false },
-      { "value": 0, "exceeded": false },
-      { "value": 90, "exceeded": true },
-    ]},
-  {
-    "assembly": "bamlab.micromissiles", "class": "ProtobufInitializer", "reportPath": "bamlab.micromissiles_ProtobufInitializer.html", "methodName": "static System.Void ProtobufInitializer::Initialize(Google.Protobuf.IMessage)", "methodShortName": "Initialize(...)", "fileIndex": 0, "line": 13,
     "metrics": [
       { "value": 9, "exceeded": false },
       { "value": 0, "exceeded": false },
