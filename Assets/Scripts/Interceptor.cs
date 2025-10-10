@@ -170,7 +170,7 @@ public class Interceptor : Agent {
   }
 
   public override void TerminateAgent() {
-    DetatchMissileTrail();
+    DetachMissileTrail();
     base.TerminateAgent();
   }
 
@@ -223,11 +223,11 @@ public class Interceptor : Agent {
     // Get the particle effect duration time.
     float duration = _missileTrailEffect.GetComponent<ParticleSystem>().main.duration;
     if (_timeSinceBoost > duration) {
-      DetatchMissileTrail();
+      DetachMissileTrail();
     }
   }
 
-  private void DetatchMissileTrail() {
+  private void DetachMissileTrail() {
     if (_missileTrailEffect != null && _missileTrailEffectAttached) {
       Vector3 currentPosition = _missileTrailEffect.transform.position;
       _missileTrailEffect.transform.SetParent(null);
