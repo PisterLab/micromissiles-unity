@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class KDTreeTest {
+public class KDTreeTests {
   [Test]
   public void TestEmpty() {
     KDTree<Vector2> tree = new KDTree<Vector2>(new List<Vector2>(), (Vector2 point) => point);

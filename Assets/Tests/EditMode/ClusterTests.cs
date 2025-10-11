@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class ClusterTest {
+public class ClusterTests {
   public static GameObject GenerateObject(in Vector3 position) {
     GameObject obj = new GameObject();
     obj.transform.position = position;

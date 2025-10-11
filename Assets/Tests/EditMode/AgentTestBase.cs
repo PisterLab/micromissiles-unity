@@ -4,22 +4,22 @@ using NUnit.Framework;
 using UnityEngine;
 
 public abstract class AgentTestBase : TestBase {
-  protected SimManager simManager;
+  protected SimManager _simManager;
 
   [SetUp]
   public virtual void Setup() {
-    // Initialize SimManager
+    // Initialize the simulation manager.
     var simManagerGameObject = new GameObject("SimManager");
-    simManager = simManagerGameObject.AddComponent<SimManager>();
-    simManager.SimulationConfig = new Configs.SimulationConfig();
-    SimManager.Instance = simManager;
+    _simManager = simManagerGameObject.AddComponent<SimManager>();
+    _simManager.SimulationConfig = new Configs.SimulationConfig();
+    SimManager.Instance = _simManager;
   }
 
   [TearDown]
   public virtual void Teardown() {
-    // Clean up SimManager
-    if (simManager != null) {
-      GameObject.DestroyImmediate(simManager.gameObject);
+    // Clean up the simulation manager.
+    if (_simManager != null) {
+      GameObject.DestroyImmediate(_simManager.gameObject);
     }
   }
 

@@ -2,7 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class Coordinates2Test {
+public class Coordinates2Tests {
   private const float Epsilon = 0.0001f;
 
   [Test]
@@ -79,7 +79,7 @@ public class Coordinates2Test {
   }
 }
 
-public class Coordinates3Test {
+public class Coordinates3Tests {
   private const float Epsilon = 0.0001f;
 
   [Test]

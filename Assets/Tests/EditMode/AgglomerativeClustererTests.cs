@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class AgglomerativeClustererTest {
+public class AgglomerativeClustererTests {
   public static GameObject GenerateObject(in Vector3 position) {
     GameObject obj = new GameObject();
     obj.transform.position = position;

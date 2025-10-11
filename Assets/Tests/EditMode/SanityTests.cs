@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System.Collections;
 
-public class SanityTest {
+public class SanityTests {
   [Test]
   public void SanityTestSimplePasses() {
     // Use the Assert class to test conditions
