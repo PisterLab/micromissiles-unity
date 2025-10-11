@@ -3,7 +3,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class SanityTest {
+public class SanityTests {
   [UnityTest]
   public IEnumerator SanityCheck() {
     // Arrange

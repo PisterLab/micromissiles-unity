@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 
-public class ConfigsTest : TestBase {
+public class ConfigsTests : TestBase {
   [OneTimeSetUp]
   public void LoadScene() {
     SceneManager.LoadScene("Scenes/MainScene");

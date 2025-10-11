@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class LinearExtrapolatorTest {
+public class LinearExtrapolatorTests {
   public static Agent GenerateAgent() {
     Agent agent = new GameObject().AddComponent<DummyAgent>();
     Rigidbody rb = agent.gameObject.AddComponent<Rigidbody>();

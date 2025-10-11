@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class NearestNeighborInterpolator2DTest {
+public class NearestNeighborInterpolator2DTests {
   // Helper method to count how many data points the 2D interpolator is holding.
   private static int GetNumDataPoints(NearestNeighborInterpolator2D interpolator) {
     var fieldInfo = typeof(NearestNeighborInterpolator2D)

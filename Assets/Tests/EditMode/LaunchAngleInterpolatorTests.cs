@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 using System;
 
-public class LaunchAngleCsvInterpolatorTest {
+public class LaunchAngleCsvInterpolatorTests {
   [Test]
   public void TestDataPoint() {
     LaunchAngleInput input = new LaunchAngleInput(distance: 9074.84f, altitude: 97.7306f);
@@ -52,7 +52,7 @@ public class LaunchAngleCsvInterpolatorTest {
   }
 }
 
-public class LaunchAngleDataInterpolatorTest {
+public class LaunchAngleDataInterpolatorTests {
   private class DummyLaunchAngleDataInterpolator : LaunchAngleDataInterpolator {
     public DummyLaunchAngleDataInterpolator() : base() {}
 

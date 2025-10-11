@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class IterativeLaunchPlannerTest {
+public class IterativeLaunchPlannerTests {
   private class DummyLaunchAngleDataInterpolator : LaunchAngleDataInterpolator {
     public DummyLaunchAngleDataInterpolator() : base() {}
 

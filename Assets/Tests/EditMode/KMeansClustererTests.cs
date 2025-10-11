@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class KMeansClustererTest {
+public class KMeansClustererTests {
   public static readonly List<GameObject> Objects = new List<GameObject> {
     GenerateObject(new Vector3(0, 0, 0)),
     GenerateObject(new Vector3(0, 1, 0)),
@@ -93,7 +93,7 @@ public class KMeansClustererTest {
   }
 }
 
-public class ConstrainedKMeansClustererTest {
+public class ConstrainedKMeansClustererTests {
   public static readonly List<GameObject> Objects = new List<GameObject> {
     GenerateObject(new Vector3(0, 0, 0)),
     GenerateObject(new Vector3(0, 1, 0)),

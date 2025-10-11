@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class PriorityQueueTest {
+public class PriorityQueueTests {
   [Test]
   public void TestIsEmpty() {
     PriorityQueue<float> queue = new PriorityQueue<float>();

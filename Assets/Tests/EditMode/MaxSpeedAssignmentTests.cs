@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class MaxSpeedAssignmentTest {
+public class MaxSpeedAssignmentTests {
   public static Configs.StaticConfig LoadStaticConfig() {
     return ConfigLoader.LoadStaticConfig("micromissile.pbtxt");
   }

@@ -239,7 +239,7 @@ public class ThreatTests : AgentTestBase {
       Assert.AreEqual(100f, waypoints[1].Altitude);
       Assert.AreEqual(Configs.Power.Max, waypoints[1].Power);
 
-      GameObject.DestroyImmediate(simManager.gameObject);
+      GameObject.DestroyImmediate(_simManager.gameObject);
     } catch (AssertionException e) {
       throw new AssertionException(
           e.Message + "\n" + "This test likely failed because you have edited " +
