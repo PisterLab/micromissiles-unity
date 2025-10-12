@@ -40,25 +40,21 @@ public class HierarchicalBase : IHierarchical {
   }
 
   protected virtual Vector3 GetPosition() {
-    if (_subHierarchicals.Count == 0) {
-      return Vector3.zero;
-    }
-    // Return the mean of the positions of the sub-hierarchical objects.
-    Vector3 sum = Vector3.zero;
-    foreach (var subHierarchical in _subHierarchicals) {
-      sum += subHierarchical.Position;
-    }
-    return sum / _subHierarchicals.Count;
+    return GetMean(s => s.Position);
   }
 
   protected virtual Vector3 GetVelocity() {
+    return GetMean(s => s.Velocity);
+  }
+
+  private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
     if (_subHierarchicals.Count == 0) {
       return Vector3.zero;
     }
-    // Return the mean of the velocities of the sub-hierarchical objects.
+
     Vector3 sum = Vector3.zero;
     foreach (var subHierarchical in _subHierarchicals) {
-      sum += subHierarchical.Velocity;
+      sum += selector(subHierarchical);
     }
     return sum / _subHierarchicals.Count;
   }

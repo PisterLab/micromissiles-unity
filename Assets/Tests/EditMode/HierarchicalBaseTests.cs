@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class HierarchicalBaseTests {
-  private const float Epsilon = 1e-3f;
+  private const float _epsilon = 1e-3f;
 
   private class FixedHierarchical : HierarchicalBase {
     private Vector3 _position;
@@ -78,7 +78,7 @@ public class HierarchicalBaseTests {
     var child = new FixedHierarchical(new Vector3(2, 0, 0), new Vector3(0, -4, 3));
     parent.AddSubHierarchical(child);
 
-    Assert.AreEqual(5f, parent.Speed, Epsilon);
+    Assert.AreEqual(5f, parent.Speed, _epsilon);
   }
 
   [Test]
@@ -92,15 +92,37 @@ public class HierarchicalBaseTests {
   }
 
   [Test]
+  public void AddSubHierarchical_DoesNotAddDuplicates() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+    parent.AddSubHierarchical(child);
+    parent.AddSubHierarchical(child);
+
+    Assert.AreEqual(1, parent.SubHierarchicals.Count);
+    Assert.AreSame(child, parent.SubHierarchicals[0]);
+  }
+
+  [Test]
   public void RemoveSubHierarchical_RemovesCorrectly() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+
+    parent.AddSubHierarchical(child);
+    parent.RemoveSubHierarchical(child);
+
+    Assert.AreEqual(0, parent.SubHierarchicals.Count);
+  }
+
+  [Test]
+  public void RemoveSubHierarchical_DoesNotRemoveNonExisting() {
     var parent = new HierarchicalBase();
     var child1 = new HierarchicalBase();
     var child2 = new HierarchicalBase();
 
     parent.AddSubHierarchical(child1);
-    parent.RemoveSubHierarchical(child1);
     parent.RemoveSubHierarchical(child2);
 
-    Assert.AreEqual(0, parent.SubHierarchicals.Count);
+    Assert.AreEqual(1, parent.SubHierarchicals.Count);
+    Assert.AreSame(child1, parent.SubHierarchicals[0]);
   }
 }
