@@ -7,41 +7,36 @@ using UnityEngine;
 // velocities of the sub-hierarchical objects.
 public class HierarchicalBase : IHierarchical {
   // List of hierarchical objects in the hierarchy level below.
-  [SerializeField]
-  private List<HierarchicalBase> _subHierarchicals = new List<HierarchicalBase>();
+  private List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
   // Target of the hierarchical object.
-  [SerializeField]
-  private HierarchicalBase _target;
+  private IHierarchical _target;
 
   // Target model of the hierarchical object. The target model is updated by the sensor and should
   // be used by the controller to model imperfect knowledge of the engagement.
-  [SerializeField]
-  private HierarchicalBase _targetModel;
+  private IHierarchical _targetModel;
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
   public IHierarchical Target {
     get => _target;
-    set => _target = value as HierarchicalBase;
+    set => _target = value;
   }
   public IHierarchical TargetModel {
     get => _targetModel;
-    set => _targetModel = value as HierarchicalBase;
+    set => _targetModel = value;
   }
   public Vector3 Position => GetPosition();
   public Vector3 Velocity => GetVelocity();
   public float Speed => Velocity.magnitude;
 
   public void AddSubHierarchical(IHierarchical subHierarchical) {
-    if (!_subHierarchicals.Contains(subHierarchical as HierarchicalBase)) {
-      _subHierarchicals.Add(subHierarchical as HierarchicalBase);
+    if (!_subHierarchicals.Contains(subHierarchical)) {
+      _subHierarchicals.Add(subHierarchical);
     }
   }
 
   public void RemoveSubHierarchical(IHierarchical subHierarchical) {
-    if (_subHierarchicals.Contains(subHierarchical as HierarchicalBase)) {
-      _subHierarchicals.Remove(subHierarchical as HierarchicalBase);
-    }
+    _subHierarchicals.Remove(subHierarchical);
   }
 
   protected virtual Vector3 GetPosition() {
@@ -51,7 +46,7 @@ public class HierarchicalBase : IHierarchical {
     // Return the mean of the positions of the sub-hierarchical objects.
     Vector3 sum = Vector3.zero;
     foreach (var subHierarchical in _subHierarchicals) {
-      sum += subHierarchical.GetPosition();
+      sum += subHierarchical.Position;
     }
     return sum / _subHierarchicals.Count;
   }
@@ -63,7 +58,7 @@ public class HierarchicalBase : IHierarchical {
     // Return the mean of the velocities of the sub-hierarchical objects.
     Vector3 sum = Vector3.zero;
     foreach (var subHierarchical in _subHierarchicals) {
-      sum += subHierarchical.GetVelocity();
+      sum += subHierarchical.Velocity;
     }
     return sum / _subHierarchicals.Count;
   }
