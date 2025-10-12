@@ -16,7 +16,7 @@ public class IADS : MonoBehaviour {
   // TODO(titan): Choose the CSV file based on the interceptor type.
   private ILaunchAnglePlanner _launchAnglePlanner =
       new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
-  private IAssignment _assignmentScheme = new MaxSpeedAssignment();
+  private IAssignmentLegacy _assignmentScheme = new MaxSpeedAssignment();
   private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
@@ -230,7 +230,7 @@ public class IADS : MonoBehaviour {
     // Assign threats to the submunitions.
     ClusterLegacy cluster = _interceptorClusterMap[carrier];
     List<Threat> threats = cluster.Threats.ToList();
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         _assignmentScheme.Assign(interceptors, threats);
 
     // Mark the cluster as delegated to submunitions.
@@ -270,7 +270,7 @@ public class IADS : MonoBehaviour {
       return;
     }
 
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         _assignmentScheme.Assign(interceptors, threats);
 
     // Apply the assignments to the submunitions.

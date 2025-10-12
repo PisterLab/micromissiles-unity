@@ -4,19 +4,21 @@ using UnityEngine;
 
 // The maximum speed assignment class assigns interceptors to the threats to maximize the intercept
 // speed by defining a cost of the assignment equal to the speed lost for the maneuver.
-public class MaxSpeedAssignment : IAssignment {
+public class MaxSpeedAssignment : IAssignmentLegacy {
   // Assign a threat to each interceptor that has not been assigned a threat yet.
-  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
-                                                        in IReadOnlyList<Threat> threats) {
-    List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
+  public IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> Assign(
+      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
+    List<IAssignmentLegacy.AssignmentItemLegacy> assignments =
+        new List<IAssignmentLegacy.AssignmentItemLegacy>();
 
-    List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
+    List<Interceptor> assignableInterceptors =
+        IAssignmentLegacy.GetAssignableInterceptors(interceptors);
     if (assignableInterceptors.Count == 0) {
       Debug.LogWarning("No assignable interceptors found.");
       return assignments;
     }
 
-    List<Threat> activeThreats = IAssignment.GetActiveThreats(threats);
+    List<Threat> activeThreats = IAssignmentLegacy.GetActiveThreats(threats);
     if (activeThreats.Count == 0) {
       Debug.LogWarning("No active threats found.");
       return assignments;
@@ -70,8 +72,8 @@ public class MaxSpeedAssignment : IAssignment {
     for (int i = 0; i < numAssignments; ++i) {
       int interceptorIndex = assignedInterceptorIndices[i];
       int threatIndex = assignedThreatIndices[i];
-      assignments.Add(new IAssignment.AssignmentItem(assignableInterceptors[interceptorIndex],
-                                                     activeThreats[threatIndex]));
+      assignments.Add(new IAssignmentLegacy.AssignmentItemLegacy(
+          assignableInterceptors[interceptorIndex], activeThreats[threatIndex]));
     }
     return assignments;
   }

@@ -12,7 +12,7 @@ public class MaxSpeedAssignmentTests {
   [Test]
   public void AssignNoInterceptors() {
     // Define the assignment.
-    IAssignment assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor>();
@@ -23,14 +23,15 @@ public class MaxSpeedAssignmentTests {
 
     // Assign the interceptors to the threats.
     LogAssert.Expect(LogType.Warning, "No assignable interceptors found.");
-    IEnumerable<IAssignment.AssignmentItem> assignments = assignment.Assign(interceptors, threats);
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
+        assignment.Assign(interceptors, threats);
     Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
   }
 
   [Test]
   public void AssignNoThreats() {
     // Define the assignment.
-    IAssignment assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors =
@@ -41,14 +42,15 @@ public class MaxSpeedAssignmentTests {
 
     // Assign the interceptors to the threats.
     LogAssert.Expect(LogType.Warning, "No active threats found.");
-    IEnumerable<IAssignment.AssignmentItem> assignments = assignment.Assign(interceptors, threats);
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
+        assignment.Assign(interceptors, threats);
     Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
   }
 
   [Test]
   public void AssignShouldAssignAllInterceptorsAndThreats() {
     // Define the assignment.
-    IAssignment assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignment();
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
@@ -87,7 +89,8 @@ public class MaxSpeedAssignmentTests {
     List<Threat> threats = new List<Threat> { threat1, threat2, threat3 };
 
     // Assign the interceptors to the threats.
-    IEnumerable<IAssignment.AssignmentItem> assignments = assignment.Assign(interceptors, threats);
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
+        assignment.Assign(interceptors, threats);
     Assert.AreEqual(3, assignments.Count(), "All interceptors should be assigned.");
 
     HashSet<Interceptor> assignedInterceptors = new HashSet<Interceptor>();
@@ -114,7 +117,7 @@ public class MaxSpeedAssignmentTests {
   [Test]
   public void AssignShouldHandleMoreInterceptorsThanThreats() {
     // Define the assignment.
-    IAssignment assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignment();
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
@@ -151,7 +154,8 @@ public class MaxSpeedAssignmentTests {
     List<Threat> threats = new List<Threat> { threat1, threat2 };
 
     // Assign the interceptors to the threats.
-    IEnumerable<IAssignment.AssignmentItem> assignments = assignment.Assign(interceptors, threats);
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
+        assignment.Assign(interceptors, threats);
     Assert.AreEqual(3, assignments.Count(), "All interceptors should be assigned.");
 
     HashSet<Interceptor> assignedInterceptors = new HashSet<Interceptor>();

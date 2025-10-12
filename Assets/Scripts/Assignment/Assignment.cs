@@ -6,15 +6,15 @@ using System.Linq;
 using UnityEngine;
 
 // The assignment class is an interface for assigning a threat to each interceptor.
-public interface IAssignment {
+public interface IAssignmentLegacy {
   // Assignment item type.
   // The first element corresponds to the interceptor index, and the second element
   // corresponds to the threat index.
-  public struct AssignmentItem {
+  public struct AssignmentItemLegacy {
     public Interceptor Interceptor;
     public Threat Threat;
 
-    public AssignmentItem(Interceptor interceptor, Threat threat) {
+    public AssignmentItemLegacy(Interceptor interceptor, Threat threat) {
       Interceptor = interceptor;
       Threat = threat;
     }
@@ -22,8 +22,8 @@ public interface IAssignment {
 
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
-  public abstract IEnumerable<AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
-                                                     in IReadOnlyList<Threat> threats);
+  public abstract IEnumerable<AssignmentItemLegacy> Assign(
+      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats);
 
   // Get the list of assignable interceptors.
   [Pure]

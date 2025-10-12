@@ -8,7 +8,7 @@ public class ThreatAssignmentTests {
   [Test]
   public void AssignNoInterceptors() {
     // Define the threat assignment.
-    IAssignment threatAssignment = new ThreatAssignment();
+    IAssignmentLegacy threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor>();
@@ -19,7 +19,7 @@ public class ThreatAssignmentTests {
 
     // Assign the interceptors to the threats.
     LogAssert.Expect(LogType.Warning, "No assignable interceptors found.");
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         threatAssignment.Assign(interceptors, threats);
     Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
   }
@@ -27,7 +27,7 @@ public class ThreatAssignmentTests {
   [Test]
   public void AssignNoThreats() {
     // Define the threat assignment.
-    IAssignment threatAssignment = new ThreatAssignment();
+    IAssignmentLegacy threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors =
@@ -38,7 +38,7 @@ public class ThreatAssignmentTests {
 
     // Assign the interceptors to the threats.
     LogAssert.Expect(LogType.Warning, "No active threats found.");
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         threatAssignment.Assign(interceptors, threats);
     Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
   }
@@ -46,7 +46,7 @@ public class ThreatAssignmentTests {
   [Test]
   public void AssignShouldAssignAllInterceptorsAndThreats() {
     // Define the threat assignment.
-    IAssignment threatAssignment = new ThreatAssignment();
+    IAssignmentLegacy threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor> {
@@ -78,7 +78,7 @@ public class ThreatAssignmentTests {
     List<Threat> threats = new List<Threat> { threat1, threat2, threat3 };
 
     // Assign the interceptors to the threats.
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         threatAssignment.Assign(interceptors, threats);
 
     Assert.AreEqual(3, assignments.Count(), "All interceptors should be assigned.");
@@ -114,7 +114,7 @@ public class ThreatAssignmentTests {
   [Test]
   public void AssignShouldHandleMoreInterceptorsThanThreats() {
     // Define the threat assignment.
-    IAssignment threatAssignment = new ThreatAssignment();
+    IAssignmentLegacy threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor> {
@@ -142,7 +142,7 @@ public class ThreatAssignmentTests {
     List<Threat> threats = new List<Threat> { threat1, threat2 };
 
     // Assign the interceptors to the threats.
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         threatAssignment.Assign(interceptors, threats);
 
     Assert.AreEqual(3, assignments.Count(), "All interceptors should be assigned.");
