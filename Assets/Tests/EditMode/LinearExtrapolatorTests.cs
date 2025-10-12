@@ -17,7 +17,7 @@ public class LinearExtrapolatorTests {
   public void TestPresent() {
     Agent agent = GenerateAgent();
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
-    PredictorState predictedState = predictor.Predict(time: 0f);
+    var predictedState = predictor.Predict(time: 0f);
     Assert.AreEqual(agent.GetPosition(), predictedState.Position);
     Assert.AreEqual(agent.GetVelocity(), predictedState.Velocity);
   }
@@ -26,7 +26,7 @@ public class LinearExtrapolatorTests {
   public void TestPast() {
     Agent agent = GenerateAgent();
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
-    PredictorState predictedState = predictor.Predict(time: -5f);
+    var predictedState = predictor.Predict(time: -5f);
     Assert.AreEqual(new Vector3(5, 10, -5), predictedState.Position);
     Assert.AreEqual(agent.GetVelocity(), predictedState.Velocity);
   }
@@ -35,7 +35,7 @@ public class LinearExtrapolatorTests {
   public void TestFuture() {
     Agent agent = GenerateAgent();
     LinearExtrapolator predictor = new LinearExtrapolator(agent);
-    PredictorState predictedState = predictor.Predict(time: 10f);
+    var predictedState = predictor.Predict(time: 10f);
     Assert.AreEqual(new Vector3(20, -20, 25), predictedState.Position);
     Assert.AreEqual(agent.GetVelocity(), predictedState.Velocity);
   }

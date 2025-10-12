@@ -109,7 +109,7 @@ public class IADS : MonoBehaviour {
       }
 
       // Create a predictor to track the cluster's centroid.
-      IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
+      var predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
 
       // Create a launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
@@ -166,8 +166,8 @@ public class IADS : MonoBehaviour {
     Vector3 carrierPosition = carrier.GetPosition();
     Vector3 carrierVelocity = carrier.GetVelocity();
     foreach (var threat in threats) {
-      IPredictor predictor = new LinearExtrapolator(threat);
-      PredictorState predictedState = predictor.Predict(SubmunitionSpawnPredictionTime);
+      var predictor = new LinearExtrapolator(threat);
+      var predictedState = predictor.Predict(SubmunitionSpawnPredictionTime);
       Vector3 positionToPredictedThreat = predictedState.Position - carrierPosition;
       float predictedDistanceToThreat = positionToPredictedThreat.magnitude;
 
