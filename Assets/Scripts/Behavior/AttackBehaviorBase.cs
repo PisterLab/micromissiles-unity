@@ -14,7 +14,6 @@ public abstract class AttackBehaviorBase : IAttackBehavior {
     get => _config;
     set => _config = value;
   }
-  public FlightPlan FlightPlan => new(Config.FlightPlan);
 
   // Return the next waypoint for the agent to navigate to and the power setting to use towards the
   // waypoint.
