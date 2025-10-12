@@ -3,7 +3,7 @@ using UnityEngine;
 
 // The proportional navigation controller applies proportional navigation to steer the agent towards
 // its target.
-public class PnController : IController {
+public class PnController : IControllerLegacy {
   // Negative closing velocity turn factor.
   protected const float negativeClosingVelocityTurnFactor = 100f;
 
