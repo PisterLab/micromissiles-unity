@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/10/2025 - 02:36:19 |
+| Generated on: | 10/12/2025 - 03:53:19 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 169 |
-| Files: | 105 |
+| Classes: | 170 |
+| Files: | 106 |
 | Covered lines: | 2035 |
-| Uncovered lines: | 10306 |
-| Coverable lines: | 12341 |
-| Total lines: | 25951 |
-| Line coverage: | 16.4% (2035 of 12341) |
+| Uncovered lines: | 10410 |
+| Coverable lines: | 12445 |
+| Total lines: | 26115 |
+| Line coverage: | 16.3% (2035 of 12445) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 410 |
-| Total methods: | 1985 |
-| Method coverage: | 20.6% (410 of 1985) |
+| Total methods: | 2011 |
+| Method coverage: | 20.3% (410 of 2011) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1987**|**9197**|**11184**|**92619**|**17.7%**|**0**|**0**|****|**407**|**1858**|**21.9%**|
+|**bamlab.micromissiles**|**1987**|**9229**|**11216**|**92680**|**17.7%**|**0**|**0**|****|**407**|**1872**|**21.7%**|
 |Agent|159|97|256|460|62.1%|0|0||27|45|60%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -61,6 +61,7 @@
 |FixedWingThreat|51|14|65|118|78.4%|0|0||7|9|77.7%|
 |FlightPlan|6|1|7|20|85.7%|0|0||2|3|66.6%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
+|HierarchicalBase|0|32|32|61|0%|0|0||0|14|0%|
 |IADS|97|184|281|466|34.5%|0|0||17|31|54.8%|
 |IAssignment|0|11|11|42|0%|0|0||0|3|0%|
 |IClusterer|6|4|10|56|60%|0|0||3|4|75%|
@@ -164,31 +165,31 @@
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
 |Waypoint|8|0|8|11|100%|0|0||4|4|100%|
 |WaypointController|9|0|9|22|100%|0|0||2|2|100%|
-|**bamlab.test**|**0**|**68**|**68**|**118**|**0%**|**0**|**0**|****|**0**|**12**|**0%**|
-|AgentTestBase|0|23|23|41|0%|0|0||0|4|0%|
-|SensorTestBase|0|11|11|25|0%|0|0||0|2|0%|
+|**bamlab.test**|**0**|**34**|**34**|**52**|**0%**|**0**|**0**|****|**0**|**6**|**0%**|
 |TestBase|0|34|34|52|0%|0|0||0|6|0%|
-|**bamlab.test.editmode**|**0**|**1040**|**1040**|**2307**|**0%**|**0**|**0**|****|**0**|**112**|**0%**|
-|AgglomerativeClustererTest|0|42|42|69|0%|0|0||0|6|0%|
+|**bamlab.test.editmode**|**0**|**1146**|**1146**|**2476**|**0%**|**0**|**0**|****|**0**|**130**|**0%**|
+|AgentTestBase|0|23|23|41|0%|0|0||0|4|0%|
+|AgglomerativeClustererTests|0|42|42|69|0%|0|0||0|6|0%|
 |BehaviorTests|0|50|50|113|0%|0|0||0|2|0%|
-|ClusterTest|0|74|74|99|0%|0|0||0|8|0%|
-|ConstrainedKMeansClustererTest|0|35|35|150|0%|0|0||0|6|0%|
-|Coordinates2Test|0|55|55|158|0%|0|0||0|8|0%|
-|Coordinates3Test|0|56|56|158|0%|0|0||0|8|0%|
+|ClusterTests|0|74|74|99|0%|0|0||0|8|0%|
+|ConstrainedKMeansClustererTests|0|35|35|150|0%|0|0||0|6|0%|
+|Coordinates2Tests|0|55|55|158|0%|0|0||0|8|0%|
+|Coordinates3Tests|0|56|56|158|0%|0|0||0|8|0%|
+|HierarchicalBaseTests|0|83|83|128|0%|0|0||0|14|0%|
 |IADSClusterCleanupTests|0|41|41|122|0%|0|0||0|7|0%|
-|IterativeLaunchPlannerTest|0|60|60|97|0%|0|0||0|10|0%|
-|KDTreeTest|0|39|39|55|0%|0|0||0|4|0%|
-|KMeansClustererTest|0|37|37|150|0%|0|0||0|4|0%|
-|LaunchAngleCsvInterpolatorTest|0|28|28|87|0%|0|0||0|4|0%|
-|LaunchAngleDataInterpolatorTest|0|16|16|87|0%|0|0||0|4|0%|
-|LinearExtrapolatorTest|0|28|28|42|0%|0|0||0|4|0%|
-|MaxSpeedAssignmentTest|0|103|103|177|0%|0|0||0|5|0%|
-|NearestNeighborInterpolator2DTest|0|56|56|107|0%|0|0||0|7|0%|
-|PriorityQueueTest|0|62|62|87|0%|0|0||0|7|0%|
-|SanityTest|0|7|7|22|0%|0|0||0|2|0%|
+|IterativeLaunchPlannerTests|0|60|60|97|0%|0|0||0|10|0%|
+|KDTreeTests|0|39|39|55|0%|0|0||0|4|0%|
+|KMeansClustererTests|0|37|37|150|0%|0|0||0|4|0%|
+|LaunchAngleCsvInterpolatorTests|0|28|28|87|0%|0|0||0|4|0%|
+|LaunchAngleDataInterpolatorTests|0|16|16|87|0%|0|0||0|4|0%|
+|LinearExtrapolatorTests|0|28|28|42|0%|0|0||0|4|0%|
+|MaxSpeedAssignmentTests|0|103|103|177|0%|0|0||0|5|0%|
+|NearestNeighborInterpolator2DTests|0|56|56|107|0%|0|0||0|7|0%|
+|PriorityQueueTests|0|62|62|87|0%|0|0||0|7|0%|
+|SanityTests|0|7|7|22|0%|0|0||0|2|0%|
 |ThreatAssignmentTests|0|80|80|176|0%|0|0||0|4|0%|
 |ThreatTests|0|110|110|250|0%|0|0||0|9|0%|
 |TransformationTests|0|61|61|101|0%|0|0||0|3|0%|
 |**bamlab.test.playmode**|**48**|**1**|**49**|**98**|**97.9%**|**0**|**0**|****|**3**|**3**|**100%**|
-|ConfigsTest|41|1|42|74|97.6%|0|0||2|2|100%|
-|SanityTest|7|0|7|24|100%|0|0||1|1|100%|
+|ConfigsTests|41|1|42|74|97.6%|0|0||2|2|100%|
+|SanityTests|7|0|7|24|100%|0|0||1|1|100%|

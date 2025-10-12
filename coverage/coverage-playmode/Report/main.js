@@ -265,6 +265,7 @@ var assemblies = [
       { "name": "FixedWingThreat", "rp": "bamlab.micromissiles_FixedWingThreat.html", "cl": 51, "ucl": 14, "cal": 65, "tl": 118, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "FlightPlan", "rp": "bamlab.micromissiles_FlightPlan.html", "cl": 6, "ucl": 1, "cal": 7, "tl": 20, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "GenerateCone", "rp": "bamlab.micromissiles_GenerateCone.html", "cl": 0, "ucl": 100, "cal": 100, "tl": 144, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "HierarchicalBase", "rp": "bamlab.micromissiles_HierarchicalBase.html", "cl": 0, "ucl": 32, "cal": 32, "tl": 61, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IADS", "rp": "bamlab.micromissiles_IADS.html", "cl": 97, "ucl": 184, "cal": 281, "tl": 466, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IAssignment", "rp": "bamlab.micromissiles_IAssignment.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IClusterer", "rp": "bamlab.micromissiles_IClusterer.html", "cl": 6, "ucl": 4, "cal": 10, "tl": 56, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -372,30 +373,30 @@ var assemblies = [
   {
     "name": "bamlab.test",
     "classes": [
-      { "name": "AgentTestBase", "rp": "bamlab.test_AgentTestBase.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 41, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SensorTestBase", "rp": "bamlab.test_SensorTestBase.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 25, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TestBase", "rp": "bamlab.test_TestBase.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 52, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
   {
     "name": "bamlab.test.editmode",
     "classes": [
-      { "name": "AgglomerativeClustererTest", "rp": "bamlab.test.editmode_AgglomerativeClustererTest.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 69, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "AgentTestBase", "rp": "bamlab.test.editmode_AgentTestBase.html", "cl": 0, "ucl": 23, "cal": 23, "tl": 41, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "AgglomerativeClustererTests", "rp": "bamlab.test.editmode_AgglomerativeClustererTests.html", "cl": 0, "ucl": 42, "cal": 42, "tl": 69, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "BehaviorTests", "rp": "bamlab.test.editmode_BehaviorTests.html", "cl": 0, "ucl": 50, "cal": 50, "tl": 113, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ClusterTest", "rp": "bamlab.test.editmode_ClusterTest.html", "cl": 0, "ucl": 74, "cal": 74, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ConstrainedKMeansClustererTest", "rp": "bamlab.test.editmode_ConstrainedKMeansClustererTest.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "Coordinates2Test", "rp": "bamlab.test.editmode_Coordinates2Test.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "Coordinates3Test", "rp": "bamlab.test.editmode_Coordinates3Test.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ClusterTests", "rp": "bamlab.test.editmode_ClusterTests.html", "cl": 0, "ucl": 74, "cal": 74, "tl": 99, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ConstrainedKMeansClustererTests", "rp": "bamlab.test.editmode_ConstrainedKMeansClustererTests.html", "cl": 0, "ucl": 35, "cal": 35, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "Coordinates2Tests", "rp": "bamlab.test.editmode_Coordinates2Tests.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "Coordinates3Tests", "rp": "bamlab.test.editmode_Coordinates3Tests.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 158, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "HierarchicalBaseTests", "rp": "bamlab.test.editmode_HierarchicalBaseTests.html", "cl": 0, "ucl": 83, "cal": 83, "tl": 128, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IADSClusterCleanupTests", "rp": "bamlab.test.editmode_IADSClusterCleanupTests.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 122, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "IterativeLaunchPlannerTest", "rp": "bamlab.test.editmode_IterativeLaunchPlannerTest.html", "cl": 0, "ucl": 60, "cal": 60, "tl": 97, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "KDTreeTest", "rp": "bamlab.test.editmode_KDTreeTest.html", "cl": 0, "ucl": 39, "cal": 39, "tl": 55, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "KMeansClustererTest", "rp": "bamlab.test.editmode_KMeansClustererTest.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "LaunchAngleCsvInterpolatorTest", "rp": "bamlab.test.editmode_LaunchAngleCsvInterpolatorTest.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "LaunchAngleDataInterpolatorTest", "rp": "bamlab.test.editmode_LaunchAngleDataInterpolatorTest.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "LinearExtrapolatorTest", "rp": "bamlab.test.editmode_LinearExtrapolatorTest.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "MaxSpeedAssignmentTest", "rp": "bamlab.test.editmode_MaxSpeedAssignmentTest.html", "cl": 0, "ucl": 103, "cal": 103, "tl": 177, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "NearestNeighborInterpolator2DTest", "rp": "bamlab.test.editmode_NearestNeighborInterpolator2DTest.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 107, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "PriorityQueueTest", "rp": "bamlab.test.editmode_PriorityQueueTest.html", "cl": 0, "ucl": 62, "cal": 62, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SanityTest", "rp": "bamlab.test.editmode_SanityTest.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 22, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "IterativeLaunchPlannerTests", "rp": "bamlab.test.editmode_IterativeLaunchPlannerTests.html", "cl": 0, "ucl": 60, "cal": 60, "tl": 97, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "KDTreeTests", "rp": "bamlab.test.editmode_KDTreeTests.html", "cl": 0, "ucl": 39, "cal": 39, "tl": 55, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "KMeansClustererTests", "rp": "bamlab.test.editmode_KMeansClustererTests.html", "cl": 0, "ucl": 37, "cal": 37, "tl": 150, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "LaunchAngleCsvInterpolatorTests", "rp": "bamlab.test.editmode_LaunchAngleCsvInterpolatorTests.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "LaunchAngleDataInterpolatorTests", "rp": "bamlab.test.editmode_LaunchAngleDataInterpolatorTests.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "LinearExtrapolatorTests", "rp": "bamlab.test.editmode_LinearExtrapolatorTests.html", "cl": 0, "ucl": 28, "cal": 28, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "MaxSpeedAssignmentTests", "rp": "bamlab.test.editmode_MaxSpeedAssignmentTests.html", "cl": 0, "ucl": 103, "cal": 103, "tl": 177, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "NearestNeighborInterpolator2DTests", "rp": "bamlab.test.editmode_NearestNeighborInterpolator2DTests.html", "cl": 0, "ucl": 56, "cal": 56, "tl": 107, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "PriorityQueueTests", "rp": "bamlab.test.editmode_PriorityQueueTests.html", "cl": 0, "ucl": 62, "cal": 62, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "SanityTests", "rp": "bamlab.test.editmode_SanityTests.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 22, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ThreatAssignmentTests", "rp": "bamlab.test.editmode_ThreatAssignmentTests.html", "cl": 0, "ucl": 80, "cal": 80, "tl": 176, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ThreatTests", "rp": "bamlab.test.editmode_ThreatTests.html", "cl": 0, "ucl": 110, "cal": 110, "tl": 250, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TransformationTests", "rp": "bamlab.test.editmode_TransformationTests.html", "cl": 0, "ucl": 61, "cal": 61, "tl": 101, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -403,8 +404,8 @@ var assemblies = [
   {
     "name": "bamlab.test.playmode",
     "classes": [
-      { "name": "ConfigsTest", "rp": "bamlab.test.playmode_ConfigsTest.html", "cl": 41, "ucl": 1, "cal": 42, "tl": 74, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "SanityTest", "rp": "bamlab.test.playmode_SanityTest.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ConfigsTests", "rp": "bamlab.test.playmode_ConfigsTests.html", "cl": 41, "ucl": 1, "cal": 42, "tl": 74, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "SanityTests", "rp": "bamlab.test.playmode_SanityTests.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 
@@ -733,7 +734,7 @@ var riskHotspots = [
       { "value": 90, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.test.editmode", "class": "NearestNeighborInterpolator2DTest", "reportPath": "bamlab.test.editmode_NearestNeighborInterpolator2DTest.html", "methodName": "System.Void NearestNeighborInterpolator2DTest::TestInterpolateVector2Success()", "methodShortName": "TestInterpolateVector2Success()", "fileIndex": 0, "line": 80,
+    "assembly": "bamlab.test.editmode", "class": "NearestNeighborInterpolator2DTests", "reportPath": "bamlab.test.editmode_NearestNeighborInterpolator2DTests.html", "methodName": "System.Void NearestNeighborInterpolator2DTests::TestInterpolateVector2Success()", "methodShortName": "TestInterpolateVector2Success()", "fileIndex": 0, "line": 80,
     "metrics": [
       { "value": 9, "exceeded": false },
       { "value": 0, "exceeded": false },
@@ -1398,7 +1399,7 @@ var riskHotspots = [
       { "value": 42, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.test.editmode", "class": "KMeansClustererTest", "reportPath": "bamlab.test.editmode_KMeansClustererTest.html", "methodName": "System.Void KMeansClustererTest::TestTwoDistinctClustersWithResetNeeded()", "methodShortName": "TestTwoDistinctClustersWithResetNeeded()", "fileIndex": 0, "line": 34,
+    "assembly": "bamlab.test.editmode", "class": "KMeansClustererTests", "reportPath": "bamlab.test.editmode_KMeansClustererTests.html", "methodName": "System.Void KMeansClustererTests::TestTwoDistinctClustersWithResetNeeded()", "methodShortName": "TestTwoDistinctClustersWithResetNeeded()", "fileIndex": 0, "line": 34,
     "metrics": [
       { "value": 6, "exceeded": false },
       { "value": 0, "exceeded": false },
