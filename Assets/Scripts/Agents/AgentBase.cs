@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Base implementation of an agent.
-public abstract class AgentBase : MonoBehaviour, IAgent {
+public class AgentBase : MonoBehaviour, IAgent {
   [SerializeField]
   // The agent's position within the hierarchical strategy is given by the hierarchical agent.
   private HierarchicalAgent _hierarchicalAgent;
@@ -75,32 +75,30 @@ public abstract class AgentBase : MonoBehaviour, IAgent {
   // TODO(titan): Methods for updating the agent and terminating the agent.
 
   public Transformation GetRelativeTransformation(IAgent target) {
-    return GetRelativeTransformation(target.HierarchicalAgent);
+    return GetRelativeTransformation(target.Position, target.Velocity, target.Acceleration);
   }
 
   public Transformation GetRelativeTransformation(IHierarchical target) {
-    Transformation transformation = new Transformation();
-
-    // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(target.Position - Position);
-
-    // Get the relative velocity transformation.
-    transformation.velocity =
-        GetRelativeVelocityTransformation(target.Position - Position, target.Velocity - Velocity);
-
-    // Get the relative acceleration transformation.
-    transformation.acceleration = GetRelativeAccelerationTransformation(target.Acceleration);
-    return transformation;
+    return GetRelativeTransformation(target.Position, target.Velocity, target.Acceleration);
   }
 
   public Transformation GetRelativeTransformation(in Vector3 waypoint) {
+    return GetRelativeTransformation(waypoint, Vector3.zero, Vector3.zero);
+  }
+
+  private Transformation GetRelativeTransformation(in Vector3 position, in Vector3 velocity,
+                                                   in Vector3 acceleration) {
     Transformation transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(waypoint - Position);
+    transformation.position = GetRelativePositionTransformation(position - Position);
 
     // Get the relative velocity transformation.
-    transformation.velocity = GetRelativeVelocityTransformation(waypoint - Position, -Velocity);
+    transformation.velocity =
+        GetRelativeVelocityTransformation(position - Position, velocity - Velocity);
+
+    // Get the relative acceleration transformation.
+    transformation.acceleration = GetRelativeAccelerationTransformation(acceleration);
     return transformation;
   }
 
