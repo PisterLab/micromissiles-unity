@@ -16,8 +16,10 @@ public class HierarchicalAgent : HierarchicalBase {
   protected override Vector3 GetPosition() {
     return Agent.Position;
   }
-
   protected override Vector3 GetVelocity() {
     return Agent.Velocity;
+  }
+  protected override Vector3 GetAcceleration() {
+    return Agent.Acceleration;
   }
 }

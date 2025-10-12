@@ -2,6 +2,8 @@ using UnityEngine;
 
 // Base implementation of an agent.
 public class AgentBase : MonoBehaviour, IAgent {
+  private const float _epsilon = 1e-12f;
+
   [SerializeField]
   // The agent's position within the hierarchical strategy is given by the hierarchical agent.
   private HierarchicalAgent _hierarchicalAgent;
@@ -24,13 +26,16 @@ public class AgentBase : MonoBehaviour, IAgent {
   private IController _controller;
 
   [SerializeField]
-  // The acceleration field is not part of the Rigidbody component, so it is tracked separately. The
-  // acceleration is applied as a force during each frame update.
+  // The acceleration field is not part of the rigid body component, so it is tracked separately.
+  // The acceleration is applied as a force during each frame update.
   private Vector3 _acceleration;
 
   [SerializeField]
   // The acceleration input is calculated by the controller and provided to the movement behavior.
   private Vector3 _accelerationInput;
+
+  // Rigid body component.
+  private Rigidbody _rigidbody;
 
   public HierarchicalAgent HierarchicalAgent {
     get => _hierarchicalAgent;
@@ -57,8 +62,8 @@ public class AgentBase : MonoBehaviour, IAgent {
     set => transform.position = value;
   }
   public Vector3 Velocity {
-    get => GetComponent<Rigidbody>().linearVelocity;
-    set => GetComponent<Rigidbody>().linearVelocity = value;
+    get => _rigidbody.linearVelocity;
+    set => _rigidbody.linearVelocity = value;
   }
   public float Speed => Velocity.magnitude;
   public Vector3 Acceleration {
@@ -68,6 +73,10 @@ public class AgentBase : MonoBehaviour, IAgent {
   public Vector3 AccelerationInput {
     get => _accelerationInput;
     set => _accelerationInput = value;
+  }
+
+  private void Awake() {
+    _rigidbody = GetComponent<Rigidbody>();
   }
 
   // TODO(titan): Event handlers for hits and misses.
@@ -88,16 +97,19 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   private Transformation GetRelativeTransformation(in Vector3 position, in Vector3 velocity,
                                                    in Vector3 acceleration) {
-    Transformation transformation = new Transformation();
+    var transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(position - Position);
+    var relativePosition = position - Position;
+    transformation.position = GetRelativePositionTransformation(relativePosition);
 
     // Get the relative velocity transformation.
     transformation.velocity =
-        GetRelativeVelocityTransformation(position - Position, velocity - Velocity);
+        GetRelativeVelocityTransformation(relativePosition, velocity - Velocity);
 
     // Get the relative acceleration transformation.
+    // Since the agent's acceleration is an input and can be set arbitrarily, the relative
+    // acceleration is just the other agent's acceleration.
     transformation.acceleration = GetRelativeAccelerationTransformation(acceleration);
     return transformation;
   }
@@ -111,20 +123,20 @@ public class AgentBase : MonoBehaviour, IAgent {
     // Calculate the distance (range) to the target.
     positionTransformation.range = relativePosition.magnitude;
 
-    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
-    Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
+    var flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
+    var verticalRelativePosition = relativePosition - flatRelativePosition;
 
     // Calculate the elevation (vertical angle relative to forward).
     positionTransformation.elevation =
-        Mathf.Atan(verticalRelativePosition.magnitude / flatRelativePosition.magnitude);
+        Mathf.Atan2(verticalRelativePosition.magnitude, flatRelativePosition.magnitude);
 
     // Calculate the azimuth (horizontal angle relative to forward).
-    if (flatRelativePosition.magnitude == 0) {
+    if (flatRelativePosition.sqrMagnitude < _epsilon) {
       positionTransformation.azimuth = 0;
     } else {
       positionTransformation.azimuth =
-          Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) * Mathf.PI /
-          180;
+          Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) *
+          Mathf.Deg2Rad;
     }
 
     return positionTransformation;
@@ -132,34 +144,41 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   private VelocityTransformation GetRelativeVelocityTransformation(in Vector3 relativePosition,
                                                                    in Vector3 relativeVelocity) {
-    VelocityTransformation velocityTransformation = new VelocityTransformation();
+    var velocityTransformation = new VelocityTransformation();
 
     // Set the relative velocity in Cartesian coordinates.
     velocityTransformation.cartesian = relativeVelocity;
+
+    if (relativePosition.sqrMagnitude < _epsilon) {
+      velocityTransformation.range = relativeVelocity.magnitude;
+      velocityTransformation.azimuth = 0;
+      velocityTransformation.elevation = 0;
+      return velocityTransformation;
+    }
 
     // Calculate range rate (radial velocity).
     velocityTransformation.range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
 
     // Project relative velocity onto the sphere passing through the target.
-    Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
+    var tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
 
     // The target azimuth vector is orthogonal to the relative position vector and
     // points to the starboard of the target along the azimuth-elevation sphere.
-    Vector3 targetAzimuth = Vector3.Cross(transform.up, relativePosition);
+    var targetAzimuth = Vector3.Cross(transform.up, relativePosition);
     // The target elevation vector is orthogonal to the relative position vector
     // and points upwards from the target along the azimuth-elevation sphere.
-    Vector3 targetElevation = Vector3.Cross(relativePosition, transform.right);
+    var targetElevation = Vector3.Cross(relativePosition, transform.right);
     // If the relative position vector is parallel to the yaw or pitch axis, the
     // target azimuth vector or the target elevation vector will be undefined.
-    if (targetAzimuth.magnitude == 0) {
+    if (targetAzimuth.sqrMagnitude < _epsilon) {
       targetAzimuth = Vector3.Cross(targetElevation, relativePosition);
-    } else if (targetElevation.magnitude == 0) {
+    } else if (targetElevation.sqrMagnitude < _epsilon) {
       targetElevation = Vector3.Cross(relativePosition, targetAzimuth);
     }
 
     // Project the relative velocity vector on the azimuth-elevation sphere onto
     // the target azimuth vector.
-    Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
+    var tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
 
     // Calculate the time derivative of the azimuth to the target.
     velocityTransformation.azimuth =
@@ -170,7 +189,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
     // Project the velocity vector on the azimuth-elevation sphere onto the target
     // elevation vector.
-    Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
+    var tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
 
     // Calculate the time derivative of the elevation to the target.
     velocityTransformation.elevation =
@@ -184,9 +203,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   private AccelerationTransformation GetRelativeAccelerationTransformation(
       in Vector3 relativeAcceleration) {
-    // Since the agent's acceleration is an input, the relative acceleration is just the agent's
-    // acceleration.
-    AccelerationTransformation accelerationTransformation = new AccelerationTransformation();
+    var accelerationTransformation = new AccelerationTransformation();
     accelerationTransformation.cartesian = relativeAcceleration;
     return accelerationTransformation;
   }

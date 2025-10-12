@@ -104,7 +104,7 @@ public class HierarchicalBaseTests {
   [Test]
   public void Acceleration_WithNoSubHierarchicals_IsZero() {
     var parent = new HierarchicalBase();
-    Assert.AreEqual(Vector3.zero, parent.Velocity);
+    Assert.AreEqual(Vector3.zero, parent.Acceleration);
   }
 
   [Test]
