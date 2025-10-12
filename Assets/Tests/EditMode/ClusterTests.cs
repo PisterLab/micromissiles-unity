@@ -6,7 +6,7 @@ public class ClusterTests {
   private const float _epsilon = 1e-3f;
 
   private static FixedHierarchical GenerateObject(in Vector3 position) {
-    return new FixedHierarchical(position, Vector3.zero, Vector3.zero);
+    return new FixedHierarchical(position, velocity: Vector3.zero, acceleration: Vector3.zero);
   }
 
   private static Cluster GenerateCluster(IReadOnlyList<FixedHierarchical> objects) {
