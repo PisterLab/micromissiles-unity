@@ -151,4 +151,49 @@ public class HierarchicalBaseTests {
     Assert.AreEqual(1, parent.SubHierarchicals.Count);
     Assert.AreSame(child1, parent.SubHierarchicals[0]);
   }
+
+  [Test]
+  public void AddPursuer_AddsCorrectly() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+    parent.AddPursuer(child);
+
+    Assert.AreEqual(1, parent.Pursuers.Count);
+    Assert.AreSame(child, parent.Pursuers[0]);
+  }
+
+  [Test]
+  public void AddPursuer_DoesNotAddDuplicates() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+    parent.AddPursuer(child);
+    parent.AddPursuer(child);
+
+    Assert.AreEqual(1, parent.Pursuers.Count);
+    Assert.AreSame(child, parent.Pursuers[0]);
+  }
+
+  [Test]
+  public void RemovePursuer_RemovesCorrectly() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+
+    parent.AddPursuer(child);
+    parent.RemovePursuer(child);
+
+    Assert.AreEqual(0, parent.Pursuers.Count);
+  }
+
+  [Test]
+  public void RemovePursuer_DoesNotRemoveNonExisting() {
+    var parent = new HierarchicalBase();
+    var child1 = new HierarchicalBase();
+    var child2 = new HierarchicalBase();
+
+    parent.AddPursuer(child1);
+    parent.RemovePursuer(child2);
+
+    Assert.AreEqual(1, parent.Pursuers.Count);
+    Assert.AreSame(child1, parent.Pursuers[0]);
+  }
 }
