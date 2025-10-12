@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class ClusterTests {
+public class ClusterLegacyTests {
   public static GameObject GenerateObject(in Vector3 position) {
     GameObject obj = new GameObject();
     obj.transform.position = position;
     return obj;
   }
 
-  public static Cluster GenerateCluster(in IReadOnlyList<GameObject> objects) {
-    Cluster cluster = new Cluster();
+  public static ClusterLegacy GenerateCluster(in IReadOnlyList<GameObject> objects) {
+    ClusterLegacy cluster = new ClusterLegacy();
     cluster.AddObjects(objects);
     cluster.Recenter();
     return cluster;
@@ -25,16 +25,16 @@ public class ClusterTests {
     for (int i = 0; i < size; ++i) {
       objects.Add(GenerateObject(new Vector3(0, i, 0)));
     }
-    Cluster cluster = GenerateCluster(objects);
+    ClusterLegacy cluster = GenerateCluster(objects);
     Assert.AreEqual(size, cluster.Size());
   }
 
   [Test]
   public void TestIsEmpty() {
-    Cluster emptyCluster = new Cluster();
+    ClusterLegacy emptyCluster = new ClusterLegacy();
     Assert.IsTrue(emptyCluster.IsEmpty());
 
-    Cluster cluster = new Cluster();
+    ClusterLegacy cluster = new ClusterLegacy();
     cluster.AddObject(new GameObject());
     Assert.IsFalse(cluster.IsEmpty());
   }
@@ -45,7 +45,7 @@ public class ClusterTests {
     List<GameObject> objects = new List<GameObject>();
     objects.Add(GenerateObject(new Vector3(0, radius, 0)));
     objects.Add(GenerateObject(new Vector3(0, -radius, 0)));
-    Cluster cluster = GenerateCluster(objects);
+    ClusterLegacy cluster = GenerateCluster(objects);
     Assert.AreEqual(radius, cluster.Radius());
   }
 
@@ -57,7 +57,7 @@ public class ClusterTests {
         objects.Add(GenerateObject(new Vector3(i, j, 0)));
       }
     }
-    Cluster cluster = GenerateCluster(objects);
+    ClusterLegacy cluster = GenerateCluster(objects);
     Assert.AreEqual(Vector3.zero, cluster.Centroid());
   }
 
@@ -69,7 +69,7 @@ public class ClusterTests {
         objects.Add(GenerateObject(new Vector3(i, j, 0)));
       }
     }
-    Cluster cluster = GenerateCluster(objects);
+    ClusterLegacy cluster = GenerateCluster(objects);
     cluster.AddObject(GenerateObject(new Vector3(10, -10, 0)));
     Assert.AreNotEqual(new Vector3(1, -1, 0), cluster.Coordinates);
     cluster.Recenter();
@@ -85,8 +85,8 @@ public class ClusterTests {
       objects1.Add(GenerateObject(new Vector3(0, i, 0)));
       objects2.Add(GenerateObject(new Vector3(i, 0, 0)));
     }
-    Cluster cluster1 = GenerateCluster(objects1);
-    Cluster cluster2 = GenerateCluster(objects2);
+    ClusterLegacy cluster1 = GenerateCluster(objects1);
+    ClusterLegacy cluster2 = GenerateCluster(objects2);
     int size1 = cluster1.Size();
     int size2 = cluster2.Size();
     Vector3 centroid1 = cluster1.Centroid();

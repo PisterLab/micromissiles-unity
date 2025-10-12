@@ -4,17 +4,17 @@ using System.Linq;
 using UnityEngine;
 
 // The clusterer class is an interface for clustering algorithms.
-public abstract class IClusterer {
+public abstract class IClustererLegacy {
   // List of game objects to cluster.
   protected List<GameObject> _objects = new List<GameObject>();
 
   // List of clusters.
-  protected List<Cluster> _clusters = new List<Cluster>();
+  protected List<ClusterLegacy> _clusters = new List<ClusterLegacy>();
 
-  public IClusterer(List<GameObject> objects) {
+  public IClustererLegacy(List<GameObject> objects) {
     _objects = objects;
   }
-  public IClusterer(List<Agent> agents) {
+  public IClustererLegacy(List<Agent> agents) {
     _objects = agents.ConvertAll(agent => agent.gameObject).ToList();
   }
 
@@ -24,7 +24,7 @@ public abstract class IClusterer {
   }
 
   // Get the list of clusters.
-  public IReadOnlyList<Cluster> Clusters {
+  public IReadOnlyList<ClusterLegacy> Clusters {
     get { return _clusters; }
   }
 
@@ -36,7 +36,7 @@ public abstract class IClusterer {
 // size and radius constraints. The size is defined as the maximum number of game objects within a
 // cluster, and the radius denotes the maximum distance from the cluster's centroid to any of its
 // assigned game objects.
-public abstract class ISizeAndRadiusConstrainedClusterer : IClusterer {
+public abstract class ISizeAndRadiusConstrainedClusterer : IClustererLegacy {
   // Maximum cluster size.
   protected readonly int _maxSize = 0;
 

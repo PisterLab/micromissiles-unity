@@ -23,7 +23,7 @@ public class KMeansClustererTests {
   public void TestSingleCluster() {
     KMeansClusterer clusterer = new KMeansClusterer(Objects, k: 1);
     clusterer.Cluster();
-    Cluster cluster = clusterer.Clusters[0];
+    ClusterLegacy cluster = clusterer.Clusters[0];
     Assert.AreEqual(Objects.Count, cluster.Size());
     Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Coordinates);
     Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid());
@@ -61,8 +61,8 @@ public class KMeansClustererTests {
     Assert.AreEqual(2, clusterer.Clusters.Count);
 
     // Retrieve the clusters.
-    Cluster c0 = clusterer.Clusters[0];
-    Cluster c1 = clusterer.Clusters[1];
+    ClusterLegacy c0 = clusterer.Clusters[0];
+    ClusterLegacy c1 = clusterer.Clusters[1];
 
     // Because the clusters are well-separated, each cluster should contain all points from one
     // group or the other, not a mixture. Check via centroids.
@@ -113,7 +113,7 @@ public class ConstrainedKMeansClustererTests {
         new ConstrainedKMeansClusterer(Objects, maxSize: Objects.Count, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(1, clusterer.Clusters.Count);
-    Cluster cluster = clusterer.Clusters[0];
+    ClusterLegacy cluster = clusterer.Clusters[0];
     Assert.AreEqual(Objects.Count, cluster.Size());
     Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid());
   }

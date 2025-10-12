@@ -23,75 +23,72 @@ public class IADSClusterCleanupTests : AgentTestBase {
   }
 
   private AgentConfig CreateThreatConfig() => new AgentConfig {
-    ConfigFile = "brahmos.pbtxt",
-    AttackBehaviorConfigFile = "brahmos_direct_attack.pbtxt",
-    InitialState = new Simulation.State {
-      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
-      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
-    },
-    StandardDeviation = new Simulation.State {
-      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
-      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
-    },
-    DynamicConfig = new DynamicConfig {
-      SensorConfig = new Simulation.SensorConfig {
-        Type = Simulation.SensorType.Ideal,
-        Frequency = 10
-      }
-    }
+    ConfigFile = "brahmos.pbtxt", AttackBehaviorConfigFile = "brahmos_direct_attack.pbtxt",
+    InitialState =
+        new Simulation.State {
+          Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+          Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+        },
+    StandardDeviation =
+        new Simulation.State {
+          Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+          Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+        },
+    DynamicConfig = new DynamicConfig { SensorConfig =
+                                            new Simulation.SensorConfig {
+                                              Type = Simulation.SensorType.Ideal, Frequency = 10
+                                            } }
   };
 
   private AgentConfig CreateCarrierConfig() => new AgentConfig {
     ConfigFile = "hydra70.pbtxt",
-    InitialState = new Simulation.State {
-      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
-      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 50 }
-    },
-    StandardDeviation = new Simulation.State {
-      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
-      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
-    },
-    DynamicConfig = new DynamicConfig {
-      SensorConfig = new Simulation.SensorConfig {
-        Type = Simulation.SensorType.Ideal,
-        Frequency = 10
-      },
-      FlightConfig = new FlightConfig {
-        ControllerType = ControllerType.ProportionalNavigation
-      }
-    }
+    InitialState =
+        new Simulation.State {
+          Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+          Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 50 }
+        },
+    StandardDeviation =
+        new Simulation.State {
+          Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+          Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+        },
+    DynamicConfig =
+        new DynamicConfig {
+          SensorConfig = new Simulation.SensorConfig { Type = Simulation.SensorType.Ideal,
+                                                       Frequency = 10 },
+          FlightConfig = new FlightConfig { ControllerType = ControllerType.ProportionalNavigation }
+        }
   };
 
   private AgentConfig CreateMissileConfig() => new AgentConfig {
     ConfigFile = "micromissile.pbtxt",
-    InitialState = new Simulation.State {
-      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
-      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 50 }
-    },
-    StandardDeviation = new Simulation.State {
-      Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
-      Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
-    },
-    DynamicConfig = new DynamicConfig {
-      SensorConfig = new Simulation.SensorConfig {
-        Type = Simulation.SensorType.Ideal,
-        Frequency = 10
-      },
-      FlightConfig = new FlightConfig {
-        ControllerType = ControllerType.ProportionalNavigation
-      }
-    }
+    InitialState =
+        new Simulation.State {
+          Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+          Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 50 }
+        },
+    StandardDeviation =
+        new Simulation.State {
+          Position = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 },
+          Velocity = new Simulation.CartesianCoordinates { X = 0, Y = 0, Z = 0 }
+        },
+    DynamicConfig =
+        new DynamicConfig {
+          SensorConfig = new Simulation.SensorConfig { Type = Simulation.SensorType.Ideal,
+                                                       Frequency = 10 },
+          FlightConfig = new FlightConfig { ControllerType = ControllerType.ProportionalNavigation }
+        }
   };
 
-  private (Cluster, ThreatClusterData) MakeClusterWithThreats(params Threat[] threats) {
-    var cluster = new Cluster();
+  private (ClusterLegacy, ThreatClusterData) MakeClusterWithThreats(params Threat[] threats) {
+    var cluster = new ClusterLegacy();
     foreach (var threat in threats) {
       cluster.AddObject(threat.gameObject);
     }
     var threatClusterData = new ThreatClusterData(cluster);
-    var clusters = new List<Cluster> { cluster };
+    var clusters = new List<ClusterLegacy> { cluster };
     SetPrivateField(_iads, "_threatClusters", clusters);
-    var map = new Dictionary<Cluster, ThreatClusterData> { [cluster] = threatClusterData };
+    var map = new Dictionary<ClusterLegacy, ThreatClusterData> { [cluster] = threatClusterData };
     SetPrivateField(_iads, "_threatClusterMap", map);
     return (cluster, threatClusterData);
   }
@@ -102,7 +99,7 @@ public class IADSClusterCleanupTests : AgentTestBase {
     var (cluster, threatClusterData) = MakeClusterWithThreats(threat);
 
     var carrier = (CarrierInterceptor)CreateTestInterceptor(CreateCarrierConfig());
-    var interceptorClusterMap = new Dictionary<Interceptor, Cluster> { [carrier] = cluster };
+    var interceptorClusterMap = new Dictionary<Interceptor, ClusterLegacy> { [carrier] = cluster };
     SetPrivateField(_iads, "_interceptorClusterMap", interceptorClusterMap);
 
     carrier.AssignTarget(threatClusterData.Centroid);
@@ -113,7 +110,8 @@ public class IADSClusterCleanupTests : AgentTestBase {
 
     Assert.IsFalse(carrier.HasAssignedTarget(), "Carrier should be unassigned (ballistic).");
 
-    var map = GetPrivateField<Dictionary<Interceptor, Cluster>>(_iads, "_interceptorClusterMap");
+    var map =
+        GetPrivateField<Dictionary<Interceptor, ClusterLegacy>>(_iads, "_interceptorClusterMap");
     Assert.IsFalse(map.ContainsKey(carrier), "Carrier should be removed from cluster mapping.");
 
     Assert.IsFalse(_iads.ShouldLaunchSubmunitions(carrier),

@@ -4,18 +4,18 @@ using System.Linq;
 using UnityEngine;
 
 // The cluster class represents a collection of game objects.
-public class Cluster {
+public class ClusterLegacy {
   // Coordinates of the cluster.
   private Vector3 _coordinates = Vector3.zero;
 
   // List of game objects in the cluster.
   private List<GameObject> _objects = new List<GameObject>();
 
-  public Cluster() {}
-  public Cluster(in Vector3 coordinates) {
+  public ClusterLegacy() {}
+  public ClusterLegacy(in Vector3 coordinates) {
     _coordinates = coordinates;
   }
-  public Cluster(in GameObject obj) {
+  public ClusterLegacy(GameObject obj) {
     _coordinates = obj.transform.position;
   }
 
@@ -104,19 +104,19 @@ public class Cluster {
 
   // Add a game object to the cluster.
   // This function does not update the centroid of the cluster.
-  public void AddObject(in GameObject obj) {
+  public void AddObject(GameObject obj) {
     _objects.Add(obj);
   }
 
   // Add multiple game objects to the cluster.
   // This function does not update the centroid of the cluster.
-  public void AddObjects(in IReadOnlyList<GameObject> objects) {
+  public void AddObjects(IReadOnlyList<GameObject> objects) {
     _objects.AddRange(objects);
   }
 
   // Merge another cluster into this one.
   // This function does not update the centroid of the cluster.
-  public void Merge(in Cluster cluster) {
+  public void Merge(ClusterLegacy cluster) {
     AddObjects(cluster.Objects);
   }
 
