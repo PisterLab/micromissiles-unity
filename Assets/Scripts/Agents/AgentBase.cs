@@ -83,18 +83,6 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // TODO(titan): Methods for updating the agent and terminating the agent.
 
-  public float CalculateMaxForwardAcceleration() {
-    return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
-  }
-
-  public float CalculateMaxNormalAcceleration() {
-    float maxReferenceNormalAcceleration =
-        (float)((StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) *
-                Constants.kGravity);
-    float referenceSpeed = StaticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
-    return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
-  }
-
   public Transformation GetRelativeTransformation(IAgent target) {
     return GetRelativeTransformation(target.Position, target.Velocity, target.Acceleration);
   }
@@ -105,6 +93,22 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   public Transformation GetRelativeTransformation(in Vector3 waypoint) {
     return GetRelativeTransformation(waypoint, Vector3.zero, Vector3.zero);
+  }
+
+  private void AlignWithVelocity() {
+    const float SpeedThreshold = 0.1f;
+    const float MaxDegreesDeltaTimeFactor = 10000f;
+
+    // Only align if the velocity is significant.
+    if (Speed > SpeedThreshold) {
+      // Create a rotation with forward along velocity and up along world up.
+      Quaternion targetRotation = Quaternion.LookRotation(Velocity, Vector3.up);
+
+      // Smoothly rotate towards the target rotation.
+      transform.rotation = Quaternion.RotateTowards(
+          transform.rotation, targetRotation,
+          maxDegreesDelta: MaxDegreesDeltaTimeFactor * Time.fixedDeltaTime);
+    }
   }
 
   private Transformation GetRelativeTransformation(in Vector3 position, in Vector3 velocity,

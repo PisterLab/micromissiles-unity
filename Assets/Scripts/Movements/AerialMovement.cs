@@ -7,15 +7,14 @@ using UnityEngine;
 public abstract class AerialMovement : MovementBase {
   public AerialMovement(IAgent agent) : base(agent) {}
 
-  // TODO(titan): Methods to calculate gravity and drag based on the agent as well as the total
-  // acceleration.
-
+  // Calculate the dynamic pressure on the agent.
   protected float GetDynamicPressure() {
-    var airDensity = (float)Constants.CalculateAirDensityAtAltitude(Agent.Position.y);
+    var airDensity = Constants.CalculateAirDensityAtAltitude(Agent.Position.y);
     var flowSpeed = Agent.Speed;
     return 0.5f * airDensity * (flowSpeed * flowSpeed);
   }
 
+  // Calculate the air drag acting on the agent.
   protected float CalculateDrag() {
     var staticConfig = Agent.StaticConfig;
     var dragCoefficient = staticConfig.LiftDragConfig?.DragCoefficient ?? 0;
@@ -26,9 +25,12 @@ public abstract class AerialMovement : MovementBase {
     return dragForce / mass;
   }
 
+  // Calculate the lift-induced drag acting on the agent. Since the agent is flying, any
+  // acceleration normal to the velocity vector is considered "lift".
   protected float CalculateLiftInducedDrag(in Vector3 accelerationInput) {
     var staticConfig = Agent.StaticConfig;
-    var liftAcceleration = Vector3.ProjectOnPlane(accelerationInput, transform.forward).magnitude;
+    var liftAcceleration =
+        Vector3.ProjectOnPlane(accelerationInput, Agent.transform.forward).magnitude;
     var liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }

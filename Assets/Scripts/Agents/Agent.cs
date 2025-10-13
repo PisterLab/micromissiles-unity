@@ -189,7 +189,7 @@ public abstract class Agent : MonoBehaviour {
     transform.position = position;
   }
 
-  public double GetSpeed() {
+  public float GetSpeed() {
     return GetComponent<Rigidbody>().linearVelocity.magnitude;
   }
 
@@ -326,10 +326,10 @@ public abstract class Agent : MonoBehaviour {
     return accelerationTransformation;
   }
 
-  public double GetDynamicPressure() {
+  public float GetDynamicPressure() {
     var airDensity = Constants.CalculateAirDensityAtAltitude(transform.position.y);
     var flowSpeed = GetSpeed();
-    return 0.5 * airDensity * (flowSpeed * flowSpeed);
+    return 0.5f * airDensity * (flowSpeed * flowSpeed);
   }
 
   protected abstract void UpdateReady(double deltaTime);
@@ -341,15 +341,13 @@ public abstract class Agent : MonoBehaviour {
   protected virtual void Start() {}
 
   protected virtual void FixedUpdate() {
-    _speed = (float)GetSpeed();
+    _speed = GetSpeed();
     if (_flightPhase != FlightPhase.INITIALIZED && _flightPhase != FlightPhase.READY) {
       _timeSinceBoost += Time.fixedDeltaTime;
     }
     _timeInPhase += Time.fixedDeltaTime;
 
     var boostTime = staticConfig.BoostConfig?.BoostTime ?? 0;
-    double elapsedSimulationTime = SimManager.Instance.GetElapsedSimulationTime();
-
     if (_flightPhase == FlightPhase.TERMINATED) {
       return;
     }
@@ -415,17 +413,16 @@ public abstract class Agent : MonoBehaviour {
 
   public float CalculateMaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
-        (float)((staticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) *
-                Constants.kGravity);
+        (staticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) * Constants.kGravity;
     float referenceSpeed = staticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
-    return Mathf.Pow((float)GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
+    return Mathf.Pow(GetSpeed() / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
   private float CalculateDrag() {
     float dragCoefficient = staticConfig.LiftDragConfig?.DragCoefficient ?? 0;
     float crossSectionalArea = staticConfig.BodyConfig?.CrossSectionalArea ?? 0;
     float mass = staticConfig.BodyConfig?.Mass ?? 1;
-    float dynamicPressure = (float)GetDynamicPressure();
+    float dynamicPressure = GetDynamicPressure();
     float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
     return dragForce / mass;
   }

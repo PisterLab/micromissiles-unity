@@ -6,13 +6,10 @@ using UnityEngine;
 public class IdealMovement : AerialMovement {
   public IdealMovement(IAgent agent) : base(agent) {}
 
-  // Determine the next movement for the agent by using the agent's controller to calculate the
-  // acceleration input.
-  // Ideal movement implies no drag or gravity.
-  public override void Update(double deltaTime) {
-    // Determine the agent's acceleration input using its controller.
-    var accelerationInput = Vector3.zero;
-    // Ignore drag and gravity.
-    Agent.AccelerationInput = accelerationInput;
+  // Determine the agent's actual acceleration input given its intended acceleration input by
+  // applying physics and other constraints. Ideal movement implies no drag or gravity, but the
+  // agent may be limited by its own maximum forward and normal accelerations.
+  public override Vector3 Act(in Vector3 accelerationInput) {
+    return LimitAccelerationInput(accelerationInput);
   }
 }

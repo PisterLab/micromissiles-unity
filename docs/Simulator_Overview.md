@@ -275,7 +275,7 @@ float angleToThreat =
 float fractionalSpeed = Mathf.Exp(
     -((distanceToThreat + angleToThreat * minTurningRadius) / distanceTimeConstant +
       angleToThreat / angleTimeConstant));
-float cost = (float)interceptor.GetSpeed() / fractionalSpeed;
+float cost = interceptor.GetSpeed() / fractionalSpeed;
 ```
 
 Cost-based assignment schemes can be formulated as integer linear programming (ILP) problems that optimize over boolean variables $x_{mt}$ representing whether missile $m$ is assigned to threat $t$.

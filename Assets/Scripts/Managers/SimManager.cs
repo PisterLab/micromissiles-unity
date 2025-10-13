@@ -76,17 +76,17 @@ public class SimManager : MonoBehaviour {
   public event NewInterceptorEventHandler OnNewInterceptor;
 
   // Returns the elapsed simulation time in seconds.
-  public double GetElapsedSimulationTime() {
+  public float GetElapsedSimulationTime() {
     return _elapsedSimulationTime;
   }
 
   // Returns the total cost of launched interceptors.
-  public double GetCostLaunchedInterceptors() {
+  public float GetCostLaunchedInterceptors() {
     return _costLaunchedInterceptors;
   }
 
   // Returns the total cost of destroyed threats.
-  public double GetCostDestroyedThreats() {
+  public float GetCostDestroyedThreats() {
     return _costDestroyedThreats;
   }
 
@@ -167,7 +167,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void ResumeSimulation() {
-    Time.fixedDeltaTime = (float)(1.0f / SimulatorConfig.PhysicsUpdateRate);
+    Time.fixedDeltaTime = 1.0f / SimulatorConfig.PhysicsUpdateRate;
     SetTimeScale(SimulationConfig.TimeScale);
     _isSimulationPaused = false;
   }
@@ -180,7 +180,7 @@ public class SimManager : MonoBehaviour {
     if (!IsSimulationPaused()) {
       // If the simulation was not paused, we need to update the time scale.
       SetTimeScale(SimulationConfig.TimeScale);
-      Time.fixedDeltaTime = (float)(1.0f / SimulatorConfig.PhysicsUpdateRate);
+      Time.fixedDeltaTime = 1.0f / SimulatorConfig.PhysicsUpdateRate;
       // If the simulation was paused, then ResumeSimulation will handle updating the time scale and
       // fixed delta time from the newly loaded configuration.
     }
