@@ -90,7 +90,7 @@ public class Interceptor : Agent {
     UpdateTargetModel(deltaTime);
 
     // Check whether the threat should be considered a miss.
-    SensorOutput sensorOutput = GetComponent<Sensor>().Sense(_target);
+    SensorOutput sensorOutput = GetComponent<SensorLegacy>().Sense(_target);
     // TODO(dlovell): This causes trouble with the Fateh 110B (high-speed threats).
     // if (sensorOutput.velocity.range > 1000f) {
     //   HandleInterceptMiss();

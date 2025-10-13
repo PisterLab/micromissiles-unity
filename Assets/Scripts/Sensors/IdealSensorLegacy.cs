@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class IdealSensor : Sensor {
+public class IdealSensorLegacy : SensorLegacy {
   public override SensorOutput Sense(Agent agent) {
     SensorOutput agentSensorOutput = new SensorOutput();
 

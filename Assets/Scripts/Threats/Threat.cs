@@ -10,7 +10,7 @@ public abstract class Threat : Agent {
   protected Configs.Power _currentPower;
 
   protected SensorOutput _sensorOutput;
-  protected Sensor _sensor;
+  protected SensorLegacy _sensor;
 
   protected override void Awake() {
     base.Awake();
@@ -39,7 +39,7 @@ public abstract class Threat : Agent {
 
   protected override void Start() {
     base.Start();
-    _sensor = GetComponent<Sensor>();
+    _sensor = GetComponent<SensorLegacy>();
   }
 
   protected override void FixedUpdate() {

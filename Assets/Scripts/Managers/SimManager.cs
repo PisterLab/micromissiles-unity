@@ -394,7 +394,7 @@ public class SimManager : MonoBehaviour {
     // Create a sensor for the interceptor.
     switch (config.DynamicConfig.SensorConfig.Type) {
       case Simulation.SensorType.Ideal: {
-        interceptorObject.AddComponent<IdealSensor>();
+        interceptorObject.AddComponent<IdealSensorLegacy>();
         break;
       }
       default: {
