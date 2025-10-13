@@ -6,8 +6,8 @@ public class IdealSensorLegacy : SensorLegacy {
 
     // Adapt the relative transformation to the agent for the sensor output.
     Transformation relativeTransformation = _agent.GetRelativeTransformation(agent);
-    agentSensorOutput.position = relativeTransformation.position;
-    agentSensorOutput.velocity = relativeTransformation.velocity;
+    agentSensorOutput.Position = relativeTransformation.Position;
+    agentSensorOutput.Velocity = relativeTransformation.Velocity;
 
     return agentSensorOutput;
   }
@@ -17,8 +17,8 @@ public class IdealSensorLegacy : SensorLegacy {
 
     // Adapt the agent's relative transformation to the waypoint for the sensor output.
     Transformation relativeTransformation = _agent.GetRelativeTransformationToWaypoint(waypoint);
-    waypointSensorOutput.position = relativeTransformation.position;
-    waypointSensorOutput.velocity = relativeTransformation.velocity;
+    waypointSensorOutput.Position = relativeTransformation.Position;
+    waypointSensorOutput.Velocity = relativeTransformation.Velocity;
 
     return waypointSensorOutput;
   }

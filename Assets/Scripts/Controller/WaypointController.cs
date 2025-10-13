@@ -11,7 +11,7 @@ public class WaypointController : IControllerLegacy {
   }
 
   protected override Vector3 PlanImpl(in Transformation relativeTransformation) {
-    Vector3 toWaypoint = relativeTransformation.position.cartesian;
+    Vector3 toWaypoint = relativeTransformation.Position.Cartesian;
     Vector3 desiredVelocity = toWaypoint.normalized * _desiredSpeed;
 
     // Calculate the acceleration needed to reach the desired velocity within one time step.

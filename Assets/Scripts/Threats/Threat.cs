@@ -92,9 +92,9 @@ public abstract class Threat : Agent {
     foreach (var interceptor in _interceptors) {
       if (!interceptor.IsTerminated()) {
         SensorOutput sensorOutput = _sensor.Sense(interceptor);
-        if (sensorOutput.position.range < minDistance) {
+        if (sensorOutput.Position.Range < minDistance) {
           closestInterceptor = interceptor;
-          minDistance = sensorOutput.position.range;
+          minDistance = sensorOutput.Position.Range;
         }
       }
     }
@@ -114,7 +114,7 @@ public abstract class Threat : Agent {
     float evasionRangeThreshold =
         agentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
     SensorOutput sensorOutput = _sensor.Sense(closestInterceptor);
-    return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
+    return sensorOutput.Position.Range <= evasionRangeThreshold && sensorOutput.Velocity.Range < 0;
   }
 
   protected Vector3 EvadeInterceptor(Agent interceptor) {
