@@ -8,5 +8,11 @@ public abstract class MovementBase : IMovement {
     set => _agent = value;
   }
 
+  public MovementBase(IAgent agent) {
+    _agent = agent;
+  }
+
+  // Determine the next movement for the agent by using the agent's controller to calculate the
+  // acceleration input.
   public abstract void Update(double deltaTime);
 }

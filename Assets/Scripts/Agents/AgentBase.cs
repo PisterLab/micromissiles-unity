@@ -83,6 +83,18 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // TODO(titan): Methods for updating the agent and terminating the agent.
 
+  public float CalculateMaxForwardAcceleration() {
+    return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
+  }
+
+  public float CalculateMaxNormalAcceleration() {
+    float maxReferenceNormalAcceleration =
+        (float)((StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) *
+                Constants.kGravity);
+    float referenceSpeed = StaticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
+    return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
+  }
+
   public Transformation GetRelativeTransformation(IAgent target) {
     return GetRelativeTransformation(target.Position, target.Velocity, target.Acceleration);
   }
