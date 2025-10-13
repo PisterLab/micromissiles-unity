@@ -4,10 +4,7 @@ using System.Collections.Generic;
 //
 // The assignment algorithm assigns hierarchical objects to each other in a bipartite manner.
 public interface IAssignment {
-  IReadOnlyList<IHierarchical> First { get; }
-  IReadOnlyList<IHierarchical> Second { get; }
-  IReadOnlyList<AssignmentItem> Assignments { get; }
-
   // Run the assignment algorithm and assign the hierarchical objects.
-  void Assign();
+  IEnumerable<AssignmentItem> Assign(IEnumerable<IHierarchical> first,
+                                     IEnumerable<IHierarchical> second);
 }

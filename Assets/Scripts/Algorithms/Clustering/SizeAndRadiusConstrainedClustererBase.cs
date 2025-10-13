@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 // Base implementation of a size and radius-constrained clustering algorithm.
 //
 // The size is defined as the maximum number of hierarchical objects within a cluster, and the
@@ -12,9 +10,7 @@ public abstract class SizeAndRadiusConstrainedClustererBase : ClustererBase {
   // Maximum cluster radius.
   protected readonly float _maxRadius = 0;
 
-  public SizeAndRadiusConstrainedClustererBase(IEnumerable<IHierarchical> objects, int maxSize,
-                                               float maxRadius)
-      : base(objects) {
+  public SizeAndRadiusConstrainedClustererBase(int maxSize, float maxRadius) {
     _maxSize = maxSize;
     _maxRadius = maxRadius;
   }
