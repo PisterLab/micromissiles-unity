@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-public class RocketMovementTests : AgentTestBase {
+public class RocketMovementTests : TestBase {
   private const float _epsilon = 1e-3f;
 
   private AgentBase _agent;

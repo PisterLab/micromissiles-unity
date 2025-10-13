@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-public class GroundMovementTests : AgentTestBase {
+public class GroundMovementTests : TestBase {
   private AgentBase _agent;
   private GroundMovement _movement;
 

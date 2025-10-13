@@ -2,7 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools.Utils;
 
-public class IdealMovementTests : AgentTestBase {
+public class IdealMovementTests : TestBase {
   private const float _epsilon = 1e-3f;
 
   private AgentBase _agent;
