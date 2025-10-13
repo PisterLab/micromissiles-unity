@@ -96,11 +96,11 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   private void AlignWithVelocity() {
-    const float SpeedThreshold = 0.1f;
-    const float RotationSpeedDegreesPerSecond = 10000f;
+    const float speedThreshold = 0.1f;
+    const float rotationSpeedDegreesPerSecond = 10000f;
 
     // Only align if the velocity is significant.
-    if (Speed > SpeedThreshold) {
+    if (Speed > speedThreshold) {
       // Create a rotation with the forward direction along the velocity vector and the up direction
       // along world up.
       Quaternion targetRotation = Quaternion.LookRotation(Velocity, Vector3.up);
@@ -108,7 +108,7 @@ public class AgentBase : MonoBehaviour, IAgent {
       // Smoothly rotate towards the target rotation.
       transform.rotation = Quaternion.RotateTowards(
           transform.rotation, targetRotation,
-          maxDegreesDelta: RotationSpeedDegreesPerSecond * Time.fixedDeltaTime);
+          maxDegreesDelta: rotationSpeedDegreesPerSecond * Time.fixedDeltaTime);
     }
   }
 
