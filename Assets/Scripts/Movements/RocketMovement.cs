@@ -30,8 +30,7 @@ public class RocketMovement : AerialMovement {
         return ActMidCourse(accelerationInput);
       }
       case Simulation.FlightPhase.Terminal: {
-        //
-        return ActMidCourse(accelerationInput);
+        return ActTerminal(accelerationInput);
       }
       case Simulation.FlightPhase.Terminated: {
         // In the terminated phase, the agent is not subject to any acceleration.
@@ -66,6 +65,13 @@ public class RocketMovement : AerialMovement {
   private Vector3 ActMidCourse(in Vector3 accelerationInput) {
     var limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
     return CalculateNetAccelerationInput(limitedAccelerationInput);
+  }
+
+  // In the terminal phase, the agent is homing in on the target and is still subject to drag and
+  // gravity.
+  private Vector3 ActTerminal(in Vector3 accelerationInput) {
+    // Currently, the agent acts the same in the terminal phase as in the midcourse phase.
+    return ActMidCourse(accelerationInput);
   }
 
   // Calculate the acceleration input with drag and gravity.

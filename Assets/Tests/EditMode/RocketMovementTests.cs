@@ -53,7 +53,7 @@ public class RocketMovementTests : AgentTestBase {
     _agent.Velocity = new Vector3(0, 0, 100);
     var accelerationInput = Vector3.zero;
     var appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(Physics.gravity.y - 6020, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-6020f - Constants.kGravity, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
@@ -61,7 +61,7 @@ public class RocketMovementTests : AgentTestBase {
     _movement.FlightPhase = Simulation.FlightPhase.Ready;
     var accelerationInput = Vector3.zero;
     var appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(Physics.gravity.y, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
@@ -69,7 +69,7 @@ public class RocketMovementTests : AgentTestBase {
     _movement.FlightPhase = Simulation.FlightPhase.Ready;
     var accelerationInput = Vector3.zero;
     var appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(Physics.gravity.y, appliedAccelerationInput.y, _epsilon);
+    Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.y, _epsilon);
   }
 
   [Test]
@@ -78,7 +78,7 @@ public class RocketMovementTests : AgentTestBase {
     _agent.Velocity = new Vector3(0, 0, 100);
     var accelerationInput = Vector3.zero;
     var appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(Physics.gravity.y - 6020, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-6020f - Constants.kGravity, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
@@ -86,7 +86,7 @@ public class RocketMovementTests : AgentTestBase {
     _movement.FlightPhase = Simulation.FlightPhase.Midcourse;
     var accelerationInput = Vector3.zero;
     var appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(Physics.gravity.y, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
@@ -94,7 +94,7 @@ public class RocketMovementTests : AgentTestBase {
     _movement.FlightPhase = Simulation.FlightPhase.Midcourse;
     var accelerationInput = Vector3.zero;
     var appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(Physics.gravity.y, appliedAccelerationInput.y, _epsilon);
+    Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.y, _epsilon);
   }
 
   [Test]
