@@ -18,13 +18,6 @@ public class AgentBase : MonoBehaviour, IAgent {
   // dynamic configuration, and sub-agent configuration (for interceptors).
   private Configs.AgentConfig _agentConfig;
 
-  // Movement behavior of the agent.
-  private IMovement _movement;
-
-  // The controller calculates the acceleration input, given the agent's current state and its
-  // target's current state.
-  private IController _controller;
-
   [SerializeField]
   // The acceleration field is not part of the rigid body component, so it is tracked separately.
   // The acceleration is applied as a force during each frame update.
@@ -49,14 +42,14 @@ public class AgentBase : MonoBehaviour, IAgent {
     get => _agentConfig;
     set => _agentConfig = value;
   }
-  public IMovement Movement {
-    get => _movement;
-    set => _movement = value;
-  }
-  public IController Controller {
-    get => _controller;
-    set => _controller = value;
-  }
+
+  // Movement behavior of the agent.
+  public IMovement Movement { get; set; }
+
+  // The controller calculates the acceleration input, given the agent's current state and its
+  // target's current state.
+  public IController Controller { get; set; }
+
   public Vector3 Position {
     get => transform.position;
     set => transform.position = value;
