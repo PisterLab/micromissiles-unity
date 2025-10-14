@@ -7,7 +7,7 @@ public interface IThreat {
   IAttackBehavior AttackBehavior { get; set; }
   IEvasion Evasion { get; set; }
 
-  Dictionary<Configs.Power, float> PowerTable { get; }
+  IReadOnlyDictionary<Configs.Power, float> PowerTable { get; }
 
   float LookupPowerTable(Configs.Power power);
 }

@@ -12,7 +12,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   // The evasion handles how the threat behaves in the vicinity of a pursuing interceptor.
   public IEvasion Evasion { get; set; }
 
-  public Dictionary<Configs.Power, float> PowerTable {
+  public IReadOnlyDictionary<Configs.Power, float> PowerTable {
     get {
       if (_powerTable == null) {
         _powerTable =
