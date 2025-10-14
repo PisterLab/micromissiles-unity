@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FixedWingThreat : Threat {
+public class FixedWingThreatLegacy : Threat {
   [SerializeField]
   private float _navigationGain = 50f;
 

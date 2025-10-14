@@ -397,7 +397,7 @@ public class IADS : MonoBehaviour {
 
     // Assign the interceptors to other threats.
     foreach (var assignedInterceptor in threat.AssignedInterceptors.ToList()) {
-      if (assignedInterceptor is not CarrierInterceptor) {
+      if (assignedInterceptor is not CarrierInterceptorLegacy) {
         RequestAssignInterceptorToThreat(assignedInterceptor as Interceptor);
       }
     }
