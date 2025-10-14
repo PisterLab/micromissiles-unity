@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DirectAttackBehaviorTests : TestBase {
@@ -21,22 +20,20 @@ public class DirectAttackBehaviorTests : TestBase {
             Type = Configs.FlightPlanType.DistanceToTarget,
             Waypoints =
                 {
-                  new List<Configs.FlightPlanWaypoint>() {
-                    new Configs.FlightPlanWaypoint() {
-                      Distance = 1000,
-                      Altitude = 100,
-                      Power = Configs.Power.Cruise,
-                    },
-                    new Configs.FlightPlanWaypoint() {
-                      Distance = 500,
-                      Altitude = 50,
-                      Power = Configs.Power.Mil,
-                    },
-                    new Configs.FlightPlanWaypoint() {
-                      Distance = 100,
-                      Altitude = 25,
-                      Power = Configs.Power.Max,
-                    },
+                  new Configs.FlightPlanWaypoint() {
+                    Distance = 1000,
+                    Altitude = 100,
+                    Power = Configs.Power.Cruise,
+                  },
+                  new Configs.FlightPlanWaypoint() {
+                    Distance = 500,
+                    Altitude = 50,
+                    Power = Configs.Power.Mil,
+                  },
+                  new Configs.FlightPlanWaypoint() {
+                    Distance = 100,
+                    Altitude = 25,
+                    Power = Configs.Power.Max,
                   },
                 },
           },

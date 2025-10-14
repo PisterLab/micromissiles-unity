@@ -20,6 +20,6 @@ public class FlightPlan {
   }
 
   public FlightPlan(Configs.FlightPlan config) {
-    Config = config;
+    Config = config ?? new Configs.FlightPlan();
   }
 }
