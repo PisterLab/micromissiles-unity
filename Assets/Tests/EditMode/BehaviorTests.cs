@@ -7,17 +7,14 @@ public class BehaviorTests : TestBase {
   public void TestDirectAttackBehaviorFactoryUsesOverride() {
     var config = new Configs.AttackBehaviorConfig() {
       Name = "Sample Attack", Type = Configs.AttackType.DirectAttack,
-      FlightPlan =
-          new Configs.AttackBehaviorConfig.Types.FlightPlan() {
-            Type = Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
-            Waypoints = { new List<Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint>() {
-              new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
-                Distance = 1000,
-                Altitude = 100,
-                Power = Configs.Power.Cruise,
-              }
-            } }
-          }
+      FlightPlan = new Configs.FlightPlan() { Type = Configs.FlightPlanType.DistanceToTarget,
+                                              Waypoints = { new List<Configs.FlightPlanWaypoint>() {
+                                                new Configs.FlightPlanWaypoint() {
+                                                  Distance = 1000,
+                                                  Altitude = 100,
+                                                  Power = Configs.Power.Cruise,
+                                                }
+                                              } } }
     };
 
     AttackBehavior attackBehavior = AttackBehaviorFactory.Create(config);
@@ -33,33 +30,27 @@ public class BehaviorTests : TestBase {
   [Test]
   public void TestDirectAttackBehaviorWaypoints() {
     // Create a sample direct attack behavior.
-    DirectAttackBehavior attackBehavior =
-        new DirectAttackBehavior(
-            new Configs.AttackBehaviorConfig() {
-              Name = "Sample Attack", Type = Configs.AttackType.DirectAttack,
-              FlightPlan =
-                  new Configs.AttackBehaviorConfig.Types.FlightPlan() {
-                    Type = Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
-                    Waypoints =
-                        { new List<Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint>() {
-                          new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
-                            Distance = 1000,
-                            Altitude = 100,
-                            Power = Configs.Power.Cruise,
-                          },
-                          new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
-                            Distance = 500,
-                            Altitude = 50,
-                            Power = Configs.Power.Mil,
-                          },
-                          new Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint() {
-                            Distance = 100,
-                            Altitude = 25,
-                            Power = Configs.Power.Max,
-                          }
-                        } }
-                  }
-            });
+    var attackBehavior = new DirectAttackBehaviorLegacy(new Configs.AttackBehaviorConfig() {
+      Name = "Sample Attack", Type = Configs.AttackType.DirectAttack,
+      FlightPlan = new Configs.FlightPlan() { Type = Configs.FlightPlanType.DistanceToTarget,
+                                              Waypoints = { new List<Configs.FlightPlanWaypoint>() {
+                                                new Configs.FlightPlanWaypoint() {
+                                                  Distance = 1000,
+                                                  Altitude = 100,
+                                                  Power = Configs.Power.Cruise,
+                                                },
+                                                new Configs.FlightPlanWaypoint() {
+                                                  Distance = 500,
+                                                  Altitude = 50,
+                                                  Power = Configs.Power.Mil,
+                                                },
+                                                new Configs.FlightPlanWaypoint() {
+                                                  Distance = 100,
+                                                  Altitude = 25,
+                                                  Power = Configs.Power.Max,
+                                                }
+                                              } } }
+    });
 
     Vector3 targetPosition = new Vector3(1000, 0, 0);
     const float epsilon = 0.001f;

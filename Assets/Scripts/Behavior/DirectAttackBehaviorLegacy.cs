@@ -1,23 +1,19 @@
 using UnityEngine;
 
-// Direct attack behavior.
-//
-// The agent will navigate directly to each waypoint on the way to the final target.
-public abstract class DirectAttackBehavior : AttackBehaviorBase {
-  public DirectAttackBehavior(IAgent agent, Configs.AttackBehaviorConfig config)
-      : base(agent, config) {}
+public class DirectAttackBehaviorLegacy : AttackBehavior {
+  public DirectAttackBehaviorLegacy(in Configs.AttackBehaviorConfig config) : base(config) {}
 
-  // Return the next waypoint for the agent to navigate to and the power setting to use towards the
+  // Return the next waypoint for the threat to navigate to and the power setting to use towards the
   // waypoint.
   public override (Vector3 waypointPosition, Configs.Power power)
-      GetNextWaypoint(in Vector3 targetPosition) {
+      GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
     if (FlightPlan.Waypoints.Count == 0) {
       // If no waypoints are defined, directly target the target position.
       return (targetPosition, Configs.Power.Max);
     }
 
-    var directionToTarget = targetPosition - Agent.Position;
-    var distanceToTarget = directionToTarget.magnitude;
+    Vector3 directionToTarget = targetPosition - currentPosition;
+    float distanceToTarget = directionToTarget.magnitude;
 
     // Find the index of the first waypoint whose position is closer to the target than the current
     // position.
@@ -28,8 +24,8 @@ public abstract class DirectAttackBehavior : AttackBehaviorBase {
       }
     }
 
-    var waypointPosition = targetPosition;
-    var power = Configs.Power.Idle;
+    Vector3 waypointPosition = targetPosition;
+    Configs.Power power = Configs.Power.Idle;
     if (waypointIndex == FlightPlan.Waypoints.Count) {
       // This is the last waypoint, so target the final position with the last waypoint's power
       // setting.
