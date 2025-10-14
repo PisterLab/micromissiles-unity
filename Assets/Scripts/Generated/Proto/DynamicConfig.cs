@@ -25,20 +25,20 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChxDb25maWdzL2R5bmFtaWNfY29uZmlnLnByb3RvEgdjb25maWdzGhdTaW11",
-            "bGF0aW9uL3NlbnNvci5wcm90byK4AQoMRmxpZ2h0Q29uZmlnEjAKD2NvbnRy",
-            "b2xsZXJfdHlwZRgBIAEoDjIXLmNvbmZpZ3MuQ29udHJvbGxlclR5cGUSOwoO",
-            "ZXZhc2lvbl9jb25maWcYAiABKAsyIy5jb25maWdzLkZsaWdodENvbmZpZy5F",
-            "dmFzaW9uQ29uZmlnGjkKDUV2YXNpb25Db25maWcSDwoHZW5hYmxlZBgBIAEo",
-            "CBIXCg9yYW5nZV90aHJlc2hvbGQYAiABKAIibgoNRHluYW1pY0NvbmZpZxIs",
-            "Cg1mbGlnaHRfY29uZmlnGAEgASgLMhUuY29uZmlncy5GbGlnaHRDb25maWcS",
-            "LwoNc2Vuc29yX2NvbmZpZxgCIAEoCzIYLnNpbXVsYXRpb24uU2Vuc29yQ29u",
-            "ZmlnKlQKDkNvbnRyb2xsZXJUeXBlEhsKF1BST1BPUlRJT05BTF9OQVZJR0FU",
-            "SU9OEAASJQohQVVHTUVOVEVEX1BST1BPUlRJT05BTF9OQVZJR0FUSU9OEAFi",
-            "BnByb3RvMw=="));
+            "bGF0aW9uL3NlbnNvci5wcm90byI5Cg1FdmFzaW9uQ29uZmlnEg8KB2VuYWJs",
+            "ZWQYASABKAgSFwoPcmFuZ2VfdGhyZXNob2xkGAIgASgCInAKDEZsaWdodENv",
+            "bmZpZxIwCg9jb250cm9sbGVyX3R5cGUYASABKA4yFy5jb25maWdzLkNvbnRy",
+            "b2xsZXJUeXBlEi4KDmV2YXNpb25fY29uZmlnGAIgASgLMhYuY29uZmlncy5F",
+            "dmFzaW9uQ29uZmlnIm4KDUR5bmFtaWNDb25maWcSLAoNZmxpZ2h0X2NvbmZp",
+            "ZxgBIAEoCzIVLmNvbmZpZ3MuRmxpZ2h0Q29uZmlnEi8KDXNlbnNvcl9jb25m",
+            "aWcYAiABKAsyGC5zaW11bGF0aW9uLlNlbnNvckNvbmZpZypUCg5Db250cm9s",
+            "bGVyVHlwZRIbChdQUk9QT1JUSU9OQUxfTkFWSUdBVElPThAAEiUKIUFVR01F",
+            "TlRFRF9QUk9QT1JUSU9OQUxfTkFWSUdBVElPThABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Simulation.SensorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.ControllerType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig), global::Configs.FlightConfig.Parser, new[]{ "ControllerType", "EvasionConfig" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig.Types.EvasionConfig), global::Configs.FlightConfig.Types.EvasionConfig.Parser, new[]{ "Enabled", "RangeThreshold" }, null, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.EvasionConfig), global::Configs.EvasionConfig.Parser, new[]{ "Enabled", "RangeThreshold" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig), global::Configs.FlightConfig.Parser, new[]{ "ControllerType", "EvasionConfig" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.DynamicConfig), global::Configs.DynamicConfig.Parser, new[]{ "FlightConfig", "SensorConfig" }, null, null, null, null)
           }));
     }
@@ -58,6 +58,250 @@ namespace Configs {
 
   #region Messages
   /// <summary>
+  /// Evasion configuration.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class EvasionConfig : pb::IMessage<EvasionConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<EvasionConfig> _parser = new pb::MessageParser<EvasionConfig>(() => new EvasionConfig());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<EvasionConfig> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Configs.DynamicConfigReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EvasionConfig() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EvasionConfig(EvasionConfig other) : this() {
+      enabled_ = other.enabled_;
+      rangeThreshold_ = other.rangeThreshold_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public EvasionConfig Clone() {
+      return new EvasionConfig(this);
+    }
+
+    /// <summary>Field number for the "enabled" field.</summary>
+    public const int EnabledFieldNumber = 1;
+    private bool enabled_;
+    /// <summary>
+    /// If true, evasion is enabled.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Enabled {
+      get { return enabled_; }
+      set {
+        enabled_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "range_threshold" field.</summary>
+    public const int RangeThresholdFieldNumber = 2;
+    private float rangeThreshold_;
+    /// <summary>
+    /// Range threshold in m at which the agent should evade.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float RangeThreshold {
+      get { return rangeThreshold_; }
+      set {
+        rangeThreshold_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as EvasionConfig);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(EvasionConfig other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Enabled != other.Enabled) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RangeThreshold, other.RangeThreshold)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Enabled != false) hash ^= Enabled.GetHashCode();
+      if (RangeThreshold != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RangeThreshold);
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Enabled != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Enabled);
+      }
+      if (RangeThreshold != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(RangeThreshold);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Enabled != false) {
+        output.WriteRawTag(8);
+        output.WriteBool(Enabled);
+      }
+      if (RangeThreshold != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(RangeThreshold);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Enabled != false) {
+        size += 1 + 1;
+      }
+      if (RangeThreshold != 0F) {
+        size += 1 + 4;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(EvasionConfig other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Enabled != false) {
+        Enabled = other.Enabled;
+      }
+      if (other.RangeThreshold != 0F) {
+        RangeThreshold = other.RangeThreshold;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Enabled = input.ReadBool();
+            break;
+          }
+          case 21: {
+            RangeThreshold = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Enabled = input.ReadBool();
+            break;
+          }
+          case 21: {
+            RangeThreshold = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
   /// Flight configuration.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
@@ -75,7 +319,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Configs.DynamicConfigReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Configs.DynamicConfigReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -123,13 +367,13 @@ namespace Configs {
 
     /// <summary>Field number for the "evasion_config" field.</summary>
     public const int EvasionConfigFieldNumber = 2;
-    private global::Configs.FlightConfig.Types.EvasionConfig evasionConfig_;
+    private global::Configs.EvasionConfig evasionConfig_;
     /// <summary>
     /// Evasion configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.FlightConfig.Types.EvasionConfig EvasionConfig {
+    public global::Configs.EvasionConfig EvasionConfig {
       get { return evasionConfig_; }
       set {
         evasionConfig_ = value;
@@ -239,7 +483,7 @@ namespace Configs {
       }
       if (other.evasionConfig_ != null) {
         if (evasionConfig_ == null) {
-          EvasionConfig = new global::Configs.FlightConfig.Types.EvasionConfig();
+          EvasionConfig = new global::Configs.EvasionConfig();
         }
         EvasionConfig.MergeFrom(other.EvasionConfig);
       }
@@ -268,7 +512,7 @@ namespace Configs {
           }
           case 18: {
             if (evasionConfig_ == null) {
-              EvasionConfig = new global::Configs.FlightConfig.Types.EvasionConfig();
+              EvasionConfig = new global::Configs.EvasionConfig();
             }
             input.ReadMessage(EvasionConfig);
             break;
@@ -298,7 +542,7 @@ namespace Configs {
           }
           case 18: {
             if (evasionConfig_ == null) {
-              EvasionConfig = new global::Configs.FlightConfig.Types.EvasionConfig();
+              EvasionConfig = new global::Configs.EvasionConfig();
             }
             input.ReadMessage(EvasionConfig);
             break;
@@ -307,258 +551,6 @@ namespace Configs {
       }
     }
     #endif
-
-    #region Nested types
-    /// <summary>Container for nested types declared in the FlightConfig message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static partial class Types {
-      /// <summary>
-      /// Evasion configuration.
-      /// </summary>
-      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-      public sealed partial class EvasionConfig : pb::IMessage<EvasionConfig>
-      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          , pb::IBufferMessage
-      #endif
-      {
-        private static readonly pb::MessageParser<EvasionConfig> _parser = new pb::MessageParser<EvasionConfig>(() => new EvasionConfig());
-        private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pb::MessageParser<EvasionConfig> Parser { get { return _parser; } }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pbr::MessageDescriptor Descriptor {
-          get { return global::Configs.FlightConfig.Descriptor.NestedTypes[0]; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        pbr::MessageDescriptor pb::IMessage.Descriptor {
-          get { return Descriptor; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public EvasionConfig() {
-          OnConstruction();
-        }
-
-        partial void OnConstruction();
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public EvasionConfig(EvasionConfig other) : this() {
-          enabled_ = other.enabled_;
-          rangeThreshold_ = other.rangeThreshold_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public EvasionConfig Clone() {
-          return new EvasionConfig(this);
-        }
-
-        /// <summary>Field number for the "enabled" field.</summary>
-        public const int EnabledFieldNumber = 1;
-        private bool enabled_;
-        /// <summary>
-        /// If true, evasion is enabled.
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public bool Enabled {
-          get { return enabled_; }
-          set {
-            enabled_ = value;
-          }
-        }
-
-        /// <summary>Field number for the "range_threshold" field.</summary>
-        public const int RangeThresholdFieldNumber = 2;
-        private float rangeThreshold_;
-        /// <summary>
-        /// Range threshold in m at which the agent should evade.
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public float RangeThreshold {
-          get { return rangeThreshold_; }
-          set {
-            rangeThreshold_ = value;
-          }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override bool Equals(object other) {
-          return Equals(other as EvasionConfig);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public bool Equals(EvasionConfig other) {
-          if (ReferenceEquals(other, null)) {
-            return false;
-          }
-          if (ReferenceEquals(other, this)) {
-            return true;
-          }
-          if (Enabled != other.Enabled) return false;
-          if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(RangeThreshold, other.RangeThreshold)) return false;
-          return Equals(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override int GetHashCode() {
-          int hash = 1;
-          if (Enabled != false) hash ^= Enabled.GetHashCode();
-          if (RangeThreshold != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(RangeThreshold);
-          if (_unknownFields != null) {
-            hash ^= _unknownFields.GetHashCode();
-          }
-          return hash;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override string ToString() {
-          return pb::JsonFormatter.ToDiagnosticString(this);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void WriteTo(pb::CodedOutputStream output) {
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          output.WriteRawMessage(this);
-        #else
-          if (Enabled != false) {
-            output.WriteRawTag(8);
-            output.WriteBool(Enabled);
-          }
-          if (RangeThreshold != 0F) {
-            output.WriteRawTag(21);
-            output.WriteFloat(RangeThreshold);
-          }
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(output);
-          }
-        #endif
-        }
-
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-          if (Enabled != false) {
-            output.WriteRawTag(8);
-            output.WriteBool(Enabled);
-          }
-          if (RangeThreshold != 0F) {
-            output.WriteRawTag(21);
-            output.WriteFloat(RangeThreshold);
-          }
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(ref output);
-          }
-        }
-        #endif
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public int CalculateSize() {
-          int size = 0;
-          if (Enabled != false) {
-            size += 1 + 1;
-          }
-          if (RangeThreshold != 0F) {
-            size += 1 + 4;
-          }
-          if (_unknownFields != null) {
-            size += _unknownFields.CalculateSize();
-          }
-          return size;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(EvasionConfig other) {
-          if (other == null) {
-            return;
-          }
-          if (other.Enabled != false) {
-            Enabled = other.Enabled;
-          }
-          if (other.RangeThreshold != 0F) {
-            RangeThreshold = other.RangeThreshold;
-          }
-          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(pb::CodedInputStream input) {
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          input.ReadRawMessage(this);
-        #else
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-          if ((tag & 7) == 4) {
-            // Abort on any end group tag.
-            return;
-          }
-          switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                break;
-              case 8: {
-                Enabled = input.ReadBool();
-                break;
-              }
-              case 21: {
-                RangeThreshold = input.ReadFloat();
-                break;
-              }
-            }
-          }
-        #endif
-        }
-
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-          if ((tag & 7) == 4) {
-            // Abort on any end group tag.
-            return;
-          }
-          switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-                break;
-              case 8: {
-                Enabled = input.ReadBool();
-                break;
-              }
-              case 21: {
-                RangeThreshold = input.ReadFloat();
-                break;
-              }
-            }
-          }
-        }
-        #endif
-
-      }
-
-    }
-    #endregion
 
   }
 
@@ -580,7 +572,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Configs.DynamicConfigReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Configs.DynamicConfigReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

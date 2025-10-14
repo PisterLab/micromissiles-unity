@@ -50,6 +50,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   // target's current state.
   public IController Controller { get; set; }
 
+  // The sensor calculates the relative transformation from the current agent to a target.
+  public ISensor Sensor { get; set; }
+
   public Vector3 Position {
     get => transform.position;
     set => transform.position = value;
@@ -75,6 +78,17 @@ public class AgentBase : MonoBehaviour, IAgent {
   // TODO(titan): Event handlers for hits and misses.
 
   // TODO(titan): Methods for updating the agent and terminating the agent.
+
+  public float MaxForwardAcceleration() {
+    return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
+  }
+
+  public float MaxNormalAcceleration() {
+    var maxReferenceNormalAcceleration =
+        (StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) * Constants.kGravity;
+    var referenceSpeed = StaticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
+    return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
+  }
 
   public Transformation GetRelativeTransformation(IAgent target) {
     return GetRelativeTransformation(target.Position, target.Velocity, target.Acceleration);
