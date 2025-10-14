@@ -27,9 +27,9 @@ public class IdealSensorTests : TestBase {
 
   [Test]
   public void Sense_WaypointReturnsSameAsRelativeTransformation() {
-    var target = new Vector3(-12, 20, -1);
-    var relativeTransformation = _agent.GetRelativeTransformation(target);
-    var sensorOutput = _sensor.Sense(target);
+    var waypoint = new Vector3(-12, 20, -1);
+    var relativeTransformation = _agent.GetRelativeTransformation(waypoint);
+    var sensorOutput = _sensor.Sense(waypoint);
     Assert.AreEqual(relativeTransformation.Position, sensorOutput.Position);
     Assert.AreEqual(relativeTransformation.Velocity, sensorOutput.Velocity);
   }

@@ -20,9 +20,9 @@ public class IdealSensor : SensorBase {
 
   // Generate the sensor output from the relative transformation.
   private SensorOutput GenerateSensorOutput(in Transformation relativeTransformation) {
-    var sensorOutput = new SensorOutput();
-    sensorOutput.Position = relativeTransformation.Position;
-    sensorOutput.Velocity = relativeTransformation.Velocity;
-    return sensorOutput;
+    return new SensorOutput {
+      Position = relativeTransformation.Position,
+      Velocity = relativeTransformation.Velocity,
+    };
   }
 }
