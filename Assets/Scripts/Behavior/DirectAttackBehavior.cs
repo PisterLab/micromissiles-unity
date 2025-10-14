@@ -3,7 +3,7 @@ using UnityEngine;
 // Direct attack behavior.
 //
 // The agent will navigate directly to each waypoint on the way to the final target.
-public abstract class DirectAttackBehavior : AttackBehaviorBase {
+public class DirectAttackBehavior : AttackBehaviorBase {
   public DirectAttackBehavior(IAgent agent, Configs.AttackBehaviorConfig config)
       : base(agent, config) {}
 

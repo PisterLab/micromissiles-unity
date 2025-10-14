@@ -1,9 +1,9 @@
-using System;
 using NUnit.Framework;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using UnityEngine;
 
 public class ThreatTests : AgentTestBase {
   private FixedWingThreat _fixedWingThreat;

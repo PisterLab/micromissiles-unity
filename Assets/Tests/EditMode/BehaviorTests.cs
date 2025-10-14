@@ -1,6 +1,6 @@
 using NUnit.Framework;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BehaviorTests : TestBase {
   [Test]
