@@ -56,10 +56,10 @@ public class OrthogonalEvasion : EvasionBase {
     float groundProximityThreshold = Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor;
     if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
       // Determine the evasion direction based on the angle to pursuer.
-      var rightDirection = Vector3.Cross(Vector3.up, Agent.transform.forward);
       var angle = Vector3.SignedAngle(Agent.transform.forward, relativePosition, Vector3.up);
 
       // Choose the direction that leads away from the pursuer.
+      var rightDirection = Agent.transform.right;
       var bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
 
       // Blend between horizontal evasion and slight upward movement.
