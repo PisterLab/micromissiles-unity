@@ -6,10 +6,6 @@ public abstract class AttackBehaviorBase : IAttackBehavior {
   [SerializeField]
   private Configs.AttackBehaviorConfig _config;
 
-  // Flight plan.
-  [SerializeField]
-  private FlightPlan _flightPlan;
-
   public Configs.AttackBehaviorConfig Config {
     get => _config;
     set => _config = value;
