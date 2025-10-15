@@ -3,8 +3,8 @@ using UnityEngine;
 
 // The augmented proportional navigation controller applies augmented proportional navigation to
 // steer the agent towards its target.
-public class ApnController : PnController {
-  public ApnController(Agent agent, float navigationGain) : base(agent, navigationGain) {}
+public class ApnControllerLegacy : PnControllerLegacy {
+  public ApnControllerLegacy(Agent agent, float navigationGain) : base(agent, navigationGain) {}
 
   protected override Vector3 PlanImpl(in Transformation relativeTransformation) {
     Vector3 pnAccelerationInput = base.PlanImpl(relativeTransformation);

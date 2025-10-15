@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 // The waypoint controller steers the agent to the target using direct linear guidance.
-public class WaypointController : IControllerLegacy {
+public class WaypointControllerLegacy : IControllerLegacy {
   // Desired speed in m/s.
   float _desiredSpeed;
 
-  public WaypointController(Agent agent, float desiredSpeed) : base(agent) {
+  public WaypointControllerLegacy(Agent agent, float desiredSpeed) : base(agent) {
     _desiredSpeed = desiredSpeed;
   }
 
