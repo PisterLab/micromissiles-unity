@@ -190,7 +190,7 @@ For example, this algorithm may not always converge to a solution, so to prevent
 // Check that the intercept position and the predicted position are within some threshold
 // distance of each other.
 if (Vector3.Distance(interceptPosition, targetPosition) >= InterceptPositionThreshold) {
-  return LaunchPlan.NoLaunch;
+  return LaunchPlan.NoLaunch();
 }
 ```
 Furthermore, the algorithm checks that the threat is indeed heading towards the intercept position.
@@ -200,7 +200,7 @@ Furthermore, the algorithm checks that the threat is indeed heading towards the 
 Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
 Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
 if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
-  return LaunchPlan.NoLaunch;
+  return LaunchPlan.NoLaunch();
 }
 ```
 Finally, the interceptor might be launched into the posterior hemisphere away from the threat if the estimated intercept position is behind the launch position.
@@ -212,7 +212,7 @@ The solution is to delay the launch until the intercept position is in the anter
 Vector3 interceptorToInterceptPosition = interceptPosition;
 Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
 if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
-  return LaunchPlan.NoLaunch;
+  return LaunchPlan.NoLaunch();
 }
 ```
 

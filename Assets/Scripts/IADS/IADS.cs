@@ -112,15 +112,16 @@ public class IADS : MonoBehaviour {
       var predictor = new LinearExtrapolatorLegacy(_threatClusterMap[cluster].Centroid);
 
       // Create a launch planner.
-      ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
+      ILaunchPlannerLegacy planner =
+          new IterativeLaunchPlannerLegacy(_launchAnglePlanner, predictor);
       LaunchPlan plan = planner.Plan();
 
       // Check whether an interceptor should be launched.
       if (plan.ShouldLaunch) {
         Debug.Log(
-            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.RelativeInterceptPosition}.");
         UIManager.Instance.LogActionMessage(
-            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.RelativeInterceptPosition}.");
 
         // Create a new interceptor.
         Configs.AgentConfig config =
@@ -133,7 +134,7 @@ public class IADS : MonoBehaviour {
         initialState.Position = Coordinates3.ToProto(Vector3.zero);
 
         // Set the initial velocity to point along the launch vector.
-        initialState.Velocity = Coordinates3.ToProto(plan.GetNormalizedLaunchVector() * 1e-3f);
+        initialState.Velocity = Coordinates3.ToProto(plan.NormalizedLaunchVector() * 1e-3f);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Assign the interceptor to the cluster.

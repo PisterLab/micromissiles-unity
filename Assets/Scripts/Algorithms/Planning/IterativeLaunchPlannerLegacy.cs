@@ -8,7 +8,7 @@ using UnityEngine;
 //  current position.
 //  2. Intercept position estimation: The algorithm predicts the target position at the estimated
 //  time-to-intercept.
-public class IterativeLaunchPlanner : ILaunchPlanner {
+public class IterativeLaunchPlannerLegacy : ILaunchPlannerLegacy {
   // Maximum number of iterations before declaring failure. In certain cases, the predictor and
   // planner do not converge, so we need to limit the number of iterations.
   private const int MaxNumIterations = 10;
@@ -23,7 +23,8 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // granularity of the possible intercept positions.
   private const float InterceptPositionThreshold = 1000f;
 
-  public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictorLegacy predictor)
+  public IterativeLaunchPlannerLegacy(ILaunchAnglePlanner launchAnglePlanner,
+                                      IPredictorLegacy predictor)
       : base(launchAnglePlanner, predictor) {}
 
   // Plan the launch.
@@ -56,7 +57,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
       Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
       Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
       if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
-        return LaunchPlan.NoLaunch;
+        return LaunchPlan.NoLaunch();
       }
     }
 
@@ -66,14 +67,18 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
     Vector3 interceptorToInterceptPosition = interceptPosition;
     Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
     if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
-      return LaunchPlan.NoLaunch;
+      return LaunchPlan.NoLaunch();
     }
 
     // Check that the intercept position and the predicted position are within some threshold
     // distance of each other.
     if (Vector3.Distance(interceptPosition, targetPosition) < InterceptPositionThreshold) {
-      return new LaunchPlan(launchAngleOutput.LaunchAngle, targetPosition);
+      return new LaunchPlan {
+        ShouldLaunch = true,
+        LaunchAngle = launchAngleOutput.LaunchAngle,
+        RelativeInterceptPosition = targetPosition,
+      };
     }
-    return LaunchPlan.NoLaunch;
+    return LaunchPlan.NoLaunch();
   }
 }
