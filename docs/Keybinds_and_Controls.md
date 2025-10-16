@@ -2,10 +2,6 @@
 
 This guide will help you navigate and interact with the environment using your mouse and keyboard. Below are the keybindings organized into easy-to-read tables, along with detailed descriptions to enhance your experience.
 
-## Table of Contents
-
-[[toc]]
-
 ## Mouse Controls
 
 Use your mouse to control the camera's orientation and zoom level.

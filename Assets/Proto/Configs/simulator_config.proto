@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package configs;
+
+// Simulator configuration.
+message SimulatorConfig {
+  // Enable telemetry logging.
+  bool enable_telemetry_logging = 1;
+
+  // Enable event logging.
+  bool enable_event_logging = 2;
+
+  // Enable missile trail effect.
+  bool enable_missile_trail_effect = 3;
+
+  // Enable explosion effect.
+  bool enable_explosion_effect = 4;
+
+  // Physics update rate in Hz.
+  float physics_update_rate = 5;
+
+  // Persistent flight trails.
+  bool persistent_flight_trails = 6;
+}

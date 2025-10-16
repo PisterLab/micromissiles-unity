@@ -30,13 +30,12 @@ jobs:
       - name: Build documentation
         run: npm run docs:build
 
-      - name: Download coverage report
+      - name: Download coverage reports
         if: github.event_name == 'workflow_run'
         uses: actions/download-artifact@v4
         with:
-          path: coverage
-          pattern: Coverage results for *
-          merge-multiple: true
+          path: docs/.vitepress/dist/coverage
+          pattern: coverage-*
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
         continue-on-error: true
@@ -50,4 +49,4 @@ jobs:
           github.event.workflow_run.conclusion == 'success'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/.vitepress/dist
+          publish_dir: docs/.vitepress/dist

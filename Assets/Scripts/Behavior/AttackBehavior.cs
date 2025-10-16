@@ -1,51 +1,26 @@
-using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
-public class AttackBehavior {
-  public string name;
-  public AttackBehaviorType attackBehaviorType;
+public abstract class AttackBehavior {
+  private Configs.AttackBehaviorConfig _config;
 
-  public Vector3 targetPosition;
-  public Vector3 targetVelocity;
-  public Vector3 targetColliderSize;
-  public FlightPlan flightPlan;
-  // Returns the next waypoint for the threat to navigate to
-  // In addition, return the power setting to use toward the waypoint
-  public virtual (Vector3 waypointPosition, PowerSetting power)
-      GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition) {
-    return (targetPosition, PowerSetting.IDLE);
+  public string Name {
+    get { return _config.Name; }
   }
 
-  protected static string ResolveBehaviorPath(string json) {
-    // Append "Configs/Behaviors/Attack/" to the json path if it's not already there
-    if (!json.StartsWith("Configs/Behaviors/Attack/")) {
-      json = "Configs/Behaviors/Attack/" + json;
-    }
-    return json;
+  public Configs.AttackType Type {
+    get { return _config.Type; }
   }
 
-  public static AttackBehavior FromJson(string json) {
-    string resolvedPath = ResolveBehaviorPath(json);
-    string fileContent = ConfigLoader.LoadFromStreamingAssets(resolvedPath);
-    return JsonConvert.DeserializeObject<AttackBehavior>(fileContent, new JsonSerializerSettings {
-      Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
-    });
+  public FlightPlan FlightPlan {
+    get { return new FlightPlan(_config.FlightPlan); }
   }
 
-  [JsonConverter(typeof(StringEnumConverter))]
-  public enum AttackBehaviorType { DIRECT_ATTACK, PREPLANNED_ATTACK, SLALOM_ATTACK }
-}
+  public AttackBehavior(Configs.AttackBehaviorConfig config) {
+    _config = config;
+  }
 
-[System.Serializable]
-public class VectorWaypoint : Waypoint {
-  public Vector3 waypointPosition;
-  public PowerSetting power;
-}
-
-[System.Serializable]
-public class Waypoint {}
-public class FlightPlan {
-  public string type;
+  // Return the next waypoint for the threat to navigate to and the power setting to use towards the
+  // waypoint.
+  public abstract (Vector3 waypointPosition, Configs.Power power)
+      GetNextWaypoint(Vector3 currentPosition, Vector3 targetPosition);
 }

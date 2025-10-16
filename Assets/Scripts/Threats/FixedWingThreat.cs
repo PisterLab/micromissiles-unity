@@ -10,13 +10,11 @@ public class FixedWingThreat : Threat {
   private double _elapsedTime = 0;
   private Rigidbody _rigidbody;
 
-  // Start is called before the first frame update.
   protected override void Start() {
     base.Start();
     _rigidbody = GetComponent<Rigidbody>();
   }
 
-  // Update is called once per frame.
   protected override void FixedUpdate() {
     base.FixedUpdate();
   }
@@ -35,7 +33,7 @@ public class FixedWingThreat : Threat {
       // Update the waypoint and power setting.
       UpdateWaypointAndPower();
 
-      float sensorUpdatePeriod = 1f / dynamicAgentConfig.dynamic_config.sensor_config.frequency;
+      float sensorUpdatePeriod = 1f / agentConfig.DynamicConfig.SensorConfig.Frequency;
       if (_elapsedTime >= sensorUpdatePeriod) {
         // TODO: Implement guidance filter to estimate the state from sensor output.
         _elapsedTime = 0;
@@ -59,7 +57,7 @@ public class FixedWingThreat : Threat {
   private void UpdateWaypointAndPower() {
     // Get the next waypoint and power setting from the attack behavior.
     // TODO: Implement support for sensors to update the track on the target position.
-    (_currentWaypoint, _currentPowerSetting) =
+    (_currentWaypoint, _currentPower) =
         _attackBehavior.GetNextWaypoint(transform.position, _target.transform.position);
   }
 

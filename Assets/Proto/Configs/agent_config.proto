@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package configs;
+
+import "Configs/dynamic_config.proto";
+import "Simulation/state.proto";
+
+// Agent configuration.
+message AgentConfig {
+  // Submunitions configuration.
+  message SubmunitionsConfig {
+    // Number of submunitions.
+    uint32 num_submunitions = 1;
+
+    // Agent configuration.
+    AgentConfig agent_config = 2;
+  }
+
+  // Configuration file.
+  string config_file = 1;
+
+  // Attack behavior configuration file.
+  string attack_behavior_config_file = 2;
+
+  // Initial state.
+  simulation.State initial_state = 3;
+
+  // Initial state standard deviation to randomize the state variables.
+  simulation.State standard_deviation = 4;
+
+  // Dynamic configuration.
+  DynamicConfig dynamic_config = 5;
+
+  // Submunitions configuration.
+  SubmunitionsConfig submunitions_config = 6;
+}

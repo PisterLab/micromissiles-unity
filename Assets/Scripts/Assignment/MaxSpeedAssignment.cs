@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// The maximum speed assignment class assigns interceptors to the targets to maximize the intercept
+// The maximum speed assignment class assigns interceptors to the threats to maximize the intercept
 // speed by defining a cost of the assignment equal to the speed lost for the maneuver.
 public class MaxSpeedAssignment : IAssignment {
-  // Assign a target to each interceptor that has not been assigned a target yet.
-  public unsafe IEnumerable<IAssignment.AssignmentItem> Assign(
-      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
+  // Assign a threat to each interceptor that has not been assigned a threat yet.
+  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
+                                                        in IReadOnlyList<Threat> threats) {
     List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
 
     List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
@@ -30,11 +30,11 @@ public class MaxSpeedAssignment : IAssignment {
 
       // The speed decays exponentially with the travelled distance and with the bearing change.
       float distanceTimeConstant =
-          2 * interceptor.staticAgentConfig.bodyConfig.mass /
+          2 * (interceptor.staticConfig.BodyConfig?.Mass ?? 0) /
           ((float)Constants.CalculateAirDensityAtAltitude(interceptor.GetPosition().y) *
-           interceptor.staticAgentConfig.liftDragConfig.dragCoefficient *
-           interceptor.staticAgentConfig.bodyConfig.crossSectionalArea);
-      float angleTimeConstant = interceptor.staticAgentConfig.liftDragConfig.liftDragRatio;
+           (interceptor.staticConfig.LiftDragConfig?.DragCoefficient ?? 0) *
+           (interceptor.staticConfig.BodyConfig?.CrossSectionalArea ?? 0));
+      float angleTimeConstant = interceptor.staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
       // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
       float minTurningRadius = (float)(interceptor.GetVelocity().sqrMagnitude /
                                        interceptor.CalculateMaxNormalAcceleration());
@@ -59,13 +59,14 @@ public class MaxSpeedAssignment : IAssignment {
     // Solve the assignment problem.
     int[] assignedInterceptorIndices = new int[assignableInterceptors.Count];
     int[] assignedThreatIndices = new int[assignableInterceptors.Count];
-    int numAssignments = 0;
-    fixed(int* assignedInterceptorIndicesPtr = assignedInterceptorIndices)
-        fixed(int* assignedThreatIndicesPtr = assignedThreatIndices) {
-      numAssignments = Assignment.Assignment_EvenAssignment_Assign(
-          assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
-          (IntPtr)assignedInterceptorIndicesPtr, (IntPtr)assignedThreatIndicesPtr);
+    Plugin.StatusCode status = Assignment.Assignment_EvenAssignment_Assign(
+        assignableInterceptors.Count, activeThreats.Count, assignmentCosts,
+        assignedInterceptorIndices, assignedThreatIndices, out int numAssignments);
+    if (status != Plugin.StatusCode.StatusOk) {
+      Debug.Log($"Failed to assign the interceptors to the threats with status code {status}.");
+      return assignments;
     }
+
     for (int i = 0; i < numAssignments; ++i) {
       int interceptorIndex = assignedInterceptorIndices[i];
       int threatIndex = assignedThreatIndices[i];

@@ -1,6 +1,10 @@
 common --enable_bzlmod
 common --enable_platform_specific_config
 
+# Enable optimized builds by default.
+build -c opt
+
+# Use C++20.
 build:linux --cxxopt=-std=c++20
 build:macos --cxxopt=-std=c++20
 build:windows --cxxopt=/std:c++20
@@ -10,10 +14,3 @@ build:windows --host_cxxopt=/std:c++20
 build:linux --objccopt=-std=c++20
 build:macos --objccopt=-std=c++20
 build:windows --objccopt=/std:c++20
-
-# This flag is required by Protobuf because it is dropping support for MSVC +
-# Bazel.
-# See https://github.com/protocolbuffers/protobuf/issues/20085 for more details
-# and track https://github.com/protocolbuffers/protobuf/pull/22632 for a
-# possible revert.
-build:windows --define=protobuf_allow_msvc=true
