@@ -26,11 +26,11 @@ public class PriorityQueue<T> : IEnumerable<T> {
       throw new System.InvalidOperationException("The priority queue is empty.");
     }
 
-    float minKey = _buffer.Keys.Min();
-    Queue<T> queue = _buffer[minKey];
-    T item = queue.Dequeue();
+    var firstPair = _buffer.First();
+    var queue = firstPair.Value;
+    var item = queue.Dequeue();
     if (queue.Count == 0) {
-      _buffer.Remove(minKey);
+      _buffer.Remove(firstPair.Key);
     }
     return item;
   }
@@ -40,9 +40,7 @@ public class PriorityQueue<T> : IEnumerable<T> {
     if (IsEmpty()) {
       throw new System.InvalidOperationException("The priority queue is empty.");
     }
-
-    float minKey = _buffer.Keys.Min();
-    return _buffer[minKey].Peek();
+    return _buffer.First().Value.Peek();
   }
 
   // Return an enumerator for the priority queue.
