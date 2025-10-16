@@ -54,6 +54,7 @@ public class UIManager : MonoBehaviour {
 
   // Start is called before the first frame update
   void Awake() {
+    // singleton
     if (Instance == null)
       Instance = this;
     else
@@ -64,6 +65,8 @@ public class UIManager : MonoBehaviour {
     SetUIMode(UIMode.THREE_DIMENSIONAL);
     _configSelectorPanel.SetActive(false);
     SetupConfigSelectorPanel();
+    // inputManager = InputManager.Instance;
+    // worldManager = WorldManager.Instance;
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
@@ -75,10 +78,10 @@ public class UIManager : MonoBehaviour {
   }
 
   public void LogAction(string message, Color color) {
-    // Shift existing messages to older slots with faded colors.
+    // Shift existing messages to older slots with faded colors
     pppppActionMessageTextHandle.text = ppppActionMessageTextHandle.text;
     pppppActionMessageTextHandle.color =
-        ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 20%.
+        ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 75%
 
     ppppActionMessageTextHandle.text = ppActionMessageTextHandle.text;
     ppppActionMessageTextHandle.color = ppActionMessageTextHandle.color * 0.85f;
@@ -89,7 +92,7 @@ public class UIManager : MonoBehaviour {
     pActionMessageTextHandle.text = actionMessageTextHandle.text;
     pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.9f;
 
-    // Set new message.
+    // Set new message
     actionMessageTextHandle.text = message;
     actionMessageTextHandle.color = color;
 
@@ -121,8 +124,8 @@ public class UIManager : MonoBehaviour {
 
   private void PopulateConfigDropdown() {
     _configDropdown.ClearOptions();
-    string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs/Simulations");
-    string[] configFiles = Directory.GetFiles(configPath, "*.pbtxt");
+    string configPath = Path.Combine(Application.streamingAssetsPath, "Configs");
+    string[] configFiles = Directory.GetFiles(configPath, "*.json");
 
     List<string> configFileNames = new List<string>();
     foreach (string configFile in configFiles) {
@@ -134,6 +137,9 @@ public class UIManager : MonoBehaviour {
     string selectedConfig = _configDropdown.options[_configDropdown.value].text;
     SimManager.Instance.LoadNewConfig(selectedConfig);
     _configSelectorPanel.SetActive(false);
+    // if(!InputManager.Instance.mouseActive){
+    //     InputManager.Instance.mouseActive = true;
+    // }
   }
 
   public void ToggleUIMode() {
@@ -161,7 +167,9 @@ public class UIManager : MonoBehaviour {
   private void UpdateSwarmPanel() {
     string agentPanelText = "";
     foreach (Agent agent in SimManager.Instance.GetActiveAgents()) {
-      string jobText = agent.name + "| Phase: " + agent.GetFlightPhase().ToString();
+      string jobText =
+          agent.name + "| Phase: " +
+          (agent is AerialAgent aerialAgent ? aerialAgent.GetFlightPhase().ToString() : "N/A");
       agentPanelText += jobText + "\n";
     }
     SetAgentPanelText(agentPanelText);
@@ -254,6 +262,7 @@ public class UIManager : MonoBehaviour {
     UpdateSummaryText();
   }
 
+  // Update is called once per frame
   void Update() {
     // UpdateSwarmPanel();
     UpdateSimTimeText();

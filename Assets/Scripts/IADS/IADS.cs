@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine;
 
 // Integrated Air Defense System.
+// Manages launchers, threat clustering, and launch coordination.
 public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
 
@@ -17,6 +18,7 @@ public class IADS : MonoBehaviour {
   private ILaunchAnglePlanner _launchAnglePlanner =
       new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignment _assignmentScheme = new MaxSpeedAssignment();
+
   private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
@@ -65,9 +67,6 @@ public class IADS : MonoBehaviour {
   }
 
   public void LateUpdate() {
-    // Detach interceptors assigned to fully-destroyed clusters.
-    CleanupDestroyedClusters();
-
     // Update the cluster centroids.
     foreach (var cluster in _threatClusters) {
       cluster.Recenter();
@@ -95,6 +94,8 @@ public class IADS : MonoBehaviour {
     }
   }
 
+  // Checks each threat cluster and launches interceptors as needed.
+  // Now supports origin-aware launch planning with configurable assignment strategies.
   private void CheckAndLaunchInterceptors() {
     foreach (var cluster in _threatClusters) {
       // Check whether an interceptor has already been assigned to the cluster.
@@ -108,33 +109,55 @@ public class IADS : MonoBehaviour {
         continue;
       }
 
+      // Get the cluster's centroid position for origin selection
+      Vector3 threatPosition = _threatClusterMap[cluster].Centroid.transform.position;
+
+      // Get the interceptor configuration for this launch
+      DynamicAgentConfig config = GetInterceptorConfig();
+      if (config == null) {
+        Debug.LogWarning("No interceptor configuration available for launch.");
+        continue;
+      }
+
+      // Select appropriate launcher based on strategy
+      Launcher selectedLauncher = SelectLauncherForThreat(threatPosition, config.agent_model);
+      if (selectedLauncher == null) {
+        Debug.LogWarning(
+            $"No suitable launcher available for interceptor type {config.agent_model} against threat at {threatPosition}.");
+        continue;
+      }
+
       // Create a predictor to track the cluster's centroid.
       IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
 
-      // Create a launch planner.
+      // Create a launcher-aware launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
-      LaunchPlan plan = planner.Plan();
+
+      // Use the runtime object directly for planning
+      LaunchPlan plan = planner.Plan(selectedLauncher);
 
       // Check whether an interceptor should be launched.
       if (plan.ShouldLaunch) {
+        // Allocate capacity from the selected launcher
+        if (!selectedLauncher.AllocateInterceptor()) {
+          Debug.LogWarning(
+              $"Failed to allocate interceptor from launcher {selectedLauncher.LauncherId} - capacity exhausted.");
+          continue;
+        }
+
         Debug.Log(
-            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+            $"Launching interceptor from {selectedLauncher.LauncherId} at {selectedLauncher.GetPosition()} " +
+            $"with elevation {plan.LaunchAngle} degrees to intercept at {plan.InterceptPosition}.");
         UIManager.Instance.LogActionMessage(
-            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
+            $"[IADS] Launching interceptor from {selectedLauncher.LauncherId} at elevation {plan.LaunchAngle} degrees.");
 
-        // Create a new interceptor.
-        Configs.AgentConfig config =
-            SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs.Count > 0
-                ? SimManager.Instance.SimulationConfig.InterceptorSwarmConfigs[0].AgentConfig
-                : null;
-        Simulation.State initialState = new Simulation.State();
-
-        // Set the initial position, which defaults to the origin.
-        initialState.Position = Coordinates3.ToProto(Vector3.zero);
-
-        // Set the initial velocity to point along the launch vector.
-        initialState.Velocity = Coordinates3.ToProto(plan.GetNormalizedLaunchVector() * 1e-3f);
+        // Create a new interceptor with launcher-aware initial state
+        InitialState initialState =
+            CreateInitialStateFromLauncher(selectedLauncher, plan, Time.time);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
+
+        // Store launcher reference for capacity management
+        interceptor.gameObject.AddComponent<LauncherReference>().SetLauncher(selectedLauncher);
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;
@@ -147,10 +170,53 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  public bool ShouldLaunchSubmunitions(Interceptor carrier) {
-    if (!HasClusterAssignment(carrier)) {
-      return false;
+  // Gets the interceptor configuration for launching.
+  // Supports manual launcher assignment from swarm configuration.
+  private DynamicAgentConfig GetInterceptorConfig() {
+    var swarmConfigs = SimManager.Instance.SimulationConfig.interceptor_swarm_configs;
+    if (swarmConfigs == null || swarmConfigs.Count == 0) {
+      Debug.LogError("No interceptor swarm configurations available.");
+      return null;
     }
+
+    // For now, use the first configuration. Future work could implement
+    // more sophisticated configuration selection based on threat characteristics.
+    return swarmConfigs[0].dynamic_agent_config;
+  }
+
+  // Selects the most appropriate launcher for engaging a threat.
+  // Uses the configured assignment strategy and accounts for launcher capabilities.
+  // Returns the runtime launcher object, not just the configuration.
+  private Launcher SelectLauncherForThreat(Vector3 threatPosition, string interceptorType) {
+    // TODO: Implement the launcher assignment strategy.
+    var availableLaunchers =
+        SimManager.Instance.GetLaunchers()
+            .Where(l => l.SupportsInterceptorType(interceptorType) && l.HasCapacity())
+            .ToList();
+
+    if (availableLaunchers.Count == 0)
+      return null;
+
+    // For now, use a simple "closest" strategy.
+    return availableLaunchers.OrderBy(l => l.GetDistanceToTarget(threatPosition)).FirstOrDefault();
+  }
+
+  // Creates an initial state for an interceptor based on the selected launcher and launch plan.
+  // Uses the runtime launcher object to get actual position.
+  private InitialState CreateInitialStateFromLauncher(Launcher launcher, LaunchPlan plan,
+                                                      float currentTime) {
+    // Use the actual GameObject position from runtime object
+    Vector3 launcherPosition = launcher.GetPosition();
+
+    InitialState initialState =
+        new InitialState { position = launcherPosition,
+                           velocity = plan.GetNormalizedLaunchVector(launcherPosition) * 1e-3f,
+                           rotation = Vector3.zero };
+
+    return initialState;
+  }
+
+  public bool ShouldLaunchSubmunitions(Interceptor carrier) {
     // The carrier interceptor will spawn submunitions when any target is greater than 30 degrees
     // away from the carrier interceptor's current velocity or when any threat is within 500 meters
     // of the interceptor.
@@ -187,43 +253,6 @@ public class IADS : MonoBehaviour {
       }
     }
     return false;
-  }
-
-  // True if an interceptor still has a valid cluster assignment.
-  private bool HasClusterAssignment(Interceptor interceptor) {
-    return _interceptorClusterMap.ContainsKey(interceptor);
-  }
-
-  // Releases interceptors from clusters that only contain destroyed threats.
-  private void CleanupDestroyedClusters() {
-    foreach (Cluster cluster in _threatClusters) {
-      if (!cluster.IsFullyTerminated()) {
-        continue;
-      }
-
-      IReadOnlyList<Interceptor> assigned = _threatClusterMap[cluster].AssignedInterceptors;
-      if (assigned.Count == 0) {
-        continue;
-      }
-
-      foreach (Interceptor interceptor in assigned.ToList()) {
-        ReleaseInterceptorFromCluster(cluster, interceptor);
-      }
-    }
-  }
-
-  // Detach a single interceptor from a cluster and decide its next action.
-  // All interceptors are queued for reassignment in the hierarchical architecture,
-  // including carrier interceptors.
-  private void ReleaseInterceptorFromCluster(Cluster cluster, Interceptor interceptor) {
-    _threatClusterMap[cluster].RemoveInterceptor(interceptor);
-    _interceptorClusterMap.Remove(interceptor);
-    // TODO(titan): During the hierarchical architecture overhaul/refactor,
-    // we need to properly handle the assignment of carrier interceptors at this point.
-    // Since they have been unassigned from their cluster, they will need to be queued for
-    // a new cluster assignment. Right now, they will go for re-assignment but fail
-    // since they return false for IsAssignable().
-    RequestAssignInterceptorToThreat(interceptor);
   }
 
   public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {

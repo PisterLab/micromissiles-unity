@@ -135,7 +135,7 @@ public class TacticalPanelController : MonoBehaviour {
     TacticalSymbol tacticalSymbol = symbolObj.GetComponent<TacticalSymbol>();
 
     // Set common properties
-    tacticalSymbol.SetSprite(trackFile.Agent.staticConfig.VisualizationConfig?.SymbolPresent);
+    tacticalSymbol.SetSprite(trackFile.Agent.staticAgentConfig.symbolPresent);
     tacticalSymbol.SetDirectionArrowRotation(
         Mathf.Atan2(trackFile.Agent.GetVelocity().z, trackFile.Agent.GetVelocity().x) *
         Mathf.Rad2Deg);
@@ -144,7 +144,7 @@ public class TacticalPanelController : MonoBehaviour {
 
     // Set type-specific properties
     if (trackFile is ThreatData) {
-      tacticalSymbol.SetType(trackFile.Agent.staticConfig.AgentType.ToString());
+      tacticalSymbol.SetType(trackFile.Agent.staticAgentConfig.agentClass.ToString());
     } else if (trackFile is InterceptorData) {
       tacticalSymbol.SetType("Interceptor");
     }
@@ -164,7 +164,9 @@ public class TacticalPanelController : MonoBehaviour {
         $"{Utilities.ConvertMetersToFeet(trackFile.Agent.transform.position.y):F0}ft");
   }
 
-  /// Updates the position of a symbol based on the threat's real-world position.
+  // Updates the position of a symbol based on the threat's real-world position.
+  //   symbolObj: The symbol GameObject to update.
+  //   threatPosition: The real-world position of the threat.
   private void UpdateSymbolPosition(GameObject symbolObj, Vector3 threatPosition) {
     if (_polarGridGraphic == null) {
       Debug.LogError("TacticalPolarGridGraphic reference is missing.");
@@ -231,7 +233,8 @@ public class TacticalPanelController : MonoBehaviour {
     Pan(delta);
   }
 
-  /// Adjusts the radar scale by the specified amount.
+  // Adjusts the radar scale by the specified amount.
+  //   amount: The amount to adjust the radar scale.
   private void AdjustRadarScale(float amount) {
     Vector3 newScale = _radarUIGroupRectTransform.localScale + new Vector3(amount, amount, 0f);
 

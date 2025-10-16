@@ -27,8 +27,10 @@ public class InputManager : MonoBehaviour {
   private Vector2 _lastMousePosition;
   private bool _isDragging = false;
 
+  // Start is called before the first frame update
   void Start() {}
 
+  // Update is called once per frame.
   void Update() {
     HandleInput();
   }

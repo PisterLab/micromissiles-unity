@@ -1,0 +1,8 @@
+{
+    "enableTelemetryLogging": false,
+    "enableEventLogging": true,
+    "enableMissileTrailEffect": false,
+    "enableExplosionEffect": false,
+    "physicsUpdateRate": 500,
+    "persistentFlightTrails": true
+}

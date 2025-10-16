@@ -1,30 +1,27 @@
 #!/bin/bash
 
-# Path to the clang-format executable.
+# Path to clang-format executable (if it's already on PATH, just "clang-format")
 CLANG_FORMAT="clang-format"
 
-# Check if clang-format is available.
+# Check if clang-format is available
 if ! command -v "$CLANG_FORMAT" &> /dev/null; then
-  echo "Error: clang-format not found. Please ensure that it is installed and in your PATH."
-  exit 1
+    echo "Error: clang-format not found. Please ensure it's installed and in your PATH."
+    exit 1
 fi
 
-# Format all .cs files in Assets, excluding Scripts/Generated.
+# 1) Format all .cs and .json files in Assets/
 echo "Formatting Unity Assets..."
-(
-  cd Assets || exit
-  find . -type d -path "./Scripts/Generated" -prune -o \
-    -type f -name "*.cs" \
-    -exec "$CLANG_FORMAT" -i -style=file {} +
-)
+cd Assets
+find . -type f \( -name "*.cs" -o -name "*.json" \) \
+  -exec "$CLANG_FORMAT" -i -style=file {} +
+cd ..
 
-# Format only C/C++ files under plugins, excluding any in bazel-* directories.
+# 2) Format only C/C++ files under plugins/, excluding any in bazel-* directories
 echo "Formatting Bazel project files..."
-(
-  cd plugins || exit
-  find . -type d -name "bazel-\*" -prune -o \
-    -type f \( -name "*.cc" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) \
-    -exec "$CLANG_FORMAT" -i -style=file {} +
-)
+cd plugins
+find . -type d -name "bazel-\*" -prune -o \
+  -type f \( -name "*.cc" -o -name "*.cpp" -o -name "*.h" -o -name "*.hpp" \) \
+  -exec "$CLANG_FORMAT" -i -style=file {} +
+cd ..
 
 echo "Formatting complete."

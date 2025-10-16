@@ -39,11 +39,6 @@ public class ThreatClusterData {
     get { return _assignedInterceptors.Count; }
   }
 
-  // Read-only view of interceptors currently assigned to this cluster.
-  public IReadOnlyList<Interceptor> AssignedInterceptors {
-    get { return _assignedInterceptors; }
-  }
-
   public void UpdateCentroid() {
     _agent.SetPosition(_cluster.Centroid());
     _agent.SetVelocity(_cluster.Velocity());

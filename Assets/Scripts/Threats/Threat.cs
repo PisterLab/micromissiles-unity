@@ -2,12 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Threat : Agent {
+// An abstract class for all threats.
+public abstract class Threat : AerialAgent {
   protected AttackBehavior _attackBehavior;
   [SerializeField]
   protected Vector3 _currentWaypoint;
   [SerializeField]
-  protected Configs.Power _currentPower;
+  protected PowerSetting _currentPowerSetting;
 
   protected SensorOutput _sensorOutput;
   protected Sensor _sensor;
@@ -19,18 +20,26 @@ public abstract class Threat : Agent {
 
   public void SetAttackBehavior(AttackBehavior attackBehavior) {
     _attackBehavior = attackBehavior;
-    // TODO(titan): Set the threat's initial target properly.
-    _target = SimManager.Instance.CreateDummyAgent(Vector3.zero, Vector3.zero);
+    _target = SimManager.Instance.CreateDummyAgent(attackBehavior.targetPosition,
+                                                   attackBehavior.targetVelocity);
   }
 
-  protected float LookupPowerTable(Configs.Power power) {
-    foreach (var entry in staticConfig.PowerTable) {
-      if (entry.Power == power) {
-        return entry.Speed;
-      }
+  protected float PowerTableLookup(PowerSetting powerSetting) {
+    switch (powerSetting) {
+      case PowerSetting.IDLE:
+        return staticAgentConfig.powerTable.IDLE;
+      case PowerSetting.LOW:
+        return staticAgentConfig.powerTable.LOW;
+      case PowerSetting.CRUISE:
+        return staticAgentConfig.powerTable.CRUISE;
+      case PowerSetting.MIL:
+        return staticAgentConfig.powerTable.MIL;
+      case PowerSetting.MAX:
+        return staticAgentConfig.powerTable.MAX;
+      default:
+        Debug.LogError("Invalid power setting.");
+        return 0f;
     }
-    Debug.LogError($"Invalid power setting: {power}.");
-    return 0f;
   }
 
   public override bool IsAssignable() {
@@ -50,7 +59,7 @@ public abstract class Threat : Agent {
     Vector3 transformVelocity = GetVelocity();
 
     // Get the target speed for the current power setting.
-    float targetSpeed = LookupPowerTable(_currentPower);
+    float targetSpeed = PowerTableLookup(_currentPowerSetting);
 
     // Calculate the current speed.
     float currentSpeed = transformVelocity.magnitude;
@@ -102,7 +111,7 @@ public abstract class Threat : Agent {
   }
 
   protected bool ShouldEvade() {
-    if (!agentConfig.DynamicConfig.FlightConfig.EvasionConfig.Enabled) {
+    if (!dynamicAgentConfig.dynamic_config.flight_config.evasionEnabled) {
       return false;
     }
 
@@ -112,7 +121,7 @@ public abstract class Threat : Agent {
     }
 
     float evasionRangeThreshold =
-        agentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
+        dynamicAgentConfig.dynamic_config.flight_config.evasionRangeThreshold;
     SensorOutput sensorOutput = _sensor.Sense(closestInterceptor);
     return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
   }
@@ -123,8 +132,8 @@ public abstract class Threat : Agent {
     Vector3 transformPosition = GetPosition();
     Vector3 interceptorPosition = interceptor.GetPosition();
 
-    // Set power to maximum.
-    _currentPower = Configs.Power.Max;
+    // Set power setting to maximum.
+    _currentPowerSetting = PowerSetting.MAX;
 
     // Evade the interceptor by changing the velocity to be normal to the interceptor's velocity.
     Vector3 normalVelocity = Vector3.ProjectOnPlane(transformVelocity, interceptorVelocity);

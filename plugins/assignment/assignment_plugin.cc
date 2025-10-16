@@ -2,8 +2,6 @@
 
 #include <vector>
 
-#include "Plugin/status.pb.h"
-#include "assignment/assignment.h"
 #include "assignment/cover_assignment.h"
 #include "assignment/even_assignment.h"
 #include "assignment/weighted_even_assignment.h"
@@ -22,61 +20,52 @@ std::vector<std::vector<double>> CreateCostMatrix(const int num_agents,
   }
   return cost_matrix;
 }
+}  // namespace
 
-// Perform the assignment and return the assignments for the agents and tasks as
-// output arguments.
-plugin::StatusCode PerformAssignment(const assignment::Assignment& assignment,
-                                     int* assigned_agents, int* assigned_tasks,
-                                     int* num_assignments) {
+extern "C" {
+// Assign the agents to the tasks using a cover assignment.
+int Assignment_CoverAssignment_Assign(const int num_agents, const int num_tasks,
+                                      const float* costs, int* assigned_agents,
+                                      int* assigned_tasks) {
+  // Create the cost matrix.
+  const auto cost_matrix = CreateCostMatrix(num_agents, num_tasks, costs);
+
   // Perform the assignment.
-  std::vector<assignment::Assignment::AssignmentItem> assignments;
-  const auto assignment_status = assignment.Assign(&assignments);
-  if (assignment_status != plugin::STATUS_OK) {
-    return assignment_status;
-  }
+  assignment::CoverAssignment assignment(num_agents, num_tasks, cost_matrix);
+  const auto assignments = assignment.Assign();
 
   // Record the assignments.
   for (int i = 0; i < assignments.size(); ++i) {
     assigned_agents[i] = assignments[i].first;
     assigned_tasks[i] = assignments[i].second;
   }
-  *num_assignments = static_cast<int>(assignments.size());
-  return plugin::STATUS_OK;
-}
-}  // namespace
-
-extern "C" {
-// Assign the agents to the tasks using a cover assignment.
-plugin::StatusCode Assignment_CoverAssignment_Assign(
-    const int num_agents, const int num_tasks, const float* costs,
-    int* assigned_agents, int* assigned_tasks, int* num_assignments) {
-  // Create the cost matrix.
-  const auto cost_matrix = CreateCostMatrix(num_agents, num_tasks, costs);
-
-  // Perform the assignment.
-  assignment::CoverAssignment assignment(num_agents, num_tasks, cost_matrix);
-  return PerformAssignment(assignment, assigned_agents, assigned_tasks,
-                           num_assignments);
+  return assignments.size();
 }
 
 // Assign the agents to the tasks using an even assignment.
-plugin::StatusCode Assignment_EvenAssignment_Assign(
-    const int num_agents, const int num_tasks, const float* costs,
-    int* assigned_agents, int* assigned_tasks, int* num_assignments) {
+int Assignment_EvenAssignment_Assign(const int num_agents, const int num_tasks,
+                                     const float* costs, int* assigned_agents,
+                                     int* assigned_tasks) {
   // Create the cost matrix.
   const auto cost_matrix = CreateCostMatrix(num_agents, num_tasks, costs);
 
   // Perform the assignment.
   assignment::EvenAssignment assignment(num_agents, num_tasks, cost_matrix);
-  return PerformAssignment(assignment, assigned_agents, assigned_tasks,
-                           num_assignments);
+  const auto assignments = assignment.Assign();
+
+  // Record the assignments.
+  for (int i = 0; i < assignments.size(); ++i) {
+    assigned_agents[i] = assignments[i].first;
+    assigned_tasks[i] = assignments[i].second;
+  }
+  return assignments.size();
 }
 
 // Assign the agents to the tasks using a weighted even assignment.
-plugin::StatusCode Assignment_WeightedEvenAssignment_Assign(
+int Assignment_WeightedEvenAssignment_Assign(
     const int num_agents, const int num_tasks, const float* costs,
     const float* weights, const int weight_scaling_factor, int* assigned_agents,
-    int* assigned_tasks, int* num_assignments) {
+    int* assigned_tasks) {
   // Create the cost matrix and the task weights.
   const auto cost_matrix = CreateCostMatrix(num_agents, num_tasks, costs);
   std::vector<double> task_weights(num_tasks);
@@ -87,7 +76,13 @@ plugin::StatusCode Assignment_WeightedEvenAssignment_Assign(
   // Perform the assignment.
   assignment::WeightedEvenAssignment assignment(
       num_agents, num_tasks, cost_matrix, task_weights, weight_scaling_factor);
-  return PerformAssignment(assignment, assigned_agents, assigned_tasks,
-                           num_assignments);
+  const auto assignments = assignment.Assign();
+
+  // Record the assignments.
+  for (int i = 0; i < assignments.size(); ++i) {
+    assigned_agents[i] = assignments[i].first;
+    assigned_tasks[i] = assignments[i].second;
+  }
+  return assignments.size();
 }
 }

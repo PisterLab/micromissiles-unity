@@ -15,15 +15,15 @@ public class UIDialog : MonoBehaviour {
   [SerializeField]
   private RectTransform contentHandle;
 
-  /// Tabs
+  // TABS
   [SerializeField]
   private float _tabWidth = 15f;
   [SerializeField]
   private float _tabHeight = 8f;
-  // List of dialog tabs.
+  // List of dialog tabs
   private List<GameObject> dialogTabs;
 
-  /// Entries
+  // ENTRIES
   private List<UISelectableEntry> entries;
 
   [SerializeField]
@@ -35,6 +35,7 @@ public class UIDialog : MonoBehaviour {
 
   private bool isOpen;
 
+  // Start is called before the first frame update
   public virtual void Start() {
     dialogTitleHandle.text = dialogTitle;
     dialogTitleHandle.font = UIManager.Instance.GlobalFont;
@@ -48,6 +49,13 @@ public class UIDialog : MonoBehaviour {
     if (cleanupPool != null) {
       ClearDialogEntries();
     }
+    /*
+    if(entries != null) {
+      foreach(UISelectableEntry entry in entries) {
+        Destroy(entry.gameObject);
+      }
+    }
+    */
     dialogTabs = new List<GameObject>();
     entries = new List<UISelectableEntry>();
     cleanupPool = new List<UISelectableEntry>();
@@ -75,60 +83,60 @@ public class UIDialog : MonoBehaviour {
     return _tabHeight;
   }
 
-  /// Returns the height of the dialog title bar.
+  // Returns the height of the dialog title bar
   public float GetTitleBarHeight() {
     return dialogTitleHandle.rectTransform.sizeDelta.y;
   }
 
-  /// Adds a new tab to the dialog. When clicked, it will call the given callback.
+  // Adds a new tab to the dialog, when clicked it will call the given callback
   public void AddDialogTab(string tabName, Action onClick) {
     dialogTabs.Add(AddTabButton(tabName, onClick));
   }
 
-  /// Add the tab button to the right of the existing tabs.
+  // Add the tab button to the right of the existing tabs
   private GameObject AddTabButton(string tabName, Action onClick) {
     GameObject tabButton = new GameObject("TabButton", typeof(RectTransform));
 
-    // Pass false in the second parameter to keep local scale at (1, 1, 1).
+    // Pass false in the second parameter to keep local scale at (1,1,1)
     tabButton.transform.SetParent(transform, false);
 
-    // Optional: Force localScale to one, if you want to be explicit.
+    // Optional: Force localScale to one, if you want to be explicit
     // tabButton.transform.localScale = Vector3.one;
 
-    // RectTransform setup.
+    // RectTransform setup
     RectTransform rTransform = tabButton.GetComponent<RectTransform>();
     rTransform.anchorMin = new Vector2(0, 1);
     rTransform.anchorMax = new Vector2(0, 1);
     rTransform.pivot = new Vector2(0, 1);
     rTransform.sizeDelta = new Vector2(_tabWidth, _tabHeight);
 
-    // Calculate anchoredPosition based on how many tabs exist.
+    // Calculate anchoredPosition based on how many tabs exist
     rTransform.anchoredPosition = new Vector2(_tabWidth * dialogTabs.Count, -(GetTitleBarHeight()));
 
-    // Add the onClick callback to the button.
+    // Add the onClick callback to the button
     Button button = tabButton.AddComponent<Button>();
     button.onClick.AddListener(() => onClick());
 
-    // Add the image to the button and link it to the tab.
+    // Add the image to the button and link it to the tab
     button.targetGraphic = tabButton.AddComponent<Image>();
 
-    // Create the child text object.
+    // Create the child text object
     AddTabText(tabName, tabButton);
 
     return tabButton;
   }
 
-  /// Add text as a child of the tab's button object.
+  // Add text as a child of the tab's button object
   private void AddTabText(string tabName, GameObject tabButton) {
     GameObject tabText = new GameObject("TabText", typeof(RectTransform));
 
-    // Again, pass false to avoid messing up the new child's scale.
+    // Again, pass false to avoid messing up the new child's scale
     tabText.transform.SetParent(tabButton.transform, false);
 
-    // Optional: Force localScale to one, if you want to be explicit.
+    // Optional: Force localScale to one, if you want to be explicit
     // tabText.transform.localScale = Vector3.one;
 
-    // RectTransform setup.
+    // RectTransform setup
     RectTransform textRectTransform = tabText.GetComponent<RectTransform>();
     textRectTransform.anchorMin = new Vector2(0.5f, 0.5f);
     textRectTransform.anchorMax = new Vector2(0.5f, 0.5f);
@@ -136,7 +144,7 @@ public class UIDialog : MonoBehaviour {
     textRectTransform.sizeDelta = new Vector2(_tabWidth, _tabHeight);
     textRectTransform.anchoredPosition = new Vector2(0, 0);
 
-    // Create the TextMeshProUGUI component.
+    // Create the TextMeshProUGUI component
     TextMeshProUGUI buttonText = tabText.AddComponent<TextMeshProUGUI>();
     buttonText.text = tabName;
     buttonText.font = UIManager.Instance.GlobalFont;
@@ -147,12 +155,12 @@ public class UIDialog : MonoBehaviour {
   }
 
   public virtual UISelectableEntry CreateSelectableEntry() {
-    // Create a new entry object with content handle as parent.
+    // Create a new entry object with content handle as parent
     GameObject go = Instantiate(Resources.Load<GameObject>("Prefabs/EmptyObject"), contentHandle);
     go.name = "UISelectableEntry";
     UISelectableEntry entry = go.AddComponent<UISelectableEntry>();
     entry.SetParent(this);
-    // add to cleanup pool so we can clear later in clear dialog entries.
+    // add to cleanup pool so we can clear later in clear dialog entries
     cleanupPool.Add(entry);
     return entry;
   }
@@ -168,10 +176,10 @@ public class UIDialog : MonoBehaviour {
       entries.Clear();
   }
 
-  /// Clears, sets, and prints the dialog entries in the order they were added
+  // Clears, sets, and prints the dialog entries in the order they were added
   public virtual void SetDialogEntries(List<UISelectableEntry> entries) {
     this.entries = entries;
-    // Calculate total height of the content.
+    // calculate total height of the content
     float heightHead = -1 * GetTabHeight();
     int count = 0;
     foreach (UISelectableEntry entry in this.entries) {
@@ -192,14 +200,16 @@ public class UIDialog : MonoBehaviour {
     rTransform.anchorMax = new Vector2(1, 1);
     rTransform.pivot = new Vector2(0.5f, 1f);
 
-    rTransform.anchoredPosition = new Vector2(0, heightHead);  // Positioning from top.
+    rTransform.anchoredPosition = new Vector2(0, heightHead);  // positioning from top
     rTransform.sizeDelta = new Vector2(0, entryHeight);
     float padding = 5f;
     rTransform.SetRight(padding);
     rTransform.SetLeft(padding);
+    // actually indent the text
     entry.GetTextTransform(0).anchoredPosition = new Vector2(entryIndentWidth * depth, 0);
     heightHead -= entryHeight;
     ++count;
+    // Print the children
     if (entry.GetChildEntries() != null) {
       foreach (UISelectableEntry child in entry.GetChildEntries()) {
         (heightHead, count) = RecursiveContentPrint(child, depth + 1, heightHead, count);
@@ -208,5 +218,6 @@ public class UIDialog : MonoBehaviour {
     return (heightHead, count);
   }
 
+  // Update is called once per frame
   void Update() {}
 }

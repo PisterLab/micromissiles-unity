@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Plugin/status.pb.h"
 #include "assignment/assignment.h"
 
 namespace assignment {
@@ -21,8 +20,7 @@ TEST(WeightedEvenAssignmentTest, AssignUnique) {
   const std::vector<double> weights{1, 1, 1, 1};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/1);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
+  const auto assignments = assignment.Assign();
   std::unordered_map<int, int> expected_assignments{
       {0, 3}, {1, 2}, {2, 1}, {3, 0}, {4, 0},
   };
@@ -43,8 +41,7 @@ TEST(WeightedEvenAssignmentTest, AssignMultiple) {
   const std::vector<double> weights{1, 1};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/1);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
+  const auto assignments = assignment.Assign();
   std::unordered_map<int, int> expected_assignments{
       {0, 0}, {1, 1}, {2, 0}, {3, 1}, {4, 1},
   };
@@ -65,8 +62,7 @@ TEST(WeightedEvenAssignmentTest, AssignWeighted) {
   const std::vector<double> weights{1, 0.5};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/2);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
+  const auto assignments = assignment.Assign();
   std::unordered_map<int, int> expected_assignments{
       {0, 1}, {1, 1}, {2, 1}, {3, 1}, {4, 0}, {5, 0},
   };
@@ -88,8 +84,7 @@ TEST(WeightedEvenAssignmentTest, AssignFewer) {
   const std::vector<double> weights{1, 1, 1};
   WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
                                     /*weighted_scaling_factor=*/1);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_EQ(assignment.Assign(&assignments), plugin::STATUS_OK);
+  const auto assignments = assignment.Assign();
   std::unordered_map<int, int> expected_assignments{
       {0, 1},
       {1, 2},
@@ -100,49 +95,6 @@ TEST(WeightedEvenAssignmentTest, AssignFewer) {
         << "Agent " << agent_index << " was assigned to task " << task_index
         << " but expected task " << expected_assignments[agent_index] << ".";
   }
-}
-
-TEST(WeightedEvenAssignmentTest, AssignInvalidCostsNumAgents) {
-  constexpr int kNumAgents = 2;
-  constexpr int kNumTasks = 3;
-  const std::vector<std::vector<double>> costs{
-      {3, 0, 2},
-      {4, 2, 3},
-      {4, 2, 3},
-  };
-  const std::vector<double> weights{1, 1, 1};
-  WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
-                                    /*weighted_scaling_factor=*/1);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
-}
-
-TEST(WeightedEvenAssignmentTest, AssignInvalidCostsNumTasks) {
-  constexpr int kNumAgents = 2;
-  constexpr int kNumTasks = 3;
-  const std::vector<std::vector<double>> costs{
-      {3, 0, 2},
-      {4, 2, 3, 4},
-  };
-  const std::vector<double> weights{1, 1, 1};
-  WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
-                                    /*weighted_scaling_factor=*/1);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
-}
-
-TEST(WeightedEvenAssignmentTest, AssignInvalidWeights) {
-  constexpr int kNumAgents = 2;
-  constexpr int kNumTasks = 3;
-  const std::vector<std::vector<double>> costs{
-      {3, 0, 2},
-      {4, 2, 3},
-  };
-  const std::vector<double> weights{1, 1, 1, 2};
-  WeightedEvenAssignment assignment(kNumAgents, kNumTasks, costs, weights,
-                                    /*weighted_scaling_factor=*/1);
-  std::vector<Assignment::AssignmentItem> assignments;
-  EXPECT_NE(assignment.Assign(&assignments), plugin::STATUS_OK);
 }
 
 }  // namespace

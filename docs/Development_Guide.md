@@ -3,6 +3,10 @@
 This guide will help you set up and run the project in development mode.
 You'll learn how to install Unity Hub, open the project, and navigate the main scene.
 
+## Table of Contents
+
+[[toc]]
+
 ## Prerequisites
 
 - A computer with internet access.

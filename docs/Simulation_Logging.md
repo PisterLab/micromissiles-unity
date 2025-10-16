@@ -2,6 +2,10 @@
 
 This guide provides instructions on how to access and interpret the simulation logs, how they are structured by the `SimMonitor` class, and how to utilize the provided `visualize_log.py` script to analyze simulation data. Additionally, it offers guidance on creating your own scripts for custom analysis.
 
+## Table of Contents
+
+[[toc]]
+
 ## Overview
 
 ![Python simulation log visualizer](./images/sim_visualizer.png)

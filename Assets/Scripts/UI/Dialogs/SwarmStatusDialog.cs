@@ -4,6 +4,10 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.AI;
 public class SwarmStatusDialog : UIDialog {
+  // Start is called before the first frame update
+
+  // bool wasStarted = false;
+
   private List<List<(Agent, bool)>> interceptorSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> submunitionsSwarms = new List<List<(Agent, bool)>>();
   private List<List<(Agent, bool)>> threatsSwarms = new List<List<(Agent, bool)>>();
@@ -13,6 +17,7 @@ public class SwarmStatusDialog : UIDialog {
     base.Start();
 
     InitDialog();
+    // wasStarted = true;
   }
 
   public void InitDialog() {
@@ -147,6 +152,11 @@ public class SwarmStatusDialog : UIDialog {
 
   protected override void OnEnable() {
     base.OnEnable();
+    // if (!wasStarted) {
+    //   base.Start();
+    //   InitDialog();
+    //   wasStarted = true;
+    // }
     if (SimManager.Instance != null) {
       interceptorSwarms = SimManager.Instance.GetInterceptorSwarms();
       submunitionsSwarms = SimManager.Instance.GetSubmunitionsSwarms();
@@ -154,6 +164,6 @@ public class SwarmStatusDialog : UIDialog {
       RedrawFullDialog();
     }
   }
-
+  // Update is called once per frame
   void Update() {}
 }

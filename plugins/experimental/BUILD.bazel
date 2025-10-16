@@ -8,7 +8,7 @@ cc_binary(
     deps = [
         "//base",
         "//base:logging",
-        "@or-tools//ortools/sat:cp_model",
+        "@ortools//ortools/sat:cp_model",
     ],
 )
 
@@ -18,7 +18,7 @@ cc_binary(
     deps = [
         "//base",
         "//base:logging",
-        "@or-tools//ortools/linear_solver",
+        "@ortools//ortools/linear_solver",
     ],
 )
 
@@ -28,6 +28,6 @@ cc_binary(
     deps = [
         "//base",
         "//base:logging",
-        "@or-tools//ortools/graph:assignment",
+        "@ortools//ortools/graph:assignment",
     ],
 )

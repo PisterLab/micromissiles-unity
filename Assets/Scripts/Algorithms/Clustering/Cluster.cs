@@ -119,9 +119,4 @@ public class Cluster {
   public void Merge(in Cluster cluster) {
     AddObjects(cluster.Objects);
   }
-
-  // Returns true if all threats in the cluster are terminated.
-  public bool IsFullyTerminated() {
-    return Threats.All(threat => threat.IsTerminated());
-  }
 }

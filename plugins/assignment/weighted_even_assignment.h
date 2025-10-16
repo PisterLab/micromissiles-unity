@@ -8,35 +8,32 @@
 #include <cstdint>
 #include <vector>
 
-#include "Plugin/status.pb.h"
-#include "assignment/cp_assignment.h"
-#include "ortools/sat/cp_model.h"
+#include "assignment/assignment.h"
 
 namespace assignment {
 
 // Weighted even assignment.
-class WeightedEvenAssignment : public CpAssignment {
+class WeightedEvenAssignment : public Assignment {
  public:
   WeightedEvenAssignment(const int num_agents, const int num_tasks,
                          std::vector<std::vector<double>> costs,
                          std::vector<double> weights,
                          const int64_t weight_scaling_factor)
-      : CpAssignment(num_agents, num_tasks, std::move(costs)),
+      : Assignment(num_agents, num_tasks, std::move(costs)),
         weights_(std::move(weights)),
-        weight_scaling_factor_(weight_scaling_factor) {}
+        weight_scaling_factor_(weight_scaling_factor) {
+    ValidateWeights();
+  }
 
   WeightedEvenAssignment(const WeightedEvenAssignment&) = default;
   WeightedEvenAssignment& operator=(const WeightedEvenAssignment&) = default;
 
- protected:
-  // Define the constraints of the assignment problem.
-  plugin::StatusCode DefineConstraints(
-      const std::vector<std::vector<operations_research::sat::BoolVar>>& x,
-      operations_research::sat::CpModelBuilder* cp_model) const override;
+  // Assign the agents to the tasks.
+  std::vector<AssignmentItem> Assign() const override;
 
  private:
   // Validate the task weights.
-  plugin::StatusCode ValidateWeights() const;
+  void ValidateWeights() const;
 
   // Task weights.
   std::vector<double> weights_;

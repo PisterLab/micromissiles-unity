@@ -8,10 +8,7 @@ cc_library(
     name = "assignment",
     srcs = ["assignment.cc"],
     hdrs = ["assignment.h"],
-    deps = [
-        "//base:logging",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-    ],
+    deps = ["@abseil-cpp//absl/strings:str_format"],
 )
 
 cc_library(
@@ -19,9 +16,9 @@ cc_library(
     srcs = ["cover_assignment.cc"],
     hdrs = ["cover_assignment.h"],
     deps = [
-        ":cp_assignment",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-        "@or-tools//ortools/sat:cp_model",
+        ":assignment",
+        "//base:logging",
+        "@ortools//ortools/sat:cp_model",
     ],
 )
 
@@ -33,19 +30,6 @@ cc_test(
         ":cover_assignment",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-    ],
-)
-
-cc_library(
-    name = "cp_assignment",
-    srcs = ["cp_assignment.cc"],
-    hdrs = ["cp_assignment.h"],
-    deps = [
-        ":assignment",
-        "//base:logging",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-        "@or-tools//ortools/sat:cp_model",
     ],
 )
 
@@ -54,9 +38,9 @@ cc_library(
     srcs = ["even_assignment.cc"],
     hdrs = ["even_assignment.h"],
     deps = [
-        ":cp_assignment",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-        "@or-tools//ortools/sat:cp_model",
+        ":assignment",
+        "//base:logging",
+        "@ortools//ortools/sat:cp_model",
     ],
 )
 
@@ -68,7 +52,6 @@ cc_test(
         ":even_assignment",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
-        "@micromissiles-proto//Plugin:status_cc_proto",
     ],
 )
 
@@ -77,10 +60,10 @@ cc_library(
     srcs = ["weighted_even_assignment.cc"],
     hdrs = ["weighted_even_assignment.h"],
     deps = [
-        ":cp_assignment",
+        ":assignment",
         "//base:logging",
-        "@micromissiles-proto//Plugin:status_cc_proto",
-        "@or-tools//ortools/sat:cp_model",
+        "@abseil-cpp//absl/strings:str_format",
+        "@ortools//ortools/sat:cp_model",
     ],
 )
 
@@ -92,7 +75,6 @@ cc_test(
         ":weighted_even_assignment",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
-        "@micromissiles-proto//Plugin:status_cc_proto",
     ],
 )
 
@@ -100,10 +82,8 @@ cc_library(
     name = "assignment_plugin",
     srcs = ["assignment_plugin.cc"],
     deps = [
-        ":assignment",
         ":cover_assignment",
         ":even_assignment",
         ":weighted_even_assignment",
-        "@micromissiles-proto//Plugin:status_cc_proto",
     ],
 )

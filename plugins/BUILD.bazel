@@ -1,4 +1,3 @@
-load("@rules_cc//cc:cc_shared_library.bzl", "cc_shared_library")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
 package(default_visibility = ["//visibility:public"])
@@ -18,35 +17,15 @@ cc_shared_library(
 
 cc_shared_library(
     name = "example",
-    additional_linker_inputs = select({
-        "@platforms//os:windows": ["//example:example.def"],
+    features = select({
+        "@platforms//os:windows": ["windows_export_all_symbols"],
         "//conditions:default": [],
-    }),
-    win_def_file = select({
-        "@platforms//os:windows": "//example:example.def",
-        "//conditions:default": None,
     }),
     deps = ["//example:example_plugin"],
 )
 
-cc_shared_library(
-    name = "protobuf",
-    additional_linker_inputs = select({
-        "@platforms//os:windows": ["//protobuf:protobuf.def"],
-        "//conditions:default": [],
-    }),
-    win_def_file = select({
-        "@platforms//os:windows": "//protobuf:protobuf.def",
-        "//conditions:default": None,
-    }),
-    deps = ["//protobuf:protobuf_plugin"],
-)
-
 pkg_tar(
     name = "plugins",
-    srcs = [
-        ":assignment",
-        ":protobuf",
-    ],
+    srcs = [":assignment"],
     extension = ".tar.gz",
 )

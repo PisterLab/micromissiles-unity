@@ -8,12 +8,14 @@ public abstract class Sensor : MonoBehaviour {
     _agent = GetComponent<Agent>();
   }
 
-  /// Main sensing method to gather information about a target agent.
-  /// Returns the sensor output containing the sensed position and velocity.
+  // Main sensing method to gather information about a target agent.
+  //   agent: The agent to sense.
+  // Returns: SensorOutput containing position and velocity data.
   public abstract SensorOutput Sense(Agent agent);
 
-  /// Main sensing method to gather information about a waypoint.
-  /// Returns the sensor output containing the sensed position and velocity.
+  // Main sensing method to gather information about a waypoint.
+  //   waypoint: The waypoint to sense.
+  // Returns: SensorOutput containing position and velocity data.
   public abstract SensorOutput SenseWaypoint(Vector3 waypoint);
 }
 
