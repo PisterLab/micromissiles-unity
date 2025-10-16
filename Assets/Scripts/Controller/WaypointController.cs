@@ -2,11 +2,18 @@ using UnityEngine;
 
 // The waypoint controller steers the agent to the target using direct linear guidance.
 public class WaypointController : ControllerBase {
+  // To prevent overshooting near the waypoint, if the squared distance to the waypoint is less than
+  // the threshold, do not apply any acceleration.
+  private const float AccelerationCutoffDistanceSqr = 1.0f;
+
   public WaypointController(IAgent agent) : base(agent) {}
 
   // Controller-dependent implementation of the control law.
   protected override Vector3 Plan(in Transformation relativeTransformation) {
     var relativePosition = relativeTransformation.Position.Cartesian;
+    if (relativeTransformation.Position.Range < AccelerationCutoffDistanceSqr) {
+      return Vector3.zero;
+    }
 
     // To reach the waypoint as fast as possible, use the maximum forward acceleration.
     var forward = Agent.transform.forward;

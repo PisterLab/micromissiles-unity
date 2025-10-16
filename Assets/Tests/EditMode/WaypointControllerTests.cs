@@ -25,6 +25,14 @@ public class WaypointControllerTests : TestBase {
   }
 
   [Test]
+  public void Plan_WithinCutoffDistance_ReturnsZero() {
+    _agent.HierarchicalAgent.TargetModel =
+        new FixedHierarchical(position: new Vector3(0, 0.5f, 0.5f), velocity: new Vector3(0, 1, -1),
+                              acceleration: new Vector3(0, 1, 0));
+    Assert.AreEqual(Vector3.zero, _controller.Plan());
+  }
+
+  [Test]
   public void Plan_UsesMaximumForwardAcceleration() {
     _agent.HierarchicalAgent.TargetModel =
         new FixedHierarchical(position: new Vector3(0, 1, 1), velocity: new Vector3(0, 1, -1),

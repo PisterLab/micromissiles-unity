@@ -24,8 +24,6 @@ public class PnController : ControllerBase {
     var agentTransform = Agent.transform;
     var right = agentTransform.right;
     var up = agentTransform.up;
-    var velocity = Agent.Velocity;
-    var speed = Agent.Speed;
 
     // Extract the bearing and closing velocity from the relative transformation.
     var losAz = relativeTransformation.Position.Azimuth;
