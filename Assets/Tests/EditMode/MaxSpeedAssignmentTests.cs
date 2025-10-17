@@ -12,7 +12,7 @@ public class MaxSpeedAssignmentTests {
   [Test]
   public void AssignNoInterceptors() {
     // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor>();
@@ -31,7 +31,7 @@ public class MaxSpeedAssignmentTests {
   [Test]
   public void AssignNoThreats() {
     // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
 
     // Create interceptors.
     List<Interceptor> interceptors =
@@ -50,7 +50,7 @@ public class MaxSpeedAssignmentTests {
   [Test]
   public void AssignShouldAssignAllInterceptorsAndThreats() {
     // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
@@ -117,7 +117,7 @@ public class MaxSpeedAssignmentTests {
   [Test]
   public void AssignShouldHandleMoreInterceptorsThanThreats() {
     // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignment();
+    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
 
     // Create the interceptors.
     Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();

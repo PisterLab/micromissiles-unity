@@ -4,7 +4,7 @@ using UnityEngine;
 
 // The maximum speed assignment class assigns interceptors to the threats to maximize the intercept
 // speed by defining a cost of the assignment equal to the speed lost for the maneuver.
-public class MaxSpeedAssignment : IAssignmentLegacy {
+public class MaxSpeedAssignmentLegacy : IAssignmentLegacy {
   // Assign a threat to each interceptor that has not been assigned a threat yet.
   public IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> Assign(
       in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
