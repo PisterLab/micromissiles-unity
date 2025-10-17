@@ -12,11 +12,12 @@ public static class Coordinates3 {
   public static Vector3 ConvertCartesianToSpherical(in Vector3 cartesian) {
     float r = cartesian.magnitude;
     float azimuth = Mathf.Atan2(cartesian.x, cartesian.z) * Mathf.Rad2Deg;
-    float elevation = Mathf.Atan(cartesian.y / Mathf.Sqrt(cartesian.x * cartesian.x +
+    float elevation = Mathf.Atan2(cartesian.y, Mathf.Sqrt(cartesian.x * cartesian.x +
                                                           cartesian.z * cartesian.z)) *
                       Mathf.Rad2Deg;
     return new Vector3(r, azimuth, elevation);
   }
+
   public static Vector3 ConvertCartesianToSpherical(float x, float y, float z) {
     return ConvertCartesianToSpherical(new Vector3(x, y, z));
   }
@@ -29,6 +30,7 @@ public static class Coordinates3 {
               Mathf.Cos(spherical.y * Mathf.Deg2Rad);
     return new Vector3(x, y, z);
   }
+
   public static Vector3 ConvertSphericalToCartesian(float r, float azimuth, float elevation) {
     return ConvertSphericalToCartesian(new Vector3(r, azimuth, elevation));
   }
@@ -39,6 +41,7 @@ public static class Coordinates3 {
     float height = cartesian.y;
     return new Vector3(r, azimuth, height);
   }
+
   public static Vector3 ConvertCartesianToCylindrical(float x, float y, float z) {
     return ConvertCartesianToCylindrical(new Vector3(x, y, z));
   }
@@ -49,6 +52,7 @@ public static class Coordinates3 {
     float z = cylindrical.x * Mathf.Cos(cylindrical.y * Mathf.Deg2Rad);
     return new Vector3(x, y, z);
   }
+
   public static Vector3 ConvertCylindricalToCartesian(float r, float azimuth, float height) {
     return ConvertCylindricalToCartesian(new Vector3(r, azimuth, height));
   }

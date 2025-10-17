@@ -8,7 +8,9 @@ public class Coordinates2Tests {
   [Test]
   public void ConvertCartesianToPolar_Origin_ReturnsZeroDistance() {
     var cartesian = Vector2.zero;
-    Assert.AreEqual(0, Coordinates2.ConvertCartesianToPolar(cartesian).x, _epsilon);
+    var polar = Coordinates2.ConvertCartesianToPolar(cartesian);
+    Assert.AreEqual(0, polar.x, _epsilon);
+    Assert.IsFalse(float.IsNaN(polar.y));
   }
 
   [Test]
@@ -28,15 +30,17 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertPolarToCartesian_ZeroDistance_ReturnsOrigin() {
+  [TestCase(0f)]
+  [TestCase(45f)]
+  [TestCase(90f)]
+  [TestCase(180f)]
+  [TestCase(360f)]
+  public void ConvertPolarToCartesian_ZeroDistance_ReturnsOrigin(float theta) {
+    var polar = new Vector2(0, theta);
     var expectedCartesian = Vector2.zero;
-    Vector2[] polarInputs = new[] { new Vector2(0, 0), new Vector2(0, 45), new Vector2(0, 90),
-                                    new Vector2(0, 180), new Vector2(0, 360) };
-    foreach (var polar in polarInputs) {
-      var actualCartesian = Coordinates2.ConvertPolarToCartesian(polar);
-      Assert.That(actualCartesian,
-                  Is.EqualTo(expectedCartesian).Using(Vector2EqualityComparer.Instance));
-    }
+    var actualCartesian = Coordinates2.ConvertPolarToCartesian(polar);
+    Assert.That(actualCartesian,
+                Is.EqualTo(expectedCartesian).Using(Vector2EqualityComparer.Instance));
   }
 
   [Test]

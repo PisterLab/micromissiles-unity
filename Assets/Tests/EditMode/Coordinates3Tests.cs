@@ -8,7 +8,10 @@ public class Coordinates3Tests {
   [Test]
   public void ConvertCartesianToSpherical_Origin_ReturnsZeroDistance() {
     var cartesian = Vector3.zero;
-    Assert.AreEqual(0, Coordinates3.ConvertCartesianToSpherical(cartesian).x, _epsilon);
+    var spherical = Coordinates3.ConvertCartesianToSpherical(cartesian);
+    Assert.AreEqual(0, spherical.x, _epsilon);
+    Assert.IsFalse(float.IsNaN(spherical.y));
+    Assert.IsFalse(float.IsNaN(spherical.z));
   }
 
   [Test]
@@ -21,8 +24,18 @@ public class Coordinates3Tests {
   }
 
   [Test]
-  public void ConvertSphericalToCartesian_ZeroDistance_ReturnsOrigin() {
-    var spherical = new Vector3(0, 45, 90);
+  [TestCase(0f, 0f)]
+  [TestCase(45f, 0f)]
+  [TestCase(90f, 0f)]
+  [TestCase(180f, 0f)]
+  [TestCase(360f, 0f)]
+  [TestCase(45f, 0f)]
+  [TestCase(45f, 45f)]
+  [TestCase(45f, 90f)]
+  [TestCase(45f, 180f)]
+  [TestCase(45f, 360f)]
+  public void ConvertSphericalToCartesian_ZeroDistance_ReturnsOrigin(float theta, float phi) {
+    var spherical = new Vector3(0, theta, phi);
     var expectedCartesian = Vector3.zero;
     var actualCartesian = Coordinates3.ConvertSphericalToCartesian(spherical);
     Assert.That(actualCartesian,
@@ -40,9 +53,11 @@ public class Coordinates3Tests {
 
   [Test]
   public void ConvertCartesianToCylindrical_Origin_ReturnsZeroDistanceZeroHeight() {
-    Vector3 cartesian = Vector3.zero;
-    Assert.AreEqual(0, Coordinates3.ConvertCartesianToCylindrical(cartesian).x, _epsilon);
-    Assert.AreEqual(0, Coordinates3.ConvertCartesianToCylindrical(cartesian).z, _epsilon);
+    var cartesian = Vector3.zero;
+    var cylindrical = Coordinates3.ConvertCartesianToCylindrical(cartesian);
+    Assert.AreEqual(0, cylindrical.x, _epsilon);
+    Assert.IsFalse(float.IsNaN(cylindrical.y));
+    Assert.AreEqual(0, cylindrical.z, _epsilon);
   }
 
   [Test]
@@ -51,12 +66,17 @@ public class Coordinates3Tests {
     var expectedCylindrical = new Vector3(Mathf.Sqrt(13), 33.6900675f, -1);
     var actualCylindrical = Coordinates3.ConvertCartesianToCylindrical(cartesian);
     Assert.That(actualCylindrical,
-                Is.EqualTo(actualCylindrical).Using(Vector3EqualityComparer.Instance));
+                Is.EqualTo(expectedCylindrical).Using(Vector3EqualityComparer.Instance));
   }
 
   [Test]
-  public void ConvertCylindricalToCartesian_ZeroDistance_ZeroHeight_ReturnsOrigin() {
-    var cylindrical = new Vector3(0, 45, 0);
+  [TestCase(0f)]
+  [TestCase(45f)]
+  [TestCase(90f)]
+  [TestCase(180f)]
+  [TestCase(360f)]
+  public void ConvertCylindricalToCartesian_ZeroDistance_ZeroHeight_ReturnsOrigin(float theta) {
+    var cylindrical = new Vector3(0, theta, 0);
     var expectedCartesian = Vector3.zero;
     var actualCartesian = Coordinates3.ConvertCylindricalToCartesian(cylindrical);
     Assert.That(actualCartesian,
