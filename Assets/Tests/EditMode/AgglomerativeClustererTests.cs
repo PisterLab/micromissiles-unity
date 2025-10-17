@@ -21,8 +21,8 @@ public class AgglomerativeClustererTests {
 
   [Test]
   public void TestSingleCluster() {
-    AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: Mathf.Infinity);
+    var clusterer = new AgglomerativeClustererLegacy(Objects, maxSize: Objects.Count,
+                                                     maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(1, clusterer.Clusters.Count);
     ClusterLegacy cluster = clusterer.Clusters[0];
@@ -32,8 +32,8 @@ public class AgglomerativeClustererTests {
 
   [Test]
   public void TestMaxSizeOne() {
-    AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
+    var clusterer =
+        new AgglomerativeClustererLegacy(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
     foreach (var cluster in clusterer.Clusters) {
@@ -43,8 +43,7 @@ public class AgglomerativeClustererTests {
 
   [Test]
   public void TestZeroRadius() {
-    AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 0);
+    var clusterer = new AgglomerativeClustererLegacy(Objects, maxSize: Objects.Count, maxRadius: 0);
     clusterer.Cluster();
     Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
     foreach (var cluster in clusterer.Clusters) {
@@ -54,8 +53,7 @@ public class AgglomerativeClustererTests {
 
   [Test]
   public void TestSmallRadius() {
-    AgglomerativeClusterer clusterer =
-        new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 1);
+    var clusterer = new AgglomerativeClustererLegacy(Objects, maxSize: Objects.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(3, clusterer.Clusters.Count);
     List<ClusterLegacy> clusters =

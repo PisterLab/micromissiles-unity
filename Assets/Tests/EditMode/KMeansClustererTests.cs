@@ -21,7 +21,7 @@ public class KMeansClustererTests {
 
   [Test]
   public void TestSingleCluster() {
-    KMeansClusterer clusterer = new KMeansClusterer(Objects, k: 1);
+    var clusterer = new KMeansClustererLegacy(Objects, k: 1);
     clusterer.Cluster();
     ClusterLegacy cluster = clusterer.Clusters[0];
     Assert.AreEqual(Objects.Count, cluster.Size());
@@ -54,7 +54,7 @@ public class KMeansClustererTests {
     objects.AddRange(groupB);
 
     // Create clusterer with k = 2.
-    KMeansClusterer clusterer = new KMeansClusterer(objects, k: 2);
+    var clusterer = new KMeansClustererLegacy(objects, k: 2);
     clusterer.Cluster();
 
     // We expect exactly 2 clusters.
@@ -109,8 +109,8 @@ public class ConstrainedKMeansClustererTests {
 
   [Test]
   public void TestSingleCluster() {
-    ConstrainedKMeansClusterer clusterer =
-        new ConstrainedKMeansClusterer(Objects, maxSize: Objects.Count, maxRadius: Mathf.Infinity);
+    var clusterer = new ConstrainedKMeansClustererLegacy(Objects, maxSize: Objects.Count,
+                                                         maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(1, clusterer.Clusters.Count);
     ClusterLegacy cluster = clusterer.Clusters[0];
@@ -120,8 +120,8 @@ public class ConstrainedKMeansClustererTests {
 
   [Test]
   public void TestMaxSizeOne() {
-    ConstrainedKMeansClusterer clusterer =
-        new ConstrainedKMeansClusterer(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
+    var clusterer =
+        new ConstrainedKMeansClustererLegacy(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
     foreach (var cluster in clusterer.Clusters) {
@@ -131,8 +131,8 @@ public class ConstrainedKMeansClustererTests {
 
   [Test]
   public void TestZeroRadius() {
-    ConstrainedKMeansClusterer clusterer =
-        new ConstrainedKMeansClusterer(Objects, maxSize: Objects.Count, maxRadius: 0);
+    var clusterer =
+        new ConstrainedKMeansClustererLegacy(Objects, maxSize: Objects.Count, maxRadius: 0);
     clusterer.Cluster();
     Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
     foreach (var cluster in clusterer.Clusters) {
@@ -142,8 +142,8 @@ public class ConstrainedKMeansClustererTests {
 
   [Test]
   public void TestSmallRadius() {
-    ConstrainedKMeansClusterer clusterer =
-        new ConstrainedKMeansClusterer(Objects, maxSize: Objects.Count, maxRadius: 1);
+    var clusterer =
+        new ConstrainedKMeansClustererLegacy(Objects, maxSize: Objects.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(2, clusterer.Clusters.Count);
   }

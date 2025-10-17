@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // The k-means clusterer class performs k-means clustering.
-public class KMeansClusterer : IClustererLegacy {
+public class KMeansClustererLegacy : IClustererLegacy {
   public const float Epsilon = 1e-3f;
 
   // Number of clusters.
@@ -13,11 +13,12 @@ public class KMeansClusterer : IClustererLegacy {
   // Maximum number of iterations.
   private int _maxIterations = 20;
 
-  public KMeansClusterer(List<GameObject> objects, int k, int maxIterations = 20) : base(objects) {
+  public KMeansClustererLegacy(List<GameObject> objects, int k, int maxIterations = 20)
+      : base(objects) {
     _k = k;
     _maxIterations = maxIterations;
   }
-  public KMeansClusterer(List<Agent> agents, int k, int maxIterations = 20) : base(agents) {
+  public KMeansClustererLegacy(List<Agent> agents, int k, int maxIterations = 20) : base(agents) {
     _k = k;
     _maxIterations = maxIterations;
   }
@@ -86,16 +87,16 @@ public class KMeansClusterer : IClustererLegacy {
 
 // The constrained k-means clusterer class performs k-means clustering under size and radius
 // constraints.
-public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
-  public ConstrainedKMeansClusterer(List<GameObject> objects, int maxSize, float maxRadius)
+public class ConstrainedKMeansClustererLegacy : ISizeAndRadiusConstrainedClusterer {
+  public ConstrainedKMeansClustererLegacy(List<GameObject> objects, int maxSize, float maxRadius)
       : base(objects, maxSize, maxRadius) {}
 
   // Cluster the game objects.
   public override void Cluster() {
     int numClusters = (int)Mathf.Ceil(_objects.Count / _maxSize);
-    KMeansClusterer clusterer;
+    KMeansClustererLegacy clusterer;
     while (true) {
-      clusterer = new KMeansClusterer(_objects, numClusters);
+      clusterer = new KMeansClustererLegacy(_objects, numClusters);
       clusterer.Cluster();
 
       // Count the number of over-populated and over-sized clusters.

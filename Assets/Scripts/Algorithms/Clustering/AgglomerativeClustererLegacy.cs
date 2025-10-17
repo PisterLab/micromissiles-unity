@@ -4,10 +4,10 @@ using UnityEngine;
 
 // The agglomerative clusterer class performs agglomerative clustering with the stopping condition
 // given by the size and radius constraints.
-public class AgglomerativeClusterer : ISizeAndRadiusConstrainedClusterer {
-  public AgglomerativeClusterer(List<GameObject> objects, int maxSize, float maxRadius)
+public class AgglomerativeClustererLegacy : ISizeAndRadiusConstrainedClusterer {
+  public AgglomerativeClustererLegacy(List<GameObject> objects, int maxSize, float maxRadius)
       : base(objects, maxSize, maxRadius) {}
-  public AgglomerativeClusterer(List<Agent> agents, int maxSize, float maxRadius)
+  public AgglomerativeClustererLegacy(List<Agent> agents, int maxSize, float maxRadius)
       : base(agents, maxSize, maxRadius) {}
 
   // Cluster the game objects.
