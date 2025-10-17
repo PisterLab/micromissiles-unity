@@ -70,15 +70,17 @@ public class Cluster {
   }
 
   // Calculate the centroid of the cluster.
+  // The centroid is the mean position of all active game objects.
   public Vector3 Centroid() {
-    var activeAgents = Agents.Where(agent => !agent.IsTerminated()).ToList();
-    if (activeAgents.Count == 0) {
-      return Vector3.zero;
+    Vector3 positionSum = Vector3.zero;
+    int activeAgentCount = 0;
+    foreach (var agent in Agents) {
+      if (agent != null && !agent.IsTerminated()) {
+        positionSum += agent.GetPosition();
+        ++activeAgentCount;
+      }
     }
-
-    Vector3 positionSum =
-        activeAgents.Aggregate(Vector3.zero, (sum, agent) => sum + agent.GetPosition());
-    return positionSum / activeAgents.Count;
+    return activeAgentCount > 0 ? positionSum / activeAgentCount : Vector3.zero;
   }
 
   // Recenter the cluster's centroid to be the mean of all game objects' positions in the cluster.
@@ -87,16 +89,17 @@ public class Cluster {
   }
 
   // Calculate the velocity of the cluster.
-  // The velocity is the mean velocity of all game objects.
+  // The velocity is the mean velocity of all active game objects.
   public Vector3 Velocity() {
-    var activeAgents = Agents.Where(agent => !agent.IsTerminated()).ToList();
-    if (activeAgents.Count == 0) {
-      return Vector3.zero;
+    Vector3 velocitySum = Vector3.zero;
+    int activeAgentCount = 0;
+    foreach (var agent in Agents) {
+      if (agent != null && !agent.IsTerminated()) {
+        velocitySum += agent.GetVelocity();
+        ++activeAgentCount;
+      }
     }
-
-    Vector3 velocitySum =
-        activeAgents.Aggregate(Vector3.zero, (sum, agent) => sum + agent.GetVelocity());
-    return velocitySum / activeAgents.Count;
+    return activeAgentCount > 0 ? velocitySum / activeAgentCount : Vector3.zero;
   }
 
   // Add a game object to the cluster.
@@ -119,6 +122,6 @@ public class Cluster {
 
   // Returns true if all agents in the cluster are terminated.
   public bool IsFullyTerminated() {
-    return Agents.All(agent => agent.IsTerminated());
+    return Agents.All(agent => agent?.IsTerminated() ?? true);
   }
 }
