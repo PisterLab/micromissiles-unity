@@ -69,12 +69,11 @@ public class AgglomerativeClusterer : SizeAndRadiusConstrainedClustererBase {
       // Update the distances matrix using the distance between the cluster centroids.
       // TODO(titan): Change the distance metric to use average or maximum linkage.
       foreach (int i in validClusterIndices) {
+        var distance = Vector3.Distance(clusters[clusterIndex2].Centroid, clusters[i].Centroid);
         if (i < clusterIndex2) {
-          distances[clusterIndex2, i] =
-              Vector3.Distance(clusters[clusterIndex2].Centroid, clusters[i].Centroid);
+          distances[clusterIndex2, i] = distance;
         } else if (i > clusterIndex2) {
-          distances[i, clusterIndex2] =
-              Vector3.Distance(clusters[clusterIndex2].Centroid, clusters[i].Centroid);
+          distances[i, clusterIndex2] = distance;
         }
       }
     }
