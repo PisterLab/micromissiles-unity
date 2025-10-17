@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/15/2025 - 23:53:17 |
+| Generated on: | 10/17/2025 - 07:08:49 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 170 |
 | Files: | 106 |
-| Covered lines: | 2822 |
-| Uncovered lines: | 9623 |
-| Coverable lines: | 12445 |
-| Total lines: | 26115 |
-| Line coverage: | 22.6% (2822 of 12445) |
+| Covered lines: | 2829 |
+| Uncovered lines: | 9621 |
+| Coverable lines: | 12450 |
+| Total lines: | 26119 |
+| Line coverage: | 22.7% (2829 of 12450) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 497 |
+| Covered methods: | 498 |
 | Total methods: | 2011 |
-| Method coverage: | 24.7% (497 of 2011) |
+| Method coverage: | 24.7% (498 of 2011) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1652**|**9564**|**11216**|**92680**|**14.7%**|**0**|**0**|****|**362**|**1872**|**19.3%**|
+|**bamlab.micromissiles**|**1655**|**9562**|**11217**|**92680**|**14.7%**|**0**|**0**|****|**363**|**1872**|**19.3%**|
 |Agent|131|125|256|460|51.1%|0|0||26|45|57.7%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -27,7 +27,7 @@
 |AttackBehaviorFactory|4|3|7|10|57.1%|0|0||1|1|100%|
 |CameraController|0|347|347|564|0%|0|0||0|36|0%|
 |CarrierInterceptor|4|39|43|71|9.3%|0|0||2|6|33.3%|
-|Cluster|60|6|66|127|90.9%|0|0||16|18|88.8%|
+|Cluster|63|4|67|127|94%|0|0||17|18|94.4%|
 |ConfigLoader|29|16|45|99|64.4%|0|0||5|7|71.4%|
 |Configs.AccelerationConfig|30|94|124|2839|24.1%|0|0||9|23|39.1%|
 |Configs.AgentConfig|25|295|320|753|7.8%|0|0||12|50|24%|
@@ -167,19 +167,19 @@
 |WaypointController|9|0|9|22|100%|0|0||2|2|100%|
 |**bamlab.test**|**29**|**5**|**34**|**52**|**85.2%**|**0**|**0**|****|**6**|**6**|**100%**|
 |TestBase|29|5|34|52|85.2%|0|0||6|6|100%|
-|**bamlab.test.editmode**|**1141**|**5**|**1146**|**2476**|**99.5%**|**0**|**0**|****|**129**|**130**|**99.2%**|
+|**bamlab.test.editmode**|**1145**|**5**|**1150**|**2482**|**99.5%**|**0**|**0**|****|**129**|**130**|**99.2%**|
 |AgentTestBase|23|0|23|41|100%|0|0||4|4|100%|
-|AgglomerativeClustererTests|42|0|42|69|100%|0|0||6|6|100%|
+|AgglomerativeClustererTests|43|0|43|70|100%|0|0||6|6|100%|
 |BehaviorTests|50|0|50|113|100%|0|0||2|2|100%|
-|ClusterTests|74|0|74|99|100%|0|0||8|8|100%|
-|ConstrainedKMeansClustererTests|35|0|35|150|100%|0|0||6|6|100%|
+|ClusterTests|75|0|75|100|100%|0|0||8|8|100%|
+|ConstrainedKMeansClustererTests|36|0|36|152|100%|0|0||6|6|100%|
 |Coordinates2Tests|55|0|55|158|100%|0|0||8|8|100%|
 |Coordinates3Tests|56|0|56|158|100%|0|0||8|8|100%|
 |HierarchicalBaseTests|83|0|83|128|100%|0|0||14|14|100%|
 |IADSClusterCleanupTests|40|1|41|122|97.5%|0|0||6|7|85.7%|
 |IterativeLaunchPlannerTests|60|0|60|97|100%|0|0||10|10|100%|
 |KDTreeTests|39|0|39|55|100%|0|0||4|4|100%|
-|KMeansClustererTests|37|0|37|150|100%|0|0||4|4|100%|
+|KMeansClustererTests|38|0|38|152|100%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolatorTests|27|1|28|87|96.4%|0|0||4|4|100%|
 |LaunchAngleDataInterpolatorTests|16|0|16|87|100%|0|0||4|4|100%|
 |LinearExtrapolatorTests|28|0|28|42|100%|0|0||4|4|100%|
