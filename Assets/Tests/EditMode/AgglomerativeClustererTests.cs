@@ -1,68 +1,85 @@
 using NUnit.Framework;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class AgglomerativeClustererTests {
-  public static GameObject GenerateObject(in Vector3 position) {
-    GameObject obj = new GameObject();
-    obj.transform.position = position;
-    return obj;
-  }
-
-  public static readonly List<GameObject> Objects = new List<GameObject> {
-    GenerateObject(new Vector3(0, 0, 0)),
-    GenerateObject(new Vector3(0, 1, 0)),
-    GenerateObject(new Vector3(0, 1.5f, 0)),
-    GenerateObject(new Vector3(0, 2.5f, 0)),
+  private static readonly List<FixedHierarchical> _hierarchicals = new List<FixedHierarchical> {
+    new FixedHierarchical(position: new Vector3(0, 0, 0)),
+    new FixedHierarchical(position: new Vector3(0, 1, 0)),
+    new FixedHierarchical(position: new Vector3(0, 1.5f, 0)),
+    new FixedHierarchical(position: new Vector3(0, 2.5f, 0)),
   };
 
+  private AgglomerativeClusterer _clusterer;
+
   [Test]
-  public void TestSingleCluster() {
-    var clusterer = new AgglomerativeClustererLegacy(Objects, maxSize: Objects.Count,
-                                                     maxRadius: Mathf.Infinity);
-    clusterer.Cluster();
-    Assert.AreEqual(1, clusterer.Clusters.Count);
-    ClusterLegacy cluster = clusterer.Clusters[0];
-    Assert.AreEqual(Objects.Count, cluster.Size());
-    Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid());
+  public void Cluster_NoConstraints_ReturnsSingleCluster() {
+    _clusterer =
+        new AgglomerativeClusterer(maxSize: _hierarchicals.Count, maxRadius: Mathf.Infinity);
+    var clusters = _clusterer.Cluster(_hierarchicals);
+    Assert.AreEqual(1, clusters.Count);
+    var cluster = clusters[0];
+    Assert.AreEqual(_hierarchicals.Count, cluster.Size);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Position);
   }
 
   [Test]
-  public void TestMaxSizeOne() {
-    var clusterer =
-        new AgglomerativeClustererLegacy(Objects, maxSize: 1, maxRadius: Mathf.Infinity);
-    clusterer.Cluster();
-    Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
-    foreach (var cluster in clusterer.Clusters) {
-      Assert.AreEqual(1, cluster.Size());
+  public void Cluster_MaxSizeOne_ReturnsSingletonClusters() {
+    _clusterer = new AgglomerativeClusterer(maxSize: 1, maxRadius: Mathf.Infinity);
+    var clusters = _clusterer.Cluster(_hierarchicals);
+    Assert.AreEqual(_hierarchicals.Count, clusters.Count);
+    foreach (var cluster in clusters) {
+      Assert.AreEqual(1, cluster.Size);
     }
   }
 
   [Test]
-  public void TestZeroRadius() {
-    var clusterer = new AgglomerativeClustererLegacy(Objects, maxSize: Objects.Count, maxRadius: 0);
-    clusterer.Cluster();
-    Assert.AreEqual(Objects.Count, clusterer.Clusters.Count);
-    foreach (var cluster in clusterer.Clusters) {
-      Assert.AreEqual(1, cluster.Size());
+  public void Cluster_ZeroRadius_ReturnsSingletonClusters() {
+    _clusterer = new AgglomerativeClusterer(maxSize: _hierarchicals.Count, maxRadius: 0);
+    var clusters = _clusterer.Cluster(_hierarchicals);
+    Assert.AreEqual(_hierarchicals.Count, clusters.Count);
+    foreach (var cluster in clusters) {
+      Assert.AreEqual(1, cluster.Size);
     }
   }
 
   [Test]
-  public void TestSmallRadius() {
-    var clusterer = new AgglomerativeClustererLegacy(Objects, maxSize: Objects.Count, maxRadius: 1);
-    clusterer.Cluster();
-    Assert.AreEqual(3, clusterer.Clusters.Count);
-    List<ClusterLegacy> clusters =
-        clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();
-    Assert.AreEqual(1, clusters[0].Size());
-    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Coordinates);
-    Assert.AreEqual(2, clusters[1].Size());
-    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Coordinates);
-    Assert.AreEqual(1, clusters[2].Size());
-    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Coordinates);
+  public void Cluster_SmallRadius_ReturnsMultipleClusters() {
+    _clusterer = new AgglomerativeClusterer(maxSize: _hierarchicals.Count, maxRadius: 0.5f);
+    var clusters = _clusterer.Cluster(_hierarchicals);
+    Debug.Log(
+        $"{clusters[0].Centroid} {clusters[1].Centroid} {clusters[0].Radius()} {clusters[1].Radius()}");
+    Assert.AreEqual(3, clusters.Count);
+    var sortedClusters = clusters.OrderBy(cluster => cluster.Centroid[1]).ToList();
+    Assert.AreEqual(1, sortedClusters[0].Size);
+    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Centroid);
+    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Position);
+    Assert.AreEqual(2, sortedClusters[1].Size);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Centroid);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Position);
+    Assert.AreEqual(1, sortedClusters[2].Size);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Centroid);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Position);
+  }
+
+  [Test]
+  public void Cluster_SmallSize_ReturnsMultipleClusters() {
+    _clusterer = new AgglomerativeClusterer(maxSize: 2, maxRadius: 1);
+    var clusters = _clusterer.Cluster(_hierarchicals);
+    Debug.Log(
+        $"{clusters[0].Centroid} {clusters[1].Centroid} {clusters[0].Size} {clusters[1].Size}");
+    Assert.AreEqual(3, clusters.Count);
+    var sortedClusters = clusters.OrderBy(cluster => cluster.Centroid[1]).ToList();
+    Assert.AreEqual(1, sortedClusters[0].Size);
+    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Centroid);
+    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Position);
+    Assert.AreEqual(2, sortedClusters[1].Size);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Centroid);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Position);
+    Assert.AreEqual(1, sortedClusters[2].Size);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Centroid);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Position);
   }
 }
