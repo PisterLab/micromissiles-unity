@@ -74,10 +74,9 @@ public class KDTree<T> {
     var axis = depth % k;
 
     // Sort the points by axis and find the median.
-    var sortedPoints = points.Select(p => new { Point = p, Coordinates = _getCoordinates(p) })
-                           .OrderBy(p => axis == 0 ? p.Coordinates.x : p.Coordinates.y)
-                           .Select(p => p.Point)
-                           .ToList();
+    var sortedPoints =
+        points.OrderBy(point => (axis == 0 ? _getCoordinates(point).x : _getCoordinates(point).y))
+            .ToList();
     var medianIndex = sortedPoints.Count / 2;
     var medianPoint = sortedPoints[medianIndex];
 

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Base imple,entation of a launch angle interpolator.
+// Base implementation of a launch angle interpolator.
 //
 // The interpolator determines the optimal launch angle and the time-to-target given the horizontal
 // distance and altitude of the target.

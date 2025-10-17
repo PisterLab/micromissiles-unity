@@ -32,7 +32,7 @@ public class LaunchAngleCsvInterpolator : LaunchAngleInterpolatorBase {
       throw new InvalidOperationException("Interpolator could not be initialized.");
     }
 
-    var csvLines = fileContent.Split('\n');
+    var csvLines = fileContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
     if (csvLines.Length < 1) {
       throw new InvalidOperationException("No data points available for interpolation.");
     }
