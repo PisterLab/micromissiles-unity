@@ -52,7 +52,7 @@ public class KDTree<T> {
     var targetCoordinatesValue = axis == 0 ? target.x : target.y;
     var nodeCoordinatesValue = axis == 0 ? nodeCoordinates.x : nodeCoordinates.y;
     var nextBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Left : node.Right;
-    var otherBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Right : node.Right;
+    var otherBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Right : node.Left;
 
     // Explore the next branch first.
     bestNode = NearestNeighbor(nextBranch, target, depth + 1, bestNode);

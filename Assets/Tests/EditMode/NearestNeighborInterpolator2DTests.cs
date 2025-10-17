@@ -1,12 +1,16 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.TestTools;
+using UnityEngine.TestTools.Utils;
 
 public class NearestNeighborInterpolator2DTests {
   private const float _epsilon = 1e-3f;
 
   [Test]
   public void Interpolate_InvalidPoints_ReturnsEmptyResult() {
+    LogAssert.ignoreFailingMessages = true;
     string[] csvLines = {
       "",              // Empty.
       " , ",           // Whitespace.
@@ -24,7 +28,9 @@ public class NearestNeighborInterpolator2DTests {
     var interpolator = new NearestNeighborInterpolator2D(csvLines);
     var result = interpolator.Interpolate(100, 200);
     Assert.AreEqual(new Vector2(0, 0), result.Coordinates);
-    Assert.AreEqual(new List<float> { 45f, 2f }, result.Data, _epsilon);
+    Assert.AreEqual(2, result.Data.Count);
+    Assert.AreEqual(45f, result.Data[0], _epsilon);
+    Assert.AreEqual(2f, result.Data[1], _epsilon);
   }
 
   [Test]
@@ -33,7 +39,8 @@ public class NearestNeighborInterpolator2DTests {
     var interpolator = new NearestNeighborInterpolator2D(csvLines);
     var result = interpolator.Interpolate(100f, 200f);
     Assert.NotNull(result);
-    Assert.AreEqual(new Vector2(100f, 200f), result.Coordinates, _epsilon);
+    Assert.That(result.Coordinates,
+                Is.EqualTo(new Vector2(100f, 200f)).Using(Vector2EqualityComparer.Instance));
     Assert.AreEqual(0, result.Data.Count);
   }
 
@@ -43,7 +50,9 @@ public class NearestNeighborInterpolator2DTests {
     var interpolator = new NearestNeighborInterpolator2D(csvLines);
     var result = interpolator.Interpolate(1000, 1000);
     Assert.AreEqual(new Vector2(20, 5), result.Coordinates);
-    Assert.AreEqual(new List<float> { 25f, 4f }, result.Data, _epsilon);
+    Assert.AreEqual(2, result.Data.Count);
+    Assert.AreEqual(25f, result.Data[0], _epsilon);
+    Assert.AreEqual(4f, result.Data[1], _epsilon);
   }
 
   [Test]
@@ -53,14 +62,16 @@ public class NearestNeighborInterpolator2DTests {
     var testPoint = new Vector2(1.5f, 1.5f);
     var result = interpolator.Interpolate(testPoint);
     Assert.AreEqual(2, result.Data.Count);
-    var isValidPair =
-        (result.Data == new Vector2(10f, 20f) || result.Data == new Vector2(30f, 40f) ||
-         result.Data == new Vector2(50f, 60f) || result.Data == new Vector2(70f, 80f));
+    var validData =
+        new List<List<float>> { new List<float> { 10f, 20f }, new List<float> { 30f, 40f },
+                                new List<float> { 50f, 60f }, new List<float> { 70f, 80f } };
+    var isValidPair = validData.Any(v => v.SequenceEqual(result.Data));
     Assert.IsTrue(isValidPair);
   }
 
   [Test]
   public void Interpolate_NoDataPoints_ReturnsEmptyResult() {
+    LogAssert.ignoreFailingMessages = true;
     string[] csvLines = {};
     var interpolator = new NearestNeighborInterpolator2D(csvLines);
     Interpolator2DDataPoint result = interpolator.Interpolate(new Vector2(1f, 1f));

@@ -16,9 +16,9 @@ public class LaunchPlanTests {
     var launchPlan = new LaunchPlan {
       ShouldLaunch = true,
       LaunchAngle = 45f,
-      RelativeInterceptPosition = new Vector3(1, 1, 0),
+      InterceptPosition = new Vector3(1, 1, 0),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector();
+    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.AreEqual(1f, launchVector.magnitude, _epsilon);
   }
 
@@ -27,9 +27,9 @@ public class LaunchPlanTests {
     var launchPlan = new LaunchPlan {
       ShouldLaunch = true,
       LaunchAngle = 90f,
-      RelativeInterceptPosition = new Vector3(1, 1, 0),
+      InterceptPosition = new Vector3(1, 1, 0),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector();
+    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.That(launchVector,
                 Is.EqualTo(new Vector3(0, 1f, 0)).Using(Vector3EqualityComparer.Instance));
   }
@@ -39,9 +39,9 @@ public class LaunchPlanTests {
     var launchPlan = new LaunchPlan {
       ShouldLaunch = true,
       LaunchAngle = 0f,
-      RelativeInterceptPosition = new Vector3(1, 1, 0),
+      InterceptPosition = new Vector3(1, 1, 0),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector();
+    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.That(launchVector,
                 Is.EqualTo(new Vector3(1f, 0, 0)).Using(Vector3EqualityComparer.Instance));
   }
@@ -51,9 +51,9 @@ public class LaunchPlanTests {
     var launchPlan = new LaunchPlan {
       ShouldLaunch = true,
       LaunchAngle = 45f,
-      RelativeInterceptPosition = new Vector3(1, 0, 1),
+      InterceptPosition = new Vector3(1, 0, 1),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector();
+    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.That(launchVector, Is.EqualTo(new Vector3(1, Mathf.Sqrt(2f), 1).normalized)
                                   .Using(Vector3EqualityComparer.Instance));
   }

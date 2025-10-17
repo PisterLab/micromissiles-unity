@@ -14,8 +14,8 @@ public class IADS : MonoBehaviour {
   private const float ClusterThreatsPeriod = 2.0f;
 
   // TODO(titan): Choose the CSV file based on the interceptor type.
-  private ILaunchAnglePlanner _launchAnglePlanner =
-      new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
+  private ILaunchAnglePlannerLegacy _launchAnglePlanner =
+      new LaunchAngleCsvInterpolatorLegacy(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignmentLegacy _assignmentScheme = new MaxSpeedAssignment();
   private Coroutine _launchInterceptorsCoroutine;
 
@@ -119,9 +119,9 @@ public class IADS : MonoBehaviour {
       // Check whether an interceptor should be launched.
       if (plan.ShouldLaunch) {
         Debug.Log(
-            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.RelativeInterceptPosition}.");
+            $"Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
         UIManager.Instance.LogActionMessage(
-            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.RelativeInterceptPosition}.");
+            $"[IADS] Launching a carrier interceptor at an elevation of {plan.LaunchAngle} degrees to position {plan.InterceptPosition}.");
 
         // Create a new interceptor.
         Configs.AgentConfig config =
@@ -134,7 +134,8 @@ public class IADS : MonoBehaviour {
         initialState.Position = Coordinates3.ToProto(Vector3.zero);
 
         // Set the initial velocity to point along the launch vector.
-        initialState.Velocity = Coordinates3.ToProto(plan.NormalizedLaunchVector() * 1e-3f);
+        initialState.Velocity =
+            Coordinates3.ToProto(plan.NormalizedLaunchVector(position: Vector3.zero) * 1e-3f);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Assign the interceptor to the cluster.

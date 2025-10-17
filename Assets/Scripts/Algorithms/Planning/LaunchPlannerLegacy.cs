@@ -4,12 +4,13 @@ using UnityEngine;
 // intercept a target.
 public abstract class ILaunchPlannerLegacy {
   // Launch angle planner.
-  protected ILaunchAnglePlanner _launchAnglePlanner;
+  protected ILaunchAnglePlannerLegacy _launchAnglePlanner;
 
   // Agent trajectory predictor.
   protected IPredictorLegacy _predictor;
 
-  public ILaunchPlannerLegacy(ILaunchAnglePlanner launchAnglePlanner, IPredictorLegacy predictor) {
+  public ILaunchPlannerLegacy(ILaunchAnglePlannerLegacy launchAnglePlanner,
+                              IPredictorLegacy predictor) {
     _launchAnglePlanner = launchAnglePlanner;
     _predictor = predictor;
   }

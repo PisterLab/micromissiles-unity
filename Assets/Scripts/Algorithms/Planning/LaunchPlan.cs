@@ -8,17 +8,18 @@ public struct LaunchPlan {
   // Launch angle in degrees measured from the horizon.
   public float LaunchAngle { get; set; }
 
-  // Intercept position relative to the launcher's position.
-  public Vector3 RelativeInterceptPosition { get; set; }
+  // Absolute intercept position.
+  public Vector3 InterceptPosition { get; set; }
 
   // No-launch launch plan.
   public static LaunchPlan NoLaunch() {
     return new LaunchPlan { ShouldLaunch = false };
   }
 
-  // Get the normalized launch vector.
-  public Vector3 NormalizedLaunchVector() {
-    var interceptDirection = Coordinates3.ConvertCartesianToSpherical(RelativeInterceptPosition);
+  // Get the normalized launch vector given the agent's position.
+  public Vector3 NormalizedLaunchVector(in Vector3 position) {
+    var relativeInterceptPosition = InterceptPosition - position;
+    var interceptDirection = Coordinates3.ConvertCartesianToSpherical(relativeInterceptPosition);
     return Coordinates3.ConvertSphericalToCartesian(r: 1, azimuth: interceptDirection[1],
                                                     elevation: LaunchAngle);
   }
