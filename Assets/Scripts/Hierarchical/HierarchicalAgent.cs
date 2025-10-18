@@ -5,7 +5,7 @@ using UnityEngine;
 // Since agents cannot inherit from both HierarchicalBase and MonoBehaviour, agents use composition
 // to know their position within the hierarchical strategy.
 public class HierarchicalAgent : HierarchicalBase {
-  // Agent to which the hierarchical node belongs.
+  // Agent to which this hierarchical node belongs.
   public IAgent Agent { get; set; }
 
   public HierarchicalAgent(IAgent agent) {
