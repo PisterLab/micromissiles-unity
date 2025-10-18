@@ -2,25 +2,27 @@ using UnityEngine;
 
 // Ideal sensor.
 //
-// The ideal sensor does not add any noise to the measurements.
+// The ideal sensor provides perfect, noise-free measurements of the relative transformation between
+// the sensing agent and a target. This sensor is useful for testing and establishing baseline
+// behavior before adding realistic sensor noise and limitations.
 public class IdealSensor : SensorBase {
   public IdealSensor(IAgent agent) : base(agent) {}
 
   // Sense the target hierarchical object.
   public override SensorOutput Sense(IHierarchical hierarchical) {
-    var relativeTransformation = Agent.GetRelativeTransformation(hierarchical);
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(hierarchical);
     return GenerateSensorOutput(relativeTransformation);
   }
 
   // Sense the target agent.
   public override SensorOutput Sense(IAgent agent) {
-    var relativeTransformation = Agent.GetRelativeTransformation(agent);
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(agent);
     return GenerateSensorOutput(relativeTransformation);
   }
 
   // Sense the waypoint.
   public override SensorOutput Sense(in Vector3 waypoint) {
-    var relativeTransformation = Agent.GetRelativeTransformation(waypoint);
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(waypoint);
     return GenerateSensorOutput(relativeTransformation);
   }
 

@@ -32,22 +32,22 @@ public class IdealMovementTests : TestBase {
 
   [Test]
   public void Act_LimitsForwardAccelerationInput() {
-    var accelerationInput = new Vector3(0, 0, 100);
-    var appliedAccelerationInput = _movement.Act(accelerationInput);
+    Vector3 accelerationInput = new Vector3(0, 0, 100);
+    Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
     Assert.AreEqual(new Vector3(0, 0, 10), appliedAccelerationInput);
   }
 
   [Test]
   public void Act_LimitsForwardAccelerationInput_NegativeAcceleration() {
-    var accelerationInput = new Vector3(0, 0, -20);
-    var appliedAccelerationInput = _movement.Act(accelerationInput);
+    Vector3 accelerationInput = new Vector3(0, 0, -20);
+    Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
     Assert.AreEqual(new Vector3(0, 0, -10), appliedAccelerationInput);
   }
 
   [Test]
   public void Act_LimitsNormalAccelerationInput() {
-    var accelerationInput = new Vector3(0, 50, 0);
-    var appliedAccelerationInput = _movement.Act(accelerationInput);
+    Vector3 accelerationInput = new Vector3(0, 50, 0);
+    Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
     Assert.That(appliedAccelerationInput,
                 Is.EqualTo(new Vector3(0, 20f, 0)).Using(Vector3EqualityComparer.Instance));
   }

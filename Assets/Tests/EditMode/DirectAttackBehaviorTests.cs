@@ -44,7 +44,7 @@ public class DirectAttackBehaviorTests : TestBase {
   [Test]
   public void GetNextWaypoint_BeyondFarthestWaypoint() {
     _agent.Position = new Vector3(-100, 0, 0);
-    (var waypoint, var power) = _attackBehavior.GetNextWaypoint(_targetPosition);
+    (Vector3 waypoint, Configs.Power power) = _attackBehavior.GetNextWaypoint(_targetPosition);
     Assert.AreEqual(new Vector3(0, 100, 0), waypoint);
     Assert.AreEqual(Configs.Power.Cruise, power);
   }
@@ -52,7 +52,7 @@ public class DirectAttackBehaviorTests : TestBase {
   [Test]
   public void GetNextWaypoint_AtFarthestWaypoint() {
     _agent.Position = new Vector3(0, 0, 0);
-    (var waypoint, var power) = _attackBehavior.GetNextWaypoint(_targetPosition);
+    (Vector3 waypoint, Configs.Power power) = _attackBehavior.GetNextWaypoint(_targetPosition);
     Assert.AreEqual(new Vector3(500, 50, 0), waypoint);
     Assert.AreEqual(Configs.Power.Mil, power);
   }
@@ -60,7 +60,7 @@ public class DirectAttackBehaviorTests : TestBase {
   [Test]
   public void GetNextWaypoint_BetweenWaypoints() {
     _agent.Position = new Vector3(600, 0, 0);
-    (var waypoint, var power) = _attackBehavior.GetNextWaypoint(_targetPosition);
+    (Vector3 waypoint, Configs.Power power) = _attackBehavior.GetNextWaypoint(_targetPosition);
     Assert.AreEqual(new Vector3(900, 25, 0), waypoint);
     Assert.AreEqual(Configs.Power.Max, power);
   }
@@ -68,7 +68,7 @@ public class DirectAttackBehaviorTests : TestBase {
   [Test]
   public void GetNextWaypoint_PastClosestWaypoint() {
     _agent.Position = new Vector3(920, 0, 0);
-    (var waypoint, var power) = _attackBehavior.GetNextWaypoint(_targetPosition);
+    (Vector3 waypoint, Configs.Power power) = _attackBehavior.GetNextWaypoint(_targetPosition);
     Assert.AreEqual(new Vector3(1000, 0, 0), waypoint);
     Assert.AreEqual(Configs.Power.Max, power);
   }
@@ -76,7 +76,8 @@ public class DirectAttackBehaviorTests : TestBase {
   [Test]
   public void GetNextWaypoint_AtFarthestWaypoint_WithNonzeroZ() {
     _agent.Position = new Vector3(0, 0, 0);
-    (var waypoint, var power) = _attackBehavior.GetNextWaypoint(_targetPositionWithNonzeroZ);
+    (Vector3 waypoint, Configs.Power power) =
+        _attackBehavior.GetNextWaypoint(_targetPositionWithNonzeroZ);
     Assert.AreEqual(new Vector3(400, 50, 300), waypoint);
     Assert.AreEqual(Configs.Power.Mil, power);
   }
@@ -84,7 +85,8 @@ public class DirectAttackBehaviorTests : TestBase {
   [Test]
   public void GetNextWaypoint_BetweenWaypoints_WithNonzeroZ() {
     _agent.Position = new Vector3(440, 0, 330);
-    (var waypoint, var power) = _attackBehavior.GetNextWaypoint(_targetPositionWithNonzeroZ);
+    (Vector3 waypoint, Configs.Power power) =
+        _attackBehavior.GetNextWaypoint(_targetPositionWithNonzeroZ);
     Assert.AreEqual(new Vector3(720, 25, 540), waypoint);
     Assert.AreEqual(Configs.Power.Max, power);
   }

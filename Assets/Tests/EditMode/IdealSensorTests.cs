@@ -2,6 +2,8 @@ using NUnit.Framework;
 using UnityEngine;
 
 public class IdealSensorTests : TestBase {
+  private const float _epsilon = 1e-3f;
+
   private AgentBase _agent;
   private IdealSensor _sensor;
 
@@ -16,20 +18,35 @@ public class IdealSensorTests : TestBase {
   }
 
   [Test]
-  public void Sense_ReturnsSameAsRelativeTransformation() {
+  public void Sense_TargetAtSamePosition_HandlesGracefully() {
+    var target = new FixedHierarchical(position: _agent.Position, velocity: new Vector3(5, 0, 0));
+    SensorOutput sensorOutput = _sensor.Sense(target);
+    Assert.AreEqual(0f, sensorOutput.Position.Range, _epsilon);
+  }
+
+  [Test]
+  public void Sense_TargetDirectlyAbove_ReturnsCorrectElevation() {
+    var target =
+        new FixedHierarchical(position: _agent.Position + Vector3.up * 100, velocity: Vector3.zero);
+    SensorOutput sensorOutput = _sensor.Sense(target);
+    Assert.AreEqual(Mathf.PI / 2, sensorOutput.Position.Elevation, _epsilon);
+  }
+
+  [Test]
+  public void Sense_Hierarchical_ReturnsCorrectPositionAndVelocity() {
     var target =
         new FixedHierarchical(position: new Vector3(10, 2, 20), velocity: new Vector3(-12, 20, -1));
-    var relativeTransformation = _agent.GetRelativeTransformation(target);
-    var sensorOutput = _sensor.Sense(target);
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(target);
+    SensorOutput sensorOutput = _sensor.Sense(target);
     Assert.AreEqual(relativeTransformation.Position, sensorOutput.Position);
     Assert.AreEqual(relativeTransformation.Velocity, sensorOutput.Velocity);
   }
 
   [Test]
-  public void Sense_WaypointReturnsSameAsRelativeTransformation() {
+  public void Sense_Waypoint_ReturnsCorrectPositionAndVelocity() {
     var waypoint = new Vector3(-12, 20, -1);
-    var relativeTransformation = _agent.GetRelativeTransformation(waypoint);
-    var sensorOutput = _sensor.Sense(waypoint);
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(waypoint);
+    SensorOutput sensorOutput = _sensor.Sense(waypoint);
     Assert.AreEqual(relativeTransformation.Position, sensorOutput.Position);
     Assert.AreEqual(relativeTransformation.Velocity, sensorOutput.Velocity);
   }

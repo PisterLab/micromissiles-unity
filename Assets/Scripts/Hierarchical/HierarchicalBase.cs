@@ -9,7 +9,7 @@ public class HierarchicalBase : IHierarchical {
   // List of hierarchical objects in the hierarchy level below.
   private List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
-  // List of hierarchical objects pursuing the hierarchical object.
+  // List of hierarchical objects pursuing this hierarchical object.
   private List<IHierarchical> _pursuers = new List<IHierarchical>();
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
