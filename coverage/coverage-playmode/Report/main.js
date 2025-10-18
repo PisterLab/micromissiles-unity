@@ -292,7 +292,7 @@ var assemblies = [
       { "name": "LaunchAngleOutput", "rp": "bamlab.micromissiles_LaunchAngleOutput.html", "cl": 0, "ucl": 6, "cal": 6, "tl": 63, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LaunchPlan", "rp": "bamlab.micromissiles_LaunchPlan.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 50, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "LinearExtrapolator", "rp": "bamlab.micromissiles_LinearExtrapolator.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 14, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 0, "ucl": 40, "cal": 40, "tl": 78, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "MaxSpeedAssignment", "rp": "bamlab.micromissiles_MaxSpeedAssignment.html", "cl": 0, "ucl": 41, "cal": 41, "tl": 87, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Micromissiles.AccelerationConfig", "rp": "bamlab.micromissiles_AccelerationConfig.2.html", "cl": 0, "ucl": 124, "cal": 124, "tl": 2779, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Micromissiles.AgentConfig", "rp": "bamlab.micromissiles_AgentConfig.2.html", "cl": 0, "ucl": 344, "cal": 344, "tl": 1112, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Micromissiles.AgentReflection", "rp": "bamlab.micromissiles_AgentReflection.html", "cl": 0, "ucl": 5, "cal": 5, "tl": 1112, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -447,7 +447,7 @@ var riskHotspots = [
       { "value": 240, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "MaxSpeedAssignment", "reportPath": "bamlab.micromissiles_MaxSpeedAssignment.html", "methodName": "System.Collections.Generic.IEnumerable[AssignmentItem] MaxSpeedAssignment::Assign(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Collections.Generic.IReadOnlyList`1[[Threat, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "Assign(...)", "fileIndex": 0, "line": 10,
+    "assembly": "bamlab.micromissiles", "class": "MaxSpeedAssignment", "reportPath": "bamlab.micromissiles_MaxSpeedAssignment.html", "methodName": "System.Collections.Generic.IEnumerable[AssignmentItem] MaxSpeedAssignment::Assign(System.Collections.Generic.IReadOnlyList`1[[Interceptor, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Collections.Generic.IReadOnlyList`1[[Threat, bamlab.micromissiles, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]&)", "methodShortName": "Assign(...)", "fileIndex": 0, "line": 16,
     "metrics": [
       { "value": 15, "exceeded": false },
       { "value": 0, "exceeded": false },
