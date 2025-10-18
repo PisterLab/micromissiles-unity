@@ -4,6 +4,9 @@ using UnityEngine;
 // overall intercept speed. The assignment cost is defined as the agent's fractional speed loss
 // during the maneuver.
 public class MaxSpeedAssignment : CostBasedAssignment {
+  // Minimum fractional speed to prevent division by zero.
+  private const float _minFractionalSpeed = 1e-6f;
+
   public MaxSpeedAssignment(AssignDelegate assignFunction)
       : base(CalculateSpeedLoss, assignFunction) {}
 
@@ -30,6 +33,8 @@ public class MaxSpeedAssignment : CostBasedAssignment {
     float fractionalSpeed =
         Mathf.Exp(-((distanceToTarget + angleToTarget * minTurningRadius) / distanceTimeConstant +
                     angleToTarget / angleTimeConstant));
+    // Prevent division by zero.
+    fractionalSpeed = Mathf.Max(fractionalSpeed, _minFractionalSpeed);
     return agent.Speed / fractionalSpeed;
   }
 }
