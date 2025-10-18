@@ -16,6 +16,9 @@ public class HierarchicalBase : IHierarchical {
   // be used by the controller to model imperfect knowledge of the engagement.
   private IHierarchical _targetModel;
 
+  // List of hierarchical objects pursuing the hierarchical object.
+  private List<IHierarchical> _pursuers = new List<IHierarchical>();
+
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
   public IHierarchical Target {
     get => _target;
@@ -25,6 +28,8 @@ public class HierarchicalBase : IHierarchical {
     get => _targetModel;
     set => _targetModel = value;
   }
+  public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
+
   public Vector3 Position => GetPosition();
   public Vector3 Velocity => GetVelocity();
   public float Speed => Velocity.magnitude;
@@ -38,6 +43,16 @@ public class HierarchicalBase : IHierarchical {
 
   public void RemoveSubHierarchical(IHierarchical subHierarchical) {
     _subHierarchicals.Remove(subHierarchical);
+  }
+
+  public void AddPursuer(IHierarchical pursuer) {
+    if (!_pursuers.Contains(pursuer)) {
+      _pursuers.Add(pursuer);
+    }
+  }
+
+  public void RemovePursuer(IHierarchical pursuer) {
+    _pursuers.Remove(pursuer);
   }
 
   protected virtual Vector3 GetPosition() {

@@ -12,6 +12,7 @@ public interface IHierarchical {
   IReadOnlyList<IHierarchical> SubHierarchicals { get; }
   IHierarchical Target { get; set; }
   IHierarchical TargetModel { get; set; }
+  IReadOnlyList<IHierarchical> Pursuers { get; }
 
   Vector3 Position { get; }
   Vector3 Velocity { get; }
@@ -20,4 +21,7 @@ public interface IHierarchical {
 
   void AddSubHierarchical(IHierarchical subHierarchical);
   void RemoveSubHierarchical(IHierarchical subHierarchical);
+
+  void AddPursuer(IHierarchical pursuer);
+  void RemovePursuer(IHierarchical pursuer);
 }
