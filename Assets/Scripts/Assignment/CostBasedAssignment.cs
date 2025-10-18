@@ -12,6 +12,9 @@ public class CostBasedAssignment : AssignmentBase {
                                                    int[] assignedFirsts, int[] assignedSeconds,
                                                    out int numAssignments);
 
+  // Maximum cost to prevent overflow.
+  private const float _maxCost = 1e18f;
+
   private readonly CostDelegate _costFunction;
   private readonly AssignDelegate _assignFunction;
 
@@ -34,7 +37,8 @@ public class CostBasedAssignment : AssignmentBase {
     for (int firstIndex = 0; firstIndex < numFirst; ++firstIndex) {
       for (int secondIndex = 0; secondIndex < numSecond; ++secondIndex) {
         var cost = _costFunction(first[firstIndex], second[secondIndex]);
-        assignmentCosts[firstIndex * numSecond + secondIndex] = cost;
+        assignmentCosts[firstIndex * numSecond + secondIndex] =
+            Mathf.Clamp(cost, -_maxCost, _maxCost);
       }
     }
 
