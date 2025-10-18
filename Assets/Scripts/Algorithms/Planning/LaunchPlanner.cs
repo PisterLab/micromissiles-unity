@@ -38,9 +38,9 @@ public abstract class ILaunchPlanner {
   protected ILaunchAnglePlanner _launchAnglePlanner;
 
   // Agent trajectory predictor.
-  protected IPredictor _predictor;
+  protected IPredictorLegacy _predictor;
 
-  public ILaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor) {
+  public ILaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictorLegacy predictor) {
     _launchAnglePlanner = launchAnglePlanner;
     _predictor = predictor;
   }

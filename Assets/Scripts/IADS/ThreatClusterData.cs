@@ -7,7 +7,7 @@ public enum ThreatClusterStatus { UNASSIGNED, ASSIGNED, DELEGATED }
 
 [System.Serializable]
 public class ThreatClusterData {
-  private Cluster _cluster;
+  private ClusterLegacy _cluster;
 
   // The agent tracks the centroid of the cluster.
   private Agent _agent;
@@ -18,12 +18,12 @@ public class ThreatClusterData {
   [SerializeField]
   private List<Interceptor> _assignedInterceptors = new List<Interceptor>();
 
-  public ThreatClusterData(Cluster cluster) {
+  public ThreatClusterData(ClusterLegacy cluster) {
     _cluster = cluster;
     _agent = SimManager.Instance.CreateDummyAgent(cluster.Centroid(), cluster.Velocity());
   }
 
-  public Cluster Cluster {
+  public ClusterLegacy Cluster {
     get { return _cluster; }
   }
 

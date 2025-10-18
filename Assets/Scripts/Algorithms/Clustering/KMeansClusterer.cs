@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // The k-means clusterer class performs k-means clustering.
-public class KMeansClusterer : IClusterer {
+public class KMeansClusterer : IClustererLegacy {
   public const float Epsilon = 1e-3f;
 
   // Number of clusters.
@@ -32,7 +32,7 @@ public class KMeansClusterer : IClusterer {
       (_objects[i], _objects[j]) = (_objects[j], _objects[i]);
     }
     for (int i = _objects.Count - 1; i >= _objects.Count - _k; --i) {
-      _clusters.Add(new Cluster(_objects[i]));
+      _clusters.Add(new ClusterLegacy(_objects[i]));
     }
 
     bool converged = false;
@@ -43,12 +43,12 @@ public class KMeansClusterer : IClusterer {
       // Calculate the new clusters as the mean of all assigned game objects.
       converged = true;
       for (int clusterIndex = 0; clusterIndex < _clusters.Count; ++clusterIndex) {
-        Cluster newCluster;
+        ClusterLegacy newCluster;
         if (_clusters[clusterIndex].IsEmpty()) {
           int objectIndex = random.Next(_objects.Count);
-          newCluster = new Cluster(_objects[objectIndex]);
+          newCluster = new ClusterLegacy(_objects[objectIndex]);
         } else {
-          newCluster = new Cluster(_clusters[clusterIndex].Centroid());
+          newCluster = new ClusterLegacy(_clusters[clusterIndex].Centroid());
         }
 
         // Check whether the algorithm has converged by checking whether the cluster has moved.
@@ -118,6 +118,6 @@ public class ConstrainedKMeansClusterer : ISizeAndRadiusConstrainedClusterer {
       numClusters +=
           (int)Mathf.Ceil(Mathf.Max(numOverPopulatedClusters, numOverSizedClusters) / 2.0f);
     }
-    _clusters = new List<Cluster>(clusterer.Clusters);
+    _clusters = new List<ClusterLegacy>(clusterer.Clusters);
   }
 }

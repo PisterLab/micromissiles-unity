@@ -23,12 +23,12 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
   // granularity of the possible intercept positions.
   private const float InterceptPositionThreshold = 1000f;
 
-  public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictor predictor)
+  public IterativeLaunchPlanner(ILaunchAnglePlanner launchAnglePlanner, IPredictorLegacy predictor)
       : base(launchAnglePlanner, predictor) {}
 
   // Plan the launch.
   public override LaunchPlan Plan() {
-    PredictorState initialState = _predictor.Predict(time: 0);
+    var initialState = _predictor.Predict(time: 0);
     Vector3 targetPosition = initialState.Position;
 
     LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
@@ -39,7 +39,7 @@ public class IterativeLaunchPlanner : ILaunchPlanner {
       float timeToIntercept = launchAngleOutput.TimeToPosition;
 
       // Estimate the target position.
-      PredictorState predictedState = _predictor.Predict(timeToIntercept);
+      var predictedState = _predictor.Predict(timeToIntercept);
       targetPosition = predictedState.Position;
 
       // Check whether the intercept direction has changed, in which case the algorithm has

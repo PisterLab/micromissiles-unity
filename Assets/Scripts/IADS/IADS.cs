@@ -16,7 +16,7 @@ public class IADS : MonoBehaviour {
   // TODO(titan): Choose the CSV file based on the interceptor type.
   private ILaunchAnglePlanner _launchAnglePlanner =
       new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
-  private IAssignment _assignmentScheme = new MaxSpeedAssignment();
+  private IAssignmentLegacy _assignmentScheme = new MaxSpeedAssignment();
   private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
@@ -24,11 +24,11 @@ public class IADS : MonoBehaviour {
   private Dictionary<Agent, TrackFileData> _trackFileMap = new Dictionary<Agent, TrackFileData>();
 
   private List<Interceptor> _assignmentQueue = new List<Interceptor>();
-  private List<Cluster> _threatClusters = new List<Cluster>();
-  private Dictionary<Cluster, ThreatClusterData> _threatClusterMap =
-      new Dictionary<Cluster, ThreatClusterData>();
-  private Dictionary<Interceptor, Cluster> _interceptorClusterMap =
-      new Dictionary<Interceptor, Cluster>();
+  private List<ClusterLegacy> _threatClusters = new List<ClusterLegacy>();
+  private Dictionary<ClusterLegacy, ThreatClusterData> _threatClusterMap =
+      new Dictionary<ClusterLegacy, ThreatClusterData>();
+  private Dictionary<Interceptor, ClusterLegacy> _interceptorClusterMap =
+      new Dictionary<Interceptor, ClusterLegacy>();
   private HashSet<Interceptor> _assignableInterceptors = new HashSet<Interceptor>();
 
   private HashSet<Threat> _threatsToCluster = new HashSet<Threat>();
@@ -109,7 +109,7 @@ public class IADS : MonoBehaviour {
       }
 
       // Create a predictor to track the cluster's centroid.
-      IPredictor predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
+      var predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
 
       // Create a launch planner.
       ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
@@ -161,13 +161,13 @@ public class IADS : MonoBehaviour {
     // as the boost time.
     const float SubmunitionSpawnPredictionTime = 0.6f;
 
-    Cluster cluster = _interceptorClusterMap[carrier];
+    ClusterLegacy cluster = _interceptorClusterMap[carrier];
     List<Threat> threats = cluster.Threats.ToList();
     Vector3 carrierPosition = carrier.GetPosition();
     Vector3 carrierVelocity = carrier.GetVelocity();
     foreach (var threat in threats) {
-      IPredictor predictor = new LinearExtrapolator(threat);
-      PredictorState predictedState = predictor.Predict(SubmunitionSpawnPredictionTime);
+      var predictor = new LinearExtrapolator(threat);
+      var predictedState = predictor.Predict(SubmunitionSpawnPredictionTime);
       Vector3 positionToPredictedThreat = predictedState.Position - carrierPosition;
       float predictedDistanceToThreat = positionToPredictedThreat.magnitude;
 
@@ -196,7 +196,7 @@ public class IADS : MonoBehaviour {
 
   // Releases interceptors from clusters that only contain destroyed threats.
   private void CleanupDestroyedClusters() {
-    foreach (Cluster cluster in _threatClusters) {
+    foreach (var cluster in _threatClusters) {
       if (!cluster.IsFullyTerminated()) {
         continue;
       }
@@ -215,7 +215,7 @@ public class IADS : MonoBehaviour {
   // Detach a single interceptor from a cluster and decide its next action.
   // All interceptors are queued for reassignment in the hierarchical architecture,
   // including carrier interceptors.
-  private void ReleaseInterceptorFromCluster(Cluster cluster, Interceptor interceptor) {
+  private void ReleaseInterceptorFromCluster(ClusterLegacy cluster, Interceptor interceptor) {
     _threatClusterMap[cluster].RemoveInterceptor(interceptor);
     _interceptorClusterMap.Remove(interceptor);
     // TODO(titan): During the hierarchical architecture overhaul/refactor,
@@ -228,9 +228,9 @@ public class IADS : MonoBehaviour {
 
   public void AssignSubmunitionsToThreats(Interceptor carrier, List<Interceptor> interceptors) {
     // Assign threats to the submunitions.
-    Cluster cluster = _interceptorClusterMap[carrier];
+    ClusterLegacy cluster = _interceptorClusterMap[carrier];
     List<Threat> threats = cluster.Threats.ToList();
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         _assignmentScheme.Assign(interceptors, threats);
 
     // Mark the cluster as delegated to submunitions.
@@ -270,7 +270,7 @@ public class IADS : MonoBehaviour {
       return;
     }
 
-    IEnumerable<IAssignment.AssignmentItem> assignments =
+    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
         _assignmentScheme.Assign(interceptors, threats);
 
     // Apply the assignments to the submunitions.
@@ -342,7 +342,8 @@ public class IADS : MonoBehaviour {
     }
 
     // Cluster threats.
-    IClusterer clusterer = new AgglomerativeClusterer(new List<Agent>(threats), MaxSize, MaxRadius);
+    IClustererLegacy clusterer =
+        new AgglomerativeClusterer(new List<Agent>(threats), MaxSize, MaxRadius);
     clusterer.Cluster();
     var clusters = clusterer.Clusters;
     Debug.Log($"Clustered {threats.Count} threats into {clusters.Count} clusters.");

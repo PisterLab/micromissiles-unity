@@ -6,20 +6,22 @@ using UnityEngine;
 
 // The threat assignment class assigns interceptors to the targets based
 // on the threat level of the targets.
-public class ThreatAssignment : IAssignment {
+public class ThreatAssignment : IAssignmentLegacy {
   // Assign a target to each interceptor that has not been assigned a target yet.
   [Pure]
-  public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
-                                                        in IReadOnlyList<Threat> threats) {
-    List<IAssignment.AssignmentItem> assignments = new List<IAssignment.AssignmentItem>();
+  public IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> Assign(
+      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
+    List<IAssignmentLegacy.AssignmentItemLegacy> assignments =
+        new List<IAssignmentLegacy.AssignmentItemLegacy>();
 
-    List<Interceptor> assignableInterceptors = IAssignment.GetAssignableInterceptors(interceptors);
+    List<Interceptor> assignableInterceptors =
+        IAssignmentLegacy.GetAssignableInterceptors(interceptors);
     if (assignableInterceptors.Count == 0) {
       Debug.LogWarning("No assignable interceptors found.");
       return assignments;
     }
 
-    List<Threat> activeThreats = IAssignment.GetActiveThreats(threats);
+    List<Threat> activeThreats = IAssignmentLegacy.GetActiveThreats(threats);
     if (activeThreats.Count == 0) {
       Debug.LogWarning("No active threats found.");
       return assignments;
@@ -37,8 +39,8 @@ public class ThreatAssignment : IAssignment {
     var assignableInterceptorsEnumerator = assignableInterceptors.GetEnumerator();
     int threatIndex = 0;
     while (assignableInterceptorsEnumerator.MoveNext()) {
-      assignments.Add(new IAssignment.AssignmentItem(assignableInterceptorsEnumerator.Current,
-                                                     threatInfos[threatIndex].Threat));
+      assignments.Add(new IAssignmentLegacy.AssignmentItemLegacy(
+          assignableInterceptorsEnumerator.Current, threatInfos[threatIndex].Threat));
       threatIndex = (threatIndex + 1) % threatInfos.Count;
     }
     return assignments;
