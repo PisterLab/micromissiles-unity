@@ -1,0 +1,29 @@
+<Project>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+
+    <!-- Enable XML doc generation to trigger CS8019 (unused usings) -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn> <!-- Suppress missing XML doc comments -->
+
+    <!-- Treat compiler unused code warnings as errors -->
+    <WarningsAsErrors>
+      CS0168;  <!-- Variable declared but never used -->
+      CS0169;  <!-- Private field never used -->
+      CS0219;  <!-- Variable assigned but value never used -->
+      CS0414;  <!-- Private field assigned constant but never used -->
+      CS0649;  <!-- Field never assigned, always default value (Unity SerializeField issue!) -->
+      CS8019;  <!-- Unnecessary using directive -->
+      CS8321   <!-- Local function declared but never used -->
+    </WarningsAsErrors>
+
+    <!-- Treat analyzer unused code rules as errors -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- IDE analyzers for unused code -->
+    <CompilerVisibleProperty Include="AnalysisLevel" />
+  </ItemGroup>
+</Project>
