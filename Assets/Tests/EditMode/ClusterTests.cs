@@ -5,13 +5,13 @@ using UnityEngine;
 public class ClusterTests {
   private const float _epsilon = 1e-3f;
 
-  private static FixedHierarchical GenerateObject(in Vector3 position) {
+  private static FixedHierarchical GenerateHierarchical(in Vector3 position) {
     return new FixedHierarchical(position, velocity: Vector3.zero, acceleration: Vector3.zero);
   }
 
-  private static Cluster GenerateCluster(IReadOnlyList<FixedHierarchical> objects) {
+  private static Cluster GenerateCluster(IReadOnlyList<FixedHierarchical> hierarchicals) {
     Cluster cluster = new Cluster();
-    foreach (var obj in objects) {
+    foreach (var obj in hierarchicals) {
       cluster.AddSubHierarchical(obj);
     }
     cluster.Recenter();
@@ -29,11 +29,11 @@ public class ClusterTests {
   [Test]
   public void Size_ReturnsCorrectly() {
     const int size = 10;
-    var objects = new List<FixedHierarchical>();
+    var hierarchicals = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      objects.Add(GenerateObject(new Vector3(0, i, 0)));
+      hierarchicals.Add(GenerateHierarchical(new Vector3(0, i, 0)));
     }
-    Cluster cluster = GenerateCluster(objects);
+    Cluster cluster = GenerateCluster(hierarchicals);
     Assert.AreEqual(size, cluster.Size);
   }
 
@@ -41,19 +41,19 @@ public class ClusterTests {
   public void IsEmpty_ReturnsCorrectly() {
     var cluster = new Cluster();
     Assert.IsTrue(cluster.IsEmpty);
-    cluster.AddSubHierarchical(GenerateObject(Vector3.zero));
+    cluster.AddSubHierarchical(GenerateHierarchical(Vector3.zero));
     Assert.IsFalse(cluster.IsEmpty);
   }
 
   [Test]
   public void Radius_ReturnsDistanceFromCentroidToFarthest() {
     const int size = 10;
-    var objects = new List<FixedHierarchical>();
+    var hierarchicals = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      objects.Add(GenerateObject(new Vector3(0, i, 0)));
+      hierarchicals.Add(GenerateHierarchical(new Vector3(0, i, 0)));
     }
-    Cluster cluster = GenerateCluster(objects);
-    var centroid = size / 2 - 2;
+    Cluster cluster = GenerateCluster(hierarchicals);
+    float centroid = size / 2 - 2;
     cluster.Centroid = new Vector3(0, centroid, 0);
     Assert.AreEqual(size - 1 - centroid, cluster.Radius(), _epsilon);
   }
@@ -66,14 +66,14 @@ public class ClusterTests {
 
   [Test]
   public void Recenter_SetsCentroidToMeanOfSubHierarchicalPositions() {
-    var objects = new List<FixedHierarchical>();
+    var hierarchicals = new List<FixedHierarchical>();
     for (int i = -1; i <= 1; ++i) {
       for (int j = -1; j <= 1; ++j) {
-        objects.Add(GenerateObject(new Vector3(i, j, 0)));
+        hierarchicals.Add(GenerateHierarchical(new Vector3(i, j, 0)));
       }
     }
-    var cluster = GenerateCluster(objects);
-    cluster.AddSubHierarchical(GenerateObject(new Vector3(10, -10, 0)));
+    Cluster cluster = GenerateCluster(hierarchicals);
+    cluster.AddSubHierarchical(GenerateHierarchical(new Vector3(10, -10, 0)));
     Assert.AreNotEqual(new Vector3(1, -1, 0), cluster.Centroid);
     cluster.Recenter();
     Assert.AreEqual(new Vector3(1, -1, 0), cluster.Centroid);
@@ -82,14 +82,14 @@ public class ClusterTests {
   [Test]
   public void Merge_CombinesAllSubHierarchicals() {
     const int size = 10;
-    var objects1 = new List<FixedHierarchical>();
-    var objects2 = new List<FixedHierarchical>();
+    var hierarchicals1 = new List<FixedHierarchical>();
+    var hierarchicals2 = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      objects1.Add(GenerateObject(new Vector3(0, i, 0)));
-      objects2.Add(GenerateObject(new Vector3(i, 0, 0)));
+      hierarchicals1.Add(GenerateHierarchical(new Vector3(0, i, 0)));
+      hierarchicals2.Add(GenerateHierarchical(new Vector3(i, 0, 0)));
     }
-    var cluster1 = GenerateCluster(objects1);
-    var cluster2 = GenerateCluster(objects2);
+    Cluster cluster1 = GenerateCluster(hierarchicals1);
+    Cluster cluster2 = GenerateCluster(hierarchicals2);
     int size1 = cluster1.Size;
     int size2 = cluster2.Size;
     cluster1.Merge(cluster2);
@@ -99,16 +99,16 @@ public class ClusterTests {
   [Test]
   public void Merge_DoesNotUpdateCentroid() {
     const int size = 10;
-    var objects1 = new List<FixedHierarchical>();
-    var objects2 = new List<FixedHierarchical>();
+    var hierarchicals1 = new List<FixedHierarchical>();
+    var hierarchicals2 = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      objects1.Add(GenerateObject(new Vector3(0, i, 0)));
-      objects2.Add(GenerateObject(new Vector3(i, 0, 0)));
+      hierarchicals1.Add(GenerateHierarchical(new Vector3(0, i, 0)));
+      hierarchicals2.Add(GenerateHierarchical(new Vector3(i, 0, 0)));
     }
-    var cluster1 = GenerateCluster(objects1);
-    var cluster2 = GenerateCluster(objects2);
-    var centroid1 = cluster1.Centroid;
-    var centroid2 = cluster2.Centroid;
+    Cluster cluster1 = GenerateCluster(hierarchicals1);
+    Cluster cluster2 = GenerateCluster(hierarchicals2);
+    Vector3 centroid1 = cluster1.Centroid;
+    Vector3 centroid2 = cluster2.Centroid;
     cluster1.Merge(cluster2);
     Assert.AreNotEqual((centroid1 + centroid2) / 2, cluster1.Centroid);
     cluster1.Recenter();
