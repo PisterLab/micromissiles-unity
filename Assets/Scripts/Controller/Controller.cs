@@ -2,11 +2,11 @@ using System;
 using UnityEngine;
 
 // The controller class is an interface between the agent and its control law.
-public class IController {
+public class IControllerLegacy {
   // Agent that the controller is controlling.
   protected Agent _agent;
 
-  public IController(Agent agent) {
+  public IControllerLegacy(Agent agent) {
     _agent = agent;
   }
 

@@ -28,6 +28,7 @@ public class HierarchicalBase : IHierarchical {
   public Vector3 Position => GetPosition();
   public Vector3 Velocity => GetVelocity();
   public float Speed => Velocity.magnitude;
+  public Vector3 Acceleration => GetAcceleration();
 
   public void AddSubHierarchical(IHierarchical subHierarchical) {
     if (!_subHierarchicals.Contains(subHierarchical)) {
@@ -45,6 +46,10 @@ public class HierarchicalBase : IHierarchical {
 
   protected virtual Vector3 GetVelocity() {
     return GetMean(s => s.Velocity);
+  }
+
+  protected virtual Vector3 GetAcceleration() {
+    return GetMean(s => s.Acceleration);
   }
 
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {

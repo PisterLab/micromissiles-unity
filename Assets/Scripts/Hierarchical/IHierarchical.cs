@@ -16,6 +16,7 @@ public interface IHierarchical {
   Vector3 Position { get; }
   Vector3 Velocity { get; }
   float Speed { get; }
+  Vector3 Acceleration { get; }
 
   void AddSubHierarchical(IHierarchical subHierarchical);
   void RemoveSubHierarchical(IHierarchical subHierarchical);
