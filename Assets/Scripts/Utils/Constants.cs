@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
+// Physical constants.
 public static class Constants {
-  // Constants (these should be defined with appropriate values).
   public const float kAirDensity = 1.204f;                     // Sea level air density in kg/m^3.
   public const float kAirDensityScaleHeight = 10.4f;           // Scale height in km.
   public static readonly float kGravity = -Physics.gravity.y;  // Standard gravity in m/s^2.

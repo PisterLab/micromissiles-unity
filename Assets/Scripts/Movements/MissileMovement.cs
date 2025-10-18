@@ -1,14 +1,18 @@
 using UnityEngine;
 
-// Rocket movement.
+// Missile movement.
 //
-// A rocket is defined by having three modes during its flight: ready mode (before it is launched),
-// boost mode (when its burner is on), and midcourse mode (after the burner has completed burning).
-public class RocketMovement : AerialMovement {
+// A missile is defined by having multiple modes during its flight: ready mode (before it is
+// launched), boost mode (when its burner is on), midcourse mode (after the burner has completed
+// burning), and terminal mode (when the agent is homing in on the target).
+//
+// We define two additional states for our simulator: initialized state (when the missile has been
+// created) and terminated state (when the missile has finished its flight).
+public class MissileMovement : AerialMovement {
   // Flight phase of the agent.
   public Simulation.FlightPhase FlightPhase { get; set; }
 
-  public RocketMovement(IAgent agent) : base(agent) {
+  public MissileMovement(IAgent agent) : base(agent) {
     FlightPhase = Simulation.FlightPhase.Initialized;
   }
 
@@ -44,18 +48,18 @@ public class RocketMovement : AerialMovement {
 
   // In the ready phase, the agent is subject to drag and gravity but has not boosted yet.
   private Vector3 ActReady(in Vector3 accelerationInput) {
-    var limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
+    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
     return CalculateNetAccelerationInput(limitedAccelerationInput);
   }
 
   // In the boost phase, the boost acceleration is added to the control acceleration input.
   private Vector3 ActBoost(in Vector3 accelerationInput) {
-    var limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
+    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
 
     // Determine the boost acceleration.
-    var boostAcceleration =
+    float boostAcceleration =
         (Agent.StaticConfig?.BoostConfig?.BoostAcceleration ?? 0) * Constants.kGravity;
-    var totalAccelerationInput =
+    Vector3 totalAccelerationInput =
         boostAcceleration * Agent.transform.forward + limitedAccelerationInput;
     return CalculateNetAccelerationInput(totalAccelerationInput);
   }
@@ -63,7 +67,7 @@ public class RocketMovement : AerialMovement {
   // In the midcourse phase, the agent accelerates according to the control acceleration input but
   // is subject to drag and gravity.
   private Vector3 ActMidCourse(in Vector3 accelerationInput) {
-    var limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
+    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
     return CalculateNetAccelerationInput(limitedAccelerationInput);
   }
 
@@ -76,10 +80,10 @@ public class RocketMovement : AerialMovement {
 
   // Calculate the acceleration input with drag and gravity.
   private Vector3 CalculateNetAccelerationInput(in Vector3 accelerationInput) {
-    var gravity = Physics.gravity;
-    var airDrag = CalculateDrag();
-    var liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + Physics.gravity);
-    var dragAcceleration = -(airDrag + liftInducedDrag);
+    Vector3 gravity = Physics.gravity;
+    float airDrag = CalculateDrag();
+    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + Physics.gravity);
+    float dragAcceleration = -(airDrag + liftInducedDrag);
     return accelerationInput + gravity + dragAcceleration * Agent.transform.forward;
   }
 }
