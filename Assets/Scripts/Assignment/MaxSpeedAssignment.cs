@@ -5,6 +5,9 @@ using UnityEngine;
 // The maximum speed assignment class assigns interceptors to the threats to maximize the intercept
 // speed by defining a cost of the assignment equal to the speed lost for the maneuver.
 public class MaxSpeedAssignment : IAssignment {
+  // Maximum cost to prevent overflow.
+  private const float _maxCost = 1e18f;
+
   // Assign a threat to each interceptor that has not been assigned a threat yet.
   public IEnumerable<IAssignment.AssignmentItem> Assign(in IReadOnlyList<Interceptor> interceptors,
                                                         in IReadOnlyList<Threat> threats) {
@@ -52,7 +55,8 @@ public class MaxSpeedAssignment : IAssignment {
             -((distanceToThreat + angleToThreat * minTurningRadius) / distanceTimeConstant +
               angleToThreat / angleTimeConstant));
         float cost = (float)interceptor.GetSpeed() / fractionalSpeed;
-        assignmentCosts[interceptorIndex * activeThreats.Count + threatIndex] = cost;
+        assignmentCosts[interceptorIndex * activeThreats.Count + threatIndex] =
+            Mathf.Clamp(cost, -_maxCost, _maxCost);
       }
     }
 
