@@ -44,10 +44,45 @@ jobs:
           name: plugins-${{ matrix.platform }}
           path: plugins/bazel-bin/plugins-${{ matrix.platform }}.tar.gz
 
+  csharp-lint:
+    name: C# linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Unity (from ProjectVersion.txt)
+        uses: buildalon/unity-setup@v1
+        with:
+          version-file: ProjectSettings/ProjectVersion.txt
+
+      - name: Activate Unity License (Personal)
+        if: ${{ secrets.UNITY_USERNAME != '' && secrets.UNITY_PASSWORD != '' }}
+        uses: buildalon/activate-unity-license@v1
+        with:
+          username: ${{ secrets.UNITY_USERNAME }}
+          password: ${{ secrets.UNITY_PASSWORD }}
+          license: Personal
+
+      - name: Generate .sln/.csproj via Unity (Rider SyncSolution)
+        uses: buildalon/unity-action@v2
+        with:
+          project-path: .
+          args: -quit -batchmode -nographics -projectPath . -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build and check for warnings
+        run: dotnet build micromissiles-unity.sln --configuration Debug -nologo
+
   build-all:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
-    needs: build-plugins
+    needs:
+      - build-plugins
+      - csharp-lint
     strategy:
       fail-fast: false
       matrix:

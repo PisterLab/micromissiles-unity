@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.ide.rider": "3.0.34",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.9.3",
     "com.unity.device-simulator.devices": "1.0.0",

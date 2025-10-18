@@ -35,36 +35,3 @@ jobs:
         run: |
           find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -mode=check
           find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -lint=warn -mode=check
-
-  csharp-linting:
-    name: Run C# linting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/cache@v4
-        with:
-          path: Library
-          key: Library-linter-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-linter-
-            Library-
-
-      - name: Generate Unity project files
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          targetPlatform: StandaloneLinux64
-          buildMethod: GenerateProjectFiles.Generate
-          allowDirtyBuild: true
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build and check for warnings
-        run: dotnet build micromissiles-unity.sln --configuration Debug -nologo
