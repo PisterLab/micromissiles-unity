@@ -100,7 +100,7 @@ public class AgentBase : MonoBehaviour, IAgent {
     var transformation = new Transformation();
 
     // Get the relative position transformation.
-    var relativePosition = position - Position;
+    Vector3 relativePosition = position - Position;
     transformation.position = GetRelativePositionTransformation(relativePosition);
 
     // Get the relative velocity transformation.
@@ -123,8 +123,8 @@ public class AgentBase : MonoBehaviour, IAgent {
     // Calculate the distance (range) to the target.
     positionTransformation.range = relativePosition.magnitude;
 
-    var flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
-    var verticalRelativePosition = relativePosition - flatRelativePosition;
+    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
+    Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
 
     // Calculate the elevation (vertical angle relative to forward).
     positionTransformation.elevation =
@@ -160,14 +160,14 @@ public class AgentBase : MonoBehaviour, IAgent {
     velocityTransformation.range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
 
     // Project relative velocity onto the sphere passing through the target.
-    var tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
+    Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
 
     // The target azimuth vector is orthogonal to the relative position vector and
     // points to the starboard of the target along the azimuth-elevation sphere.
-    var targetAzimuth = Vector3.Cross(transform.up, relativePosition);
+    Vector3 targetAzimuth = Vector3.Cross(transform.up, relativePosition);
     // The target elevation vector is orthogonal to the relative position vector
     // and points upwards from the target along the azimuth-elevation sphere.
-    var targetElevation = Vector3.Cross(relativePosition, transform.right);
+    Vector3 targetElevation = Vector3.Cross(relativePosition, transform.right);
     // If the relative position vector is parallel to the yaw or pitch axis, the
     // target azimuth vector or the target elevation vector will be undefined.
     if (targetAzimuth.sqrMagnitude < _epsilon) {
@@ -178,7 +178,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
     // Project the relative velocity vector on the azimuth-elevation sphere onto
     // the target azimuth vector.
-    var tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
+    Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
 
     // Calculate the time derivative of the azimuth to the target.
     velocityTransformation.azimuth =
@@ -189,7 +189,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
     // Project the velocity vector on the azimuth-elevation sphere onto the target
     // elevation vector.
-    var tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
+    Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
 
     // Calculate the time derivative of the elevation to the target.
     velocityTransformation.elevation =
