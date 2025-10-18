@@ -13,7 +13,7 @@ public class CostBasedAssignment : AssignmentBase {
                                                    out int numAssignments);
 
   // Maximum cost to prevent overflow.
-  private const float _maxCost = 1e18f;
+  private const float _maxCost = 1e12f;
 
   private readonly CostDelegate _costFunction;
   private readonly AssignDelegate _assignFunction;
