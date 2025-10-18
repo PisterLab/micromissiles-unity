@@ -3,13 +3,13 @@ using UnityEngine;
 // The launch planner outputs a launch plan.
 public struct LaunchPlan {
   // If true, the interceptor should be launched.
-  public bool ShouldLaunch { get; set; }
+  public bool ShouldLaunch { get; init; }
 
   // Launch angle in degrees measured from the horizon.
-  public float LaunchAngle { get; set; }
+  public float LaunchAngle { get; init; }
 
   // Absolute intercept position.
-  public Vector3 InterceptPosition { get; set; }
+  public Vector3 InterceptPosition { get; init; }
 
   // No-launch launch plan.
   public static LaunchPlan NoLaunch() {

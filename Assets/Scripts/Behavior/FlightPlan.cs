@@ -8,7 +8,7 @@ public class FlightPlan {
   // List of waypoints sorted by distance in descending order.
   List<Configs.FlightPlanWaypoint> _waypoints;
 
-  public Configs.FlightPlan Config { get; set; }
+  public Configs.FlightPlan Config { get; init; }
 
   public IReadOnlyList<Configs.FlightPlanWaypoint> Waypoints {
     get {
