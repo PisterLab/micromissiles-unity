@@ -50,7 +50,7 @@ public class IterativeLaunchPlannerTests : TestBase {
   public void Plan_InterceptAtDataPoint_ReturnsLaunch() {
     _target.Position = new Vector3(1, 110, 0);
     _target.Velocity = new Vector3(0, -1, 0);
-    var plan = _planner.Plan();
+    LaunchPlan plan = _planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(90, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(1, 100, 0), plan.InterceptPosition);
@@ -60,7 +60,7 @@ public class IterativeLaunchPlannerTests : TestBase {
   public void Plan_InterceptNearDataPoint_ReturnsLaunch() {
     _target.Position = new Vector3(1, 110, 0);
     _target.Velocity = new Vector3(0, -1.1f, 0);
-    var plan = _planner.Plan();
+    LaunchPlan plan = _planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(90, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(1, 99, 0), plan.InterceptPosition);
@@ -70,7 +70,7 @@ public class IterativeLaunchPlannerTests : TestBase {
   public void Plan_InterceptBetweenDataPoints_ReturnsLaunch() {
     _target.Position = new Vector3(126, 1, 0);
     _target.Velocity = new Vector3(-5, 0, 0);
-    var plan = _planner.Plan();
+    LaunchPlan plan = _planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
     Assert.AreEqual(20, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(61, 1, 0), plan.InterceptPosition);
@@ -80,7 +80,7 @@ public class IterativeLaunchPlannerTests : TestBase {
   public void Plan_DivergingFromOrigin_ReturnsNoLaunch() {
     _target.Position = new Vector3(0, 1, -80);
     _target.Velocity = new Vector3(0, 0, -1);
-    var plan = _planner.Plan();
+    LaunchPlan plan = _planner.Plan();
     Assert.IsFalse(plan.ShouldLaunch);
   }
 
@@ -88,7 +88,7 @@ public class IterativeLaunchPlannerTests : TestBase {
   public void Plan_DivergingFromInterceptPoint_ReturnsNoLaunch() {
     _target.Position = new Vector3(1, 105, 0);
     _target.Velocity = new Vector3(0, 1, 0);
-    var plan = _planner.Plan();
+    LaunchPlan plan = _planner.Plan();
     Assert.IsFalse(plan.ShouldLaunch);
   }
 
@@ -96,7 +96,7 @@ public class IterativeLaunchPlannerTests : TestBase {
   public void Plan_TooFarFromInterceptPoint_ReturnsNoLaunch() {
     _target.Position = new Vector3(1, 2000, 0);
     _target.Velocity = new Vector3(0, -1, 0);
-    var plan = _planner.Plan();
+    LaunchPlan plan = _planner.Plan();
     Assert.IsFalse(plan.ShouldLaunch);
   }
 }

@@ -16,8 +16,8 @@ public class DirectAttackBehavior : AttackBehaviorBase {
       return (targetPosition, Configs.Power.Max);
     }
 
-    var directionToTarget = targetPosition - Agent.Position;
-    var distanceToTarget = directionToTarget.magnitude;
+    Vector3 directionToTarget = targetPosition - Agent.Position;
+    float distanceToTarget = directionToTarget.magnitude;
 
     // Find the index of the first waypoint whose position is closer to the target than the current
     // position.
@@ -28,8 +28,8 @@ public class DirectAttackBehavior : AttackBehaviorBase {
       }
     }
 
-    var waypointPosition = targetPosition;
-    var power = Configs.Power.Idle;
+    Vector3 waypointPosition = targetPosition;
+    Configs.Power power = Configs.Power.Idle;
     if (waypointIndex == FlightPlan.Waypoints.Count) {
       // This is the last waypoint, so target the final position with the last waypoint's power
       // setting.
@@ -38,7 +38,7 @@ public class DirectAttackBehavior : AttackBehaviorBase {
       return (waypointPosition, power);
     }
     // There is a next waypoint.
-    var waypoint = FlightPlan.Waypoints[waypointIndex];
+    Configs.FlightPlanWaypoint waypoint = FlightPlan.Waypoints[waypointIndex];
     waypointPosition = targetPosition - directionToTarget.normalized * waypoint.Distance;
     waypointPosition.y = waypoint.Altitude;
     power = waypoint.Power;

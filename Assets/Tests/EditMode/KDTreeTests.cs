@@ -30,7 +30,7 @@ public class KDTreeTests {
       }
     }
     var tree = new KDTree<Vector2>(points, (Vector2 point) => point);
-    Assert.AreEqual(tree.NearestNeighbor(Vector2.zero), Vector2.zero);
+    Assert.AreEqual(Vector2.zero, tree.NearestNeighbor(Vector2.zero));
     Assert.AreEqual(new Vector2(1, 6), tree.NearestNeighbor(new Vector2(1, 6)));
     Assert.AreEqual(new Vector2(3, 2), tree.NearestNeighbor(new Vector2(3, 2)));
     Assert.AreEqual(new Vector2(9, 9), tree.NearestNeighbor(new Vector2(9, 9)));

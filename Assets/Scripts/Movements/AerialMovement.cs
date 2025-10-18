@@ -9,19 +9,19 @@ public abstract class AerialMovement : MovementBase {
 
   // Calculate the dynamic pressure on the agent.
   protected float GetDynamicPressure() {
-    var airDensity = Constants.CalculateAirDensityAtAltitude(Agent.Position.y);
-    var flowSpeed = Agent.Speed;
+    float airDensity = Constants.CalculateAirDensityAtAltitude(Agent.Position.y);
+    float flowSpeed = Agent.Speed;
     return 0.5f * airDensity * (flowSpeed * flowSpeed);
   }
 
   // Calculate the air drag acting on the agent.
   protected float CalculateDrag() {
     var staticConfig = Agent.StaticConfig;
-    var dragCoefficient = staticConfig.LiftDragConfig?.DragCoefficient ?? 0;
-    var crossSectionalArea = staticConfig.BodyConfig?.CrossSectionalArea ?? 0;
-    var mass = staticConfig.BodyConfig?.Mass ?? 1;
-    var dynamicPressure = GetDynamicPressure();
-    var dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
+    float dragCoefficient = staticConfig.LiftDragConfig?.DragCoefficient ?? 0;
+    float crossSectionalArea = staticConfig.BodyConfig?.CrossSectionalArea ?? 0;
+    float mass = staticConfig.BodyConfig?.Mass ?? 1;
+    float dynamicPressure = GetDynamicPressure();
+    float dragForce = dragCoefficient * dynamicPressure * crossSectionalArea;
     return dragForce / mass;
   }
 
@@ -29,9 +29,9 @@ public abstract class AerialMovement : MovementBase {
   // acceleration normal to the velocity vector is considered "lift".
   protected float CalculateLiftInducedDrag(in Vector3 accelerationInput) {
     var staticConfig = Agent.StaticConfig;
-    var liftAcceleration =
+    float liftAcceleration =
         Vector3.ProjectOnPlane(accelerationInput, Agent.transform.forward).magnitude;
-    var liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
+    float liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }
 }

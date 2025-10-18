@@ -4,28 +4,30 @@ using UnityEngine;
 public class AgentBaseTests : TestBase {
   private const float _epsilon = 1e-3f;
 
+  private AgentBase _agent;
+  private FixedHierarchical _target;
+
+  [SetUp]
+  public void SetUp() {
+    _agent = new GameObject("Agent").AddComponent<AgentBase>();
+    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    InvokePrivateMethod(_agent, "Awake");
+  }
+
   [Test]
   public void GetRelativeTransformation_TargetAtBoresight() {
-    AgentBase agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(agent, "Awake");
-    agent.Position = new Vector3(0, 0, 0);
-    agent.Velocity = new Vector3(0, 0, 0);
+    _agent.Position = new Vector3(0, 0, 0);
+    _agent.Velocity = new Vector3(0, 0, 0);
+    _target =
+        new FixedHierarchical(position: new Vector3(0, 0, 20), velocity: new Vector3(0, 20, -1));
 
-    AgentBase target = new GameObject("Target").AddComponent<AgentBase>();
-    Rigidbody targetRb = target.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(target, "Awake");
-    target.Position = new Vector3(0, 0, 20);
-    target.Velocity = new Vector3(0, 20, -1);
-
-    Transformation relativeTransformation = agent.GetRelativeTransformation(target);
-
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
     Assert.AreEqual(relativeTransformation.Position.Cartesian,
-                    target.transform.position - agent.transform.position);
+                    _target.Position - _agent.transform.position);
     Assert.AreEqual(relativeTransformation.Position.Range, 20f, _epsilon);
     Assert.AreEqual(relativeTransformation.Position.Azimuth, 0f, _epsilon);
     Assert.AreEqual(relativeTransformation.Position.Elevation, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, target.Velocity - agent.Velocity);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, _target.Velocity - _agent.Velocity);
     Assert.AreEqual(relativeTransformation.Velocity.Range, -1f, _epsilon);
     Assert.AreEqual(relativeTransformation.Velocity.Azimuth, 0f, _epsilon);
     Assert.AreEqual(relativeTransformation.Velocity.Elevation, 1f, _epsilon);
@@ -33,26 +35,18 @@ public class AgentBaseTests : TestBase {
 
   [Test]
   public void GetRelativeTransformation_TargetAtStarboard() {
-    AgentBase agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(agent, "Awake");
-    agent.Position = new Vector3(0, 0, 0);
-    agent.Velocity = new Vector3(0, 0, 0);
+    _agent.Position = new Vector3(0, 0, 0);
+    _agent.Velocity = new Vector3(0, 0, 0);
+    _target =
+        new FixedHierarchical(position: new Vector3(20, 0, 0), velocity: new Vector3(0, 0, 20));
 
-    AgentBase target = new GameObject("Target").AddComponent<AgentBase>();
-    Rigidbody targetRb = target.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(target, "Awake");
-    target.Position = new Vector3(20, 0, 0);
-    target.Velocity = new Vector3(0, 0, 20);
-
-    Transformation relativeTransformation = agent.GetRelativeTransformation(target);
-
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
     Assert.AreEqual(relativeTransformation.Position.Cartesian,
-                    target.transform.position - agent.transform.position);
+                    _target.Position - _agent.transform.position);
     Assert.AreEqual(relativeTransformation.Position.Range, 20f, _epsilon);
     Assert.AreEqual(relativeTransformation.Position.Azimuth, Mathf.PI / 2, _epsilon);
     Assert.AreEqual(relativeTransformation.Position.Elevation, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, target.Velocity - agent.Velocity);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, _target.Velocity - _agent.Velocity);
     Assert.AreEqual(relativeTransformation.Velocity.Range, 0f, _epsilon);
     Assert.AreEqual(relativeTransformation.Velocity.Azimuth, -1f, _epsilon);
     Assert.AreEqual(relativeTransformation.Velocity.Elevation, 0f, _epsilon);
@@ -60,26 +54,18 @@ public class AgentBaseTests : TestBase {
 
   [Test]
   public void GetRelativeTransformation_TargetWithElevation() {
-    AgentBase agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(agent, "Awake");
-    agent.Position = new Vector3(0, 0, 0);
-    agent.Velocity = new Vector3(0, 0, 0);
+    _agent.Position = new Vector3(0, 0, 0);
+    _agent.Velocity = new Vector3(0, 0, 0);
+    _target =
+        new FixedHierarchical(position: new Vector3(0, 20, 0), velocity: new Vector3(0, 0, 20));
 
-    AgentBase target = new GameObject("Target").AddComponent<AgentBase>();
-    Rigidbody targetRb = target.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(target, "Awake");
-    target.Position = new Vector3(0, 20, 0);
-    target.Velocity = new Vector3(0, 0, 20);
-
-    Transformation relativeTransformation = agent.GetRelativeTransformation(target);
-
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
     Assert.AreEqual(relativeTransformation.Position.Cartesian,
-                    target.transform.position - agent.transform.position);
+                    _target.Position - _agent.transform.position);
     Assert.AreEqual(relativeTransformation.Position.Range, 20f, _epsilon);
     Assert.AreEqual(relativeTransformation.Position.Azimuth, 0f, _epsilon);
     Assert.AreEqual(relativeTransformation.Position.Elevation, Mathf.PI / 2, _epsilon);
-    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, target.Velocity - agent.Velocity);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, _target.Velocity - _agent.Velocity);
     Assert.AreEqual(relativeTransformation.Velocity.Range, 0f, _epsilon);
     Assert.AreEqual(relativeTransformation.Velocity.Azimuth, 0f, _epsilon);
     Assert.AreEqual(relativeTransformation.Velocity.Elevation, -1f, _epsilon);

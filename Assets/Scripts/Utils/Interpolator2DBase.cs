@@ -10,7 +10,7 @@ public abstract class Interpolator2DBase : IInterpolator2D {
   public IReadOnlyList<Interpolator2DDataPoint> Data => _data;
 
   public Interpolator2DBase(IEnumerable<Interpolator2DDataPoint> data) {
-    _data = data.ToList() ?? new List<Interpolator2DDataPoint>();
+    _data = data?.ToList() ?? new List<Interpolator2DDataPoint>();
   }
   public Interpolator2DBase(string[] csvLines) : this(ParseCsvLines(csvLines)) {}
 
@@ -27,8 +27,9 @@ public abstract class Interpolator2DBase : IInterpolator2D {
       if (string.IsNullOrWhiteSpace(line)) {
         continue;
       }
-      var values = line.Split(',');
-      var (success, parsedValues) = Interpolator2DDataPoint.ValidateAndParseData(values);
+      string[] values = line.Split(',');
+      (bool success, List<float> parsedValues) =
+          Interpolator2DDataPoint.ValidateAndParseData(values);
       if (success && parsedValues.Count >= 2) {
         parsedDataPoints.Add(new Interpolator2DDataPoint {
           Coordinates = new Vector2(parsedValues[0], parsedValues[1]),

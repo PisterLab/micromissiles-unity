@@ -18,7 +18,8 @@ public abstract class LaunchAngleInterpolatorBase : LaunchAnglePlannerBase {
       InitInterpolator();
     }
 
-    var interpolatedDataPoint = _interpolator.Interpolate(input.Distance, input.Altitude);
+    Interpolator2DDataPoint interpolatedDataPoint =
+        _interpolator.Interpolate(input.Distance, input.Altitude);
     if (interpolatedDataPoint == null || interpolatedDataPoint.Data == null ||
         interpolatedDataPoint.Data.Count < 2) {
       throw new InvalidOperationException("Interpolator returned invalid data.");
@@ -30,10 +31,21 @@ public abstract class LaunchAngleInterpolatorBase : LaunchAnglePlannerBase {
 
   // Return the absolute intercept position given the absolute target position.
   public override Vector3 InterceptPosition(in Vector3 targetPosition) {
-    var direction = ConvertToRelativeDirection(targetPosition);
-    var interpolatedDataPoint = _interpolator.Interpolate(direction[0], direction[1]);
-    var relativePosition = targetPosition - Agent.Position;
-    var cylindricalRelativePosition = Coordinates3.ConvertCartesianToCylindrical(relativePosition);
+    if (_interpolator == null) {
+      InitInterpolator();
+    }
+
+    Direction direction = ConvertToRelativeDirection(targetPosition);
+    Interpolator2DDataPoint interpolatedDataPoint =
+        _interpolator.Interpolate(direction.Distance, direction.Altitude);
+    if (interpolatedDataPoint == null || interpolatedDataPoint.Data == null ||
+        interpolatedDataPoint.Data.Count < 2) {
+      throw new InvalidOperationException("Interpolator returned invalid data.");
+    }
+
+    Vector3 relativePosition = targetPosition - Agent.Position;
+    Vector3 cylindricalRelativePosition =
+        Coordinates3.ConvertCartesianToCylindrical(relativePosition);
     return Coordinates3.ConvertCylindricalToCartesian(
                r: interpolatedDataPoint.Coordinates[0], azimuth: cylindricalRelativePosition.y,
                height: interpolatedDataPoint.Coordinates[1]) +

@@ -17,10 +17,10 @@ public class OrthogonalEvasion : EvasionBase {
       return false;
     }
 
-    var evasionRangeThreshold =
+    float evasionRangeThreshold =
         Agent.AgentConfig?.DynamicConfig?.FlightConfig?.EvasionConfig?.RangeThreshold ??
         defaultEvasionRangeThreshold;
-    var sensorOutput = Agent.Sensor.Sense(pursuer);
+    SensorOutput sensorOutput = Agent.Sensor.Sense(pursuer);
     return sensorOutput.Position.Range <= evasionRangeThreshold && sensorOutput.Velocity.Range < 0;
   }
 
@@ -30,23 +30,23 @@ public class OrthogonalEvasion : EvasionBase {
     const float groundProximityThresholdFactor = 5f;
     const float groundAvoidanceUpFactor = 5f;
 
-    var agentPosition = Agent.Position;
-    var agentVelocity = Agent.Velocity;
-    var pursuerPosition = pursuer.Position;
-    var pursuerVelocity = pursuer.Velocity;
+    Vector3 agentPosition = Agent.Position;
+    Vector3 agentVelocity = Agent.Velocity;
+    Vector3 pursuerPosition = pursuer.Position;
+    Vector3 pursuerVelocity = pursuer.Velocity;
 
     // Evade the pursuer by turning the velocity to be orthogonal to the pursuer's velocity.
-    var normalVelocity = Vector3.ProjectOnPlane(agentVelocity, pursuerVelocity);
+    Vector3 normalVelocity = Vector3.ProjectOnPlane(agentVelocity, pursuerVelocity);
     if (normalVelocity.sqrMagnitude < epsilon) {
       // If the agent's velocity is aligned with the pursuer's velocity, choose a random normal
       // direction in which to evade.
       normalVelocity = pursuer.transform.right;
     }
-    var normalAccelerationDirection =
+    Vector3 normalAccelerationDirection =
         Vector3.ProjectOnPlane(normalVelocity, agentVelocity).normalized;
 
     // Turn away from the pursuer.
-    var relativePosition = pursuerPosition - agentPosition;
+    Vector3 relativePosition = pursuerPosition - agentPosition;
     if (Vector3.Dot(relativePosition, normalAccelerationDirection) > 0) {
       normalAccelerationDirection *= -1;
     }
@@ -56,14 +56,14 @@ public class OrthogonalEvasion : EvasionBase {
     float groundProximityThreshold = Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor;
     if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
       // Determine the evasion direction based on the angle to pursuer.
-      var angle = Vector3.SignedAngle(Agent.transform.forward, relativePosition, Vector3.up);
+      float angle = Vector3.SignedAngle(Agent.transform.forward, relativePosition, Vector3.up);
 
       // Choose the direction that leads away from the pursuer.
-      var rightDirection = Agent.transform.right;
-      var bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
+      Vector3 rightDirection = Agent.transform.right;
+      Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
 
       // Blend between horizontal evasion and slight upward movement.
-      var blendFactor = 1 - (altitude / groundProximityThreshold);
+      float blendFactor = 1 - (altitude / groundProximityThreshold);
       normalAccelerationDirection =
           Vector3
               .Lerp(normalAccelerationDirection,
@@ -71,14 +71,14 @@ public class OrthogonalEvasion : EvasionBase {
                     blendFactor)
               .normalized;
     }
-    var normalAcceleration = normalAccelerationDirection * Agent.MaxNormalAcceleration();
+    Vector3 normalAcceleration = normalAccelerationDirection * Agent.MaxNormalAcceleration();
 
     // Set the forward acceleration.
-    var forwardAcceleration = Vector3.zero;
+    Vector3 forwardAcceleration = Vector3.zero;
     if (Agent is IThreat threat) {
       // Set the forward acceleration to reach the target speed within one time step.
-      var targetSpeed = threat.LookupPowerTable(Configs.Power.Max);
-      var speedError = targetSpeed - Agent.Speed;
+      float targetSpeed = threat.LookupPowerTable(Configs.Power.Max);
+      float speedError = targetSpeed - Agent.Speed;
       forwardAcceleration = speedError / Time.fixedDeltaTime * Agent.transform.forward;
     }
     return normalAcceleration + forwardAcceleration;
