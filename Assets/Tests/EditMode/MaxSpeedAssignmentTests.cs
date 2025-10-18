@@ -1,181 +1,95 @@
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-public class MaxSpeedAssignmentTests {
-  public static Configs.StaticConfig LoadStaticConfig() {
-    return ConfigLoader.LoadStaticConfig("micromissile.pbtxt");
+public class MaxSpeedAssignmentTests : TestBase {
+  private MaxSpeedAssignment _assignment =
+      new MaxSpeedAssignment(assignFunction: Assignment.Assignment_EvenAssignment_Assign);
+
+  private HierarchicalAgent GenerateAgent(in Vector3 position, in Vector3 velocity) {
+    var agent = new GameObject("Agent").AddComponent<AgentBase>();
+    agent.StaticConfig = new Configs.StaticConfig() {
+      AccelerationConfig =
+          new Configs.AccelerationConfig() {
+            MaxForwardAcceleration = 10,
+            MaxReferenceNormalAcceleration = 5 / Constants.kGravity,
+            ReferenceSpeed = 0.5f,
+          },
+      LiftDragConfig =
+          new Configs.LiftDragConfig() {
+            DragCoefficient = 0.7f,
+            LiftDragRatio = 5,
+          },
+      BodyConfig =
+          new Configs.BodyConfig() {
+            CrossSectionalArea = 1,
+            Mass = 1,
+          },
+    };
+    Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
+    InvokePrivateMethod(agent, "Awake");
+    agent.Position = position;
+    agent.Velocity = velocity;
+    return new HierarchicalAgent(agent);
   }
 
   [Test]
-  public void AssignNoInterceptors() {
-    // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
-
-    // Create interceptors.
-    List<Interceptor> interceptors = new List<Interceptor>();
-
-    // Create threats.
-    List<Threat> threats =
-        new List<Threat> { new GameObject("Threat").AddComponent<RotaryWingThreat>() };
-
-    // Assign the interceptors to the threats.
-    LogAssert.Expect(LogType.Warning, "No assignable interceptors found.");
-    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
-        assignment.Assign(interceptors, threats);
-    Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
+  public void Assign_NoFirst_ReturnsEmptyList() {
+    var first = new List<HierarchicalAgent>();
+    var second = new List<FixedHierarchical> { new FixedHierarchical() };
+    var assignments = _assignment.Assign(first, second);
+    Assert.AreEqual(0, assignments.Count);
   }
 
   [Test]
-  public void AssignNoThreats() {
-    // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
-
-    // Create interceptors.
-    List<Interceptor> interceptors =
-        new List<Interceptor> { new GameObject("Interceptor").AddComponent<MissileInterceptor>() };
-
-    // Create threats.
-    List<Threat> threats = new List<Threat>();
-
-    // Assign the interceptors to the threats.
-    LogAssert.Expect(LogType.Warning, "No active threats found.");
-    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
-        assignment.Assign(interceptors, threats);
-    Assert.AreEqual(0, assignments.Count(), "There should be no assignments.");
+  public void Assign_NoSecond_ReturnsEmptyList() {
+    var first = new List<HierarchicalAgent> { GenerateAgent(position: Vector3.zero,
+                                                            velocity: Vector3.zero) };
+    var second = new List<FixedHierarchical>();
+    var assignments = _assignment.Assign(first, second);
+    Assert.AreEqual(0, assignments.Count);
   }
 
   [Test]
-  public void AssignShouldAssignAllInterceptorsAndThreats() {
-    // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
-
-    // Create the interceptors.
-    Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
-    interceptor1.staticConfig = LoadStaticConfig();
-    Interceptor interceptor2 = new GameObject("Interceptor 2").AddComponent<MissileInterceptor>();
-    interceptor2.staticConfig = LoadStaticConfig();
-    Interceptor interceptor3 = new GameObject("Interceptor 3").AddComponent<MissileInterceptor>();
-    interceptor3.staticConfig = LoadStaticConfig();
-
-    // Add rigid body components to interceptors to set their velocities.
-    Rigidbody interceptorRb1 = interceptor1.gameObject.AddComponent<Rigidbody>();
-    Rigidbody interceptorRb2 = interceptor2.gameObject.AddComponent<Rigidbody>();
-    Rigidbody interceptorRb3 = interceptor3.gameObject.AddComponent<Rigidbody>();
-
-    // Set the interceptor positions and velocities.
-    interceptor1.transform.position = Vector3.zero;
-    interceptor2.transform.position = Vector3.zero;
-    interceptor3.transform.position = new Vector3(0, 100, 0);
-    interceptorRb1.linearVelocity = new Vector3(0, 0, 5);
-    interceptorRb2.linearVelocity = new Vector3(0, 10, 0);
-    interceptorRb3.linearVelocity = new Vector3(0, 0, 5);
-
-    List<Interceptor> interceptors =
-        new List<Interceptor> { interceptor1, interceptor2, interceptor3 };
-
-    // Create the threats.
-    Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreat>();
-    Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreat>();
-    Threat threat3 = new GameObject("Threat 3").AddComponent<RotaryWingThreat>();
-
-    // Set threat positions.
-    threat1.transform.position = new Vector3(0, -1, 0);
-    threat2.transform.position = new Vector3(0, 1, 0);
-    threat3.transform.position = new Vector3(0, 105, 0);
-
-    List<Threat> threats = new List<Threat> { threat1, threat2, threat3 };
-
-    // Assign the interceptors to the threats.
-    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
-        assignment.Assign(interceptors, threats);
-    Assert.AreEqual(3, assignments.Count(), "All interceptors should be assigned.");
-
-    HashSet<Interceptor> assignedInterceptors = new HashSet<Interceptor>();
-    HashSet<Threat> assignedThreats = new HashSet<Threat>();
-    Dictionary<Interceptor, Threat> assignmentMap = new Dictionary<Interceptor, Threat>();
-
-    foreach (var assignmentItem in assignments) {
-      Assert.IsNotNull(assignmentItem.Interceptor, "Interceptor should not be null.");
-      Assert.IsNotNull(assignmentItem.Threat, "Threat should not be null.");
-      assignedInterceptors.Add(assignmentItem.Interceptor);
-      assignedThreats.Add(assignmentItem.Threat);
-      assignmentMap[assignmentItem.Interceptor] = assignmentItem.Threat;
+  public void Assign_ShouldAssignEachFirst() {
+    const int numFirst = 20;
+    var first = new List<HierarchicalAgent>();
+    for (int i = 0; i < numFirst; ++i) {
+      first.Add(GenerateAgent(position: Vector3.zero, velocity: new Vector3(0, 0, 1)));
     }
-
-    Assert.AreEqual(3, assignedInterceptors.Count, "All interceptors should be unique.");
-    Assert.AreEqual(3, assignedThreats.Count, "All threats should be assigned.");
-
-    // Verify that threats are assigned to maximize the intercept speed.
-    Assert.AreEqual(assignmentMap[interceptor1], threat1);
-    Assert.AreEqual(assignmentMap[interceptor2], threat2);
-    Assert.AreEqual(assignmentMap[interceptor3], threat3);
+    var second = new List<FixedHierarchical>() { new FixedHierarchical() };
+    var assignments = _assignment.Assign(first, second);
+    Assert.AreEqual(numFirst, assignments.Count);
+    var assignedFirsts = new HashSet<IHierarchical>();
+    foreach (var assignment in assignments) {
+      Assert.Contains(assignment.First, first);
+      Assert.IsTrue(assignedFirsts.Add(assignment.First));
+    }
   }
 
   [Test]
-  public void AssignShouldHandleMoreInterceptorsThanThreats() {
-    // Define the assignment.
-    IAssignmentLegacy assignment = new MaxSpeedAssignmentLegacy();
-
-    // Create the interceptors.
-    Interceptor interceptor1 = new GameObject("Interceptor 1").AddComponent<MissileInterceptor>();
-    interceptor1.staticConfig = LoadStaticConfig();
-    Interceptor interceptor2 = new GameObject("Interceptor 2").AddComponent<MissileInterceptor>();
-    interceptor2.staticConfig = LoadStaticConfig();
-    Interceptor interceptor3 = new GameObject("Interceptor 3").AddComponent<MissileInterceptor>();
-    interceptor3.staticConfig = LoadStaticConfig();
-
-    // Add rigid body components to interceptors to set their velocities.
-    Rigidbody interceptorRb1 = interceptor1.gameObject.AddComponent<Rigidbody>();
-    Rigidbody interceptorRb2 = interceptor2.gameObject.AddComponent<Rigidbody>();
-    Rigidbody interceptorRb3 = interceptor3.gameObject.AddComponent<Rigidbody>();
-
-    // Set the interceptor positions and velocities.
-    interceptor1.transform.position = Vector3.zero;
-    interceptor2.transform.position = Vector3.zero;
-    interceptor3.transform.position = new Vector3(0, 100, 0);
-    interceptorRb1.linearVelocity = new Vector3(0, 0, 5);
-    interceptorRb2.linearVelocity = new Vector3(0, 10, 0);
-    interceptorRb3.linearVelocity = new Vector3(0, 0, 5);
-
-    List<Interceptor> interceptors =
-        new List<Interceptor> { interceptor1, interceptor2, interceptor3 };
-
-    // Create the threats.
-    Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreat>();
-    Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreat>();
-
-    // Set threat positions.
-    threat1.transform.position = new Vector3(0, -1, 0);
-    threat2.transform.position = new Vector3(0, 1, 0);
-
-    List<Threat> threats = new List<Threat> { threat1, threat2 };
-
-    // Assign the interceptors to the threats.
-    IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> assignments =
-        assignment.Assign(interceptors, threats);
-    Assert.AreEqual(3, assignments.Count(), "All interceptors should be assigned.");
-
-    HashSet<Interceptor> assignedInterceptors = new HashSet<Interceptor>();
-    HashSet<Threat> assignedThreats = new HashSet<Threat>();
-    Dictionary<Interceptor, Threat> assignmentMap = new Dictionary<Interceptor, Threat>();
-
-    foreach (var assignmentItem in assignments) {
-      Assert.IsNotNull(assignmentItem.Interceptor, "Interceptor should not be null.");
-      Assert.IsNotNull(assignmentItem.Threat, "Threat should not be null.");
-      assignedInterceptors.Add(assignmentItem.Interceptor);
-      assignedThreats.Add(assignmentItem.Threat);
-      assignmentMap[assignmentItem.Interceptor] = assignmentItem.Threat;
+  public void Assign_ShouldMaximizeSpeed() {
+    var first = new List<HierarchicalAgent> {
+      GenerateAgent(position: new Vector3(10, 0, 0), velocity: new Vector3(1, 0, 0)),
+      GenerateAgent(position: new Vector3(10, 0, 0), velocity: new Vector3(-1, 0, 0)),
+      GenerateAgent(position: new Vector3(0, 110, 0), velocity: new Vector3(1, -1, 0)),
+    };
+    var second = new List<FixedHierarchical> {
+      new FixedHierarchical(position: new Vector3(0, 0, 0)),
+      new FixedHierarchical(position: new Vector3(20, 0, 0)),
+      new FixedHierarchical(position: new Vector3(0, 100, 0)),
+    };
+    var assignments = _assignment.Assign(first, second);
+    Assert.AreEqual(first.Count, assignments.Count);
+    var expectedAssignments = new List<AssignmentItem> {
+      new AssignmentItem { First = first[0], Second = second[1] },
+      new AssignmentItem { First = first[1], Second = second[0] },
+      new AssignmentItem { First = first[2], Second = second[2] },
+    };
+    var assignmentItems = new HashSet<AssignmentItem>();
+    foreach (var assignment in assignments) {
+      Assert.Contains(assignment, expectedAssignments);
+      Assert.IsTrue(assignmentItems.Add(assignment));
     }
-
-    Assert.AreEqual(3, assignedInterceptors.Count, "All interceptors should be assigned.");
-    Assert.AreEqual(2, assignedThreats.Count, "Both threats should be assigned.");
-
-    // Verify that threats are assigned to maximize the intercept speed.
-    Assert.AreEqual(assignmentMap[interceptor1], threat1);
-    Assert.AreEqual(assignmentMap[interceptor2], threat2);
-    Assert.AreEqual(assignmentMap[interceptor3], threat2);
   }
 }
