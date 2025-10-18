@@ -29,23 +29,23 @@ public class IterativeLaunchPlanner : LaunchPlannerBase {
   // Plan the launch by finding the convergence point between the launch angle planner and the
   // predictor.
   public override LaunchPlan Plan() {
-    var initialState = Predictor.Predict(time: 0f);
-    var targetPosition = initialState.Position;
+    PredictorState initialState = Predictor.Predict(time: 0f);
+    Vector3 targetPosition = initialState.Position;
 
-    var launchAngleOutput = new LaunchAngleOutput();
-    var interceptPosition = new Vector3();
+    LaunchAngleOutput launchAngleOutput = new LaunchAngleOutput();
+    Vector3 interceptPosition = new Vector3();
     for (int i = 0; i < _maxNumIterations; ++i) {
       // Estimate the time-to-intercept.
       launchAngleOutput = LaunchAnglePlanner.Plan(targetPosition);
-      var timeToIntercept = launchAngleOutput.TimeToPosition;
+      float timeToIntercept = launchAngleOutput.TimeToPosition;
 
       // Estimate the target position.
-      var predictedState = Predictor.Predict(timeToIntercept);
+      PredictorState predictedState = Predictor.Predict(timeToIntercept);
       targetPosition = predictedState.Position;
 
       // Check whether the intercept direction has changed, in which case the algorithm has
       // converged.
-      var newInterceptPosition = LaunchAnglePlanner.InterceptPosition(targetPosition);
+      Vector3 newInterceptPosition = LaunchAnglePlanner.InterceptPosition(targetPosition);
       if ((interceptPosition - newInterceptPosition).magnitude < _convergenceThreshold) {
         interceptPosition = newInterceptPosition;
         break;
@@ -54,8 +54,8 @@ public class IterativeLaunchPlanner : LaunchPlannerBase {
 
       // Check that the target is moving towards the intercept position. Otherwise, the interceptor
       // should wait to be launched.
-      var targetToInterceptPosition = interceptPosition - initialState.Position;
-      var targetToPredictedPosition = targetPosition - initialState.Position;
+      Vector3 targetToInterceptPosition = interceptPosition - initialState.Position;
+      Vector3 targetToPredictedPosition = targetPosition - initialState.Position;
       if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
         return LaunchPlan.NoLaunch();
       }
@@ -64,8 +64,8 @@ public class IterativeLaunchPlanner : LaunchPlannerBase {
     // Check that the interceptor is moving towards the target. If the target is moving too fast,
     // the interceptor might be launched backwards because the intercept position and the predicted
     // position are behind the asset. In this case, the interceptor should wait to be launched.
-    var interceptorToInterceptPosition = interceptPosition;
-    var threatToPredictedPosition = targetPosition - initialState.Position;
+    Vector3 interceptorToInterceptPosition = interceptPosition;
+    Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
     if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
       return LaunchPlan.NoLaunch();
     }

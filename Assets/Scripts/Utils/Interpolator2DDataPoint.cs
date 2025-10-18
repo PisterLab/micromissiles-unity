@@ -7,7 +7,7 @@ public class Interpolator2DDataPoint {
   public Vector2 Coordinates { get; set; }
 
   // Arbitrary data consisting of floats.
-  public List<float> Data { get; set; }
+  public IReadOnlyList<float> Data { get; set; }
 
   // Validate and parse the data from strings to floats.
   public static (bool, List<float>) ValidateAndParseData(string[] values) {

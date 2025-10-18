@@ -11,7 +11,7 @@ public class GroundMovement : MovementBase {
   // ignore drag and gravity along the ground.
   public override Vector3 Act(in Vector3 accelerationInput) {
     // Ensure that there is no acceleration out of the x-z plane.
-    var constrainedAccelerationInput = accelerationInput;
+    Vector3 constrainedAccelerationInput = accelerationInput;
     constrainedAccelerationInput.y = 0;
     return LimitAccelerationInput(constrainedAccelerationInput);
   }

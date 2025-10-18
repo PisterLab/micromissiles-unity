@@ -16,8 +16,8 @@ public abstract class MovementBase : IMovement {
 
   // Limit acceleration input to the agent's maximum forward and normal accelerations.
   protected Vector3 LimitAccelerationInput(in Vector3 accelerationInput) {
-    var forwardAccelerationInput = Vector3.Project(accelerationInput, Agent.transform.forward);
-    var normalAccelerationInput = accelerationInput - forwardAccelerationInput;
+    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, Agent.transform.forward);
+    Vector3 normalAccelerationInput = accelerationInput - forwardAccelerationInput;
 
     // Limit the forward and the normal acceleration magnitude.
     forwardAccelerationInput =
