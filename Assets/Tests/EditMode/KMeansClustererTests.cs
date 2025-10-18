@@ -21,9 +21,9 @@ public class KMeansClustererTests {
   [Test]
   public void Cluster_SingleCluster() {
     _clusterer = new KMeansClusterer(k: 1);
-    var clusters = _clusterer.Cluster(_hierarchicals);
+    List<Cluster> clusters = _clusterer.Cluster(_hierarchicals);
     Assert.AreEqual(1, clusters.Count);
-    var cluster = clusters[0];
+    Cluster cluster = clusters[0];
     Assert.AreEqual(_hierarchicals.Count, cluster.Size);
     Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid);
     Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Position);
@@ -54,13 +54,13 @@ public class KMeansClustererTests {
 
     // Create a k-means clusterer with k = 2 clusters.
     _clusterer = new KMeansClusterer(k: 2);
-    var clusters = _clusterer.Cluster(allHierarchicals);
+    List<Cluster> clusters = _clusterer.Cluster(allHierarchicals);
     Assert.AreEqual(2, clusters.Count);
 
     // Sort the clusters by the x-coordinate of their centroids.
-    var sortedClusters = clusters.OrderBy(cluster => cluster.Centroid.x).ToList();
-    var clusterA = sortedClusters[0];
-    var clusterB = sortedClusters[1];
+    List<Cluster> sortedClusters = clusters.OrderBy(cluster => cluster.Centroid.x).ToList();
+    Cluster clusterA = sortedClusters[0];
+    Cluster clusterB = sortedClusters[1];
     Assert.AreEqual(4, clusterA.Size);
     Assert.AreEqual(4, clusterB.Size);
     Assert.AreEqual(new Vector3(0.5f, 0.5f, 0), clusterA.Centroid);
