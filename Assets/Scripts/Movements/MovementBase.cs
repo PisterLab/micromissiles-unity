@@ -26,17 +26,17 @@ public abstract class MovementBase : IMovement {
 
   // Get the maximum normal acceleration from the agent's static configuration.
   public float MaxNormalAcceleration() {
-    var maxReferenceNormalAcceleration =
+    float maxReferenceNormalAcceleration =
         (Agent.StaticConfig?.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) *
         Constants.kGravity;
-    var referenceSpeed = Agent.StaticConfig?.AccelerationConfig?.ReferenceSpeed ?? 1;
+    float referenceSpeed = Agent.StaticConfig?.AccelerationConfig?.ReferenceSpeed ?? 1;
     return Mathf.Pow(Agent.Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
   // Limit acceleration input to the agent's maximum forward and normal accelerations.
   protected Vector3 LimitAccelerationInput(in Vector3 accelerationInput) {
-    var forwardAccelerationInput = Vector3.Project(accelerationInput, Agent.transform.forward);
-    var normalAccelerationInput = accelerationInput - forwardAccelerationInput;
+    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, Agent.transform.forward);
+    Vector3 normalAccelerationInput = accelerationInput - forwardAccelerationInput;
 
     // Limit the forward and the normal acceleration magnitude.
     forwardAccelerationInput =
