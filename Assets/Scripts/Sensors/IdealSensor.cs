@@ -16,7 +16,7 @@ public class IdealSensor : SensorBase {
 
   // Sense the target agent.
   public override SensorOutput Sense(IAgent agent) {
-    var relativeTransformation = Agent.GetRelativeTransformation(agent);
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(agent);
     return GenerateSensorOutput(relativeTransformation);
   }
 
