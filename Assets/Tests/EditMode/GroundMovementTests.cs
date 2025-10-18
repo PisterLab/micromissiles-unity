@@ -29,8 +29,8 @@ public class GroundMovementTests : TestBase {
 
   [Test]
   public void Act_KeepsAgentWithinXZPlane() {
-    var accelerationInput = new Vector3(1, -2, 3);
-    var appliedAccelerationInput = _movement.Act(accelerationInput);
+    Vector3 accelerationInput = new Vector3(1, -2, 3);
+    Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
     Assert.AreEqual(new Vector3(1, 0, 3), appliedAccelerationInput);
   }
 }
