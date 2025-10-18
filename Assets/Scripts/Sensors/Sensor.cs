@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class Sensor : MonoBehaviour {
+public abstract class SensorLegacy : MonoBehaviour {
   protected Agent _agent;
 
   protected virtual void Start() {
@@ -15,9 +15,4 @@ public abstract class Sensor : MonoBehaviour {
   /// Main sensing method to gather information about a waypoint.
   /// Returns the sensor output containing the sensed position and velocity.
   public abstract SensorOutput SenseWaypoint(Vector3 waypoint);
-}
-
-public struct SensorOutput {
-  public PositionTransformation position;
-  public VelocityTransformation velocity;
 }

@@ -27,14 +27,14 @@ public abstract class AgentTestBase : TestBase {
         config, new Simulation.State() { Position = Coordinates3.ToProto(Vector3.zero),
                                          Velocity = Coordinates3.ToProto(Vector3.zero) });
     InvokePrivateMethod(interceptor, "Start");
-    InvokePrivateMethod(interceptor.gameObject.GetComponent<Sensor>(), "Start");
+    InvokePrivateMethod(interceptor.gameObject.GetComponent<SensorLegacy>(), "Start");
     return interceptor;
   }
 
   protected Threat CreateTestThreat(Configs.AgentConfig config) {
     Threat threat = SimManager.Instance.CreateThreat(config);
     InvokePrivateMethod(threat, "Start");
-    InvokePrivateMethod(threat.gameObject.GetComponent<Sensor>(), "Start");
+    InvokePrivateMethod(threat.gameObject.GetComponent<SensorLegacy>(), "Start");
     return threat;
   }
 }

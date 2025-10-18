@@ -29,12 +29,12 @@ public class PnController : IControllerLegacy {
     float speed = velocity.magnitude;
 
     // Extract the bearing and closing velocity from the relative transformation.
-    float losAz = relativeTransformation.position.azimuth;
-    float losEl = relativeTransformation.position.elevation;
-    float losRateAz = relativeTransformation.velocity.azimuth;
-    float losRateEl = relativeTransformation.velocity.elevation;
+    float losAz = relativeTransformation.Position.Azimuth;
+    float losEl = relativeTransformation.Position.Elevation;
+    float losRateAz = relativeTransformation.Velocity.Azimuth;
+    float losRateEl = relativeTransformation.Velocity.Elevation;
     // The closing velocity is negative because the closing velocity is opposite to the range rate.
-    float closingVelocity = -relativeTransformation.velocity.range;
+    float closingVelocity = -relativeTransformation.Velocity.Range;
 
     // Set the turn factor, which is equal to the closing velocity by default.
     float turnFactor = closingVelocity;
