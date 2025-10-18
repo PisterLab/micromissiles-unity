@@ -34,7 +34,7 @@ public class DirectAttackBehaviorLegacy : AttackBehavior {
       return (waypointPosition, power);
     }
     // There is a next waypoint.
-    var waypoint = FlightPlan.Waypoints[waypointIndex];
+    Configs.FlightPlanWaypoint waypoint = FlightPlan.Waypoints[waypointIndex];
     waypointPosition = targetPosition - directionToTarget.normalized * waypoint.Distance;
     waypointPosition.y = waypoint.Altitude;
     power = waypoint.Power;
