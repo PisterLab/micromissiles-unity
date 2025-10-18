@@ -7,11 +7,11 @@ public class ApnController : PnController {
 
   // Controller-dependent implementation of the control law.
   protected override Vector3 Plan(in Transformation relativeTransformation) {
-    var accelerationInput = base.Plan(relativeTransformation);
+    Vector3 accelerationInput = base.Plan(relativeTransformation);
 
     // Add a feedforward term proportional to the target's acceleration.
-    var targetAcceleration = relativeTransformation.Acceleration.Cartesian;
-    var normalTargetAcceleration =
+    Vector3 targetAcceleration = relativeTransformation.Acceleration.Cartesian;
+    Vector3 normalTargetAcceleration =
         Vector3.ProjectOnPlane(targetAcceleration, Agent.transform.forward);
     return accelerationInput + Gain / 2 * normalTargetAcceleration;
   }

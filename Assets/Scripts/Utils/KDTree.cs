@@ -5,9 +5,9 @@ using UnityEngine;
 
 // K-D tree node.
 public class KDNode<T> {
-  public T Data { get; set; }
-  public KDNode<T> Left { get; set; }
-  public KDNode<T> Right { get; set; }
+  public T Data { get; internal set; }
+  public KDNode<T> Left { get; internal set; }
+  public KDNode<T> Right { get; internal set; }
 }
 
 // K-D tree with 2D coordinates.
@@ -25,7 +25,7 @@ public class KDTree<T> {
 
   // Find the nearest neighbor to the target node.
   public T NearestNeighbor(in Vector2 target) {
-    var neighbor = NearestNeighbor(_root, target, depth: 0, bestNode: null);
+    KDNode<T> neighbor = NearestNeighbor(_root, target, depth: 0, bestNode: null);
     if (neighbor == null) {
       return default(T);
     }
@@ -39,20 +39,21 @@ public class KDTree<T> {
       return bestNode;
     }
 
-    var nodeCoordinates = _getCoordinates(node.Data);
-    var currentDistance = Vector2.Distance(nodeCoordinates, target);
-    var bestDistance = bestNode == null ? float.MaxValue
-                                        : Vector2.Distance(_getCoordinates(bestNode.Data), target);
+    Vector2 nodeCoordinates = _getCoordinates(node.Data);
+    float currentDistance = Vector2.Distance(nodeCoordinates, target);
+    float bestDistance = bestNode == null
+                             ? float.MaxValue
+                             : Vector2.Distance(_getCoordinates(bestNode.Data), target);
     if (currentDistance < bestDistance) {
       bestNode = node;
       bestDistance = currentDistance;
     }
 
-    var axis = depth % 2;
-    var targetCoordinatesValue = axis == 0 ? target.x : target.y;
-    var nodeCoordinatesValue = axis == 0 ? nodeCoordinates.x : nodeCoordinates.y;
-    var nextBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Left : node.Right;
-    var otherBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Right : node.Left;
+    int axis = depth % 2;
+    float targetCoordinatesValue = axis == 0 ? target.x : target.y;
+    float nodeCoordinatesValue = axis == 0 ? nodeCoordinates.x : nodeCoordinates.y;
+    KDNode<T> nextBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Left : node.Right;
+    KDNode<T> otherBranch = targetCoordinatesValue < nodeCoordinatesValue ? node.Right : node.Left;
 
     // Explore the next branch first.
     bestNode = NearestNeighbor(nextBranch, target, depth + 1, bestNode);
@@ -70,19 +71,20 @@ public class KDTree<T> {
       return null;
     }
 
-    var k = 2;
-    var axis = depth % k;
+    int k = 2;
+    int axis = depth % k;
 
     // Sort the points by axis and find the median.
-    var sortedPoints =
+    List<T> sortedPoints =
         points.OrderBy(point => (axis == 0 ? _getCoordinates(point).x : _getCoordinates(point).y))
             .ToList();
-    var medianIndex = sortedPoints.Count / 2;
-    var medianPoint = sortedPoints[medianIndex];
+    int medianIndex = sortedPoints.Count / 2;
+    T medianPoint = sortedPoints[medianIndex];
 
     var node = new KDNode<T> { Data = medianPoint };
-    var leftPoints = sortedPoints.GetRange(0, medianIndex);
-    var rightPoints = sortedPoints.GetRange(medianIndex + 1, sortedPoints.Count - medianIndex - 1);
+    List<T> leftPoints = sortedPoints.GetRange(0, medianIndex);
+    List<T> rightPoints =
+        sortedPoints.GetRange(medianIndex + 1, sortedPoints.Count - medianIndex - 1);
 
     node.Left = BuildTree(leftPoints, depth + 1);
     node.Right = BuildTree(rightPoints, depth + 1);

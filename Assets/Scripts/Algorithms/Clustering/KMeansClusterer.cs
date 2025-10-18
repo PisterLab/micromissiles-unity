@@ -23,7 +23,7 @@ public class KMeansClusterer : ClustererBase {
   public override List<Cluster> Cluster(IEnumerable<IHierarchical> hierarchicals) {
     // Initialize the clusters with centroids located at the positions of k random hierarchical
     // objects. Perform Fisher-Yates shuffling to find k random hierarchical objects.
-    var hierarchicalsList = hierarchicals.ToList();
+    List<IHierarchical> hierarchicalsList = hierarchicals.ToList();
     var clusters = new List<Cluster>();
     for (int i = 0; i < _k; ++i) {
       int j = Random.Range(i, hierarchicalsList.Count);
@@ -40,7 +40,7 @@ public class KMeansClusterer : ClustererBase {
       // Calculate the new clusters as the mean of all assigned hierarchical objects.
       converged = true;
       for (int clusterIndex = 0; clusterIndex < clusters.Count; ++clusterIndex) {
-        var oldClusterPosition = clusters[clusterIndex].Centroid;
+        Vector3 oldClusterPosition = clusters[clusterIndex].Centroid;
         if (clusters[clusterIndex].IsEmpty) {
           int hierarchicalIndex = Random.Range(0, hierarchicalsList.Count);
           clusters[clusterIndex].Centroid = hierarchicalsList[hierarchicalIndex].Position;

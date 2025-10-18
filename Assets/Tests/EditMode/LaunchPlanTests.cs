@@ -18,7 +18,7 @@ public class LaunchPlanTests {
       LaunchAngle = 45f,
       InterceptPosition = new Vector3(1, 1, 0),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.AreEqual(1f, launchVector.magnitude, _epsilon);
   }
 
@@ -29,7 +29,7 @@ public class LaunchPlanTests {
       LaunchAngle = 90f,
       InterceptPosition = new Vector3(1, 1, 0),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.That(launchVector,
                 Is.EqualTo(new Vector3(0, 1f, 0)).Using(Vector3EqualityComparer.Instance));
   }
@@ -41,7 +41,7 @@ public class LaunchPlanTests {
       LaunchAngle = 0f,
       InterceptPosition = new Vector3(1, 1, 0),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.That(launchVector,
                 Is.EqualTo(new Vector3(1f, 0, 0)).Using(Vector3EqualityComparer.Instance));
   }
@@ -53,7 +53,7 @@ public class LaunchPlanTests {
       LaunchAngle = 45f,
       InterceptPosition = new Vector3(1, 0, 1),
     };
-    var launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
     Assert.That(launchVector, Is.EqualTo(new Vector3(1, Mathf.Sqrt(2f), 1).normalized)
                                   .Using(Vector3EqualityComparer.Instance));
   }

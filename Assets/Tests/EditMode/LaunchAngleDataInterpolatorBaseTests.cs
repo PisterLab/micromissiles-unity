@@ -50,7 +50,6 @@ public class LaunchAngleDataInterpolatorBaseTests : TestBase {
   [Test]
   public void InterceptPosition_MatchesDataPoint_ReturnsSamePoint() {
     var targetPosition = new Vector3(100f, 1f, 0f);
-    _interpolator.Plan(new LaunchAngleInput());
     Assert.That(_interpolator.InterceptPosition(targetPosition),
                 Is.EqualTo(new Vector3(100f, 1f, 0f)).Using(Vector3EqualityComparer.Instance));
   }
@@ -58,7 +57,6 @@ public class LaunchAngleDataInterpolatorBaseTests : TestBase {
   [Test]
   public void InterceptPosition_NearDataPoint_ReturnsClosestPoint() {
     var targetPosition = new Vector3(101f, 2f, 0f);
-    _interpolator.Plan(new LaunchAngleInput());
     Assert.That(_interpolator.InterceptPosition(targetPosition),
                 Is.EqualTo(new Vector3(100f, 1f, 0f)).Using(Vector3EqualityComparer.Instance));
   }
@@ -68,7 +66,6 @@ public class LaunchAngleDataInterpolatorBaseTests : TestBase {
     var agentPosition = new Vector3(61, 5055, 874);
     _agent.Position = agentPosition;
     var targetPosition = agentPosition + new Vector3(100f, 1f, 0f);
-    _interpolator.Plan(new LaunchAngleInput());
     Assert.That(_interpolator.InterceptPosition(targetPosition),
                 Is.EqualTo(agentPosition + new Vector3(100f, 1f, 0f))
                     .Using(Vector3EqualityComparer.Instance));

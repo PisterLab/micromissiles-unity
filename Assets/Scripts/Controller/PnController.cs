@@ -22,19 +22,19 @@ public class PnController : ControllerBase {
   protected override Vector3 Plan(in Transformation relativeTransformation) {
     // Cache the transform, velocity, and speed.
     var agentTransform = Agent.transform;
-    var right = agentTransform.right;
-    var up = agentTransform.up;
+    Vector3 right = agentTransform.right;
+    Vector3 up = agentTransform.up;
 
     // Extract the bearing and closing velocity from the relative transformation.
-    var losAz = relativeTransformation.Position.Azimuth;
-    var losEl = relativeTransformation.Position.Elevation;
-    var losRateAz = relativeTransformation.Velocity.Azimuth;
-    var losRateEl = relativeTransformation.Velocity.Elevation;
+    float losAz = relativeTransformation.Position.Azimuth;
+    float losEl = relativeTransformation.Position.Elevation;
+    float losRateAz = relativeTransformation.Velocity.Azimuth;
+    float losRateEl = relativeTransformation.Velocity.Elevation;
     // The closing velocity is negative because the closing velocity is opposite to the range rate.
-    var closingVelocity = -relativeTransformation.Velocity.Range;
+    float closingVelocity = -relativeTransformation.Velocity.Range;
 
     // Set the turn factor, which is equal to the closing velocity by default.
-    var turnFactor = closingVelocity;
+    float turnFactor = closingVelocity;
     // Handle a negative closing velocity. In this case, since the target is moving away from the
     // agent, apply a stronger turn.
     if (closingVelocity < 0) {
@@ -52,8 +52,8 @@ public class PnController : ControllerBase {
       turnFactor = Mathf.Abs(closingVelocity) * _negativeClosingVelocityTurnFactor;
     }
 
-    var accelerationAz = Gain * turnFactor * losRateAz;
-    var accelerationEl = Gain * turnFactor * losRateEl;
+    float accelerationAz = Gain * turnFactor * losRateAz;
+    float accelerationEl = Gain * turnFactor * losRateEl;
     return right * accelerationAz + up * accelerationEl;
   }
 }
