@@ -53,10 +53,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Cache Unity Editor installation
+        uses: actions/cache@v4
+        with:
+          path: .unity-editor
+          key: unity-editor-${{ runner.os }}-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
+          restore-keys: |
+            unity-editor-${{ runner.os }}-
+
       - name: Set up Unity (from ProjectVersion.txt)
         uses: buildalon/unity-setup@v1
         with:
           version-file: ProjectSettings/ProjectVersion.txt
+          install-path: .unity-editor
 
       - name: Activate Unity License (Personal)
         if: ${{ env.UNITY_USERNAME != '' && env.UNITY_PASSWORD != '' }}
