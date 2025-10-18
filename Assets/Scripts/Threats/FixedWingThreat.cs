@@ -74,8 +74,7 @@ public class FixedWingThreat : Threat {
     Vector3 accelerationInput = controller.PlanToWaypoint(_currentWaypoint);
 
     // Counter gravity as much as possible.
-    accelerationInput +=
-        (float)Constants.kGravity / Vector3.Dot(transform.up, Vector3.up) * transform.up;
+    accelerationInput += Constants.kGravity / Vector3.Dot(transform.up, Vector3.up) * transform.up;
 
     // Clamp the normal acceleration input to the maximum normal acceleration.
     float maxNormalAcceleration = CalculateMaxNormalAcceleration();

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 // Interface for a movement behavior.
 //
 // The movement behavior determines how the agent navigates through the environment, such as whether
@@ -5,7 +7,7 @@
 public interface IMovement {
   IAgent Agent { get; set; }
 
-  // Determine the next movement for the agent by using the agent's controller to calculate the
-  // acceleration input.
-  void Update(double deltaTime);
+  // Determine the agent's actual acceleration input given its intended acceleration input by
+  // applying physics and other constraints.
+  Vector3 Act(in Vector3 accelerationInput);
 }

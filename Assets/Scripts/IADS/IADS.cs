@@ -307,9 +307,9 @@ public class IADS : MonoBehaviour {
         Vector3 interceptorPosition = interceptor.GetPosition();
         Vector3 threatPosition = threat.GetPosition();
 
-        float threatTimeToHit = (float)(threatPosition.magnitude / threat.GetSpeed());
+        float threatTimeToHit = (threatPosition.magnitude / threat.GetSpeed());
         float interceptorTimeToHit =
-            (float)((threatPosition - interceptorPosition).magnitude / interceptor.GetSpeed());
+            (threatPosition - interceptorPosition).magnitude / interceptor.GetSpeed();
         return interceptorPosition.magnitude > threatPosition.magnitude ||
                threatTimeToHit < interceptorTimeToHit;
       });

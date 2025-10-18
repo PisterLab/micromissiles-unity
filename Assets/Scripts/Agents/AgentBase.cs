@@ -95,6 +95,23 @@ public class AgentBase : MonoBehaviour, IAgent {
     return GetRelativeTransformation(waypoint, Vector3.zero, Vector3.zero);
   }
 
+  private void AlignWithVelocity() {
+    const float speedThreshold = 0.1f;
+    const float rotationSpeedDegreesPerSecond = 10000f;
+
+    // Only align if the velocity is significant.
+    if (Speed > speedThreshold) {
+      // Create a rotation with the forward direction along the velocity vector and the up direction
+      // along world up.
+      Quaternion targetRotation = Quaternion.LookRotation(Velocity, Vector3.up);
+
+      // Smoothly rotate towards the target rotation.
+      transform.rotation = Quaternion.RotateTowards(
+          transform.rotation, targetRotation,
+          maxDegreesDelta: rotationSpeedDegreesPerSecond * Time.fixedDeltaTime);
+    }
+  }
+
   private Transformation GetRelativeTransformation(in Vector3 position, in Vector3 velocity,
                                                    in Vector3 acceleration) {
     var transformation = new Transformation();

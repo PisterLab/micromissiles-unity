@@ -91,7 +91,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RecordTelemetry() {
-    float time = (float)SimManager.Instance.GetElapsedSimulationTime();
+    float time = SimManager.Instance.GetElapsedSimulationTime();
     var agents = SimManager.Instance.GetActiveAgents();
     if (_telemetryBinaryWriter == null) {
       Debug.LogWarning("Telemetry binary writer is null");
@@ -218,7 +218,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterNewAgent(Agent agent, string eventType) {
-    float time = (float)SimManager.Instance.GetElapsedSimulationTime();
+    float time = SimManager.Instance.GetElapsedSimulationTime();
     Vector3 pos = agent.transform.position;
     var record = new EventRecord { Time = time,       PositionX = pos.x,     PositionY = pos.y,
                                    PositionZ = pos.z, EventType = eventType, Details = agent.name };
@@ -238,7 +238,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   public void RegisterInterceptorEvent(Interceptor interceptor, Threat threat, bool hit) {
-    float time = (float)SimManager.Instance.GetElapsedSimulationTime();
+    float time = SimManager.Instance.GetElapsedSimulationTime();
     Vector3 pos = interceptor.transform.position;
     string eventType = hit ? "INTERCEPTOR_HIT" : "INTERCEPTOR_MISS";
     var record = new EventRecord {

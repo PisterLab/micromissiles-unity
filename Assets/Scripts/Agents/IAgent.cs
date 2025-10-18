@@ -19,6 +19,8 @@ public interface IAgent {
   Vector3 Acceleration { get; set; }
   Vector3 AccelerationInput { get; set; }
 
+  Transform transform { get; }
+
   Transformation GetRelativeTransformation(IAgent target);
   Transformation GetRelativeTransformation(IHierarchical target);
   Transformation GetRelativeTransformation(in Vector3 waypoint);
