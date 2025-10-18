@@ -47,6 +47,9 @@ jobs:
   csharp-lint:
     name: C# linting
     runs-on: ubuntu-latest
+    env:
+      UNITY_USERNAME: ${{ secrets.UNITY_USERNAME }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -56,11 +59,11 @@ jobs:
           version-file: ProjectSettings/ProjectVersion.txt
 
       - name: Activate Unity License (Personal)
-        if: ${{ secrets.UNITY_USERNAME != '' && secrets.UNITY_PASSWORD != '' }}
+        if: ${{ env.UNITY_USERNAME != '' && env.UNITY_PASSWORD != '' }}
         uses: buildalon/activate-unity-license@v1
         with:
-          username: ${{ secrets.UNITY_USERNAME }}
-          password: ${{ secrets.UNITY_PASSWORD }}
+          username: ${{ env.UNITY_USERNAME }}
+          password: ${{ env.UNITY_PASSWORD }}
           license: Personal
 
       - name: Generate .sln/.csproj via Unity (Rider SyncSolution)
