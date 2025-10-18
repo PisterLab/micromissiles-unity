@@ -18,8 +18,9 @@ public struct LaunchPlan {
 
   // Get the normalized launch vector given the agent's position.
   public Vector3 NormalizedLaunchVector(in Vector3 position) {
-    var relativeInterceptPosition = InterceptPosition - position;
-    var interceptDirection = Coordinates3.ConvertCartesianToSpherical(relativeInterceptPosition);
+    Vector3 relativeInterceptPosition = InterceptPosition - position;
+    Vector3 interceptDirection =
+        Coordinates3.ConvertCartesianToSpherical(relativeInterceptPosition);
     return Coordinates3.ConvertSphericalToCartesian(r: 1, azimuth: interceptDirection[1],
                                                     elevation: LaunchAngle);
   }

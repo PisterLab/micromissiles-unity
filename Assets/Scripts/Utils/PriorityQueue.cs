@@ -27,8 +27,8 @@ public class PriorityQueue<T> : IEnumerable<T> {
     }
 
     var firstPair = _buffer.First();
-    var queue = firstPair.Value;
-    var item = queue.Dequeue();
+    Queue<T> queue = firstPair.Value;
+    T item = queue.Dequeue();
     if (queue.Count == 0) {
       _buffer.Remove(firstPair.Key);
     }

@@ -18,7 +18,7 @@ public class NearestNeighborInterpolator2D : Interpolator2DBase {
 
   // Interpolate the value using nearest neighbor interpolation.
   public override Interpolator2DDataPoint Interpolate(float x, float y) {
-    var closestPoint = _tree.NearestNeighbor(new Vector2(x, y));
+    Interpolator2DDataPoint closestPoint = _tree.NearestNeighbor(new Vector2(x, y));
     if (closestPoint == null) {
       Debug.LogError("No data points available for interpolation.");
       return new Interpolator2DDataPoint { Coordinates = new Vector2(x, y),

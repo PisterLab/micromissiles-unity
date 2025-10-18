@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 // The launch angle CSV interpolator loads launch angle data from a CSV file and provides
@@ -26,19 +27,20 @@ public class LaunchAngleCsvInterpolator : LaunchAngleInterpolatorBase {
 
   // Initialize the interpolator.
   protected override void InitInterpolator() {
-    var fileContent = _configLoader(_relativePath);
+    string fileContent = _configLoader(_relativePath);
     if (string.IsNullOrEmpty(fileContent)) {
       Debug.LogError($"Failed to load CSV file from {_relativePath}.");
       throw new InvalidOperationException("Interpolator could not be initialized.");
     }
 
-    var csvLines = fileContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-    if (csvLines.Length < 1) {
+    string[] csvLines = fileContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+    string[] dataLines = csvLines.Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
+    if (dataLines.Length < 1) {
       throw new InvalidOperationException("No data points available for interpolation.");
     }
 
     try {
-      _interpolator = new NearestNeighborInterpolator2D(csvLines);
+      _interpolator = new NearestNeighborInterpolator2D(dataLines);
     } catch (Exception e) {
       throw new InvalidOperationException("Failed to initialize interpolator: " + e.Message);
     }

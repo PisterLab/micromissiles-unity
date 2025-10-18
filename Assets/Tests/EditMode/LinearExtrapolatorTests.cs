@@ -15,7 +15,7 @@ public class LinearExtrapolatorTests {
 
   [Test]
   public void Predict_AtTimeZero_ReturnsCurrentState() {
-    var predictedState = _predictor.Predict(time: 0f);
+    PredictorState predictedState = _predictor.Predict(time: 0f);
     Assert.AreEqual(_hierarchical.Position, predictedState.Position);
     Assert.AreEqual(_hierarchical.Velocity, predictedState.Velocity);
     Assert.AreEqual(_hierarchical.Acceleration, predictedState.Acceleration);
@@ -23,7 +23,7 @@ public class LinearExtrapolatorTests {
 
   [Test]
   public void Predict_InThePast_ReturnsExtrapolatedState() {
-    var predictedState = _predictor.Predict(time: -5f);
+    PredictorState predictedState = _predictor.Predict(time: -5f);
     Assert.AreEqual(new Vector3(5, 10, -5), predictedState.Position);
     Assert.AreEqual(_hierarchical.Velocity, predictedState.Velocity);
     Assert.AreEqual(_hierarchical.Acceleration, predictedState.Acceleration);
@@ -31,7 +31,7 @@ public class LinearExtrapolatorTests {
 
   [Test]
   public void Predict_InTheFuture_ReturnsExtrapolatedState() {
-    var predictedState = _predictor.Predict(time: 10f);
+    PredictorState predictedState = _predictor.Predict(time: 10f);
     Assert.AreEqual(new Vector3(20, -20, 25), predictedState.Position);
     Assert.AreEqual(_hierarchical.Velocity, predictedState.Velocity);
     Assert.AreEqual(_hierarchical.Acceleration, predictedState.Acceleration);
