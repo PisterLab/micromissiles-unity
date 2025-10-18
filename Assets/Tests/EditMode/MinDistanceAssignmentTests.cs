@@ -18,7 +18,7 @@ public class MinDistanceAssignmentTests {
   public void Assign_NoFirst_ReturnsEmptyList() {
     var first = new List<FixedHierarchical>();
     var second = new List<FixedHierarchical> { new FixedHierarchical() };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(0, assignments.Count);
   }
 
@@ -26,16 +26,16 @@ public class MinDistanceAssignmentTests {
   public void Assign_NoSecond_ReturnsEmptyList() {
     var first = new List<FixedHierarchical> { new FixedHierarchical() };
     var second = new List<FixedHierarchical>();
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(0, assignments.Count);
   }
 
   [Test]
   public void Assign_ShouldAssignEachFirst() {
     const int numFirst = 20;
-    var first = GenerateHierarchicals(numFirst);
+    List<FixedHierarchical> first = GenerateHierarchicals(numFirst);
     var second = new List<FixedHierarchical>() { new FixedHierarchical() };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(numFirst, assignments.Count);
     var assignedFirsts = new HashSet<IHierarchical>();
     foreach (var assignment in assignments) {
@@ -57,7 +57,7 @@ public class MinDistanceAssignmentTests {
       new FixedHierarchical(position: new Vector3(20, 0, 0)),
       new FixedHierarchical(position: new Vector3(0, 100, 0)),
     };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(first.Count, assignments.Count);
     var expectedAssignments = new List<AssignmentItem> {
       new AssignmentItem { First = first[0], Second = second[0] },

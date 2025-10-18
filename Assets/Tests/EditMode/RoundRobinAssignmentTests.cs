@@ -17,7 +17,7 @@ public class RoundRobinAssignmentTests {
   public void Assign_NoFirst_ReturnsEmptyList() {
     var first = new List<FixedHierarchical>();
     var second = new List<FixedHierarchical> { new FixedHierarchical() };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(0, assignments.Count);
   }
 
@@ -25,16 +25,16 @@ public class RoundRobinAssignmentTests {
   public void Assign_NoSecond_ReturnsEmptyList() {
     var first = new List<FixedHierarchical> { new FixedHierarchical() };
     var second = new List<FixedHierarchical>();
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(0, assignments.Count);
   }
 
   [Test]
   public void Assign_ShouldAssignEachFirst() {
     const int numFirst = 20;
-    var first = GenerateHierarchicals(numFirst);
+    List<FixedHierarchical> first = GenerateHierarchicals(numFirst);
     var second = new List<FixedHierarchical>() { new FixedHierarchical() };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(numFirst, assignments.Count);
     var assignedFirsts = new HashSet<IHierarchical>();
     foreach (var assignment in assignments) {
@@ -47,9 +47,9 @@ public class RoundRobinAssignmentTests {
   public void Assign_ShouldRoundRobinAmongSecond() {
     const int numFirst = 50;
     const int numSecond = 13;
-    var first = GenerateHierarchicals(numFirst);
-    var second = GenerateHierarchicals(numSecond);
-    var assignments = _assignment.Assign(first, second);
+    List<FixedHierarchical> first = GenerateHierarchicals(numFirst);
+    List<FixedHierarchical> second = GenerateHierarchicals(numSecond);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(numFirst, assignments.Count);
     int secondIndex = 0;
     for (int i = 0; i < numFirst; ++i) {

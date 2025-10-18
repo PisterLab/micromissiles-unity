@@ -36,7 +36,7 @@ public class CostBasedAssignment : AssignmentBase {
     var assignmentCosts = new float[numFirst * numSecond];
     for (int firstIndex = 0; firstIndex < numFirst; ++firstIndex) {
       for (int secondIndex = 0; secondIndex < numSecond; ++secondIndex) {
-        var cost = _costFunction(first[firstIndex], second[secondIndex]);
+        float cost = _costFunction(first[firstIndex], second[secondIndex]);
         assignmentCosts[firstIndex * numSecond + secondIndex] =
             Mathf.Clamp(cost, -_maxCost, _maxCost);
       }

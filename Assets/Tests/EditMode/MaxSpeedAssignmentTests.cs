@@ -37,7 +37,7 @@ public class MaxSpeedAssignmentTests : TestBase {
   public void Assign_NoFirst_ReturnsEmptyList() {
     var first = new List<HierarchicalAgent>();
     var second = new List<FixedHierarchical> { new FixedHierarchical() };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(0, assignments.Count);
   }
 
@@ -46,7 +46,7 @@ public class MaxSpeedAssignmentTests : TestBase {
     var first = new List<HierarchicalAgent> { GenerateAgent(position: Vector3.zero,
                                                             velocity: Vector3.zero) };
     var second = new List<FixedHierarchical>();
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(0, assignments.Count);
   }
 
@@ -58,7 +58,7 @@ public class MaxSpeedAssignmentTests : TestBase {
       first.Add(GenerateAgent(position: Vector3.zero, velocity: new Vector3(0, 0, 1)));
     }
     var second = new List<FixedHierarchical>() { new FixedHierarchical() };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(numFirst, assignments.Count);
     var assignedFirsts = new HashSet<IHierarchical>();
     foreach (var assignment in assignments) {
@@ -79,7 +79,7 @@ public class MaxSpeedAssignmentTests : TestBase {
       new FixedHierarchical(position: new Vector3(20, 0, 0)),
       new FixedHierarchical(position: new Vector3(0, 100, 0)),
     };
-    var assignments = _assignment.Assign(first, second);
+    List<AssignmentItem> assignments = _assignment.Assign(first, second);
     Assert.AreEqual(first.Count, assignments.Count);
     var expectedAssignments = new List<AssignmentItem> {
       new AssignmentItem { First = first[0], Second = second[1] },
