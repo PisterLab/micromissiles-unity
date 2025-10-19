@@ -60,10 +60,10 @@ jobs:
           ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
           echo "version=$ver" >> "$GITHUB_OUTPUT"
 
-      - name: Cache Unity Editor installation (.unity-editor)
+      - name: Cache Unity Editor installation (Hub default)
         uses: actions/cache@v4
         with:
-          path: .unity-editor/${{ steps.unity_version.outputs.version }}
+          path: ${{ runner.home }}/Unity/Hub/Editor/${{ steps.unity_version.outputs.version }}
           key: unity-editor-${{ runner.os }}-${{ steps.unity_version.outputs.version }}
           restore-keys: |
             unity-editor-${{ runner.os }}-
@@ -72,16 +72,15 @@ jobs:
         uses: buildalon/unity-setup@v1
         with:
           version-file: ProjectSettings/ProjectVersion.txt
-          install-path: .unity-editor
 
-      - name: Verify Unity installation path (.unity-editor)
+      - name: Verify Unity installation path (Hub default)
         run: |
           set -euo pipefail
-          EXPECTED_ROOT="${{ github.workspace }}/.unity-editor/${{ steps.unity_version.outputs.version }}"
+          EXPECTED_ROOT="${HOME}/Unity/Hub/Editor/${{ steps.unity_version.outputs.version }}"
           echo "Expected Unity root: $EXPECTED_ROOT"
           if [ ! -d "$EXPECTED_ROOT" ]; then
             echo "::error::Unity not installed at $EXPECTED_ROOT" >&2
-            ls -al "${{ github.workspace }}/.unity-editor" || true
+            ls -al "${HOME}/Unity/Hub/Editor" || true
             exit 1
           fi
           if [ ! -x "$EXPECTED_ROOT/Editor/Unity" ]; then
