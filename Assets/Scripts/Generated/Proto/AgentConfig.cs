@@ -26,19 +26,19 @@ namespace Configs {
           string.Concat(
             "ChpDb25maWdzL2FnZW50X2NvbmZpZy5wcm90bxIHY29uZmlncxocQ29uZmln",
             "cy9keW5hbWljX2NvbmZpZy5wcm90bxoWU2ltdWxhdGlvbi9zdGF0ZS5wcm90",
-            "byLyAgoLQWdlbnRDb25maWcSEwoLY29uZmlnX2ZpbGUYASABKAkSIwobYXR0",
+            "byLlAgoLQWdlbnRDb25maWcSEwoLY29uZmlnX2ZpbGUYASABKAkSIwobYXR0",
             "YWNrX2JlaGF2aW9yX2NvbmZpZ19maWxlGAIgASgJEigKDWluaXRpYWxfc3Rh",
             "dGUYAyABKAsyES5zaW11bGF0aW9uLlN0YXRlEi0KEnN0YW5kYXJkX2Rldmlh",
             "dGlvbhgEIAEoCzIRLnNpbXVsYXRpb24uU3RhdGUSLgoOZHluYW1pY19jb25m",
-            "aWcYBSABKAsyFi5jb25maWdzLkR5bmFtaWNDb25maWcSRAoTc3VibXVuaXRp",
-            "b25zX2NvbmZpZxgGIAEoCzInLmNvbmZpZ3MuQWdlbnRDb25maWcuU3VibXVu",
-            "aXRpb25zQ29uZmlnGloKElN1Ym11bml0aW9uc0NvbmZpZxIYChBudW1fc3Vi",
-            "bXVuaXRpb25zGAEgASgNEioKDGFnZW50X2NvbmZpZxgCIAEoCzIULmNvbmZp",
-            "Z3MuQWdlbnRDb25maWdiBnByb3RvMw=="));
+            "aWcYBSABKAsyFi5jb25maWdzLkR5bmFtaWNDb25maWcSPQoQc3ViX2FnZW50",
+            "X2NvbmZpZxgGIAEoCzIjLmNvbmZpZ3MuQWdlbnRDb25maWcuU3ViQWdlbnRD",
+            "b25maWcaVAoOU3ViQWdlbnRDb25maWcSFgoObnVtX3N1Yl9hZ2VudHMYASAB",
+            "KA0SKgoMYWdlbnRfY29uZmlnGAIgASgLMhQuY29uZmlncy5BZ2VudENvbmZp",
+            "Z2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.DynamicConfigReflection.Descriptor, global::Simulation.StateReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig), global::Configs.AgentConfig.Parser, new[]{ "ConfigFile", "AttackBehaviorConfigFile", "InitialState", "StandardDeviation", "DynamicConfig", "SubmunitionsConfig" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig.Types.SubmunitionsConfig), global::Configs.AgentConfig.Types.SubmunitionsConfig.Parser, new[]{ "NumSubmunitions", "AgentConfig" }, null, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig), global::Configs.AgentConfig.Parser, new[]{ "ConfigFile", "AttackBehaviorConfigFile", "InitialState", "StandardDeviation", "DynamicConfig", "SubAgentConfig" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig.Types.SubAgentConfig), global::Configs.AgentConfig.Types.SubAgentConfig.Parser, new[]{ "NumSubAgents", "AgentConfig" }, null, null, null, null)})
           }));
     }
     #endregion
@@ -88,7 +88,7 @@ namespace Configs {
       initialState_ = other.initialState_ != null ? other.initialState_.Clone() : null;
       standardDeviation_ = other.standardDeviation_ != null ? other.standardDeviation_.Clone() : null;
       dynamicConfig_ = other.dynamicConfig_ != null ? other.dynamicConfig_.Clone() : null;
-      submunitionsConfig_ = other.submunitionsConfig_ != null ? other.submunitionsConfig_.Clone() : null;
+      subAgentConfig_ = other.subAgentConfig_ != null ? other.subAgentConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -173,18 +173,18 @@ namespace Configs {
       }
     }
 
-    /// <summary>Field number for the "submunitions_config" field.</summary>
-    public const int SubmunitionsConfigFieldNumber = 6;
-    private global::Configs.AgentConfig.Types.SubmunitionsConfig submunitionsConfig_;
+    /// <summary>Field number for the "sub_agent_config" field.</summary>
+    public const int SubAgentConfigFieldNumber = 6;
+    private global::Configs.AgentConfig.Types.SubAgentConfig subAgentConfig_;
     /// <summary>
-    /// Submunitions configuration.
+    /// Sub-agent configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.AgentConfig.Types.SubmunitionsConfig SubmunitionsConfig {
-      get { return submunitionsConfig_; }
+    public global::Configs.AgentConfig.Types.SubAgentConfig SubAgentConfig {
+      get { return subAgentConfig_; }
       set {
-        submunitionsConfig_ = value;
+        subAgentConfig_ = value;
       }
     }
 
@@ -208,7 +208,7 @@ namespace Configs {
       if (!object.Equals(InitialState, other.InitialState)) return false;
       if (!object.Equals(StandardDeviation, other.StandardDeviation)) return false;
       if (!object.Equals(DynamicConfig, other.DynamicConfig)) return false;
-      if (!object.Equals(SubmunitionsConfig, other.SubmunitionsConfig)) return false;
+      if (!object.Equals(SubAgentConfig, other.SubAgentConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -221,7 +221,7 @@ namespace Configs {
       if (initialState_ != null) hash ^= InitialState.GetHashCode();
       if (standardDeviation_ != null) hash ^= StandardDeviation.GetHashCode();
       if (dynamicConfig_ != null) hash ^= DynamicConfig.GetHashCode();
-      if (submunitionsConfig_ != null) hash ^= SubmunitionsConfig.GetHashCode();
+      if (subAgentConfig_ != null) hash ^= SubAgentConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -260,9 +260,9 @@ namespace Configs {
         output.WriteRawTag(42);
         output.WriteMessage(DynamicConfig);
       }
-      if (submunitionsConfig_ != null) {
+      if (subAgentConfig_ != null) {
         output.WriteRawTag(50);
-        output.WriteMessage(SubmunitionsConfig);
+        output.WriteMessage(SubAgentConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -294,9 +294,9 @@ namespace Configs {
         output.WriteRawTag(42);
         output.WriteMessage(DynamicConfig);
       }
-      if (submunitionsConfig_ != null) {
+      if (subAgentConfig_ != null) {
         output.WriteRawTag(50);
-        output.WriteMessage(SubmunitionsConfig);
+        output.WriteMessage(SubAgentConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -323,8 +323,8 @@ namespace Configs {
       if (dynamicConfig_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(DynamicConfig);
       }
-      if (submunitionsConfig_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SubmunitionsConfig);
+      if (subAgentConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(SubAgentConfig);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -362,11 +362,11 @@ namespace Configs {
         }
         DynamicConfig.MergeFrom(other.DynamicConfig);
       }
-      if (other.submunitionsConfig_ != null) {
-        if (submunitionsConfig_ == null) {
-          SubmunitionsConfig = new global::Configs.AgentConfig.Types.SubmunitionsConfig();
+      if (other.subAgentConfig_ != null) {
+        if (subAgentConfig_ == null) {
+          SubAgentConfig = new global::Configs.AgentConfig.Types.SubAgentConfig();
         }
-        SubmunitionsConfig.MergeFrom(other.SubmunitionsConfig);
+        SubAgentConfig.MergeFrom(other.SubAgentConfig);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -417,10 +417,10 @@ namespace Configs {
             break;
           }
           case 50: {
-            if (submunitionsConfig_ == null) {
-              SubmunitionsConfig = new global::Configs.AgentConfig.Types.SubmunitionsConfig();
+            if (subAgentConfig_ == null) {
+              SubAgentConfig = new global::Configs.AgentConfig.Types.SubAgentConfig();
             }
-            input.ReadMessage(SubmunitionsConfig);
+            input.ReadMessage(SubAgentConfig);
             break;
           }
         }
@@ -472,10 +472,10 @@ namespace Configs {
             break;
           }
           case 50: {
-            if (submunitionsConfig_ == null) {
-              SubmunitionsConfig = new global::Configs.AgentConfig.Types.SubmunitionsConfig();
+            if (subAgentConfig_ == null) {
+              SubAgentConfig = new global::Configs.AgentConfig.Types.SubAgentConfig();
             }
-            input.ReadMessage(SubmunitionsConfig);
+            input.ReadMessage(SubAgentConfig);
             break;
           }
         }
@@ -489,19 +489,19 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
       /// <summary>
-      /// Submunitions configuration.
+      /// Sub-agent configuration.
       /// </summary>
       [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-      public sealed partial class SubmunitionsConfig : pb::IMessage<SubmunitionsConfig>
+      public sealed partial class SubAgentConfig : pb::IMessage<SubAgentConfig>
       #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           , pb::IBufferMessage
       #endif
       {
-        private static readonly pb::MessageParser<SubmunitionsConfig> _parser = new pb::MessageParser<SubmunitionsConfig>(() => new SubmunitionsConfig());
+        private static readonly pb::MessageParser<SubAgentConfig> _parser = new pb::MessageParser<SubAgentConfig>(() => new SubAgentConfig());
         private pb::UnknownFieldSet _unknownFields;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pb::MessageParser<SubmunitionsConfig> Parser { get { return _parser; } }
+        public static pb::MessageParser<SubAgentConfig> Parser { get { return _parser; } }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -517,7 +517,7 @@ namespace Configs {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SubmunitionsConfig() {
+        public SubAgentConfig() {
           OnConstruction();
         }
 
@@ -525,30 +525,30 @@ namespace Configs {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SubmunitionsConfig(SubmunitionsConfig other) : this() {
-          numSubmunitions_ = other.numSubmunitions_;
+        public SubAgentConfig(SubAgentConfig other) : this() {
+          numSubAgents_ = other.numSubAgents_;
           agentConfig_ = other.agentConfig_ != null ? other.agentConfig_.Clone() : null;
           _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SubmunitionsConfig Clone() {
-          return new SubmunitionsConfig(this);
+        public SubAgentConfig Clone() {
+          return new SubAgentConfig(this);
         }
 
-        /// <summary>Field number for the "num_submunitions" field.</summary>
-        public const int NumSubmunitionsFieldNumber = 1;
-        private uint numSubmunitions_;
+        /// <summary>Field number for the "num_sub_agents" field.</summary>
+        public const int NumSubAgentsFieldNumber = 1;
+        private uint numSubAgents_;
         /// <summary>
-        /// Number of submunitions.
+        /// Number of sub-agents.
         /// </summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public uint NumSubmunitions {
-          get { return numSubmunitions_; }
+        public uint NumSubAgents {
+          get { return numSubAgents_; }
           set {
-            numSubmunitions_ = value;
+            numSubAgents_ = value;
           }
         }
 
@@ -570,19 +570,19 @@ namespace Configs {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override bool Equals(object other) {
-          return Equals(other as SubmunitionsConfig);
+          return Equals(other as SubAgentConfig);
         }
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public bool Equals(SubmunitionsConfig other) {
+        public bool Equals(SubAgentConfig other) {
           if (ReferenceEquals(other, null)) {
             return false;
           }
           if (ReferenceEquals(other, this)) {
             return true;
           }
-          if (NumSubmunitions != other.NumSubmunitions) return false;
+          if (NumSubAgents != other.NumSubAgents) return false;
           if (!object.Equals(AgentConfig, other.AgentConfig)) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
@@ -591,7 +591,7 @@ namespace Configs {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public override int GetHashCode() {
           int hash = 1;
-          if (NumSubmunitions != 0) hash ^= NumSubmunitions.GetHashCode();
+          if (NumSubAgents != 0) hash ^= NumSubAgents.GetHashCode();
           if (agentConfig_ != null) hash ^= AgentConfig.GetHashCode();
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
@@ -611,9 +611,9 @@ namespace Configs {
         #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
           output.WriteRawMessage(this);
         #else
-          if (NumSubmunitions != 0) {
+          if (NumSubAgents != 0) {
             output.WriteRawTag(8);
-            output.WriteUInt32(NumSubmunitions);
+            output.WriteUInt32(NumSubAgents);
           }
           if (agentConfig_ != null) {
             output.WriteRawTag(18);
@@ -629,9 +629,9 @@ namespace Configs {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-          if (NumSubmunitions != 0) {
+          if (NumSubAgents != 0) {
             output.WriteRawTag(8);
-            output.WriteUInt32(NumSubmunitions);
+            output.WriteUInt32(NumSubAgents);
           }
           if (agentConfig_ != null) {
             output.WriteRawTag(18);
@@ -647,8 +647,8 @@ namespace Configs {
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
         public int CalculateSize() {
           int size = 0;
-          if (NumSubmunitions != 0) {
-            size += 1 + pb::CodedOutputStream.ComputeUInt32Size(NumSubmunitions);
+          if (NumSubAgents != 0) {
+            size += 1 + pb::CodedOutputStream.ComputeUInt32Size(NumSubAgents);
           }
           if (agentConfig_ != null) {
             size += 1 + pb::CodedOutputStream.ComputeMessageSize(AgentConfig);
@@ -661,12 +661,12 @@ namespace Configs {
 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
         [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(SubmunitionsConfig other) {
+        public void MergeFrom(SubAgentConfig other) {
           if (other == null) {
             return;
           }
-          if (other.NumSubmunitions != 0) {
-            NumSubmunitions = other.NumSubmunitions;
+          if (other.NumSubAgents != 0) {
+            NumSubAgents = other.NumSubAgents;
           }
           if (other.agentConfig_ != null) {
             if (agentConfig_ == null) {
@@ -694,7 +694,7 @@ namespace Configs {
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
                 break;
               case 8: {
-                NumSubmunitions = input.ReadUInt32();
+                NumSubAgents = input.ReadUInt32();
                 break;
               }
               case 18: {
@@ -724,7 +724,7 @@ namespace Configs {
                 _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
                 break;
               case 8: {
-                NumSubmunitions = input.ReadUInt32();
+                NumSubAgents = input.ReadUInt32();
                 break;
               }
               case 18: {

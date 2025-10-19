@@ -12,8 +12,8 @@ interceptor_swarm_configs {
         frequency: 100
       }
     }
-    submunitions_config {
-      num_submunitions: 7
+    sub_agent_config {
+      num_sub_agents: 7
       agent_config: {
         config_file: "micromissile.pbtxt"
         dynamic_config {
