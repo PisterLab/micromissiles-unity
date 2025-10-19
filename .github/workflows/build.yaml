@@ -102,12 +102,6 @@ jobs:
           password: ${{ env.UNITY_PASSWORD }}
           license: Personal
 
-      - name: Generate .sln/.csproj via Unity (Rider SyncSolution)
-        uses: buildalon/unity-action@v2
-        with:
-          project-path: .
-          args: -quit -batchmode -nographics -projectPath . -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
