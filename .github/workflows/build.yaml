@@ -48,7 +48,7 @@ jobs:
     name: C# linting
     runs-on: ubuntu-latest
     env:
-      UNITY_USERNAME: ${{ secrets.UNITY_USERNAME }}
+      UNITY_LOGIN: ${{ secrets.UNITY_USERNAME != '' && secrets.UNITY_USERNAME || secrets.UNITY_EMAIL }}
       UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
@@ -68,10 +68,10 @@ jobs:
           install-path: .unity-editor
 
       - name: Activate Unity License (Personal)
-        if: ${{ env.UNITY_USERNAME != '' && env.UNITY_PASSWORD != '' }}
+        if: ${{ env.UNITY_LOGIN != '' && env.UNITY_PASSWORD != '' }}
         uses: buildalon/activate-unity-license@v1
         with:
-          username: ${{ env.UNITY_USERNAME }}
+          username: ${{ env.UNITY_LOGIN }}
           password: ${{ env.UNITY_PASSWORD }}
           license: Personal
 
@@ -87,7 +87,9 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build and check for warnings
-        run: dotnet build micromissiles-unity.sln --configuration Debug -nologo
+        run: |
+          dotnet build micromissiles-unity.sln --configuration Debug -nologo \
+            -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060"
 
   build-all:
     name: Build for ${{ matrix.targetPlatform }}
