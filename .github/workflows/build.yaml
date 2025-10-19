@@ -53,11 +53,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache Unity Editor installation
+      - name: Read Unity version
+        id: unity_version
+        run: |
+          set -e
+          ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Unity Editor installation (.unity-editor)
         uses: actions/cache@v4
         with:
-          path: .unity-editor
-          key: unity-editor-${{ runner.os }}-${{ hashFiles('ProjectSettings/ProjectVersion.txt') }}
+          path: .unity-editor/${{ steps.unity_version.outputs.version }}
+          key: unity-editor-${{ runner.os }}-${{ steps.unity_version.outputs.version }}
           restore-keys: |
             unity-editor-${{ runner.os }}-
 
@@ -66,6 +73,26 @@ jobs:
         with:
           version-file: ProjectSettings/ProjectVersion.txt
           install-path: .unity-editor
+
+      - name: Verify Unity installation path (.unity-editor)
+        run: |
+          set -euo pipefail
+          EXPECTED_ROOT="${{ github.workspace }}/.unity-editor/${{ steps.unity_version.outputs.version }}"
+          echo "Expected Unity root: $EXPECTED_ROOT"
+          if [ ! -d "$EXPECTED_ROOT" ]; then
+            echo "::error::Unity not installed at $EXPECTED_ROOT" >&2
+            ls -al "${{ github.workspace }}/.unity-editor" || true
+            exit 1
+          fi
+          if [ ! -x "$EXPECTED_ROOT/Editor/Unity" ]; then
+            echo "::error::Unity binary missing at $EXPECTED_ROOT/Editor/Unity" >&2
+            ls -al "$EXPECTED_ROOT/Editor" || true
+            exit 1
+          fi
+          if [ -n "${UNITY_EDITOR_PATH:-}" ] && [ "$UNITY_EDITOR_PATH" != "$EXPECTED_ROOT/Editor/Unity" ]; then
+            echo "::error::UNITY_EDITOR_PATH ($UNITY_EDITOR_PATH) does not match expected ($EXPECTED_ROOT/Editor/Unity)" >&2
+            exit 1
+          fi
 
       - name: Activate Unity License (Personal)
         if: ${{ env.UNITY_LOGIN != '' && env.UNITY_PASSWORD != '' }}
