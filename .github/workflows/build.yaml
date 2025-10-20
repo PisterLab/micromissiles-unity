@@ -146,7 +146,7 @@ jobs:
             -v "${GITHUB_WORKSPACE}:/workspace" \
             -w /workspace \
             "$IMAGE" \
-            bash -c 'ls -la *.sln *.csproj; dotnet --info; dotnet build micromissiles-unity.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
+            bash -lc 'ls -la *.sln *.csproj; dotnet --info; dotnet build workspace.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
 
       - name: Upload lint binlog
         if: matrix.targetPlatform == 'StandaloneLinux64'
