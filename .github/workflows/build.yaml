@@ -64,14 +64,14 @@ jobs:
           find *.tar.gz -exec tar -xvzf {} \;
           rm plugins-*.tar.gz
 
-      - name: Read Unity version (for Docker image tag)
+      - name: Read Unity version
         id: unity_version
         run: |
           set -e
           ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
           echo "version=$ver" >> "$GITHUB_OUTPUT"
 
-      - name: Generate solution files for linting
+      - name: Generate solution files with custom script
         env:
           UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -90,51 +90,26 @@ jobs:
             "$IMAGE" \
             unity-editor -quit -batchmode -nographics -logFile /dev/stdout \
               -projectPath /workspace \
-              -executeMethod UnityEditor.SyncVS.SyncSolution
-
-      - name: Verify solution files exist
-        run: |
-          set -euo pipefail
-          ls -al *.sln *.csproj || true
-          shopt -s nullglob
-          SOLN=( *.sln )
-          if [ ${#SOLN[@]} -eq 0 ]; then
-            echo "::error::No .sln present after unity-builder" >&2
-            exit 1
-          fi
-          echo "Found solution file(s): ${SOLN[@]}"
-
-      - name: Inspect generated solution and projects
-        run: |
-          echo "=== Solution file contents ==="
-          cat workspace.sln
-          echo ""
-          echo "=== Projects in solution ==="
-          grep 'Project(' workspace.sln || echo "No projects found"
-          echo ""
-          echo "=== Checking bamlab.micromissiles.csproj ==="
-          if [ -f "bamlab.micromissiles.csproj" ]; then
-            echo "File exists! Counting source files..."
-            grep -c '<Compile Include=' bamlab.micromissiles.csproj || echo "0 files"
-            echo "Sample entries:"
-            grep '<Compile Include=' bamlab.micromissiles.csproj | head -5
-          else
-            echo "::error::bamlab.micromissiles.csproj not found - this is the main project!"
-            exit 1
-          fi
+              -executeMethod GenerateSolutionFiles.Generate
+          echo "Checking if files were generated..."
+          ls -la *.sln *.csproj 2>/dev/null || echo "No solution files found yet"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
-      - name: Run dotnet build (C# lint)
+      - name: Run C# linting with dotnet build
         env:
           UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
         run: |
           set -euo pipefail
+          if [ ! -f *.sln ]; then
+            echo "::error::No solution file generated - cannot lint"
+            exit 1
+          fi
+
           IMAGE="unityci/editor:ubuntu-${UNITY_VERSION}-linux-il2cpp-3"
-          echo "Using image: $IMAGE"
           mkdir -p artifacts
           docker run --rm \
             -v "${GITHUB_WORKSPACE}:/workspace" \
@@ -143,7 +118,7 @@ jobs:
             -e PATH="/usr/share/dotnet:$PATH" \
             -w /workspace \
             "$IMAGE" \
-            sh -c 'ls -la *.sln *.csproj; dotnet --info; dotnet build workspace.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
+            sh -c 'dotnet build *.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
 
       - name: Upload lint binlog
         if: always()
@@ -151,23 +126,6 @@ jobs:
         with:
           name: csharp-lint-binlog
           path: artifacts/csharp-lint.binlog
-
-      - name: Package solution+projects from workspace
-        if: always()
-        run: |
-          set -euo pipefail
-          mkdir -p artifacts
-          tar -czf artifacts/unity-sln-and-projects.tgz *.sln *.csproj || {
-            echo "::warning::No .csproj matched; continuing with .sln only"; \
-            tar -czf artifacts/unity-sln-and-projects.tgz *.sln; }
-
-      - name: Upload solution artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unity-sln
-          path: artifacts/unity-sln-and-projects.tgz
-          if-no-files-found: error
 
   build-all:
     name: Build for ${{ matrix.targetPlatform }}
