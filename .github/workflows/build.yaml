@@ -133,6 +133,12 @@ jobs:
           fi
           echo "Found solution file(s): ${SOLN[@]}"
 
+      - name: Setup .NET
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
       - name: Run dotnet build (C# lint) inside unityci/editor
         if: matrix.targetPlatform == 'StandaloneLinux64'
         env:
@@ -144,9 +150,12 @@ jobs:
           mkdir -p artifacts
           docker run --rm \
             -v "${GITHUB_WORKSPACE}:/workspace" \
+            -v "/usr/share/dotnet:/usr/share/dotnet" \
+            -e DOTNET_ROOT=/usr/share/dotnet \
+            -e PATH="/usr/share/dotnet:\$PATH" \
             -w /workspace \
             "$IMAGE" \
-            bash -lc 'ls -la *.sln *.csproj; dotnet --info; dotnet build workspace.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
+            bash -c 'ls -la *.sln *.csproj; dotnet --info; dotnet build workspace.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
 
       - name: Upload lint binlog
         if: matrix.targetPlatform == 'StandaloneLinux64'
