@@ -73,33 +73,3 @@ jobs:
           asset_name: micromissiles-${{ github.event.workflow_run.head_branch }}-linux-x86_64.tar.gz
           asset_path: build/build-StandaloneLinux64.tar.gz
           asset_content_type: application/gzip
-
-      - name: Upload Windows plugins
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: micromissiles-plugins-${{ github.event.workflow_run.head_branch }}-windows-x86_64.tar.gz
-          asset_path: build/plugins-windows-latest.tar.gz
-          asset_content_type: application/gzip
-
-      - name: Upload Darwin plugins
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: micromissiles-plugins-${{ github.event.workflow_run.head_branch }}-darwin-x86_64.tar.gz
-          asset_path: build/plugins-macos-latest.tar.gz
-          asset_content_type: application/gzip
-
-      - name: Upload Linux plugins
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: micromissiles-plugins-${{ github.event.workflow_run.head_branch }}-linux-x86_64.tar.gz
-          asset_path: build/plugins-ubuntu-22.04.tar.gz
-          asset_content_type: application/gzip
