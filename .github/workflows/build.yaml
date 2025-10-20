@@ -44,79 +44,13 @@ jobs:
           name: plugins-${{ matrix.platform }}
           path: plugins/bazel-bin/plugins-${{ matrix.platform }}.tar.gz
 
-  csharp-lint:
-    name: C# linting
-    runs-on: ubuntu-latest
-    env:
-      UNITY_LOGIN: ${{ secrets.UNITY_USERNAME != '' && secrets.UNITY_USERNAME || secrets.UNITY_EMAIL }}
-      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Read Unity version
-        id: unity_version
-        run: |
-          set -e
-          ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
-          echo "version=$ver" >> "$GITHUB_OUTPUT"
-
-      - name: Cache Unity Editor installation (Hub default)
-        uses: actions/cache@v4
-        with:
-          path: ${{ runner.home }}/Unity/Hub/Editor/${{ steps.unity_version.outputs.version }}
-          key: unity-editor-${{ runner.os }}-${{ steps.unity_version.outputs.version }}
-          restore-keys: |
-            unity-editor-${{ runner.os }}-
-
-      - name: Set up Unity (from ProjectVersion.txt)
-        uses: buildalon/unity-setup@v1
-        with:
-          version-file: ProjectSettings/ProjectVersion.txt
-
-      - name: Verify Unity installation path (Hub default)
-        run: |
-          set -euo pipefail
-          EXPECTED_ROOT="${HOME}/Unity/Hub/Editor/${{ steps.unity_version.outputs.version }}"
-          echo "Expected Unity root: $EXPECTED_ROOT"
-          if [ ! -d "$EXPECTED_ROOT" ]; then
-            echo "::error::Unity not installed at $EXPECTED_ROOT" >&2
-            ls -al "${HOME}/Unity/Hub/Editor" || true
-            exit 1
-          fi
-          if [ ! -x "$EXPECTED_ROOT/Editor/Unity" ]; then
-            echo "::error::Unity binary missing at $EXPECTED_ROOT/Editor/Unity" >&2
-            ls -al "$EXPECTED_ROOT/Editor" || true
-            exit 1
-          fi
-          if [ -n "${UNITY_EDITOR_PATH:-}" ] && [ "$UNITY_EDITOR_PATH" != "$EXPECTED_ROOT/Editor/Unity" ]; then
-            echo "::error::UNITY_EDITOR_PATH ($UNITY_EDITOR_PATH) does not match expected ($EXPECTED_ROOT/Editor/Unity)" >&2
-            exit 1
-          fi
-
-      - name: Activate Unity License (Personal)
-        if: ${{ env.UNITY_LOGIN != '' && env.UNITY_PASSWORD != '' }}
-        uses: buildalon/activate-unity-license@v1
-        with:
-          username: ${{ env.UNITY_LOGIN }}
-          password: ${{ env.UNITY_PASSWORD }}
-          license: Personal
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Build and check for warnings
-        run: |
-          dotnet build micromissiles-unity.sln --configuration Debug -nologo \
-            -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060"
+  # csharp-lint moved into Linux leg of build-all to reuse pulled Docker image.
 
   build-all:
     name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     needs:
       - build-plugins
-      - csharp-lint
     strategy:
       fail-fast: false
       matrix:
@@ -145,6 +79,14 @@ jobs:
           find *.tar.gz -exec tar -xvzf {} \;
           rm plugins-*.tar.gz
 
+      - name: Read Unity version (for Docker image tag)
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        id: unity_version
+        run: |
+          set -e
+          ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -155,6 +97,54 @@ jobs:
           versioning: Semantic
           targetPlatform: ${{ matrix.targetPlatform }}
           allowDirtyBuild: true
+
+      - name: Run dotnet build (C# lint) inside unityci/editor
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        env:
+          UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
+        run: |
+          set -euo pipefail
+          IMAGE="unityci/editor:ubuntu-${UNITY_VERSION}-linux-il2cpp-3"
+          echo "Using image: $IMAGE"
+          mkdir -p artifacts
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -v "/usr/share/dotnet:/usr/share/dotnet" \
+            -w /workspace \
+            "$IMAGE" \
+            bash -lc 'export DOTNET_ROOT=/usr/share/dotnet; export PATH="$DOTNET_ROOT:$PATH"; dotnet --info; dotnet build micromissiles-unity.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
+
+      - name: Upload lint binlog
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: csharp-lint-binlog
+          path: artifacts/csharp-lint.binlog
+
+      - name: Package solution+projects from workspace
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        run: |
+          set -euo pipefail
+          ls -al
+          shopt -s nullglob
+          SOLN=( *.sln )
+          PROJS=( *.csproj )
+          if [ ${#SOLN[@]} -eq 0 ]; then
+            echo "::error::No .sln present after unity-builder" >&2
+            exit 1
+          fi
+          mkdir -p artifacts
+          tar -czf artifacts/unity-sln-and-projects.tgz *.sln *.csproj || {
+            echo "::warning::No .csproj matched; continuing with .sln only"; \
+            tar -czf artifacts/unity-sln-and-projects.tgz *.sln; }
+
+      - name: Upload solution artifact
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-sln
+          path: artifacts/unity-sln-and-projects.tgz
+          if-no-files-found: error
 
       - name: Copy tools directory
         run: |
