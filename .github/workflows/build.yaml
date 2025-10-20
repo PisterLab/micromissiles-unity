@@ -104,6 +104,25 @@ jobs:
           fi
           echo "Found solution file(s): ${SOLN[@]}"
 
+      - name: Inspect generated solution and projects
+        run: |
+          echo "=== Solution file contents ==="
+          cat workspace.sln
+          echo ""
+          echo "=== Projects in solution ==="
+          grep 'Project(' workspace.sln || echo "No projects found"
+          echo ""
+          echo "=== Checking bamlab.micromissiles.csproj ==="
+          if [ -f "bamlab.micromissiles.csproj" ]; then
+            echo "File exists! Counting source files..."
+            grep -c '<Compile Include=' bamlab.micromissiles.csproj || echo "0 files"
+            echo "Sample entries:"
+            grep '<Compile Include=' bamlab.micromissiles.csproj | head -5
+          else
+            echo "::error::bamlab.micromissiles.csproj not found - this is the main project!"
+            exit 1
+          fi
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
