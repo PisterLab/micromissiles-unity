@@ -90,7 +90,7 @@ jobs:
             "$IMAGE" \
             unity-editor -quit -batchmode -nographics -logFile /dev/stdout \
               -projectPath /workspace \
-              -executeMethod Unity.CodeEditor.CodeEditorProjectSync.SyncAll
+              -executeMethod UnityEditor.CodeEditorProjectSync.SyncEditorProject
 
       - name: Verify solution files exist
         run: |
