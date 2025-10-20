@@ -59,157 +59,101 @@ jobs:
           merge-multiple: true
 
       - name: Extract plugins
-        shell: pwsh
         run: |
-          Set-Location Assets/Plugins
-          Get-ChildItem *.tar.gz | ForEach-Object {
-            Write-Host "Extracting $($_.Name)"
-            tar -xzf $_.FullName
-            Remove-Item $_.FullName
-          }
+          set -e
+          cd Assets/Plugins
+          for archive in *.tar.gz; do
+            echo "Extracting ${archive}"
+            tar -xzf "${archive}"
+            rm -f "${archive}"
+          done
 
       - name: Read Unity version
         id: unity_version
-        shell: pwsh
         run: |
-          $match = Select-String -Path "ProjectSettings/ProjectVersion.txt" -Pattern '^m_EditorVersion:\s*(\S+)'
-          if (-not $match) { throw "Unable to read Unity version from ProjectSettings/ProjectVersion.txt" }
-          $version = $match.Matches[0].Groups[1].Value
-          "version=$version" | Out-File -FilePath $Env:GITHUB_OUTPUT -Encoding utf8 -Append
-          Write-Host "Detected Unity version: $version"
-
-      - name: Install Unity Editor
-        id: unity_setup
-        uses: buildalon/unity-setup@v1
-        with:
-          version-file: ProjectSettings/ProjectVersion.txt
-          unity-version: ${{ steps.unity_version.outputs.version }}
-          build-targets: StandaloneWindows64
-
-      - name: Record environment layout
-        shell: pwsh
-        run: |
-          Write-Host "Workspace: $Env:GITHUB_WORKSPACE"
-          Get-ChildItem $Env:GITHUB_WORKSPACE | ForEach-Object { Write-Host $_.FullName }
-          Write-Host "UNITY_EDITOR_PATH: $Env:UNITY_EDITOR_PATH"
-          Write-Host "UNITY_PROJECT_PATH: $Env:UNITY_PROJECT_PATH"
+          set -e
+          ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
+          if [ -z "$ver" ]; then
+            echo "::error::Unable to read Unity version from ProjectSettings/ProjectVersion.txt"
+            exit 1
+          fi
+          echo "version=$ver" >> "$GITHUB_OUTPUT"
+          echo "Detected Unity version: $ver"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
-      - name: Generate solution files with Unity
-        id: unity_sync
-        shell: pwsh
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-          UNITY_LICENSING_SERVER: ${{ secrets.UNITY_LICENSING_SERVER }}
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $logDir = Join-Path $Env:GITHUB_WORKSPACE "artifacts\windows"
-          New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+      - name: Prepare artifact directory
+        run: mkdir -p artifacts/csharp-lint
 
-          $unityPath = $Env:UNITY_EDITOR_PATH
-          if (-not (Test-Path $unityPath)) {
-            throw "Unity editor not found at '$unityPath'."
-          }
-
-          $syncLog = Join-Path $logDir "unity-generate.log"
-          Write-Host "Invoking Unity at $unityPath to sync solutions..."
-          & $unityPath `
-            -logFile $syncLog `
-            -quit -batchmode -nographics `
-            -projectPath $Env:GITHUB_WORKSPACE `
-            -executeMethod GenerateSolutionFiles.Generate
-          $exitCode = $LASTEXITCODE
-          Write-Host "Unity exited with code $exitCode"
-          if ($exitCode -ne 0) {
-            Get-Content $syncLog | Select-Object -Last 200
-            throw "Unity solution generation failed with exit code $exitCode"
-          }
-
-          $slnScan = Join-Path $logDir "post-sync-solution-scan.txt"
-          $csprojScan = Join-Path $logDir "post-sync-csproj-scan.txt"
-          Get-ChildItem -Path $Env:GITHUB_WORKSPACE -Filter *.sln -Recurse | Sort-Object FullName | ForEach-Object { $_.FullName } | Out-File $slnScan -Encoding utf8
-          Get-ChildItem -Path $Env:GITHUB_WORKSPACE -Filter *.csproj -Recurse | Sort-Object FullName | ForEach-Object { $_.FullName } | Out-File $csprojScan -Encoding utf8
-          Write-Host "Post-sync solution files:"
-          Get-Content $slnScan
-
-      - name: Run dotnet build lint
-        id: dotnet_build
-        shell: pwsh
-        env:
-          DOTNET_WARN_AS_ERROR: CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060
-        run: |
-          $ErrorActionPreference = 'Stop'
-          $logDir = Join-Path $Env:GITHUB_WORKSPACE "artifacts\windows"
-          New-Item -ItemType Directory -Path $logDir -Force | Out-Null
-          $solution = Get-ChildItem -Path $Env:GITHUB_WORKSPACE -Filter *.sln -Recurse | Select-Object -First 1
-          if (-not $solution) {
-            throw "No solution file found before dotnet build."
-          }
-          Write-Host "Building solution: $($solution.FullName)"
-          dotnet build $solution.FullName `
-            --configuration Debug `
-            -nologo `
-            -warnaserror:$Env:DOTNET_WARN_AS_ERROR `
-            -bl:"$(Join-Path $logDir 'csharp-lint.binlog')"
-
-      - name: Run Unity edit mode tests
-        if: always()
+      - name: Run Unity editmode tests (game-ci)
         id: unity_tests
-        shell: pwsh
+        uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
           UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
           UNITY_LICENSING_SERVER: ${{ secrets.UNITY_LICENSING_SERVER }}
+        with:
+          projectPath: .
+          testMode: editmode
+          artifactsPath: csharp-lint-tests
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          customImage: unityci/editor:ubuntu-${{ steps.unity_version.outputs.version }}-linux-il2cpp-3
+
+      - name: Capture file inventory after tests
         run: |
-          $ErrorActionPreference = 'Stop'
-          $logDir = Join-Path $Env:GITHUB_WORKSPACE "artifacts\windows"
-          New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+          set -e
+          find . -maxdepth 2 -name '*.sln' -print | sort | tee artifacts/csharp-lint/post-tests-sln.txt
+          find . -maxdepth 4 -name '*.csproj' -print | sort | tee artifacts/csharp-lint/post-tests-csproj.txt
 
-          $unityPath = $Env:UNITY_EDITOR_PATH
-          if (-not (Test-Path $unityPath)) {
-            throw "Unity editor not found at '$unityPath'."
-          }
+      - name: Run dotnet build inside Unity container
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_LICENSING_SERVER: ${{ secrets.UNITY_LICENSING_SERVER }}
+          UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
+        run: |
+          set -euo pipefail
+          IMAGE="unityci/editor:ubuntu-${UNITY_VERSION}-linux-il2cpp-3"
+          mkdir -p artifacts/csharp-lint
+          echo "Using docker image: $IMAGE"
+          docker run --rm \
+            -e UNITY_LICENSE \
+            -e UNITY_EMAIL \
+            -e UNITY_PASSWORD \
+            -e UNITY_SERIAL \
+            -e UNITY_LICENSING_SERVER \
+            -e GITHUB_WORKSPACE=/workspace \
+            -e PROJECT_PATH=. \
+            -e ARTIFACTS_PATH=/workspace/artifacts/csharp-lint \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -v "/usr/share/dotnet:/usr/share/dotnet" \
+            -e DOTNET_ROOT=/usr/share/dotnet \
+            -w /workspace \
+            "$IMAGE" \
+            sh /workspace/Tools/ci/unity-generate-and-build.sh
 
-          $testLog = Join-Path $logDir "unity-tests.log"
-          $testResults = Join-Path $logDir "editmode-results.xml"
-          Write-Host "Running Unity edit mode tests..."
-          & $unityPath `
-            -logFile $testLog `
-            -quit -batchmode -nographics `
-            -projectPath $Env:GITHUB_WORKSPACE `
-            -runTests -testPlatform EditMode `
-            -testResults $testResults
-          $exitCode = $LASTEXITCODE
-          Write-Host "Unity tests exited with code $exitCode"
+      - name: Capture file inventory after dotnet build
+        run: |
+          set -e
+          find . -maxdepth 2 -name '*.sln' -print | sort | tee artifacts/csharp-lint/post-dotnet-sln.txt
+          find . -maxdepth 4 -name '*.csproj' -print | sort | tee artifacts/csharp-lint/post-dotnet-csproj.txt
 
-          $slnScan = Join-Path $logDir "post-tests-solution-scan.txt"
-          $csprojScan = Join-Path $logDir "post-tests-csproj-scan.txt"
-          Get-ChildItem -Path $Env:GITHUB_WORKSPACE -Filter *.sln -Recurse | Sort-Object FullName | ForEach-Object { $_.FullName } | Out-File $slnScan -Encoding utf8
-          Get-ChildItem -Path $Env:GITHUB_WORKSPACE -Filter *.csproj -Recurse | Sort-Object FullName | ForEach-Object { $_.FullName } | Out-File $csprojScan -Encoding utf8
-          Write-Host "Post-test solution files:"
-          Get-Content $slnScan
-
-          if ($exitCode -ne 0) {
-            Write-Warning "Unity tests returned non-zero exit code $exitCode"
-            exit $exitCode
-          }
-
-      - name: Upload lint binlog
+      - name: Upload lint artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: csharp-lint-windows-artifacts
+          name: csharp-lint-artifacts
+          if-no-files-found: warn
           path: |
-            artifacts/windows
+            artifacts/csharp-lint
+            csharp-lint-tests
 
   build-all:
     name: Build for ${{ matrix.targetPlatform }}
