@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/18/2025 - 21:59:23 |
+| Generated on: | 10/20/2025 - 22:04:03 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
-| Classes: | 170 |
-| Files: | 106 |
+| Classes: | 140 |
+| Files: | 97 |
 | Covered lines: | 2830 |
-| Uncovered lines: | 9621 |
-| Coverable lines: | 12451 |
-| Total lines: | 26128 |
-| Line coverage: | 22.7% (2830 of 12451) |
+| Uncovered lines: | 6394 |
+| Coverable lines: | 9224 |
+| Total lines: | 18434 |
+| Line coverage: | 30.6% (2830 of 9224) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 498 |
-| Total methods: | 2011 |
-| Method coverage: | 24.7% (498 of 2011) |
+| Total methods: | 1445 |
+| Method coverage: | 34.4% (498 of 1445) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1656**|**9562**|**11218**|**92689**|**14.7%**|**0**|**0**|****|**363**|**1872**|**19.3%**|
+|**bamlab.micromissiles**|**1656**|**6335**|**7991**|**51774**|**20.7%**|**0**|**0**|****|**363**|**1306**|**27.7%**|
 |Agent|131|125|256|460|51.1%|0|0||26|45|57.7%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -89,36 +89,6 @@
 |LaunchPlan|12|4|16|50|75%|0|0||6|7|85.7%|
 |LinearExtrapolator|5|0|5|14|100%|0|0||2|2|100%|
 |MaxSpeedAssignment|39|2|41|87|95.1%|0|0||1|1|100%|
-|Micromissiles.AccelerationConfig|0|124|124|2779|0%|0|0||0|23|0%|
-|Micromissiles.AgentConfig|0|344|344|1112|0%|0|0||0|56|0%|
-|Micromissiles.AgentReflection|0|5|5|1112|0%|0|0||0|2|0%|
-|Micromissiles.AgentSwarmConfig|0|110|110|1112|0%|0|0||0|21|0%|
-|Micromissiles.BodyConfig|0|144|144|2779|0%|0|0||0|25|0%|
-|Micromissiles.BoostConfig|0|104|104|2779|0%|0|0||0|21|0%|
-|Micromissiles.CartesianCoordinates|0|184|184|736|0%|0|0||0|29|0%|
-|Micromissiles.ControllerConfig|0|84|84|2779|0%|0|0||0|19|0%|
-|Micromissiles.CoordinatesReflection|0|5|5|736|0%|0|0||0|2|0%|
-|Micromissiles.DynamicConfig|0|116|116|831|0%|0|0||0|21|0%|
-|Micromissiles.DynamicConfigReflection|0|5|5|831|0%|0|0||0|2|0%|
-|Micromissiles.FlightConfig|0|215|215|831|0%|0|0||0|42|0%|
-|Micromissiles.HitConfig|0|104|104|2779|0%|0|0||0|21|0%|
-|Micromissiles.LiftDragConfig|0|124|124|2779|0%|0|0||0|23|0%|
-|Micromissiles.PowerTableEntry|0|105|105|2779|0%|0|0||0|21|0%|
-|Micromissiles.SensorConfig|0|105|105|616|0%|0|0||0|21|0%|
-|Micromissiles.SensorOutput|0|142|142|616|0%|0|0||0|23|0%|
-|Micromissiles.SensorReflection|0|5|5|616|0%|0|0||0|2|0%|
-|Micromissiles.SimulationConfig|0|128|128|350|0%|0|0||0|23|0%|
-|Micromissiles.SimulationConfigReflection|0|5|5|350|0%|0|0||0|2|0%|
-|Micromissiles.SimulatorConfig|0|184|184|452|0%|0|0||0|29|0%|
-|Micromissiles.SimulatorConfigReflection|0|5|5|452|0%|0|0||0|2|0%|
-|Micromissiles.SphericalCoordinates|0|124|124|736|0%|0|0||0|23|0%|
-|Micromissiles.State|0|142|142|358|0%|0|0||0|23|0%|
-|Micromissiles.StateReflection|0|5|5|358|0%|0|0||0|2|0%|
-|Micromissiles.StaticConfig|0|299|299|2779|0%|0|0||0|36|0%|
-|Micromissiles.StaticConfigReflection|0|5|5|2779|0%|0|0||0|2|0%|
-|Micromissiles.Transformation|0|194|194|460|0%|0|0||0|27|0%|
-|Micromissiles.TransformationReflection|0|5|5|460|0%|0|0||0|2|0%|
-|Micromissiles.VisualizationConfig|0|106|106|2779|0%|0|0||0|21|0%|
 |NearestNeighborInterpolator2D|15|0|15|86|100%|0|0||3|3|100%|
 |ParticleManager|0|185|185|269|0%|0|0||0|28|0%|
 |Plugin.Status|0|106|106|323|0%|0|0||0|21|0%|

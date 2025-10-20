@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/18/2025 - 22:01:59</Generatedon>
+    <Generatedon>10/20/2025 - 22:06:03</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
-    <Classes>170</Classes>
-    <Files>106</Files>
+    <Classes>140</Classes>
+    <Files>97</Files>
     <Coveredlines>2032</Coveredlines>
-    <Uncoveredlines>10419</Uncoveredlines>
-    <Coverablelines>12451</Coverablelines>
-    <Totallines>26128</Totallines>
-    <Linecoverage>16.3</Linecoverage>
+    <Uncoveredlines>7192</Uncoveredlines>
+    <Coverablelines>9224</Coverablelines>
+    <Totallines>18434</Totallines>
+    <Linecoverage>22</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>409</Coveredmethods>
-    <Totalmethods>2011</Totalmethods>
-    <Methodcoverage>20.3</Methodcoverage>
+    <Totalmethods>1445</Totalmethods>
+    <Methodcoverage>28.3</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="145" coverage="17.6" coveredlines="1984" coverablelines="11218" totallines="92689" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="406" totalmethods="1872" methodcoverage="21.6">
+    <Assembly name="bamlab.micromissiles" classes="115" coverage="24.8" coveredlines="1984" coverablelines="7991" totallines="51774" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="406" totalmethods="1306" methodcoverage="31">
       <Class name="Agent" coverage="62.1" coveredlines="159" coverablelines="256" totallines="460" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="27" totalmethods="45" methodcoverage="60" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -88,36 +88,6 @@
       <Class name="LaunchPlan" coverage="0" coveredlines="0" coverablelines="16" totallines="50" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
       <Class name="LinearExtrapolator" coverage="0" coveredlines="0" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="MaxSpeedAssignment" coverage="0" coveredlines="0" coverablelines="41" totallines="87" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
-      <Class name="Micromissiles.AccelerationConfig" coverage="0" coveredlines="0" coverablelines="124" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Micromissiles.AgentConfig" coverage="0" coveredlines="0" coverablelines="344" totallines="1112" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="56" methodcoverage="0" />
-      <Class name="Micromissiles.AgentReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="1112" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.AgentSwarmConfig" coverage="0" coveredlines="0" coverablelines="110" totallines="1112" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Micromissiles.BodyConfig" coverage="0" coveredlines="0" coverablelines="144" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="25" methodcoverage="0" />
-      <Class name="Micromissiles.BoostConfig" coverage="0" coveredlines="0" coverablelines="104" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Micromissiles.CartesianCoordinates" coverage="0" coveredlines="0" coverablelines="184" totallines="736" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="29" methodcoverage="0" />
-      <Class name="Micromissiles.ControllerConfig" coverage="0" coveredlines="0" coverablelines="84" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="19" methodcoverage="0" />
-      <Class name="Micromissiles.CoordinatesReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="736" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.DynamicConfig" coverage="0" coveredlines="0" coverablelines="116" totallines="831" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Micromissiles.DynamicConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="831" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.FlightConfig" coverage="0" coveredlines="0" coverablelines="215" totallines="831" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="42" methodcoverage="0" />
-      <Class name="Micromissiles.HitConfig" coverage="0" coveredlines="0" coverablelines="104" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Micromissiles.LiftDragConfig" coverage="0" coveredlines="0" coverablelines="124" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Micromissiles.PowerTableEntry" coverage="0" coveredlines="0" coverablelines="105" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Micromissiles.SensorConfig" coverage="0" coveredlines="0" coverablelines="105" totallines="616" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Micromissiles.SensorOutput" coverage="0" coveredlines="0" coverablelines="142" totallines="616" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Micromissiles.SensorReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="616" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.SimulationConfig" coverage="0" coveredlines="0" coverablelines="128" totallines="350" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Micromissiles.SimulationConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="350" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.SimulatorConfig" coverage="0" coveredlines="0" coverablelines="184" totallines="452" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="29" methodcoverage="0" />
-      <Class name="Micromissiles.SimulatorConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="452" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.SphericalCoordinates" coverage="0" coveredlines="0" coverablelines="124" totallines="736" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Micromissiles.State" coverage="0" coveredlines="0" coverablelines="142" totallines="358" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Micromissiles.StateReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="358" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.StaticConfig" coverage="0" coveredlines="0" coverablelines="299" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="36" methodcoverage="0" />
-      <Class name="Micromissiles.StaticConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.Transformation" coverage="0" coveredlines="0" coverablelines="194" totallines="460" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="27" methodcoverage="0" />
-      <Class name="Micromissiles.TransformationReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="460" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Micromissiles.VisualizationConfig" coverage="0" coveredlines="0" coverablelines="106" totallines="2779" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
       <Class name="NearestNeighborInterpolator2D" coverage="0" coveredlines="0" coverablelines="15" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="ParticleManager" coverage="17.2" coveredlines="32" coverablelines="185" totallines="269" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="28" methodcoverage="28.5" />
       <Class name="Plugin.Status" coverage="0" coveredlines="0" coverablelines="106" totallines="323" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
