@@ -8,6 +8,18 @@ public class HierarchicalAgent : HierarchicalBase {
   // Agent to which this hierarchical node belongs.
   public IAgent Agent { get; init; }
 
+  public override IHierarchical Target {
+    get { return base.Target; }
+    set {
+      if (base.Target != null) {
+        // TODO(titan): Remove the dummy agent created for the previous target model.
+      }
+      base.Target = value;
+      Agent.TargetModel =
+          SimManager.Instance.CreateDummyAgent(base.Target.Position, base.Target.Velocity);
+    }
+  }
+
   public HierarchicalAgent(IAgent agent) {
     Agent = agent;
   }

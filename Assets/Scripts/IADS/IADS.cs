@@ -136,7 +136,7 @@ public class IADS : MonoBehaviour {
         // Set the initial velocity to point along the launch vector.
         initialState.Velocity =
             Coordinates3.ToProto(plan.NormalizedLaunchVector(position: Vector3.zero) * 1e-3f);
-        Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
+        Interceptor interceptor = SimManager.Instance.CreateInterceptorLegacy(config, initialState);
 
         // Assign the interceptor to the cluster.
         _interceptorClusterMap[interceptor] = cluster;

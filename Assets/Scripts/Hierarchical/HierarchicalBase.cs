@@ -9,17 +9,24 @@ public class HierarchicalBase : IHierarchical {
   // List of hierarchical objects in the hierarchy level below.
   private List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
+  // Target of the hierarchical object.
+  private IHierarchical _target;
+
   // List of hierarchical objects pursuing this hierarchical object.
   private List<IHierarchical> _pursuers = new List<IHierarchical>();
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
 
-  // Target of the hierarchical object.
-  public IHierarchical Target { get; set; }
-
-  // Target model of the hierarchical object. The target model is updated by the sensor and should
-  // be used by the controller to model imperfect knowledge of the engagement.
-  public IHierarchical TargetModel { get; set; }
+  public virtual IHierarchical Target {
+    get { return _target; }
+    set {
+      if (_target != null) {
+        _target.RemovePursuer(this);
+      }
+      _target = value;
+      _target.AddPursuer(this);
+    }
+  }
 
   public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
 

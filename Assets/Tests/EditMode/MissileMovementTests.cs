@@ -10,6 +10,9 @@ public class MissileMovementTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
+    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
+    InvokePrivateMethod(_agent, "Awake");
     _agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
           new Configs.AccelerationConfig() {
@@ -33,9 +36,6 @@ public class MissileMovementTests : TestBase {
             Mass = 1,
           },
     };
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
-    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
-    InvokePrivateMethod(_agent, "Awake");
     _movement = new MissileMovement(_agent);
   }
 
@@ -112,6 +112,17 @@ public class MissileMovementTests : TestBase {
     Vector3 accelerationInput = Vector3.zero;
     Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
     Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.y, _epsilon);
+  }
+
+  [Test]
+  public void Act_Boost_TransitionsToMidcourseAfterBoostTime() {
+    _movement.FlightPhase = Simulation.FlightPhase.Boost;
+    SetPrivateField(_agent, "_elapsedTime",
+                    _agent.ElapsedTime + _agent.StaticConfig.BoostConfig.BoostTime + 1f);
+    Vector3 accelerationInput = Vector3.zero;
+    Assert.AreEqual(_movement.FlightPhase, Simulation.FlightPhase.Boost);
+    Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
+    Assert.AreEqual(_movement.FlightPhase, Simulation.FlightPhase.Midcourse);
   }
 
   [Test]

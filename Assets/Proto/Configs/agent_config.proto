@@ -5,17 +5,17 @@ package configs;
 import "Configs/dynamic_config.proto";
 import "Simulation/state.proto";
 
+// Sub-agent configuration.
+message SubAgentConfig {
+  // Number of sub-agents.
+  uint32 num_sub_agents = 1;
+
+  // Agent configuration.
+  AgentConfig agent_config = 2;
+}
+
 // Agent configuration.
 message AgentConfig {
-  // Sub-agent configuration.
-  message SubAgentConfig {
-    // Number of sub-agents.
-    uint32 num_sub_agents = 1;
-
-    // Agent configuration.
-    AgentConfig agent_config = 2;
-  }
-
   // Configuration file.
   string config_file = 1;
 

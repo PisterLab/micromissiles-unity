@@ -26,25 +26,278 @@ namespace Configs {
           string.Concat(
             "ChpDb25maWdzL2FnZW50X2NvbmZpZy5wcm90bxIHY29uZmlncxocQ29uZmln",
             "cy9keW5hbWljX2NvbmZpZy5wcm90bxoWU2ltdWxhdGlvbi9zdGF0ZS5wcm90",
-            "byLlAgoLQWdlbnRDb25maWcSEwoLY29uZmlnX2ZpbGUYASABKAkSIwobYXR0",
-            "YWNrX2JlaGF2aW9yX2NvbmZpZ19maWxlGAIgASgJEigKDWluaXRpYWxfc3Rh",
-            "dGUYAyABKAsyES5zaW11bGF0aW9uLlN0YXRlEi0KEnN0YW5kYXJkX2Rldmlh",
-            "dGlvbhgEIAEoCzIRLnNpbXVsYXRpb24uU3RhdGUSLgoOZHluYW1pY19jb25m",
-            "aWcYBSABKAsyFi5jb25maWdzLkR5bmFtaWNDb25maWcSPQoQc3ViX2FnZW50",
-            "X2NvbmZpZxgGIAEoCzIjLmNvbmZpZ3MuQWdlbnRDb25maWcuU3ViQWdlbnRD",
-            "b25maWcaVAoOU3ViQWdlbnRDb25maWcSFgoObnVtX3N1Yl9hZ2VudHMYASAB",
-            "KA0SKgoMYWdlbnRfY29uZmlnGAIgASgLMhQuY29uZmlncy5BZ2VudENvbmZp",
-            "Z2IGcHJvdG8z"));
+            "byJUCg5TdWJBZ2VudENvbmZpZxIWCg5udW1fc3ViX2FnZW50cxgBIAEoDRIq",
+            "CgxhZ2VudF9jb25maWcYAiABKAsyFC5jb25maWdzLkFnZW50Q29uZmlnIoMC",
+            "CgtBZ2VudENvbmZpZxITCgtjb25maWdfZmlsZRgBIAEoCRIjChthdHRhY2tf",
+            "YmVoYXZpb3JfY29uZmlnX2ZpbGUYAiABKAkSKAoNaW5pdGlhbF9zdGF0ZRgD",
+            "IAEoCzIRLnNpbXVsYXRpb24uU3RhdGUSLQoSc3RhbmRhcmRfZGV2aWF0aW9u",
+            "GAQgASgLMhEuc2ltdWxhdGlvbi5TdGF0ZRIuCg5keW5hbWljX2NvbmZpZxgF",
+            "IAEoCzIWLmNvbmZpZ3MuRHluYW1pY0NvbmZpZxIxChBzdWJfYWdlbnRfY29u",
+            "ZmlnGAYgASgLMhcuY29uZmlncy5TdWJBZ2VudENvbmZpZ2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.DynamicConfigReflection.Descriptor, global::Simulation.StateReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig), global::Configs.AgentConfig.Parser, new[]{ "ConfigFile", "AttackBehaviorConfigFile", "InitialState", "StandardDeviation", "DynamicConfig", "SubAgentConfig" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig.Types.SubAgentConfig), global::Configs.AgentConfig.Types.SubAgentConfig.Parser, new[]{ "NumSubAgents", "AgentConfig" }, null, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SubAgentConfig), global::Configs.SubAgentConfig.Parser, new[]{ "NumSubAgents", "AgentConfig" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AgentConfig), global::Configs.AgentConfig.Parser, new[]{ "ConfigFile", "AttackBehaviorConfigFile", "InitialState", "StandardDeviation", "DynamicConfig", "SubAgentConfig" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
+  /// <summary>
+  /// Sub-agent configuration.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class SubAgentConfig : pb::IMessage<SubAgentConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<SubAgentConfig> _parser = new pb::MessageParser<SubAgentConfig>(() => new SubAgentConfig());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<SubAgentConfig> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Configs.AgentConfigReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SubAgentConfig() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SubAgentConfig(SubAgentConfig other) : this() {
+      numSubAgents_ = other.numSubAgents_;
+      agentConfig_ = other.agentConfig_ != null ? other.agentConfig_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SubAgentConfig Clone() {
+      return new SubAgentConfig(this);
+    }
+
+    /// <summary>Field number for the "num_sub_agents" field.</summary>
+    public const int NumSubAgentsFieldNumber = 1;
+    private uint numSubAgents_;
+    /// <summary>
+    /// Number of sub-agents.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint NumSubAgents {
+      get { return numSubAgents_; }
+      set {
+        numSubAgents_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "agent_config" field.</summary>
+    public const int AgentConfigFieldNumber = 2;
+    private global::Configs.AgentConfig agentConfig_;
+    /// <summary>
+    /// Agent configuration.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Configs.AgentConfig AgentConfig {
+      get { return agentConfig_; }
+      set {
+        agentConfig_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as SubAgentConfig);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(SubAgentConfig other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (NumSubAgents != other.NumSubAgents) return false;
+      if (!object.Equals(AgentConfig, other.AgentConfig)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (NumSubAgents != 0) hash ^= NumSubAgents.GetHashCode();
+      if (agentConfig_ != null) hash ^= AgentConfig.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (NumSubAgents != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(NumSubAgents);
+      }
+      if (agentConfig_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AgentConfig);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (NumSubAgents != 0) {
+        output.WriteRawTag(8);
+        output.WriteUInt32(NumSubAgents);
+      }
+      if (agentConfig_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(AgentConfig);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (NumSubAgents != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(NumSubAgents);
+      }
+      if (agentConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AgentConfig);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(SubAgentConfig other) {
+      if (other == null) {
+        return;
+      }
+      if (other.NumSubAgents != 0) {
+        NumSubAgents = other.NumSubAgents;
+      }
+      if (other.agentConfig_ != null) {
+        if (agentConfig_ == null) {
+          AgentConfig = new global::Configs.AgentConfig();
+        }
+        AgentConfig.MergeFrom(other.AgentConfig);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            NumSubAgents = input.ReadUInt32();
+            break;
+          }
+          case 18: {
+            if (agentConfig_ == null) {
+              AgentConfig = new global::Configs.AgentConfig();
+            }
+            input.ReadMessage(AgentConfig);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            NumSubAgents = input.ReadUInt32();
+            break;
+          }
+          case 18: {
+            if (agentConfig_ == null) {
+              AgentConfig = new global::Configs.AgentConfig();
+            }
+            input.ReadMessage(AgentConfig);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   /// <summary>
   /// Agent configuration.
   /// </summary>
@@ -63,7 +316,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Configs.AgentConfigReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Configs.AgentConfigReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -175,13 +428,13 @@ namespace Configs {
 
     /// <summary>Field number for the "sub_agent_config" field.</summary>
     public const int SubAgentConfigFieldNumber = 6;
-    private global::Configs.AgentConfig.Types.SubAgentConfig subAgentConfig_;
+    private global::Configs.SubAgentConfig subAgentConfig_;
     /// <summary>
     /// Sub-agent configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.AgentConfig.Types.SubAgentConfig SubAgentConfig {
+    public global::Configs.SubAgentConfig SubAgentConfig {
       get { return subAgentConfig_; }
       set {
         subAgentConfig_ = value;
@@ -364,7 +617,7 @@ namespace Configs {
       }
       if (other.subAgentConfig_ != null) {
         if (subAgentConfig_ == null) {
-          SubAgentConfig = new global::Configs.AgentConfig.Types.SubAgentConfig();
+          SubAgentConfig = new global::Configs.SubAgentConfig();
         }
         SubAgentConfig.MergeFrom(other.SubAgentConfig);
       }
@@ -418,7 +671,7 @@ namespace Configs {
           }
           case 50: {
             if (subAgentConfig_ == null) {
-              SubAgentConfig = new global::Configs.AgentConfig.Types.SubAgentConfig();
+              SubAgentConfig = new global::Configs.SubAgentConfig();
             }
             input.ReadMessage(SubAgentConfig);
             break;
@@ -473,7 +726,7 @@ namespace Configs {
           }
           case 50: {
             if (subAgentConfig_ == null) {
-              SubAgentConfig = new global::Configs.AgentConfig.Types.SubAgentConfig();
+              SubAgentConfig = new global::Configs.SubAgentConfig();
             }
             input.ReadMessage(SubAgentConfig);
             break;
@@ -482,267 +735,6 @@ namespace Configs {
       }
     }
     #endif
-
-    #region Nested types
-    /// <summary>Container for nested types declared in the AgentConfig message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static partial class Types {
-      /// <summary>
-      /// Sub-agent configuration.
-      /// </summary>
-      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-      public sealed partial class SubAgentConfig : pb::IMessage<SubAgentConfig>
-      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          , pb::IBufferMessage
-      #endif
-      {
-        private static readonly pb::MessageParser<SubAgentConfig> _parser = new pb::MessageParser<SubAgentConfig>(() => new SubAgentConfig());
-        private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pb::MessageParser<SubAgentConfig> Parser { get { return _parser; } }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pbr::MessageDescriptor Descriptor {
-          get { return global::Configs.AgentConfig.Descriptor.NestedTypes[0]; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        pbr::MessageDescriptor pb::IMessage.Descriptor {
-          get { return Descriptor; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SubAgentConfig() {
-          OnConstruction();
-        }
-
-        partial void OnConstruction();
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SubAgentConfig(SubAgentConfig other) : this() {
-          numSubAgents_ = other.numSubAgents_;
-          agentConfig_ = other.agentConfig_ != null ? other.agentConfig_.Clone() : null;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public SubAgentConfig Clone() {
-          return new SubAgentConfig(this);
-        }
-
-        /// <summary>Field number for the "num_sub_agents" field.</summary>
-        public const int NumSubAgentsFieldNumber = 1;
-        private uint numSubAgents_;
-        /// <summary>
-        /// Number of sub-agents.
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public uint NumSubAgents {
-          get { return numSubAgents_; }
-          set {
-            numSubAgents_ = value;
-          }
-        }
-
-        /// <summary>Field number for the "agent_config" field.</summary>
-        public const int AgentConfigFieldNumber = 2;
-        private global::Configs.AgentConfig agentConfig_;
-        /// <summary>
-        /// Agent configuration.
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public global::Configs.AgentConfig AgentConfig {
-          get { return agentConfig_; }
-          set {
-            agentConfig_ = value;
-          }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override bool Equals(object other) {
-          return Equals(other as SubAgentConfig);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public bool Equals(SubAgentConfig other) {
-          if (ReferenceEquals(other, null)) {
-            return false;
-          }
-          if (ReferenceEquals(other, this)) {
-            return true;
-          }
-          if (NumSubAgents != other.NumSubAgents) return false;
-          if (!object.Equals(AgentConfig, other.AgentConfig)) return false;
-          return Equals(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override int GetHashCode() {
-          int hash = 1;
-          if (NumSubAgents != 0) hash ^= NumSubAgents.GetHashCode();
-          if (agentConfig_ != null) hash ^= AgentConfig.GetHashCode();
-          if (_unknownFields != null) {
-            hash ^= _unknownFields.GetHashCode();
-          }
-          return hash;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override string ToString() {
-          return pb::JsonFormatter.ToDiagnosticString(this);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void WriteTo(pb::CodedOutputStream output) {
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          output.WriteRawMessage(this);
-        #else
-          if (NumSubAgents != 0) {
-            output.WriteRawTag(8);
-            output.WriteUInt32(NumSubAgents);
-          }
-          if (agentConfig_ != null) {
-            output.WriteRawTag(18);
-            output.WriteMessage(AgentConfig);
-          }
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(output);
-          }
-        #endif
-        }
-
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-          if (NumSubAgents != 0) {
-            output.WriteRawTag(8);
-            output.WriteUInt32(NumSubAgents);
-          }
-          if (agentConfig_ != null) {
-            output.WriteRawTag(18);
-            output.WriteMessage(AgentConfig);
-          }
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(ref output);
-          }
-        }
-        #endif
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public int CalculateSize() {
-          int size = 0;
-          if (NumSubAgents != 0) {
-            size += 1 + pb::CodedOutputStream.ComputeUInt32Size(NumSubAgents);
-          }
-          if (agentConfig_ != null) {
-            size += 1 + pb::CodedOutputStream.ComputeMessageSize(AgentConfig);
-          }
-          if (_unknownFields != null) {
-            size += _unknownFields.CalculateSize();
-          }
-          return size;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(SubAgentConfig other) {
-          if (other == null) {
-            return;
-          }
-          if (other.NumSubAgents != 0) {
-            NumSubAgents = other.NumSubAgents;
-          }
-          if (other.agentConfig_ != null) {
-            if (agentConfig_ == null) {
-              AgentConfig = new global::Configs.AgentConfig();
-            }
-            AgentConfig.MergeFrom(other.AgentConfig);
-          }
-          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(pb::CodedInputStream input) {
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          input.ReadRawMessage(this);
-        #else
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-          if ((tag & 7) == 4) {
-            // Abort on any end group tag.
-            return;
-          }
-          switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                break;
-              case 8: {
-                NumSubAgents = input.ReadUInt32();
-                break;
-              }
-              case 18: {
-                if (agentConfig_ == null) {
-                  AgentConfig = new global::Configs.AgentConfig();
-                }
-                input.ReadMessage(AgentConfig);
-                break;
-              }
-            }
-          }
-        #endif
-        }
-
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-          if ((tag & 7) == 4) {
-            // Abort on any end group tag.
-            return;
-          }
-          switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-                break;
-              case 8: {
-                NumSubAgents = input.ReadUInt32();
-                break;
-              }
-              case 18: {
-                if (agentConfig_ == null) {
-                  AgentConfig = new global::Configs.AgentConfig();
-                }
-                input.ReadMessage(AgentConfig);
-                break;
-              }
-            }
-          }
-        }
-        #endif
-
-      }
-
-    }
-    #endregion
 
   }
 

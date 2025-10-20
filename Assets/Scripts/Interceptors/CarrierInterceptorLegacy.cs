@@ -55,7 +55,8 @@ public class CarrierInterceptorLegacy : Interceptor {
           velocity, lateralDirection, maxRadiansDelta: SubmunitionsAngularDeviation,
           maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation)));
 
-      Interceptor submunition = SimManager.Instance.CreateInterceptor(SubAgentConfig, initialState);
+      Interceptor submunition =
+          SimManager.Instance.CreateInterceptorLegacy(SubAgentConfig, initialState);
       submunition.SetFlightPhase(FlightPhase.READY);
       // Launch the submunitions with the same velocity as the carrier interceptor's.
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);

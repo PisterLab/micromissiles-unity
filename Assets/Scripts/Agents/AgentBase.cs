@@ -4,31 +4,37 @@ using UnityEngine;
 public class AgentBase : MonoBehaviour, IAgent {
   private const float _epsilon = 1e-12f;
 
-  [SerializeField]
+  // Rigid body component.
+  protected Rigidbody _rigidbody;
+
   // The agent's position within the hierarchical strategy is given by the hierarchical agent.
+  [SerializeField]
   private HierarchicalAgent _hierarchicalAgent;
 
-  [SerializeField]
   // Static configuration of the agent, including agent type, unit cost, acceleration configuration,
   // aerodynamics parameters, power table, and visualization configuration.
+  [SerializeField]
   private Configs.StaticConfig _staticConfig;
 
-  [SerializeField]
   // Agent configuration, including initial state, attack behavior configuration (for threats),
   // dynamic configuration, and sub-agent configuration (for interceptors).
+  [SerializeField]
   private Configs.AgentConfig _agentConfig;
 
-  [SerializeField]
   // The acceleration field is not part of the rigid body component, so it is tracked separately.
   // The acceleration is applied as a force during each frame update.
+  [SerializeField]
   private Vector3 _acceleration;
 
-  [SerializeField]
   // The acceleration input is calculated by the controller and provided to the movement behavior.
+  [SerializeField]
   private Vector3 _accelerationInput;
 
-  // Rigid body component.
-  private Rigidbody _rigidbody;
+  // Elapsed time since the creation of the agent.
+  private float _elapsedTime = 0f;
+
+  // Last sensing time.
+  private float _lastSensingTime = Mathf.NegativeInfinity;
 
   public HierarchicalAgent HierarchicalAgent {
     get => _hierarchicalAgent;
@@ -36,11 +42,17 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
   public Configs.StaticConfig StaticConfig {
     get => _staticConfig;
-    set => _staticConfig = value;
+    set {
+      _staticConfig = value;
+      _rigidbody.mass = StaticConfig.BodyConfig?.Mass ?? 1;
+    }
   }
   public Configs.AgentConfig AgentConfig {
     get => _agentConfig;
-    set => _agentConfig = value;
+    set {
+      _agentConfig = value;
+      UpdateAgentConfig();
+    }
   }
 
   // Movement behavior of the agent.
@@ -52,6 +64,10 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // The sensor calculates the relative transformation from the current agent to a target.
   public ISensor Sensor { get; set; }
+
+  // Target model. The target model is updated by the sensor and should be used by the controller to
+  // model imperfect knowledge of the engagement.
+  public IAgent TargetModel { get; set; }
 
   public Vector3 Position {
     get => transform.position;
@@ -71,13 +87,11 @@ public class AgentBase : MonoBehaviour, IAgent {
     set => _accelerationInput = value;
   }
 
-  private void Awake() {
-    _rigidbody = GetComponent<Rigidbody>();
+  public float ElapsedTime {
+    get { return _elapsedTime; }
+  private
+    set { _elapsedTime = value; }
   }
-
-  // TODO(titan): Event handlers for hits and misses.
-
-  // TODO(titan): Methods for updating the agent and terminating the agent.
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
@@ -88,6 +102,24 @@ public class AgentBase : MonoBehaviour, IAgent {
         (StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) * Constants.kGravity;
     float referenceSpeed = StaticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
     return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
+  }
+
+  public void UpdateTargetModel() {
+    if (HierarchicalAgent == null || HierarchicalAgent.Target == null || Sensor == null) {
+      return;
+    }
+
+    // Check whether the sensing period has elapsed.
+    float sensingFrequency = AgentConfig?.DynamicConfig?.SensorConfig?.Frequency ?? Mathf.Infinity;
+    float sensingPeriod = 1f / sensingFrequency;
+    if (ElapsedTime - _lastSensingTime >= sensingPeriod) {
+      // Sense the target.
+      SensorOutput sensorOutput = Sensor.Sense(HierarchicalAgent.Target);
+      TargetModel.Position = Position + sensorOutput.Position.Cartesian;
+      TargetModel.Velocity = Velocity + sensorOutput.Velocity.Cartesian;
+      TargetModel.Acceleration = Acceleration + sensorOutput.Acceleration.Cartesian;
+      _lastSensingTime = ElapsedTime;
+    }
   }
 
   public Transformation GetRelativeTransformation(IAgent target) {
@@ -101,6 +133,42 @@ public class AgentBase : MonoBehaviour, IAgent {
   public Transformation GetRelativeTransformation(in Vector3 waypoint) {
     return GetRelativeTransformation(waypoint, Vector3.zero, Vector3.zero);
   }
+
+  // Awake is called before Start and right after a prefab is instantiated.
+  protected virtual void Awake() {
+    _rigidbody = GetComponent<Rigidbody>();
+  }
+
+  // Start is called before the first frame update.
+  protected virtual void Start() {}
+
+  // FixedUpdate is called multiple times per frame. All physics calculations and updates occur
+  // immediately after FixedUpdate, and all movement values are multiplied by Time.deltaTime.
+  protected virtual void FixedUpdate() {
+    ElapsedTime += Time.fixedDeltaTime;
+
+    UpdateTargetModel();
+    AlignWithVelocity();
+  }
+
+  // UpdateAgentConfig is called whenever the agent configuration is changed.
+  protected virtual void UpdateAgentConfig() {
+    // Set the sensor.
+    switch (AgentConfig.DynamicConfig?.SensorConfig?.Type) {
+      case Simulation.SensorType.Ideal: {
+        Sensor = new IdealSensor(this);
+        break;
+      }
+      default: {
+        Debug.LogError($"Sensor type {AgentConfig.DynamicConfig?.SensorConfig?.Type} not found.");
+        break;
+      }
+    }
+  }
+
+  // TODO(titan): Event handlers for hits and misses.
+
+  // TODO(titan): Methods for updating the agent and terminating the agent.
 
   private void AlignWithVelocity() {
     const float speedThreshold = 0.1f;

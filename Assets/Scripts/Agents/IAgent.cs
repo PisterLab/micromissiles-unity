@@ -13,6 +13,7 @@ public interface IAgent {
   IMovement Movement { get; set; }
   IController Controller { get; set; }
   ISensor Sensor { get; set; }
+  IAgent TargetModel { get; set; }
 
   Vector3 Position { get; set; }
   Vector3 Velocity { get; set; }
@@ -20,10 +21,14 @@ public interface IAgent {
   Vector3 Acceleration { get; set; }
   Vector3 AccelerationInput { get; set; }
 
+  float ElapsedTime { get; }
+
   Transform transform { get; }
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
+
+  void UpdateTargetModel();
 
   Transformation GetRelativeTransformation(IAgent target);
   Transformation GetRelativeTransformation(IHierarchical target);
