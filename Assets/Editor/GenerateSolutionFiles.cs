@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using Unity.CodeEditor;
 using UnityEditor;
@@ -16,6 +15,7 @@ public static class GenerateSolutionFiles
         var projectRoot = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
         var syncSteps = new Func<bool>[]
         {
+            SyncViaRiderReflection,
             SyncViaCurrentCodeEditor,
             SyncViaSyncVSReflection,
             SyncViaMenuItem
@@ -68,6 +68,27 @@ public static class GenerateSolutionFiles
         }
 
         Debug.Log("Solution generation complete!");
+    }
+
+    private static bool SyncViaRiderReflection()
+    {
+        var riderType = Type.GetType("Packages.Rider.Editor.RiderScriptEditor, Unity.Rider.Editor");
+        if (riderType == null)
+        {
+            Debug.Log("RiderScriptEditor type not found (package not installed?).");
+            return false;
+        }
+
+        var method = riderType.GetMethod("SyncSolution", BindingFlags.Public | BindingFlags.Static);
+        if (method == null)
+        {
+            Debug.Log("RiderScriptEditor.SyncSolution method unavailable.");
+            return false;
+        }
+
+        method.Invoke(null, null);
+        Debug.Log("Synced via RiderScriptEditor.SyncSolution reflection call.");
+        return true;
     }
 
     private static bool SyncViaCurrentCodeEditor()
