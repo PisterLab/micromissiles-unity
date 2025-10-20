@@ -14,7 +14,7 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       startsWith(github.event.workflow_run.head_branch, 'v')
     steps:
-      - name: Verify tag
+      - name: Validate semantic version tag
         run: |
           if [[ ! "${{ github.event.workflow_run.head_branch }}" =~ v[0-9]+\.[0-9]+\.[0-9]+ ]]; then
             exit 1
