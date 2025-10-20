@@ -87,6 +87,28 @@ jobs:
           ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
           echo "version=$ver" >> "$GITHUB_OUTPUT"
 
+      - name: Generate solution files for linting
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        env:
+          UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          IMAGE="unityci/editor:ubuntu-${UNITY_VERSION}-linux-il2cpp-3"
+          echo "Using image: $IMAGE"
+          docker run --rm \
+            -e UNITY_LICENSE \
+            -e UNITY_EMAIL \
+            -e UNITY_PASSWORD \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            "$IMAGE" \
+            unity-editor -quit -batchmode -nographics -logFile /dev/stdout \
+              -projectPath /workspace \
+              -executeMethod Packages.Rider.Editor.RiderScriptEditor.SyncSolution
+
       - uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
