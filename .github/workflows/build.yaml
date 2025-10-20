@@ -71,54 +71,38 @@ jobs:
           ver=$(grep -E '^m_EditorVersion:' ProjectSettings/ProjectVersion.txt | awk '{print $2}')
           echo "version=$ver" >> "$GITHUB_OUTPUT"
 
-      - name: Generate solution files with custom script
-        env:
-          UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        run: |
-          set -euo pipefail
-          IMAGE="unityci/editor:ubuntu-${UNITY_VERSION}-linux-il2cpp-3"
-          echo "Using image: $IMAGE"
-          docker run --rm \
-            -e UNITY_LICENSE \
-            -e UNITY_EMAIL \
-            -e UNITY_PASSWORD \
-            -v "${GITHUB_WORKSPACE}:/workspace" \
-            -w /workspace \
-            "$IMAGE" \
-            unity-editor -quit -batchmode -nographics -logFile /dev/stdout \
-              -projectPath /workspace \
-              -executeMethod GenerateSolutionFiles.Generate
-          echo "Checking if files were generated..."
-          ls -la *.sln *.csproj 2>/dev/null || echo "No solution files found yet"
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
-      - name: Run C# linting with dotnet build
+      - name: Run Unity solution sync and dotnet build
         env:
           UNITY_VERSION: ${{ steps.unity_version.outputs.version }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_LICENSING_SERVER: ${{ secrets.UNITY_LICENSING_SERVER }}
         run: |
           set -euo pipefail
-          if [ ! -f *.sln ]; then
-            echo "::error::No solution file generated - cannot lint"
-            exit 1
-          fi
-
           IMAGE="unityci/editor:ubuntu-${UNITY_VERSION}-linux-il2cpp-3"
           mkdir -p artifacts
           docker run --rm \
+            -e UNITY_LICENSE \
+            -e UNITY_EMAIL \
+            -e UNITY_PASSWORD \
+            -e UNITY_SERIAL \
+            -e UNITY_LICENSING_SERVER \
+            -e GITHUB_WORKSPACE=/workspace \
+            -e PROJECT_PATH=. \
+            -e ARTIFACTS_PATH=/workspace/artifacts \
             -v "${GITHUB_WORKSPACE}:/workspace" \
             -v "/usr/share/dotnet:/usr/share/dotnet" \
             -e DOTNET_ROOT=/usr/share/dotnet \
-            -e PATH="/usr/share/dotnet:$PATH" \
             -w /workspace \
             "$IMAGE" \
-            sh -c 'dotnet build *.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
+            sh /workspace/Tools/ci/unity-generate-and-build.sh
 
       - name: Upload lint binlog
         if: always()
