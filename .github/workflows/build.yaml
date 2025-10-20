@@ -98,6 +98,19 @@ jobs:
           targetPlatform: ${{ matrix.targetPlatform }}
           allowDirtyBuild: true
 
+      - name: Verify solution files exist
+        if: matrix.targetPlatform == 'StandaloneLinux64'
+        run: |
+          set -euo pipefail
+          ls -al *.sln *.csproj || true
+          shopt -s nullglob
+          SOLN=( *.sln )
+          if [ ${#SOLN[@]} -eq 0 ]; then
+            echo "::error::No .sln present after unity-builder" >&2
+            exit 1
+          fi
+          echo "Found solution file(s): ${SOLN[@]}"
+
       - name: Run dotnet build (C# lint) inside unityci/editor
         if: matrix.targetPlatform == 'StandaloneLinux64'
         env:
@@ -109,10 +122,9 @@ jobs:
           mkdir -p artifacts
           docker run --rm \
             -v "${GITHUB_WORKSPACE}:/workspace" \
-            -v "/usr/share/dotnet:/usr/share/dotnet" \
             -w /workspace \
             "$IMAGE" \
-            bash -lc 'export DOTNET_ROOT=/usr/share/dotnet; export PATH="$DOTNET_ROOT:$PATH"; dotnet --info; dotnet build micromissiles-unity.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
+            bash -c 'ls -la *.sln *.csproj; dotnet --info; dotnet build micromissiles-unity.sln --configuration Debug -nologo -warnaserror:"CS0168;CS0169;CS0219;CS0414;CS0649;CS8019;CS8321;IDE0005;IDE0051;IDE0052;IDE0059;IDE0060" -bl:artifacts/csharp-lint.binlog'
 
       - name: Upload lint binlog
         if: matrix.targetPlatform == 'StandaloneLinux64'
@@ -125,14 +137,6 @@ jobs:
         if: matrix.targetPlatform == 'StandaloneLinux64'
         run: |
           set -euo pipefail
-          ls -al
-          shopt -s nullglob
-          SOLN=( *.sln )
-          PROJS=( *.csproj )
-          if [ ${#SOLN[@]} -eq 0 ]; then
-            echo "::error::No .sln present after unity-builder" >&2
-            exit 1
-          fi
           mkdir -p artifacts
           tar -czf artifacts/unity-sln-and-projects.tgz *.sln *.csproj || {
             echo "::warning::No .csproj matched; continuing with .sln only"; \
