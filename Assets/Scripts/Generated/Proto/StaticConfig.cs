@@ -49,12 +49,12 @@ namespace Configs {
             "cy5IaXRDb25maWcSNAoRY29udHJvbGxlcl9jb25maWcYCSABKAsyGS5jb25m",
             "aWdzLkNvbnRyb2xsZXJDb25maWcSLQoLcG93ZXJfdGFibGUYCiADKAsyGC5j",
             "b25maWdzLlBvd2VyVGFibGVFbnRyeRI6ChR2aXN1YWxpemF0aW9uX2NvbmZp",
-            "ZxgLIAEoCzIcLmNvbmZpZ3MuVmlzdWFsaXphdGlvbkNvbmZpZyp+CglBZ2Vu",
-            "dFR5cGUSEAoMSU5WQUxJRF9UWVBFEAASFwoTQ0FSUklFUl9JTlRFUkNFUFRP",
-            "UhABEhcKE01JU1NJTEVfSU5URVJDRVBUT1IQAhIVChFGSVhFRF9XSU5HX1RI",
-            "UkVBVBADEhYKElJPVEFSWV9XSU5HX1RIUkVBVBAEKjgKBVBvd2VyEggKBElE",
-            "TEUQABIHCgNMT1cQARIKCgZDUlVJU0UQAhIHCgNNSUwQAxIHCgNNQVgQBGIG",
-            "cHJvdG8z"));
+            "ZxgLIAEoCzIcLmNvbmZpZ3MuVmlzdWFsaXphdGlvbkNvbmZpZyqdAQoJQWdl",
+            "bnRUeXBlEhAKDElOVkFMSURfVFlQRRAAEgoKBlZFU1NFTBABEhEKDVNIT1JF",
+            "X0JBVFRFUlkQAhIXChNDQVJSSUVSX0lOVEVSQ0VQVE9SEAMSFwoTTUlTU0lM",
+            "RV9JTlRFUkNFUFRPUhAEEhUKEUZJWEVEX1dJTkdfVEhSRUFUEAUSFgoSUk9U",
+            "QVJZX1dJTkdfVEhSRUFUEAYqOAoFUG93ZXISCAoESURMRRAAEgcKA0xPVxAB",
+            "EgoKBkNSVUlTRRACEgcKA01JTBADEgcKA01BWBAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.AgentType), typeof(global::Configs.Power), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -81,13 +81,15 @@ namespace Configs {
     /// <summary>
     /// Interceptor types.
     /// </summary>
-    [pbr::OriginalName("CARRIER_INTERCEPTOR")] CarrierInterceptor = 1,
-    [pbr::OriginalName("MISSILE_INTERCEPTOR")] MissileInterceptor = 2,
+    [pbr::OriginalName("VESSEL")] Vessel = 1,
+    [pbr::OriginalName("SHORE_BATTERY")] ShoreBattery = 2,
+    [pbr::OriginalName("CARRIER_INTERCEPTOR")] CarrierInterceptor = 3,
+    [pbr::OriginalName("MISSILE_INTERCEPTOR")] MissileInterceptor = 4,
     /// <summary>
     /// Threat types.
     /// </summary>
-    [pbr::OriginalName("FIXED_WING_THREAT")] FixedWingThreat = 3,
-    [pbr::OriginalName("ROTARY_WING_THREAT")] RotaryWingThreat = 4,
+    [pbr::OriginalName("FIXED_WING_THREAT")] FixedWingThreat = 5,
+    [pbr::OriginalName("ROTARY_WING_THREAT")] RotaryWingThreat = 6,
   }
 
   /// <summary>

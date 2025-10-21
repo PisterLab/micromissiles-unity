@@ -1,0 +1,10 @@
+name: "Shore Battery"
+agent_type: SHORE_BATTERY
+cost: 0
+body_config {
+  mass: 1
+}
+visualization_config {
+  symbol_present: "friendly_shore_battery_present"
+  symbol_destroyed: "friendly_shore_battery_destroyed"
+}
