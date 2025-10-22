@@ -13,6 +13,7 @@
       CS0219;  <!-- Variable assigned but value never used -->
       CS0414;  <!-- Private field assigned constant but never used -->
       CS0649;  <!-- Field never assigned, always default value (Unity SerializeField issue!) -->
+      CS8618;  <!-- Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable. -->
       CS8019;  <!-- Unnecessary using directive -->
       CS8321;  <!-- Local function declared but never used -->
       IDE0005; <!-- Unused using -->

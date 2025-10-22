@@ -4,7 +4,6 @@ root = true
 # IDE analyzer rules for linting - treat as errors
 dotnet_diagnostic.IDE0005.severity = error  # Using directive is unnecessary
 dotnet_diagnostic.IDE0051.severity = error  # Remove unused private member
-dotnet_diagnostic.IDE0052.severity = error  # Remove unread private member
 dotnet_diagnostic.IDE0059.severity = error  # Unnecessary value assignment
 dotnet_diagnostic.IDE0060.severity = error  # Remove unused parameter
 
