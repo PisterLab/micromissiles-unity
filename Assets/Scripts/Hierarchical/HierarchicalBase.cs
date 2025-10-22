@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Base implementation of a hierarchical object.
@@ -24,16 +25,19 @@ public class HierarchicalBase : IHierarchical {
         _target.RemovePursuer(this);
       }
       _target = value;
-      _target.AddPursuer(this);
+      if (_target != null) {
+        _target.AddPursuer(this);
+      }
     }
   }
 
   public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
 
-  public Vector3 Position => GetPosition();
-  public Vector3 Velocity => GetVelocity();
+  public virtual Vector3 Position => GetMean(s => s.Position);
+  public virtual Vector3 Velocity => GetMean(s => s.Velocity);
   public float Speed => Velocity.magnitude;
-  public Vector3 Acceleration => GetAcceleration();
+  public virtual Vector3 Acceleration => GetMean(s => s.Acceleration);
+  public virtual bool IsTerminated => SubHierarchicals.All(s => s.IsTerminated);
 
   public void AddSubHierarchical(IHierarchical subHierarchical) {
     if (!_subHierarchicals.Contains(subHierarchical)) {
@@ -55,27 +59,37 @@ public class HierarchicalBase : IHierarchical {
     _pursuers.Remove(pursuer);
   }
 
-  protected virtual Vector3 GetPosition() {
-    return GetMean(s => s.Position);
-  }
-
-  protected virtual Vector3 GetVelocity() {
-    return GetMean(s => s.Velocity);
-  }
-
-  protected virtual Vector3 GetAcceleration() {
-    return GetMean(s => s.Acceleration);
+  public bool IsEscapingPursuers() {
+    return Pursuers.All(pursuer => {
+      // A hierarchical object is considered escaping a pursuer if the closing velocity is
+      // non-positive or if the hierarchical object will reach its target before the pursuer reaches
+      // the hierarchical object.
+      Vector3 relativePosition = pursuer.Position - Position;
+      Vector3 relativeVelocity = pursuer.Velocity - Velocity;
+      float rangeRate = Vector3.Dot(relativeVelocity, relativePosition.normalized);
+      float closingVelocity = -rangeRate;
+      if (closingVelocity <= 0) {
+        return true;
+      }
+      float pursuerDistance = relativePosition.magnitude;
+      float targetDistance = (Target.Position - Position).magnitude;
+      float timeToTarget = targetDistance / Speed;
+      float pursuerTimeToIntercept = pursuerDistance / pursuer.Speed;
+      return pursuerDistance > targetDistance && timeToTarget < pursuerTimeToIntercept;
+    });
   }
 
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
-    if (_subHierarchicals.Count == 0) {
+    var activeSubHierarchicals =
+        _subHierarchicals.Where(subHierarchical => !subHierarchical.IsTerminated).ToList();
+    if (activeSubHierarchicals.Count == 0) {
       return Vector3.zero;
     }
 
     Vector3 sum = Vector3.zero;
-    foreach (var subHierarchical in _subHierarchicals) {
+    foreach (var subHierarchical in activeSubHierarchicals) {
       sum += selector(subHierarchical);
     }
-    return sum / _subHierarchicals.Count;
+    return sum / activeSubHierarchicals.Count;
   }
 }

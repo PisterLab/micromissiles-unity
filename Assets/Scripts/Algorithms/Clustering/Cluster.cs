@@ -18,8 +18,8 @@ public class Cluster : HierarchicalBase {
     if (IsEmpty) {
       return 0;
     }
-    return SubHierarchicals.Max(subHierarchical =>
-                                    Vector3.Distance(Centroid, subHierarchical.Position));
+    return SubHierarchicals.Where(subHierarchical => !subHierarchical.IsTerminated)
+        .Max(subHierarchical => Vector3.Distance(Centroid, subHierarchical.Position));
   }
 
   public void Recenter() {

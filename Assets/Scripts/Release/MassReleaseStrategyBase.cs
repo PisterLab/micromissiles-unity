@@ -17,6 +17,10 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
   }
 
   public override List<IAgent> Release() {
+    if (Agent is not CarrierBase carrier || carrier.NumSubInterceptorsRemaining <= 0) {
+      return new List<IAgent>();
+    }
+
     IHierarchical target = Agent.HierarchicalAgent.Target;
     if (target == null) {
       return new List<IAgent>();

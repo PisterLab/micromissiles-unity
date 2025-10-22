@@ -27,7 +27,7 @@ public class ConfigsTests : TestBase {
         isPaused = true;
       }
       yield return new WaitForSecondsRealtime(0.1f);
-      SimManager.Instance.LoadNewConfig(configFiles[i]);
+      SimManager.Instance.LoadNewSimulationConfig(configFiles[i]);
       yield return new WaitForSecondsRealtime(0.1f);
       double elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
       if (isPaused) {
