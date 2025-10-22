@@ -18,7 +18,6 @@
       CS8321;  <!-- Local function declared but never used -->
       IDE0005; <!-- Unused using -->
       IDE0051; <!-- Unused private member -->
-      IDE0052; <!-- Unused private field -->
       IDE0059; <!-- Unnecessary value assignment -->
       IDE0060  <!-- Unused parameter -->
     </WarningsAsErrors>
