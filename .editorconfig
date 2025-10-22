@@ -13,3 +13,5 @@ dotnet_code_quality_unused_parameters = all
 # IDE0059 configuration - prefer discard for unused assignments
 csharp_style_unused_value_assignment_preference = discard_variable:error
 csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+ 
+; (Removed CA* elevation for Unity compile-only policy)
