@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>10/21/2025 - 00:20:52</Generatedon>
+    <Generatedon>10/22/2025 - 01:36:45</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>4</Assemblies>
     <Classes>140</Classes>
     <Files>97</Files>
-    <Coveredlines>2032</Coveredlines>
-    <Uncoveredlines>7192</Uncoveredlines>
-    <Coverablelines>9224</Coverablelines>
-    <Totallines>18434</Totallines>
-    <Linecoverage>22</Linecoverage>
+    <Coveredlines>2048</Coveredlines>
+    <Uncoveredlines>7206</Uncoveredlines>
+    <Coverablelines>9254</Coverablelines>
+    <Totallines>18431</Totallines>
+    <Linecoverage>22.1</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>409</Coveredmethods>
-    <Totalmethods>1445</Totalmethods>
-    <Methodcoverage>28.3</Methodcoverage>
+    <Totalmethods>1446</Totalmethods>
+    <Methodcoverage>28.2</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="115" coverage="24.8" coveredlines="1984" coverablelines="7991" totallines="51774" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="406" totalmethods="1306" methodcoverage="31">
+    <Assembly name="bamlab.micromissiles" classes="115" coverage="24.9" coveredlines="2000" coverablelines="8021" totallines="51771" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="406" totalmethods="1307" methodcoverage="31">
       <Class name="Agent" coverage="62.1" coveredlines="159" coverablelines="256" totallines="460" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="27" totalmethods="45" methodcoverage="60" />
       <Class name="AgglomerativeClusterer" coverage="98.4" coveredlines="63" coverablelines="64" totallines="101" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="8" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
@@ -114,22 +114,22 @@
       <Class name="Simulation.TransformationReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="459" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="SpriteManager" coverage="0" coveredlines="0" coverablelines="8" totallines="96" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="SwarmStatusDialog" coverage="2.3" coveredlines="3" coverablelines="128" totallines="159" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="16" methodcoverage="6.2" />
-      <Class name="TacticalPanelController" coverage="14.3" coveredlines="23" coverablelines="160" totallines="258" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="29" methodcoverage="24.1" />
-      <Class name="TacticalPolarGridGraphic" coverage="30" coveredlines="42" coverablelines="140" totallines="225" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="15" methodcoverage="33.3" />
-      <Class name="TacticalSymbol" coverage="0" coveredlines="0" coverablelines="51" totallines="96" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="11" methodcoverage="0" />
+      <Class name="TacticalPanelController" coverage="16.4" coveredlines="27" coverablelines="164" totallines="257" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="29" methodcoverage="24.1" />
+      <Class name="TacticalPolarGridGraphic" coverage="30.4" coveredlines="43" coverablelines="141" totallines="225" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="15" methodcoverage="33.3" />
+      <Class name="TacticalSymbol" coverage="0" coveredlines="0" coverablelines="57" totallines="96" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="12" methodcoverage="0" />
       <Class name="Threat" coverage="48.5" coveredlines="50" coverablelines="103" totallines="181" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="11" methodcoverage="81.8" />
       <Class name="ThreatAssignment" coverage="0" coveredlines="0" coverablelines="38" totallines="73" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="ThreatClusterData" coverage="32.2" coveredlines="10" coverablelines="31" totallines="73" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="9" methodcoverage="22.2" />
       <Class name="ThreatData" coverage="9" coveredlines="2" coverablelines="22" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="5" methodcoverage="20" />
       <Class name="TrackFileData" coverage="63.6" coveredlines="7" coverablelines="11" totallines="99" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="7" methodcoverage="71.4" />
       <Class name="UIBuildButton" coverage="0" coveredlines="0" coverablelines="2" totallines="9" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="UIDialog" coverage="3.1" coveredlines="4" coverablelines="127" totallines="212" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="18" methodcoverage="5.5" />
+      <Class name="UIDialog" coverage="7.5" coveredlines="10" coverablelines="133" totallines="212" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="18" methodcoverage="5.5" />
       <Class name="UIElementDragger" coverage="0" coveredlines="0" coverablelines="3" totallines="12" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="UIElementMouseCapturer" coverage="0" coveredlines="0" coverablelines="11" totallines="20" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="UIEventMarker" coverage="0" coveredlines="0" coverablelines="17" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="UIManager" coverage="64.7" coveredlines="110" coverablelines="170" totallines="254" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="18" totalmethods="30" methodcoverage="60" />
-      <Class name="UISelectableEntry" coverage="0" coveredlines="0" coverablelines="81" totallines="138" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
-      <Class name="UIWindow" coverage="1.7" coveredlines="1" coverablelines="58" totallines="94" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="9" methodcoverage="11.1" />
+      <Class name="UIManager" coverage="65.3" coveredlines="113" coverablelines="173" totallines="254" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="18" totalmethods="30" methodcoverage="60" />
+      <Class name="UISelectableEntry" coverage="0" coveredlines="0" coverablelines="89" totallines="136" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
+      <Class name="UIWindow" coverage="5" coveredlines="3" coverablelines="60" totallines="94" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="9" methodcoverage="11.1" />
       <Class name="Utilities" coverage="50" coveredlines="6" coverablelines="12" totallines="21" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="4" methodcoverage="50" />
       <Class name="Vessel" coverage="0" coveredlines="0" coverablelines="15" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
       <Class name="Waypoint" coverage="100" coveredlines="8" coverablelines="8" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />

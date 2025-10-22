@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 10/21/2025 - 00:20:51 |
+| Generated on: | 10/22/2025 - 01:36:45 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 4 |
 | Classes: | 140 |
 | Files: | 97 |
-| Covered lines: | 2032 |
-| Uncovered lines: | 7192 |
-| Coverable lines: | 9224 |
-| Total lines: | 18434 |
-| Line coverage: | 22% (2032 of 9224) |
+| Covered lines: | 2048 |
+| Uncovered lines: | 7206 |
+| Coverable lines: | 9254 |
+| Total lines: | 18431 |
+| Line coverage: | 22.1% (2048 of 9254) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 409 |
-| Total methods: | 1445 |
-| Method coverage: | 28.3% (409 of 1445) |
+| Total methods: | 1446 |
+| Method coverage: | 28.2% (409 of 1446) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1984**|**6007**|**7991**|**51774**|**24.8%**|**0**|**0**|****|**406**|**1306**|**31%**|
+|**bamlab.micromissiles**|**2000**|**6021**|**8021**|**51771**|**24.9%**|**0**|**0**|****|**406**|**1307**|**31%**|
 |Agent|159|97|256|460|62.1%|0|0||27|45|60%|
 |AgglomerativeClusterer|63|1|64|101|98.4%|0|0||2|3|66.6%|
 |ApnController|0|8|8|20|0%|0|0||0|2|0%|
@@ -115,22 +115,22 @@
 |Simulation.TransformationReflection|0|5|5|459|0%|0|0||0|2|0%|
 |SpriteManager|0|8|8|96|0%|0|0||0|1|0%|
 |SwarmStatusDialog|3|125|128|159|2.3%|0|0||1|16|6.2%|
-|TacticalPanelController|23|137|160|258|14.3%|0|0||7|29|24.1%|
-|TacticalPolarGridGraphic|42|98|140|225|30%|0|0||5|15|33.3%|
-|TacticalSymbol|0|51|51|96|0%|0|0||0|11|0%|
+|TacticalPanelController|27|137|164|257|16.4%|0|0||7|29|24.1%|
+|TacticalPolarGridGraphic|43|98|141|225|30.4%|0|0||5|15|33.3%|
+|TacticalSymbol|0|57|57|96|0%|0|0||0|12|0%|
 |Threat|50|53|103|181|48.5%|0|0||9|11|81.8%|
 |ThreatAssignment|0|38|38|73|0%|0|0||0|5|0%|
 |ThreatClusterData|10|21|31|73|32.2%|0|0||2|9|22.2%|
 |ThreatData|2|20|22|99|9%|0|0||1|5|20%|
 |TrackFileData|7|4|11|99|63.6%|0|0||5|7|71.4%|
 |UIBuildButton|0|2|2|9|0%|0|0||0|2|0%|
-|UIDialog|4|123|127|212|3.1%|0|0||1|18|5.5%|
+|UIDialog|10|123|133|212|7.5%|0|0||1|18|5.5%|
 |UIElementDragger|0|3|3|12|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|20|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
-|UIManager|110|60|170|254|64.7%|0|0||18|30|60%|
-|UISelectableEntry|0|81|81|138|0%|0|0||0|15|0%|
-|UIWindow|1|57|58|94|1.7%|0|0||1|9|11.1%|
+|UIManager|113|60|173|254|65.3%|0|0||18|30|60%|
+|UISelectableEntry|0|89|89|136|0%|0|0||0|15|0%|
+|UIWindow|3|57|60|94|5%|0|0||1|9|11.1%|
 |Utilities|6|6|12|21|50%|0|0||2|4|50%|
 |Vessel|0|15|15|27|0%|0|0||0|5|0%|
 |Waypoint|8|0|8|11|100%|0|0||4|4|100%|
