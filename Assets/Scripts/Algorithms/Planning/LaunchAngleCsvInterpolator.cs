@@ -29,20 +29,21 @@ public class LaunchAngleCsvInterpolator : LaunchAngleInterpolatorBase {
   protected override void InitInterpolator() {
     string fileContent = _configLoader(_relativePath);
     if (string.IsNullOrEmpty(fileContent)) {
-      Debug.LogError($"Failed to load CSV file from {_relativePath}.");
-      throw new InvalidOperationException("Interpolator could not be initialized.");
+      throw new InvalidOperationException($"CSV file {_relativePath} is either null or empty.");
     }
 
     string[] csvLines = fileContent.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
     string[] dataLines = csvLines.Where(line => !string.IsNullOrWhiteSpace(line)).ToArray();
     if (dataLines.Length < 1) {
-      throw new InvalidOperationException("No data points available for interpolation.");
+      throw new InvalidOperationException(
+          $"No data points available for interpolation in {_relativePath}.");
     }
 
     try {
       _interpolator = new NearestNeighborInterpolator2D(dataLines);
     } catch (Exception e) {
-      throw new InvalidOperationException("Failed to initialize interpolator: " + e.Message);
+      throw new InvalidOperationException(
+          $"Failed to initialize interpolator from {_relativePath}.", e);
     }
   }
 }

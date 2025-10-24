@@ -14,13 +14,16 @@ public abstract class AttackBehaviorBase : IAttackBehavior {
 
   public Configs.AttackBehaviorConfig Config {
     get => _config;
-    set => _config = value;
+    set {
+      _config = value;
+      _flightPlan = null;
+    }
   }
 
   public FlightPlan FlightPlan {
     get {
       if (_flightPlan == null) {
-        _flightPlan = new FlightPlan(Config.FlightPlan);
+        _flightPlan = new FlightPlan(Config?.FlightPlan);
       }
       return _flightPlan;
     }
