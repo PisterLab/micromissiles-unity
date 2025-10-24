@@ -57,6 +57,10 @@ public class KDTree<T> {
 
     // Explore the next branch first.
     bestNode = NearestNeighbor(nextBranch, target, depth + 1, bestNode);
+    if (bestNode != null) {
+      bestDistance = Vector2.Distance(_getCoordinates(bestNode.Data), target);
+      ;
+    }
 
     // Explore the other branch.
     if (Mathf.Abs(targetCoordinatesValue - nodeCoordinatesValue) < bestDistance) {

@@ -25,6 +25,6 @@ public abstract class LaunchAnglePlannerBase : ILaunchAnglePlanner {
     Vector3 relativePosition = position - Agent.Position;
     return new Direction { Distance =
                                Vector3.ProjectOnPlane(relativePosition, Vector3.up).magnitude,
-                           Altitude = Vector3.Project(relativePosition, Vector3.up).magnitude };
+                           Altitude = Vector3.Project(relativePosition, Vector3.up).y };
   }
 }

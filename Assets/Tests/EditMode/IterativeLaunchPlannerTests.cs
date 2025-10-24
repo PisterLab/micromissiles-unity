@@ -52,6 +52,9 @@ public class IterativeLaunchPlannerTests : TestBase {
     _target.Velocity = new Vector3(0, -1, 0);
     LaunchPlan plan = _planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
+    // Target moves from (1, 110, 0) with a velocity of (0, -1, 0) for 10 seconds to reach (1, 100,
+    // 0).
+    // The interceptor can reach (1, 100, 0) after 10 seconds with a launch angle of 90 degrees.
     Assert.AreEqual(90, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(1, 100, 0), plan.InterceptPosition);
   }
@@ -62,6 +65,9 @@ public class IterativeLaunchPlannerTests : TestBase {
     _target.Velocity = new Vector3(0, -1.1f, 0);
     LaunchPlan plan = _planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
+    // Target moves from (1, 110, 0) with a velocity of (0, -1.1, 0) for 10 seconds to reach (1, 99,
+    // 0).
+    // The interceptor can reach (1, 100, 0) after 10 seconds with a launch angle of 90 degrees.
     Assert.AreEqual(90, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(1, 99, 0), plan.InterceptPosition);
   }
@@ -72,6 +78,9 @@ public class IterativeLaunchPlannerTests : TestBase {
     _target.Velocity = new Vector3(-5, 0, 0);
     LaunchPlan plan = _planner.Plan();
     Assert.IsTrue(plan.ShouldLaunch);
+    // Target moves from (126, 1, 0) with a velocity of (-5, 0, 0) for 13 seconds to reach (61, 1,
+    // 0).
+    // The interceptor can reach (60, 1, 0) after 13 seconds with a launch angle of 20 degrees.
     Assert.AreEqual(20, plan.LaunchAngle);
     Assert.AreEqual(new Vector3(61, 1, 0), plan.InterceptPosition);
   }
