@@ -15,7 +15,8 @@ message EvasionConfig {
   // If true, evasion is enabled.
   bool enabled = 1;
 
-  // Range threshold in m at which the agent should evade.
+  // Range threshold in meters. The agent will evade when a pursuer is within
+  // this range threshold with a positive closing velocity.
   float range_threshold = 2;
 }
 
