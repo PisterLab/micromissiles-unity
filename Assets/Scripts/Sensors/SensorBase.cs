@@ -12,6 +12,9 @@ public abstract class SensorBase : ISensor {
   // Sense the target hierarchical object.
   public abstract SensorOutput Sense(IHierarchical hierarchical);
 
+  // Sense the target hierarchical object.
+  public abstract SensorOutput Sense(IAgent agent);
+
   // Sense the waypoint.
   public abstract SensorOutput Sense(in Vector3 waypoint);
 }

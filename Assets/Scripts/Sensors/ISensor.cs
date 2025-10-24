@@ -9,6 +9,9 @@ public interface ISensor {
   // Sense the target hierarchical object.
   SensorOutput Sense(IHierarchical hierarchical);
 
+  // Sense the target agent.
+  SensorOutput Sense(IAgent agent);
+
   // Sense the waypoint.
   SensorOutput Sense(in Vector3 waypoint);
 }

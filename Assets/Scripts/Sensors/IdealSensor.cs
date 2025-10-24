@@ -14,6 +14,12 @@ public class IdealSensor : SensorBase {
     return GenerateSensorOutput(relativeTransformation);
   }
 
+  // Sense the target agent.
+  public override SensorOutput Sense(IAgent agent) {
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(agent);
+    return GenerateSensorOutput(relativeTransformation);
+  }
+
   // Sense the waypoint.
   public override SensorOutput Sense(in Vector3 waypoint) {
     Transformation relativeTransformation = Agent.GetRelativeTransformation(waypoint);
