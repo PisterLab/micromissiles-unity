@@ -125,7 +125,8 @@ namespace Configs {
     public const int RangeThresholdFieldNumber = 2;
     private float rangeThreshold_;
     /// <summary>
-    /// Range threshold in m at which the agent should evade.
+    /// Range threshold in meters. The agent will evade when a pursuer is within
+    /// this range threshold with a positive closing velocity.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

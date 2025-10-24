@@ -10,23 +10,19 @@ public class OrthogonalEvasion : EvasionBase {
 
   // Determine whether to perform any evasive maneuvers.
   public override bool ShouldEvade(IAgent pursuer) {
-    // Default evasion range threshold in meters.
-    const float defaultEvasionRangeThreshold = 1000f;
-
     if (!(Agent.AgentConfig?.DynamicConfig?.FlightConfig?.EvasionConfig?.Enabled ?? false)) {
       return false;
     }
 
-    float evasionRangeThreshold =
-        Agent.AgentConfig?.DynamicConfig?.FlightConfig?.EvasionConfig?.RangeThreshold ??
-        defaultEvasionRangeThreshold;
     SensorOutput sensorOutput = Agent.Sensor.Sense(pursuer);
+    float evasionRangeThreshold =
+        Agent.AgentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
     return sensorOutput.Position.Range <= evasionRangeThreshold && sensorOutput.Velocity.Range < 0;
   }
 
   // Calculate the acceleration input to evade the pursuer.
   public override Vector3 Evade(IAgent pursuer) {
-    const float epsilon = 1e-12f;
+    const float epsilon = 1e-6f;
     const float groundProximityThresholdFactor = 5f;
     const float groundAvoidanceUpFactor = 5f;
 
@@ -42,6 +38,9 @@ public class OrthogonalEvasion : EvasionBase {
       // direction in which to evade.
       normalVelocity = pursuer.transform.right;
     }
+    // If the agent's velocity is aligned with the normal velocity, i.e., orthogonal to the
+    // pursuer's velocity, then the normal acceleration should be zero as the agent should continue
+    // in the same direction.
     Vector3 normalAccelerationDirection =
         Vector3.ProjectOnPlane(normalVelocity, agentVelocity).normalized;
 
@@ -73,14 +72,8 @@ public class OrthogonalEvasion : EvasionBase {
     }
     Vector3 normalAcceleration = normalAccelerationDirection * Agent.MaxNormalAcceleration();
 
-    // Set the forward acceleration.
-    Vector3 forwardAcceleration = Vector3.zero;
-    if (Agent is IThreat threat) {
-      // Set the forward acceleration to reach the target speed within one time step.
-      float targetSpeed = threat.LookupPowerTable(Configs.Power.Max);
-      float speedError = targetSpeed - Agent.Speed;
-      forwardAcceleration = speedError / Time.fixedDeltaTime * Agent.transform.forward;
-    }
+    // Apply the maximum forward acceleration.
+    Vector3 forwardAcceleration = Agent.transform.forward * Agent.MaxForwardAcceleration();
     return normalAcceleration + forwardAcceleration;
   }
 }
