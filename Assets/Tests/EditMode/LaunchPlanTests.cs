@@ -1,0 +1,60 @@
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools.Utils;
+
+public class LaunchPlanTests {
+  private const float _epsilon = 1e-3f;
+
+  [Test]
+  public void NoLaunch_ShouldHaveShouldLaunchFalse() {
+    var plan = LaunchPlan.NoLaunch();
+    Assert.IsFalse(plan.ShouldLaunch);
+  }
+
+  [Test]
+  public void NormalizedLaunchVector_IsNormalized() {
+    var launchPlan = new LaunchPlan {
+      ShouldLaunch = true,
+      LaunchAngle = 45f,
+      InterceptPosition = new Vector3(1, 1, 0),
+    };
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Assert.AreEqual(1f, launchVector.magnitude, _epsilon);
+  }
+
+  [Test]
+  public void NormalizedLaunchVector_PointsVertically() {
+    var launchPlan = new LaunchPlan {
+      ShouldLaunch = true,
+      LaunchAngle = 90f,
+      InterceptPosition = new Vector3(1, 1, 0),
+    };
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Assert.That(launchVector,
+                Is.EqualTo(new Vector3(0, 1f, 0)).Using(Vector3EqualityComparer.Instance));
+  }
+
+  [Test]
+  public void NormalizedLaunchVector_PointsHorizontally() {
+    var launchPlan = new LaunchPlan {
+      ShouldLaunch = true,
+      LaunchAngle = 0f,
+      InterceptPosition = new Vector3(1, 1, 0),
+    };
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Assert.That(launchVector,
+                Is.EqualTo(new Vector3(1f, 0, 0)).Using(Vector3EqualityComparer.Instance));
+  }
+
+  [Test]
+  public void NormalizedLaunchVector_PointsDiagonally() {
+    var launchPlan = new LaunchPlan {
+      ShouldLaunch = true,
+      LaunchAngle = 45f,
+      InterceptPosition = new Vector3(1, 0, 1),
+    };
+    Vector3 launchVector = launchPlan.NormalizedLaunchVector(position: Vector3.zero);
+    Assert.That(launchVector, Is.EqualTo(new Vector3(1, Mathf.Sqrt(2f), 1).normalized)
+                                  .Using(Vector3EqualityComparer.Instance));
+  }
+}

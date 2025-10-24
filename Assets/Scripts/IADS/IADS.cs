@@ -14,8 +14,8 @@ public class IADS : MonoBehaviour {
   private const float ClusterThreatsPeriod = 2.0f;
 
   // TODO(titan): Choose the CSV file based on the interceptor type.
-  private ILaunchAnglePlanner _launchAnglePlanner =
-      new LaunchAngleCsvInterpolator(Path.Combine("Planning", "hydra70_launch_angle.csv"));
+  private ILaunchAnglePlannerLegacy _launchAnglePlanner =
+      new LaunchAngleCsvInterpolatorLegacy(Path.Combine("Planning", "hydra70_launch_angle.csv"));
   private IAssignmentLegacy _assignmentScheme = new MaxSpeedAssignment();
   private Coroutine _launchInterceptorsCoroutine;
 
@@ -109,10 +109,11 @@ public class IADS : MonoBehaviour {
       }
 
       // Create a predictor to track the cluster's centroid.
-      var predictor = new LinearExtrapolator(_threatClusterMap[cluster].Centroid);
+      var predictor = new LinearExtrapolatorLegacy(_threatClusterMap[cluster].Centroid);
 
       // Create a launch planner.
-      ILaunchPlanner planner = new IterativeLaunchPlanner(_launchAnglePlanner, predictor);
+      ILaunchPlannerLegacy planner =
+          new IterativeLaunchPlannerLegacy(_launchAnglePlanner, predictor);
       LaunchPlan plan = planner.Plan();
 
       // Check whether an interceptor should be launched.
@@ -133,7 +134,8 @@ public class IADS : MonoBehaviour {
         initialState.Position = Coordinates3.ToProto(Vector3.zero);
 
         // Set the initial velocity to point along the launch vector.
-        initialState.Velocity = Coordinates3.ToProto(plan.GetNormalizedLaunchVector() * 1e-3f);
+        initialState.Velocity =
+            Coordinates3.ToProto(plan.NormalizedLaunchVector(position: Vector3.zero) * 1e-3f);
         Interceptor interceptor = SimManager.Instance.CreateInterceptor(config, initialState);
 
         // Assign the interceptor to the cluster.
@@ -166,7 +168,7 @@ public class IADS : MonoBehaviour {
     Vector3 carrierPosition = carrier.GetPosition();
     Vector3 carrierVelocity = carrier.GetVelocity();
     foreach (var threat in threats) {
-      var predictor = new LinearExtrapolator(threat);
+      var predictor = new LinearExtrapolatorLegacy(threat);
       var predictedState = predictor.Predict(SubmunitionSpawnPredictionTime);
       Vector3 positionToPredictedThreat = predictedState.Position - carrierPosition;
       float predictedDistanceToThreat = positionToPredictedThreat.magnitude;

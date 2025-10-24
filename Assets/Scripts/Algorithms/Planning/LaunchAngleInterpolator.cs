@@ -4,13 +4,31 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+// The launch angle planner class is an interface for a planner that outputs the optimal launch
+// angle and the time-to-target.
+public interface ILaunchAnglePlannerLegacy {
+  // Calculate the optimal launch angle in degrees and the time-to-target in seconds.
+  public LaunchAngleOutput Plan(in LaunchAngleInput input);
+  public LaunchAngleOutput Plan(Vector3 position) {
+    Vector2 direction = ConvertToDirection(position);
+    return Plan(new LaunchAngleInput { Distance = direction[0], Altitude = direction[1] });
+  }
+
+  // Get the intercept position.
+  public Vector3 GetInterceptPosition(Vector3 position);
+
+  // Convert from a 3D vector to a 2D direction that ignores the azimuth.
+  protected static Vector2 ConvertToDirection(Vector3 position) {
+    return new Vector2(Vector3.ProjectOnPlane(position, Vector3.up).magnitude,
+                       Vector3.Project(position, Vector3.up).magnitude);
+  }
+}
+
 // The launch angle interpolator class determines the optimal launch angle and the time-to-target
 // given the horizontal distance and altitude of the target.
-public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
+public abstract class ILaunchAngleInterpolatorLegacy : ILaunchAnglePlannerLegacy {
   // Launch angle data interpolator.
   protected IInterpolator2D _interpolator;
-
-  public ILaunchAngleInterpolator() : base() {}
 
   // Initialize the interpolator.
   protected abstract void InitInterpolator();
@@ -29,13 +47,13 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
       throw new InvalidOperationException("Interpolator returned invalid data.");
     }
 
-    return new LaunchAngleOutput(launchAngle: interpolatedDataPoint.Data[0],
-                                 timeToPosition: interpolatedDataPoint.Data[1]);
+    return new LaunchAngleOutput { LaunchAngle = interpolatedDataPoint.Data[0],
+                                   TimeToPosition = interpolatedDataPoint.Data[1] };
   }
 
   // Get the intercept position.
   public Vector3 GetInterceptPosition(Vector3 position) {
-    Vector2 direction = ILaunchAnglePlanner.ConvertToDirection(position);
+    Vector2 direction = ILaunchAnglePlannerLegacy.ConvertToDirection(position);
     Interpolator2DDataPoint interpolatedDataPoint =
         _interpolator.Interpolate(direction[0], direction[1]);
     Vector3 cylindricalPosition = Coordinates3.ConvertCartesianToCylindrical(position);
@@ -47,7 +65,7 @@ public abstract class ILaunchAngleInterpolator : ILaunchAnglePlanner {
 
 // The launch angle CSV interpolator class loads launch angle data from a CSV file and provides
 // interpolated values for arbitrary target positions.
-public class LaunchAngleCsvInterpolator : ILaunchAngleInterpolator {
+public class LaunchAngleCsvInterpolatorLegacy : ILaunchAngleInterpolatorLegacy {
   // Path to the CSV file.
   // The first two columns of the CSV file specify the coordinates of each data point.
   // The third column denotes the launch angle in degrees, and the fourth column denotes the time to
@@ -58,8 +76,8 @@ public class LaunchAngleCsvInterpolator : ILaunchAngleInterpolator {
   public delegate string ConfigLoaderDelegate(string path);
   private readonly ConfigLoaderDelegate _configLoader;
 
-  public LaunchAngleCsvInterpolator(string path = null, ConfigLoaderDelegate configLoader = null)
-      : base() {
+  public LaunchAngleCsvInterpolatorLegacy(string path = null,
+                                          ConfigLoaderDelegate configLoader = null) {
     _relativePath = path ?? Path.Combine("Planning", "hydra70_launch_angle.csv");
     _configLoader = configLoader ?? ConfigLoader.LoadFromStreamingAssets;
   }
@@ -86,21 +104,20 @@ public class LaunchAngleCsvInterpolator : ILaunchAngleInterpolator {
 }
 
 // The launch angle data interpolator class interpolates the values from a static list of values.
-public abstract class LaunchAngleDataInterpolator : ILaunchAngleInterpolator {
-  public LaunchAngleDataInterpolator() : base() {}
-
+public abstract class LaunchAngleDataInterpolatorLegacy : ILaunchAngleInterpolatorLegacy {
   // Initialize the interpolator.
   protected override void InitInterpolator() {
     List<Interpolator2DDataPoint> interpolatorDataPoints = new List<Interpolator2DDataPoint>();
     foreach (var dataPoint in GenerateData()) {
-      Interpolator2DDataPoint interpolatorDataPoint = new Interpolator2DDataPoint(
-          new Vector2(dataPoint.Input.Distance, dataPoint.Input.Altitude),
-          new List<float> { dataPoint.Output.LaunchAngle, dataPoint.Output.TimeToPosition });
+      Interpolator2DDataPoint interpolatorDataPoint = new Interpolator2DDataPoint {
+        Coordinates = new Vector2(dataPoint.Input.Distance, dataPoint.Input.Altitude),
+        Data = new List<float> { dataPoint.Output.LaunchAngle, dataPoint.Output.TimeToPosition }
+      };
       interpolatorDataPoints.Add(interpolatorDataPoint);
     }
     _interpolator = new NearestNeighborInterpolator2D(interpolatorDataPoints);
   }
 
-  // Generate the list of launch angle data points to interpolate.
+  // Generate the launch angle data points to interpolate.
   protected abstract List<LaunchAngleDataPoint> GenerateData();
 }
