@@ -49,8 +49,6 @@ public class AgglomerativeClustererTests {
   public void Cluster_SmallRadius_ReturnsMultipleClusters() {
     _clusterer = new AgglomerativeClusterer(maxSize: _hierarchicals.Count, maxRadius: 0.5f);
     List<Cluster> clusters = _clusterer.Cluster(_hierarchicals);
-    Debug.Log(
-        $"{clusters[0].Centroid} {clusters[1].Centroid} {clusters[0].Radius()} {clusters[1].Radius()}");
     Assert.AreEqual(3, clusters.Count);
     List<Cluster> sortedClusters = clusters.OrderBy(cluster => cluster.Centroid[1]).ToList();
     Assert.AreEqual(1, sortedClusters[0].Size);
@@ -68,8 +66,6 @@ public class AgglomerativeClustererTests {
   public void Cluster_SmallSize_ReturnsMultipleClusters() {
     _clusterer = new AgglomerativeClusterer(maxSize: 2, maxRadius: 1);
     List<Cluster> clusters = _clusterer.Cluster(_hierarchicals);
-    Debug.Log(
-        $"{clusters[0].Centroid} {clusters[1].Centroid} {clusters[0].Size} {clusters[1].Size}");
     Assert.AreEqual(3, clusters.Count);
     List<Cluster> sortedClusters = clusters.OrderBy(cluster => cluster.Centroid[1]).ToList();
     Assert.AreEqual(1, sortedClusters[0].Size);
