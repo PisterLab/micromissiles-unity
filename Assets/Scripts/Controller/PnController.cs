@@ -21,7 +21,7 @@ public class PnController : ControllerBase {
   // Controller-dependent implementation of the control law.
   protected override Vector3 Plan(in Transformation relativeTransformation) {
     // Cache the transform, velocity, and speed.
-    var agentTransform = Agent.transform;
+    Transform agentTransform = Agent.transform;
     Vector3 right = agentTransform.right;
     Vector3 up = agentTransform.up;
 
@@ -35,8 +35,8 @@ public class PnController : ControllerBase {
 
     // Set the turn factor, which is equal to the closing velocity by default.
     float turnFactor = closingVelocity;
-    // Handle a negative closing velocity. In this case, since the target is moving away from the
-    // agent, apply a stronger turn.
+    // Handle a negative closing velocity. If the target is moving away from the agent, apply a
+    // stronger turn as the agent most likely passed the target already and should turn around.
     if (closingVelocity < 0) {
       turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * _negativeClosingVelocityTurnFactor);
     }

@@ -33,7 +33,6 @@ public class DirectAttackBehavior : AttackBehaviorBase {
     if (waypointIndex == FlightPlan.Waypoints.Count) {
       // This is the last waypoint, so target the final position with the last waypoint's power
       // setting.
-      waypointPosition = targetPosition;
       power = FlightPlan.Waypoints[FlightPlan.Waypoints.Count - 1].Power;
       return (waypointPosition, power);
     }
