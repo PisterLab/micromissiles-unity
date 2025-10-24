@@ -29,7 +29,6 @@ public class Coordinates3Tests {
   [TestCase(90f, 0f)]
   [TestCase(180f, 0f)]
   [TestCase(360f, 0f)]
-  [TestCase(45f, 0f)]
   [TestCase(45f, 45f)]
   [TestCase(45f, 90f)]
   [TestCase(45f, 180f)]
@@ -49,6 +48,19 @@ public class Coordinates3Tests {
     Vector3 actualCartesian = Coordinates3.ConvertSphericalToCartesian(spherical);
     Assert.That(actualCartesian,
                 Is.EqualTo(expectedCartesian).Using(Vector3EqualityComparer.Instance));
+  }
+
+  [TestCase(1.5f, 2.5f, 3.5f)]
+  [TestCase(-1, 2, 3)]
+  [TestCase(-12, 0, 0)]
+  [TestCase(0, 5, 0)]
+  [TestCase(0, 0, -10)]
+  public void RoundTrip_CartesianToSphericalToCartesian_ReturnsOriginal(float x, float y, float z) {
+    var originalCartesian = new Vector3(x, y, z);
+    Vector3 spherical = Coordinates3.ConvertCartesianToSpherical(originalCartesian);
+    Vector3 resultCartesian = Coordinates3.ConvertSphericalToCartesian(spherical);
+    Assert.That(resultCartesian,
+                Is.EqualTo(originalCartesian).Using(Vector3EqualityComparer.Instance));
   }
 
   [Test]
@@ -90,5 +102,19 @@ public class Coordinates3Tests {
     Vector3 actualCartesian = Coordinates3.ConvertCylindricalToCartesian(cylindrical);
     Assert.That(actualCartesian,
                 Is.EqualTo(expectedCartesian).Using(Vector3EqualityComparer.Instance));
+  }
+
+  [TestCase(1.5f, 2.5f, 3.5f)]
+  [TestCase(-1, 2, 3)]
+  [TestCase(-12, 0, 0)]
+  [TestCase(0, 5, 0)]
+  [TestCase(0, 0, -10)]
+  public void RoundTrip_CartesianToCylindricalToCartesian_ReturnsOriginal(float x, float y,
+                                                                          float z) {
+    var originalCartesian = new Vector3(x, y, z);
+    Vector3 cylindrical = Coordinates3.ConvertCartesianToCylindrical(originalCartesian);
+    Vector3 resultCartesian = Coordinates3.ConvertCylindricalToCartesian(cylindrical);
+    Assert.That(resultCartesian,
+                Is.EqualTo(originalCartesian).Using(Vector3EqualityComparer.Instance));
   }
 }

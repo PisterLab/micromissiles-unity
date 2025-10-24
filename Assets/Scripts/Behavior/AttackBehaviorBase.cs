@@ -20,7 +20,7 @@ public abstract class AttackBehaviorBase : IAttackBehavior {
   public FlightPlan FlightPlan {
     get {
       if (_flightPlan == null) {
-        _flightPlan = new FlightPlan(Config.FlightPlan);
+        _flightPlan = new FlightPlan(Config?.FlightPlan);
       }
       return _flightPlan;
     }

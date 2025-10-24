@@ -8,9 +8,10 @@ public class FixedHierarchical : HierarchicalBase {
   public new Vector3 Acceleration { get; set; }
 
   public FixedHierarchical() : this(position: Vector3.zero) {}
-  public FixedHierarchical(in Vector3 position) : this(position, velocity: Vector3.zero) {}
+  public FixedHierarchical(in Vector3 position)
+      : this(position: position, velocity: Vector3.zero) {}
   public FixedHierarchical(in Vector3 position, in Vector3 velocity)
-      : this(position, velocity, acceleration: Vector3.zero) {}
+      : this(position: position, velocity: velocity, acceleration: Vector3.zero) {}
   public FixedHierarchical(in Vector3 position, in Vector3 velocity, in Vector3 acceleration) {
     Position = position;
     Velocity = velocity;

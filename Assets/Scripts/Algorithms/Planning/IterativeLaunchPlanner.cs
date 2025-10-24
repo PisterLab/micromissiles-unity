@@ -64,9 +64,9 @@ public class IterativeLaunchPlanner : LaunchPlannerBase {
     // Check that the interceptor is moving towards the target. If the target is moving too fast,
     // the interceptor might be launched backwards because the intercept position and the predicted
     // position are behind the asset. In this case, the interceptor should wait to be launched.
-    Vector3 interceptorToInterceptPosition = interceptPosition;
-    Vector3 threatToPredictedPosition = targetPosition - initialState.Position;
-    if (Vector3.Dot(interceptorToInterceptPosition, threatToPredictedPosition) > 0) {
+    Vector3 interceptorToInterceptPosition = interceptPosition - LaunchAnglePlanner.Agent.Position;
+    Vector3 targetToPredictedTargetPosition = targetPosition - initialState.Position;
+    if (Vector3.Dot(interceptorToInterceptPosition, targetToPredictedTargetPosition) > 0) {
       return LaunchPlan.NoLaunch();
     }
 

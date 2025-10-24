@@ -4,6 +4,9 @@ using UnityEngine;
 
 // The k-means clusterer class performs k-means clustering.
 public class KMeansClusterer : ClustererBase {
+  // Default maximum number of iterations.
+  protected const int _defaultMaxNumIterations = 20;
+
   // Convergence threshold.
   protected const float _epsilon = 1e-3f;
 
@@ -11,12 +14,12 @@ public class KMeansClusterer : ClustererBase {
   private readonly int _k;
 
   // Maximum number of iterations.
-  private readonly int _maxIterations;
+  private readonly int _maxNumIterations;
 
-  public KMeansClusterer(int k) : this(k, maxIterations: 20) {}
-  public KMeansClusterer(int k, int maxIterations) {
+  public KMeansClusterer(int k) : this(k, _defaultMaxNumIterations) {}
+  public KMeansClusterer(int k, int maxNumIterations) {
     _k = k;
-    _maxIterations = maxIterations;
+    _maxNumIterations = maxNumIterations;
   }
 
   // Generate the clusters from the list of hierarchical objects.
@@ -33,8 +36,8 @@ public class KMeansClusterer : ClustererBase {
     }
 
     bool converged = false;
-    int iteration = 0;
-    while (!converged && iteration < _maxIterations) {
+    int numIteration = 0;
+    while (!converged && numIteration < _maxNumIterations) {
       AssignToClusters(clusters, hierarchicals);
 
       // Calculate the new clusters as the mean of all assigned hierarchical objects.
@@ -53,7 +56,7 @@ public class KMeansClusterer : ClustererBase {
           converged = false;
         }
       }
-      ++iteration;
+      ++numIteration;
     }
     AssignToClusters(clusters, hierarchicals);
     return clusters;
