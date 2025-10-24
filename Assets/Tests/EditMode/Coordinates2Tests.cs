@@ -14,7 +14,7 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertCartesianToPolar_OnXAxis_ReturnsZeroAzimuth() {
+  public void ConvertCartesianToPolar_OnXAxis_ReturnsZeroTheta() {
     var cartesian = new Vector2(5, 0);
     var expectedPolar = new Vector2(5.0f, 0.0f);
     Vector2 actualPolar = Coordinates2.ConvertCartesianToPolar(cartesian);
@@ -22,7 +22,7 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertCartesianToPolar_OnYAxis_ReturnsNinetyAzimuth() {
+  public void ConvertCartesianToPolar_OnYAxis_ReturnsNinetyTheta() {
     var cartesian = new Vector2(0, 5);
     var expectedPolar = new Vector2(5.0f, 90.0f);
     Vector2 actualPolar = Coordinates2.ConvertCartesianToPolar(cartesian);
@@ -44,7 +44,7 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertPolarToCartesian_ZeroAzimuth_ReturnsOnXAxis() {
+  public void ConvertPolarToCartesian_ZeroTheta_ReturnsOnXAxis() {
     var polar = new Vector2(10, 0);
     var expectedCartesian = new Vector2(10.0f, 0.0f);
     Vector2 actualCartesian = Coordinates2.ConvertPolarToCartesian(polar);
@@ -53,7 +53,7 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertPolarToCartesian_NinetyAzimuth_ReturnsOnYAxis() {
+  public void ConvertPolarToCartesian_NinetyTheta_ReturnsOnYAxis() {
     Vector2 polar = new Vector2(10, 90);
     Vector2 expectedCartesian = new Vector2(0.0f, 10.0f);
     Vector2 actualCartesian = Coordinates2.ConvertPolarToCartesian(polar);
@@ -62,7 +62,7 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertPolarToCartesian_ThirtyAzimuth() {
+  public void ConvertPolarToCartesian_ThirtyTheta() {
     var polar = new Vector2(20, 30);
     var expectedCartesian = new Vector2(10 * Mathf.Sqrt(3), 10);
     Vector2 actualCartesian = Coordinates2.ConvertPolarToCartesian(polar);
@@ -71,11 +71,20 @@ public class Coordinates2Tests {
   }
 
   [Test]
-  public void ConvertPolarToCartesian_FortyFiveAzimuth() {
+  public void ConvertPolarToCartesian_FortyFiveTheta() {
     var polar = new Vector2(10 * Mathf.Sqrt(2), 45);
     var expectedCartesian = new Vector2(10.0f, 10.0f);
     Vector2 actualCartesian = Coordinates2.ConvertPolarToCartesian(polar);
     Assert.That(actualCartesian,
                 Is.EqualTo(expectedCartesian).Using(Vector2EqualityComparer.Instance));
+  }
+
+  [Test]
+  public void RoundTrip_CartesianToPolarToCartesian_ReturnsOriginal() {
+    var originalCartesian = new Vector2(3.5f, 7.2f);
+    Vector2 polar = Coordinates2.ConvertCartesianToPolar(originalCartesian);
+    Vector2 resultCartesian = Coordinates2.ConvertPolarToCartesian(polar);
+    Assert.That(resultCartesian,
+                Is.EqualTo(originalCartesian).Using(Vector2EqualityComparer.Instance));
   }
 }
