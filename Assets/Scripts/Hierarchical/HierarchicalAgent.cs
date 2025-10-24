@@ -8,6 +8,10 @@ public class HierarchicalAgent : HierarchicalBase {
   // Agent to which this hierarchical node belongs.
   public IAgent Agent { get; set; }
 
+  public HierarchicalAgent(IAgent agent) {
+    Agent = agent;
+  }
+
   protected override Vector3 GetPosition() {
     return Agent.Position;
   }

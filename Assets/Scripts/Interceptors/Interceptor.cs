@@ -100,17 +100,17 @@ public class Interceptor : Agent {
     IControllerLegacy controller;
     switch (agentConfig.DynamicConfig.FlightConfig.ControllerType) {
       case Configs.ControllerType.ProportionalNavigation: {
-        controller = new PnController(this, _navigationGain);
+        controller = new PnControllerLegacy(this, _navigationGain);
         break;
       }
       case Configs.ControllerType.AugmentedProportionalNavigation: {
-        controller = new ApnController(this, _navigationGain);
+        controller = new ApnControllerLegacy(this, _navigationGain);
         break;
       }
       default: {
         Debug.LogError(
             $"Controller type {agentConfig.DynamicConfig.FlightConfig.ControllerType} not found.");
-        controller = new PnController(this, _navigationGain);
+        controller = new PnControllerLegacy(this, _navigationGain);
         break;
       }
     }

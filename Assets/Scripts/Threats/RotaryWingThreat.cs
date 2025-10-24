@@ -42,7 +42,7 @@ public class RotaryWingThreat : Threat {
   private Vector3 CalculateAccelerationToWaypoint() {
     float desiredSpeed = LookupPowerTable(_currentPower);
 
-    IControllerLegacy controller = new WaypointController(this, desiredSpeed);
+    IControllerLegacy controller = new WaypointControllerLegacy(this, desiredSpeed);
     Vector3 accelerationInput = controller.PlanToWaypoint(_currentWaypoint);
 
     Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, transform.forward);

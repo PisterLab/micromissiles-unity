@@ -70,7 +70,7 @@ public class FixedWingThreat : Threat {
     Vector3 velocity = GetVelocity();
     float speed = velocity.magnitude;
 
-    IControllerLegacy controller = new PnController(this, _navigationGain);
+    IControllerLegacy controller = new PnControllerLegacy(this, _navigationGain);
     Vector3 accelerationInput = controller.PlanToWaypoint(_currentWaypoint);
 
     // Counter gravity as much as possible.
