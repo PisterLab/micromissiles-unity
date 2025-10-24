@@ -47,4 +47,30 @@ public class WaypointControllerTests : TestBase {
                               acceleration: new Vector3(0, 1, 0));
     Assert.AreEqual(5, _controller.Plan().y);
   }
+
+  [Test]
+  public void Plan_WaypointBehind_UsesMaximumNegativeForwardAcceleration() {
+    _agent.HierarchicalAgent.TargetModel =
+        new FixedHierarchical(position: new Vector3(0, 0, -1), velocity: new Vector3(0, 1, -1),
+                              acceleration: new Vector3(0, 1, 0));
+    Assert.AreEqual(-10, _controller.Plan().z);
+  }
+
+  [Test]
+  public void Plan_WaypointAtRightBoresight_AcceleratesToTheRight() {
+    _agent.HierarchicalAgent.TargetModel =
+        new FixedHierarchical(position: new Vector3(1, 0, 0), velocity: new Vector3(0, 1, -1),
+                              acceleration: new Vector3(0, 1, 0));
+    Assert.AreEqual(5, _controller.Plan().x);
+    Assert.AreEqual(0, _controller.Plan().y);
+  }
+
+  [Test]
+  public void Plan_WaypointOverhead_AcceleratesUpwards() {
+    _agent.HierarchicalAgent.TargetModel =
+        new FixedHierarchical(position: new Vector3(0, 1, 0), velocity: new Vector3(0, 1, -1),
+                              acceleration: new Vector3(0, 1, 0));
+    Assert.AreEqual(0, _controller.Plan().x);
+    Assert.AreEqual(5, _controller.Plan().y);
+  }
 }

@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 // The linear extrapolator class predicts the trajectory of an agent by linearly extrapolating its

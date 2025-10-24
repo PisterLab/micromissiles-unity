@@ -20,6 +20,7 @@ public class NearestNeighborInterpolator2DTests {
     Assert.AreEqual(0, interpolator.Data.Count);
     Interpolator2DDataPoint result = interpolator.Interpolate(1, 1);
     Assert.AreEqual(0, result.Data.Count);
+    LogAssert.ignoreFailingMessages = false;
   }
 
   [Test]
@@ -75,5 +76,6 @@ public class NearestNeighborInterpolator2DTests {
     var interpolator = new NearestNeighborInterpolator2D(csvLines);
     Interpolator2DDataPoint result = interpolator.Interpolate(1, 1);
     Assert.AreEqual(0, result.Data.Count);
+    LogAssert.ignoreFailingMessages = false;
   }
 }

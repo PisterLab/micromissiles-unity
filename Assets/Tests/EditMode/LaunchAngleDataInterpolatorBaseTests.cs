@@ -62,6 +62,18 @@ public class LaunchAngleDataInterpolatorBaseTests : TestBase {
   }
 
   [Test]
+  public void InterceptPosition_PreservesAzimuth() {
+    var targetPosition = new Vector3(70.7f, 1f, 70.7f);  // 45 degree azimuth
+    Vector3 interceptPosition = _interpolator.InterceptPosition(targetPosition);
+
+    // Should preserve the 45 degree azimuth while snapping to nearest data point at (distance =
+    // 100, altitude = 1).
+    float expectedAzimuth = Mathf.Atan2(70.7f, 70.7f) * Mathf.Rad2Deg;
+    float actualAzimuth = Mathf.Atan2(interceptPosition.z, interceptPosition.x) * Mathf.Rad2Deg;
+    Assert.AreEqual(expectedAzimuth, actualAzimuth, 0.1f);
+  }
+
+  [Test]
   public void InterceptPosition_MovesWithAgentPosition() {
     var agentPosition = new Vector3(61, 5055, 874);
     _agent.Position = agentPosition;
