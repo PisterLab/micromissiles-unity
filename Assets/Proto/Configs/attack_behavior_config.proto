@@ -12,34 +12,35 @@ enum AttackType {
   SLALOM_ATTACK = 3;
 }
 
+// Flight plan type enumeration.
+enum FlightPlanType {
+  INVALID_FLIGHT_PLAN = 0;
+  DISTANCE_TO_TARGET = 1;
+}
+
+// Flight plan waypoint.
+message FlightPlanWaypoint {
+  // Distance.
+  float distance = 1;
+
+  // Altitude.
+  float altitude = 2;
+
+  // Power.
+  Power power = 3;
+}
+
+// Flight plan.
+message FlightPlan {
+  // Flight plan type.
+  FlightPlanType type = 1;
+
+  // Waypoints.
+  repeated FlightPlanWaypoint waypoints = 2;
+}
+
 // Attack behavior configuration.
 message AttackBehaviorConfig {
-  // Flight plan type enumeration.
-  enum FlightPlanType {
-    INVALID_FLIGHT_PLAN = 0;
-    DISTANCE_TO_TARGET = 1;
-  }
-
-  // Flight plan.
-  message FlightPlan {
-    message Waypoint {
-      // Distance.
-      float distance = 1;
-
-      // Altitude.
-      float altitude = 2;
-
-      // Power.
-      Power power = 3;
-    }
-
-    // Flight plan type.
-    FlightPlanType type = 1;
-
-    // Waypoints.
-    repeated Waypoint waypoints = 2;
-  }
-
   // Attack behavior name.
   string name = 1;
 

@@ -25,23 +25,24 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiRDb25maWdzL2F0dGFja19iZWhhdmlvcl9jb25maWcucHJvdG8SB2NvbmZp",
-            "Z3MaG0NvbmZpZ3Mvc3RhdGljX2NvbmZpZy5wcm90byKpAwoUQXR0YWNrQmVo",
-            "YXZpb3JDb25maWcSDAoEbmFtZRgBIAEoCRIhCgR0eXBlGAIgASgOMhMuY29u",
-            "Zmlncy5BdHRhY2tUeXBlEj0KC2ZsaWdodF9wbGFuGAMgASgLMiguY29uZmln",
-            "cy5BdHRhY2tCZWhhdmlvckNvbmZpZy5GbGlnaHRQbGFuGt0BCgpGbGlnaHRQ",
-            "bGFuEjoKBHR5cGUYASABKA4yLC5jb25maWdzLkF0dGFja0JlaGF2aW9yQ29u",
-            "ZmlnLkZsaWdodFBsYW5UeXBlEkQKCXdheXBvaW50cxgCIAMoCzIxLmNvbmZp",
-            "Z3MuQXR0YWNrQmVoYXZpb3JDb25maWcuRmxpZ2h0UGxhbi5XYXlwb2ludBpN",
-            "CghXYXlwb2ludBIQCghkaXN0YW5jZRgBIAEoAhIQCghhbHRpdHVkZRgCIAEo",
-            "AhIdCgVwb3dlchgDIAEoDjIOLmNvbmZpZ3MuUG93ZXIiQQoORmxpZ2h0UGxh",
-            "blR5cGUSFwoTSU5WQUxJRF9GTElHSFRfUExBThAAEhYKEkRJU1RBTkNFX1RP",
-            "X1RBUkdFVBABKl0KCkF0dGFja1R5cGUSEgoOSU5WQUxJRF9BVFRBQ0sQABIR",
-            "Cg1ESVJFQ1RfQVRUQUNLEAESFQoRUFJFUExBTk5FRF9BVFRBQ0sQAhIRCg1T",
-            "TEFMT01fQVRUQUNLEANiBnByb3RvMw=="));
+            "Z3MaG0NvbmZpZ3Mvc3RhdGljX2NvbmZpZy5wcm90byJXChJGbGlnaHRQbGFu",
+            "V2F5cG9pbnQSEAoIZGlzdGFuY2UYASABKAISEAoIYWx0aXR1ZGUYAiABKAIS",
+            "HQoFcG93ZXIYAyABKA4yDi5jb25maWdzLlBvd2VyImMKCkZsaWdodFBsYW4S",
+            "JQoEdHlwZRgBIAEoDjIXLmNvbmZpZ3MuRmxpZ2h0UGxhblR5cGUSLgoJd2F5",
+            "cG9pbnRzGAIgAygLMhsuY29uZmlncy5GbGlnaHRQbGFuV2F5cG9pbnQicQoU",
+            "QXR0YWNrQmVoYXZpb3JDb25maWcSDAoEbmFtZRgBIAEoCRIhCgR0eXBlGAIg",
+            "ASgOMhMuY29uZmlncy5BdHRhY2tUeXBlEigKC2ZsaWdodF9wbGFuGAMgASgL",
+            "MhMuY29uZmlncy5GbGlnaHRQbGFuKl0KCkF0dGFja1R5cGUSEgoOSU5WQUxJ",
+            "RF9BVFRBQ0sQABIRCg1ESVJFQ1RfQVRUQUNLEAESFQoRUFJFUExBTk5FRF9B",
+            "VFRBQ0sQAhIRCg1TTEFMT01fQVRUQUNLEAMqQQoORmxpZ2h0UGxhblR5cGUS",
+            "FwoTSU5WQUxJRF9GTElHSFRfUExBThAAEhYKEkRJU1RBTkNFX1RPX1RBUkdF",
+            "VBABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.AttackType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig), global::Configs.AttackBehaviorConfig.Parser, new[]{ "Name", "Type", "FlightPlan" }, null, new[]{ typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlanType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlan), global::Configs.AttackBehaviorConfig.Types.FlightPlan.Parser, new[]{ "Type", "Waypoints" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint), global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint.Parser, new[]{ "Distance", "Altitude", "Power" }, null, null, null, null)})})
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.AttackType), typeof(global::Configs.FlightPlanType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightPlanWaypoint), global::Configs.FlightPlanWaypoint.Parser, new[]{ "Distance", "Altitude", "Power" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightPlan), global::Configs.FlightPlan.Parser, new[]{ "Type", "Waypoints" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.AttackBehaviorConfig), global::Configs.AttackBehaviorConfig.Parser, new[]{ "Name", "Type", "FlightPlan" }, null, null, null, null)
           }));
     }
     #endregion
@@ -58,9 +59,534 @@ namespace Configs {
     [pbr::OriginalName("SLALOM_ATTACK")] SlalomAttack = 3,
   }
 
+  /// <summary>
+  /// Flight plan type enumeration.
+  /// </summary>
+  public enum FlightPlanType {
+    [pbr::OriginalName("INVALID_FLIGHT_PLAN")] InvalidFlightPlan = 0,
+    [pbr::OriginalName("DISTANCE_TO_TARGET")] DistanceToTarget = 1,
+  }
+
   #endregion
 
   #region Messages
+  /// <summary>
+  /// Flight plan waypoint.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class FlightPlanWaypoint : pb::IMessage<FlightPlanWaypoint>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<FlightPlanWaypoint> _parser = new pb::MessageParser<FlightPlanWaypoint>(() => new FlightPlanWaypoint());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<FlightPlanWaypoint> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Configs.AttackBehaviorConfigReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public FlightPlanWaypoint() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public FlightPlanWaypoint(FlightPlanWaypoint other) : this() {
+      distance_ = other.distance_;
+      altitude_ = other.altitude_;
+      power_ = other.power_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public FlightPlanWaypoint Clone() {
+      return new FlightPlanWaypoint(this);
+    }
+
+    /// <summary>Field number for the "distance" field.</summary>
+    public const int DistanceFieldNumber = 1;
+    private float distance_;
+    /// <summary>
+    /// Distance.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float Distance {
+      get { return distance_; }
+      set {
+        distance_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "altitude" field.</summary>
+    public const int AltitudeFieldNumber = 2;
+    private float altitude_;
+    /// <summary>
+    /// Altitude.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float Altitude {
+      get { return altitude_; }
+      set {
+        altitude_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "power" field.</summary>
+    public const int PowerFieldNumber = 3;
+    private global::Configs.Power power_ = global::Configs.Power.Idle;
+    /// <summary>
+    /// Power.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Configs.Power Power {
+      get { return power_; }
+      set {
+        power_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as FlightPlanWaypoint);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(FlightPlanWaypoint other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Distance, other.Distance)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Altitude, other.Altitude)) return false;
+      if (Power != other.Power) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Distance != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Distance);
+      if (Altitude != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Altitude);
+      if (Power != global::Configs.Power.Idle) hash ^= Power.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Distance != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(Distance);
+      }
+      if (Altitude != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(Altitude);
+      }
+      if (Power != global::Configs.Power.Idle) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Power);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Distance != 0F) {
+        output.WriteRawTag(13);
+        output.WriteFloat(Distance);
+      }
+      if (Altitude != 0F) {
+        output.WriteRawTag(21);
+        output.WriteFloat(Altitude);
+      }
+      if (Power != global::Configs.Power.Idle) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) Power);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Distance != 0F) {
+        size += 1 + 4;
+      }
+      if (Altitude != 0F) {
+        size += 1 + 4;
+      }
+      if (Power != global::Configs.Power.Idle) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Power);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(FlightPlanWaypoint other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Distance != 0F) {
+        Distance = other.Distance;
+      }
+      if (other.Altitude != 0F) {
+        Altitude = other.Altitude;
+      }
+      if (other.Power != global::Configs.Power.Idle) {
+        Power = other.Power;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 13: {
+            Distance = input.ReadFloat();
+            break;
+          }
+          case 21: {
+            Altitude = input.ReadFloat();
+            break;
+          }
+          case 24: {
+            Power = (global::Configs.Power) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 13: {
+            Distance = input.ReadFloat();
+            break;
+          }
+          case 21: {
+            Altitude = input.ReadFloat();
+            break;
+          }
+          case 24: {
+            Power = (global::Configs.Power) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// Flight plan.
+  /// </summary>
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class FlightPlan : pb::IMessage<FlightPlan>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<FlightPlan> _parser = new pb::MessageParser<FlightPlan>(() => new FlightPlan());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<FlightPlan> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Configs.AttackBehaviorConfigReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public FlightPlan() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public FlightPlan(FlightPlan other) : this() {
+      type_ = other.type_;
+      waypoints_ = other.waypoints_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public FlightPlan Clone() {
+      return new FlightPlan(this);
+    }
+
+    /// <summary>Field number for the "type" field.</summary>
+    public const int TypeFieldNumber = 1;
+    private global::Configs.FlightPlanType type_ = global::Configs.FlightPlanType.InvalidFlightPlan;
+    /// <summary>
+    /// Flight plan type.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Configs.FlightPlanType Type {
+      get { return type_; }
+      set {
+        type_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "waypoints" field.</summary>
+    public const int WaypointsFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::Configs.FlightPlanWaypoint> _repeated_waypoints_codec
+        = pb::FieldCodec.ForMessage(18, global::Configs.FlightPlanWaypoint.Parser);
+    private readonly pbc::RepeatedField<global::Configs.FlightPlanWaypoint> waypoints_ = new pbc::RepeatedField<global::Configs.FlightPlanWaypoint>();
+    /// <summary>
+    /// Waypoints.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Configs.FlightPlanWaypoint> Waypoints {
+      get { return waypoints_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as FlightPlan);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(FlightPlan other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Type != other.Type) return false;
+      if(!waypoints_.Equals(other.waypoints_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Type != global::Configs.FlightPlanType.InvalidFlightPlan) hash ^= Type.GetHashCode();
+      hash ^= waypoints_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Type != global::Configs.FlightPlanType.InvalidFlightPlan) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      waypoints_.WriteTo(output, _repeated_waypoints_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Type != global::Configs.FlightPlanType.InvalidFlightPlan) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Type);
+      }
+      waypoints_.WriteTo(ref output, _repeated_waypoints_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Type != global::Configs.FlightPlanType.InvalidFlightPlan) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
+      }
+      size += waypoints_.CalculateSize(_repeated_waypoints_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(FlightPlan other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Type != global::Configs.FlightPlanType.InvalidFlightPlan) {
+        Type = other.Type;
+      }
+      waypoints_.Add(other.waypoints_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Type = (global::Configs.FlightPlanType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            waypoints_.AddEntriesFrom(input, _repeated_waypoints_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Type = (global::Configs.FlightPlanType) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            waypoints_.AddEntriesFrom(ref input, _repeated_waypoints_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   /// <summary>
   /// Attack behavior configuration.
   /// </summary>
@@ -79,7 +605,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Configs.AttackBehaviorConfigReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Configs.AttackBehaviorConfigReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -143,13 +669,13 @@ namespace Configs {
 
     /// <summary>Field number for the "flight_plan" field.</summary>
     public const int FlightPlanFieldNumber = 3;
-    private global::Configs.AttackBehaviorConfig.Types.FlightPlan flightPlan_;
+    private global::Configs.FlightPlan flightPlan_;
     /// <summary>
     /// Flight plan.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.AttackBehaviorConfig.Types.FlightPlan FlightPlan {
+    public global::Configs.FlightPlan FlightPlan {
       get { return flightPlan_; }
       set {
         flightPlan_ = value;
@@ -275,7 +801,7 @@ namespace Configs {
       }
       if (other.flightPlan_ != null) {
         if (flightPlan_ == null) {
-          FlightPlan = new global::Configs.AttackBehaviorConfig.Types.FlightPlan();
+          FlightPlan = new global::Configs.FlightPlan();
         }
         FlightPlan.MergeFrom(other.FlightPlan);
       }
@@ -308,7 +834,7 @@ namespace Configs {
           }
           case 26: {
             if (flightPlan_ == null) {
-              FlightPlan = new global::Configs.AttackBehaviorConfig.Types.FlightPlan();
+              FlightPlan = new global::Configs.FlightPlan();
             }
             input.ReadMessage(FlightPlan);
             break;
@@ -342,7 +868,7 @@ namespace Configs {
           }
           case 26: {
             if (flightPlan_ == null) {
-              FlightPlan = new global::Configs.AttackBehaviorConfig.Types.FlightPlan();
+              FlightPlan = new global::Configs.FlightPlan();
             }
             input.ReadMessage(FlightPlan);
             break;
@@ -351,544 +877,6 @@ namespace Configs {
       }
     }
     #endif
-
-    #region Nested types
-    /// <summary>Container for nested types declared in the AttackBehaviorConfig message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static partial class Types {
-      /// <summary>
-      /// Flight plan type enumeration.
-      /// </summary>
-      public enum FlightPlanType {
-        [pbr::OriginalName("INVALID_FLIGHT_PLAN")] InvalidFlightPlan = 0,
-        [pbr::OriginalName("DISTANCE_TO_TARGET")] DistanceToTarget = 1,
-      }
-
-      /// <summary>
-      /// Flight plan.
-      /// </summary>
-      [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-      public sealed partial class FlightPlan : pb::IMessage<FlightPlan>
-      #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          , pb::IBufferMessage
-      #endif
-      {
-        private static readonly pb::MessageParser<FlightPlan> _parser = new pb::MessageParser<FlightPlan>(() => new FlightPlan());
-        private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pb::MessageParser<FlightPlan> Parser { get { return _parser; } }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static pbr::MessageDescriptor Descriptor {
-          get { return global::Configs.AttackBehaviorConfig.Descriptor.NestedTypes[0]; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        pbr::MessageDescriptor pb::IMessage.Descriptor {
-          get { return Descriptor; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public FlightPlan() {
-          OnConstruction();
-        }
-
-        partial void OnConstruction();
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public FlightPlan(FlightPlan other) : this() {
-          type_ = other.type_;
-          waypoints_ = other.waypoints_.Clone();
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public FlightPlan Clone() {
-          return new FlightPlan(this);
-        }
-
-        /// <summary>Field number for the "type" field.</summary>
-        public const int TypeFieldNumber = 1;
-        private global::Configs.AttackBehaviorConfig.Types.FlightPlanType type_ = global::Configs.AttackBehaviorConfig.Types.FlightPlanType.InvalidFlightPlan;
-        /// <summary>
-        /// Flight plan type.
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public global::Configs.AttackBehaviorConfig.Types.FlightPlanType Type {
-          get { return type_; }
-          set {
-            type_ = value;
-          }
-        }
-
-        /// <summary>Field number for the "waypoints" field.</summary>
-        public const int WaypointsFieldNumber = 2;
-        private static readonly pb::FieldCodec<global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint> _repeated_waypoints_codec
-            = pb::FieldCodec.ForMessage(18, global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint.Parser);
-        private readonly pbc::RepeatedField<global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint> waypoints_ = new pbc::RepeatedField<global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint>();
-        /// <summary>
-        /// Waypoints.
-        /// </summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public pbc::RepeatedField<global::Configs.AttackBehaviorConfig.Types.FlightPlan.Types.Waypoint> Waypoints {
-          get { return waypoints_; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override bool Equals(object other) {
-          return Equals(other as FlightPlan);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public bool Equals(FlightPlan other) {
-          if (ReferenceEquals(other, null)) {
-            return false;
-          }
-          if (ReferenceEquals(other, this)) {
-            return true;
-          }
-          if (Type != other.Type) return false;
-          if(!waypoints_.Equals(other.waypoints_)) return false;
-          return Equals(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override int GetHashCode() {
-          int hash = 1;
-          if (Type != global::Configs.AttackBehaviorConfig.Types.FlightPlanType.InvalidFlightPlan) hash ^= Type.GetHashCode();
-          hash ^= waypoints_.GetHashCode();
-          if (_unknownFields != null) {
-            hash ^= _unknownFields.GetHashCode();
-          }
-          return hash;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public override string ToString() {
-          return pb::JsonFormatter.ToDiagnosticString(this);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void WriteTo(pb::CodedOutputStream output) {
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          output.WriteRawMessage(this);
-        #else
-          if (Type != global::Configs.AttackBehaviorConfig.Types.FlightPlanType.InvalidFlightPlan) {
-            output.WriteRawTag(8);
-            output.WriteEnum((int) Type);
-          }
-          waypoints_.WriteTo(output, _repeated_waypoints_codec);
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(output);
-          }
-        #endif
-        }
-
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-          if (Type != global::Configs.AttackBehaviorConfig.Types.FlightPlanType.InvalidFlightPlan) {
-            output.WriteRawTag(8);
-            output.WriteEnum((int) Type);
-          }
-          waypoints_.WriteTo(ref output, _repeated_waypoints_codec);
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(ref output);
-          }
-        }
-        #endif
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public int CalculateSize() {
-          int size = 0;
-          if (Type != global::Configs.AttackBehaviorConfig.Types.FlightPlanType.InvalidFlightPlan) {
-            size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
-          }
-          size += waypoints_.CalculateSize(_repeated_waypoints_codec);
-          if (_unknownFields != null) {
-            size += _unknownFields.CalculateSize();
-          }
-          return size;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(FlightPlan other) {
-          if (other == null) {
-            return;
-          }
-          if (other.Type != global::Configs.AttackBehaviorConfig.Types.FlightPlanType.InvalidFlightPlan) {
-            Type = other.Type;
-          }
-          waypoints_.Add(other.waypoints_);
-          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public void MergeFrom(pb::CodedInputStream input) {
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-          input.ReadRawMessage(this);
-        #else
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-          if ((tag & 7) == 4) {
-            // Abort on any end group tag.
-            return;
-          }
-          switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                break;
-              case 8: {
-                Type = (global::Configs.AttackBehaviorConfig.Types.FlightPlanType) input.ReadEnum();
-                break;
-              }
-              case 18: {
-                waypoints_.AddEntriesFrom(input, _repeated_waypoints_codec);
-                break;
-              }
-            }
-          }
-        #endif
-        }
-
-        #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-          if ((tag & 7) == 4) {
-            // Abort on any end group tag.
-            return;
-          }
-          switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-                break;
-              case 8: {
-                Type = (global::Configs.AttackBehaviorConfig.Types.FlightPlanType) input.ReadEnum();
-                break;
-              }
-              case 18: {
-                waypoints_.AddEntriesFrom(ref input, _repeated_waypoints_codec);
-                break;
-              }
-            }
-          }
-        }
-        #endif
-
-        #region Nested types
-        /// <summary>Container for nested types declared in the FlightPlan message type.</summary>
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-        public static partial class Types {
-          [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-          public sealed partial class Waypoint : pb::IMessage<Waypoint>
-          #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-              , pb::IBufferMessage
-          #endif
-          {
-            private static readonly pb::MessageParser<Waypoint> _parser = new pb::MessageParser<Waypoint>(() => new Waypoint());
-            private pb::UnknownFieldSet _unknownFields;
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public static pb::MessageParser<Waypoint> Parser { get { return _parser; } }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public static pbr::MessageDescriptor Descriptor {
-              get { return global::Configs.AttackBehaviorConfig.Types.FlightPlan.Descriptor.NestedTypes[0]; }
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            pbr::MessageDescriptor pb::IMessage.Descriptor {
-              get { return Descriptor; }
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public Waypoint() {
-              OnConstruction();
-            }
-
-            partial void OnConstruction();
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public Waypoint(Waypoint other) : this() {
-              distance_ = other.distance_;
-              altitude_ = other.altitude_;
-              power_ = other.power_;
-              _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public Waypoint Clone() {
-              return new Waypoint(this);
-            }
-
-            /// <summary>Field number for the "distance" field.</summary>
-            public const int DistanceFieldNumber = 1;
-            private float distance_;
-            /// <summary>
-            /// Distance.
-            /// </summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public float Distance {
-              get { return distance_; }
-              set {
-                distance_ = value;
-              }
-            }
-
-            /// <summary>Field number for the "altitude" field.</summary>
-            public const int AltitudeFieldNumber = 2;
-            private float altitude_;
-            /// <summary>
-            /// Altitude.
-            /// </summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public float Altitude {
-              get { return altitude_; }
-              set {
-                altitude_ = value;
-              }
-            }
-
-            /// <summary>Field number for the "power" field.</summary>
-            public const int PowerFieldNumber = 3;
-            private global::Configs.Power power_ = global::Configs.Power.Idle;
-            /// <summary>
-            /// Power.
-            /// </summary>
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public global::Configs.Power Power {
-              get { return power_; }
-              set {
-                power_ = value;
-              }
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public override bool Equals(object other) {
-              return Equals(other as Waypoint);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public bool Equals(Waypoint other) {
-              if (ReferenceEquals(other, null)) {
-                return false;
-              }
-              if (ReferenceEquals(other, this)) {
-                return true;
-              }
-              if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Distance, other.Distance)) return false;
-              if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Altitude, other.Altitude)) return false;
-              if (Power != other.Power) return false;
-              return Equals(_unknownFields, other._unknownFields);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public override int GetHashCode() {
-              int hash = 1;
-              if (Distance != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Distance);
-              if (Altitude != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Altitude);
-              if (Power != global::Configs.Power.Idle) hash ^= Power.GetHashCode();
-              if (_unknownFields != null) {
-                hash ^= _unknownFields.GetHashCode();
-              }
-              return hash;
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public override string ToString() {
-              return pb::JsonFormatter.ToDiagnosticString(this);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public void WriteTo(pb::CodedOutputStream output) {
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-              output.WriteRawMessage(this);
-            #else
-              if (Distance != 0F) {
-                output.WriteRawTag(13);
-                output.WriteFloat(Distance);
-              }
-              if (Altitude != 0F) {
-                output.WriteRawTag(21);
-                output.WriteFloat(Altitude);
-              }
-              if (Power != global::Configs.Power.Idle) {
-                output.WriteRawTag(24);
-                output.WriteEnum((int) Power);
-              }
-              if (_unknownFields != null) {
-                _unknownFields.WriteTo(output);
-              }
-            #endif
-            }
-
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-              if (Distance != 0F) {
-                output.WriteRawTag(13);
-                output.WriteFloat(Distance);
-              }
-              if (Altitude != 0F) {
-                output.WriteRawTag(21);
-                output.WriteFloat(Altitude);
-              }
-              if (Power != global::Configs.Power.Idle) {
-                output.WriteRawTag(24);
-                output.WriteEnum((int) Power);
-              }
-              if (_unknownFields != null) {
-                _unknownFields.WriteTo(ref output);
-              }
-            }
-            #endif
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public int CalculateSize() {
-              int size = 0;
-              if (Distance != 0F) {
-                size += 1 + 4;
-              }
-              if (Altitude != 0F) {
-                size += 1 + 4;
-              }
-              if (Power != global::Configs.Power.Idle) {
-                size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Power);
-              }
-              if (_unknownFields != null) {
-                size += _unknownFields.CalculateSize();
-              }
-              return size;
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public void MergeFrom(Waypoint other) {
-              if (other == null) {
-                return;
-              }
-              if (other.Distance != 0F) {
-                Distance = other.Distance;
-              }
-              if (other.Altitude != 0F) {
-                Altitude = other.Altitude;
-              }
-              if (other.Power != global::Configs.Power.Idle) {
-                Power = other.Power;
-              }
-              _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-            }
-
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            public void MergeFrom(pb::CodedInputStream input) {
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-              input.ReadRawMessage(this);
-            #else
-              uint tag;
-              while ((tag = input.ReadTag()) != 0) {
-              if ((tag & 7) == 4) {
-                // Abort on any end group tag.
-                return;
-              }
-              switch(tag) {
-                  default:
-                    _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                    break;
-                  case 13: {
-                    Distance = input.ReadFloat();
-                    break;
-                  }
-                  case 21: {
-                    Altitude = input.ReadFloat();
-                    break;
-                  }
-                  case 24: {
-                    Power = (global::Configs.Power) input.ReadEnum();
-                    break;
-                  }
-                }
-              }
-            #endif
-            }
-
-            #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-            [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-            void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-              uint tag;
-              while ((tag = input.ReadTag()) != 0) {
-              if ((tag & 7) == 4) {
-                // Abort on any end group tag.
-                return;
-              }
-              switch(tag) {
-                  default:
-                    _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-                    break;
-                  case 13: {
-                    Distance = input.ReadFloat();
-                    break;
-                  }
-                  case 21: {
-                    Altitude = input.ReadFloat();
-                    break;
-                  }
-                  case 24: {
-                    Power = (global::Configs.Power) input.ReadEnum();
-                    break;
-                  }
-                }
-              }
-            }
-            #endif
-
-          }
-
-        }
-        #endregion
-
-      }
-
-    }
-    #endregion
 
   }
 
