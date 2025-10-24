@@ -38,8 +38,6 @@ public class LaunchAngleCsvInterpolatorTests : TestBase {
 
   [Test]
   public void Plan_FileNotFound_ThrowsException() {
-    LogAssert.ignoreFailingMessages = true;
-
     // Inject a mock ConfigLoader that returns an empty string.
     LaunchAngleCsvInterpolator.ConfigLoaderDelegate mockLoader = (string path) => "";
     Assert.Throws<InvalidOperationException>(() => {
@@ -51,8 +49,6 @@ public class LaunchAngleCsvInterpolatorTests : TestBase {
 
   [Test]
   public void Plan_InvalidInterpolationData_ThrowsException() {
-    LogAssert.ignoreFailingMessages = true;
-
     // Create a mock CSV with invalid data format.
     string mockCsv = "invalid,csv,data\n1,2,3";
     LaunchAngleCsvInterpolator.ConfigLoaderDelegate mockLoader = (string path) => mockCsv;
