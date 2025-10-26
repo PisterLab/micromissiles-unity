@@ -80,16 +80,17 @@ public class HierarchicalBase : IHierarchical {
   }
 
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
-    var activeSubHierarchicals =
-        _subHierarchicals.Where(subHierarchical => !subHierarchical.IsTerminated).ToList();
-    if (activeSubHierarchicals.Count == 0) {
+    Vector3 sum = Vector3.zero;
+    int count = 0;
+    foreach (var subHierarchical in _subHierarchicals) {
+      if (!subHierarchical.IsTerminated) {
+        sum += selector(subHierarchical);
+        ++count;
+      }
+    }
+    if (count == 0) {
       return Vector3.zero;
     }
-
-    Vector3 sum = Vector3.zero;
-    foreach (var subHierarchical in activeSubHierarchicals) {
-      sum += selector(subHierarchical);
-    }
-    return sum / activeSubHierarchicals.Count;
+    return sum / count;
   }
 }

@@ -158,8 +158,8 @@ public abstract class ThreatBase : AgentBase, IThreat {
     if (otherAgent is IThreat) {
       OnMiss?.Invoke(this);
       Terminate();
-    } else if (HierarchicalAgent.Target != null &&
-               otherAgent == (HierarchicalAgent.Target as HierarchicalAgent).Agent) {
+    } else if (HierarchicalAgent.Target is HierarchicalAgent targetAgent &&
+               otherAgent == targetAgent.Agent) {
       OnHit?.Invoke(this);
       Terminate();
     }

@@ -89,6 +89,9 @@ public class IADS : MonoBehaviour {
     _threatsToCluster.Clear();
 
     // Cluster the threat clusters into threat swarms.
+    if (_launchers.Count == 0) {
+      return;
+    }
     var clusterClusterer = new KMeansClusterer(_launchers.Count);
     List<Cluster> swarms = clusterClusterer.Cluster(clusters);
     Debug.Log($"Clustered {clusters.Count} clusters into {swarms.Count} swarms.");

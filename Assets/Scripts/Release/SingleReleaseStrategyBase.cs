@@ -49,7 +49,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
           }
           if (subInterceptor is IInterceptor subInterceptorInterceptor) {
             subInterceptorInterceptor.OnHit += carrier.RegisterSubInterceptorHit;
-            subInterceptorInterceptor.OnMiss += carrier.RegisterSubInterceptorHit;
+            subInterceptorInterceptor.OnMiss += carrier.RegisterSubInterceptorMiss;
           }
           releasedAgents.Add(subInterceptor);
 
