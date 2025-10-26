@@ -51,47 +51,47 @@ interceptor_swarm_configs {
         }
       }
     }
-    threat_swarm_configs {
-      num_agents: 7
-      agent_config {
-        config_file: "brahmos.pbtxt"
-        attack_behavior_config_file: "brahmos_direct_attack.pbtxt"
-        initial_state {
-          position {
-            x: 0
-            y: 50
-            z: 30000
-          }
-          velocity {
-            x: 0
-            y: 0
-            z: -800
-          }
+  }
+}
+threat_swarm_configs {
+  num_agents: 7
+  agent_config {
+    config_file: "brahmos.pbtxt"
+    attack_behavior_config_file: "brahmos_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 50
+        z: 30000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -800
+      }
+    }
+    standard_deviation {
+      position {
+        x: 3000
+        y: 10
+        z: 200
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 25
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+            enabled: true
+            range_threshold: 2000
         }
-        standard_deviation {
-          position {
-            x: 3000
-            y: 10
-            z: 200
-          }
-          velocity {
-            x: 0
-            y: 0
-            z: 25
-          }
-        }
-        dynamic_config {
-          flight_config {
-            evasion_config {
-                enabled: true
-                range_threshold: 2000
-            }
-          }
-          sensor_config {
-            type: IDEAL
-            frequency: 100
-          }
-        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
       }
     }
   }
