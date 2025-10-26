@@ -9,10 +9,6 @@ using System;
 public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
 
-  // [SerializeField]
-  // [Tooltip("The UI panel that renders the tactical view for TACTICAL mode")]
-  // private GameObject _tacticalPanel;
-
   [SerializeField]
   [Tooltip("The UI panel that renders the camera view for THREE_DIMENSIONAL mode")]
   private GameObject _cameraPanel;
@@ -133,7 +129,6 @@ public class UIManager : MonoBehaviour {
   public void SetUIMode(UIMode mode) {
     curMode = mode;
     _cameraPanel.SetActive(mode == UIMode.THREE_DIMENSIONAL);
-    // _tacticalPanel.SetActive(mode == UIMode.TACTICAL);
   }
 
   public UIMode GetUIMode() {

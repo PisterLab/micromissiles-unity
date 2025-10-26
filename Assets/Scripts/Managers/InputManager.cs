@@ -55,11 +55,7 @@ public class InputManager : MonoBehaviour {
     }
   }
 
-  void HandleTacticalModeScrollWheelInput() {
-    if (Input.GetAxis("Mouse ScrollWheel") != 0) {
-      // TacticalPanelController.Instance.ZoomIn(Input.GetAxis("Mouse ScrollWheel") * 0.1f);
-    }
-  }
+  void HandleTacticalModeScrollWheelInput() {}
 
   private void HandleTacticalModeMouseInput() {
     // Start drag on right mouse button
@@ -76,7 +72,6 @@ public class InputManager : MonoBehaviour {
     if (_isDragging) {
       Vector2 currentMousePos = Input.mousePosition;
       Vector2 delta = currentMousePos - _lastMousePosition;
-      // TacticalPanelController.Instance.Pan(delta);
       _lastMousePosition = currentMousePos;
     }
   }
@@ -124,17 +119,6 @@ public class InputManager : MonoBehaviour {
     }
     if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
       keyboardPanDirection.x += 1;
-    }
-
-    if (Input.GetKeyDown(KeyCode.Q)) {
-      // TacticalPanelController.Instance.CycleRangeUp();
-    }
-    if (Input.GetKeyDown(KeyCode.E)) {
-      // TacticalPanelController.Instance.CycleRangeDown();
-    }
-
-    if (keyboardPanDirection != Vector2.zero) {
-      // TacticalPanelController.Instance.PanWithKeyboard(keyboardPanDirection.normalized);
     }
   }
 
