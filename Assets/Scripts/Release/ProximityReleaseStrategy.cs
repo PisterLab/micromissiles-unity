@@ -8,8 +8,8 @@ public class ProximityReleaseStrategy : MassReleaseStrategyBase {
   // from the carrier interceptor's current velocity or when any threat is within 500 meters of the
   // interceptor.
   private const float _maxBearingDegrees = 30f;
-  private const float _minDistanceToThreat = 500f;
-  private const float _maxDistanceToThreat = 2000f;
+  private const float _minDistanceToThreat = 1000f;
+  private const float _maxDistanceToThreat = 2500f;
   // TODO(titan): The prediction time should be a function of the sub-interceptor characteristic,
   // such as the boost time.
   private const float _predictionTime = 0.6f;
