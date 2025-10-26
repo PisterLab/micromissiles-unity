@@ -23,7 +23,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
       LaunchPlan launchPlan = PlanRelease(subHierarchical);
       if (launchPlan.ShouldLaunch) {
         Simulation.State initialState = new Simulation.State() {
-          Position = Coordinates3.ToProto(Vector3.zero),
+          Position = Coordinates3.ToProto(Agent.Position),
           Velocity = Coordinates3.ToProto(launchPlan.NormalizedLaunchVector(Agent.Position) *
                                           _initialSpeed),
         };

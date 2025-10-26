@@ -39,7 +39,7 @@ public class CarrierInterceptorLegacy : Interceptor {
 
     List<Interceptor> submunitions = new List<Interceptor>();
     for (int i = 0; i < agentConfig.SubAgentConfig.NumSubAgents; ++i) {
-      Configs.AgentConfig SubAgentConfig = agentConfig.SubAgentConfig.AgentConfig;
+      Configs.AgentConfig subAgentConfig = agentConfig.SubAgentConfig.AgentConfig;
       Simulation.State initialState = new Simulation.State();
       initialState.Position = Coordinates3.ToProto(transform.position);
 
@@ -56,7 +56,7 @@ public class CarrierInterceptorLegacy : Interceptor {
           maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation)));
 
       Interceptor submunition =
-          SimManager.Instance.CreateInterceptorLegacy(SubAgentConfig, initialState);
+          SimManager.Instance.CreateInterceptorLegacy(subAgentConfig, initialState);
       submunition.SetFlightPhase(FlightPhase.READY);
       // Launch the submunitions with the same velocity as the carrier interceptor's.
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);
