@@ -16,7 +16,9 @@ public class HierarchicalBase : IHierarchical {
   // List of hierarchical objects pursuing this hierarchical object.
   private List<IHierarchical> _pursuers = new List<IHierarchical>();
 
-  public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
+  // Return a list of active sub-hierarchical objects.
+  public IEnumerable<IHierarchical> SubHierarchicals =>
+      _subHierarchicals.Where(s => !s.IsTerminated);
 
   public virtual IHierarchical Target {
     get { return _target; }
@@ -37,7 +39,7 @@ public class HierarchicalBase : IHierarchical {
   public virtual Vector3 Velocity => GetMean(s => s.Velocity);
   public float Speed => Velocity.magnitude;
   public virtual Vector3 Acceleration => GetMean(s => s.Acceleration);
-  public virtual bool IsTerminated => SubHierarchicals.All(s => s.IsTerminated);
+  public virtual bool IsTerminated => _subHierarchicals.All(s => s.IsTerminated);
 
   public void AddSubHierarchical(IHierarchical subHierarchical) {
     if (!_subHierarchicals.Contains(subHierarchical)) {
@@ -82,11 +84,9 @@ public class HierarchicalBase : IHierarchical {
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
     Vector3 sum = Vector3.zero;
     int count = 0;
-    foreach (var subHierarchical in _subHierarchicals) {
-      if (!subHierarchical.IsTerminated) {
-        sum += selector(subHierarchical);
-        ++count;
-      }
+    foreach (var subHierarchical in SubHierarchicals) {
+      sum += selector(subHierarchical);
+      ++count;
     }
     if (count == 0) {
       return Vector3.zero;

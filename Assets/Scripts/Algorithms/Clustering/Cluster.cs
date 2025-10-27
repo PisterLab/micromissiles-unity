@@ -11,7 +11,7 @@ public class Cluster : HierarchicalBase {
     set => _centroid = value;
   }
 
-  public int Size => SubHierarchicals.Count;
+  public int Size => SubHierarchicals.Count();
   public bool IsEmpty => Size == 0;
 
   public float Radius() {

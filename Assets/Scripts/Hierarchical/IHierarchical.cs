@@ -9,7 +9,8 @@ using UnityEngine;
 // Hierarchical objects can be assigned to one another and are used by all hierarchical algorithms,
 // including clustering, prediction, and assignment algorithms.
 public interface IHierarchical {
-  IReadOnlyList<IHierarchical> SubHierarchicals { get; }
+  // Return a list of active sub-hierarchical objects.
+  IEnumerable<IHierarchical> SubHierarchicals { get; }
   IHierarchical Target { get; set; }
   IReadOnlyList<IHierarchical> Pursuers { get; }
 
