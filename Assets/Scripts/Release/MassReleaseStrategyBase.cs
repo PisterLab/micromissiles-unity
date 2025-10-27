@@ -61,11 +61,12 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       }
 
       // Assign the released sub-interceptors to the sub-hierarchical objects of the target.
-      if (target.SubHierarchicals.Count() != 0) {
+      List<IHierarchical> subHierarchicals = target.SubHierarchicals.ToList();
+      if (subHierarchicals.Any()) {
         var releasedAgentHierarchicals =
             releasedAgents.Select(agent => agent.HierarchicalAgent).ToList();
         List<AssignmentItem> assignments =
-            Assignment.Assign(releasedAgentHierarchicals, target.SubHierarchicals.ToList());
+            Assignment.Assign(releasedAgentHierarchicals, subHierarchicals);
         foreach (var assignment in assignments) {
           assignment.First.Target = assignment.Second;
         }

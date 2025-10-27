@@ -15,7 +15,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
 
   public override List<IAgent> Release() {
     IHierarchical target = Agent.HierarchicalAgent.Target;
-    if ((target?.SubHierarchicals.Count() ?? 0) == 0) {
+    if (target == null || !target.SubHierarchicals.Any()) {
       return new List<IAgent>();
     }
     var carrier = Agent as CarrierBase;
