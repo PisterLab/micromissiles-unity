@@ -97,17 +97,17 @@ public class SimManager : MonoBehaviour {
 
     // Clear existing interceptors and threats.
     foreach (var interceptor in _interceptors) {
-      if (interceptor != null) {
+      if (interceptor as MonoBehaviour != null) {
         Destroy(interceptor.gameObject);
       }
     }
     foreach (var threat in _threats) {
-      if (threat != null) {
+      if (threat as MonoBehaviour != null) {
         Destroy(threat.gameObject);
       }
     }
     foreach (var dummyAgent in _dummyAgents) {
-      if (dummyAgent != null) {
+      if (dummyAgent as MonoBehaviour != null) {
         Destroy(dummyAgent.gameObject);
       }
     }
