@@ -15,7 +15,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
 
   public override List<IAgent> Release() {
     IHierarchical target = Agent.HierarchicalAgent.Target;
-    if (target == null || !target.SubHierarchicals.Any()) {
+    if (target == null || !target.ActiveSubHierarchicals.Any()) {
       return new List<IAgent>();
     }
     var carrier = Agent as CarrierBase;
@@ -24,12 +24,9 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
     }
 
     var releasedAgents = new List<IAgent>();
-    foreach (var subHierarchical in target.SubHierarchicals) {
+    foreach (var subHierarchical in target.ActiveSubHierarchicals) {
       if (carrier.NumSubInterceptorsRemaining - releasedAgents.Count <= 0) {
         break;
-      }
-      if (subHierarchical.IsTerminated) {
-        continue;
       }
       if (subHierarchical.Pursuers.Count != 0 && !subHierarchical.IsEscapingPursuers()) {
         continue;

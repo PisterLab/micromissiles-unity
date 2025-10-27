@@ -16,8 +16,10 @@ public class HierarchicalBase : IHierarchical {
   // List of hierarchical objects pursuing this hierarchical object.
   private List<IHierarchical> _pursuers = new List<IHierarchical>();
 
+  public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
+
   // Return a list of active sub-hierarchical objects.
-  public IEnumerable<IHierarchical> SubHierarchicals =>
+  public IEnumerable<IHierarchical> ActiveSubHierarchicals =>
       _subHierarchicals.Where(s => !s.IsTerminated);
 
   public virtual IHierarchical Target {
@@ -84,7 +86,7 @@ public class HierarchicalBase : IHierarchical {
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
     Vector3 sum = Vector3.zero;
     int count = 0;
-    foreach (var subHierarchical in SubHierarchicals) {
+    foreach (var subHierarchical in ActiveSubHierarchicals) {
       sum += selector(subHierarchical);
       ++count;
     }

@@ -113,8 +113,8 @@ public class HierarchicalBaseTests {
     var child = new HierarchicalBase();
     parent.AddSubHierarchical(child);
 
-    Assert.AreEqual(1, parent.SubHierarchicals.Count());
-    Assert.AreSame(child, parent.SubHierarchicals.First());
+    Assert.AreEqual(1, parent.SubHierarchicals.Count);
+    Assert.AreSame(child, parent.SubHierarchicals[0]);
   }
 
   [Test]
@@ -124,8 +124,8 @@ public class HierarchicalBaseTests {
     parent.AddSubHierarchical(child);
     parent.AddSubHierarchical(child);
 
-    Assert.AreEqual(1, parent.SubHierarchicals.Count());
-    Assert.AreSame(child, parent.SubHierarchicals.First());
+    Assert.AreEqual(1, parent.SubHierarchicals.Count);
+    Assert.AreSame(child, parent.SubHierarchicals[0]);
   }
 
   [Test]
@@ -136,7 +136,7 @@ public class HierarchicalBaseTests {
     parent.AddSubHierarchical(child);
     parent.RemoveSubHierarchical(child);
 
-    Assert.AreEqual(0, parent.SubHierarchicals.Count());
+    Assert.AreEqual(0, parent.SubHierarchicals.Count);
   }
 
   [Test]
@@ -148,8 +148,8 @@ public class HierarchicalBaseTests {
     parent.AddSubHierarchical(child1);
     parent.RemoveSubHierarchical(child2);
 
-    Assert.AreEqual(1, parent.SubHierarchicals.Count());
-    Assert.AreSame(child1, parent.SubHierarchicals.First());
+    Assert.AreEqual(1, parent.SubHierarchicals.Count);
+    Assert.AreSame(child1, parent.SubHierarchicals[0]);
   }
 
   [Test]
