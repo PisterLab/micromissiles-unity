@@ -50,6 +50,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   protected override void OnDrawGizmos() {
+    const float axisLength = 10f;
+
     base.OnDrawGizmos();
 
     if (Application.isPlaying) {
@@ -60,16 +62,16 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       }
 
       // Forward direction.
-      Gizmos.color = Color.cyan;
-      Gizmos.DrawRay(Position, transform.forward * 10f);
+      Gizmos.color = Color.blue;
+      Gizmos.DrawRay(Position, transform.forward * axisLength);
 
       // Right direction.
-      Gizmos.color = Color.magenta;
-      Gizmos.DrawRay(Position, transform.right * 10f);
+      Gizmos.color = Color.red;
+      Gizmos.DrawRay(Position, transform.right * axisLength);
 
       // Upwards direction.
       Gizmos.color = Color.yellow;
-      Gizmos.DrawRay(Position, transform.up * 10f);
+      Gizmos.DrawRay(Position, transform.up * axisLength);
     }
   }
 
