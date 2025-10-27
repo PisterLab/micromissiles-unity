@@ -14,9 +14,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     base.FixedUpdate();
 
     // Navigate towards the target.
-    var accelerationInput = Controller?.Plan() ?? Vector3.zero;
-    var acceleration = Movement?.Act(accelerationInput) ?? Vector3.zero;
-    _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
+    _accelerationInput = Controller?.Plan() ?? Vector3.zero;
+    _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
+    _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
   }
 
   protected override void UpdateAgentConfig() {
@@ -46,6 +46,30 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             $"Controller type {AgentConfig.DynamicConfig?.FlightConfig?.ControllerType} not found.");
         break;
       }
+    }
+  }
+
+  protected override void OnDrawGizmos() {
+    base.OnDrawGizmos();
+
+    if (Application.isPlaying) {
+      // Target.
+      if (HierarchicalAgent.Target != null) {
+        Gizmos.color = new Color(1, 1, 1, 0.15f);
+        Gizmos.DrawLine(Position, HierarchicalAgent.Target.Position);
+      }
+
+      // Forward direction.
+      Gizmos.color = Color.cyan;
+      Gizmos.DrawRay(Position, transform.forward * 10f);
+
+      // Right direction.
+      Gizmos.color = Color.magenta;
+      Gizmos.DrawRay(Position, transform.right * 10f);
+
+      // Upwards direction.
+      Gizmos.color = Color.yellow;
+      Gizmos.DrawRay(Position, transform.up * 10f);
     }
   }
 
