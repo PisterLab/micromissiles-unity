@@ -57,8 +57,8 @@ public static class Coordinates3 {
     return ConvertCylindricalToCartesian(new Vector3(r, azimuth, height));
   }
 
-  public static Vector3 FromProto(in Simulation.CartesianCoordinates coordinates) {
-    return new Vector3(coordinates.X, coordinates.Y, coordinates.Z);
+  public static Vector3 FromProto(Simulation.CartesianCoordinates coordinates) {
+    return new Vector3(coordinates?.X ?? 0, coordinates?.Y ?? 0, coordinates?.Z ?? 0);
   }
 
   public static Simulation.CartesianCoordinates ToProto(in Vector3 cartesian) {
