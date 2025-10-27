@@ -56,7 +56,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     if (Application.isPlaying) {
       // Target.
-      if (HierarchicalAgent.Target != null) {
+      if (HierarchicalAgent.Target != null && !HierarchicalAgent.Target.IsTerminated) {
         Gizmos.color = new Color(1, 1, 1, 0.15f);
         Gizmos.DrawLine(Position, HierarchicalAgent.Target.Position);
       }
