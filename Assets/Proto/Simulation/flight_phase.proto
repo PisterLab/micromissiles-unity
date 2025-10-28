@@ -9,5 +9,6 @@ enum FlightPhase {
   BOOST = 2;
   MIDCOURSE = 3;
   TERMINAL = 4;
-  TERMINATED = 5;
+  BALLISTIC = 5;
+  TERMINATED = 6;
 }

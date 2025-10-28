@@ -9,4 +9,10 @@ public class CarrierInterceptor : CarrierBase {
     var assignment = new MaxSpeedAssignment(Assignment.Assignment_EvenAssignment_Assign);
     ReleaseStrategy = new ProximityReleaseStrategy(this, assignment);
   }
+
+  protected override void LateUpdate() {
+    if (NumSubInterceptorsRemaining <= 0) {
+      (Movement as MissileMovement).FlightPhase = Simulation.FlightPhase.Ballistic;
+    }
+  }
 }

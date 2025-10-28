@@ -17,10 +17,13 @@ public interface IHierarchical {
   Vector3 Velocity { get; }
   float Speed { get; }
   Vector3 Acceleration { get; }
+  bool IsTerminated { get; }
 
   void AddSubHierarchical(IHierarchical subHierarchical);
   void RemoveSubHierarchical(IHierarchical subHierarchical);
 
   void AddPursuer(IHierarchical pursuer);
   void RemovePursuer(IHierarchical pursuer);
+
+  bool IsEscapingPursuers();
 }
