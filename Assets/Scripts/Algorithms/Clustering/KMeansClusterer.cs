@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,12 +25,23 @@ public class KMeansClusterer : ClustererBase {
 
   // Generate the clusters from the list of hierarchical objects.
   public override List<Cluster> Cluster(IEnumerable<IHierarchical> hierarchicals) {
+    if (hierarchicals == null || !hierarchicals.Any()) {
+      return new List<Cluster>();
+    }
+
     // Initialize the clusters with centroids located at the positions of k random hierarchical
     // objects. Perform Fisher-Yates shuffling to find k random hierarchical objects.
     List<IHierarchical> hierarchicalsList = hierarchicals.ToList();
+
+    // Validate that k is not greater than the number of hierarchical objects.
+    if (_k > hierarchicalsList.Count) {
+      throw new InvalidOperationException(
+          $"Cannot create {_k} clusters from {hierarchicalsList.Count} hierarchical objects.");
+    }
+
     var clusters = new List<Cluster>();
     for (int i = 0; i < _k; ++i) {
-      int j = Random.Range(i, hierarchicalsList.Count);
+      int j = UnityEngine.Random.Range(i, hierarchicalsList.Count);
       (hierarchicalsList[i], hierarchicalsList[j]) = (hierarchicalsList[j], hierarchicalsList[i]);
 
       clusters.Add(new Cluster { Centroid = hierarchicalsList[i].Position });
@@ -45,7 +57,7 @@ public class KMeansClusterer : ClustererBase {
       for (int clusterIndex = 0; clusterIndex < clusters.Count; ++clusterIndex) {
         Vector3 oldClusterPosition = clusters[clusterIndex].Centroid;
         if (clusters[clusterIndex].IsEmpty) {
-          int hierarchicalIndex = Random.Range(0, hierarchicalsList.Count);
+          int hierarchicalIndex = UnityEngine.Random.Range(0, hierarchicalsList.Count);
           clusters[clusterIndex].Centroid = hierarchicalsList[hierarchicalIndex].Position;
         } else {
           clusters[clusterIndex].Recenter();
@@ -64,6 +76,11 @@ public class KMeansClusterer : ClustererBase {
 
   private static void AssignToClusters(IReadOnlyList<Cluster> clusters,
                                        IEnumerable<IHierarchical> hierarchicals) {
+    // Clear all clusters.
+    foreach (var cluster in clusters) {
+      cluster.ClearSubHierarchicals();
+    }
+
     // Determine the closest centroid to each hierarchical object.
     foreach (var hierarchical in hierarchicals) {
       float minDistance = Mathf.Infinity;
