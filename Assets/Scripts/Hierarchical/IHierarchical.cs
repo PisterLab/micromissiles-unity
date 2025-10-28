@@ -11,7 +11,6 @@ using UnityEngine;
 public interface IHierarchical {
   IReadOnlyList<IHierarchical> SubHierarchicals { get; }
   IHierarchical Target { get; set; }
-  IHierarchical TargetModel { get; set; }
   IReadOnlyList<IHierarchical> Pursuers { get; }
 
   Vector3 Position { get; }

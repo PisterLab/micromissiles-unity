@@ -33,13 +33,13 @@ public class CarrierInterceptorLegacy : Interceptor {
   }
 
   private void SpawnSubmunitions() {
-    if (agentConfig.SubmunitionsConfig == null) {
+    if (agentConfig.SubAgentConfig == null) {
       return;
     }
 
     List<Interceptor> submunitions = new List<Interceptor>();
-    for (int i = 0; i < agentConfig.SubmunitionsConfig.NumSubmunitions; ++i) {
-      Configs.AgentConfig submunitionsConfig = agentConfig.SubmunitionsConfig.AgentConfig;
+    for (int i = 0; i < agentConfig.SubAgentConfig.NumSubAgents; ++i) {
+      Configs.AgentConfig subAgentConfig = agentConfig.SubAgentConfig.AgentConfig;
       Simulation.State initialState = new Simulation.State();
       initialState.Position = Coordinates3.ToProto(transform.position);
 
@@ -49,14 +49,14 @@ public class CarrierInterceptorLegacy : Interceptor {
       Vector3 velocity = GetComponent<Rigidbody>().linearVelocity;
       Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
       Vector3 lateralDirection =
-          Quaternion.AngleAxis(i * 360 / agentConfig.SubmunitionsConfig.NumSubmunitions, velocity) *
+          Quaternion.AngleAxis(i * 360 / agentConfig.SubAgentConfig.NumSubAgents, velocity) *
           perpendicularDirection;
       initialState.Velocity = Coordinates3.ToProto(Vector3.RotateTowards(
           velocity, lateralDirection, maxRadiansDelta: SubmunitionsAngularDeviation,
           maxMagnitudeDelta: Mathf.Cos(SubmunitionsAngularDeviation)));
 
       Interceptor submunition =
-          SimManager.Instance.CreateInterceptor(submunitionsConfig, initialState);
+          SimManager.Instance.CreateInterceptorLegacy(subAgentConfig, initialState);
       submunition.SetFlightPhase(FlightPhase.READY);
       // Launch the submunitions with the same velocity as the carrier interceptor's.
       submunition.SetVelocity(GetComponent<Rigidbody>().linearVelocity);

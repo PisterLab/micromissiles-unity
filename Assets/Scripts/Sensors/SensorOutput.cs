@@ -6,4 +6,7 @@ public struct SensorOutput {
 
   // Relative velocity transformation.
   public VelocityTransformation Velocity { get; init; }
+
+  // Relative acceleration transformation.
+  public AccelerationTransformation Acceleration { get; init; }
 }

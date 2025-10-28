@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ApnControllerTests : TestBase {
   private AgentBase _agent;
+  private AgentBase _targetModel;
   private ApnController _controller;
 
   [SetUp]
@@ -11,15 +12,18 @@ public class ApnControllerTests : TestBase {
     Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
     _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
-    _agent.HierarchicalAgent = new HierarchicalAgent(_agent);
+    _targetModel = new GameObject("Target").AddComponent<AgentBase>();
+    Rigidbody targetRb = _targetModel.gameObject.AddComponent<Rigidbody>();
+    InvokePrivateMethod(_targetModel, "Awake");
+    _agent.TargetModel = _targetModel;
     _controller = new ApnController(_agent, gain: 1);
   }
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards() {
-    _agent.HierarchicalAgent.TargetModel =
-        new FixedHierarchical(position: new Vector3(0, 0, 1), velocity: new Vector3(0, 1, -1),
-                              acceleration: new Vector3(0, 1, 0));
+    _targetModel.Position = new Vector3(0, 0, 1);
+    _targetModel.Velocity = new Vector3(0, 1, -1);
+    _targetModel.Acceleration = new Vector3(0, 1, 0);
     // Vertical PN acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
     // = 1. Vertical APN feedforward acceleration = 0.5 * gain * y-acceleration = 1/2 * 1 * 1 = 0.5.
     Assert.AreEqual(new Vector3(0, 1.5f, 0), _controller.Plan());
@@ -27,8 +31,9 @@ public class ApnControllerTests : TestBase {
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards_WithNoAcceleration() {
-    _agent.HierarchicalAgent.TargetModel =
-        new FixedHierarchical(position: new Vector3(0, 0, 1), velocity: new Vector3(0, 1, -1));
+    _targetModel.Position = new Vector3(0, 0, 1);
+    _targetModel.Velocity = new Vector3(0, 1, -1);
+    _targetModel.Acceleration = new Vector3(0, 0, 0);
     // Vertical PN acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
     // = 1.
     Assert.AreEqual(new Vector3(0, 1, 0), _controller.Plan());
@@ -37,9 +42,9 @@ public class ApnControllerTests : TestBase {
   [Test]
   public void
   Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards_WithAccelerationAlongBoresight() {
-    _agent.HierarchicalAgent.TargetModel =
-        new FixedHierarchical(position: new Vector3(0, 0, 1), velocity: new Vector3(0, 1, -1),
-                              acceleration: new Vector3(0, 0, -5));
+    _targetModel.Position = new Vector3(0, 0, 1);
+    _targetModel.Velocity = new Vector3(0, 1, -1);
+    _targetModel.Acceleration = new Vector3(0, 0, -5);
     // Vertical PN acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
     // = 1.
     Assert.AreEqual(new Vector3(0, 1, 0), _controller.Plan());
@@ -47,9 +52,9 @@ public class ApnControllerTests : TestBase {
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingLeft() {
-    _agent.HierarchicalAgent.TargetModel =
-        new FixedHierarchical(position: new Vector3(0, 0, 1), velocity: new Vector3(-1, 0, -1),
-                              acceleration: new Vector3(0, 1, 0));
+    _targetModel.Position = new Vector3(0, 0, 1);
+    _targetModel.Velocity = new Vector3(-1, 0, -1);
+    _targetModel.Acceleration = new Vector3(0, 1, 0);
     // Horizontal PN acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 *
     // -1 = -1. Vertical APN feedforward acceleration = 0.5 * gain * y-acceleration = 1/2 * 1 * 1 =
     // 0.5.
@@ -58,8 +63,9 @@ public class ApnControllerTests : TestBase {
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingLeft_WithNoAcceleration() {
-    _agent.HierarchicalAgent.TargetModel =
-        new FixedHierarchical(position: new Vector3(0, 0, 1), velocity: new Vector3(-1, 0, -1));
+    _targetModel.Position = new Vector3(0, 0, 1);
+    _targetModel.Velocity = new Vector3(-1, 0, -1);
+    _targetModel.Acceleration = new Vector3(0, 0, 0);
     // Horizontal PN acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 *
     // -1 = -1.
     Assert.AreEqual(new Vector3(-1, 0, 0), _controller.Plan());
@@ -68,9 +74,9 @@ public class ApnControllerTests : TestBase {
   [Test]
   public void
   Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingLeft_WithAccelerationAlongBoresight() {
-    _agent.HierarchicalAgent.TargetModel =
-        new FixedHierarchical(position: new Vector3(0, 0, 1), velocity: new Vector3(-1, 0, -1),
-                              acceleration: new Vector3(0, 0, -5));
+    _targetModel.Position = new Vector3(0, 0, 1);
+    _targetModel.Velocity = new Vector3(-1, 0, -1);
+    _targetModel.Acceleration = new Vector3(0, 0, -5);
     // Horizontal PN acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 *
     // -1 = -1.
     Assert.AreEqual(new Vector3(-1, 0, 0), _controller.Plan());

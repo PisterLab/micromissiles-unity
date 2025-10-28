@@ -11,6 +11,9 @@ public class OrthogonalEvasionTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
+    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
+    InvokePrivateMethod(_agent, "Awake");
     _agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
           new Configs.AccelerationConfig() {
@@ -22,16 +25,21 @@ public class OrthogonalEvasionTests : TestBase {
     _agent.AgentConfig = new Configs.AgentConfig() {
       DynamicConfig =
           new Configs.DynamicConfig() {
-            FlightConfig = new Configs.FlightConfig() { EvasionConfig =
-                                                            new Configs.EvasionConfig() {
-                                                              Enabled = true,
-                                                              RangeThreshold = 1000,
-                                                            } },
+            FlightConfig =
+                new Configs.FlightConfig() {
+                  EvasionConfig =
+                      new Configs.EvasionConfig() {
+                        Enabled = true,
+                        RangeThreshold = 1000,
+                      },
+                },
+            SensorConfig =
+                new Simulation.SensorConfig() {
+                  Type = Simulation.SensorType.Ideal,
+                  Frequency = 100,
+                },
           },
     };
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
-    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
-    InvokePrivateMethod(_agent, "Awake");
     _agent.Sensor = new IdealSensor(_agent);
     _pursuer = new GameObject("Agent").AddComponent<AgentBase>();
     Rigidbody pursuerRb = _pursuer.gameObject.AddComponent<Rigidbody>();

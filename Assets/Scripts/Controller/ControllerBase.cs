@@ -11,12 +11,11 @@ public abstract class ControllerBase : IController {
 
   // Plan the next optimal control to intercept the target.
   public Vector3 Plan() {
-    if (Agent.HierarchicalAgent == null || Agent.HierarchicalAgent.TargetModel == null) {
+    if (Agent.TargetModel == null) {
       return Vector3.zero;
     }
 
-    Transformation relativeTransformation =
-        Agent.GetRelativeTransformation(Agent.HierarchicalAgent.TargetModel);
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(Agent.TargetModel);
     return Plan(relativeTransformation);
   }
 

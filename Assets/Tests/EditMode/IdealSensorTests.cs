@@ -33,21 +33,23 @@ public class IdealSensorTests : TestBase {
   }
 
   [Test]
-  public void Sense_Hierarchical_ReturnsCorrectPositionAndVelocity() {
+  public void Sense_Hierarchical_ReturnsCorrectPositionVelocityAndAcceleration() {
     var target =
         new FixedHierarchical(position: new Vector3(10, 2, 20), velocity: new Vector3(-12, 20, -1));
     Transformation relativeTransformation = _agent.GetRelativeTransformation(target);
     SensorOutput sensorOutput = _sensor.Sense(target);
     Assert.AreEqual(relativeTransformation.Position, sensorOutput.Position);
     Assert.AreEqual(relativeTransformation.Velocity, sensorOutput.Velocity);
+    Assert.AreEqual(relativeTransformation.Acceleration, sensorOutput.Acceleration);
   }
 
   [Test]
-  public void Sense_Waypoint_ReturnsCorrectPositionAndVelocity() {
+  public void Sense_Waypoint_ReturnsCorrectPositionVelocityAndAcceleration() {
     var waypoint = new Vector3(-12, 20, -1);
     Transformation relativeTransformation = _agent.GetRelativeTransformation(waypoint);
     SensorOutput sensorOutput = _sensor.Sense(waypoint);
     Assert.AreEqual(relativeTransformation.Position, sensorOutput.Position);
     Assert.AreEqual(relativeTransformation.Velocity, sensorOutput.Velocity);
+    Assert.AreEqual(relativeTransformation.Acceleration, sensorOutput.Acceleration);
   }
 }
