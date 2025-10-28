@@ -7,6 +7,15 @@ public class AgentBase : MonoBehaviour, IAgent {
   // Rigid body component.
   protected Rigidbody _rigidbody;
 
+  // The acceleration field is not part of the rigid body component, so it is tracked separately.
+  // The acceleration is applied as a force during each frame update.
+  [SerializeField]
+  protected Vector3 _acceleration;
+
+  // The acceleration input is calculated by the controller and provided to the movement behavior.
+  [SerializeField]
+  protected Vector3 _accelerationInput;
+
   // The agent's position within the hierarchical strategy is given by the hierarchical agent.
   [SerializeField]
   private HierarchicalAgent _hierarchicalAgent;
@@ -20,15 +29,6 @@ public class AgentBase : MonoBehaviour, IAgent {
   // dynamic configuration, and sub-agent configuration (for interceptors).
   [SerializeField]
   private Configs.AgentConfig _agentConfig;
-
-  // The acceleration field is not part of the rigid body component, so it is tracked separately.
-  // The acceleration is applied as a force during each frame update.
-  [SerializeField]
-  private Vector3 _acceleration;
-
-  // The acceleration input is calculated by the controller and provided to the movement behavior.
-  [SerializeField]
-  private Vector3 _accelerationInput;
 
   // Elapsed time since the creation of the agent.
   private float _elapsedTime = 0f;
@@ -196,6 +196,13 @@ public class AgentBase : MonoBehaviour, IAgent {
         Debug.LogError($"Sensor type {AgentConfig.DynamicConfig?.SensorConfig?.Type} not found.");
         break;
       }
+    }
+  }
+
+  protected virtual void OnDrawGizmos() {
+    if (Application.isPlaying) {
+      Gizmos.color = Color.green;
+      Gizmos.DrawRay(Position, _accelerationInput);
     }
   }
 

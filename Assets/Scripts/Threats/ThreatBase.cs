@@ -63,35 +63,34 @@ public abstract class ThreatBase : AgentBase, IThreat {
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
-    Vector3 accelerationInput = Vector3.zero;
     float desiredSpeed = 0f;
     // Check whether the threat should evade any pursuer.
     IAgent closestPursuer = FindClosestPursuer();
     if (Evasion != null && closestPursuer != null && Evasion.ShouldEvade(closestPursuer)) {
-      accelerationInput = Evasion.Evade(closestPursuer);
+      _accelerationInput = Evasion.Evade(closestPursuer);
       desiredSpeed = LookupPowerTable(Configs.Power.Max);
     } else {
       // Follow the attack behavior.
       (Vector3 waypoint, Configs.Power waypointPower) =
           AttackBehavior.GetNextWaypoint(TargetModel.Position);
-      accelerationInput = Controller?.Plan(waypoint) ?? Vector3.zero;
+      _accelerationInput = Controller?.Plan(waypoint) ?? Vector3.zero;
       desiredSpeed = LookupPowerTable(waypointPower);
     }
 
     // Limit the forward acceleration according to the desired speed.
     float speedError = desiredSpeed - Speed;
-    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, transform.forward);
-    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(accelerationInput, transform.forward);
+    Vector3 forwardAccelerationInput = Vector3.Project(_accelerationInput, transform.forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(_accelerationInput, transform.forward);
     if (Mathf.Abs(speedError) < _speedErrorThreshold) {
-      accelerationInput = normalAccelerationInput;
+      _accelerationInput = normalAccelerationInput;
     } else {
       float speedFactor = Mathf.Clamp01(Mathf.Abs(speedError) / _speedErrorThreshold);
-      accelerationInput =
+      _accelerationInput =
           normalAccelerationInput + forwardAccelerationInput * Mathf.Sign(speedError) * speedFactor;
     }
 
-    Vector3 acceleration = Movement?.Act(accelerationInput) ?? Vector3.zero;
-    _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
+    _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
+    _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
   }
 
   protected override void UpdateAgentConfig() {
