@@ -18,6 +18,7 @@ public class HierarchicalAgent : HierarchicalBase {
     set {
       if (base.Target != null) {
         SimManager.Instance.DestroyDummyAgent(Agent.TargetModel);
+        Agent.TargetModel = null;
       }
       base.Target = value;
       if (base.Target != null) {

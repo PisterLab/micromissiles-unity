@@ -25,9 +25,7 @@ public abstract class CarrierBase : InterceptorBase {
     // Use a maximum speed assignment.
     IAssignment targetAssignment =
         new MaxSpeedAssignment(Assignment.Assignment_EvenAssignment_Assign);
-    var activeTargets = HierarchicalAgent.Target.SubHierarchicals
-                            .Where(subHierarchical => !subHierarchical.IsTerminated)
-                            .ToList();
+    var activeTargets = HierarchicalAgent.Target.ActiveSubHierarchicals.ToList();
     List<AssignmentItem> assignments = targetAssignment.Assign(pursuers, activeTargets);
     foreach (var assignment in assignments) {
       assignment.First.Target = assignment.Second;

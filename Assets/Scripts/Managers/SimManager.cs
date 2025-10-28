@@ -97,17 +97,17 @@ public class SimManager : MonoBehaviour {
 
     // Clear existing interceptors and threats.
     foreach (var interceptor in _interceptors) {
-      if (interceptor != null) {
+      if (interceptor as MonoBehaviour != null) {
         Destroy(interceptor.gameObject);
       }
     }
     foreach (var threat in _threats) {
-      if (threat != null) {
+      if (threat as MonoBehaviour != null) {
         Destroy(threat.gameObject);
       }
     }
     foreach (var dummyAgent in _dummyAgents) {
-      if (dummyAgent != null) {
+      if (dummyAgent as MonoBehaviour != null) {
         Destroy(dummyAgent.gameObject);
       }
     }
@@ -154,6 +154,7 @@ public class SimManager : MonoBehaviour {
     interceptor.HierarchicalAgent = new HierarchicalAgent(interceptor);
     interceptor.StaticConfig = staticConfig;
     _interceptors.Add(interceptor);
+    interceptor.OnTerminated += (interceptor) => _interceptors.Remove(interceptor);
 
     // Assign a unique and simple ID.
     int interceptorId = _interceptors.Count;
@@ -192,6 +193,7 @@ public class SimManager : MonoBehaviour {
     threat.StaticConfig = staticConfig;
     threat.OnMiss += RegisterThreatMiss;
     _threats.Add(threat);
+    threat.OnTerminated += (threat) => _threats.Remove(threat);
 
     // Assign a unique and simple ID.
     int threatId = _threats.Count;
@@ -207,6 +209,7 @@ public class SimManager : MonoBehaviour {
     var dummyAgent = dummyAgentObject.GetComponent<IAgent>();
     dummyAgent.Velocity = velocity;
     _dummyAgents.Add(dummyAgent);
+    dummyAgent.OnTerminated += (agent) => _dummyAgents.Remove(agent);
     return dummyAgent;
   }
 
