@@ -7,7 +7,7 @@ using UnityEngine;
 // velocities of the sub-hierarchical objects.
 public class HierarchicalBase : IHierarchical {
   // List of hierarchical objects in the hierarchy level below.
-  private List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
+  protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
   // Target of the hierarchical object.
   private IHierarchical _target;
@@ -43,6 +43,10 @@ public class HierarchicalBase : IHierarchical {
 
   public void RemoveSubHierarchical(IHierarchical subHierarchical) {
     _subHierarchicals.Remove(subHierarchical);
+  }
+
+  public void ClearSubHierarchicals() {
+    _subHierarchicals.Clear();
   }
 
   public void AddPursuer(IHierarchical pursuer) {
