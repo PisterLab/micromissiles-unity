@@ -52,14 +52,14 @@ public class AgglomerativeClustererTests {
     Assert.AreEqual(3, clusters.Count);
     List<Cluster> sortedClusters = clusters.OrderBy(cluster => cluster.Centroid[1]).ToList();
     Assert.AreEqual(1, sortedClusters[0].Size);
-    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Centroid);
-    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Position);
+    Assert.AreEqual(new Vector3(0, 0, 0), sortedClusters[0].Centroid);
+    Assert.AreEqual(new Vector3(0, 0, 0), sortedClusters[0].Position);
     Assert.AreEqual(2, sortedClusters[1].Size);
-    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Centroid);
-    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Position);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), sortedClusters[1].Centroid);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), sortedClusters[1].Position);
     Assert.AreEqual(1, sortedClusters[2].Size);
-    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Centroid);
-    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Position);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), sortedClusters[2].Centroid);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), sortedClusters[2].Position);
   }
 
   [Test]
@@ -69,13 +69,27 @@ public class AgglomerativeClustererTests {
     Assert.AreEqual(3, clusters.Count);
     List<Cluster> sortedClusters = clusters.OrderBy(cluster => cluster.Centroid[1]).ToList();
     Assert.AreEqual(1, sortedClusters[0].Size);
-    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Centroid);
-    Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Position);
+    Assert.AreEqual(new Vector3(0, 0, 0), sortedClusters[0].Centroid);
+    Assert.AreEqual(new Vector3(0, 0, 0), sortedClusters[0].Position);
     Assert.AreEqual(2, sortedClusters[1].Size);
-    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Centroid);
-    Assert.AreEqual(new Vector3(0, 1.25f, 0), clusters[1].Position);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), sortedClusters[1].Centroid);
+    Assert.AreEqual(new Vector3(0, 1.25f, 0), sortedClusters[1].Position);
     Assert.AreEqual(1, sortedClusters[2].Size);
-    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Centroid);
-    Assert.AreEqual(new Vector3(0, 2.5f, 0), clusters[2].Position);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), sortedClusters[2].Centroid);
+    Assert.AreEqual(new Vector3(0, 2.5f, 0), sortedClusters[2].Position);
+  }
+
+  [Test]
+  public void Cluster_Null_ReturnsNoClusters() {
+    _clusterer = new AgglomerativeClusterer(maxSize: 2, maxRadius: 1);
+    List<Cluster> clusters = _clusterer.Cluster(hierarchicals: null);
+    Assert.AreEqual(0, clusters.Count);
+  }
+
+  [Test]
+  public void Cluster_EmptyList_ReturnsNoClusters() {
+    _clusterer = new AgglomerativeClusterer(maxSize: 2, maxRadius: 1);
+    List<Cluster> clusters = _clusterer.Cluster(hierarchicals: new List<IHierarchical>());
+    Assert.AreEqual(0, clusters.Count);
   }
 }
