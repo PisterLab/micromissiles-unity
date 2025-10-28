@@ -173,7 +173,7 @@ public abstract class Threat : Agent {
     }
 
     // Check if the collision is with the asset.
-    DummyAgent otherAgent = other.gameObject.GetComponentInParent<DummyAgent>();
+    var otherAgent = other.gameObject.GetComponentInParent<DummyAgentLegacy>();
     if (otherAgent != null && _target == otherAgent) {
       HandleThreatHit();
     }

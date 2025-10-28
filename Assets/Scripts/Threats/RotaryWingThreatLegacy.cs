@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotaryWingThreat : Threat {
+public class RotaryWingThreatLegacy : Threat {
   private Vector3 _accelerationInput;
 
   protected override void Start() {

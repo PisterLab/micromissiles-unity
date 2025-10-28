@@ -6,8 +6,8 @@ using System.Linq;
 using UnityEngine;
 
 public class ThreatTests : AgentTestBase {
-  private FixedWingThreat _fixedWingThreat;
-  private RotaryWingThreat _rotaryWingThreat;
+  private FixedWingThreatLegacy _fixedWingThreat;
+  private RotaryWingThreatLegacy _rotaryWingThreat;
 
   private const string TestDirectAttackPbtxt =
       @"
@@ -82,14 +82,14 @@ public class ThreatTests : AgentTestBase {
 
     Agent threatAgent = CreateTestThreat(ucavConfig);
     Assert.IsNotNull(threatAgent);
-    Assert.IsTrue(threatAgent is FixedWingThreat);
-    _fixedWingThreat = (FixedWingThreat)threatAgent;
+    Assert.IsTrue(threatAgent is FixedWingThreatLegacy);
+    _fixedWingThreat = (FixedWingThreatLegacy)threatAgent;
     Assert.IsNotNull(_fixedWingThreat);
 
     threatAgent = CreateTestThreat(quadcopterConfig);
     Assert.IsNotNull(threatAgent);
-    Assert.IsTrue(threatAgent is RotaryWingThreat);
-    _rotaryWingThreat = (RotaryWingThreat)threatAgent;
+    Assert.IsTrue(threatAgent is RotaryWingThreatLegacy);
+    _rotaryWingThreat = (RotaryWingThreatLegacy)threatAgent;
     Assert.IsNotNull(_rotaryWingThreat);
   }
 

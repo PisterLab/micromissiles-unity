@@ -360,7 +360,7 @@ public class SimManager : MonoBehaviour {
     GameObject dummyAgentPrefab = Resources.Load<GameObject>($"Prefabs/DummyAgent");
     GameObject dummyAgentObject = Instantiate(dummyAgentPrefab, position, Quaternion.identity);
     if (!dummyAgentObject.TryGetComponent<Agent>(out _)) {
-      dummyAgentObject.AddComponent<DummyAgent>();
+      dummyAgentObject.AddComponent<DummyAgentLegacy>();
     }
     Rigidbody dummyRigidbody = dummyAgentObject.GetComponent<Rigidbody>();
     dummyRigidbody.linearVelocity = velocity;

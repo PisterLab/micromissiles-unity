@@ -15,7 +15,7 @@ public class ThreatAssignmentTests {
 
     // Create threats.
     List<Threat> threats =
-        new List<Threat> { new GameObject("Threat").AddComponent<RotaryWingThreat>() };
+        new List<Threat> { new GameObject("Threat").AddComponent<RotaryWingThreatLegacy>() };
 
     // Assign the interceptors to the threats.
     LogAssert.Expect(LogType.Warning, "No assignable interceptors found.");
@@ -30,8 +30,9 @@ public class ThreatAssignmentTests {
     IAssignmentLegacy threatAssignment = new ThreatAssignment();
 
     // Create interceptors.
-    List<Interceptor> interceptors =
-        new List<Interceptor> { new GameObject("Interceptor").AddComponent<MissileInterceptor>() };
+    List<Interceptor> interceptors = new List<Interceptor> {
+      new GameObject("Interceptor").AddComponent<MissileInterceptorLegacy>()
+    };
 
     // Create threats.
     List<Threat> threats = new List<Threat>();
@@ -50,15 +51,15 @@ public class ThreatAssignmentTests {
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor> {
-      new GameObject("Interceptor 1").AddComponent<MissileInterceptor>(),
-      new GameObject("Interceptor 2").AddComponent<MissileInterceptor>(),
-      new GameObject("Interceptor 3").AddComponent<MissileInterceptor>()
+      new GameObject("Interceptor 1").AddComponent<MissileInterceptorLegacy>(),
+      new GameObject("Interceptor 2").AddComponent<MissileInterceptorLegacy>(),
+      new GameObject("Interceptor 3").AddComponent<MissileInterceptorLegacy>()
     };
 
     // Create threats.
-    Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreat>();
-    Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreat>();
-    Threat threat3 = new GameObject("Threat 3").AddComponent<RotaryWingThreat>();
+    Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreatLegacy>();
+    Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreatLegacy>();
+    Threat threat3 = new GameObject("Threat 3").AddComponent<RotaryWingThreatLegacy>();
 
     // Add rigid body components to threats to set velocities.
     Rigidbody rb1 = threat1.gameObject.AddComponent<Rigidbody>();
@@ -118,14 +119,14 @@ public class ThreatAssignmentTests {
 
     // Create interceptors.
     List<Interceptor> interceptors = new List<Interceptor> {
-      new GameObject("Interceptor 1").AddComponent<MissileInterceptor>(),
-      new GameObject("Interceptor 2").AddComponent<MissileInterceptor>(),
-      new GameObject("Interceptor 3").AddComponent<MissileInterceptor>()
+      new GameObject("Interceptor 1").AddComponent<MissileInterceptorLegacy>(),
+      new GameObject("Interceptor 2").AddComponent<MissileInterceptorLegacy>(),
+      new GameObject("Interceptor 3").AddComponent<MissileInterceptorLegacy>()
     };
 
     // Create threats.
-    Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreat>();
-    Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreat>();
+    Threat threat1 = new GameObject("Threat 1").AddComponent<RotaryWingThreatLegacy>();
+    Threat threat2 = new GameObject("Threat 2").AddComponent<RotaryWingThreatLegacy>();
 
     // Add rigid body components to threats to set velocities.
     Rigidbody rb1 = threat1.gameObject.AddComponent<Rigidbody>();

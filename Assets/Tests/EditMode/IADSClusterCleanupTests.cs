@@ -98,7 +98,7 @@ public class IADSClusterCleanupTests : AgentTestBase {
     var threat = CreateTestThreat(CreateThreatConfig());
     var (cluster, threatClusterData) = MakeClusterWithThreats(threat);
 
-    var carrier = (CarrierInterceptor)CreateTestInterceptor(CreateCarrierConfig());
+    var carrier = (CarrierInterceptorLegacy)CreateTestInterceptor(CreateCarrierConfig());
     var interceptorClusterMap = new Dictionary<Interceptor, ClusterLegacy> { [carrier] = cluster };
     SetPrivateField(_iads, "_interceptorClusterMap", interceptorClusterMap);
 

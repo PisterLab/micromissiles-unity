@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using System.Linq;
 
-public class CarrierInterceptor : Interceptor {
+public class CarrierInterceptorLegacy : Interceptor {
   private bool _submunitionsLaunched = false;
 
   public override bool IsAssignable() {
