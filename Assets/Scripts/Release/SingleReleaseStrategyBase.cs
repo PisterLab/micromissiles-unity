@@ -24,14 +24,14 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
     }
 
     var releasedAgents = new List<IAgent>();
-    foreach (var subHierarchical in target.ActiveSubHierarchicals) {
+    foreach (var activeTarget in target.ActiveSubHierarchicals) {
       if (carrier.NumSubInterceptorsRemaining - releasedAgents.Count <= 0) {
         break;
       }
-      if (subHierarchical.Pursuers.Count != 0 && !subHierarchical.IsEscapingPursuers()) {
+      if (activeTarget.Pursuers.Count != 0 && !activeTarget.IsEscapingPursuers()) {
         continue;
       }
-      LaunchPlan launchPlan = PlanRelease(subHierarchical);
+      LaunchPlan launchPlan = PlanRelease(activeTarget);
       if (launchPlan.ShouldLaunch) {
         Simulation.State initialState = new Simulation.State() {
           Position = Coordinates3.ToProto(carrier.Position),
@@ -41,7 +41,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
         IAgent subInterceptor = SimManager.Instance.CreateInterceptor(
             carrier.AgentConfig.SubAgentConfig.AgentConfig, initialState);
         if (subInterceptor != null) {
-          subInterceptor.HierarchicalAgent.Target = subHierarchical;
+          subInterceptor.HierarchicalAgent.Target = activeTarget;
           if (subInterceptor.Movement is MissileMovement movement) {
             movement.FlightPhase = Simulation.FlightPhase.Boost;
           }
