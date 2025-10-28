@@ -10,14 +10,11 @@ public abstract class AttackBehaviorBase : IAttackBehavior {
   private FlightPlan _flightPlan;
 
   // Agent that will execute the attack behavior.
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public Configs.AttackBehaviorConfig Config {
     get => _config;
-    set {
-      _config = value;
-      _flightPlan = null;
-    }
+    init => _config = value;
   }
 
   public FlightPlan FlightPlan {

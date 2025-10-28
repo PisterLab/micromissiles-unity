@@ -3,7 +3,7 @@ using UnityEngine;
 // Base implementation of a controller.
 public abstract class ControllerBase : IController {
   // Agent that the controller is steering.
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public ControllerBase(IAgent agent) {
     Agent = agent;

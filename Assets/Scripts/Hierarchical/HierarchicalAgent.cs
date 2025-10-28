@@ -6,7 +6,7 @@ using UnityEngine;
 // to know their position within the hierarchical strategy.
 public class HierarchicalAgent : HierarchicalBase {
   // Agent to which this hierarchical node belongs.
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public HierarchicalAgent(IAgent agent) {
     Agent = agent;

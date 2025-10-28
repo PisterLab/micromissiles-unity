@@ -1,8 +1,8 @@
 // Launch angle input.
 public struct LaunchAngleInput {
   // Horizontal distance in meters.
-  public float Distance { get; set; }
+  public float Distance { get; init; }
 
   // Altitude in meters.
-  public float Altitude { get; set; }
+  public float Altitude { get; init; }
 }

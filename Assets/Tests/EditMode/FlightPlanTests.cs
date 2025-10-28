@@ -43,24 +43,4 @@ public class FlightPlanTests {
     var flightPlan = new FlightPlan(config: null);
     Assert.AreEqual(0, flightPlan.Waypoints.Count);
   }
-
-  [Test]
-  public void Waypoints_IsResetAfterSettingConfig() {
-    var flightPlan = new FlightPlan(config: null);
-    Assert.AreEqual(0, flightPlan.Waypoints.Count);
-    flightPlan.Config = new Configs.FlightPlan() {
-      Type = Configs.FlightPlanType.DistanceToTarget,
-      Waypoints =
-          {
-            new Configs.FlightPlanWaypoint() {
-              Distance = 100,
-              Altitude = 25,
-              Power = Configs.Power.Max,
-            },
-          },
-    };
-    Assert.AreEqual(1, flightPlan.Waypoints.Count);
-    Assert.AreEqual(100, flightPlan.Waypoints[0].Distance);
-    Assert.AreEqual(25, flightPlan.Waypoints[0].Altitude);
-  }
 }

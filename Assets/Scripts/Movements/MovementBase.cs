@@ -4,7 +4,7 @@ using UnityEngine;
 // Base implementation of a movement behavior.
 public abstract class MovementBase : IMovement {
   // Agent to which the movement behavior is assigned.
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public MovementBase(IAgent agent) {
     Agent = agent;

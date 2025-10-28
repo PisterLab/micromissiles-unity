@@ -3,7 +3,7 @@ using UnityEngine;
 // Base implementation of a sensor.
 public abstract class SensorBase : ISensor {
   // Agent to which this sensor belongs.
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public SensorBase(IAgent agent) {
     Agent = agent;

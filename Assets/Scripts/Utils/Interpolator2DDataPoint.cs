@@ -4,10 +4,10 @@ using UnityEngine;
 // 2D interpolator data point.
 public class Interpolator2DDataPoint {
   // 2D coordinates.
-  public Vector2 Coordinates { get; set; }
+  public Vector2 Coordinates { get; init; }
 
   // Arbitrary data consisting of floats.
-  public IReadOnlyList<float> Data { get; set; }
+  public IReadOnlyList<float> Data { get; init; }
 
   // Validate and parse the data from strings to floats.
   public static (bool, List<float>) ValidateAndParseData(string[] values) {

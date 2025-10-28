@@ -121,67 +121,62 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   private Transformation GetRelativeTransformation(in Vector3 position, in Vector3 velocity,
                                                    in Vector3 acceleration) {
-    var transformation = new Transformation();
-
     // Get the relative position transformation.
     Vector3 relativePosition = position - Position;
-    transformation.Position = GetRelativePositionTransformation(relativePosition);
+    PositionTransformation positionTransformation =
+        GetRelativePositionTransformation(relativePosition);
 
     // Get the relative velocity transformation.
-    transformation.Velocity =
+    VelocityTransformation velocityTransformation =
         GetRelativeVelocityTransformation(relativePosition, velocity - Velocity);
 
     // Get the relative acceleration transformation.
     // Since the agent's acceleration is an input and can be set arbitrarily, the relative
     // acceleration is just the other agent's acceleration.
-    transformation.Acceleration = GetRelativeAccelerationTransformation(acceleration);
-    return transformation;
+    AccelerationTransformation accelerationTransformation =
+        GetRelativeAccelerationTransformation(acceleration);
+    return new Transformation {
+      Position = positionTransformation,
+      Velocity = velocityTransformation,
+      Acceleration = accelerationTransformation,
+    };
   }
 
   private PositionTransformation GetRelativePositionTransformation(in Vector3 relativePosition) {
-    PositionTransformation positionTransformation = new PositionTransformation();
-
-    // Set the relative position in Cartesian coordinates.
-    positionTransformation.Cartesian = relativePosition;
-
-    // Calculate the distance (range) to the target.
-    positionTransformation.Range = relativePosition.magnitude;
-
     Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
     Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
 
     // Calculate the elevation (vertical angle relative to forward).
-    positionTransformation.Elevation =
+    float elevation =
         Mathf.Atan2(verticalRelativePosition.magnitude, flatRelativePosition.magnitude);
 
     // Calculate the azimuth (horizontal angle relative to forward).
-    if (flatRelativePosition.sqrMagnitude < _epsilon) {
-      positionTransformation.Azimuth = 0;
-    } else {
-      positionTransformation.Azimuth =
-          Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) *
-          Mathf.Deg2Rad;
+    float azimuth = 0;
+    if (flatRelativePosition.sqrMagnitude >= _epsilon) {
+      azimuth = Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) *
+                Mathf.Deg2Rad;
     }
-
-    return positionTransformation;
+    return new PositionTransformation {
+      Cartesian = relativePosition,
+      Range = relativePosition.magnitude,
+      Azimuth = azimuth,
+      Elevation = elevation,
+    };
   }
 
   private VelocityTransformation GetRelativeVelocityTransformation(in Vector3 relativePosition,
                                                                    in Vector3 relativeVelocity) {
-    var velocityTransformation = new VelocityTransformation();
-
-    // Set the relative velocity in Cartesian coordinates.
-    velocityTransformation.Cartesian = relativeVelocity;
-
     if (relativePosition.sqrMagnitude < _epsilon) {
-      velocityTransformation.Range = relativeVelocity.magnitude;
-      velocityTransformation.Azimuth = 0;
-      velocityTransformation.Elevation = 0;
-      return velocityTransformation;
+      return new VelocityTransformation {
+        Cartesian = relativeVelocity,
+        Range = relativeVelocity.magnitude,
+        Azimuth = 0,
+        Elevation = 0,
+      };
     }
 
     // Calculate range rate (radial velocity).
-    velocityTransformation.Range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
+    float rangeRate = Vector3.Dot(relativeVelocity, relativePosition.normalized);
 
     // Project relative velocity onto the sphere passing through the target.
     Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
@@ -205,10 +200,9 @@ public class AgentBase : MonoBehaviour, IAgent {
     Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
 
     // Calculate the time derivative of the azimuth to the target.
-    velocityTransformation.Azimuth =
-        tangentialVelocityOnAzimuth.magnitude / relativePosition.magnitude;
+    float azimuth = tangentialVelocityOnAzimuth.magnitude / relativePosition.magnitude;
     if (Vector3.Dot(tangentialVelocityOnAzimuth, targetAzimuth) < 0) {
-      velocityTransformation.Azimuth *= -1;
+      azimuth *= -1;
     }
 
     // Project the velocity vector on the azimuth-elevation sphere onto the target
@@ -216,19 +210,22 @@ public class AgentBase : MonoBehaviour, IAgent {
     Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
 
     // Calculate the time derivative of the elevation to the target.
-    velocityTransformation.Elevation =
-        tangentialVelocityOnElevation.magnitude / relativePosition.magnitude;
+    float elevation = tangentialVelocityOnElevation.magnitude / relativePosition.magnitude;
     if (Vector3.Dot(tangentialVelocityOnElevation, targetElevation) < 0) {
-      velocityTransformation.Elevation *= -1;
+      elevation *= -1;
     }
-
-    return velocityTransformation;
+    return new VelocityTransformation {
+      Cartesian = relativeVelocity,
+      Range = rangeRate,
+      Azimuth = azimuth,
+      Elevation = elevation,
+    };
   }
 
   private AccelerationTransformation GetRelativeAccelerationTransformation(
       in Vector3 relativeAcceleration) {
-    var accelerationTransformation = new AccelerationTransformation();
-    accelerationTransformation.Cartesian = relativeAcceleration;
-    return accelerationTransformation;
+    return new AccelerationTransformation {
+      Cartesian = relativeAcceleration,
+    };
   }
 }
