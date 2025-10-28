@@ -117,4 +117,9 @@ public class Coordinates3Tests {
     Assert.That(resultCartesian,
                 Is.EqualTo(originalCartesian).Using(Vector3EqualityComparer.Instance));
   }
+
+  public void FromProto_HandlesNullCoordinates_ReturnsZero() {
+    Vector3 vector = Coordinates3.FromProto(coordinates: null);
+    Assert.AreEqual(Vector3.zero, vector);
+  }
 }
