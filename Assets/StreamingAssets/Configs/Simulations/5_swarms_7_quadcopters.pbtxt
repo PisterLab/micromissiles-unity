@@ -2,20 +2,29 @@ end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
   agent_config {
-    config_file: "hydra70.pbtxt"
-    dynamic_config {
-      flight_config {
-        controller_type: PROPORTIONAL_NAVIGATION
+    config_file: "ddg.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 0
+        z: 0
       }
+      velocity {
+        x: 5
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
       sensor_config {
         type: IDEAL
-        frequency: 100
+        frequency: 1000
       }
     }
     sub_agent_config {
-      num_sub_agents: 7
-      agent_config: {
-        config_file: "micromissile.pbtxt"
+      num_sub_agents: 126
+      agent_config {
+        config_file: "hydra70.pbtxt"
         dynamic_config {
           flight_config {
             controller_type: PROPORTIONAL_NAVIGATION
@@ -23,6 +32,21 @@ interceptor_swarm_configs {
           sensor_config {
             type: IDEAL
             frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config: {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              flight_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
           }
         }
       }

@@ -7,12 +7,14 @@ enum AgentType {
   INVALID_TYPE = 0;
 
   // Interceptor types.
-  CARRIER_INTERCEPTOR = 1;
-  MISSILE_INTERCEPTOR = 2;
+  VESSEL = 1;
+  SHORE_BATTERY = 2;
+  CARRIER_INTERCEPTOR = 3;
+  MISSILE_INTERCEPTOR = 4;
 
   // Threat types.
-  FIXED_WING_THREAT = 3;
-  ROTARY_WING_THREAT = 4;
+  FIXED_WING_THREAT = 5;
+  ROTARY_WING_THREAT = 6;
 }
 
 // Power enumeration.
