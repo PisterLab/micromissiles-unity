@@ -73,7 +73,6 @@ public class KMeansClustererTests {
   [Test]
   public void Cluster_KGreaterThanNumberOfSubHierarchicals_ThrowsException() {
     _clusterer = new KMeansClusterer(k: _hierarchicals.Count + 1);
-
     Assert.Throws<InvalidOperationException>(
         () => { List<Cluster> clusters = _clusterer.Cluster(_hierarchicals); });
   }
