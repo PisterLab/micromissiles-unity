@@ -41,7 +41,7 @@ public class HierarchicalBase : IHierarchical {
   public virtual Vector3 Velocity => GetMean(s => s.Velocity);
   public float Speed => Velocity.magnitude;
   public virtual Vector3 Acceleration => GetMean(s => s.Acceleration);
-  public virtual bool IsTerminated => _subHierarchicals.All(s => s.IsTerminated);
+  public virtual bool IsTerminated => !ActiveSubHierarchicals.Any();
 
   public void AddSubHierarchical(IHierarchical subHierarchical) {
     if (!_subHierarchicals.Contains(subHierarchical)) {
