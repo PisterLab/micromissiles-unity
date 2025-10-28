@@ -8,6 +8,10 @@ public class ConstrainedKMeansClusterer : SizeAndRadiusConstrainedClustererBase 
 
   // Generate the clusters from the list of hierarchical objects.
   public override List<Cluster> Cluster(IEnumerable<IHierarchical> hierarchicals) {
+    if (hierarchicals == null || !hierarchicals.Any()) {
+      return new List<Cluster>();
+    }
+
     int numClusters = (int)Mathf.Ceil(hierarchicals.Count() / _maxSize);
     KMeansClusterer clusterer;
     List<Cluster> clusters;

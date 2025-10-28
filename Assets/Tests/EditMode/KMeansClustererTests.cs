@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +16,7 @@ public class KMeansClustererTests {
 
   [SetUp]
   public void SetUp() {
-    Random.InitState(5);
+    UnityEngine.Random.InitState(5);
   }
 
   [Test]
@@ -67,5 +68,27 @@ public class KMeansClustererTests {
     Assert.AreEqual(new Vector3(0.5f, 0.5f, 0), clusterA.Position);
     Assert.AreEqual(new Vector3(10.5f, 10.5f, 10), clusterB.Centroid);
     Assert.AreEqual(new Vector3(10.5f, 10.5f, 10), clusterB.Position);
+  }
+
+  [Test]
+  public void Cluster_KGreaterThanNumberOfSubHierarchicals_ThrowsException() {
+    _clusterer = new KMeansClusterer(k: _hierarchicals.Count + 1);
+
+    Assert.Throws<InvalidOperationException>(
+        () => { List<Cluster> clusters = _clusterer.Cluster(_hierarchicals); });
+  }
+
+  [Test]
+  public void Cluster_Null_ReturnsNoClusters() {
+    _clusterer = new KMeansClusterer(k: 2);
+    List<Cluster> clusters = _clusterer.Cluster(hierarchicals: null);
+    Assert.AreEqual(0, clusters.Count);
+  }
+
+  [Test]
+  public void Cluster_EmptyList_ReturnsNoClusters() {
+    _clusterer = new KMeansClusterer(k: 2);
+    List<Cluster> clusters = _clusterer.Cluster(hierarchicals: new List<IHierarchical>());
+    Assert.AreEqual(0, clusters.Count);
   }
 }
