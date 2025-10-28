@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // The agglomerative clusterer performs agglomerative clustering with the stopping condition given
@@ -9,6 +10,10 @@ public class AgglomerativeClusterer : SizeAndRadiusConstrainedClustererBase {
   // Generate the clusters from the list of hierarchical objects.
   public override List<Cluster> Cluster(IEnumerable<IHierarchical> hierarchicals) {
     var clusters = new List<Cluster>();
+    if (hierarchicals == null || !hierarchicals.Any()) {
+      return clusters;
+    }
+
     foreach (var hierarchical in hierarchicals) {
       var cluster = new Cluster { Centroid = hierarchical.Position };
       cluster.AddSubHierarchical(hierarchical);
@@ -69,6 +74,9 @@ public class AgglomerativeClusterer : SizeAndRadiusConstrainedClustererBase {
       // Update the distances matrix using the distance between the cluster centroids.
       // TODO(titan): Change the distance metric to use average or maximum linkage.
       foreach (int i in validClusterIndices) {
+        if (i == clusterIndex2) {
+          continue;
+        }
         float distance = Vector3.Distance(clusters[clusterIndex2].Centroid, clusters[i].Centroid);
         if (i < clusterIndex2) {
           distances[clusterIndex2, i] = distance;

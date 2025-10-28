@@ -55,4 +55,18 @@ public class ConstrainedKMeansClustererTests {
     List<Cluster> clusters = _clusterer.Cluster(_hierarchicals);
     Assert.AreEqual(2, clusters.Count);
   }
+
+  [Test]
+  public void Cluster_Null_ReturnsNoClusters() {
+    _clusterer = new ConstrainedKMeansClusterer(maxSize: 2, maxRadius: 1);
+    List<Cluster> clusters = _clusterer.Cluster(hierarchicals: null);
+    Assert.AreEqual(0, clusters.Count);
+  }
+
+  [Test]
+  public void Cluster_EmptyList_ReturnsNoClusters() {
+    _clusterer = new ConstrainedKMeansClusterer(maxSize: 2, maxRadius: 1);
+    List<Cluster> clusters = _clusterer.Cluster(hierarchicals: new List<IHierarchical>());
+    Assert.AreEqual(0, clusters.Count);
+  }
 }
