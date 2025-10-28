@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProximityReleaseStrategy : MassReleaseStrategyBase {
   // Geometric parameters for determining when to launch.
   // The carrier interceptor will spawn submunitions when any target is greater than 30 degrees away
-  // from the carrier interceptor's current velocity or when any threat is within 500 meters of the
+  // from the carrier interceptor's current velocity or when any threat is within 1000 meters of the
   // interceptor.
   private const float _maxBearingDegrees = 30f;
   private const float _minDistanceToThreat = 1000f;
