@@ -13,8 +13,6 @@ public abstract class CarrierBase : InterceptorBase {
   // Coroutine for releasing sub-interceptors.
   private Coroutine _releaseCoroutine;
 
-  public int NumSubInterceptorsRemaining { get; private set; } = 0;
-
   // Release strategy for sub-interceptors.
   public IReleaseStrategy ReleaseStrategy { get; set; }
 

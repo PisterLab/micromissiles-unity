@@ -12,5 +12,14 @@ public interface IInterceptor : IAgent {
   event InterceptEventHandler OnMiss;
 
   // Maximum number of threats that this interceptor can target.
-  public int Capacity { get; }
+  int Capacity { get; }
+
+  // Capacity of each sub-interceptor.
+  int CapacityPerSubInterceptor { get; }
+
+  // Number of threats that this interceptor can target after having launched some sub-interceptors.
+  int CapacityRemaining { get; }
+
+  // Number of sub-interceptors remaining.
+  int NumSubInterceptorsRemaining { get; }
 }

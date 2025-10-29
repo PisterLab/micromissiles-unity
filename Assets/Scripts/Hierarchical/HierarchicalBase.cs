@@ -7,19 +7,20 @@ using UnityEngine;
 // The position and velocity of a hierarchical object is defined as the mean of the positions and
 // velocities of the sub-hierarchical objects.
 public class HierarchicalBase : IHierarchical {
-  public event HierarchicalEventHandler OnHit;
-  public event HierarchicalEventHandler OnMiss;
+  // Soft maximum number of sub-hierarchical objects. This is used for recursive clustering.
+  private const int _maxNumSubHierarchicals = 10;
+
+  // Maximum cluster radius in meters.
+  private const float _clusterMaxRadius = 1000f;
 
   // List of hierarchical objects in the hierarchy level below.
   protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
-  // Target of the hierarchical object.
-  private IHierarchical _target;
-
   // List of hierarchical objects pursuing this hierarchical object.
   private List<IHierarchical> _pursuers = new List<IHierarchical>();
 
-  // List of targets
+  // List of launched hierarchical objects.
+  private List<IHierarchical> _launchedHierarchicals = new List<IHierarchical>();
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
 
@@ -27,20 +28,11 @@ public class HierarchicalBase : IHierarchical {
   public IEnumerable<IHierarchical> ActiveSubHierarchicals =>
       _subHierarchicals.Where(s => !s.IsTerminated);
 
-  public virtual IHierarchical Target {
-    get { return _target; }
-    set {
-      if (_target != null) {
-        _target.RemovePursuer(this);
-      }
-      _target = value;
-      if (_target != null) {
-        _target.AddPursuer(this);
-      }
-    }
-  }
+  public virtual IHierarchical Target { get; set; }
 
   public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
+
+  public IReadOnlyList<IHierarchical> LaunchedHierarchicals => _launchedHierarchicals.AsReadOnly();
 
   public virtual Vector3 Position => GetMean(s => s.Position);
   public virtual Vector3 Velocity => GetMean(s => s.Velocity);
@@ -72,56 +64,44 @@ public class HierarchicalBase : IHierarchical {
     _pursuers.Remove(pursuer);
   }
 
-  public void HandleHit() {
-    OnHit?.Invoke(this, Target);
+  public void AddLaunchedHierarchical(IHierarchical hierarchical) {
+    _launchedHierarchicals.Add(hierarchical);
   }
 
-  public void HandleMiss() {
-    OnMiss?.Invoke(this, Target);
+  public void Update(int maxClusterSize) {
+    // Perform recursive clustering on the assigned targets as necessary.
+    RecursiveCluster(maxClusterSize);
   }
 
-  public void RegisterSubHierarchicalHit(IHierarchical subHierarchical, IHierarchical target) {
-    // Re-assign the other pursuers of the target to other active targets.
-    var otherPursuers = target.Pursuers.Where(pursuer => pursuer != subHierarchical).ToList();
-    // Use a maximum speed assignment.
-    IAssignment targetAssignment =
-        new MaxSpeedAssignment(Assignment.Assignment_EvenAssignment_Assign);
-    var activeTargets = Target.ActiveSubHierarchicals.ToList();
-    // TODO(titan): If there are no active targets left, report to the next hierarchical object
-    // above that these sub-hierarchical objects are available for re-assignment.
-    List<AssignmentItem> assignments = targetAssignment.Assign(otherPursuers, activeTargets);
-    foreach (var assignment in assignments) {
-      assignment.First.Target = assignment.Second;
-    }
-  }
-
-  public void RegisterSubHierarchicalMiss(IHierarchical subHierarchical, IHierarchical target) {
-    // If a sub-hierarchical object misses a target, the parent hierarchical object should in the
-    // following order:
-    //  1. Re-assign the target to another sub-hierarchical object without leaving another target
-    //  uncovered.
-    //  2. Launch another sub-hierarchical object to pursue the target.
-    //  3. Propagate the target miss to the next hierarchical object above.
-    var otherPursuers =
-        Target.ActiveSubHierarchicals.SelectMany(subHierarchical => subHierarchical.Pursuers)
-            .Where(pursuer => pursuer != subHierarchical)
-            .ToList();
-    var activeTargets = Target.ActiveSubHierarchicals.ToList();
-    if (otherPursuers.Count >= activeTargets.Count) {
-      // Re-assigning at least one sub-hierarchical object to pursue the missed target without
-      // leaving another target uncovered is possible. Use a cover assignment.
-      IAssignment targetAssignment =
-          new MaxSpeedAssignment(Assignment.Assignment_CoverAssignment_Assign);
-      List<AssignmentItem> assignments = targetAssignment.Assign(otherPursuers, activeTargets);
-      foreach (var assignment in assignments) {
-        assignment.First.Target = assignment.Second;
+  public void RecursiveCluster(int maxClusterSize) {
+    if (SubHierarchicals.Count > 0) {
+      foreach (var subHierarchical in SubHierarchicals) {
+        subHierarchical.RecursiveCluster(maxClusterSize);
       }
       return;
     }
+    if (Target == null || Target.SubHierarchicals.Count <= maxClusterSize) {
+      return;
+    }
 
-    // If re-assignment is not possible, queue up the targets to prepare another sub-hierarchical
-    // object to be launched or to be clustered for the next hierarchical object above.
-    return;
+    // Perform clustering on the assigned targets.
+    // TODO(titan): Define a better heuristic for choosing the clustering algorithm to minimize the
+    // size and radius of each cluster without generating too many clusters.
+    IClusterer clusterer = null;
+    if (Target.SubHierarchicals.Count >=
+        _maxNumSubHierarchicals * Mathf.Max(maxClusterSize / 2, 1)) {
+      clusterer = new KMeansClusterer(_maxNumSubHierarchicals);
+    } else {
+      clusterer = new AgglomerativeClusterer(maxClusterSize, _clusterMaxRadius);
+    }
+    List<Cluster> clusters = clusterer.Cluster(Target.SubHierarchicals);
+
+    // Generate sub-hierarchical objects to manage the target clusters.
+    foreach (var cluster in clusters) {
+      var subHierarchical = new HierarchicalBase { Target = cluster };
+      AddSubHierarchical(subHierarchical);
+      subHierarchical.RecursiveCluster(maxClusterSize);
+    }
   }
 
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {

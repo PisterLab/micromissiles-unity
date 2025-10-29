@@ -8,7 +8,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
 
-  public virtual int Capacity { get; private set; }
+  public int Capacity { get; private set; }
+  public int CapacityPerSubInterceptor { get; private set; }
+  public int CapacityRemaining => CapacityPerSubInterceptor * NumSubInterceptorsRemaining;
+  public int NumSubInterceptorsRemaining { get; protected set; }
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
@@ -17,6 +20,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _accelerationInput = Controller?.Plan() ?? Vector3.zero;
     _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
     _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
+  }
+
+  protected override void Update() {
+    base.Update();
+
+    // Update the agent hierarchy.
+    UpdateHierarchical();
   }
 
   protected override void UpdateAgentConfig() {
@@ -30,6 +40,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return (int)config.SubAgentConfig.NumSubAgents * NumAgents(config.SubAgentConfig.AgentConfig);
     }
     Capacity = NumAgents(AgentConfig);
+    CapacityPerSubInterceptor = NumAgents(AgentConfig.SubAgentConfig?.AgentConfig);
+    NumSubInterceptorsRemaining = (int)(AgentConfig.SubAgentConfig?.NumSubAgents ?? 0);
 
     // Set the controller.
     switch (AgentConfig.DynamicConfig?.FlightConfig?.ControllerType) {
@@ -75,6 +87,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
   }
 
+  // Update the agent hierarchy, including updating track files and performing recursive target
+  // clustering on the new targets.
+  private void UpdateHierarchical() {
+    HierarchicalAgent.Update(CapacityPerSubInterceptor);
+  }
+
   // If the interceptor collides with the ground or another agent, it will be terminated. It is
   // possible for an interceptor to collide with another interceptor or with a non-target threat.
   // The interceptor records a hit only if it collides with a threat and destroys it with the
@@ -83,7 +101,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Check if the interceptor hit the floor with a negative vertical speed.
     if (other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0) {
       OnMiss?.Invoke(this);
-      HierarchicalAgent.HandleMiss();
       Terminate();
     }
 
@@ -100,10 +117,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       if (isHit) {
         OnHit?.Invoke(this);
         threat.HandleIntercept();
-        HierarchicalAgent.HandleHit();
       } else {
         OnMiss?.Invoke(this);
-        HierarchicalAgent.HandleMiss();
       }
       Terminate();
     }
