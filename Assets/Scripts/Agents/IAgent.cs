@@ -8,6 +8,8 @@ using UnityEngine;
 public delegate void AgentEventHandler(IAgent agent);
 
 public interface IAgent {
+  event AgentEventHandler OnTerminated;
+
   HierarchicalAgent HierarchicalAgent { get; set; }
 
   Configs.StaticConfig StaticConfig { get; set; }
@@ -29,8 +31,6 @@ public interface IAgent {
 
   GameObject gameObject { get; }
   Transform transform { get; }
-
-  event AgentEventHandler OnTerminated;
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();

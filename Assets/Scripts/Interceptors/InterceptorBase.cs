@@ -2,13 +2,13 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
+  public event InterceptEventHandler OnHit;
+  public event InterceptEventHandler OnMiss;
+
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
 
   public virtual int Capacity { get; private set; }
-
-  public event InterceptEventHandler OnHit;
-  public event InterceptEventHandler OnMiss;
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
@@ -83,6 +83,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Check if the interceptor hit the floor with a negative vertical speed.
     if (other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0) {
       OnMiss?.Invoke(this);
+      HierarchicalAgent.HandleMiss();
       Terminate();
     }
 
@@ -99,8 +100,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       if (isHit) {
         OnHit?.Invoke(this);
         threat.HandleIntercept();
+        HierarchicalAgent.HandleHit();
       } else {
         OnMiss?.Invoke(this);
+        HierarchicalAgent.HandleMiss();
       }
       Terminate();
     }

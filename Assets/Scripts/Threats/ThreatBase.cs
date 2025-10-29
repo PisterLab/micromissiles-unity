@@ -4,6 +4,9 @@ using UnityEngine;
 
 // Base implementation of a threat.
 public abstract class ThreatBase : AgentBase, IThreat {
+  public event ThreatEventHandler OnHit;
+  public event ThreatEventHandler OnMiss;
+
   // Speed difference threshold for applying forward acceleration.
   private const float _speedErrorThreshold = 1f;
 
@@ -25,9 +28,6 @@ public abstract class ThreatBase : AgentBase, IThreat {
       return _powerTable;
     }
   }
-
-  public event ThreatEventHandler OnHit;
-  public event ThreatEventHandler OnMiss;
 
   public float LookupPowerTable(Configs.Power power) {
     PowerTable.TryGetValue(power, out float speed);

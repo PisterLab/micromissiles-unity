@@ -28,7 +28,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
       if (carrier.NumSubInterceptorsRemaining - releasedAgents.Count <= 0) {
         break;
       }
-      if (activeTarget.Pursuers.Count != 0 && !activeTarget.IsEscapingPursuers()) {
+      if (activeTarget.Pursuers.Count != 0) {
         continue;
       }
       LaunchPlan launchPlan = PlanRelease(activeTarget);
@@ -42,12 +42,12 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
             carrier.AgentConfig.SubAgentConfig.AgentConfig, initialState);
         if (subInterceptor != null) {
           subInterceptor.HierarchicalAgent.Target = activeTarget;
+          subInterceptor.HierarchicalAgent.OnHit +=
+              carrier.HierarchicalAgent.RegisterSubHierarchicalHit;
+          subInterceptor.HierarchicalAgent.OnMiss +=
+              carrier.HierarchicalAgent.RegisterSubHierarchicalMiss;
           if (subInterceptor.Movement is MissileMovement movement) {
             movement.FlightPhase = Simulation.FlightPhase.Boost;
-          }
-          if (subInterceptor is IInterceptor subInterceptorInterceptor) {
-            subInterceptorInterceptor.OnHit += carrier.RegisterSubInterceptorHit;
-            subInterceptorInterceptor.OnMiss += carrier.RegisterSubInterceptorMiss;
           }
           releasedAgents.Add(subInterceptor);
 
