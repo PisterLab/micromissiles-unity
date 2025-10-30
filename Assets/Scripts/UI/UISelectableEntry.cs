@@ -13,8 +13,6 @@ public class UISelectableEntry : EventTrigger {
 
   private RectTransform rectTransform;
 
-  private CanvasRenderer canvasRenderer;
-
   private Image image;
 
   // Replace the single TextMeshProUGUI with a list to hold multiple columns
