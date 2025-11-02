@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 public class ParticleManager : MonoBehaviour {
   public static ParticleManager Instance { get; private set; }
 
   private Queue<GameObject> _missileTrailPool;
   [SerializeField]
-  // Queues cannot be serialized, so if we want to see it in the inspector,
-  // we need to serialize the count.
   private int _missileTrailPoolCount;
   [SerializeField]
   private Queue<GameObject> _missileExplosionPool;
@@ -20,12 +17,19 @@ public class ParticleManager : MonoBehaviour {
   private List<TrailRenderer> _agentTrailRenderers = new List<TrailRenderer>();
 
   [SerializeField, Tooltip("The material to use for commandeered interceptor trail renderers")]
-  public Material interceptorTrailMatFaded;
+  public Material InterceptorTrailMatFaded;
   [SerializeField, Tooltip("The material to use for commandeered threat trail renderers")]
-  public Material threatTrailMatFaded;
+  public Material ThreatTrailMatFaded;
 
   [SerializeField]
   private List<GameObject> _hitMarkerList = new List<GameObject>();
+
+  public void ClearHitMarkers() {
+    foreach (var hitMarker in _hitMarkerList) {
+      Destroy(hitMarker);
+    }
+    _hitMarkerList.Clear();
+  }
 
   private void Awake() {
     if (Instance == null) {
@@ -61,51 +65,64 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void InitializeMissileTrailParticlePool() {
-    // Grab from Resources/Prefabs/Effects
+    // Grab from Resources/Prefabs/Effects.
     GameObject missileTrailPrefab =
         Resources.Load<GameObject>("Prefabs/Effects/InterceptorSmokeEffect");
 
-    // Pre-instantiate 10 missile trail particles
+    // Pre-instantiate 10 missile trail particles.
     for (int i = 0; i < 10; ++i) {
       InstantiateMissileTrail(missileTrailPrefab);
     }
-    // Instantiate over an interval
+    // Instantiate over an interval.
     StartCoroutine(InstantiateMissileTrailsOverTime(missileTrailPrefab, 200, 0.05f));
+  }
+
+  private GameObject InstantiateMissileTrail(GameObject prefab) {
+    GameObject trail = Instantiate(prefab, transform);
+    trail.GetComponent<ParticleSystem>().Stop();
+    _missileTrailPool.Enqueue(trail);
+    return trail;
+  }
+
+  private IEnumerator InstantiateMissileTrailsOverTime(GameObject prefab, int count,
+                                                       float duration) {
+    float interval = duration / count;
+    for (int i = 0; i < count; ++i) {
+      InstantiateMissileTrail(prefab);
+      yield return new WaitForSeconds(interval);
+    }
   }
 
   private void InitializeMissileExplosionParticlePool() {
     GameObject missileExplosionPrefab =
         Resources.Load<GameObject>("Prefabs/Effects/InterceptExplosionEffect");
-    // Pre-instantiate 10 missile trail particles
+    // Pre-instantiate 10 missile trail particles.
     for (int i = 0; i < 10; ++i) {
       InstantiateMissileExplosion(missileExplosionPrefab);
     }
     StartCoroutine(InstantiateMissileExplosionsOverTime(missileExplosionPrefab, 200, 0.05f));
   }
 
-  private void RegisterSimulationEnded() {
-    foreach (var trailRenderer in _agentTrailRenderers) {
-      Destroy(trailRenderer.gameObject);
+  private GameObject InstantiateMissileExplosion(GameObject prefab) {
+    GameObject explosion = Instantiate(prefab, transform);
+    explosion.GetComponent<ParticleSystem>().Stop();
+    _missileExplosionPool.Enqueue(explosion);
+    return explosion;
+  }
+
+  private IEnumerator InstantiateMissileExplosionsOverTime(GameObject prefab, int count,
+                                                           float duration) {
+    float interval = duration / count;
+    for (int i = 0; i < count; ++i) {
+      InstantiateMissileExplosion(prefab);
+      yield return new WaitForSeconds(interval);
     }
-    _agentTrailRenderers.Clear();
   }
 
   private void RegisterNewInterceptor(IInterceptor interceptor) {
     interceptor.OnHit += RegisterInterceptorHit;
     interceptor.OnMiss += RegisterInterceptorMiss;
     interceptor.OnTerminated += RegisterAgentTerminated;
-  }
-
-  private void RegisterNewThreat(IThreat threat) {
-    threat.OnHit += RegisterThreatHit;
-    threat.OnMiss += RegisterThreatMiss;
-    threat.OnTerminated += RegisterAgentTerminated;
-  }
-
-  private void RegisterAgentTerminated(IAgent agent) {
-    if (SimManager.Instance.SimulatorConfig.PersistentFlightTrails) {
-      CommandeerAgentTrailRenderer(agent);
-    }
   }
 
   private void RegisterInterceptorHit(IInterceptor interceptor) {
@@ -118,28 +135,26 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
-    // It does not make sense to commandeer the TrailRenderer for a miss.
-    // As the interceptor remains in flight
     GameObject hitMarkerObject = SpawnHitMarker(interceptor.transform.position);
     hitMarkerObject.GetComponent<UIEventMarker>().SetEventMiss();
     _hitMarkerList.Add(hitMarkerObject);
   }
 
-  private void RegisterThreatHit(IThreat threat) {}
+  private void RegisterNewThreat(IThreat threat) {
+    threat.OnTerminated += RegisterAgentTerminated;
+  }
 
-  private void RegisterThreatMiss(IThreat threat) {}
-
-  private void CommandeerAgentTrailRenderer(IAgent agent) {
-    // Take the TrailRenderer component off of the agent, onto us, and store it
-    // (so we can destroy it later on simulation end)
-    TrailRenderer trailRenderer = agent.gameObject.GetComponentInChildren<TrailRenderer>();
-    if (trailRenderer != null) {
-      trailRenderer.transform.parent = transform;
-      _agentTrailRenderers.Add(trailRenderer);
-      trailRenderer.material = (agent is IThreat) ? threatTrailMatFaded : interceptorTrailMatFaded;
-    } else {
-      Debug.LogWarning("Agent has no TrailRenderer component");
+  private void RegisterAgentTerminated(IAgent agent) {
+    if (SimManager.Instance.SimulatorConfig.PersistentFlightTrails) {
+      CommandeerAgentTrailRenderer(agent);
     }
+  }
+
+  private void RegisterSimulationEnded() {
+    foreach (var trailRenderer in _agentTrailRenderers) {
+      Destroy(trailRenderer.gameObject);
+    }
+    _agentTrailRenderers.Clear();
   }
 
   private GameObject SpawnHitMarker(in Vector3 position) {
@@ -149,16 +164,7 @@ public class ParticleManager : MonoBehaviour {
     return hitMarker;
   }
 
-  public void ClearHitMarkers() {
-    foreach (var hitMarker in _hitMarkerList) {
-      Destroy(hitMarker);
-    }
-    _hitMarkerList.Clear();
-  }
-
-  /// Returns a missile explosion particle prefab from the pool and plays it at the specified
-  /// location. If the pool is empty, it returns null.
-  public GameObject PlayMissileExplosion(in Vector3 position) {
+  private GameObject PlayMissileExplosion(in Vector3 position) {
     if (_missileExplosionPool.Count > 0) {
       GameObject explosion = _missileExplosionPool.Dequeue();
       explosion.transform.position = position;
@@ -203,67 +209,16 @@ public class ParticleManager : MonoBehaviour {
     _missileExplosionPool.Enqueue(explosion);
   }
 
-  private GameObject InstantiateMissileTrail(GameObject prefab) {
-    GameObject trail = Instantiate(prefab, transform);
-    trail.GetComponent<ParticleSystem>().Stop();
-    _missileTrailPool.Enqueue(trail);
-    return trail;
-  }
-
-  private GameObject InstantiateMissileExplosion(GameObject prefab) {
-    GameObject explosion = Instantiate(prefab, transform);
-    explosion.GetComponent<ParticleSystem>().Stop();
-    _missileExplosionPool.Enqueue(explosion);
-    return explosion;
-  }
-
-  private IEnumerator InstantiateMissileTrailsOverTime(GameObject prefab, int count,
-                                                       float duration) {
-    float interval = duration / count;
-    for (int i = 0; i < count; ++i) {
-      InstantiateMissileTrail(prefab);
-      yield return new WaitForSeconds(interval);
-    }
-  }
-
-  private IEnumerator InstantiateMissileExplosionsOverTime(GameObject prefab, int count,
-                                                           float duration) {
-    float interval = duration / count;
-    for (int i = 0; i < count; ++i) {
-      InstantiateMissileExplosion(prefab);
-      yield return new WaitForSeconds(interval);
-    }
-  }
-
-  /// Returns a missile trail particle prefab from the pool. If the pool is empty, it returns null.
-  public GameObject RequestMissileTrailParticle() {
-    if (_missileTrailPool.Count > 0 &&
-        SimManager.Instance.SimulatorConfig.EnableMissileTrailEffect) {
-      GameObject trail = _missileTrailPool.Dequeue();
-
-      return trail;
-    }
-    return null;
-  }
-
-  public void ReturnMissileTrailParticle(GameObject trail) {
-    if (trail == null) {
-      Debug.LogError("Attempted to return a null missile trail particle.");
-      return;
-    }
-
-    trail.transform.parent = transform;
-    trail.transform.localPosition = Vector3.zero;
-    ParticleSystem particleSystem = trail.GetComponent<ParticleSystem>();
-    if (particleSystem != null) {
-      particleSystem.Stop();
-      particleSystem.Clear();
-      var emission = particleSystem.emission;
-      emission.enabled = true;
+  private void CommandeerAgentTrailRenderer(IAgent agent) {
+    // Take the TrailRenderer component off of the agent, so it can be destroyed at the end of the
+    // simulation.
+    TrailRenderer trailRenderer = agent.gameObject.GetComponentInChildren<TrailRenderer>();
+    if (trailRenderer != null) {
+      trailRenderer.transform.parent = transform;
+      _agentTrailRenderers.Add(trailRenderer);
+      trailRenderer.material = (agent is IThreat) ? ThreatTrailMatFaded : InterceptorTrailMatFaded;
     } else {
-      Debug.LogError("Attempted to return a missile trail particle with no particle system.");
+      Debug.LogWarning("Agent has no TrailRenderer component.");
     }
-
-    _missileTrailPool.Enqueue(trail);
   }
 }

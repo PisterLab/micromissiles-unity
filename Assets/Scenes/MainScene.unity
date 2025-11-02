@@ -4678,31 +4678,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9e222cf9df32df4196f08036d68d740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseActive: 1
-  lockUserInput: 0
   _cameraSpeedNormal: 300
   _cameraSpeedMax: 2000
   _speedH: 0.5
   _speedV: 0.5
   _autoRotate: 0
-  target: {fileID: 1255004942}
+  _target: {fileID: 1255004942}
   _orbitDistance: 5
   _orbitXSpeed: 0.03
   _orbitYSpeed: 0.03
-  _zoomSpeed: 10
-  orbitYMinLimit: -80
-  orbitYMaxLimit: 120
+  _orbitYMinLimit: -20
+  _orbitYMaxLimit: 80
+  _orbitDistanceMin: 10
   _orbitDistanceMax: 50000
-  targetRenderer: {fileID: 1255004940}
-  floorRenderer: {fileID: 320210796}
-  matAlpha: 0
-  autoplayCamSpeed: 0.025
-  xAutoRotateTime: 40
-  yAutoRotateTime: 0
-  forwardToCameraAngle: 0
-  cameraMode: 0
-  _selectedInterceptorSwarmIndex: -1
-  _selectedThreatSwarmIndex: -1
+  _zoomSpeed: 10
+  _targetRenderer: {fileID: 1255004940}
+  _floorRenderer: {fileID: 320210796}
+  _autoplayCamSpeed: 2
+  _xAutoRotateTime: 5
+  _yAutoRotateTime: 5
+  _forwardToCameraAngle: 0
+  _cameraMode: 0
   _centroidUpdateFrequency: 0.1
   _defaultInterpolationSpeed: 20
   _currentInterpolationSpeed: 0
@@ -10139,11 +10135,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8453457817924536687, guid: aa7ae4d8098e76042adf44084e6d17b7, type: 3}
-      propertyPath: threatTrailMatFaded
+      propertyPath: ThreatTrailMatFaded
       value: 
       objectReference: {fileID: 2100000, guid: 53fa63d934ec00746a0e8e0926461afd, type: 2}
     - target: {fileID: 8453457817924536687, guid: aa7ae4d8098e76042adf44084e6d17b7, type: 3}
-      propertyPath: interceptorTrailMatFaded
+      propertyPath: InterceptorTrailMatFaded
       value: 
       objectReference: {fileID: 2100000, guid: 37be7f5b4882cc146afeec6c0247c1fb, type: 2}
     - target: {fileID: 8837696709373837493, guid: aa7ae4d8098e76042adf44084e6d17b7, type: 3}
