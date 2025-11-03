@@ -59,9 +59,6 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       IAgent subInterceptor =
           SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
       if (subInterceptor != null && subInterceptor is IInterceptor subInterceptorInterceptor) {
-        if (subInterceptor.Movement is MissileMovement movement) {
-          movement.FlightPhase = Simulation.FlightPhase.Boost;
-        }
         releasedAgents.Add(subInterceptor);
       }
     }
@@ -74,6 +71,7 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       assignment.First.Target = assignment.Second;
       targetToHierarchicalMap[assignment.Second].AddLaunchedHierarchical(assignment.First);
     }
+
     return releasedAgents;
   }
 

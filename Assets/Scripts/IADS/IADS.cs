@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // The Integrated Air Defense System (IADS) manages the air defense strategy.
 // It implements the singleton pattern to ensure that only one instance exists.
 public class IADS : MonoBehaviour {
-  // Clustering parameters.
-  private const float _clusterThreatsPeriod = 5f;
+  // Hierarchy parameters.
+  private const float _hierarchyUpdatePeriod = 5f;
   private const float _coverageFactor = 1f;
 
   // The IADS only manages the launchers in the top level of the interceptor hierarchy.
   private List<IHierarchical> _launchers = new List<IHierarchical>();
 
-  // Coroutine to perform the top-level threat clustering.
-  private Coroutine _clusterThreatsCoroutine;
+  // Coroutine to perform the maintain the agent hierarchy.
+  private Coroutine _hierarchyCoroutine;
 
-  // List of threats awaiting clustering.
-  private List<IHierarchical> _threatsToCluster = new List<IHierarchical>();
+  // List of threats waiting to be incorporated into the hierarchy..
+  private List<IHierarchical> _newThreats = new List<IHierarchical>();
 
   public static IADS Instance { get; private set; }
 
@@ -38,46 +39,48 @@ public class IADS : MonoBehaviour {
   }
 
   private void OnDestroy() {
-    if (_clusterThreatsCoroutine != null) {
-      StopCoroutine(_clusterThreatsCoroutine);
+    if (_hierarchyCoroutine != null) {
+      StopCoroutine(_hierarchyCoroutine);
     }
   }
 
   private void RegisterSimulationStarted() {
-    _clusterThreatsCoroutine = StartCoroutine(ClusterThreatsManager(_clusterThreatsPeriod));
+    _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
   }
 
   private void RegisterSimulationEnded() {
     _launchers.Clear();
-    _threatsToCluster.Clear();
+    _newThreats.Clear();
   }
 
   public void RegisterNewLauncher(IInterceptor interceptor) {
     if (interceptor.HierarchicalAgent != null) {
+      interceptor.OnAssignSubInterceptor += AssignSubInterceptor;
+      // interceptor.OnReassignTarget += ReassignTarget;
       _launchers.Add(interceptor.HierarchicalAgent);
     }
   }
 
   public void RegisterNewThreat(IThreat threat) {
     if (threat.HierarchicalAgent != null) {
-      _threatsToCluster.Add(threat.HierarchicalAgent);
+      _newThreats.Add(threat.HierarchicalAgent);
     }
   }
 
-  private IEnumerator ClusterThreatsManager(float period) {
+  private IEnumerator HierarchyManager(float period) {
     while (true) {
-      if (_threatsToCluster.Count != 0) {
-        ClusterThreats();
+      if (_newThreats.Count != 0) {
+        BuildHierarchy();
       }
       yield return new WaitForSeconds(period);
     }
   }
 
-  private void ClusterThreats() {
+  private void BuildHierarchy() {
     // TODO(titan): The clustering algorithm should be aware of the capacity of the launcher.
     var swarmClusterer = new KMeansClusterer(Mathf.RoundToInt(_launchers.Count / _coverageFactor));
-    List<Cluster> swarms = swarmClusterer.Cluster(_threatsToCluster);
-    _threatsToCluster.Clear();
+    List<Cluster> swarms = swarmClusterer.Cluster(_newThreats);
+    _newThreats.Clear();
 
     // Assign one swarm to each launcher.
     var swarmToLauncherAssignment =
@@ -86,7 +89,7 @@ public class IADS : MonoBehaviour {
         swarmToLauncherAssignment.Assign(_launchers, swarms);
     void AssignTarget(IHierarchical hierarchical, IHierarchical target) {
       hierarchical.Target = target;
-      foreach (var subHierarchical in hierarchical.ActiveSubHierarchicals) {
+      foreach (var subHierarchical in hierarchical.SubHierarchicals) {
         AssignTarget(subHierarchical, target);
       }
     }
@@ -97,6 +100,18 @@ public class IADS : MonoBehaviour {
       // TODO(titan): The threats would normally target the aircraft carrier within the strike
       // group.
       AssignTarget(assignment.Second, assignment.First);
+    }
+  }
+
+  private void AssignSubInterceptor(IInterceptor subInterceptor) {
+    // Pass the sub-interceptor through all the launchers to find a new target.
+    var sortedLaunchers =
+        Launchers.Where(launcher => launcher.Target != null && !launcher.Target.IsTerminated)
+            .OrderBy(launcher =>
+                         Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
+    foreach (var launcher in sortedLaunchers) {
+      // TODO(titan): The capacity remaining should be used instead.
+      launcher.AssignNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.Capacity);
     }
   }
 }

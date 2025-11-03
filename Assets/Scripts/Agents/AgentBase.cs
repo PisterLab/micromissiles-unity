@@ -32,14 +32,8 @@ public class AgentBase : MonoBehaviour, IAgent {
   [SerializeField]
   private Configs.AgentConfig _agentConfig;
 
-  // Elapsed time since the creation of the agent.
-  private float _elapsedTime = 0f;
-
   // Last sensing time.
   private float _lastSensingTime = Mathf.NegativeInfinity;
-
-  // If true, the agent is terminated.
-  private bool _isTerminated = false;
 
   public HierarchicalAgent HierarchicalAgent {
     get => _hierarchicalAgent;
@@ -92,16 +86,11 @@ public class AgentBase : MonoBehaviour, IAgent {
     set => _accelerationInput = value;
   }
 
-  public float ElapsedTime {
-    get { return _elapsedTime; }
-  private
-    set { _elapsedTime = value; }
-  }
-  public bool IsTerminated {
-    get { return _isTerminated; }
-  private
-    set { _isTerminated = value; }
-  }
+  // Elapsed time since the creation of the agent.
+  public float ElapsedTime { get; private set; } = 0f;
+
+  // If true, the agent is terminated.
+  public bool IsTerminated { get; private set; } = false;
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;

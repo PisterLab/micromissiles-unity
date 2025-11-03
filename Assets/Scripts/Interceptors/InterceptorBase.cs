@@ -1,32 +1,63 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  public event InterceptEventHandler OnHit;
-  public event InterceptEventHandler OnMiss;
+  public event InterceptorEventHandler OnHit;
+  public event InterceptorEventHandler OnMiss;
+  public event InterceptorEventHandler OnAssignSubInterceptor;
+  public event TargetEventHandler OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
 
-  public int Capacity { get; private set; }
-  public int CapacityPerSubInterceptor { get; private set; }
-  public int CapacityRemaining => CapacityPerSubInterceptor * NumSubInterceptorsRemaining;
+  public int Capacity { get; protected set; }
+  public int CapacityPerSubInterceptor { get; protected set; }
+  public virtual int CapacityRemaining => CapacityPerSubInterceptor * NumSubInterceptorsRemaining;
   public int NumSubInterceptorsRemaining { get; protected set; }
+
+  public void AssignSubInterceptor(IInterceptor subInterceptor) {
+    // Assign a new target to the sub-interceptor within the parent interceptor's assigned targets.
+    // TODO(titan): The capacity remaining should be used instead.
+    if (!HierarchicalAgent.AssignNewTarget(subInterceptor.HierarchicalAgent,
+                                           subInterceptor.Capacity)) {
+      // Propagate the sub-interceptor target assignment to the parent interceptor above.
+      OnAssignSubInterceptor?.Invoke(subInterceptor);
+    }
+  }
+
+  public void ReassignTarget(IHierarchical target) {
+    // If a target needs to be re-assigned, the interceptor should in the following order:
+    //  1. Re-assign the target to another sub-interceptor without leaving another target uncovered.
+    //  2. Launch another sub-interceptor to pursue the target.
+    //  3. Propagate the target re-assignment to the parent interceptor above.
+    if (!HierarchicalAgent.ReassignTarget(target)) {
+      // Check if it is possible to launch another sub-interceptor.
+      // Otherwise, propagate the target re-assignment to the parent interceptor above.
+      OnReassignTarget?.Invoke(target);
+    }
+  }
+
+  protected override void Start() {
+    base.Start();
+
+    OnMiss += RegisterMiss;
+  }
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
+
+    // Check whether the interceptor has a target. If not, request a new target from the parent
+    // interceptor.
+    if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
+      OnAssignSubInterceptor?.Invoke(this);
+    }
 
     // Navigate towards the target.
     _accelerationInput = Controller?.Plan() ?? Vector3.zero;
     _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
     _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
-  }
-
-  protected override void Update() {
-    base.Update();
-
-    // Update the agent hierarchy.
-    UpdateHierarchical();
   }
 
   protected override void UpdateAgentConfig() {
@@ -87,10 +118,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
   }
 
-  // Update the agent hierarchy, including updating track files and performing recursive target
-  // clustering on the new targets.
-  private void UpdateHierarchical() {
-    HierarchicalAgent.Update(CapacityPerSubInterceptor);
+  private void RegisterMiss(IInterceptor interceptor) {
+    // Request the parent interceptor to re-assign the target to another interceptor if there are no
+    // other pursuers.
+    IHierarchical target = interceptor.HierarchicalAgent.Target;
+    bool targetIsCovered =
+        target.Pursuers.Where(pursuer => pursuer != interceptor.HierarchicalAgent).Any();
+    if (!targetIsCovered) {
+      OnReassignTarget?.Invoke(target);
+    }
+    // Request a new target from the parent interceptor.
+    OnAssignSubInterceptor?.Invoke(interceptor);
   }
 
   // If the interceptor collides with the ground or another agent, it will be terminated. It is
@@ -115,8 +153,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       float killProbability = threat.StaticConfig.HitConfig?.KillProbability ?? 1;
       bool isHit = Random.value <= killProbability;
       if (isHit) {
-        OnHit?.Invoke(this);
         threat.HandleIntercept();
+        OnHit?.Invoke(this);
       } else {
         OnMiss?.Invoke(this);
       }

@@ -26,8 +26,6 @@ public abstract class ReleaseStrategyBase : IReleaseStrategy {
         return leafHierarchicals;
       }
 
-      // Check if a target exists for the hierarchical object.
-      IHierarchical target = hierarchical.Target;
       if (hierarchical.Target == null) {
         return new List<IHierarchical>();
       }

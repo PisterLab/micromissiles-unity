@@ -18,11 +18,23 @@ public class HierarchicalAgent : HierarchicalBase {
     set {
       if (base.Target != null) {
         base.Target.RemovePursuer(this);
+        ClearSubHierarchicals();
         SimManager.Instance.DestroyDummyAgent(Agent.TargetModel);
         Agent.TargetModel = null;
       }
       base.Target = value;
       if (base.Target != null) {
+        if (Agent is IInterceptor interceptor) {
+          // Subscribe to the target events.
+          foreach (var targetHierarchical in Target.ActiveSubHierarchicals) {
+            if (targetHierarchical is HierarchicalAgent targetAgent) {
+              targetAgent.Agent.OnTerminated += (IAgent agent) =>
+                  agent.HierarchicalAgent.RemoveTargetHierarchical(targetHierarchical);
+            }
+          }
+          // Perform recursive clustering on the new targets.
+          RecursiveCluster(maxClusterSize: interceptor.CapacityPerSubInterceptor);
+        }
         base.Target.AddPursuer(this);
         Agent.TargetModel =
             SimManager.Instance.CreateDummyAgent(base.Target.Position, base.Target.Velocity);
