@@ -18,10 +18,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public int NumSubInterceptorsRemaining { get; protected set; }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
+    if (subInterceptor.CapacityRemaining == 0) {
+      return;
+    }
+
     // Assign a new target to the sub-interceptor within the parent interceptor's assigned targets.
-    // TODO(titan): The capacity remaining should be used instead.
     if (!HierarchicalAgent.AssignNewTarget(subInterceptor.HierarchicalAgent,
-                                           subInterceptor.Capacity)) {
+                                           subInterceptor.CapacityRemaining)) {
       // Propagate the sub-interceptor target assignment to the parent interceptor above.
       OnAssignSubInterceptor?.Invoke(subInterceptor);
     }
