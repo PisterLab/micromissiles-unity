@@ -16,6 +16,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Time to accumulate unassigned targets before launching additional sub-interceptors.
   private const float _unassignedTargetsLaunchPeriod = 2.5f;
 
+  public IEscapeDetector EscapeDetector { get; set; }
+
   public int Capacity { get; protected set; }
   public int CapacityPerSubInterceptor { get; protected set; }
   public virtual int CapacityPlannedRemaining => CapacityPerSubInterceptor *
@@ -56,7 +58,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return;
     }
 
-    _unassignedTargets.Add(target);
+    if (!_unassignedTargets.Contains(target)) {
+      _unassignedTargets.Add(target);
+    }
   }
 
   protected override void Start() {
@@ -69,18 +73,36 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
-    // Update the planned number of sub-interceptors remaining.
-    // TODO(titan): Update the planned number of sub-interceptors remaining when the number of leaf
-    // hierarchical objects changes, such as when a new target is added.
-    List<IHierarchical> leafHierarchicals =
-        HierarchicalAgent.LeafHierarchicals(activeOnly: false, withTargetOnly: false);
-    NumSubInterceptorsPlannedRemaining = NumSubInterceptors - leafHierarchicals.Count;
-
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       OnAssignSubInterceptor?.Invoke(this);
     }
+
+    // Check whether any targets are escaping from the interceptor.
+    if (EscapeDetector != null && HierarchicalAgent.Target != null &&
+        !HierarchicalAgent.Target.IsTerminated) {
+      List<IHierarchical> targetHierarchicals =
+          HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
+      int numEscapingTargets = 0;
+      foreach (var targetHierarchical in targetHierarchicals) {
+        if (EscapeDetector.IsEscaping(targetHierarchical)) {
+          OnReassignTarget?.Invoke(targetHierarchical);
+          ++numEscapingTargets;
+        }
+      }
+      if (numEscapingTargets == targetHierarchicals.Count) {
+        OnAssignSubInterceptor?.Invoke(this);
+      }
+    }
+
+    // Update the planned number of sub-interceptors remaining.
+    // TODO(titan): Update the planned number of sub-interceptors remaining when the number of leaf
+    // hierarchical objects changes, such as when a new target is added.
+    List<IHierarchical> leafHierarchicals =
+        HierarchicalAgent.LeafHierarchicals(activeOnly: false, withTargetOnly: false);
+    NumSubInterceptorsPlannedRemaining =
+        Mathf.Min(NumSubInterceptorsRemaining, NumSubInterceptors - leafHierarchicals.Count);
 
     // Navigate towards the target.
     _accelerationInput = Controller?.Plan() ?? Vector3.zero;
@@ -197,12 +219,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      bool targetIsCovered = targetHierarchical.ActivePursuers
-                                 .Where(pursuer => pursuer != interceptor.HierarchicalAgent)
-                                 .Any();
-      if (!targetIsCovered) {
-        OnReassignTarget?.Invoke(targetHierarchical);
-      }
+      OnReassignTarget?.Invoke(targetHierarchical);
     }
 
     // Request a new target from the parent interceptor.
@@ -217,10 +234,15 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       IEnumerable<IHierarchical> unassignedTargets = _unassignedTargets.ToList();
       _unassignedTargets.Clear();
 
-      // Check whether the unassigned targets are still unassigned.
-      unassignedTargets = unassignedTargets.Where(target => !target.ActivePursuers.Any());
-      int numUnassignedTargets = unassignedTargets.Count();
-      if (numUnassignedTargets > CapacityPlannedRemaining) {
+      // Check whether the unassigned targets are still unassigned or are escaping the assigned
+      // pursuers.
+      unassignedTargets = unassignedTargets.Where(
+          target => !target.IsTerminated && target.ActivePursuers.All(pursuer => {
+            var pursuerAgent = pursuer as HierarchicalAgent;
+            var interceptor = pursuerAgent?.Agent as IInterceptor;
+            return interceptor?.EscapeDetector?.IsEscaping(target) ?? true;
+          }));
+      if (unassignedTargets.Count() > CapacityPlannedRemaining) {
         // If there are more unassigned targets than the capacity remaining, propagate the target
         // re-assignment to the parent interceptor for the excess targets.
         unassignedTargets =
@@ -230,18 +252,23 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
           OnReassignTarget?.Invoke(target);
         }
         unassignedTargets = unassignedTargets.Take(CapacityPlannedRemaining);
-        if (!unassignedTargets.Any()) {
-          continue;
-        }
+      }
+      if (!unassignedTargets.Any()) {
+        continue;
       }
 
       // Create a new hierarchical object with the cluster of unassigned targets as the target.
       var newTargetSubHierarchical = new HierarchicalBase();
+      int numUnassignedTargets = 0;
       foreach (var target in unassignedTargets) {
         newTargetSubHierarchical.AddSubHierarchical(target);
+        ++numUnassignedTargets;
       }
       var newSubHierarchical = new HierarchicalBase { Target = newTargetSubHierarchical };
       HierarchicalAgent.AddSubHierarchical(newSubHierarchical);
+      Debug.Log($"Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.");
+      UIManager.Instance.LogActionMessage(
+          $"[IADS] Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.");
 
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);

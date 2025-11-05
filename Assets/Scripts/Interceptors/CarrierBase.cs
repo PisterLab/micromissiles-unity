@@ -19,6 +19,11 @@ public abstract class CarrierBase : InterceptorBase {
   // Release strategy for sub-interceptors.
   public IReleaseStrategy ReleaseStrategy { get; set; }
 
+  protected override void Awake() {
+    base.Awake();
+    EscapeDetector = new GeometricEscapeDetector(this);
+  }
+
   protected override void Start() {
     base.Start();
     _releaseCoroutine = StartCoroutine(ReleaseManager(_releasePeriod));
