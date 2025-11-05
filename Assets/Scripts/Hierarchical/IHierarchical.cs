@@ -14,6 +14,7 @@ public interface IHierarchical {
   IEnumerable<IHierarchical> ActiveSubHierarchicals { get; }
   IHierarchical Target { get; set; }
   IReadOnlyList<IHierarchical> Pursuers { get; }
+  IEnumerable<IHierarchical> ActivePursuers { get; }
   IReadOnlyList<IHierarchical> LaunchedHierarchicals { get; }
 
   Vector3 Position { get; }
@@ -25,6 +26,7 @@ public interface IHierarchical {
   void AddSubHierarchical(IHierarchical subHierarchical);
   void RemoveSubHierarchical(IHierarchical subHierarchical);
   void ClearSubHierarchicals();
+  List<IHierarchical> LeafHierarchicals(bool activeOnly = false, bool withTargetOnly = true);
 
   void AddPursuer(IHierarchical pursuer);
   void RemovePursuer(IHierarchical pursuer);
@@ -42,8 +44,4 @@ public interface IHierarchical {
   // Assign a new target to the given hierarchical object. Return whether a new target was
   // successfully assigned to the hierarchical object.
   bool AssignNewTarget(IHierarchical hierarchical, int capacity);
-
-  // Re-assign the given target to another hierarchical object. Return whether the target was
-  // successfully assigned to another hierarchical object.
-  bool ReassignTarget(IHierarchical target);
 }

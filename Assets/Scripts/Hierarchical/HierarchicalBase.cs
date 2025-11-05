@@ -31,6 +31,8 @@ public class HierarchicalBase : IHierarchical {
   public virtual IHierarchical Target { get; set; }
 
   public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
+  public IEnumerable<IHierarchical> ActivePursuers =>
+      Pursuers.Where(pursuer => !pursuer.IsTerminated);
 
   public IReadOnlyList<IHierarchical> LaunchedHierarchicals => _launchedHierarchicals.AsReadOnly();
 
@@ -52,6 +54,22 @@ public class HierarchicalBase : IHierarchical {
 
   public void ClearSubHierarchicals() {
     _subHierarchicals.Clear();
+  }
+
+  public List<IHierarchical> LeafHierarchicals(bool activeOnly, bool withTargetOnly) {
+    var subHierarchicals = activeOnly ? ActiveSubHierarchicals : SubHierarchicals;
+    if (SubHierarchicals.Count > 0) {
+      var leafHierarchicals = new List<IHierarchical>();
+      foreach (var subHierarchical in subHierarchicals) {
+        leafHierarchicals.AddRange(subHierarchical.LeafHierarchicals(activeOnly, withTargetOnly));
+      }
+      return leafHierarchicals;
+    }
+
+    if (withTargetOnly && (Target == null || Target.IsTerminated)) {
+      return new List<IHierarchical>();
+    }
+    return new List<IHierarchical> { this };
   }
 
   public void AddPursuer(IHierarchical pursuer) {
@@ -118,12 +136,6 @@ public class HierarchicalBase : IHierarchical {
     return hierarchical.Target != null;
   }
 
-  public bool ReassignTarget(IHierarchical target) {
-    // Recursively check through hierarchicals based on cluster position first (BFS).  Then check
-    // through launched hierarchicals?
-    return false;
-  }
-
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
     Vector3 sum = Vector3.zero;
     int count = 0;
@@ -171,22 +183,8 @@ public class HierarchicalBase : IHierarchical {
   }
 
   private IHierarchical FindBestLeafHierarchicalTarget(IHierarchical hierarchical, int capacity) {
-    List<IHierarchical> FindLeafHierarchicalTargets(IHierarchical hierarchical) {
-      // Traverse the agent hierarchy to find only the leaf hierarchical objects.
-      if (hierarchical.SubHierarchicals.Count > 0) {
-        var leafHierarchicalTargets = new List<IHierarchical>();
-        foreach (var subHierarchical in hierarchical.ActiveSubHierarchicals) {
-          leafHierarchicalTargets.AddRange(FindLeafHierarchicalTargets(subHierarchical));
-        }
-        return leafHierarchicalTargets;
-      }
-
-      if (hierarchical.Target == null) {
-        return new List<IHierarchical>();
-      }
-      return new List<IHierarchical> { hierarchical.Target };
-    }
-    List<IHierarchical> leafHierarchicalTargets = FindLeafHierarchicalTargets(this);
+    List<IHierarchical> leafHierarchicalTargets =
+        LeafHierarchicals(activeOnly: true, withTargetOnly: true);
     if (leafHierarchicalTargets.Count == 0) {
       return null;
     }
