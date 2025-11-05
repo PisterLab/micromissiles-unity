@@ -202,10 +202,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       if (isHit) {
         threat.HandleIntercept();
         OnHit?.Invoke(this);
+        Terminate();
       } else {
         OnMiss?.Invoke(this);
       }
-      Terminate();
     }
   }
 
