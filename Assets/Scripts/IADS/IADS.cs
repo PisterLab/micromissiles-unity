@@ -130,15 +130,16 @@ public class IADS : MonoBehaviour {
     // Assign the closest launcher with non-zero remaining capacity to pursue the target.
     var closestLauncher =
         Launchers
-            .Where(launcher => {
-              var interceptor = (launcher as HierarchicalAgent)?.Agent as IInterceptor;
-              return interceptor?.CapacityPlannedRemaining > 0;
+            .Select(launcher => new {
+              Hierarchical = launcher,
+              Interceptor = (launcher as HierarchicalAgent)?.Agent as IInterceptor,
             })
-            .OrderBy(launcher => Vector3.Distance(target.Position, launcher.Position))
+            .Where(launcher => launcher.Interceptor?.CapacityPlannedRemaining > 0)
+            .OrderBy(launcher => Vector3.Distance(target.Position, launcher.Hierarchical.Position))
             .FirstOrDefault();
     if (closestLauncher == null) {
       return;
     }
-    ((closestLauncher as HierarchicalAgent).Agent as IInterceptor).ReassignTarget(target);
+    closestLauncher.Interceptor.ReassignTarget(target);
   }
 }

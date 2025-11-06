@@ -57,8 +57,8 @@ public class HierarchicalBase : IHierarchical {
   }
 
   public List<IHierarchical> LeafHierarchicals(bool activeOnly, bool withTargetOnly) {
-    var subHierarchicals = activeOnly ? ActiveSubHierarchicals : SubHierarchicals;
-    if (SubHierarchicals.Count > 0) {
+    var subHierarchicals = (activeOnly ? ActiveSubHierarchicals : SubHierarchicals).ToList();
+    if (subHierarchicals.Count > 0) {
       var leafHierarchicals = new List<IHierarchical>();
       foreach (var subHierarchical in subHierarchicals) {
         leafHierarchicals.AddRange(subHierarchical.LeafHierarchicals(activeOnly, withTargetOnly));
@@ -184,7 +184,9 @@ public class HierarchicalBase : IHierarchical {
 
   private IHierarchical FindBestLeafHierarchicalTarget(IHierarchical hierarchical, int capacity) {
     List<IHierarchical> leafHierarchicalTargets =
-        LeafHierarchicals(activeOnly: true, withTargetOnly: true);
+        LeafHierarchicals(activeOnly: true, withTargetOnly: true)
+            .Select(hierarchical => hierarchical.Target)
+            .ToList();
     if (leafHierarchicalTargets.Count == 0) {
       return null;
     }

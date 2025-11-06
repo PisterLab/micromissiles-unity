@@ -70,6 +70,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     base.FixedUpdate();
 
     // Update the planned number of sub-interceptors remaining.
+    // TODO(titan): Update the planned number of sub-interceptors remaining when the number of leaf
+    // hierarchical objects changes, such as when a new target is added.
     List<IHierarchical> leafHierarchicals =
         HierarchicalAgent.LeafHierarchicals(activeOnly: false, withTargetOnly: false);
     NumSubInterceptorsPlannedRemaining = NumSubInterceptors - leafHierarchicals.Count;
@@ -212,8 +214,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       yield return new WaitUntil(() => _unassignedTargets.Count > 0);
       yield return new WaitForSeconds(period);
 
+      IEnumerable<IHierarchical> unassignedTargets = _unassignedTargets.ToList();
+      _unassignedTargets.Clear();
+
       // Check whether the unassigned targets are still unassigned.
-      var unassignedTargets = _unassignedTargets.Where(target => !target.ActivePursuers.Any());
+      unassignedTargets = unassignedTargets.Where(target => !target.ActivePursuers.Any());
       int numUnassignedTargets = unassignedTargets.Count();
       if (numUnassignedTargets > CapacityPlannedRemaining) {
         // If there are more unassigned targets than the capacity remaining, propagate the target
@@ -240,7 +245,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);
-      _unassignedTargets.Clear();
     }
   }
 }
