@@ -49,7 +49,7 @@ public class Interceptor : Agent {
 
     // Calculate the boost acceleration.
     float boostAcceleration =
-        (float)((staticConfig.BoostConfig?.BoostAcceleration ?? 0) * Constants.kGravity);
+        (staticConfig.BoostConfig?.BoostAcceleration ?? 0) * Constants.kGravity;
     Vector3 boostAccelerationVector = boostAcceleration * transform.forward;
 
     // Add the PN acceleration to the boost acceleration.
