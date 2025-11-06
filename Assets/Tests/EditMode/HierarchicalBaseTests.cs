@@ -8,10 +8,14 @@ public class HierarchicalBaseTests {
   private class FixedHierarchical : HierarchicalBase {
     private Vector3 _position;
     private Vector3 _velocity;
+    private Vector3 _acceleration;
 
-    public FixedHierarchical(in Vector3 position, in Vector3 velocity) {
+    public FixedHierarchical(in Vector3 position, in Vector3 velocity)
+        : this(position, velocity, Vector3.zero) {}
+    public FixedHierarchical(in Vector3 position, in Vector3 velocity, in Vector3 acceleration) {
       _position = position;
       _velocity = velocity;
+      _acceleration = acceleration;
     }
 
     protected override Vector3 GetPosition() {
@@ -19,6 +23,9 @@ public class HierarchicalBaseTests {
     }
     protected override Vector3 GetVelocity() {
       return _velocity;
+    }
+    protected override Vector3 GetAcceleration() {
+      return _acceleration;
     }
   }
 
@@ -79,6 +86,25 @@ public class HierarchicalBaseTests {
     parent.AddSubHierarchical(child);
 
     Assert.AreEqual(5f, parent.Speed, _epsilon);
+  }
+
+  [Test]
+  public void Acceleration_ReturnsMeanOfSubHierarchicals() {
+    var parent = new HierarchicalBase();
+    var child1 =
+        new FixedHierarchical(new Vector3(2, 0, 0), new Vector3(2, 1, 1), new Vector3(0, -1, 3));
+    parent.AddSubHierarchical(child1);
+    var child2 =
+        new FixedHierarchical(new Vector3(-1, 2, 3), new Vector3(1, -2, 0), new Vector3(0, 2, -2));
+    parent.AddSubHierarchical(child2);
+
+    Assert.AreEqual(new Vector3(0f, 0.5f, 0.5f), parent.Acceleration);
+  }
+
+  [Test]
+  public void Acceleration_WithNoSubHierarchicals_IsZero() {
+    var parent = new HierarchicalBase();
+    Assert.AreEqual(Vector3.zero, parent.Acceleration);
   }
 
   [Test]

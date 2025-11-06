@@ -1,6 +1,5 @@
-using System;
-using System.Reflection;
 using NUnit.Framework;
+using System.Reflection;
 using UnityEngine;
 
 public abstract class AgentTestBase : TestBase {

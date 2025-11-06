@@ -97,7 +97,7 @@ public class Interceptor : Agent {
     //   return Vector3.zero;
     // }
 
-    IController controller;
+    IControllerLegacy controller;
     switch (agentConfig.DynamicConfig.FlightConfig.ControllerType) {
       case Configs.ControllerType.ProportionalNavigation: {
         controller = new PnController(this, _navigationGain);
