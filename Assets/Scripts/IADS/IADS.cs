@@ -104,7 +104,7 @@ public class IADS : MonoBehaviour {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining == 0) {
+    if (subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
@@ -114,7 +114,8 @@ public class IADS : MonoBehaviour {
             .OrderBy(launcher =>
                          Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
     foreach (var launcher in sortedLaunchers) {
-      if (launcher.AssignNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.CapacityRemaining)) {
+      if (launcher.AssignNewTarget(subInterceptor.HierarchicalAgent,
+                                   subInterceptor.CapacityRemaining)) {
         break;
       }
     }

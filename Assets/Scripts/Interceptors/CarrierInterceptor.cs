@@ -11,7 +11,7 @@ public class CarrierInterceptor : CarrierBase {
   }
 
   protected override void LateUpdate() {
-    if (NumSubInterceptorsRemaining == 0) {
+    if (NumSubInterceptorsRemaining <= 0) {
       HierarchicalAgent.Target = null;
       (Movement as MissileMovement).FlightPhase = Simulation.FlightPhase.Ballistic;
     }

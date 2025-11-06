@@ -18,7 +18,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public int NumSubInterceptorsRemaining { get; protected set; }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining == 0) {
+    if (subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
