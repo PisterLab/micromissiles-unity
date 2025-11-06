@@ -89,7 +89,7 @@ public class IADS : MonoBehaviour {
         swarmToLauncherAssignment.Assign(_launchers, swarms);
     void AssignTarget(IHierarchical hierarchical, IHierarchical target) {
       hierarchical.Target = target;
-      foreach (var subHierarchical in hierarchical.SubHierarchicals) {
+      foreach (var subHierarchical in hierarchical.ActiveSubHierarchicals) {
         AssignTarget(subHierarchical, target);
       }
     }
@@ -111,7 +111,9 @@ public class IADS : MonoBehaviour {
                          Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
     foreach (var launcher in sortedLaunchers) {
       // TODO(titan): The capacity remaining should be used instead.
-      launcher.AssignNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.Capacity);
+      if (launcher.AssignNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.Capacity)) {
+        break;
+      }
     }
   }
 }

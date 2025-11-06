@@ -82,7 +82,11 @@ public class HierarchicalBase : IHierarchical {
       }
       return;
     }
-    if (Target == null || Target.ActiveSubHierarchicals.Count() <= maxClusterSize) {
+    if (Target == null) {
+      return;
+    }
+    int numActiveSubHierarchicals = Target.ActiveSubHierarchicals.Count();
+    if (numActiveSubHierarchicals <= maxClusterSize) {
       return;
     }
 
@@ -90,8 +94,7 @@ public class HierarchicalBase : IHierarchical {
     // TODO(titan): Define a better heuristic for choosing the clustering algorithm to minimize the
     // size and radius of each cluster without generating too many clusters.
     IClusterer clusterer = null;
-    if (Target.ActiveSubHierarchicals.Count() >=
-        _maxNumSubHierarchicals * Mathf.Max(maxClusterSize / 2, 1)) {
+    if (numActiveSubHierarchicals >= _maxNumSubHierarchicals * Mathf.Max(maxClusterSize / 2, 1)) {
       clusterer = new KMeansClusterer(_maxNumSubHierarchicals);
     } else {
       clusterer = new AgglomerativeClusterer(maxClusterSize, _clusterMaxRadius);
@@ -107,12 +110,11 @@ public class HierarchicalBase : IHierarchical {
   }
 
   public bool AssignNewTarget(IHierarchical hierarchical, int capacity) {
-    hierarchical.Target = null;
     // TODO(titan): Abstract the target picking strategy to its own interface and class.
     // TODO(titan): Consider whether the OnAssignSubInterceptor and OnReassignTarget events should
     // be modified to refer to the new parent interceptor.
-    hierarchical.Target ??= FindBestHierarchicalTarget(hierarchical, capacity) ??
-                            FindBestLeafHierarchicalTarget(hierarchical, capacity);
+    hierarchical.Target = FindBestHierarchicalTarget(hierarchical, capacity) ??
+                          FindBestLeafHierarchicalTarget(hierarchical, capacity);
     return hierarchical.Target != null;
   }
 

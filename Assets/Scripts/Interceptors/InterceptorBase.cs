@@ -122,10 +122,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Request the parent interceptor to re-assign the target to another interceptor if there are no
     // other pursuers.
     IHierarchical target = interceptor.HierarchicalAgent.Target;
-    bool targetIsCovered =
-        target.Pursuers.Where(pursuer => pursuer != interceptor.HierarchicalAgent).Any();
-    if (!targetIsCovered) {
-      OnReassignTarget?.Invoke(target);
+    if (target != null) {
+      bool targetIsCovered =
+          target.Pursuers.Where(pursuer => pursuer != interceptor.HierarchicalAgent).Any();
+      if (!targetIsCovered) {
+        OnReassignTarget?.Invoke(target);
+      }
     }
     // Request a new target from the parent interceptor.
     OnAssignSubInterceptor?.Invoke(interceptor);

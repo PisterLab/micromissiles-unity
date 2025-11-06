@@ -37,11 +37,12 @@ public abstract class CarrierBase : InterceptorBase {
         NumSubInterceptorsRemaining -= releasedAgents.Count;
 
         foreach (var agent in releasedAgents) {
-          var subInterceptor = agent as IInterceptor;
-          subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
-          subInterceptor.OnReassignTarget += ReassignTarget;
-          if (subInterceptor.Movement is MissileMovement movement) {
-            movement.FlightPhase = Simulation.FlightPhase.Boost;
+          if (agent is IInterceptor subInterceptor) {
+            subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
+            subInterceptor.OnReassignTarget += ReassignTarget;
+            if (subInterceptor.Movement is MissileMovement movement) {
+              movement.FlightPhase = Simulation.FlightPhase.Boost;
+            }
           }
         }
       }
