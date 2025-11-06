@@ -14,7 +14,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private const float _proportionalNavigationGain = 5f;
 
   // Time to accumulate unassigned targets before launching additional sub-interceptors.
-  private const float _unassignedTargetsLaunchPeriod = 2.5f;
+  private const float _unassignedTargetsLaunchPeriod = 5f;
 
   public int Capacity { get; protected set; }
   public int CapacityPerSubInterceptor { get; protected set; }
