@@ -136,6 +136,19 @@ public class HierarchicalBaseTests {
   }
 
   [Test]
+  public void ClearSubHierarchicals_RemovesAllSubHierarchicals() {
+    var parent = new HierarchicalBase();
+    var child1 = new HierarchicalBase();
+    var child2 = new HierarchicalBase();
+    parent.AddSubHierarchical(child1);
+    parent.AddSubHierarchical(child2);
+
+    Assert.AreEqual(2, parent.SubHierarchicals.Count);
+    parent.ClearSubHierarchicals();
+    Assert.AreEqual(0, parent.SubHierarchicals.Count);
+  }
+
+  [Test]
   public void AddPursuer_AddsCorrectly() {
     var parent = new HierarchicalBase();
     var child = new HierarchicalBase();
