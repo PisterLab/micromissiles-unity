@@ -122,7 +122,7 @@ public class MissileMovement : AerialMovement {
     if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
       // Add some upwards acceleration to avoid the ground.
       float blendFactor = 1 - (altitude / groundProximityThreshold);
-      return accelerationInput + blendFactor * Agent.transform.up * Agent.Speed;
+      return accelerationInput + blendFactor * Agent.MaxNormalAcceleration() * Agent.transform.up;
     }
     return accelerationInput;
   }
