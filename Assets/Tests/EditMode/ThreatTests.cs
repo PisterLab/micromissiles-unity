@@ -1,9 +1,9 @@
-using System;
 using NUnit.Framework;
-using UnityEngine;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
+using UnityEngine;
 
 public class ThreatTests : AgentTestBase {
   private FixedWingThreat _fixedWingThreat;
@@ -219,15 +219,15 @@ public class ThreatTests : AgentTestBase {
       Assert.AreEqual("Test Direct Attack", attackBehavior.Name);
       Assert.AreEqual(Configs.AttackType.DirectAttack, attackBehavior.Type);
 
-      Assert.IsTrue(attackBehavior is DirectAttackBehavior,
-                    "Attack behavior should be a DirectAttackBehavior.");
-      DirectAttackBehavior directAttackBehavior = (DirectAttackBehavior)attackBehavior;
+      Assert.IsTrue(attackBehavior is DirectAttackBehaviorLegacy,
+                    "Attack behavior should be a DirectAttackBehaviorLegacy.");
+      var directAttackBehavior = (DirectAttackBehaviorLegacy)attackBehavior;
 
       Assert.IsNotNull(attackBehavior.FlightPlan, "Flight plan should not be null.");
-      Assert.AreEqual(Configs.AttackBehaviorConfig.Types.FlightPlanType.DistanceToTarget,
-                      attackBehavior.FlightPlan.Type);
+      Assert.AreEqual(Configs.FlightPlanType.DistanceToTarget,
+                      attackBehavior.FlightPlan.Config.Type);
 
-      List<Waypoint> waypoints = attackBehavior.FlightPlan.Waypoints;
+      var waypoints = attackBehavior.FlightPlan.Waypoints;
       Assert.IsNotNull(waypoints, "Waypoints should not be null.");
       Assert.AreEqual(2, waypoints.Count, "There should be 2 waypoints.");
 
