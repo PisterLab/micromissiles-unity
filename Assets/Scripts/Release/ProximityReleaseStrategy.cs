@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 // The proximity release strategy decides to launch an interceptor against an incoming target
@@ -16,23 +17,25 @@ public class ProximityReleaseStrategy : MassReleaseStrategyBase {
 
   public ProximityReleaseStrategy(IAgent agent, IAssignment assignment) : base(agent, assignment) {}
 
-  protected override LaunchPlan PlanRelease(IHierarchical target) {
-    var predictor = new LinearExtrapolator(target);
-    PredictorState predictedState = predictor.Predict(_predictionTime);
-    Vector3 positionToPredictedTarget = predictedState.Position - Agent.Position;
-    float predictedDistanceToTarget = positionToPredictedTarget.magnitude;
+  protected override LaunchPlan PlanRelease(IEnumerable<IHierarchical> targets) {
+    foreach (var target in targets) {
+      var predictor = new LinearExtrapolator(target);
+      PredictorState predictedState = predictor.Predict(_predictionTime);
+      Vector3 positionToPredictedTarget = predictedState.Position - Agent.Position;
+      float predictedDistanceToTarget = positionToPredictedTarget.magnitude;
 
-    // Check whether the distance to the target is less than the minimum distance.
-    if (predictedDistanceToTarget < _minDistanceToThreat) {
-      return new LaunchPlan { ShouldLaunch = true };
-    }
+      // Check whether the distance to the target is less than the minimum distance.
+      if (predictedDistanceToTarget < _minDistanceToThreat) {
+        return new LaunchPlan { ShouldLaunch = true };
+      }
 
-    // Check whether the bearing exceeds the maximum bearing.
-    float lateralDistance =
-        (Vector3.ProjectOnPlane(positionToPredictedTarget, Agent.Velocity)).magnitude;
-    float bearing = Mathf.Asin(lateralDistance / predictedDistanceToTarget) * Mathf.Rad2Deg;
-    if (bearing > _maxBearingDegrees && predictedDistanceToTarget < _maxDistanceToThreat) {
-      return new LaunchPlan { ShouldLaunch = true };
+      // Check whether the bearing exceeds the maximum bearing.
+      float lateralDistance =
+          (Vector3.ProjectOnPlane(positionToPredictedTarget, Agent.Velocity)).magnitude;
+      float bearing = Mathf.Asin(lateralDistance / predictedDistanceToTarget) * Mathf.Rad2Deg;
+      if (bearing > _maxBearingDegrees && predictedDistanceToTarget < _maxDistanceToThreat) {
+        return new LaunchPlan { ShouldLaunch = true };
+      }
     }
     return LaunchPlan.NoLaunch();
   }

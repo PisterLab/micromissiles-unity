@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 // Base implementation of a release strategy.
 public abstract class ReleaseStrategyBase : IReleaseStrategy {
@@ -9,8 +11,32 @@ public abstract class ReleaseStrategyBase : IReleaseStrategy {
   }
 
   // Release the sub-interceptors.
-  public abstract List<IAgent> Release();
+  public List<IAgent> Release() {
+    if (Agent is not CarrierBase carrier || carrier.NumSubInterceptorsRemaining <= 0) {
+      return new List<IAgent>();
+    }
 
-  // Plan the release for the given target.
-  protected abstract LaunchPlan PlanRelease(IHierarchical target);
+    List<IHierarchical> FindLeafHierarchicals(IHierarchical hierarchical) {
+      // Traverse the agent hierarchy to find only the leaf hierarchical objects.
+      if (hierarchical.SubHierarchicals.Count > 0) {
+        var leafHierarchicals = new List<IHierarchical>();
+        foreach (var subHierarchical in hierarchical.SubHierarchicals) {
+          leafHierarchicals.AddRange(FindLeafHierarchicals(subHierarchical));
+        }
+        return leafHierarchicals;
+      }
+
+      // Check if a target exists for the hierarchical object.
+      IHierarchical target = hierarchical.Target;
+      if (hierarchical.Target == null) {
+        return new List<IHierarchical>();
+      }
+      return new List<IHierarchical> { hierarchical };
+    }
+    List<IHierarchical> leafHierarchicals = FindLeafHierarchicals(Agent.HierarchicalAgent);
+    return Release(leafHierarchicals);
+  }
+
+  // Release the sub-interceptors for the given leaf hierarchical objects.
+  protected abstract List<IAgent> Release(IEnumerable<IHierarchical> hierarchicals);
 }

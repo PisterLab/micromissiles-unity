@@ -17,11 +17,13 @@ public class HierarchicalAgent : HierarchicalBase {
     get { return base.Target; }
     set {
       if (base.Target != null) {
+        base.Target.RemovePursuer(this);
         SimManager.Instance.DestroyDummyAgent(Agent.TargetModel);
         Agent.TargetModel = null;
       }
       base.Target = value;
       if (base.Target != null) {
+        base.Target.AddPursuer(this);
         Agent.TargetModel =
             SimManager.Instance.CreateDummyAgent(base.Target.Position, base.Target.Velocity);
       }
