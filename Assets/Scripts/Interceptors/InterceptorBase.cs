@@ -27,8 +27,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public int NumSubInterceptorsPlannedRemaining { get; protected set; }
   public int NumSubInterceptorsRemaining { get; protected set; }
 
-  // List of unassigned targets for which an additional sub-interceptor should be launched.
-  private List<IHierarchical> _unassignedTargets = new List<IHierarchical>();
+  // Set of unassigned targets for which an additional sub-interceptor should be launched.
+  private HashSet<IHierarchical> _unassignedTargets = new HashSet<IHierarchical>();
 
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
@@ -58,9 +58,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return;
     }
 
-    if (!_unassignedTargets.Contains(target)) {
-      _unassignedTargets.Add(target);
-    }
+    _unassignedTargets.Add(target);
   }
 
   protected override void Start() {
@@ -84,14 +82,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         !HierarchicalAgent.Target.IsTerminated) {
       List<IHierarchical> targetHierarchicals =
           HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
-      int numEscapingTargets = 0;
-      foreach (var targetHierarchical in targetHierarchicals) {
-        if (EscapeDetector.IsEscaping(targetHierarchical)) {
-          OnReassignTarget?.Invoke(targetHierarchical);
-          ++numEscapingTargets;
-        }
+      List<IHierarchical> escapingTargets =
+          targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
+      foreach (var target in escapingTargets) {
+        OnReassignTarget?.Invoke(target);
       }
-      if (numEscapingTargets == targetHierarchicals.Count) {
+      if (escapingTargets.Count == targetHierarchicals.Count) {
         OnAssignSubInterceptor?.Invoke(this);
       }
     }
@@ -236,22 +232,24 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
       // Check whether the unassigned targets are still unassigned or are escaping the assigned
       // pursuers.
-      unassignedTargets = unassignedTargets.Where(
-          target => !target.IsTerminated && target.ActivePursuers.All(pursuer => {
-            var pursuerAgent = pursuer as HierarchicalAgent;
-            var interceptor = pursuerAgent?.Agent as IInterceptor;
-            return interceptor?.EscapeDetector?.IsEscaping(target) ?? true;
-          }));
-      if (unassignedTargets.Count() > CapacityPlannedRemaining) {
+      var filteredTargets =
+          unassignedTargets
+              .Where(target => !target.IsTerminated && target.ActivePursuers.All(pursuer => {
+                var pursuerAgent = pursuer as HierarchicalAgent;
+                var interceptor = pursuerAgent?.Agent as IInterceptor;
+                return interceptor?.EscapeDetector?.IsEscaping(target) ?? true;
+              }))
+              .ToList();
+      if (filteredTargets.Count > CapacityPlannedRemaining) {
         // If there are more unassigned targets than the capacity remaining, propagate the target
         // re-assignment to the parent interceptor for the excess targets.
-        unassignedTargets =
-            unassignedTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
-        var excessTargets = unassignedTargets.Skip(CapacityPlannedRemaining);
+        var orderedTargets =
+            filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
+        var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
           OnReassignTarget?.Invoke(target);
         }
-        unassignedTargets = unassignedTargets.Take(CapacityPlannedRemaining);
+        unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       }
       if (!unassignedTargets.Any()) {
         continue;
