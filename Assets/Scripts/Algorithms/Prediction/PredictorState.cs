@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // The predictor state defines the output of a predictor.
-public class PredictorState {
+public struct PredictorState {
   // Position.
   public Vector3 Position { get; set; }
 
