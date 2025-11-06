@@ -15,6 +15,7 @@ public class KMeansClustererTests {
 
   public static GameObject GenerateObject(in Vector3 position) {
     GameObject obj = new GameObject();
+    Agent agent = obj.AddComponent<DummyAgent>();
     obj.transform.position = position;
     return obj;
   }
@@ -103,6 +104,7 @@ public class ConstrainedKMeansClustererTests {
 
   public static GameObject GenerateObject(in Vector3 position) {
     GameObject obj = new GameObject();
+    Agent agent = obj.AddComponent<DummyAgent>();
     obj.transform.position = position;
     return obj;
   }
