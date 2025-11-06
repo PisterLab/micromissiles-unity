@@ -80,7 +80,6 @@ public class TimeEscapeDetectorTests : TestBase {
         new FixedHierarchical(position: new Vector3(0, 0, 10), velocity: new Vector3(0, 0, -5)) {
           Target = new FixedHierarchical(position: new Vector3(1, 0, 0))
         };
-    Debug.Log(target.Speed);
     Assert.IsTrue(_escapeDetector.IsEscaping(target));
   }
 

@@ -21,10 +21,10 @@ public class GeometricEscapeDetector : EscapeDetectorBase {
     if (target.Target != null && !target.Target.IsTerminated) {
       Vector3 targetRelativePositionToTarget = target.Target.Position - target.Position;
       // The target is escaping if the distance from the agent to the target is greater than the
-      // distance from the target to its target or if the agent is moving head-on towards the
-      // target.
+      // distance from the target to its target or if the agent is geometrically behind the target
+      // relative the target's own target.
       return agentToTargetTransformation.Position.Range >
-                 targetRelativePositionToTarget.magnitude ||
+                 targetRelativePositionToTarget.magnitude * _rangeBufferFactor ||
              Vector3.Dot(-agentToTargetTransformation.Position.Cartesian,
                          targetRelativePositionToTarget) < 0;
     }
