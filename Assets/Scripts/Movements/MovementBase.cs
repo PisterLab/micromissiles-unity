@@ -4,15 +4,10 @@ using UnityEngine;
 // Base implementation of a movement behavior.
 public abstract class MovementBase : IMovement {
   // Agent to which the movement behavior is assigned.
-  private IAgent _agent;
-
-  public IAgent Agent {
-    get => _agent;
-    set => _agent = value;
-  }
+  public IAgent Agent { get; set; }
 
   public MovementBase(IAgent agent) {
-    _agent = agent;
+    Agent = agent;
   }
 
   // Determine the agent's actual acceleration input given its intended acceleration input by
