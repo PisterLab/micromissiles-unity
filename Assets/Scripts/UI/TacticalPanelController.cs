@@ -1,10 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.UI;
 using System.Linq;
 
 public class TacticalPanelController : MonoBehaviour {
-  public static TacticalPanelController Instance { get; private set; }
+  public static TacticalPanelController Instance { get; private set; } = null!;
 
   private void Awake() {
     if (Instance == null) {
@@ -17,7 +16,7 @@ public class TacticalPanelController : MonoBehaviour {
 
   [Tooltip("The UI group that contains the radar symbology elements")]
   [SerializeField]
-  private GameObject _radarUIGroup;
+  private GameObject _radarUIGroup = null!;
 
   [SerializeField]
   [Tooltip("How often to refresh symbol positions (in seconds)")]
@@ -29,15 +28,15 @@ public class TacticalPanelController : MonoBehaviour {
   [SerializeField]
   private float _panelZoomSpeed = 10.0f;
 
-  private RectTransform _radarUIGroupRectTransform;
-  private IADS _iads;
+  private RectTransform _radarUIGroupRectTransform = null!;
+  private IADS _iads = null!;
   private float _timeSinceLastRefresh;
   private readonly Dictionary<TrackFileData, GameObject> _trackSymbols =
       new Dictionary<TrackFileData, GameObject>();
 
   private List<GameObject> _originSymbols = new List<GameObject>();
 
-  private TacticalPolarGridGraphic _polarGridGraphic;
+  private TacticalPolarGridGraphic _polarGridGraphic = null!;
 
   private void Start() {
     _iads = IADS.Instance;
