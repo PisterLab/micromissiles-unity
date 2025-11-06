@@ -16,6 +16,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Time to accumulate unassigned targets before launching additional sub-interceptors.
   private const float _unassignedTargetsLaunchPeriod = 2.5f;
 
+  public IEscapeDetector EscapeDetector { get; set; }
+
   public int Capacity { get; protected set; }
   public int CapacityPerSubInterceptor { get; protected set; }
   public virtual int CapacityPlannedRemaining => CapacityPerSubInterceptor *
@@ -25,8 +27,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public int NumSubInterceptorsPlannedRemaining { get; protected set; }
   public int NumSubInterceptorsRemaining { get; protected set; }
 
-  // List of unassigned targets for which an additional sub-interceptor should be launched.
-  private List<IHierarchical> _unassignedTargets = new List<IHierarchical>();
+  // Set of unassigned targets for which an additional sub-interceptor should be launched.
+  private HashSet<IHierarchical> _unassignedTargets = new HashSet<IHierarchical>();
 
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
@@ -69,18 +71,34 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
-    // Update the planned number of sub-interceptors remaining.
-    // TODO(titan): Update the planned number of sub-interceptors remaining when the number of leaf
-    // hierarchical objects changes, such as when a new target is added.
-    List<IHierarchical> leafHierarchicals =
-        HierarchicalAgent.LeafHierarchicals(activeOnly: false, withTargetOnly: false);
-    NumSubInterceptorsPlannedRemaining = NumSubInterceptors - leafHierarchicals.Count;
-
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       OnAssignSubInterceptor?.Invoke(this);
     }
+
+    // Check whether any targets are escaping from the interceptor.
+    if (EscapeDetector != null && HierarchicalAgent.Target != null &&
+        !HierarchicalAgent.Target.IsTerminated) {
+      List<IHierarchical> targetHierarchicals =
+          HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
+      List<IHierarchical> escapingTargets =
+          targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
+      foreach (var target in escapingTargets) {
+        OnReassignTarget?.Invoke(target);
+      }
+      if (escapingTargets.Count == targetHierarchicals.Count) {
+        OnAssignSubInterceptor?.Invoke(this);
+      }
+    }
+
+    // Update the planned number of sub-interceptors remaining.
+    // TODO(titan): Update the planned number of sub-interceptors remaining when the number of leaf
+    // hierarchical objects changes, such as when a new target is added.
+    List<IHierarchical> leafHierarchicals =
+        HierarchicalAgent.LeafHierarchicals(activeOnly: false, withTargetOnly: false);
+    NumSubInterceptorsPlannedRemaining =
+        Mathf.Min(NumSubInterceptorsRemaining, NumSubInterceptors - leafHierarchicals.Count);
 
     // Navigate towards the target.
     _accelerationInput = Controller?.Plan() ?? Vector3.zero;
@@ -180,10 +198,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       if (isHit) {
         threat.HandleIntercept();
         OnHit?.Invoke(this);
+        Terminate();
       } else {
         OnMiss?.Invoke(this);
       }
-      Terminate();
     }
   }
 
@@ -197,12 +215,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      bool targetIsCovered = targetHierarchical.ActivePursuers
-                                 .Where(pursuer => pursuer != interceptor.HierarchicalAgent)
-                                 .Any();
-      if (!targetIsCovered) {
-        OnReassignTarget?.Invoke(targetHierarchical);
-      }
+      OnReassignTarget?.Invoke(targetHierarchical);
     }
 
     // Request a new target from the parent interceptor.
@@ -217,31 +230,43 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       IEnumerable<IHierarchical> unassignedTargets = _unassignedTargets.ToList();
       _unassignedTargets.Clear();
 
-      // Check whether the unassigned targets are still unassigned.
-      unassignedTargets = unassignedTargets.Where(target => !target.ActivePursuers.Any());
-      int numUnassignedTargets = unassignedTargets.Count();
-      if (numUnassignedTargets > CapacityPlannedRemaining) {
+      // Check whether the unassigned targets are still unassigned or are escaping the assigned
+      // pursuers.
+      var filteredTargets =
+          unassignedTargets
+              .Where(target => !target.IsTerminated && target.ActivePursuers.All(pursuer => {
+                var pursuerAgent = pursuer as HierarchicalAgent;
+                var interceptor = pursuerAgent?.Agent as IInterceptor;
+                return interceptor?.EscapeDetector?.IsEscaping(target) ?? true;
+              }))
+              .ToList();
+      if (filteredTargets.Count > CapacityPlannedRemaining) {
         // If there are more unassigned targets than the capacity remaining, propagate the target
         // re-assignment to the parent interceptor for the excess targets.
-        unassignedTargets =
-            unassignedTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
-        var excessTargets = unassignedTargets.Skip(CapacityPlannedRemaining);
+        var orderedTargets =
+            filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
+        var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
           OnReassignTarget?.Invoke(target);
         }
-        unassignedTargets = unassignedTargets.Take(CapacityPlannedRemaining);
-        if (!unassignedTargets.Any()) {
-          continue;
-        }
+        unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
+      }
+      if (!unassignedTargets.Any()) {
+        continue;
       }
 
       // Create a new hierarchical object with the cluster of unassigned targets as the target.
       var newTargetSubHierarchical = new HierarchicalBase();
+      int numUnassignedTargets = 0;
       foreach (var target in unassignedTargets) {
         newTargetSubHierarchical.AddSubHierarchical(target);
+        ++numUnassignedTargets;
       }
       var newSubHierarchical = new HierarchicalBase { Target = newTargetSubHierarchical };
       HierarchicalAgent.AddSubHierarchical(newSubHierarchical);
+      Debug.Log($"Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.");
+      UIManager.Instance.LogActionMessage(
+          $"[IADS] Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.");
 
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);
