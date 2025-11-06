@@ -24,6 +24,7 @@ public class HierarchicalAgent : HierarchicalBase {
       }
       base.Target = value;
       if (base.Target != null) {
+        base.Target.AddPursuer(this);
         if (Agent is IInterceptor interceptor) {
           // Subscribe to the target events.
           foreach (var targetHierarchical in Target.ActiveSubHierarchicals) {
@@ -32,10 +33,19 @@ public class HierarchicalAgent : HierarchicalBase {
                   agent.HierarchicalAgent.RemoveTargetHierarchical(targetHierarchical);
             }
           }
+
           // Perform recursive clustering on the new targets.
           RecursiveCluster(maxClusterSize: interceptor.CapacityPerSubInterceptor);
+
+          // Add the interceptor as a pursuer to all target sub-hierarchical objects.
+          void AddPursuerToHierarchical(IHierarchical target) {
+            target.AddPursuer(this);
+            foreach (var subHierarchical in target.SubHierarchicals) {
+              AddPursuerToHierarchical(subHierarchical);
+            }
+          }
+          AddPursuerToHierarchical(base.Target);
         }
-        base.Target.AddPursuer(this);
         Agent.TargetModel =
             SimManager.Instance.CreateDummyAgent(base.Target.Position, base.Target.Velocity);
       }

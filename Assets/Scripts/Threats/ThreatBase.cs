@@ -127,7 +127,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
     HierarchicalAgent closestAgent = null;
     float minDistance = float.MaxValue;
     foreach (var pursuer in HierarchicalAgent.Pursuers) {
-      if (pursuer is HierarchicalAgent agent) {
+      if (!pursuer.IsTerminated && pursuer is HierarchicalAgent agent) {
         SensorOutput sensorOutput = Sensor.Sense(agent);
         if (sensorOutput.Position.Range < minDistance) {
           closestAgent = agent;
@@ -135,7 +135,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
         }
       }
     }
-    return closestAgent?.Agent ?? null;
+    return closestAgent?.Agent;
   }
 
   // If the threat collides with the ground or another agent, it will be terminated. It is possible
