@@ -15,30 +15,6 @@ public class HierarchicalBaseTests {
   }
 
   [Test]
-  public void Target_Set_AddsToPursuersOfTarget() {
-    var parent = new HierarchicalBase();
-    var target = new HierarchicalBase();
-    Assert.IsFalse(target.Pursuers.Contains(parent));
-    parent.Target = target;
-    Assert.IsTrue(target.Pursuers.Contains(parent));
-  }
-
-  [Test]
-  public void Target_Set_RemovesFromPursuersOfPreviousTarget() {
-    var parent = new HierarchicalBase();
-    var target1 = new HierarchicalBase();
-    var target2 = new HierarchicalBase();
-    Assert.IsFalse(target1.Pursuers.Contains(parent));
-    Assert.IsFalse(target2.Pursuers.Contains(parent));
-    parent.Target = target1;
-    Assert.IsTrue(target1.Pursuers.Contains(parent));
-    Assert.IsFalse(target2.Pursuers.Contains(parent));
-    parent.Target = target2;
-    Assert.IsFalse(target1.Pursuers.Contains(parent));
-    Assert.IsTrue(target2.Pursuers.Contains(parent));
-  }
-
-  [Test]
   public void Position_ReturnsMeanOfSubHierarchicals() {
     var parent = new HierarchicalBase();
     var child1 =

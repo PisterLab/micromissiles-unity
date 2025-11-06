@@ -59,7 +59,6 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       IAgent subInterceptor =
           SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
       if (subInterceptor != null && subInterceptor is IInterceptor subInterceptorInterceptor) {
-        var agentInterceptor = Agent as IInterceptor;
         if (subInterceptor.Movement is MissileMovement movement) {
           movement.FlightPhase = Simulation.FlightPhase.Boost;
         }

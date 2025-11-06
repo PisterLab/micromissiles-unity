@@ -47,10 +47,9 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
     };
     IAgent subInterceptor = SimManager.Instance.CreateInterceptor(
         Agent.AgentConfig.SubAgentConfig.AgentConfig, initialState);
-    if (subInterceptor == null || subInterceptor is not IInterceptor subInterceptorInterceptor) {
+    if (subInterceptor is not IInterceptor subInterceptorInterceptor) {
       return null;
     }
-    var agentInterceptor = Agent as IInterceptor;
     subInterceptor.HierarchicalAgent.Target = target;
     if (subInterceptor.Movement is MissileMovement movement) {
       movement.FlightPhase = Simulation.FlightPhase.Boost;
