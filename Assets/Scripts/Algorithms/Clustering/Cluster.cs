@@ -70,17 +70,17 @@ public class Cluster {
   }
 
   // Calculate the centroid of the cluster.
+  // The centroid is the mean position of all active game objects.
   public Vector3 Centroid() {
-    if (IsEmpty()) {
-      return Vector3.zero;
+    Vector3 positionSum = Vector3.zero;
+    int activeAgentCount = 0;
+    foreach (var agent in Agents) {
+      if (agent != null && !agent.IsTerminated()) {
+        positionSum += agent.GetPosition();
+        ++activeAgentCount;
+      }
     }
-
-    Vector3 centroid = Vector3.zero;
-    foreach (var obj in _objects) {
-      centroid += obj.transform.position;
-    }
-    centroid /= _objects.Count;
-    return centroid;
+    return activeAgentCount > 0 ? positionSum / activeAgentCount : Vector3.zero;
   }
 
   // Recenter the cluster's centroid to be the mean of all game objects' positions in the cluster.
@@ -89,17 +89,17 @@ public class Cluster {
   }
 
   // Calculate the velocity of the cluster.
-  // The velocity is the mean velocity of all game objects.
+  // The velocity is the mean velocity of all active game objects.
   public Vector3 Velocity() {
-    Vector3 velocity = Vector3.zero;
-    int numObjects = 0;
-    foreach (var obj in _objects) {
-      if (obj.GetComponent<Rigidbody>() != null) {
-        velocity += obj.GetComponent<Rigidbody>().linearVelocity;
-        ++numObjects;
+    Vector3 velocitySum = Vector3.zero;
+    int activeAgentCount = 0;
+    foreach (var agent in Agents) {
+      if (agent != null && !agent.IsTerminated()) {
+        velocitySum += agent.GetVelocity();
+        ++activeAgentCount;
       }
     }
-    return numObjects > 0 ? velocity / numObjects : Vector3.zero;
+    return activeAgentCount > 0 ? velocitySum / activeAgentCount : Vector3.zero;
   }
 
   // Add a game object to the cluster.
@@ -120,8 +120,8 @@ public class Cluster {
     AddObjects(cluster.Objects);
   }
 
-  // Returns true if all threats in the cluster are terminated.
+  // Returns true if all agents in the cluster are terminated.
   public bool IsFullyTerminated() {
-    return Threats.All(threat => threat.IsTerminated());
+    return Agents.All(agent => agent?.IsTerminated() ?? true);
   }
 }
