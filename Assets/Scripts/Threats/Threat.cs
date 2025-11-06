@@ -10,7 +10,7 @@ public abstract class Threat : Agent {
   protected Configs.Power _currentPower;
 
   protected SensorOutput _sensorOutput;
-  protected Sensor _sensor;
+  protected SensorLegacy _sensor;
 
   protected override void Awake() {
     base.Awake();
@@ -39,7 +39,7 @@ public abstract class Threat : Agent {
 
   protected override void Start() {
     base.Start();
-    _sensor = GetComponent<Sensor>();
+    _sensor = GetComponent<SensorLegacy>();
   }
 
   protected override void FixedUpdate() {
@@ -92,9 +92,9 @@ public abstract class Threat : Agent {
     foreach (var interceptor in _interceptors) {
       if (!interceptor.IsTerminated()) {
         SensorOutput sensorOutput = _sensor.Sense(interceptor);
-        if (sensorOutput.position.range < minDistance) {
+        if (sensorOutput.Position.Range < minDistance) {
           closestInterceptor = interceptor;
-          minDistance = sensorOutput.position.range;
+          minDistance = sensorOutput.Position.Range;
         }
       }
     }
@@ -114,7 +114,7 @@ public abstract class Threat : Agent {
     float evasionRangeThreshold =
         agentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
     SensorOutput sensorOutput = _sensor.Sense(closestInterceptor);
-    return sensorOutput.position.range <= evasionRangeThreshold && sensorOutput.velocity.range < 0;
+    return sensorOutput.Position.Range <= evasionRangeThreshold && sensorOutput.Velocity.Range < 0;
   }
 
   protected Vector3 EvadeInterceptor(Agent interceptor) {

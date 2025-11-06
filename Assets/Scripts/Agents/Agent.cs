@@ -213,15 +213,15 @@ public abstract class Agent : MonoBehaviour {
     Transformation transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position =
+    transformation.Position =
         GetRelativePositionTransformation(target.GetPosition() - GetPosition());
 
     // Get the relative velocity transformation.
-    transformation.velocity = GetRelativeVelocityTransformation(
+    transformation.Velocity = GetRelativeVelocityTransformation(
         target.GetPosition() - GetPosition(), target.GetVelocity() - GetVelocity());
 
     // Get the relative acceleration transformation.
-    transformation.acceleration = GetRelativeAccelerationTransformation(target);
+    transformation.Acceleration = GetRelativeAccelerationTransformation(target);
     return transformation;
   }
 
@@ -229,10 +229,10 @@ public abstract class Agent : MonoBehaviour {
     Transformation transformation = new Transformation();
 
     // Get the relative position transformation.
-    transformation.position = GetRelativePositionTransformation(waypoint - GetPosition());
+    transformation.Position = GetRelativePositionTransformation(waypoint - GetPosition());
 
     // Get the relative velocity transformation.
-    transformation.velocity =
+    transformation.Velocity =
         GetRelativeVelocityTransformation(waypoint - GetPosition(), -GetVelocity());
 
     return transformation;
@@ -242,23 +242,23 @@ public abstract class Agent : MonoBehaviour {
     PositionTransformation positionTransformation = new PositionTransformation();
 
     // Set the relative position in Cartesian coordinates.
-    positionTransformation.cartesian = relativePosition;
+    positionTransformation.Cartesian = relativePosition;
 
     // Calculate the distance (range) to the target.
-    positionTransformation.range = relativePosition.magnitude;
+    positionTransformation.Range = relativePosition.magnitude;
 
     Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
     Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
 
     // Calculate the elevation (vertical angle relative to forward).
-    positionTransformation.elevation =
+    positionTransformation.Elevation =
         Mathf.Atan(verticalRelativePosition.magnitude / flatRelativePosition.magnitude);
 
     // Calculate the azimuth (horizontal angle relative to forward).
     if (flatRelativePosition.magnitude == 0) {
-      positionTransformation.azimuth = 0;
+      positionTransformation.Azimuth = 0;
     } else {
-      positionTransformation.azimuth =
+      positionTransformation.Azimuth =
           Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) * Mathf.PI /
           180;
     }
@@ -271,10 +271,10 @@ public abstract class Agent : MonoBehaviour {
     VelocityTransformation velocityTransformation = new VelocityTransformation();
 
     // Set the relative velocity in Cartesian coordinates.
-    velocityTransformation.cartesian = relativeVelocity;
+    velocityTransformation.Cartesian = relativeVelocity;
 
     // Calculate range rate (radial velocity).
-    velocityTransformation.range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
+    velocityTransformation.Range = Vector3.Dot(relativeVelocity, relativePosition.normalized);
 
     // Project relative velocity onto the sphere passing through the target.
     Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
@@ -298,10 +298,10 @@ public abstract class Agent : MonoBehaviour {
     Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
 
     // Calculate the time derivative of the azimuth to the target.
-    velocityTransformation.azimuth =
+    velocityTransformation.Azimuth =
         tangentialVelocityOnAzimuth.magnitude / relativePosition.magnitude;
     if (Vector3.Dot(tangentialVelocityOnAzimuth, targetAzimuth) < 0) {
-      velocityTransformation.azimuth *= -1;
+      velocityTransformation.Azimuth *= -1;
     }
 
     // Project the velocity vector on the azimuth-elevation sphere onto the target
@@ -309,10 +309,10 @@ public abstract class Agent : MonoBehaviour {
     Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
 
     // Calculate the time derivative of the elevation to the target.
-    velocityTransformation.elevation =
+    velocityTransformation.Elevation =
         tangentialVelocityOnElevation.magnitude / relativePosition.magnitude;
     if (Vector3.Dot(tangentialVelocityOnElevation, targetElevation) < 0) {
-      velocityTransformation.elevation *= -1;
+      velocityTransformation.Elevation *= -1;
     }
 
     return velocityTransformation;
@@ -322,7 +322,7 @@ public abstract class Agent : MonoBehaviour {
     // Since the agent's acceleration is an input, the relative acceleration is just the agent's
     // acceleration.
     AccelerationTransformation accelerationTransformation = new AccelerationTransformation();
-    accelerationTransformation.cartesian = agent.GetAcceleration();
+    accelerationTransformation.Cartesian = agent.GetAcceleration();
     return accelerationTransformation;
   }
 

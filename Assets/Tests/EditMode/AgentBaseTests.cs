@@ -21,15 +21,16 @@ public class AgentBaseTests : TestBase {
     _target =
         new FixedHierarchical(position: new Vector3(0, 0, 20), velocity: new Vector3(0, 20, -1));
 
-    var relativeTransformation = _agent.GetRelativeTransformation(_target);
-    Assert.AreEqual(relativeTransformation.position.cartesian, _target.Position - _agent.Position);
-    Assert.AreEqual(relativeTransformation.position.range, 20f, _epsilon);
-    Assert.AreEqual(relativeTransformation.position.azimuth, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.position.elevation, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.cartesian, _target.Velocity - _agent.Velocity);
-    Assert.AreEqual(relativeTransformation.velocity.range, -1f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.azimuth, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.elevation, 1f, _epsilon);
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
+    Assert.AreEqual(relativeTransformation.Position.Cartesian,
+                    _target.Position - _agent.transform.position);
+    Assert.AreEqual(relativeTransformation.Position.Range, 20f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Position.Azimuth, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Position.Elevation, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, _target.Velocity - _agent.Velocity);
+    Assert.AreEqual(relativeTransformation.Velocity.Range, -1f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Azimuth, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Elevation, 1f, _epsilon);
   }
 
   [Test]
@@ -39,15 +40,16 @@ public class AgentBaseTests : TestBase {
     _target =
         new FixedHierarchical(position: new Vector3(20, 0, 0), velocity: new Vector3(0, 0, 20));
 
-    var relativeTransformation = _agent.GetRelativeTransformation(_target);
-    Assert.AreEqual(relativeTransformation.position.cartesian, _target.Position - _agent.Position);
-    Assert.AreEqual(relativeTransformation.position.range, 20f, _epsilon);
-    Assert.AreEqual(relativeTransformation.position.azimuth, Mathf.PI / 2, _epsilon);
-    Assert.AreEqual(relativeTransformation.position.elevation, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.cartesian, _target.Velocity - _agent.Velocity);
-    Assert.AreEqual(relativeTransformation.velocity.range, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.azimuth, -1f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.elevation, 0f, _epsilon);
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
+    Assert.AreEqual(relativeTransformation.Position.Cartesian,
+                    _target.Position - _agent.transform.position);
+    Assert.AreEqual(relativeTransformation.Position.Range, 20f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Position.Azimuth, Mathf.PI / 2, _epsilon);
+    Assert.AreEqual(relativeTransformation.Position.Elevation, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, _target.Velocity - _agent.Velocity);
+    Assert.AreEqual(relativeTransformation.Velocity.Range, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Azimuth, -1f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Elevation, 0f, _epsilon);
   }
 
   [Test]
@@ -57,14 +59,15 @@ public class AgentBaseTests : TestBase {
     _target =
         new FixedHierarchical(position: new Vector3(0, 20, 0), velocity: new Vector3(0, 0, 20));
 
-    var relativeTransformation = _agent.GetRelativeTransformation(_target);
-    Assert.AreEqual(relativeTransformation.position.cartesian, _target.Position - _agent.Position);
-    Assert.AreEqual(relativeTransformation.position.range, 20f, _epsilon);
-    Assert.AreEqual(relativeTransformation.position.azimuth, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.position.elevation, Mathf.PI / 2, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.cartesian, _target.Velocity - _agent.Velocity);
-    Assert.AreEqual(relativeTransformation.velocity.range, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.azimuth, 0f, _epsilon);
-    Assert.AreEqual(relativeTransformation.velocity.elevation, -1f, _epsilon);
+    Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
+    Assert.AreEqual(relativeTransformation.Position.Cartesian,
+                    _target.Position - _agent.transform.position);
+    Assert.AreEqual(relativeTransformation.Position.Range, 20f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Position.Azimuth, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Position.Elevation, Mathf.PI / 2, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian, _target.Velocity - _agent.Velocity);
+    Assert.AreEqual(relativeTransformation.Velocity.Range, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Azimuth, 0f, _epsilon);
+    Assert.AreEqual(relativeTransformation.Velocity.Elevation, -1f, _epsilon);
   }
 }

@@ -25,16 +25,16 @@ public class TransformationTests : AgentTestBase {
     Transformation relativeTransformation = agent.GetRelativeTransformation(target);
 
     // Assert
-    Assert.AreEqual(relativeTransformation.position.cartesian,
+    Assert.AreEqual(relativeTransformation.Position.Cartesian,
                     target.transform.position - agent.transform.position);
-    Assert.AreEqual(relativeTransformation.position.range, 20);
-    Assert.AreEqual(relativeTransformation.position.azimuth, 0);
-    Assert.AreEqual(relativeTransformation.position.elevation, 0);
-    Assert.AreEqual(relativeTransformation.velocity.cartesian,
+    Assert.AreEqual(relativeTransformation.Position.Range, 20);
+    Assert.AreEqual(relativeTransformation.Position.Azimuth, 0);
+    Assert.AreEqual(relativeTransformation.Position.Elevation, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian,
                     target.GetVelocity() - agent.GetVelocity());
-    Assert.AreEqual(relativeTransformation.velocity.range, -1);
-    Assert.AreEqual(relativeTransformation.velocity.azimuth, 0);
-    Assert.AreEqual(relativeTransformation.velocity.elevation, 1);
+    Assert.AreEqual(relativeTransformation.Velocity.Range, -1);
+    Assert.AreEqual(relativeTransformation.Velocity.Azimuth, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Elevation, 1);
   }
 
   [Test]
@@ -55,16 +55,16 @@ public class TransformationTests : AgentTestBase {
     Transformation relativeTransformation = agent.GetRelativeTransformation(target);
 
     // Assert
-    Assert.AreEqual(relativeTransformation.position.cartesian,
+    Assert.AreEqual(relativeTransformation.Position.Cartesian,
                     target.transform.position - agent.transform.position);
-    Assert.AreEqual(relativeTransformation.position.range, 20);
-    Assert.AreEqual(relativeTransformation.position.azimuth, Mathf.PI / 2);
-    Assert.AreEqual(relativeTransformation.position.elevation, 0);
-    Assert.AreEqual(relativeTransformation.velocity.cartesian,
+    Assert.AreEqual(relativeTransformation.Position.Range, 20);
+    Assert.AreEqual(relativeTransformation.Position.Azimuth, Mathf.PI / 2);
+    Assert.AreEqual(relativeTransformation.Position.Elevation, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian,
                     target.GetVelocity() - agent.GetVelocity());
-    Assert.AreEqual(relativeTransformation.velocity.range, 0);
-    Assert.AreEqual(relativeTransformation.velocity.azimuth, -1);
-    Assert.AreEqual(relativeTransformation.velocity.elevation, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Range, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Azimuth, -1);
+    Assert.AreEqual(relativeTransformation.Velocity.Elevation, 0);
   }
 
   [Test]
@@ -87,15 +87,15 @@ public class TransformationTests : AgentTestBase {
     Transformation relativeTransformation = agent.GetRelativeTransformation(target);
 
     // Assert
-    Assert.AreEqual(relativeTransformation.position.cartesian,
+    Assert.AreEqual(relativeTransformation.Position.Cartesian,
                     target.transform.position - agent.transform.position);
-    Assert.AreEqual(relativeTransformation.position.range, 20);
-    Assert.AreEqual(relativeTransformation.position.azimuth, 0);
-    Assert.AreEqual(relativeTransformation.position.elevation, Mathf.PI / 2);
-    Assert.AreEqual(relativeTransformation.velocity.cartesian,
+    Assert.AreEqual(relativeTransformation.Position.Range, 20);
+    Assert.AreEqual(relativeTransformation.Position.Azimuth, 0);
+    Assert.AreEqual(relativeTransformation.Position.Elevation, Mathf.PI / 2);
+    Assert.AreEqual(relativeTransformation.Velocity.Cartesian,
                     target.GetVelocity() - agent.GetVelocity());
-    Assert.AreEqual(relativeTransformation.velocity.range, 0);
-    Assert.AreEqual(relativeTransformation.velocity.azimuth, 0);
-    Assert.AreEqual(relativeTransformation.velocity.elevation, -1);
+    Assert.AreEqual(relativeTransformation.Velocity.Range, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Azimuth, 0);
+    Assert.AreEqual(relativeTransformation.Velocity.Elevation, -1);
   }
 }
