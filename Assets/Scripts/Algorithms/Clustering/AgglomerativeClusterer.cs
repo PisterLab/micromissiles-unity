@@ -14,7 +14,7 @@ public class AgglomerativeClusterer : ISizeAndRadiusConstrainedClusterer {
   public override void Cluster() {
     // Add a cluster for every game object.
     foreach (var obj in _objects) {
-      Cluster cluster = new Cluster(obj);
+      ClusterLegacy cluster = new ClusterLegacy(obj);
       cluster.AddObject(obj);
       _clusters.Add(cluster);
     }

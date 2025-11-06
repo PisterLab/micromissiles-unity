@@ -26,7 +26,7 @@ public class AgglomerativeClustererTests {
         new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: Mathf.Infinity);
     clusterer.Cluster();
     Assert.AreEqual(1, clusterer.Clusters.Count);
-    Cluster cluster = clusterer.Clusters[0];
+    ClusterLegacy cluster = clusterer.Clusters[0];
     Assert.AreEqual(Objects.Count, cluster.Size());
     Assert.AreEqual(new Vector3(0, 1.25f, 0), cluster.Centroid());
   }
@@ -59,7 +59,8 @@ public class AgglomerativeClustererTests {
         new AgglomerativeClusterer(Objects, maxSize: Objects.Count, maxRadius: 1);
     clusterer.Cluster();
     Assert.AreEqual(3, clusterer.Clusters.Count);
-    List<Cluster> clusters = clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();
+    List<ClusterLegacy> clusters =
+        clusterer.Clusters.OrderBy(cluster => cluster.Coordinates[1]).ToList();
     Assert.AreEqual(1, clusters[0].Size());
     Assert.AreEqual(new Vector3(0, 0, 0), clusters[0].Coordinates);
     Assert.AreEqual(2, clusters[1].Size());
