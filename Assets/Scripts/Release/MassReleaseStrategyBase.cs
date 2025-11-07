@@ -33,7 +33,6 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
     if (!launchPlan.ShouldLaunch) {
       return new List<IAgent>();
     }
-
     // Release all sub-interceptors.
     Configs.SubAgentConfig subAgentConfig = carrier.AgentConfig.SubAgentConfig;
     Vector3 position = carrier.Position;
@@ -71,7 +70,6 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       assignment.First.Target = assignment.Second;
       targetToHierarchicalMap[assignment.Second].AddLaunchedHierarchical(assignment.First);
     }
-
     return releasedAgents;
   }
 
