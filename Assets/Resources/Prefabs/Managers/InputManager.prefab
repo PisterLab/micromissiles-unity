@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a028bd12cca23f45a9eeb9fb0c4d1f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseActive: 1
-  lockUserInput: 0
+  MouseActive: 1
+  LockUserInput: 0
