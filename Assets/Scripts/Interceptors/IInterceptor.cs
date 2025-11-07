@@ -35,6 +35,9 @@ public interface IInterceptor : IAgent {
   // Number of threats that this interceptor can target after having launched some sub-interceptors.
   int CapacityRemaining { get; }
 
+  // Number of sub-interceptors.
+  int NumSubInterceptors { get; }
+
   // Number of sub-interceptors remaining that can be planned to launch.
   int NumSubInterceptorsPlannedRemaining { get; }
 

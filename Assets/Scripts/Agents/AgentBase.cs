@@ -19,20 +19,19 @@ public class AgentBase : MonoBehaviour, IAgent {
   protected Vector3 _accelerationInput;
 
   // The agent's position within the hierarchical strategy is given by the hierarchical agent.
-  [SerializeField]
+  [SerializeReference]
   private HierarchicalAgent _hierarchicalAgent;
 
   // Static configuration of the agent, including agent type, unit cost, acceleration configuration,
   // aerodynamics parameters, power table, and visualization configuration.
-  [SerializeField]
   private Configs.StaticConfig _staticConfig;
 
   // Agent configuration, including initial state, attack behavior configuration (for threats),
   // dynamic configuration, and sub-agent configuration (for interceptors).
-  [SerializeField]
   private Configs.AgentConfig _agentConfig;
 
   // Last sensing time.
+  [SerializeField]
   private float _lastSensingTime = Mathf.NegativeInfinity;
 
   public HierarchicalAgent HierarchicalAgent {
