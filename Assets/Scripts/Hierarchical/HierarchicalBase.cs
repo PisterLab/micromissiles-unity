@@ -16,7 +16,7 @@ public class HierarchicalBase : IHierarchical {
   private const float _clusterMaxRadius = 1000f;
 
   // List of hierarchical objects in the hierarchy level below.
-  [SerializeField]
+  [SerializeReference]
   protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
   // List of hierarchical objects pursuing this hierarchical object.
