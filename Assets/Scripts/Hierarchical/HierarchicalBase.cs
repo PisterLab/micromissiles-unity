@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine;
 //
 // The position and velocity of a hierarchical object is defined as the mean of the positions and
 // velocities of the sub-hierarchical objects.
+[Serializable]
 public class HierarchicalBase : IHierarchical {
   // Soft maximum number of sub-hierarchical objects. This is used for recursive clustering.
   private const int _maxNumSubHierarchicals = 10;
@@ -14,12 +16,19 @@ public class HierarchicalBase : IHierarchical {
   private const float _clusterMaxRadius = 1000f;
 
   // List of hierarchical objects in the hierarchy level below.
+  [SerializeField]
   protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
 
   // List of hierarchical objects pursuing this hierarchical object.
+  [SerializeReference]
   private List<IHierarchical> _pursuers = new List<IHierarchical>();
 
+  // Target hierarchical object.
+  [SerializeReference]
+  private IHierarchical _target;
+
   // List of launched hierarchical objects.
+  [SerializeReference]
   private List<IHierarchical> _launchedHierarchicals = new List<IHierarchical>();
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
@@ -28,7 +37,10 @@ public class HierarchicalBase : IHierarchical {
   public IEnumerable<IHierarchical> ActiveSubHierarchicals =>
       _subHierarchicals.Where(s => !s.IsTerminated);
 
-  public virtual IHierarchical Target { get; set; }
+  public virtual IHierarchical Target {
+    get => _target;
+    set { _target = value; }
+  }
 
   public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
   public IEnumerable<IHierarchical> ActivePursuers =>

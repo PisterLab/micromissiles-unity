@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 60, y: 60, z: 60}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8462434346230391091}
@@ -355,3 +355,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _acceleration: {x: 0, y: 0, z: 0}
   _accelerationInput: {x: 0, y: 0, z: 0}
+  _hierarchicalAgent:
+    rid: -2
+  _lastSensingTime: -Infinity
+  _capacity: 0
+  _capacityPerSubInterceptor: 0
+  _numSubInterceptors: 0
+  _numSubInterceptorsPlannedRemaining: 0
+  _numSubInterceptorsRemaining: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
