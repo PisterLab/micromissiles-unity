@@ -1,13 +1,13 @@
-using UnityEngine;
-using System.Collections;
-using System.IO;
 using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
+using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
-  [System.Serializable]
+  [Serializable]
   private class EventRecord {
     public float Time;
     public float PositionX;
