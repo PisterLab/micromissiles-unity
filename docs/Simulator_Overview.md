@@ -19,8 +19,8 @@ Then, they distribute the task of engaging the many threats among themselves.
 
 The command structure is hierarchical for better **autonomy** and **tractability** because to successfully defend against hundreds of threats, we need to recursively cluster and assign them to groups of interceptors.
 - At the top of the hierarchy, the integrated air defense system (IADS) manages the defense strategy and assigns swarms of threats to each launcher.
-  Each launcher then recursively clusters the assigned swarm of threats to divide and conquer the defense algorithm until each threat cluster only contains no more threats than the number of missile interceptors in a carrier interceptors.
-- At the next level of the hierarchy, a carrier interceptor is launcher and assigned to defend against a single cluster of threats.
+  Each launcher then recursively clusters the assigned swarm of threats to divide and conquer the defense algorithm until each threat cluster only contains no more threats than the number of missile interceptors in a carrier interceptor.
+- At the next level of the hierarchy, a carrier interceptor is launched and assigned to defend against a single cluster of threats.
 - Finally, at the bottom of the hierarchy, each missile interceptor released by the carrier interceptor is assigned to pursue a single threat.
 
 ![Hierarchical command structure](./images/hierarchical_command_structure.png)
@@ -271,7 +271,7 @@ In the current version of the simulator, only the un-interpolated samples of the
 
 The assignment algorithm is used to match two collections of hierarchical objects to each other.
 For example, when a carrier interceptor releases its seven missile interceptors, an assignment is performed to assign a threat to each of the missile interceptors.
-Similarly, when the IADS initially clusters all threats into multiple threat swarms, an assignment is performed to assign one threat swarm of each launcher.
+Similarly, when the IADS initially clusters all threats into multiple threat swarms, an assignment is performed to assign one threat swarm to each launcher.
 
 ### Maximum Speed Assignment
 
@@ -543,14 +543,14 @@ The attack behavior may also let the threat move in a slalom pattern as it moves
 
 ## Reassignment
 
-During the course of the simulation, the threats may re-arrange themselves, causing them to be missed by the intercepetors.
+During the course of the simulation, the threats may re-arrange themselves, causing them to be missed by the interceptors.
 Interceptors may also miss their intended target due to the kill probability or no longer have a target because another interceptor doubling up already destroyed their target.
 As a result, the defense strategy needs to account for interceptors that need to be re-assigned a different target and threats that need to be re-assigned to and re-clustered by another interceptor.
 
 ### Interceptor Reassignment
 
 An interceptor needs to be re-assigned a new target if:
-- The original original target was destroyed or was terminated.
+- The original target was destroyed or was terminated.
 - The interceptor missed its original target.
 
 Interceptor re-assignment occurs by requesting a new target from the parent interceptor.
@@ -571,7 +571,7 @@ Threat re-assignment can involve:
 - Accepting defeat.
 
 Similar to interceptor-reassignment, an interceptor notifies to its parent interceptor of any un-assigned threats.
-Instead of re-assigning a threat to an existing interceptor, which requires traversing down the agent hierarchy, the parent interceptor queues up all un-assigned threats and processes them in a batch every 2.5 seconds in hopes that other interceptor were re-assigned to pursue some of the un-assigned threats.
+Instead of re-assigning a threat to an existing interceptor, which requires traversing down the agent hierarchy, the parent interceptor queues up all un-assigned threats and processes them in a batch every 2.5 seconds in hopes that other interceptors were re-assigned to pursue some of the un-assigned threats.
 Queueing up the threats also minimizes the likelihood of launching an additional sub-interceptor just for one threat, which is wasteful.
 
 If the parent interceptor has no capacity remaining, i.e., it is unable to launch an additional interceptor to pursue the un-assigned threats, the parent interceptor propagates the un-assigned threat notification up to its superior.
@@ -585,7 +585,7 @@ In this case, the interceptor will request the threat to be re-assigned to anoth
 
 The simulator currently supports multiple escape detectors, intended for different interceptors.
 * **Geometric**: The geometric escape detector checks whether the agent is moving head-on towards the target.
-* **Time-based**: The time-baed escape detector checks whether the target will hit the asset before the agent hits the target.
+* **Time-based**: The time-based escape detector checks whether the target will hit the asset before the agent hits the target.
 * **Speed-based**: The speed-based escape detector checks whether the agent has a greater speed than the target when the agent reaches the target.
 
 The carrier interceptor, for example, uses a geometric escape detector because it must release its submunitions in front of all of its assigned threats.
