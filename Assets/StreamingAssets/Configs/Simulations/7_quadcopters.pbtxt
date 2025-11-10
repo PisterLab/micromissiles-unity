@@ -30,15 +30,15 @@ interceptor_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 7
+  num_agents: 25
   agent_config {
     config_file: "quadcopter.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
-        x: 0
+        x: 800
         y: 800
-        z: 6000
+        z: 600
       }
       velocity {
         x: 0
