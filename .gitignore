@@ -73,16 +73,16 @@ crashlytics-build.properties
 .vscode/
 .vsconfig
 
-# Telemetry logs.
-Telemetry/Logs/
-
 # Mac.
 .DS_Store
 
 # Node.
 node_modules/
 
-# AI tools
+# Python.
+__pycache__/
+
+# AI tools.
 CURSOR.md
 CLAUDE.md
 AGENTS.md

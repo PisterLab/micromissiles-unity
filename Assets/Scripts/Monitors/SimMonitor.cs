@@ -201,7 +201,7 @@ public class SimMonitor : MonoBehaviour {
 
   private void WriteEventsToFile() {
     using (StreamWriter writer = new StreamWriter(_eventLogPath, false)) {
-      // Write CSV header
+      // Write the CSV header.
       writer.WriteLine("Time,PositionX,PositionY,PositionZ,Event,Details");
 
       foreach (var record in _eventLogCache) {
