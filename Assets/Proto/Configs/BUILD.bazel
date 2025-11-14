@@ -40,6 +40,16 @@ cc_proto_library(
 )
 
 proto_library(
+    name = "run_config_proto",
+    srcs = ["run_config.proto"],
+)
+
+cc_proto_library(
+    name = "run_config_cc_proto",
+    deps = [":run_config_proto"],
+)
+
+proto_library(
     name = "simulation_config_proto",
     srcs = ["simulation_config.proto"],
     deps = [":swarm_config_proto"],
