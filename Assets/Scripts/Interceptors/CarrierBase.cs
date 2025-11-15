@@ -29,18 +29,24 @@ public abstract class CarrierBase : InterceptorBase {
     }
   }
 
-  protected override void UpdateAgentConfig() {
-    base.UpdateAgentConfig();
-    NumSubInterceptorsRemaining = (int)AgentConfig.SubAgentConfig.NumSubAgents;
-  }
-
   private IEnumerator ReleaseManager(float period) {
     while (true) {
       // Determine whether to release the sub-interceptors.
       if (ReleaseStrategy != null) {
         List<IAgent> releasedAgents = ReleaseStrategy.Release();
         NumSubInterceptorsRemaining -= releasedAgents.Count;
+
+        foreach (var agent in releasedAgents) {
+          if (agent is IInterceptor subInterceptor) {
+            subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
+            subInterceptor.OnReassignTarget += ReassignTarget;
+            if (subInterceptor.Movement is MissileMovement movement) {
+              movement.FlightPhase = Simulation.FlightPhase.Boost;
+            }
+          }
+        }
       }
+
       yield return new WaitForSeconds(period);
     }
   }

@@ -117,8 +117,8 @@ public class MissileMovementTests : TestBase {
   [Test]
   public void Act_Boost_TransitionsToMidcourseAfterBoostTime() {
     _movement.FlightPhase = Simulation.FlightPhase.Boost;
-    SetPrivateField(_agent, "_elapsedTime",
-                    _agent.ElapsedTime + _agent.StaticConfig.BoostConfig.BoostTime + 1f);
+    SetPrivateProperty(_agent, "ElapsedTime",
+                       _agent.ElapsedTime + _agent.StaticConfig.BoostConfig.BoostTime + 1f);
     Vector3 accelerationInput = Vector3.zero;
     Assert.AreEqual(_movement.FlightPhase, Simulation.FlightPhase.Boost);
     Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
