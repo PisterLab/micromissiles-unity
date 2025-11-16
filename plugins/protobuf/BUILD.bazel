@@ -20,6 +20,7 @@ cc_test(
     data = [
         "@micromissiles-configs-data//Attacks:attacks",
         "@micromissiles-configs-data//Models:models",
+        "@micromissiles-configs-data//Runs:runs",
         "@micromissiles-configs-data//Simulations:simulations",
     ],
     deps = [
@@ -28,6 +29,7 @@ cc_test(
         "@googletest//:gtest",
         "@googletest//:gtest_main",
         "@micromissiles-proto//Configs:attack_behavior_config_cc_proto",
+        "@micromissiles-proto//Configs:run_config_cc_proto",
         "@micromissiles-proto//Configs:simulation_config_cc_proto",
         "@micromissiles-proto//Configs:static_config_cc_proto",
         "@micromissiles-proto//Plugin:status_cc_proto",
@@ -44,6 +46,7 @@ cc_library(
     deps = [
         ":protobuf",
         "@micromissiles-proto//Configs:attack_behavior_config_cc_proto",
+        "@micromissiles-proto//Configs:run_config_cc_proto",
         "@micromissiles-proto//Configs:simulation_config_cc_proto",
         "@micromissiles-proto//Configs:simulator_config_cc_proto",
         "@micromissiles-proto//Configs:static_config_cc_proto",

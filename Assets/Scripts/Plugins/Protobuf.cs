@@ -14,6 +14,19 @@ public static class Protobuf {
   public static extern Plugin.StatusCode Protobuf_AttackBehaviorConfig_LoadToBinary(
       string file, byte[] buffer, int size, out int serializedLength);
 
+  // Load a run configuration from a Protobuf text file and return the length of the serialized
+  // message as an output argument.
+  [DllImport("protobuf")]
+  public static extern Plugin.StatusCode Protobuf_RunConfig_GetSerializedLength(
+      string file, out int serializedLength);
+
+  // Load a run configuration from a Protobuf text file to binary format and return the length of
+  // the serialized message as an output argument.
+  [DllImport("protobuf")]
+  public static extern Plugin.StatusCode Protobuf_RunConfig_LoadToBinary(string file, byte[] buffer,
+                                                                         int size,
+                                                                         out int serializedLength);
+
   // Load a simulation configuration from a Protobuf text file and return the length of the
   // serialized message as an output argument.
   [DllImport("protobuf")]
