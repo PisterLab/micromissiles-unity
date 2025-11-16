@@ -43,11 +43,13 @@ def _find_latest_file(directory: str, file_pattern: str) -> str:
         directory: Directory to look through.
         file_pattern: File pattern to match.
     """
-    list_of_files = glob.glob(os.path.join(directory, file_pattern))
+    list_of_files = glob.glob(
+        os.path.join(directory, "**", file_pattern),
+        recursive=True,
+    )
     if not list_of_files:
-        logging.warning(
-            f"No files found matching the pattern {file_pattern} in the directory: {directory}."
-        )
+        logging.warning(f"No files found matching the pattern {file_pattern} "
+                        f"in the directory: {directory}.")
         return None
     latest_file = max(list_of_files, key=os.path.getctime)
     logging.info(f"Using latest file found: {latest_file}.")

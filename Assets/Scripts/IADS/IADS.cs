@@ -24,10 +24,10 @@ public class IADS : MonoBehaviour {
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
 
   private void Awake() {
-    if (Instance == null) {
-      Instance = this;
-    } else {
+    if (Instance != null && Instance != this) {
       Destroy(gameObject);
+    } else {
+      Instance = this;
     }
   }
 

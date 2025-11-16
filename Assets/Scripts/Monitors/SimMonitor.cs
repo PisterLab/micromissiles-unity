@@ -18,6 +18,10 @@ public class SimMonitor : MonoBehaviour {
 
   private const float _updatePeriod = 0.1f;  // 100 Hz
 
+  public static SimMonitor Instance { get; private set; }
+
+  public string Timestamp { get; private set; } = "";
+
   private Coroutine _monitorRoutine;
 
   private string _sessionDirectory;
@@ -31,7 +35,12 @@ public class SimMonitor : MonoBehaviour {
   private List<EventRecord> _eventLogCache;
 
   private void Awake() {
-    InitializeSessionDirectory();
+    if (Instance != null && Instance != this) {
+      Destroy(gameObject);
+      return;
+    }
+    Instance = this;
+    DontDestroyOnLoad(gameObject);
   }
 
   private void Start() {
@@ -46,6 +55,14 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
+    // If a run configuration is provided, enable telemetry logging and event logging.
+    if (RunManager.Instance.HasRunConfig()) {
+      SimManager.Instance.SimulatorConfig.EnableTelemetryLogging = true;
+      SimManager.Instance.SimulatorConfig.EnableEventLogging = true;
+    }
+
+    Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+    InitializeSessionDirectory();
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
       InitializeTelemetryLogging();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
@@ -71,7 +88,7 @@ public class SimMonitor : MonoBehaviour {
 
   private void RegisterNewAgent(IAgent agent, string eventType) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
-      float time = SimManager.Instance.ElapsedSimulationTime;
+      float time = SimManager.Instance.ElapsedTime;
       Vector3 pos = agent.transform.position;
       var record = new EventRecord {
         Time = time,       PositionX = pos.x,     PositionY = pos.y,
@@ -91,7 +108,7 @@ public class SimMonitor : MonoBehaviour {
 
   private void RegisterInterceptorEvent(IInterceptor interceptor, bool hit) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
-      float time = SimManager.Instance.ElapsedSimulationTime;
+      float time = SimManager.Instance.ElapsedTime;
       Vector3 pos = interceptor.transform.position;
       string eventType = hit ? "INTERCEPTOR_HIT" : "INTERCEPTOR_MISS";
       var record = new EventRecord {
@@ -103,26 +120,33 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void InitializeSessionDirectory() {
-    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-    _sessionDirectory = Path.Combine(Application.persistentDataPath, "Logs", timestamp);
+    if (RunManager.Instance.HasRunConfig()) {
+      _sessionDirectory =
+          Path.Combine(Application.persistentDataPath, "Logs",
+                       $"{RunManager.Instance.RunConfig.Name}_{RunManager.Instance.Timestamp}",
+                       $"run_{RunManager.Instance.RunIndex + 1}_seed_{RunManager.Instance.Seed}");
+    } else {
+      _sessionDirectory = Path.Combine(Application.persistentDataPath, "Logs",
+                                       $"run_{SimManager.Instance.Timestamp}");
+    }
     Directory.CreateDirectory(_sessionDirectory);
     Debug.Log($"Monitoring simulation logs to {_sessionDirectory}.");
   }
 
   private void InitializeTelemetryLogging() {
-    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-    _telemetryBinPath = Path.Combine(_sessionDirectory, $"sim_telemetry_{timestamp}.bin");
+    string telemetryFile = $"sim_telemetry_{Timestamp}.bin";
+    _telemetryBinPath = Path.Combine(_sessionDirectory, telemetryFile);
     _telemetryFileStream =
         new FileStream(_telemetryBinPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
     _telemetryBinaryWriter = new BinaryWriter(_telemetryFileStream);
-    Debug.Log("Telemetry file initialized successfully.");
+    Debug.Log($"Telemetry file initialized successfully: {telemetryFile}.");
   }
 
   private void InitializeEventLogging() {
-    string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-    _eventLogPath = Path.Combine(_sessionDirectory, $"sim_events_{timestamp}.csv");
+    string eventLog = $"sim_events_{Timestamp}.csv";
+    _eventLogPath = Path.Combine(_sessionDirectory, eventLog);
     _eventLogCache = new List<EventRecord>();
-    Debug.Log("Event log initialized successfully.");
+    Debug.Log($"Event log initialized successfully: {eventLog}.");
   }
 
   private void DestroyLogging() {
@@ -158,7 +182,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RecordTelemetry() {
-    float time = SimManager.Instance.ElapsedSimulationTime;
+    float time = SimManager.Instance.ElapsedTime;
     List<IAgent> agents = SimManager.Instance.Agents.Where(agent => !agent.IsTerminated).ToList();
     if (_telemetryBinaryWriter == null) {
       Debug.LogWarning("Telemetry binary writer is null.");
@@ -217,6 +241,7 @@ public class SimMonitor : MonoBehaviour {
           writer.WriteLine(
               $"{time:F2},{agentID},{positionX:F2},{positionY:F2},{positionZ:F2},{velocityX:F2},{velocityY:F2},{velocityZ:F2},{agentType}");
         }
+        Debug.Log($"Telemetry CSV file converted successfully: {csvFilePath}.");
       }
     } catch (IOException e) {
       Debug.LogWarning(

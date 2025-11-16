@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -37,8 +38,7 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
   };
 
-  // Singleton instance of SimManager.
-  public static SimManager Instance { get; set; }
+  public static SimManager Instance { get; private set; }
 
   // Simulation configuration.
   public Configs.SimulationConfig SimulationConfig { get; set; }
@@ -47,8 +47,16 @@ public class SimManager : MonoBehaviour {
   public Configs.SimulatorConfig SimulatorConfig { get; set; }
 
   // Simulation time.
-  public float ElapsedSimulationTime { get; private set; } = 0f;
-  public bool IsSimulationPaused { get; private set; } = false;
+  public float ElapsedTime { get; private set; } = 0f;
+  public bool IsPaused { get; private set; } = false;
+
+  // If true, the simulation is currently running.
+  public bool IsRunning { get; private set; } = false;
+
+  // If true, automatically restart the simulation.
+  public bool AutoRestartOnEnd { get; set; } = true;
+
+  public string Timestamp { get; private set; } = "";
 
   // Lists of all agents in the simulation.
   private List<IAgent> _interceptors = new List<IAgent>();
@@ -63,38 +71,26 @@ public class SimManager : MonoBehaviour {
   public float CostLaunchedInterceptors { get; private set; } = 0f;
   public float CostDestroyedThreats { get; private set; } = 0f;
 
+  // Track the number of interceptors and threats spawned and terminated.
+  private int _numInterceptorsSpawned = 0;
+  private int _numThreatsSpawned = 0;
+  private int _numThreatsTerminated = 0;
+
   public void StartSimulation() {
+    IsRunning = true;
     OnSimulationStarted?.Invoke();
     Debug.Log("Simulation started.");
     UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
+
     InitializeLaunchers();
     InitializeThreats();
   }
 
-  public void ResumeSimulation() {
-    Time.fixedDeltaTime = 1.0f / SimulatorConfig.PhysicsUpdateRate;
-    SetTimeScale(SimulationConfig.TimeScale);
-    IsSimulationPaused = false;
-  }
-
-  public void PauseSimulation() {
-    Time.fixedDeltaTime = 0;
-    SetTimeScale(timeScale: 0);
-    IsSimulationPaused = true;
-  }
-
-  public void QuitSimulation() {
-    Application.Quit();
-  }
-
-  public void RestartSimulation() {
+  public void EndSimulation() {
+    IsRunning = false;
     OnSimulationEnded?.Invoke();
     Debug.Log("Simulation ended.");
     UIManager.Instance.LogActionMessage("[SIM] Simulation ended.");
-
-    ElapsedSimulationTime = 0f;
-    CostLaunchedInterceptors = 0f;
-    CostDestroyedThreats = 0f;
 
     // Clear existing interceptors and threats.
     foreach (var interceptor in _interceptors) {
@@ -116,6 +112,33 @@ public class SimManager : MonoBehaviour {
     _interceptors.Clear();
     _threats.Clear();
     _dummyAgents.Clear();
+  }
+
+  public void PostSimulation() {
+    if (AutoRestartOnEnd) {
+      RestartSimulation();
+    }
+  }
+
+  public void PauseSimulation() {
+    IsPaused = true;
+    SetGameSpeed();
+  }
+
+  public void ResumeSimulation() {
+    IsPaused = false;
+    SetGameSpeed();
+  }
+
+  public void QuitSimulation() {
+    Application.Quit();
+  }
+
+  public void RestartSimulation() {
+    ElapsedTime = 0f;
+    CostLaunchedInterceptors = 0f;
+    CostDestroyedThreats = 0f;
+
     StartSimulation();
   }
 
@@ -123,6 +146,8 @@ public class SimManager : MonoBehaviour {
     // Reload the simulator configuration.
     SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfig);
     SimulationConfig = ConfigLoader.LoadSimulationConfig(configFile);
+    SetGameSpeed();
+
     if (SimulationConfig != null) {
       Debug.Log($"Loaded new simulation configuration: {configFile}.");
       RestartSimulation();
@@ -154,11 +179,12 @@ public class SimManager : MonoBehaviour {
     IInterceptor interceptor = interceptorObject.GetComponent<IInterceptor>();
     interceptor.HierarchicalAgent = new HierarchicalAgent(interceptor);
     interceptor.StaticConfig = staticConfig;
-    _interceptors.Add(interceptor);
     interceptor.OnTerminated += (interceptor) => _interceptors.Remove(interceptor);
+    _interceptors.Add(interceptor);
+    ++_numInterceptorsSpawned;
 
     // Assign a unique and simple ID.
-    int interceptorId = _interceptors.Count;
+    int interceptorId = _numInterceptorsSpawned;
     interceptorObject.name = $"{staticConfig.Name}_Interceptor_{interceptorId}";
 
     // Add the interceptor's unit cost to the total cost.
@@ -193,8 +219,9 @@ public class SimManager : MonoBehaviour {
     threat.HierarchicalAgent = new HierarchicalAgent(threat);
     threat.StaticConfig = staticConfig;
     threat.OnMiss += RegisterThreatMiss;
+    threat.OnTerminated += RegisterThreatTerminated;
     _threats.Add(threat);
-    threat.OnTerminated += (threat) => _threats.Remove(threat);
+    ++_numThreatsSpawned;
 
     // Assign a unique and simple ID.
     int threatId = _threats.Count;
@@ -256,31 +283,34 @@ public class SimManager : MonoBehaviour {
   }
 
   private void Awake() {
-    // Ensure that only one instance of the simulation manager exists.
-    if (Instance == null) {
-      Instance = this;
-      DontDestroyOnLoad(gameObject);
-    } else {
+    if (Instance != null && Instance != this) {
       Destroy(gameObject);
+      return;
     }
+    Instance = this;
+    DontDestroyOnLoad(gameObject);
+
     SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfig);
     SimulationConfig = ConfigLoader.LoadSimulationConfig(_defaultSimulationConfig);
+    Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
   }
 
   private void Start() {
-    if (Instance == this) {
-      IsSimulationPaused = false;
+    IsPaused = false;
+    if (!RunManager.Instance.HasRunConfig()) {
       StartSimulation();
       ResumeSimulation();
     }
   }
 
   private void FixedUpdate() {
-    if (!IsSimulationPaused && ElapsedSimulationTime < SimulationConfig.EndTime) {
-      ElapsedSimulationTime += Time.deltaTime;
-    } else if (ElapsedSimulationTime >= SimulationConfig.EndTime) {
-      Debug.Log("Simulation completed.");
-      RestartSimulation();
+    if (IsRunning) {
+      if (!IsPaused && ElapsedTime < SimulationConfig.EndTime) {
+        ElapsedTime += Time.deltaTime;
+      } else if (ElapsedTime >= SimulationConfig.EndTime) {
+        EndSimulation();
+        PostSimulation();
+      }
     }
   }
 
@@ -300,6 +330,16 @@ public class SimManager : MonoBehaviour {
     }
   }
 
+  private void SetGameSpeed() {
+    if (IsPaused) {
+      Time.fixedDeltaTime = 0;
+      SetTimeScale(timeScale: 0);
+    } else {
+      Time.fixedDeltaTime = 1.0f / SimulatorConfig.PhysicsUpdateRate;
+      SetTimeScale(SimulationConfig.TimeScale);
+    }
+  }
+
   private void SetTimeScale(float timeScale) {
     Time.timeScale = timeScale;
     // Time.fixedDeltaTime is derived from the simulator configuration.
@@ -308,5 +348,18 @@ public class SimManager : MonoBehaviour {
 
   private void RegisterThreatMiss(IThreat threat) {
     CostDestroyedThreats += threat.StaticConfig.Cost;
+  }
+
+  private void RegisterThreatTerminated(IAgent threat) {
+    _threats.Remove(threat);
+    ++_numThreatsTerminated;
+
+    // The simulation can be ended before the actual end time if there is a run configuration and
+    // all spawned threats have been terminated.
+    if (RunManager.Instance.HasRunConfig() && _numThreatsSpawned > 0 &&
+        _numThreatsTerminated >= _numThreatsTerminated) {
+      EndSimulation();
+      PostSimulation();
+    }
   }
 }
