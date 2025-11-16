@@ -13,17 +13,18 @@ def _get_unity_roots() -> list[Path]:
     roots: list[Path] = []
     system = platform.system()
     if system == "Windows":
-        roots.append(Path(os.environ.get("UNITY_HUB_PATH", "")) / "Editor")
+        unity_hub_path = os.environ.get("UNITY_HUB_PATH")
+        if unity_hub_path:
+            roots.append(Path(unity_hub_path) / "Editor")
         for env_variable in ("ProgramFiles", "ProgramFiles(x86)"):
             base = os.environ.get(env_variable)
             if base:
                 roots.append(Path(base) / "Unity/Hub/Editor")
                 roots.append(Path(base) / "Unity Hub/Editor")
                 roots.append(Path(base) / "Unity/Editor")
-        roots.append(
-            Path(os.environ.get("LOCALAPPDATA", "") / "UnityHub/Editor"))
-        roots.append(Path("C:/Program Files/Unity/Hub/Editor"))
-        roots.append(Path("C:/Program Files/Unity/Editor"))
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data:
+            roots.append(Path(local_app_data) / "UnityHub/Editor")
     elif system == "Darwin":
         roots.append(Path("/Applications/Unity/Hub/Editor"))
         roots.append(Path("/Applications/Unity"))
@@ -37,10 +38,10 @@ def _get_unity_roots() -> list[Path]:
         roots.append(Path("~/Unity/Hub/Editor"))
     else:
         raise NotImplementedError(f"Unsupported platform: {system}.")
-    return map(lambda path: path.expanduser(), roots)
+    return [path.expanduser() for path in roots]
 
 
-def _resolve_unity_executable(directory: Path) -> Path:
+def _resolve_unity_executable(directory: Path) -> Path | None:
     """Resolves the path to a Unity executable in the given directory.
 
     Args:
@@ -108,7 +109,7 @@ def _find_unity_executables() -> list[Path]:
     for executable in _get_default_unity_paths():
         if executable.exists():
             installs.add(executable.resolve())
-    return list(installs)
+    return sorted(list(installs), key=str)
 
 
 def find_unity_path(unity_path: str) -> Path:
