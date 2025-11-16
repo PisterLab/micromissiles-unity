@@ -73,6 +73,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationEnded() {
+    RecordTelemetry();
     DestroyLogging();
   }
 

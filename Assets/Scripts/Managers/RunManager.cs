@@ -93,7 +93,7 @@ public class RunManager : MonoBehaviour {
   }
 
   private IEnumerator Advance() {
-    // Allow one frame for cleanup to finish.
+    // Allow one frame for cleanup to finish, such as simulation monitoring.
     yield return null;
 
     ++RunIndex;

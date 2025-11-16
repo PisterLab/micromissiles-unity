@@ -304,13 +304,15 @@ public class SimManager : MonoBehaviour {
   }
 
   private void FixedUpdate() {
-    if (IsRunning) {
-      if (!IsPaused && ElapsedTime < SimulationConfig.EndTime) {
-        ElapsedTime += Time.deltaTime;
-      } else if (ElapsedTime >= SimulationConfig.EndTime) {
-        EndSimulation();
-        PostSimulation();
-      }
+    if (IsRunning && !IsPaused && ElapsedTime < SimulationConfig.EndTime) {
+      ElapsedTime += Time.fixedDeltaTime;
+    }
+  }
+
+  private void LateUpdate() {
+    if (ShouldEndSimulation()) {
+      EndSimulation();
+      PostSimulation();
     }
   }
 
@@ -353,13 +355,18 @@ public class SimManager : MonoBehaviour {
   private void RegisterThreatTerminated(IAgent threat) {
     _threats.Remove(threat);
     ++_numThreatsTerminated;
+  }
 
+  private bool ShouldEndSimulation() {
+    if (IsRunning && ElapsedTime >= SimulationConfig.EndTime) {
+      return true;
+    }
     // The simulation can be ended before the actual end time if there is a run configuration and
     // all spawned threats have been terminated.
     if (RunManager.Instance.HasRunConfig() && _numThreatsSpawned > 0 &&
-        _numThreatsTerminated >= _numThreatsTerminated) {
-      EndSimulation();
-      PostSimulation();
+        _numThreatsTerminated >= _numThreatsSpawned) {
+      return true;
     }
+    return false;
   }
 }
