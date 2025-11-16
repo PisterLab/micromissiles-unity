@@ -21,11 +21,11 @@ public class SimManager : MonoBehaviour {
   public delegate void NewThreatEventHandler(IThreat threat);
   public event NewThreatEventHandler OnNewThreat;
 
-  // Default simulation configuration.
-  private const string _defaultSimulationConfig = "7_quadcopters.pbtxt";
+  // Default simulation configuration file.
+  private const string _defaultSimulationConfigFile = "7_quadcopters.pbtxt";
 
-  // Default simulator configuration.
-  private const string _defaultSimulatorConfig = "simulator.pbtxt";
+  // Default simulator configuration file.
+  private const string _defaultSimulatorConfigFile = "simulator.pbtxt";
 
   // Map from the agent type to the prefab class name.
   // The prefab class must exist in the Resources/Prefabs directory.
@@ -142,17 +142,15 @@ public class SimManager : MonoBehaviour {
     StartSimulation();
   }
 
-  public void LoadNewSimulationConfig(string configFile) {
-    // Reload the simulator configuration.
-    SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfig);
-    SimulationConfig = ConfigLoader.LoadSimulationConfig(configFile);
+  public void LoadNewSimulationConfig(string simulationConfigFile) {
+    LoadSimConfigs(simulationConfigFile);
     SetGameSpeed();
 
     if (SimulationConfig != null) {
-      Debug.Log($"Loaded new simulation configuration: {configFile}.");
+      Debug.Log($"Loaded new simulation configuration: {simulationConfigFile}.");
       RestartSimulation();
     } else {
-      Debug.LogError($"Failed to load simulation configuration: {configFile}.");
+      Debug.LogError($"Failed to load simulation configuration: {simulationConfigFile}.");
     }
   }
 
@@ -184,8 +182,7 @@ public class SimManager : MonoBehaviour {
     ++_numInterceptorsSpawned;
 
     // Assign a unique and simple ID.
-    int interceptorId = _numInterceptorsSpawned;
-    interceptorObject.name = $"{staticConfig.Name}_Interceptor_{interceptorId}";
+    interceptorObject.name = $"{staticConfig.Name}_Interceptor_{_numInterceptorsSpawned}";
 
     // Add the interceptor's unit cost to the total cost.
     CostLaunchedInterceptors += staticConfig.Cost;
@@ -223,9 +220,8 @@ public class SimManager : MonoBehaviour {
     _threats.Add(threat);
     ++_numThreatsSpawned;
 
-    // Assign a unique and simple ID.
-    int threatId = _threats.Count;
-    threatObject.name = $"{staticConfig.Name}_Threat_{threatId}";
+    // Assign a unique name.
+    threatObject.name = $"{staticConfig.Name}_Threat_{_numThreatsSpawned}";
 
     OnNewThreat?.Invoke(threat);
     return threat;
@@ -290,8 +286,7 @@ public class SimManager : MonoBehaviour {
     Instance = this;
     DontDestroyOnLoad(gameObject);
 
-    SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfig);
-    SimulationConfig = ConfigLoader.LoadSimulationConfig(_defaultSimulationConfig);
+    LoadSimConfigs(_defaultSimulationConfigFile);
     Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
   }
 
@@ -330,6 +325,16 @@ public class SimManager : MonoBehaviour {
         CreateThreat(swarmConfig.AgentConfig);
       }
     }
+  }
+
+  private void LoadSimConfigs(string simulationConfigFile) {
+    SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfigFile);
+    // If a run configuration is provided, enable telemetry logging and event logging.
+    if (RunManager.Instance.HasRunConfig()) {
+      SimulatorConfig.EnableTelemetryLogging = true;
+      SimulatorConfig.EnableEventLogging = true;
+    }
+    SimulationConfig = ConfigLoader.LoadSimulationConfig(simulationConfigFile);
   }
 
   private void SetGameSpeed() {

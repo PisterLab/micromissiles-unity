@@ -38,12 +38,11 @@ public class RunManager : MonoBehaviour {
 
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
   private static void OnBeforeSceneLoad() {
-    string runConfigPath = TryGetCommandLineArg(_configFlag);
-    if (runConfigPath == null) {
+    string runConfigFile = TryGetCommandLineArg(_configFlag);
+    if (runConfigFile == null) {
       return;
     }
-
-    Configs.RunConfig runConfig = ConfigLoader.LoadRunConfig(runConfigPath);
+    Configs.RunConfig runConfig = ConfigLoader.LoadRunConfig(runConfigFile);
 
     // Create a game object to run coroutines.
     var gameObject = new GameObject("RunManager");

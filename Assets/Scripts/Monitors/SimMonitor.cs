@@ -55,12 +55,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    // If a run configuration is provided, enable telemetry logging and event logging.
-    if (RunManager.Instance.HasRunConfig()) {
-      SimManager.Instance.SimulatorConfig.EnableTelemetryLogging = true;
-      SimManager.Instance.SimulatorConfig.EnableEventLogging = true;
-    }
-
     Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
     InitializeSessionDirectory();
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
