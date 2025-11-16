@@ -72,9 +72,9 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 3000
-        y: 10
-        z: 200
+        x: 1000
+        y: 3
+        z: 60
       }
       velocity {
         x: 0
@@ -115,9 +115,9 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 3000
-        y: 200
-        z: 100
+        x: 1000
+        y: 3
+        z: 60
       }
       velocity {
         x: 0
@@ -158,9 +158,9 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 3000
-        y: 10
-        z: 200
+        x: 1000
+        y: 3
+        z: 60
       }
       velocity {
         x: 0
@@ -201,9 +201,9 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 3000
-        y: 10
-        z: 200
+        x: 1000
+        y: 3
+        z: 60
       }
       velocity {
         x: 0
@@ -244,9 +244,9 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 3000
-        y: 10
-        z: 200
+        x: 1000
+        y: 3
+        z: 60
       }
       velocity {
         x: 0
