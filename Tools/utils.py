@@ -19,8 +19,9 @@ def find_all_files(dir: str, file_pattern: str) -> list[Path]:
     """
     files = list(Path(dir).rglob(file_pattern))
     if not files:
-        logging.warning(f"No files found matching the pattern {file_pattern} "
-                        f"in the directory: {dir}.")
+        logging.warning(
+            "No files found matching the pattern %s in the directory: %s.",
+            file_pattern, dir)
     return files
 
 
@@ -56,7 +57,7 @@ def find_latest_file(dir: str, file_pattern: str) -> Path | None:
     if not files:
         return None
     latest_file = max(files, key=lambda path: path.stat().st_ctime)
-    logging.info(f"Using latest file found: {latest_file}.")
+    logging.info("Found latest file: %s.", latest_file)
     return latest_file
 
 
@@ -78,23 +79,51 @@ def find_latest_event_log(log_dir: str) -> Path | None:
     return find_latest_file(log_dir, f"{EVENT_LOG_FILE_PREFIX}_*.csv")
 
 
-def find_all_subdirectories(dir: str, subdir_pattern: str) -> list[Path]:
-    """Returns all subdirectories within the directory and its subdirectories
-    that match the file pattern.
+def find_all_subdirectories(
+    dir: str,
+    subdir_pattern: str = "*",
+    recursive: bool = True,
+) -> list[Path]:
+    """Returns all subdirectories within the directory that match the file
+    pattern.
 
     If no subdirectories match the given pattern, returns an empty list.
 
     Args:
         dir: Directory to look through.
         subdir_pattern: Subdirectory pattern to match.
+        recursive: If true, search recursively through the directory.
     """
-    paths = Path(dir).rglob(subdir_pattern)
+    if recursive:
+        paths = Path(dir).rglob(subdir_pattern)
+    else:
+        paths = Path(dir).glob(subdir_pattern)
     subdirs = [path for path in paths if path.is_dir()]
     if not subdirs:
         logging.warning(
-            f"No subdirectories found matching the pattern {subdir_pattern} "
-            f"in the directory: {dir}.")
+            "No subdirectories found matching the pattern %s "
+            "in the directory: %s.", subdir_pattern, dir)
     return subdirs
+
+
+def find_latest_subdirectory(
+    dir: str,
+    subdir_pattern: str = "*",
+) -> Path | None:
+    """Returns the latest subdirectory within the directory.
+
+    If no subdirectories match the given pattern, returns None.
+
+    Args:
+        dir: Directory to look through.
+        subdir_pattern: Subdirectory pattern to match.
+    """
+    subdirs = find_all_subdirectories(dir, subdir_pattern, recursive=False)
+    if not subdirs:
+        return None
+    latest_subdir = max(subdirs, key=lambda path: path.stat().st_ctime)
+    logging.info("Found latest subdirectory: %s.", latest_subdir)
+    return latest_subdir
 
 
 def read_telemetry_file(path: str | Path) -> pd.DataFrame:
