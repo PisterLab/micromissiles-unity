@@ -16,10 +16,14 @@ class Distribution(Aggregator):
 
     def min(self) -> float:
         """Returns the minimum of the metric values."""
+        if not self.values:
+            raise ValueError("The list of metric values is empty.")
         return min(self.values)
 
     def max(self) -> float:
         """Returns the maximum of the metric values."""
+        if not self.values:
+            raise ValueError("The list of metric values is empty.")
         return max(self.values)
 
     def mean(self) -> float:

@@ -112,10 +112,10 @@ class InterceptorEfficiency(ScalarMetric):
             event_df: Dataframe containing the events.
         """
         num_interceptors = sum(event_df["Event"] == EventType.NEW_INTERCEPTOR)
-        num_threats = sum(event_df["Event"] == EventType.NEW_THREAT)
+        num_hits = sum(event_df["Event"] == EventType.INTERCEPTOR_HIT)
         if num_interceptors == 0:
-            return 1
-        return num_threats / num_interceptors
+            return 0
+        return num_hits / num_interceptors
 
 
 class MinInterceptorDistance(ScalarMetric):
@@ -133,6 +133,8 @@ class MinInterceptorDistance(ScalarMetric):
             event_df: Dataframe containing the events.
         """
         hits = event_df[event_df["Event"] == EventType.INTERCEPTOR_HIT]
+        if hits.empty:
+            return np.inf
         hit_positions = hits[["PositionX", "PositionY", "PositionZ"]]
-        hit_distances = np.linalg.norm(hit_positions, axis=1)
-        return min(hit_distances)
+        hit_distances = np.linalg.norm(hit_positions.to_numpy(), axis=1)
+        return np.min(hit_distances)

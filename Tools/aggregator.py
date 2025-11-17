@@ -23,3 +23,6 @@ class Aggregator:
                 value for event_df in event_dfs
                 for value in metric.emit(event_df)
             ]
+        else:
+            raise TypeError(f"Unsupported metric type: "
+                            f"{type(metric).__name__}.")

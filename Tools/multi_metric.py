@@ -38,7 +38,7 @@ class InterceptPosition2D(MultiMetric):
         """
         hits = event_df[event_df["Event"] == EventType.INTERCEPTOR_HIT]
         hit_positions = hits[["PositionX", "PositionZ"]]
-        return list(hit_positions.apply(np.array, axis=1))
+        return list(hit_positions.to_numpy())
 
 
 class InterceptorSpawnPosition2D(MultiMetric):
@@ -61,4 +61,4 @@ class InterceptorSpawnPosition2D(MultiMetric):
         new_interceptors = (
             event_df[event_df["Event"] == EventType.NEW_INTERCEPTOR])
         spawn_positions = new_interceptors[["PositionX", "PositionZ"]]
-        return list(spawn_positions.apply(np.array, axis=1))
+        return list(spawn_positions.to_numpy())
