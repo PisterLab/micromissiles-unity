@@ -1,76 +1,40 @@
 """Visualizes the telemetry data and events."""
 
-import glob
-import os
-import platform
+from dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 import mpl_config
 import numpy as np
 import pandas as pd
+import unity
+import utils
 from absl import app, flags, logging
+from constants import AgentType, EventType
 
 FLAGS = flags.FLAGS
 
-# Telmetry file prefix.
-TELEMETRY_FILE_PREFIX = "sim_telemetry_"
 
-# Event log prefix.
-EVENT_LOG_FILE_PREFIX = "sim_events_"
-
-
-def _get_logs_directory() -> str:
-    """Returns the path to the logs directory."""
-    system = platform.system()
-    if system == "Windows":
-        return os.path.expandvars(
-            r"%USERPROFILE%\AppData\LocalLow\BAMLAB\micromissiles\Logs")
-    elif system == "Darwin":
-        return os.path.expanduser(
-            "~/Library/Application Support/BAMLAB/micromissiles/Logs")
-    elif system == "Linux":
-        return os.path.expanduser("~/.config/unity3d/Logs")
-    else:
-        raise NotImplementedError(f"Unsupported platform: {system}.")
+@dataclass(frozen=True)
+class EventMarker:
+    """Event marker."""
+    marker: str
+    color: str
+    label: str
 
 
-def _find_latest_file(directory: str, file_pattern: str) -> str:
-    """Returns the latest file in the directory that matches the file pattern.
+# Map from agent type to visualization color.
+AGENT_TYPE_TO_COLOR = {
+    AgentType.INTERCEPTOR: "blue",
+    AgentType.THREAT: "red",
+}
 
-    If no files match the given pattern, returns None.
-
-    Args:
-        directory: Directory to look through.
-        file_pattern: File pattern to match.
-    """
-    list_of_files = glob.glob(
-        os.path.join(directory, "**", file_pattern),
-        recursive=True,
-    )
-    if not list_of_files:
-        logging.warning(f"No files found matching the pattern {file_pattern} "
-                        f"in the directory: {directory}.")
-        return None
-    latest_file = max(list_of_files, key=os.path.getctime)
-    logging.info(f"Using latest file found: {latest_file}.")
-    return latest_file
-
-
-def _find_latest_telemetry_file() -> str:
-    """Returns the latest telemtry file."""
-    logs_dir = _get_logs_directory()
-    latest_log_dir = max(glob.glob(os.path.join(logs_dir, "*")),
-                         key=os.path.getctime)
-    return _find_latest_file(latest_log_dir, f"{TELEMETRY_FILE_PREFIX}*.csv")
-
-
-def _find_latest_event_log() -> str:
-    """Returns the latest event log."""
-    latest_telemetry_file = _find_latest_telemetry_file()
-    if latest_telemetry_file:
-        return latest_telemetry_file.replace(TELEMETRY_FILE_PREFIX,
-                                             EVENT_LOG_FILE_PREFIX)
-    return None
+# Map from event type to event marker.
+EVENT_TYPE_TO_MARKER = {
+    EventType.NEW_INTERCEPTOR: EventMarker("s", "blue", "New Interceptor"),
+    EventType.NEW_THREAT: EventMarker("^", "darkorange", "New Threat"),
+    EventType.INTERCEPTOR_HIT: EventMarker("o", "lime", "Hit"),
+    EventType.INTERCEPTOR_MISS: EventMarker("X", "red", "Miss"),
+}
 
 
 def log_event_summary(event_df: pd.DataFrame) -> None:
@@ -97,8 +61,8 @@ def log_event_summary(event_df: pd.DataFrame) -> None:
                  duration, start_time, end_time)
 
     # Determine the times of the hits and misses.
-    hits = event_df[event_df["Event"] == "INTERCEPTOR_HIT"]
-    misses = event_df[event_df["Event"] == "INTERCEPTOR_MISS"]
+    hits = event_df[event_df["Event"] == EventType.INTERCEPTOR_HIT]
+    misses = event_df[event_df["Event"] == EventType.INTERCEPTOR_MISS]
     logging.info("Number of hits recorded: %d.", len(hits))
     if not hits.empty:
         first_hit_time = hits["Time"].min()
@@ -120,18 +84,15 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
         telemetry_df: Dataframe containing the telemetry data.
         event_df: Dataframe containing the events.
     """
-    fig, ax = plt.subplots(figsize=(16, 8), subplot_kw={"projection": "3d"})
-
-    # Define colors for different agent types.
-    colors = {
-        "M": "blue",
-        "T": "red",
-    }
+    fig, ax = plt.subplots(
+        figsize=(16, 8),
+        subplot_kw={"projection": "3d"},
+    )
 
     # Plot the agent trajectories.
     for _, agent_data in telemetry_df.groupby("AgentID"):
         agent_type = agent_data["AgentType"].iloc[0]
-        color = colors.get(agent_type, "black")
+        color = AGENT_TYPE_TO_COLOR.get(agent_type, "black")
 
         ax.plot(
             agent_data["AgentX"],
@@ -142,16 +103,8 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
             linewidth=0.5,
         )
 
-    # Define event markers for different events.
-    event_markers = {
-        "INTERCEPTOR_HIT": ("o", "lime", "Hit"),
-        "INTERCEPTOR_MISS": ("X", "red", "Miss"),
-        "NEW_THREAT": ("^", "darkorange", "New Threat"),
-        "NEW_INTERCEPTOR": ("s", "blue", "New Interceptor"),
-    }
-
     # Plot the events.
-    for event_type, (marker, color, label) in event_markers.items():
+    for event_type, event_marker in EVENT_TYPE_TO_MARKER.items():
         event_data = event_df[event_df["Event"] == event_type]
         if not event_data.empty:
             ax.scatter(
@@ -159,12 +112,10 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
                 event_data["PositionZ"],
                 event_data["PositionY"],
                 s=60,
-                c=color,
-                marker=marker,
-                depthshade=True,
+                c=event_marker.color,
+                marker=event_marker.marker,
                 edgecolors="black",
-                zorder=5,
-                label=label,
+                label=event_marker.label,
             )
 
     # Add a ground plane for reference.
@@ -190,8 +141,9 @@ def main(argv):
     telemetry_file_path = FLAGS.telemetry_file
     event_file_path = FLAGS.event_file
     if not telemetry_file_path or not event_file_path:
-        telemetry_file_path = _find_latest_telemetry_file()
-        event_file_path = _find_latest_event_log()
+        telemetry_file_path = utils.find_latest_telemetry_file(
+            FLAGS.log_search_dir)
+        event_file_path = utils.find_latest_event_log(FLAGS.log_search_dir)
     if not telemetry_file_path or not event_file_path:
         raise ValueError(
             "Both a telemetry file and an event log must be provided.")
@@ -209,5 +161,7 @@ if __name__ == "__main__":
     flags.DEFINE_string("telemetry_file", None,
                         "Path to the telemetry CSV file.")
     flags.DEFINE_string("event_file", None, "Path to the event CSV file.")
+    flags.DEFINE_string("log_search_dir", unity.get_persistent_data_directory(),
+                        "Log directory in which to search for logs.")
 
     app.run(main)

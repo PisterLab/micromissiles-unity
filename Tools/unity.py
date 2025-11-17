@@ -122,10 +122,24 @@ def find_unity_path(unity_path: str) -> Path:
 
     executables = _find_unity_executables()
     if not executables:
-        raise ValueError(
-            f"No Unity installations detected. Use --unity-path or set $UNITY_PATH."
-        )
+        raise ValueError(f"No Unity installations detected. "
+                         f"Use --unity-path or set $UNITY_PATH.")
     if len(executables) > 1:
         logging.warn("Found multiple Unity installations.")
     logging.info("Found Unity installation at %s.", executables[0])
     return executables[0]
+
+
+def get_persistent_data_directory() -> str:
+    """Returns the path to Unity's persistent data directory."""
+    system = platform.system()
+    if system == "Windows":
+        return os.path.expandvars(
+            r"%USERPROFILE%\AppData\LocalLow\BAMLAB\micromissiles\Logs")
+    elif system == "Darwin":
+        return os.path.expanduser(
+            "~/Library/Application Support/BAMLAB/micromissiles/Logs")
+    elif system == "Linux":
+        return os.path.expanduser("~/.config/unity3d/Logs")
+    else:
+        raise NotImplementedError(f"Unsupported platform: {system}.")
