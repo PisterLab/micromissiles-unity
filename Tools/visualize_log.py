@@ -1,6 +1,7 @@
 """Visualizes the telemetry data and events."""
 
 from dataclasses import dataclass
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import mpl_config
@@ -138,20 +139,19 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
 def main(argv):
     assert len(argv) == 1, argv
 
-    telemetry_file_path = FLAGS.telemetry_file
-    event_file_path = FLAGS.event_file
-    if not telemetry_file_path or not event_file_path:
+    if FLAGS.telemetry_file and FLAGS.event_log:
+        telemetry_file_path = Path(FLAGS.telemetry_file)
+        event_log_path = Path(FLAGS.event_file)
+    else:
         telemetry_file_path = utils.find_latest_telemetry_file(
             FLAGS.log_search_dir)
-        event_file_path = utils.find_latest_event_log(FLAGS.log_search_dir)
-    if not telemetry_file_path or not event_file_path:
+        event_log_path = utils.find_latest_event_log(FLAGS.log_search_dir)
+    if not telemetry_file_path or not event_log_path:
         raise ValueError(
             "Both a telemetry file and an event log must be provided.")
 
-    event_df = pd.read_csv(event_file_path)
-    # Sanitize the event column to ensure consistency.
-    event_df["Event"] = event_df["Event"].str.upper().str.strip()
-    telemetry_df = pd.read_csv(telemetry_file_path)
+    telemetry_df = utils.read_telemetry_file(telemetry_file_path)
+    event_df = utils.read_event_log(event_log_path)
 
     log_event_summary(event_df)
     plot_telemetry(telemetry_df, event_df)
@@ -160,7 +160,7 @@ def main(argv):
 if __name__ == "__main__":
     flags.DEFINE_string("telemetry_file", None,
                         "Path to the telemetry CSV file.")
-    flags.DEFINE_string("event_file", None, "Path to the event CSV file.")
+    flags.DEFINE_string("event_log", None, "Path to the event CSV log.")
     flags.DEFINE_string("log_search_dir", unity.get_persistent_data_directory(),
                         "Log directory in which to search for logs.")
 
