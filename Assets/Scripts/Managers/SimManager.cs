@@ -143,6 +143,9 @@ public class SimManager : MonoBehaviour {
   }
 
   public void LoadNewSimulationConfig(string simulationConfigFile) {
+    if (IsRunning) {
+      EndSimulation();
+    }
     LoadSimConfigs(simulationConfigFile);
     SetGameSpeed();
 
