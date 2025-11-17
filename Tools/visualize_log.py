@@ -141,7 +141,7 @@ def main(argv):
 
     if FLAGS.telemetry_file and FLAGS.event_log:
         telemetry_file_path = Path(FLAGS.telemetry_file)
-        event_log_path = Path(FLAGS.event_file)
+        event_log_path = Path(FLAGS.event_log)
     else:
         telemetry_file_path = utils.find_latest_telemetry_file(
             FLAGS.log_search_dir)

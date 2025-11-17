@@ -17,11 +17,11 @@ def find_all_files(dir: str, file_pattern: str) -> list[Path]:
         dir: Directory to look through.
         file_pattern: File pattern to match.
     """
-    files = Path(dir).rglob(file_pattern)
+    files = list(Path(dir).rglob(file_pattern))
     if not files:
         logging.warning(f"No files found matching the pattern {file_pattern} "
                         f"in the directory: {dir}.")
-    return list(files)
+    return files
 
 
 def find_all_telemetry_files(log_dir: str) -> list[Path]:

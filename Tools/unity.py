@@ -140,6 +140,6 @@ def get_persistent_data_directory() -> str:
         return os.path.expanduser(
             "~/Library/Application Support/BAMLAB/micromissiles/Logs")
     elif system == "Linux":
-        return os.path.expanduser("~/.config/unity3d/Logs")
+        return os.path.expanduser("~/.config/unity3d/BAMLAB/micromissiles/Logs")
     else:
         raise NotImplementedError(f"Unsupported platform: {system}.")
