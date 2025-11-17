@@ -25,17 +25,6 @@ public class RunManager : MonoBehaviour {
     return RunConfig != null;
   }
 
-  public void StartRun() {
-    Application.targetFrameRate = -1;
-
-    // Disable automatically restarting at the end of the simulation.
-    SimManager.Instance.AutoRestartOnEnd = false;
-    SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
-    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
-
-    StartCoroutine(Run());
-  }
-
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
   private static void OnBeforeSceneLoad() {
     string runConfigFile = TryGetCommandLineArg(_configFlag);
@@ -51,19 +40,25 @@ public class RunManager : MonoBehaviour {
     runManager.InitializeFromRunConfig(runConfig);
   }
 
-  [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-  private static void OnAfterSceneLoad() {
-    if (Instance.RunConfig != null) {
-      Instance.StartRun();
-    }
-  }
-
   private void InitializeFromRunConfig(Configs.RunConfig runConfig) {
     RunConfig = runConfig;
     IsRunning = false;
     RunIndex = 0;
     Seed = RunConfig.Seed;
     Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+  }
+
+  private void Start() {
+    if (RunConfig != null) {
+      Application.targetFrameRate = -1;
+
+      // Disable automatically restarting at the end of the simulation.
+      SimManager.Instance.AutoRestartOnEnd = false;
+      SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
+      SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+
+      StartCoroutine(Run());
+    }
   }
 
   private void Awake() {
