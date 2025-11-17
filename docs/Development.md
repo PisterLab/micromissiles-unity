@@ -1,4 +1,4 @@
-# Development Guide
+# Development
 
 This guide will help you set up and run the project in development mode.
 You'll learn how to install Unity Hub, open the project, and navigate the main scene.
@@ -70,6 +70,6 @@ After the project opens in Unity:
 
 ## Additional Resources
 
-- [Plugins Guide](./Plugins_Guide.md)
+- [Plugins](./Plugins.md)
 - [Keybinds and Controls](./Keybinds_and_Controls.md)
-- [Simulation Configuration Guide](./Simulation_Configuration_Guide.md)
+- [Simulation Configuration](./Simulation_Configuration.md)

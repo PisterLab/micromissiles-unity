@@ -13,7 +13,7 @@ hero:
       link: /Simulator_Overview
     - theme: alt
       text: CONTRIBUTE
-      link: /Development_Guide
+      link: /Development
 features:
   - title: Sim Overview
     details: Explore the simulator architecture and the swarm algorithms currently implemented in the simulator.
@@ -21,12 +21,12 @@ features:
   - title: Keybinds and Controls
     details: Learn how to navigate and interact with the simulation environment using your keyboard and mouse.
     link: /Keybinds_and_Controls
-  - title: Sim Config Guide
+  - title: Sim Config
     details: Explore the different configuration files used in the simulation and how to modify them to customize your engagement scenarios.
-    link: /Simulation_Configuration_Guide
-  - title: Development Guide
+    link: /Simulation_Configuration
+  - title: Development
     details: Follow the step-by-step guide on setting up the Unity project in development mode to contribute to it.
-    link: /Development_Guide
+    link: /Development
 ---
 
 ![Simulator view](./images/simulator_view.png)
@@ -73,5 +73,5 @@ Follow the instructions below for your operating system to download and run the 
 
 - Read the [**Simulation Overview**](./Simulator_Overview.md) to understand the simulation physics, agent behaviors, and swarm algorithms currently implemented in the simulator.
 - Familiarize yourself with the [**Keybinds and Controls**](./Keybinds_and_Controls.md) to navigate and interact with the simulation.
-- Learn how to configure the simulation settings by reading the [**Simulation Configuration Guide**](./Simulation_Configuration_Guide.md).
-- Contribute to the project by setting up the Unity project according to the [**Development Guide**](./Development_Guide.md).
+- Learn how to configure the simulation settings by reading the [**Simulation Configuration**](./Simulation_Configuration.md) guide.
+- Contribute to the project by setting up the Unity project according to the [**Development**](./Development.md) guide.

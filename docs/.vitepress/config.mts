@@ -34,8 +34,8 @@ export default defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Sim Overview", link: "/Simulator_Overview" },
-      { text: "Sim Config Guide", link: "/Simulation_Configuration_Guide" },
-      { text: "Development Guide", link: "/Development_Guide" },
+      { text: "Sim Config", link: "/Simulation_Configuration" },
+      { text: "Development", link: "/Development" },
     ],
 
     sidebar: [
@@ -44,16 +44,17 @@ export default defineConfig({
         items: [
           { text: "Sim Overview", link: "/Simulator_Overview" },
           { text: "Keybinds and Controls", link: "/Keybinds_and_Controls" },
-          { text: "Sim Config Guide", link: "/Simulation_Configuration_Guide" },
+          { text: "Sim Config", link: "/Simulation_Configuration" },
+          { text: "Sim Runner", link: "/Simulation_Runner" },
           { text: "Sim Logging", link: "/Simulation_Logging" },
-          { text: "Coverage Reports",
+         { text: "Coverage Reports",
             items: [
               { text: "EditMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-editmode/Report/index.html" },
               { text: "PlayMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-playmode/Report/index.html" }
             ]
           },
-          { text: "Development Guide", link: "/Development_Guide" },
-          { text: "Plugins Guide", link: "/Plugins_Guide" }
+          { text: "Development", link: "/Development" },
+          { text: "Plugins", link: "/Plugins" }
         ],
       },
     ],
