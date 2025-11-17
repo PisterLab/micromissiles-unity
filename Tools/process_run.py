@@ -36,6 +36,10 @@ def print_aggregated_stats(event_dfs: list[pd.DataFrame]) -> None:
     Args:
         event_dfs: List of dataframes containing the events.
     """
+    if not event_dfs:
+        logging.warning("No simulation runs to aggregate stats.")
+        return
+
     num_runs = len(event_dfs)
     logging.info(
         "Aggregating the stats for %d runs found in the log directory.",
@@ -57,6 +61,9 @@ def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
     """
     aggregator = Aggregator(event_dfs, metric)
     values = np.array(aggregator.values)
+    if values.size == 0:
+        logging.warning("No metric values for metric: %s.", metric.name)
+        return
 
     # Calculate the extent to plot.
     xvalues = values[:, 0]
@@ -69,8 +76,10 @@ def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
     yrange = ymax - ymin
     xpad = xrange * 0.05 if xrange > 0 else 1
     ypad = yrange * 0.05 if yrange > 0 else 1
-    xedges = np.linspace(xmin - xpad, xmax + xpad, int(xrange / PIXEL_SIZE) + 1)
-    yedges = np.linspace(ymin - ypad, ymax + ypad, int(yrange / PIXEL_SIZE) + 1)
+    xedges = np.linspace(xmin - xpad, xmax + xpad,
+                         max(int(xrange / PIXEL_SIZE) + 1, 2))
+    yedges = np.linspace(ymin - ypad, ymax + ypad,
+                         max(int(yrange / PIXEL_SIZE) + 1, 2))
 
     # Plot a 2D histogram of the metric values.
     fig, ax = plt.subplots(figsize=(16, 8))
@@ -90,7 +99,6 @@ def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
     ax.set_title(metric.name)
     ax.grid(alpha=0.25)
     fig.tight_layout()
-    plt.show()
 
     # Plot a scatter plot of the metric values.
     fig, ax = plt.subplots(figsize=(16, 8))
@@ -103,6 +111,7 @@ def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
     ax.set_title(metric.name)
     ax.grid(alpha=0.5)
     fig.tight_layout()
+
     plt.show()
 
 
