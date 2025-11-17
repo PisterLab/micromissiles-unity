@@ -1,0 +1,5 @@
+name: "batch_5_swarms_100_ucav"
+simulation_config_file: "5_swarms_100_ucav.pbtxt"
+num_runs: 100
+seed: 100
+seed_stride: 1
