@@ -6,6 +6,9 @@ using UnityEngine;
 // Interceptors can be launched from naval vessels, shore batteries, or mobile platforms, for
 // example.
 public abstract class LauncherBase : CarrierBase {
+  // Launchers cannot pursue threats.
+  public override bool IsPursuable => false;
+
   protected override void Awake() {
     base.Awake();
 

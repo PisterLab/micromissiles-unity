@@ -13,9 +13,6 @@ public abstract class CarrierBase : InterceptorBase {
   // Coroutine for releasing sub-interceptors.
   private Coroutine _releaseCoroutine;
 
-  // Carriers cannot pursue threats.
-  public override bool IsPursuable => false;
-
   // Release strategy for sub-interceptors.
   public IReleaseStrategy ReleaseStrategy { get; set; }
 
