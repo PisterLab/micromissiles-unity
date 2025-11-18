@@ -6,7 +6,7 @@ To aggregate logs from multiple runs kicked off using a run configuration, we ha
 
 ## Overview
 
-![Log visualizer](./images/log_visualizer.png){width=80%}
+![Log visualizer](./images/log_visualizer.png)
 
 Simulation logs capture detailed telemetry and event data from each simulation run.
 These logs are essential for debugging, performance analysis, and understanding the behavior of agents within the simulation.
