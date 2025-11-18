@@ -101,8 +101,10 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   public void DestroyTargetModel() {
-    SimManager.Instance.DestroyDummyAgent(TargetModel);
-    TargetModel = null;
+    if (TargetModel != null) {
+      SimManager.Instance.DestroyDummyAgent(TargetModel);
+      TargetModel = null;
+    }
   }
 
   public void UpdateTargetModel() {

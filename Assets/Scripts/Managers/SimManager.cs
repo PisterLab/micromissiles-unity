@@ -241,7 +241,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void DestroyDummyAgent(IAgent dummyAgent) {
-    Destroy(dummyAgent.gameObject);
+    dummyAgent.Terminate();
     _dummyAgents.Remove(dummyAgent);
   }
 
