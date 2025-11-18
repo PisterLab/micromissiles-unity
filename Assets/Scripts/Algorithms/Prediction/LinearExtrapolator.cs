@@ -8,10 +8,6 @@ public class LinearExtrapolator : PredictorBase {
   // Predict the future state of the hierarchical object by linearly extrapolating its current
   // position and velocity.
   public override PredictorState Predict(float time) {
-    if (Hierarchical == null) {
-      return new PredictorState();
-    }
-
     Vector3 position = Hierarchical.Position + Hierarchical.Velocity * time;
     return new PredictorState {
       Position = position,
