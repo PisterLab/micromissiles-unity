@@ -88,10 +88,11 @@ public class UIManager : MonoBehaviour {
   }
 
   private void Awake() {
-    if (Instance == null)
-      Instance = this;
-    else
+    if (Instance != null && Instance != this) {
       Destroy(gameObject);
+    } else {
+      Instance = this;
+    }
   }
 
   private void Start() {
@@ -139,8 +140,7 @@ public class UIManager : MonoBehaviour {
   }
 
   private void UpdateSimTimeText() {
-    simTimeText.text =
-        "Elapsed Sim Time: " + SimManager.Instance.ElapsedSimulationTime.ToString("F2");
+    simTimeText.text = "Elapsed Time: " + SimManager.Instance.ElapsedTime.ToString("F2");
     float expectedSimTimeAdvance = Time.unscaledDeltaTime * Time.timeScale;
     float actualSimTimeAdvance = Time.deltaTime;
 

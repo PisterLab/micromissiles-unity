@@ -27,7 +27,7 @@ public class ConfigsTests : TestBase {
       yield return new WaitForSecondsRealtime(0.1f);
       SimManager.Instance.LoadNewSimulationConfig(configFiles[i]);
       yield return new WaitForSecondsRealtime(0.1f);
-      double elapsedTime = SimManager.Instance.ElapsedSimulationTime;
+      double elapsedTime = SimManager.Instance.ElapsedTime;
       if (isPaused) {
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime), epsilon,
@@ -49,7 +49,7 @@ public class ConfigsTests : TestBase {
         SimManager.Instance.ResumeSimulation();
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
-        Assert.IsTrue(SimManager.Instance.ElapsedSimulationTime > 0 + epsilon,
+        Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + epsilon,
                       "Simulation time should have advanced after resuming.");
       }
     }
