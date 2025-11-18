@@ -80,7 +80,8 @@ public class MissileMovement : AerialMovement {
 
   // In the boost phase, the boost acceleration is added to the control acceleration input.
   private Vector3 ActBoost(in Vector3 accelerationInput) {
-    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
+    Vector3 accelerationInputWithGroundAvoidance = AvoidGround(accelerationInput);
+    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInputWithGroundAvoidance);
 
     // Determine the boost acceleration.
     float boostAcceleration =
@@ -93,7 +94,8 @@ public class MissileMovement : AerialMovement {
   // In the midcourse phase, the agent accelerates according to the control acceleration input but
   // is subject to drag and gravity.
   private Vector3 ActMidCourse(in Vector3 accelerationInput) {
-    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInput);
+    Vector3 accelerationInputWithGroundAvoidance = AvoidGround(accelerationInput);
+    Vector3 limitedAccelerationInput = LimitAccelerationInput(accelerationInputWithGroundAvoidance);
     return CalculateNetAccelerationInput(limitedAccelerationInput);
   }
 
@@ -107,6 +109,24 @@ public class MissileMovement : AerialMovement {
   // In the ballistic phase, the agent is subject to only drag and gravity.
   private Vector3 ActBallistic(in Vector3 accelerationInput) {
     return ActMidCourse(accelerationInput: Vector3.zero);
+  }
+
+  // Adjust the acceleration input to avoid the ground.
+  private Vector3 AvoidGround(in Vector3 accelerationInput) {
+    const float groundProximityThresholdFactor = 5f;
+
+    Vector3 agentPosition = Agent.Position;
+    Vector3 agentVelocity = Agent.Velocity;
+    float altitude = agentPosition.y;
+    float groundProximityThreshold =
+        Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor +
+        0.5f * Constants.kGravity * groundProximityThresholdFactor * groundProximityThresholdFactor;
+    if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
+      // Add some upwards acceleration to avoid the ground.
+      float blendFactor = 1 - (altitude / groundProximityThreshold);
+      return accelerationInput + blendFactor * Agent.MaxNormalAcceleration() * Agent.transform.up;
+    }
+    return accelerationInput;
   }
 
   // Calculate the acceleration input with drag and gravity.
