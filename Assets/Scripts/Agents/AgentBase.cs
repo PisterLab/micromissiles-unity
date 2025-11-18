@@ -105,6 +105,15 @@ public class AgentBase : MonoBehaviour, IAgent {
     return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
+  public void CreateTargetModel(IHierarchical target) {
+    TargetModel = SimManager.Instance.CreateDummyAgent(target.Position, target.Velocity);
+  }
+
+  public void DestroyTargetModel() {
+    SimManager.Instance.DestroyDummyAgent(TargetModel);
+    TargetModel = null;
+  }
+
   public void UpdateTargetModel() {
     if (HierarchicalAgent == null || HierarchicalAgent.Target == null || Sensor == null) {
       return;

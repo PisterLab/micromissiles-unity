@@ -36,6 +36,8 @@ public interface IAgent {
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
 
+  void CreateTargetModel(IHierarchical target);
+  void DestroyTargetModel();
   void UpdateTargetModel();
 
   void Terminate();
