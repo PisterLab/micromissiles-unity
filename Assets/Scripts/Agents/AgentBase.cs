@@ -53,18 +53,9 @@ public class AgentBase : MonoBehaviour, IAgent {
     }
   }
 
-  // Movement behavior of the agent.
   public IMovement Movement { get; set; }
-
-  // The controller calculates the acceleration input, given the agent's current state and its
-  // target's current state.
   public IController Controller { get; set; }
-
-  // The sensor calculates the relative transformation from the current agent to a target.
   public ISensor Sensor { get; set; }
-
-  // Target model. The target model is updated by the sensor and should be used by the controller to
-  // model imperfect knowledge of the engagement.
   public IAgent TargetModel { get; set; }
 
   public Vector3 Position {
