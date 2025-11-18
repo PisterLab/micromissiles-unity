@@ -9,11 +9,11 @@ public class PnControllerTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
     _targetModel = new GameObject("Target").AddComponent<AgentBase>();
-    Rigidbody targetRb = _targetModel.gameObject.AddComponent<Rigidbody>();
+    _targetModel.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_targetModel, "Awake");
     _agent.TargetModel = _targetModel;
     _controller = new PnController(_agent, gain: 1);
