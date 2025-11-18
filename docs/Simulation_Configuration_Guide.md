@@ -105,8 +105,8 @@ Each swarm configuration includes:
   - **`initial_state`** (for threats): Starting position, rotation, and velocity.
   - **`standard_deviation`** (for threats): Variability in initial states.
   - **`dynamic_config`**: Time-dependent settings (sensor configurations, flight configurations).
-  - **`submunitions_config`** (for interceptors): Configuration for any submunitions deployed.
-    - **`num_submunitions`**: Number of submunitions that each interceptor in the swarm will release.
+  - **`sub_agent_config`** (for interceptors): Configuration for any submunitions deployed.
+    - **`num_sub_agents`**: Number of submunitions that each interceptor in the swarm will release.
     - **`agent_config`**: Submunition agent configuration.
 
 An advantage of using Protobuf messages to define the simulation configuration is that recursive message definitions are allowed.
@@ -139,8 +139,8 @@ interceptor_swarm_configs {
         frequency: 100
       }
     }
-    submunitions_config {
-      num_submunitions: 7
+    sub_agent_config {
+      num_sub_agents: 7
       agent_config: {
         config_file: "micromissile.pbtxt"
         dynamic_config {
@@ -209,7 +209,7 @@ threat_swarm_configs {
 - Deploys Hydra 70 rockets with:
   - Controller settings: Uses proportional navigation to steer the rocket.
   - Sensor settings: Uses an ideal sensor with an update frequency of 100 Hz.
-  - Submunitions capability: Releases 7 micromissiles per Hydra 70 rocket.
+  - Sub-agent capability: Releases 7 micromissiles per Hydra 70 rocket.
 
 **Threat Configurations (`threat_swarm_configs`):**
 - Deploys 7 quadcopter drones with:
@@ -238,8 +238,8 @@ interceptor_swarm_configs {
         frequency: 100
       }
     }
-    submunitions_config {
-      num_submunitions: 7
+    sub_agent_config {
+      num_sub_agents: 7
       agent_config: {
         config_file: "micromissile.pbtxt"
         dynamic_config {

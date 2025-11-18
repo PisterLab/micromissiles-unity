@@ -31,6 +31,7 @@ public class IdealSensor : SensorBase {
     return new SensorOutput {
       Position = relativeTransformation.Position,
       Velocity = relativeTransformation.Velocity,
+      Acceleration = relativeTransformation.Acceleration,
     };
   }
 }

@@ -98,7 +98,8 @@ public abstract class Agent : MonoBehaviour {
   public virtual void AssignTarget(Agent target) {
     _target = target;
     _target.AddInterceptor(this);
-    _targetModel = SimManager.Instance.CreateDummyAgent(target.GetPosition(), target.GetVelocity());
+    _targetModel =
+        SimManager.Instance.CreateDummyAgentLegacy(target.GetPosition(), target.GetVelocity());
   }
 
   public Agent GetAssignedTarget() {
