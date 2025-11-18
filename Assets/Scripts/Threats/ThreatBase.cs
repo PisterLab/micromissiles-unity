@@ -26,8 +26,8 @@ public abstract class ThreatBase : AgentBase, IThreat {
     }
   }
 
-  public event ThreatEventHandler OnHit;
-  public event ThreatEventHandler OnMiss;
+  public event ThreatHitMissEventHandler OnHit;
+  public event ThreatHitMissEventHandler OnMiss;
 
   public float LookupPowerTable(Configs.Power power) {
     PowerTable.TryGetValue(power, out float speed);
@@ -143,8 +143,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   // for a threat to collide with another threat or with a non-pursuing interceptor. Interceptors
   // will handle colliding with a threat.
   private void OnTriggerEnter(Collider other) {
-    // Check if the interceptor hit the floor with a negative vertical speed.
-    if (other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0) {
+    if (CheckFloorCollision()) {
       OnMiss?.Invoke(this);
       Terminate();
     }
