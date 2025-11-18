@@ -1,7 +1,7 @@
-import { defineConfig } from "vitepress";
+import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { readFileSync } from "node:fs";
+import { defineConfig } from "vitepress";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -23,8 +23,8 @@ export default defineConfig({
       await shiki.loadLanguage(grammar);
     },
     codeLangAliases: {
-      pbtxt: "textproto"
-    }
+      pbtxt: "textproto",
+    },
   },
 
   title: "micromissiles-unity",
@@ -47,27 +47,39 @@ export default defineConfig({
           { text: "Sim Config", link: "/Simulation_Configuration" },
           { text: "Sim Runner", link: "/Simulation_Runner" },
           { text: "Sim Logging", link: "/Simulation_Logging" },
-         { text: "Coverage Reports",
+          {
+            text: "Coverage Reports",
             items: [
-              { text: "EditMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-editmode/Report/index.html" },
-              { text: "PlayMode Tests", link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-playmode/Report/index.html" }
-            ]
+              {
+                text: "EditMode Tests",
+                link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-editmode/Report/index.html",
+              },
+              {
+                text: "PlayMode Tests",
+                link: "https://pisterlab.github.io/micromissiles-unity/coverage/coverage-playmode/Report/index.html",
+              },
+            ],
           },
           { text: "Development", link: "/Development" },
-          { text: "Plugins", link: "/Plugins" }
+          { text: "Plugins", link: "/Plugins" },
         ],
       },
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/PisterLab/micromissiles-unity" },
+      {
+        icon: "github",
+        link: "https://github.com/PisterLab/micromissiles-unity",
+      },
     ],
     search: {
       provider: "local",
     },
     footer: {
-      message: "Released under the <a href=\"https://github.com/PisterLab/micromissiles-unity/blob/main/LICENSE\">BSD-3-Clause License</a>.",
-      copyright: "Copyright © 2024-present The Regents of the University of California. All Rights Reserved.",
+      message:
+        'Released under the <a href="https://github.com/PisterLab/micromissiles-unity/blob/main/LICENSE">BSD-3-Clause License</a>.',
+      copyright:
+        "Copyright © 2024-present The Regents of the University of California. All Rights Reserved.",
     },
   },
 });

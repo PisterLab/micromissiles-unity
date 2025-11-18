@@ -23,7 +23,7 @@ You can specify three optional flags:
 - **--build_name**: Build name. If not provided, defaults to `micromissiles`.
 - **--build_root**: Build root directory. If not provided, defaults to `Build/`.
 
-The standalone build is outputted to a timestamped subdirectory of the build root directory.
+The standalone build is stored in a timestamped subdirectory of the build root directory.
 ```
 # Example build directory on a Mac.
 Build/
@@ -75,6 +75,6 @@ cd Build/<timestamp>
 ```
 
 Logs are exported to the `Logs` directory in your operating system's [persistent data path](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html).
-The run configuration creates a parent directory called `<run_config_name>_<timestamp>`, in which the per-run logs are stored separate subdirectories called `run_<run_index>_seed_<seed>`.
+The run configuration creates a parent directory called `<run_config_name>_<timestamp>`, in which the per-run logs are stored in separate subdirectories called `run_<run_index>_seed_<seed>`.
 
 For more details on logging and log processing, consult the [Simulation Logging](./Simulation_Logging) guide.

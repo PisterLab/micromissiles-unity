@@ -53,7 +53,7 @@ Logs/
 ```
 
 If the simulation run was executed through the command line with a run configuration provided, the logs will be stored in a parent directory called `<run_config_name>_<timestamp>`.
-The logs of each simulation run is then stored in subdirectories within this parent directory, called `run_<run_index>_seed_<seed>`.
+The logs of each simulation run are then stored in subdirectories within this parent directory, called `run_<run_index>_seed_<seed>`.
 Since a run configuration is provided, the simulation does not automatically restart on conclusion, so there are only two CSV files per subdirectory.
 ```
 Logs/
@@ -143,7 +143,7 @@ Finally, the script plots the agent trajectories and marks events, such as inter
 
 ## Run Processor
 
-If the simulation run was kicked off using a run configuration, you can use the provided `process_run.py` script to aggregate metrics across all multiple simulation runs and analyze and visualize them.
+If the simulation run was kicked off using a run configuration, you can use the provided `process_run.py` script to aggregate metrics across multiple simulation runs and analyze and visualize them.
 `process_run.py` is included in the `Tools` directory of the release.
 
 ### Requirements
