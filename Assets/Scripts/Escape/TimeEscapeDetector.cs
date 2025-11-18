@@ -5,6 +5,9 @@ using UnityEngine;
 // The time escape detector checks whether the agent reaches the target before the target reaches
 // its target based on the current respective speeds.
 public class TimeEscapeDetector : EscapeDetectorBase {
+  // Minimum speed to prevent division by zero.
+  private const float _minimumSpeed = 1e-6f;
+
   public TimeEscapeDetector(IAgent agent) : base(agent) {}
 
   public override bool IsEscaping(IHierarchical target) {
@@ -21,6 +24,9 @@ public class TimeEscapeDetector : EscapeDetectorBase {
       if (Vector3.Dot(-agentToTargetTransformation.Position.Cartesian,
                       targetRelativePositionToTarget) > 0) {
         // Check the time-to-hit for the agent and the target.
+        if (target.Speed < _minimumSpeed) {
+          return false;
+        }
         float targetTimeToHit = targetRelativePositionToTarget.magnitude / target.Speed;
         float agentTimeToHit = agentToTargetTransformation.Position.Range / Agent.Speed;
         return targetTimeToHit < agentTimeToHit;
