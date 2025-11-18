@@ -4,7 +4,7 @@ using UnityEngine;
 //
 // The sensor finds the relative transformation from an agent to another agent or another waypoint.
 public interface ISensor {
-  IAgent Agent { get; set; }
+  IAgent Agent { get; init; }
 
   // Sense the target hierarchical object.
   SensorOutput Sense(IHierarchical hierarchical);

@@ -5,7 +5,7 @@ using UnityEngine;
 // The launch angle planner outputs the optimal launch angle and the time-to-target.
 public interface ILaunchAnglePlanner {
   // Launcher agent.
-  IAgent Agent { get; set; }
+  IAgent Agent { get; init; }
 
   // Calculate the optimal launch angle in degrees and the time-to-target in seconds.
   LaunchAngleOutput Plan(in LaunchAngleInput input);

@@ -3,7 +3,7 @@ using UnityEngine;
 // Base implementation of an evasion.
 public abstract class EvasionBase : IEvasion {
   // Agent that will evade the pursuers.
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public EvasionBase(IAgent agent) {
     Agent = agent;

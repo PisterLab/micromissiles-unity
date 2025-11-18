@@ -5,19 +5,10 @@ using System.Linq;
 //
 // The flight plan contains a sorted list of waypoints for the agent on the way to the asset.
 public class FlightPlan {
-  // Flight plan configuration.
-  private Configs.FlightPlan _config;
-
   // List of waypoints sorted by distance in descending order.
   private List<Configs.FlightPlanWaypoint> _waypoints;
 
-  public Configs.FlightPlan Config {
-    get => _config;
-    set {
-      _config = value;
-      _waypoints = null;
-    }
-  }
+  public Configs.FlightPlan Config { get; init; }
 
   public IReadOnlyList<Configs.FlightPlanWaypoint> Waypoints {
     get {

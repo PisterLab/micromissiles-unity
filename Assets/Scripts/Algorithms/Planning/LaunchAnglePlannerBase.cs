@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Base implementation of a launch angle planner.
 public abstract class LaunchAnglePlannerBase : ILaunchAnglePlanner {
-  public IAgent Agent { get; set; }
+  public IAgent Agent { get; init; }
 
   public LaunchAnglePlannerBase(IAgent agent) {
     Agent = agent;
