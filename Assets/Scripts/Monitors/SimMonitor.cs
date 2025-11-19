@@ -6,6 +6,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
+  private static class EventTypes {
+    public const string NewInterceptor = "NEW_INTERCEPTOR";
+    public const string NewThreat = "NEW_THREAT";
+    public const string InterceptorHit = "INTERCEPTOR_HIT";
+    public const string InterceptorMiss = "INTERCEPTOR_MISS";
+    public const string ThreatHit = "THREAT_HIT";
+    public const string ThreatMiss = "THREAT_MISS";
+  }
+
   [System.Serializable]
   private class EventRecord {
     public float Time;
@@ -73,48 +82,31 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterNewInterceptor(IInterceptor interceptor) {
-    RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
+    RegisterAgentEvent(interceptor, EventTypes.NewInterceptor);
     interceptor.OnHit += RegisterInterceptorHit;
     interceptor.OnMiss += RegisterInterceptorMiss;
   }
 
   private void RegisterNewThreat(IThreat threat) {
-    RegisterNewAgent(threat, "NEW_THREAT");
+    RegisterAgentEvent(threat, EventTypes.NewThreat);
     threat.OnHit += RegisterThreatHit;
     threat.OnMiss += RegisterThreatMiss;
   }
 
-  private void RegisterNewAgent(IAgent agent, string eventType) {
-    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
-      float time = SimManager.Instance.ElapsedTime;
-      Vector3 position = agent.Position;
-      var record = new EventRecord {
-        Time = time,
-        EventType = eventType,
-        AgentType = agent.StaticConfig.AgentType.ToString(),
-        AgentID = agent.gameObject.name,
-        PositionX = position.x,
-        PositionY = position.y,
-        PositionZ = position.z,
-      };
-      _eventLog.Add(record);
-    }
-  }
-
   private void RegisterInterceptorHit(IInterceptor interceptor) {
-    RegisterAgentEvent(interceptor, eventType: "INTERCEPTOR_HIT");
+    RegisterAgentEvent(interceptor, EventTypes.InterceptorHit);
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
-    RegisterAgentEvent(interceptor, eventType: "INTERCEPTOR_MISS");
+    RegisterAgentEvent(interceptor, EventTypes.InterceptorMiss);
   }
 
   private void RegisterThreatHit(IThreat threat) {
-    RegisterAgentEvent(threat, eventType: "THREAT_HIT");
+    RegisterAgentEvent(threat, EventTypes.ThreatHit);
   }
 
   private void RegisterThreatMiss(IThreat threat) {
-    RegisterAgentEvent(threat, eventType: "THREAT_MISS");
+    RegisterAgentEvent(threat, EventTypes.ThreatMiss);
   }
 
   private void RegisterAgentEvent(IAgent agent, string eventType) {

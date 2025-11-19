@@ -59,7 +59,7 @@ def is_interceptor(agent_type: str) -> bool:
 
 
 def is_threat(agent_type: str) -> bool:
-    """Returns whether the given agent type is an interceptor."""
+    """Returns whether the given agent type is a threat."""
     return agent_type in (
         AgentType.FIXED_WING_THREAT,
         AgentType.ROTARY_WING_THREAT,
