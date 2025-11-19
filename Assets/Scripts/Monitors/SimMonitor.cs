@@ -102,26 +102,25 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterInterceptorHit(IInterceptor interceptor) {
-    RegisterAgentEvent(interceptor, hit: true, event_prefix: "INTERCEPTOR");
+    RegisterAgentEvent(interceptor, eventType: "INTERCEPTOR_HIT");
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
-    RegisterAgentEvent(interceptor, hit: false, event_prefix: "INTERCEPTOR");
+    RegisterAgentEvent(interceptor, eventType: "INTERCEPTOR_MISS");
   }
 
   private void RegisterThreatHit(IThreat threat) {
-    RegisterAgentEvent(threat, hit: true, event_prefix: "THREAT");
+    RegisterAgentEvent(threat, eventType: "THREAT_HIT");
   }
 
   private void RegisterThreatMiss(IThreat threat) {
-    RegisterAgentEvent(threat, hit: false, event_prefix: "THREAT");
+    RegisterAgentEvent(threat, eventType: "THREAT_MISS");
   }
 
-  private void RegisterAgentEvent(IAgent agent, bool hit, string event_prefix) {
+  private void RegisterAgentEvent(IAgent agent, string eventType) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       float time = SimManager.Instance.ElapsedTime;
       Vector3 position = agent.Position;
-      string eventType = hit ? $"{event_prefix}_HIT" : $"{event_prefix}_MISS";
       var record = new EventRecord {
         Time = time,
         EventType = eventType,
