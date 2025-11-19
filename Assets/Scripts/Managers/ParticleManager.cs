@@ -90,25 +90,25 @@ public class ParticleManager : MonoBehaviour {
     _agentTrailRenderers.Clear();
   }
 
-  private void RegisterNewInterceptor(Interceptor interceptor) {
-    interceptor.OnInterceptHit += RegisterInterceptorHit;
-    interceptor.OnInterceptMiss += RegisterInterceptorMiss;
+  private void RegisterNewInterceptor(IInterceptor interceptor) {
+    interceptor.OnHit += RegisterInterceptorHit;
+    interceptor.OnMiss += RegisterInterceptorMiss;
     interceptor.OnTerminated += RegisterAgentTerminated;
   }
 
-  private void RegisterNewThreat(Threat threat) {
-    threat.OnThreatHit += RegisterThreatHit;
-    threat.OnThreatMiss += RegisterThreatMiss;
+  private void RegisterNewThreat(IThreat threat) {
+    threat.OnHit += RegisterThreatHit;
+    threat.OnMiss += RegisterThreatMiss;
     threat.OnTerminated += RegisterAgentTerminated;
   }
 
-  private void RegisterAgentTerminated(Agent agent) {
+  private void RegisterAgentTerminated(IAgent agent) {
     if (SimManager.Instance.SimulatorConfig.PersistentFlightTrails) {
       CommandeerAgentTrailRenderer(agent);
     }
   }
 
-  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
+  private void RegisterInterceptorHit(IInterceptor interceptor) {
     if (SimManager.Instance.SimulatorConfig.EnableExplosionEffect) {
       PlayMissileExplosion(interceptor.transform.position);
     }
@@ -117,7 +117,7 @@ public class ParticleManager : MonoBehaviour {
     _hitMarkerList.Add(hitMarkerObject);
   }
 
-  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
+  private void RegisterInterceptorMiss(IInterceptor interceptor) {
     // It does not make sense to commandeer the TrailRenderer for a miss.
     // As the interceptor remains in flight
     GameObject hitMarkerObject = SpawnHitMarker(interceptor.transform.position);
@@ -125,24 +125,24 @@ public class ParticleManager : MonoBehaviour {
     _hitMarkerList.Add(hitMarkerObject);
   }
 
-  private void RegisterThreatHit(Threat threat) {}
+  private void RegisterThreatHit(IThreat threat) {}
 
-  private void RegisterThreatMiss(Threat threat) {}
+  private void RegisterThreatMiss(IThreat threat) {}
 
-  private void CommandeerAgentTrailRenderer(Agent agent) {
+  private void CommandeerAgentTrailRenderer(IAgent agent) {
     // Take the TrailRenderer component off of the agent, onto us, and store it
     // (so we can destroy it later on simulation end)
-    TrailRenderer trailRenderer = agent.GetComponentInChildren<TrailRenderer>();
+    TrailRenderer trailRenderer = agent.gameObject.GetComponentInChildren<TrailRenderer>();
     if (trailRenderer != null) {
       trailRenderer.transform.parent = transform;
       _agentTrailRenderers.Add(trailRenderer);
-      trailRenderer.material = (agent is Threat) ? threatTrailMatFaded : interceptorTrailMatFaded;
+      trailRenderer.material = (agent is IThreat) ? threatTrailMatFaded : interceptorTrailMatFaded;
     } else {
       Debug.LogWarning("Agent has no TrailRenderer component");
     }
   }
 
-  private GameObject SpawnHitMarker(Vector3 position) {
+  private GameObject SpawnHitMarker(in Vector3 position) {
     GameObject hitMarker = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
                                        position, Quaternion.identity);
     _hitMarkerList.Add(hitMarker);
@@ -158,7 +158,7 @@ public class ParticleManager : MonoBehaviour {
 
   /// Returns a missile explosion particle prefab from the pool and plays it at the specified
   /// location. If the pool is empty, it returns null.
-  public GameObject PlayMissileExplosion(Vector3 position) {
+  public GameObject PlayMissileExplosion(in Vector3 position) {
     if (_missileExplosionPool.Count > 0) {
       GameObject explosion = _missileExplosionPool.Dequeue();
       explosion.transform.position = position;
@@ -169,7 +169,7 @@ public class ParticleManager : MonoBehaviour {
         particleSystem.Play();
         StartCoroutine(ReturnExplosionAfterDelay(explosion, particleSystem.main.duration));
       } else {
-        Debug.LogError("Missile explosion particle has no ParticleSystem component");
+        Debug.LogError("Missile explosion particle has no ParticleSystem component.");
         _missileExplosionPool.Enqueue(explosion);
         return null;
       }
@@ -186,7 +186,7 @@ public class ParticleManager : MonoBehaviour {
 
   private void ReturnMissileExplosionParticle(GameObject explosion) {
     if (explosion == null) {
-      Debug.LogError("Attempted to return a null missile explosion particle");
+      Debug.LogError("Attempted to return a null missile explosion particle.");
       return;
     }
 
@@ -197,7 +197,7 @@ public class ParticleManager : MonoBehaviour {
       particleSystem.Stop();
       particleSystem.Clear();
     } else {
-      Debug.LogError("Attempted to return a missile explosion particle with no particle system");
+      Debug.LogError("Attempted to return a missile explosion particle with no particle system.");
     }
 
     _missileExplosionPool.Enqueue(explosion);
@@ -248,7 +248,7 @@ public class ParticleManager : MonoBehaviour {
 
   public void ReturnMissileTrailParticle(GameObject trail) {
     if (trail == null) {
-      Debug.LogError("Attempted to return a null missile trail particle");
+      Debug.LogError("Attempted to return a null missile trail particle.");
       return;
     }
 
@@ -261,7 +261,7 @@ public class ParticleManager : MonoBehaviour {
       var emission = particleSystem.emission;
       emission.enabled = true;
     } else {
-      Debug.LogError("Attempted to return a missile trail particle with no particle system");
+      Debug.LogError("Attempted to return a missile trail particle with no particle system.");
     }
 
     _missileTrailPool.Enqueue(trail);

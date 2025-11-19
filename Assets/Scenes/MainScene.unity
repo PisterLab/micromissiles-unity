@@ -1464,7 +1464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'THRT Remain:'
+  m_text: 'THRT Remaining:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
   m_sharedMaterial: {fileID: 3098863606857845682, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
@@ -2702,10 +2702,10 @@ MonoBehaviour:
   interceptorCostText: {fileID: 424447084}
   threatCostText: {fileID: 1170009929}
   netCostText: {fileID: 1770309963}
-  intrHitTextHandle: {fileID: 556239073}
-  intrMissTextHandle: {fileID: 1967042675}
-  intrRemainTextHandle: {fileID: 878419964}
-  thrtRemainTextHandle: {fileID: 1320351285}
+  interceptorHitTextHandle: {fileID: 556239073}
+  interceptorMissTextHandle: {fileID: 1967042675}
+  interceptorRemainingTextHandle: {fileID: 878419964}
+  threatRemainingTextHandle: {fileID: 1320351285}
   actionMessageTextHandle: {fileID: 1076302680}
   pActionMessageTextHandle: {fileID: 461629474}
   ppActionMessageTextHandle: {fileID: 2021165817}
@@ -5148,7 +5148,7 @@ GameObject:
   - component: {fileID: 878419965}
   - component: {fileID: 878419964}
   m_Layer: 5
-  m_Name: TextINTRemain
+  m_Name: TextINTRemaining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7023,7 +7023,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'INTR Remain:'
+  m_text: 'INTR Remaining:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
   m_sharedMaterial: {fileID: 3098863606857845682, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
@@ -7313,7 +7313,7 @@ GameObject:
   - component: {fileID: 1320351286}
   - component: {fileID: 1320351285}
   m_Layer: 5
-  m_Name: TextTHRTRemain
+  m_Name: TextTHRTRemaining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

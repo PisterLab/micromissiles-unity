@@ -6,8 +6,9 @@ using UnityEngine;
 // launched), boost phases (when its burner is on), midcourse phases (after the burner has completed
 // burning), and terminal phases (when the agent is homing in on the target).
 //
-// We define two additional states for our simulator: initialized state (when the missile has been
-// created) and terminated state (when the missile has finished its flight).
+// We define three additional states for our simulator: initialized state (when the missile has been
+// created), ballistic state (when the missile is subject to only drag and gravity), and terminated
+// state (when the missile has finished its flight).
 //
 // The missile is responsible for determining when it enters the boost phase.
 public class MissileMovement : AerialMovement {
@@ -58,6 +59,9 @@ public class MissileMovement : AerialMovement {
       case Simulation.FlightPhase.Terminal: {
         return ActTerminal(accelerationInput);
       }
+      case Simulation.FlightPhase.Ballistic: {
+        return ActBallistic(accelerationInput);
+      }
       case Simulation.FlightPhase.Terminated: {
         // In the terminated phase, the agent is not subject to any acceleration.
         return Vector3.zero;
@@ -100,11 +104,16 @@ public class MissileMovement : AerialMovement {
     return ActMidCourse(accelerationInput);
   }
 
+  // In the ballistic phase, the agent is subject to only drag and gravity.
+  private Vector3 ActBallistic(in Vector3 accelerationInput) {
+    return ActMidCourse(accelerationInput: Vector3.zero);
+  }
+
   // Calculate the acceleration input with drag and gravity.
   private Vector3 CalculateNetAccelerationInput(in Vector3 accelerationInput) {
     Vector3 gravity = Physics.gravity;
     float airDrag = CalculateDrag();
-    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + Physics.gravity);
+    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
     float dragAcceleration = -(airDrag + liftInducedDrag);
     return accelerationInput + gravity + dragAcceleration * Agent.transform.forward;
   }
