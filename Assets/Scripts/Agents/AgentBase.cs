@@ -142,7 +142,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   public void Terminate() {
-    HierarchicalAgent.Target = null;
+    if (HierarchicalAgent != null) {
+      HierarchicalAgent.Target = null;
+    }
     if (Movement is MissileMovement movement) {
       movement.FlightPhase = Simulation.FlightPhase.Terminated;
     }
