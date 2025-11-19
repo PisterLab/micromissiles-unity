@@ -10,7 +10,7 @@ import pandas as pd
 import unity
 import utils
 from absl import app, flags, logging
-from constants import AgentType, EventType
+from constants import Column, EventType, get_agent_color
 
 FLAGS = flags.FLAGS
 
@@ -22,12 +22,6 @@ class EventMarker:
     color: str
     label: str
 
-
-# Map from agent type to visualization color.
-AGENT_TYPE_TO_COLOR = {
-    AgentType.INTERCEPTOR: "blue",
-    AgentType.THREAT: "red",
-}
 
 # Map from event type to event marker.
 EVENT_TYPE_TO_MARKER = {
@@ -49,31 +43,35 @@ def log_event_summary(event_df: pd.DataFrame) -> None:
     logging.info("Total number of events: %d.", total_events)
 
     # Log the counts of each event type.
-    event_counts = event_df["Event"].value_counts()
+    event_counts = event_df[Column.EVENT].value_counts()
     logging.info("Event counts:")
     for event_type, count in event_counts.items():
         logging.info("  %s: %d", event_type, count)
 
     # Calculate the time duration of the events.
-    start_time = event_df["Time"].min()
-    end_time = event_df["Time"].max()
+    start_time = event_df[Column.TIME].min()
+    end_time = event_df[Column.TIME].max()
     duration = end_time - start_time
     logging.info("Total duration of events: %.2f seconds (from %.2f to %.2f).",
                  duration, start_time, end_time)
 
     # Determine the times of the hits and misses.
-    hits = event_df[event_df["Event"] == EventType.INTERCEPTOR_HIT]
-    misses = event_df[event_df["Event"] == EventType.INTERCEPTOR_MISS]
-    logging.info("Number of hits recorded: %d.", len(hits))
-    if not hits.empty:
-        first_hit_time = hits["Time"].min()
-        last_hit_time = hits["Time"].max()
+    interceptor_hits = (
+        event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT])
+    interceptor_misses = (
+        event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS])
+    logging.info("Number of interceptor hits recorded: %d.",
+                 len(interceptor_hits))
+    if not interceptor_hits.empty:
+        first_hit_time = interceptor_hits[Column.TIME].min()
+        last_hit_time = interceptor_hits[Column.TIME].max()
         logging.info("  First hit at %.2f, last hit at %.2f.", first_hit_time,
                      last_hit_time)
-    logging.info("Number of misses recorded: %d.", len(misses))
-    if not misses.empty:
-        first_miss_time = misses["Time"].min()
-        last_miss_time = misses["Time"].max()
+    logging.info("Number of interceptor misses recorded: %d.",
+                 len(interceptor_misses))
+    if not interceptor_misses.empty:
+        first_miss_time = interceptor_misses[Column.TIME].min()
+        last_miss_time = interceptor_misses[Column.TIME].max()
         logging.info("  First miss at %.2f, last miss at %.2f.",
                      first_miss_time, last_miss_time)
 
@@ -91,14 +89,14 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
     )
 
     # Plot the agent trajectories.
-    for _, agent_data in telemetry_df.groupby("AgentID"):
-        agent_type = agent_data["AgentType"].iloc[0]
-        color = AGENT_TYPE_TO_COLOR.get(agent_type, "black")
+    for _, agent_data in telemetry_df.groupby(Column.AGENT_ID):
+        agent_type = agent_data[Column.AGENT_TYPE].iloc[0]
+        color = get_agent_color(agent_type)
 
         ax.plot(
-            agent_data["AgentX"],
-            agent_data["AgentZ"],
-            agent_data["AgentY"],
+            agent_data[Column.POSITION_X],
+            agent_data[Column.POSITION_Z],
+            agent_data[Column.POSITION_Y],
             color=color,
             alpha=0.5,
             linewidth=0.5,
@@ -106,12 +104,12 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
 
     # Plot the events.
     for event_type, event_marker in EVENT_TYPE_TO_MARKER.items():
-        event_data = event_df[event_df["Event"] == event_type]
+        event_data = event_df[event_df[Column.EVENT] == event_type]
         if not event_data.empty:
             ax.scatter(
-                event_data["PositionX"],
-                event_data["PositionZ"],
-                event_data["PositionY"],
+                event_data[Column.POSITION_X],
+                event_data[Column.POSITION_Z],
+                event_data[Column.POSITION_Y],
                 s=60,
                 c=event_marker.color,
                 marker=event_marker.marker,

@@ -10,9 +10,9 @@ from absl import app, flags, logging
 from aggregator import Aggregator
 from distribution import Distribution
 from multi_metric import InterceptPosition2D, MultiMetric
-from scalar_metric import (HitRate, InterceptorEfficiency,
-                           MinInterceptorDistance, NumHits, NumInterceptors,
-                           NumMisses)
+from scalar_metric import (InterceptorEfficiency, InterceptorHitRate,
+                           MinInterceptorDistance, NumInterceptorHits,
+                           NumInterceptorMisses, NumInterceptors)
 
 FLAGS = flags.FLAGS
 
@@ -22,9 +22,9 @@ PIXEL_SIZE = 20
 # Scalar metrics.
 SCALAR_METRICS = [
     NumInterceptors(),
-    NumHits(),
-    NumMisses(),
-    HitRate(),
+    NumInterceptorHits(),
+    NumInterceptorMisses(),
+    InterceptorHitRate(),
     InterceptorEfficiency(),
     MinInterceptorDistance(),
 ]
