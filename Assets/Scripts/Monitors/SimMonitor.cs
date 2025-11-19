@@ -79,6 +79,8 @@ public class SimMonitor : MonoBehaviour {
 
   private void RegisterNewThreat(IThreat threat) {
     RegisterNewAgent(threat, "NEW_THREAT");
+    threat.OnHit += RegisterThreatHit;
+    threat.OnMiss += RegisterThreatMiss;
   }
 
   private void RegisterNewAgent(IAgent agent, string eventType) {
@@ -94,21 +96,33 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterInterceptorHit(IInterceptor interceptor) {
-    RegisterInterceptorEvent(interceptor, hit: true);
+    RegisterAgentEvent(interceptor, hit: true, event_prefix: "INTERCEPTOR");
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
-    RegisterInterceptorEvent(interceptor, hit: false);
+    RegisterAgentEvent(interceptor, hit: false, event_prefix: "INTERCEPTOR");
   }
 
-  private void RegisterInterceptorEvent(IInterceptor interceptor, bool hit) {
+  private void RegisterThreatHit(IThreat threat) {
+    RegisterAgentEvent(threat, hit: true, event_prefix: "THREAT");
+  }
+
+  private void RegisterThreatMiss(IThreat threat) {
+    RegisterAgentEvent(threat, hit: false, event_prefix: "THREAT");
+  }
+
+  private void RegisterAgentEvent(IAgent agent, bool hit, string event_prefix) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       float time = SimManager.Instance.ElapsedTime;
-      Vector3 pos = interceptor.transform.position;
-      string eventType = hit ? "INTERCEPTOR_HIT" : "INTERCEPTOR_MISS";
+      Vector3 position = agent.Position;
+      string eventType = hit ? $"{event_prefix}_HIT" : $"{event_prefix}_MISS";
       var record = new EventRecord {
-        Time = time,       PositionX = pos.x,     PositionY = pos.y,
-        PositionZ = pos.z, EventType = eventType, Details = $"{interceptor.gameObject.name}",
+        Time = time,
+        PositionX = position.x,
+        PositionY = position.y,
+        PositionZ = position.z,
+        EventType = eventType,
+        Details = $"{agent.gameObject.name}",
       };
       _eventLogCache.Add(record);
     }

@@ -15,6 +15,8 @@ class EventType(StrEnum):
     NEW_THREAT = "NEW_THREAT"
     INTERCEPTOR_HIT = "INTERCEPTOR_HIT"
     INTERCEPTOR_MISS = "INTERCEPTOR_MISS"
+    THREAT_HIT = "THREAT_HIT"
+    THREAT_MISS = "THREAT_MISS"
 
 
 # Telemetry file prefix.
