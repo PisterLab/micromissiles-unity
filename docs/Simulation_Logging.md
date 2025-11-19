@@ -129,18 +129,18 @@ If `--log_search_dir` is not provided, it defaults to the persistent data path.
 
 The script then outputs a summary of the events, including the total number of interceptor hits and misses.
 ```
-Total number of events: 31.
+Total number of events: 490.
 Event counts:
-  NEW_INTERCEPTOR: 9
-  NEW_THREAT: 7
-  THREAT_MISS: 7
-  INTERCEPTOR_HIT: 7
-  INTERCEPTOR_MISS: 1
-Total duration of events: 19.84 seconds (from 0.00 to 19.84).
-Number of interceptor hits recorded: 7.
-  First hit at 11.37, last hit at 19.84.
-Number of interceptor misses recorded: 1.
-  First miss at 11.41, last miss at 11.41.
+  NEW_INTERCEPTOR: 170
+  NEW_THREAT: 100
+  THREAT_MISS: 100
+  INTERCEPTOR_HIT: 100
+  INTERCEPTOR_MISS: 20
+Total duration of events: 45.72 seconds (from 0.00 to 45.72).
+Number of interceptor hits recorded: 100.
+  First hit at 15.77, last hit at 45.72.
+Number of interceptor misses recorded: 20.
+  First miss at 16.55, last miss at 45.59.
 ```
 
 Finally, the script plots the agent trajectories and marks events, such as interceptor hits and misses, in a 3D plot.
@@ -170,13 +170,13 @@ If `--run_log_search_dir` is not provided, it defaults to the persistent data pa
 
 The script then aggregates the events for all telemetry files and event logs found within the log directory and its subdirectories.
 ```
-Aggregating the stats for 10 runs found in the log directory.
-  Number of missile interceptors: mean: 9.800000, std: 3.429286.
-  Number of missile interceptor hits: mean: 7.000000, std: 0.447214.
-  Number of missile interceptor misses: mean: 2.000000, std: 1.341641.
-  Missile interceptor hit rate: mean: 0.794753, std: 0.097569.
-  Missile interceptor efficiency: mean: 0.792857, std: 0.229129.
-  Minimum intercept distance: mean: 4993.276801, std: 189.367052.
+Aggregating the stats for 50 runs found in the log directory.
+  Number of missile interceptors: mean: 150.360000, std: 13.805448.
+  Number of missile interceptor hits: mean: 99.840000, std: 0.611882.
+  Number of missile interceptor misses: mean: 36.360000, std: 14.784803.
+  Missile interceptor hit rate: mean: 0.741564, std: 0.077913.
+  Missile interceptor efficiency: mean: 0.669430, std: 0.059498.
+  Minimum intercept distance: mean: 6154.423782, std: 1283.849098.
 ```
 
 Each statistic is implemented as a `Metric`, which is evaluated on each simulation run.
