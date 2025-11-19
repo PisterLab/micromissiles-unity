@@ -2,17 +2,15 @@
 
 import matplotlib.pyplot as plt
 import mpl_config
+import multi_metric
 import numpy as np
 import pandas as pd
+import scalar_metric
 import unity
 import utils
 from absl import app, flags, logging
 from aggregator import Aggregator
 from distribution import Distribution
-from multi_metric import InterceptPosition2D, MultiMetric
-from scalar_metric import (InterceptorEfficiency, InterceptorHitRate,
-                           MinInterceptorDistance, NumInterceptorHits,
-                           NumInterceptorMisses, NumInterceptors)
 
 FLAGS = flags.FLAGS
 
@@ -21,12 +19,18 @@ PIXEL_SIZE = 20
 
 # Scalar metrics.
 SCALAR_METRICS = [
-    NumInterceptors(),
-    NumInterceptorHits(),
-    NumInterceptorMisses(),
-    InterceptorHitRate(),
-    InterceptorEfficiency(),
-    MinInterceptorDistance(),
+    scalar_metric.NumMissileInterceptors(),
+    scalar_metric.NumMissileInterceptorHits(),
+    scalar_metric.NumMissileInterceptorMisses(),
+    scalar_metric.MissileInterceptorHitRate(),
+    scalar_metric.MissileInterceptorEfficiency(),
+    scalar_metric.MinInterceptDistance(),
+]
+
+# Multi-metrics.
+MULTI_METRICS = [
+    multi_metric.InterceptPosition2D(),
+    multi_metric.MissileInterceptorSpawnPosition2D(),
 ]
 
 
@@ -52,8 +56,12 @@ def print_aggregated_stats(event_dfs: list[pd.DataFrame]) -> None:
         logging.info("  %s: mean: %f, std: %f.", metric.name, mean, std)
 
 
-def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
-    """Plots the heatmap of the multi-metric aggregated over all simulation runs.
+def plot_heatmap_and_scatter(
+    event_dfs: list[pd.DataFrame],
+    metric: multi_metric.MultiMetric,
+) -> None:
+    """Plots a heatmap and a scatter plot of the multi-metric aggregated over
+    all simulation runs.
 
     Args:
         event_dfs: List of dataframes containing the events.
@@ -124,7 +132,8 @@ def main(argv):
     event_log_paths = utils.find_all_event_logs(run_log_dir)
     event_dfs = [utils.read_event_log(path) for path in event_log_paths]
     print_aggregated_stats(event_dfs)
-    plot_heatmap(event_dfs, InterceptPosition2D())
+    for metric in MULTI_METRICS:
+        plot_heatmap_and_scatter(event_dfs, metric)
 
 
 if __name__ == "__main__":

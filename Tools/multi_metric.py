@@ -3,7 +3,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from constants import Column, EventType
+from constants import AgentType, Column, EventType
 from metric import Metric
 
 
@@ -45,8 +45,8 @@ class InterceptPosition2D(MultiMetric):
         return list(interceptor_hit_positions.to_numpy())
 
 
-class InterceptorSpawnPosition2D(MultiMetric):
-    """A metric for the 2D interceptor spawn positions.
+class MissileInterceptorSpawnPosition2D(MultiMetric):
+    """A metric for the 2D missile interceptor spawn positions.
 
     The 2D position ignores the elevation.
     """
@@ -54,7 +54,7 @@ class InterceptorSpawnPosition2D(MultiMetric):
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Interceptor spawn positions (2D)"
+        return "Missile interceptor spawn positions (2D)"
 
     def emit(self, event_df: pd.DataFrame) -> list[np.ndarray]:
         """Emits the metric from the given event log.
@@ -62,10 +62,11 @@ class InterceptorSpawnPosition2D(MultiMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        new_interceptors = (
-            event_df[event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR])
-        interceptor_spawn_positions = new_interceptors[[
+        new_missile_interceptors = event_df[
+            (event_df[Column.AGENT_TYPE] == AgentType.MISSILE_INTERCEPTOR) &
+            (event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR)]
+        missile_interceptor_spawn_positions = new_missile_interceptors[[
             Column.POSITION_X,
             Column.POSITION_Z,
         ]]
-        return list(interceptor_spawn_positions.to_numpy())
+        return list(missile_interceptor_spawn_positions.to_numpy())
