@@ -10,7 +10,7 @@ public class IdealSensorTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
     _agent.Position = new Vector3(x: -5, y: 2, z: -5);
     _agent.Velocity = new Vector3(x: 2, y: 4, z: 10);
