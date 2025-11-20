@@ -72,17 +72,21 @@ def generate_animation(
     <meta charset="UTF-8" />
     <title>{telemetry_file_path.stem}</title>
     <script src="https://cdn.plot.ly/plotly-3.3.0.min.js"></script>
-    <script async src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS_CHTML"></script>
 </head>
 
 <body>
     <div id="plot" style="width: 100%; height: 95vh;"></div>
     <script>
-const agents = {json.dumps(all_agents_data)};
+const agents = {json.dumps(all_agents_data, separators=(",", ":"))};
 const minTime = {min_time};
 const maxTime = {max_time};
 const fps = {fps};
 const restartDelayMs = 2000;
+
+const timeColumn = "{Column.TIME}";
+const positionXColumn = "{Column.POSITION_X}";
+const positionYColumn = "{Column.POSITION_Y}";
+const positionZColumn = "{Column.POSITION_Z}";
 
 function firstGreaterThan(arr, N) {{
   let left = 0;
@@ -129,10 +133,10 @@ function interpolate(times, values, t) {{
 }}
 
 function color(data) {{
-    if (data["{IS_INTERCEPTOR}"]) {{
+    if (data.{IS_INTERCEPTOR}) {{
         return "blue";
     }}
-    if (data["{IS_THREAT}"]) {{
+    if (data.{IS_THREAT}) {{
         return "red";
     }}
     return "black";
@@ -148,13 +152,11 @@ function symbol(data) {{
     return "circle";
 }}
 
-let numAgents = 0;
 let data = [];
 let agentToTrajectoryIndex = {{}};
 let agentToMarkerIndex = {{}};
 for (const agent in agents) {{
     const agentData = agents[agent];
-    ++numAgents;
 
     // Agent trajectory.
     agentToTrajectoryIndex[agent] = data.length;
@@ -247,7 +249,7 @@ function animate() {{
         const markerY = dataUpdate.z[markerIndex];
         const markerZ = dataUpdate.y[markerIndex];
 
-        const currentTimeIndex = firstGreaterThan(agentData.{Column.TIME}, t);
+        const currentTimeIndex = firstGreaterThan(agentData[timeColumn], t);
         if (currentTimeIndex !== 0) {{
             trajectoryX.pop();
             trajectoryY.pop();
@@ -255,23 +257,23 @@ function animate() {{
 
             // Add new positions to the trajectory.
             if (trajectoryX.length < currentTimeIndex) {{
-                trajectoryX.push(...agentData.{Column.POSITION_X}.slice(trajectoryX.length, currentTimeIndex));
+                trajectoryX.push(...agentData[positionXColumn].slice(trajectoryX.length, currentTimeIndex));
             }}
             if (trajectoryY.length < currentTimeIndex) {{
-                trajectoryY.push(...agentData.{Column.POSITION_Y}.slice(trajectoryY.length, currentTimeIndex));
+                trajectoryY.push(...agentData[positionYColumn].slice(trajectoryY.length, currentTimeIndex));
             }}
             if (trajectoryZ.length < currentTimeIndex) {{
-                trajectoryZ.push(...agentData.{Column.POSITION_Z}.slice(trajectoryZ.length, currentTimeIndex));
+                trajectoryZ.push(...agentData[positionZColumn].slice(trajectoryZ.length, currentTimeIndex));
             }}
 
             // Determine the current position.
-            const currentX = interpolate(agentData.{Column.TIME}, agentData.{Column.POSITION_X}, t);
+            const currentX = interpolate(agentData[timeColumn], agentData[positionXColumn], t);
             trajectoryX.push(currentX);
             markerX[0] = currentX;
-            const currentY = interpolate(agentData.{Column.TIME}, agentData.{Column.POSITION_Y}, t);
+            const currentY = interpolate(agentData[timeColumn], agentData[positionYColumn], t);
             trajectoryY.push(currentY);
             markerY[0] = currentY;
-            const currentZ = interpolate(agentData.{Column.TIME}, agentData.{Column.POSITION_Z}, t);
+            const currentZ = interpolate(agentData[timeColumn], agentData[positionZColumn], t);
             trajectoryZ.push(currentZ);
             markerZ[0] = currentZ;
         }}
@@ -287,9 +289,9 @@ function animate() {{
 function reset() {{
     t = minTime;
     const dataUpdate = {{
-        x: Array.from({{ length: numAgents }}, () => []),
-        y: Array.from({{ length: numAgents }}, () => []),
-        z: Array.from({{ length: numAgents }}, () => []),
+        x: Array.from({{ length: data.length }}, () => []),
+        y: Array.from({{ length: data.length }}, () => []),
+        z: Array.from({{ length: data.length }}, () => []),
     }};
     const layoutUpdate = {{
         "title.text": "Time: 0.00",

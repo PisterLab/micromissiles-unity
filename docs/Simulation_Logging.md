@@ -154,7 +154,6 @@ It is included in the `Tools` directory of the release.
 
 To run `animate_log.py`, ensure that you have Python 3 installed on your system and that you have the following Python libraries:
 - **`absl-py`**
-- **`json`**
 - **`pandas`**
 
 ### Replaying the Log
