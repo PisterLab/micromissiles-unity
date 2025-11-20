@@ -1,4 +1,4 @@
-# Plugins Guide
+# Plugins
 
 This guide explains how to build and develop the C++ plugins that provide core functionality for the micromissiles simulator and allow C++ code to be executed within Unity.
 
