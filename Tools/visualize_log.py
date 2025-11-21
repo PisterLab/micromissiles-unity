@@ -130,7 +130,6 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
 
     ax.set_aspect("equal")
     ax.view_init(elev=20, azim=-45)
-    fig.tight_layout()
     plt.show()
 
 
