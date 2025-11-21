@@ -106,7 +106,6 @@ def plot_heatmap_and_scatter(
     ax.set_ylabel("$z$ [m]")
     ax.set_title(metric.name)
     ax.grid(alpha=0.25)
-    fig.tight_layout()
 
     # Plot a scatter plot of the metric values.
     fig, ax = plt.subplots(figsize=(16, 8))
@@ -118,7 +117,6 @@ def plot_heatmap_and_scatter(
     ax.set_ylim(yedges[0], yedges[-1])
     ax.set_title(metric.name)
     ax.grid(alpha=0.5)
-    fig.tight_layout()
 
     plt.show()
 
