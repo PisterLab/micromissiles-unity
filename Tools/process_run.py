@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import mpl_config
 import numpy as np
 import pandas as pd
-import unity
+import unity_utils
 import utils
 from absl import app, flags, logging
 from aggregator import Aggregator
@@ -98,7 +98,6 @@ def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
     ax.set_ylabel("$z$ [m]")
     ax.set_title(metric.name)
     ax.grid(alpha=0.25)
-    fig.tight_layout()
 
     # Plot a scatter plot of the metric values.
     fig, ax = plt.subplots(figsize=(16, 8))
@@ -109,8 +108,6 @@ def plot_heatmap(event_dfs: list[pd.DataFrame], metric: MultiMetric) -> None:
     ax.set_xlim(xedges[0], xedges[-1])
     ax.set_ylim(yedges[0], yedges[-1])
     ax.set_title(metric.name)
-    ax.grid(alpha=0.5)
-    fig.tight_layout()
 
     plt.show()
 
@@ -132,7 +129,7 @@ if __name__ == "__main__":
         "run_log_dir", None,
         "Run log directory containing subdirectories for the logs of each run.")
     flags.DEFINE_string("run_log_search_dir",
-                        unity.get_persistent_data_directory(),
+                        unity_utils.get_persistent_data_directory(),
                         "Log directory in which to search for logs.")
 
     app.run(main)
