@@ -41,9 +41,9 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 
 # Next Steps
 
-- To get started with Unity development, see the [**Development Guide**](https://pisterlab.github.io/micromissiles-unity/Development.html)
-- To learn how to build and develop the C++ plugins, see the [**Plugins Guide**](https://pisterlab.github.io/micromissiles-unity/Plugins.html)
-- To navigate and interact with the simulation, see the [**Keybinds and Controls**](https://pisterlab.github.io/micromissiles-unity/Keybinds_and_Controls.html)
-- To configure simulation settings, see the [**Sim Config Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Configuration.html)
-- To kick off simulation runs from the command line, see the [**Sim Runner Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Runner.html)
-- To analyze simulation logs, see the [**Sim Logging Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Logging.html)
+- To get started with Unity development, see the [**Development Guide**](https://pisterlab.github.io/micromissiles-unity/Development.html).
+- To learn how to build and develop the C++ plugins, see the [**Plugins Guide**](https://pisterlab.github.io/micromissiles-unity/Plugins.html).
+- To navigate and interact with the simulation, see the [**Keybinds and Controls**](https://pisterlab.github.io/micromissiles-unity/Keybinds_and_Controls.html).
+- To configure simulation settings, see the [**Sim Config Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Configuration.html).
+- To kick off simulation runs from the command line, see the [**Sim Runner Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Runner.html).
+- To analyze simulation logs, see the [**Sim Logging Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Logging.html).
