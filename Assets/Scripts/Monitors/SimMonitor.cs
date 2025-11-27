@@ -26,7 +26,8 @@ public class SimMonitor : MonoBehaviour {
     public float PositionZ;
   }
 
-  private const float _updatePeriod = 0.1f;  // 100 Hz
+  // Telemetry update period in seconds.
+  private const float _updatePeriod = 0.1f;  // 10 Hz
 
   public static SimMonitor Instance { get; private set; }
 

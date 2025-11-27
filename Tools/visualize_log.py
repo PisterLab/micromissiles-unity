@@ -76,7 +76,7 @@ def log_event_summary(event_df: pd.DataFrame) -> None:
                      first_miss_time, last_miss_time)
 
 
-def plot_telemetry(telemetry_df: str, event_df: str) -> None:
+def plot_telemetry(telemetry_df: pd.DataFrame, event_df: pd.DataFrame) -> None:
     """Plots the trajectories in the telemetry data and the events.
 
     Args:
@@ -130,6 +130,7 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
 
     ax.set_aspect("equal")
     ax.view_init(elev=20, azim=-45)
+    ax.legend(loc="lower center")
     plt.show()
 
 
