@@ -12,7 +12,7 @@ from absl import app, flags, logging
 
 FLAGS = flags.FLAGS
 
-# Telmetry file prefix.
+# Telemetry file prefix.
 TELEMETRY_FILE_PREFIX = "sim_telemetry_"
 
 # Event log prefix.
@@ -57,7 +57,7 @@ def _find_latest_file(directory: str, file_pattern: str) -> str:
 
 
 def _find_latest_telemetry_file() -> str:
-    """Returns the latest telemtry file."""
+    """Returns the latest telemetry file."""
     logs_dir = _get_logs_directory()
     latest_log_dir = max(glob.glob(os.path.join(logs_dir, "*")),
                          key=os.path.getctime)
@@ -113,7 +113,7 @@ def log_event_summary(event_df: pd.DataFrame) -> None:
                      first_miss_time, last_miss_time)
 
 
-def plot_telemetry(telemetry_df: str, event_df: str) -> None:
+def plot_telemetry(telemetry_df: pd.DataFrame, event_df: pd.DataFrame) -> None:
     """Plots the trajectories in the telemetry data and the events.
 
     Args:
@@ -180,6 +180,7 @@ def plot_telemetry(telemetry_df: str, event_df: str) -> None:
 
     ax.set_aspect("equal")
     ax.view_init(elev=20, azim=-45)
+    ax.legend(loc="lower center")
     fig.tight_layout()
     plt.show()
 

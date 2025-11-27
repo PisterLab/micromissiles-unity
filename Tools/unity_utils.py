@@ -1,4 +1,6 @@
-"""Utility functions to find the Unity installations on the current platform."""
+"""Utility functions for Unity, such as finding Unity installations and
+returning the persistent data path.
+"""
 
 import os
 import platform
@@ -126,6 +128,6 @@ def find_unity_path(unity_path: str) -> Path:
             f"No Unity installations detected. Use --unity-path or set $UNITY_PATH."
         )
     if len(executables) > 1:
-        logging.warn("Found multiple Unity installations.")
+        logging.warning("Found multiple Unity installations.")
     logging.info("Found Unity installation at %s.", executables[0])
     return executables[0]
