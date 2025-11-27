@@ -40,7 +40,7 @@ PLATFORM_TARGETS = {
     "Darwin":
         PlatformTarget("StandaloneOSX", "-buildOSXUniversalPlayer", ".app"),
     "Linux":
-        PlatformTarget("StandaloneLinux64", "-buildLinux64Player", ".x86_64"),
+        PlatformTarget("StandaloneLinux64", "-buildLinux64Player", ""),
 }
 
 
