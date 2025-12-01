@@ -87,19 +87,20 @@ Logs/
 The telemetry file provides a snapshot of the simulation at each time step for every agent.
 Key columns include:
 - **`Time`**: Simulation time at the snapshot.
-- **`AgentID`**: Unique identifier for each agent.
-- **`AgentType`**: Type of the agent (`M` for interceptor, `T` for threat).
-- **`AgentX`**, **`AgentY`**, **`AgentZ`**: Position coordinates of the agent.
-- **`AgentVX`**, **`AgentVY`**, **`AgentVZ`**: Velocity components.
+- **`AgentType`**: Type of the agent, e.g., `CarrierInterceptor`, `MissileInterceptor`, `FixedWingThreat`, or `RotaryWingThreat`.
+- **`AgentID`**: Unique identifier for each agent, e.g., `Micromissile_Interceptor_6` or `Quadcopter_Threat_2`.
+- **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position of the agent.
+- **`VelocityX`**, **`VelocityY`**, **`VelocityZ`**: Velocity of the agent.
 
 ## Event Log
 
 The event log records significant events within the simulation.
 Key columns include:
-- **`Time`**: Time when the event occurred.
+- **`Time`**: Simulation time when the event occurred.
+- **`Event`**: Type of event, e.g., `NEW_INTERCEPTOR`, `NEW_THREAT`, `INTERCEPTOR_HIT`, `INTERCEPTOR_MISS`, `THREAT_HIT`, or `THREAT_MISS`.
+- **`AgentType`**: Type of the agent, e.g., `CarrierInterceptor`, `MissileInterceptor`, `FixedWingThreat`, or `RotaryWingThreat`.
+- **`AgentID`**: Unique identifier for each agent, e.g., `Micromissile_Interceptor_6`.
 - **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position where the event occurred.
-- **`EventType`**: Type of event (`NEW_INTERCEPTOR`, `NEW_THREAT`, `INTERCEPTOR_HIT`, `INTERCEPTOR_MISS`).
-- **`Details`**: Additional details about the event.
 
 ## Log Visualizer
 
@@ -128,15 +129,18 @@ If `--log_search_dir` is not provided, it defaults to the persistent data path.
 
 The script then outputs a summary of the events, including the total number of interceptor hits and misses.
 ```
-Total number of events: 23.
+Total number of events: 31.
 Event counts:
   NEW_INTERCEPTOR: 9
   NEW_THREAT: 7
+  THREAT_MISS: 7
   INTERCEPTOR_HIT: 7
-Total duration of events: 13.00 seconds (from 0.00 to 13.00).
-Number of hits recorded: 7.
-  First hit at 12.93, last hit at 13.00.
-Number of misses recorded: 0.
+  INTERCEPTOR_MISS: 1
+Total duration of events: 19.84 seconds (from 0.00 to 19.84).
+Number of interceptor hits recorded: 7.
+  First hit at 11.37, last hit at 19.84.
+Number of interceptor misses recorded: 1.
+  First miss at 11.41, last miss at 11.41.
 ```
 
 Finally, the script plots the agent trajectories and marks events, such as interceptor hits and misses, in a 3D plot.
@@ -166,13 +170,13 @@ If `--run_log_search_dir` is not provided, it defaults to the persistent data pa
 
 The script then aggregates the events for all telemetry files and event logs found within the log directory and its subdirectories.
 ```
-Aggregating the stats for 100 runs found in the log directory.
-  Number of interceptors: mean: 10.610000, std: 3.390855.
-  Number of interceptor hits: mean: 6.990000, std: 0.479479.
-  Number of interceptor misses: mean: 0.860000, std: 1.131548.
-  Hit rate: mean: 0.907648, std: 0.112758.
-  Interceptor efficiency: mean: 0.701214, std: 0.140875.
-  Minimum intercept distance: mean: 5153.036524, std: 461.142534.
+Aggregating the stats for 10 runs found in the log directory.
+  Number of interceptors: mean: 12.200000, std: 3.919184.
+  Number of interceptor hits: mean: 7.000000, std: 0.447214.
+  Number of interceptor misses: mean: 2.000000, std: 1.341641.
+  Interceptor hit rate: mean: 0.794753, std: 0.097569.
+  Interceptor efficiency: mean: 0.626144, std: 0.166937.
+  Minimum intercept distance: mean: 4993.276801, std: 189.367052.
 ```
 
 Each statistic is implemented as a `Metric`, which is evaluated on each simulation run.
@@ -182,5 +186,6 @@ These metrics are then aggregated and analyzed for all simulation runs.
 
 `process_run.py` also plots a heatmap and a scatter plot of the 2D intercept positions (ignoring elevation).
 
-![Scatter plot of 2D intercept positions](./images/intercept_positions_scatter_plot.png){width=80%}
-![Heatmap of 2D intercept positions](./images/intercept_positions_heatmap.png){width=80%}
+| Heatmap | Scatter Plot |
+|---------|--------------|
+| ![Heatmap of 2D intercept positions](./images/intercept_positions_heatmap.png) | ![Scatter plot of 2D intercept positions](./images/intercept_positions_scatter_plot.png) |
