@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
-import unity
+import unity_utils
 import utils
 from absl import app, flags, logging
 from constants import Column, is_interceptor, is_threat
@@ -334,7 +334,8 @@ def main(argv):
 if __name__ == "__main__":
     flags.DEFINE_string("telemetry_file", None,
                         "Path to the telemetry CSV file.")
-    flags.DEFINE_string("log_search_dir", unity.get_persistent_data_directory(),
+    flags.DEFINE_string("log_search_dir",
+                        unity_utils.get_persistent_data_directory(),
                         "Log directory in which to search for logs.")
     flags.DEFINE_string("output", None, "Output HTML file.")
     flags.DEFINE_float("fps", 30, "Target frame rate.")
