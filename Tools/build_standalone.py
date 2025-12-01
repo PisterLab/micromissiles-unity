@@ -10,7 +10,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
-import unity
+import unity_utils
 from absl import app, flags, logging
 
 FLAGS = flags.FLAGS
@@ -88,7 +88,7 @@ def build_player(unity_path: Path, build_name: str, build_root: str) -> None:
 def main(argv):
     assert len(argv) == 1, argv
 
-    unity_path = unity.find_unity_path(FLAGS.unity_path)
+    unity_path = unity_utils.find_unity_path(FLAGS.unity_path)
     build_player(unity_path, FLAGS.build_name, FLAGS.build_root)
 
 
