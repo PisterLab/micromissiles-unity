@@ -53,18 +53,9 @@ public class AgentBase : MonoBehaviour, IAgent {
     }
   }
 
-  // Movement behavior of the agent.
   public IMovement Movement { get; set; }
-
-  // The controller calculates the acceleration input, given the agent's current state and its
-  // target's current state.
   public IController Controller { get; set; }
-
-  // The sensor calculates the relative transformation from the current agent to a target.
   public ISensor Sensor { get; set; }
-
-  // Target model. The target model is updated by the sensor and should be used by the controller to
-  // model imperfect knowledge of the engagement.
   public IAgent TargetModel { get; set; }
 
   public Vector3 Position {
@@ -105,6 +96,17 @@ public class AgentBase : MonoBehaviour, IAgent {
     return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }
 
+  public void CreateTargetModel(IHierarchical target) {
+    TargetModel = SimManager.Instance.CreateDummyAgent(target.Position, target.Velocity);
+  }
+
+  public void DestroyTargetModel() {
+    if (TargetModel != null) {
+      SimManager.Instance.DestroyDummyAgent(TargetModel);
+      TargetModel = null;
+    }
+  }
+
   public void UpdateTargetModel() {
     if (HierarchicalAgent == null || HierarchicalAgent.Target == null || Sensor == null) {
       return;
@@ -140,7 +142,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   public void Terminate() {
-    HierarchicalAgent.Target = null;
+    if (HierarchicalAgent != null) {
+      HierarchicalAgent.Target = null;
+    }
     if (Movement is MissileMovement movement) {
       movement.FlightPhase = Simulation.FlightPhase.Terminated;
     }

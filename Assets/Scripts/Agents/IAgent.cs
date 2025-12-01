@@ -15,9 +15,18 @@ public interface IAgent {
   Configs.StaticConfig StaticConfig { get; set; }
   Configs.AgentConfig AgentConfig { get; set; }
 
+  // Movement behavior of the agent.
   IMovement Movement { get; set; }
+
+  // The controller calculates the acceleration input, given the agent's current state and its
+  // target's current state.
   IController Controller { get; set; }
+
+  // The sensor calculates the relative transformation from the current agent to a target.
   ISensor Sensor { get; set; }
+
+  // Target model. The target model is updated by the sensor and should be used by the controller to
+  // model imperfect knowledge of the engagement.
   IAgent TargetModel { get; set; }
 
   Vector3 Position { get; set; }
@@ -36,6 +45,8 @@ public interface IAgent {
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
 
+  void CreateTargetModel(IHierarchical target);
+  void DestroyTargetModel();
   void UpdateTargetModel();
 
   void Terminate();
