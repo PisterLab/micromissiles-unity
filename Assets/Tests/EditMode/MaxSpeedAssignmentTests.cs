@@ -8,7 +8,7 @@ public class MaxSpeedAssignmentTests : TestBase {
 
   private HierarchicalAgent GenerateAgent(in Vector3 position, in Vector3 velocity) {
     var agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
+    agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(agent, "Awake");
     agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
