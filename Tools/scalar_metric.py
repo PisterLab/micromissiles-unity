@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 import numpy as np
 import pandas as pd
-from constants import Column, EventType
+from constants import AgentType, Column, EventType
 from metric import Metric
 
 
@@ -20,13 +20,13 @@ class ScalarMetric(Metric):
         """
 
 
-class NumInterceptors(ScalarMetric):
-    """A metric for the number of interceptors spawned."""
+class NumMissileInterceptors(ScalarMetric):
+    """A metric for the number of missile interceptors spawned."""
 
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Number of interceptors"
+        return "Number of missile interceptors"
 
     def emit(self, event_df: pd.DataFrame) -> int:
         """Emits the metric from the given event log.
@@ -34,16 +34,18 @@ class NumInterceptors(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        return sum(event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR)
+        return sum(
+            (event_df[Column.AGENT_TYPE] == AgentType.MISSILE_INTERCEPTOR) &
+            (event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR))
 
 
-class NumInterceptorHits(ScalarMetric):
+class NumMissileInterceptorHits(ScalarMetric):
     """A metric for the number of interceptor hits."""
 
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Number of interceptor hits"
+        return "Number of missile interceptor hits"
 
     def emit(self, event_df: pd.DataFrame) -> int:
         """Emits the metric from the given event log.
@@ -51,16 +53,18 @@ class NumInterceptorHits(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        return sum(event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT)
+        return sum(
+            (event_df[Column.AGENT_TYPE] == AgentType.MISSILE_INTERCEPTOR) &
+            (event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT))
 
 
-class NumInterceptorMisses(ScalarMetric):
-    """A metric for the number of interceptor misses."""
+class NumMissileInterceptorMisses(ScalarMetric):
+    """A metric for the number of missile interceptor misses."""
 
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Number of interceptor misses"
+        return "Number of missile interceptor misses"
 
     def emit(self, event_df: pd.DataFrame) -> int:
         """Emits the metric from the given event log.
@@ -68,16 +72,18 @@ class NumInterceptorMisses(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        return sum(event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS)
+        return sum(
+            (event_df[Column.AGENT_TYPE] == AgentType.MISSILE_INTERCEPTOR) &
+            (event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS))
 
 
-class InterceptorHitRate(ScalarMetric):
-    """A metric for the hit rate of the interceptors."""
+class MissileInterceptorHitRate(ScalarMetric):
+    """A metric for the hit rate of the missile interceptors."""
 
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Interceptor hit rate"
+        return "Missile interceptor hit rate"
 
     def emit(self, event_df: pd.DataFrame) -> float:
         """Emits the metric from the given event log.
@@ -85,27 +91,27 @@ class InterceptorHitRate(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        num_interceptor_hits = sum(
-            event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT)
-        num_interceptor_misses = sum(
-            event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS)
-        total = num_interceptor_hits + num_interceptor_misses
+        num_missile_interceptor_hits = (
+            NumMissileInterceptorHits().emit(event_df))
+        num_missile_interceptor_misses = (
+            NumMissileInterceptorMisses().emit(event_df))
+        total = num_missile_interceptor_hits + num_missile_interceptor_misses
         if total == 0:
             return 0
-        return num_interceptor_hits / total
+        return num_missile_interceptor_hits / total
 
 
-class InterceptorEfficiency(ScalarMetric):
-    """A metric for the interceptor efficiency.
+class MissileInterceptorEfficiency(ScalarMetric):
+    """A metric for the missile interceptor efficiency.
 
-    The interceptor efficiency is the average number of threats destroyed by a
-    single interceptor.
+    The missile interceptor efficiency is the average number of threats destroyed by a
+    single missile interceptor.
     """
 
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Interceptor efficiency"
+        return "Missile interceptor efficiency"
 
     def emit(self, event_df: pd.DataFrame) -> float:
         """Emits the metric from the given event log.
@@ -113,16 +119,15 @@ class InterceptorEfficiency(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        num_interceptors = sum(
-            event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR)
-        num_interceptor_hits = sum(
-            event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT)
-        if num_interceptors == 0:
+        num_missile_interceptors = NumMissileInterceptors().emit(event_df)
+        num_missile_interceptor_hits = (
+            NumMissileInterceptorHits().emit(event_df))
+        if num_missile_interceptors == 0:
             return 0
-        return num_interceptor_hits / num_interceptors
+        return num_missile_interceptor_hits / num_missile_interceptors
 
 
-class MinInterceptorDistance(ScalarMetric):
+class MinInterceptDistance(ScalarMetric):
     """A metric for the minimum intercept distance."""
 
     @property

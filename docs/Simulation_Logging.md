@@ -171,11 +171,11 @@ If `--run_log_search_dir` is not provided, it defaults to the persistent data pa
 The script then aggregates the events for all telemetry files and event logs found within the log directory and its subdirectories.
 ```
 Aggregating the stats for 10 runs found in the log directory.
-  Number of interceptors: mean: 12.200000, std: 3.919184.
-  Number of interceptor hits: mean: 7.000000, std: 0.447214.
-  Number of interceptor misses: mean: 2.000000, std: 1.341641.
-  Interceptor hit rate: mean: 0.794753, std: 0.097569.
-  Interceptor efficiency: mean: 0.626144, std: 0.166937.
+  Number of missile interceptors: mean: 9.800000, std: 3.429286.
+  Number of missile interceptor hits: mean: 7.000000, std: 0.447214.
+  Number of missile interceptor misses: mean: 2.000000, std: 1.341641.
+  Missile interceptor hit rate: mean: 0.794753, std: 0.097569.
+  Missile interceptor efficiency: mean: 0.792857, std: 0.229129.
   Minimum intercept distance: mean: 4993.276801, std: 189.367052.
 ```
 
