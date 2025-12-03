@@ -4,7 +4,7 @@ In this guide, we will explore the different types of configuration files used i
 
 ## Introduction
 
-![Simulation configuration files](./images/agent_configuration_files.png){width=90%}
+![Simulation configuration files](./images/agent_configuration_files.png)
 
 You can customize interceptor and threat behaviors, simulation parameters, and more to suit your needs.
 There are three main types of configuration files:
@@ -44,7 +44,9 @@ Configs/
 │   ├── 5_swarms_7_brahmos.pbtxt             # Five incoming swarms of seven incoming supersonic cruise missiles each
 │   ├── 5_swarms_100_ucav.pbtxt              # 100 incoming combat drones stacked into five swarms
 │   ├── 5_swarms_500_ucav.pbtxt              # 500 incoming combat drones stacked into five swarms
-│   └── 7_quadcopters_15_ucav.pbtxt          # Seven quadcopters followed by 15 combat drones
+│   ├── 7_quadcopters_15_ucav.pbtxt          # Seven quadcopters followed by 15 combat drones
+│   ├── 2_ddg_5_swarms_100_ucav.pbtxt        # Two DDG launchers against 100 incoming combat drones stacked into five swarms
+│   └── 2_shore_batteries_5_swarms_100_ucav.pbtxt # Two shore battery launchers against 100 incoming combat drones stacked into five swarms
 │
 ├── Models/
 │   ├── Interceptors
@@ -112,9 +114,12 @@ Each swarm configuration includes:
 An advantage of using Protobuf messages to define the simulation configuration is that recursive message definitions are allowed.
 As a result, it is possible to represent arbitrarily deep hierarchies of submunitions in the simulation configuration.
 
+The top-level agent configurations of the interceptor swarm configurations must be launchers as they are initialized at the start of the simulation.
+All other nested interceptors are launched by the surrounding parent interceptors.
+
 Note that the number of agents in the swarm, the initial states, and the launch times are not specified for interceptor swarms.
 The IADS will automatically determine how many interceptors to launch and when to launch them against the incoming threats by [clustering](./Simulator_Overview.md#clustering) them.
-The carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#submunitions-release).
+The launchers and the carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#release-strategy).
 
 ### Examples
 
@@ -129,20 +134,29 @@ end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
   agent_config {
-    config_file: "hydra70.pbtxt"
-    dynamic_config {
-      flight_config {
-        controller_type: PROPORTIONAL_NAVIGATION
+    config_file: "ddg.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 0
+        z: 0
       }
+      velocity {
+        x: 5
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
       sensor_config {
         type: IDEAL
-        frequency: 100
+        frequency: 1000
       }
     }
     sub_agent_config {
-      num_sub_agents: 7
+      num_sub_agents: 126
       agent_config {
-        config_file: "micromissile.pbtxt"
+        config_file: "hydra70.pbtxt"
         dynamic_config {
           flight_config {
             controller_type: PROPORTIONAL_NAVIGATION
@@ -150,6 +164,21 @@ interceptor_swarm_configs {
           sensor_config {
             type: IDEAL
             frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              flight_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
           }
         }
       }
@@ -206,7 +235,7 @@ threat_swarm_configs {
 - `time_scale: 1` - Runs in real time (increase for faster simulation).
 
 **Interceptor Configurations (`interceptor_swarm_configs`):**
-- Deploys Hydra 70 rockets with:
+- One DDG launcher that deploys Hydra 70 rockets with:
   - Controller settings: Uses proportional navigation to steer the rocket.
   - Sensor settings: Uses an ideal sensor with an update frequency of 100 Hz.
   - Sub-agent capability: Releases 7 micromissiles per Hydra 70 rocket.
@@ -221,27 +250,36 @@ threat_swarm_configs {
 #### Example 2: `5_swarms_7_brahmos.pbtxt`
 
 A complex scenario that involves multiple swarms of supersonic cruise missiles that are spaced 5 km apart.
-This scenario demonstrates how the IADS will stagger the interceptor launch times to defeat the layered threat swarms.
+This scenario demonstrates how the DDG launcher will stagger the interceptor launch times to defeat the layered threat swarms.
 
 ```textproto
 end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
   agent_config {
-    config_file: "hydra70.pbtxt"
-    dynamic_config {
-      flight_config {
-        controller_type: PROPORTIONAL_NAVIGATION
+    config_file: "ddg.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 0
+        z: 0
       }
+      velocity {
+        x: 5
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
       sensor_config {
         type: IDEAL
-        frequency: 100
+        frequency: 1000
       }
     }
     sub_agent_config {
-      num_sub_agents: 7
+      num_sub_agents: 126
       agent_config {
-        config_file: "micromissile.pbtxt"
+        config_file: "hydra70.pbtxt"
         dynamic_config {
           flight_config {
             controller_type: PROPORTIONAL_NAVIGATION
@@ -249,6 +287,21 @@ interceptor_swarm_configs {
           sensor_config {
             type: IDEAL
             frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              flight_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
           }
         }
       }
@@ -512,7 +565,7 @@ The model configurations define the physical and performance characteristics of 
 The default models provided can be customized to suit your simulation goals.
 
 > [!IMPORTANT]
-> To understand the impact of aerodynamics/flight model parameters, refer to the [Simulator Physics](./Simulator_Overview.md#physics).
+> To understand the impact of aerodynamics/flight model parameters, refer to the [Agent Model](./Simulator_Overview.md#agent-model).
 
 ### Structure
 
@@ -537,6 +590,8 @@ The `Models` directory contains the following default model configurations:
 | Interceptors    | `hydra70.pbtxt`       | Carrier rocket for deploying micromissiles     |
 |                 | `micromissile.pbtxt`  | Primary micromissile interceptor               |
 |                 | `sfrj.pbtxt`          | Solid fuel ramjet carrier missile              |
+|                 | `ddg.pbtxt`           | Guided missile destroyer launcher              |
+|                 | `shore_battery.pbtxt` | Shore battery launcher                         |
 | Threats         | `ascm.pbtxt`          | Anti-ship cruise missile                       |
 |                 | `brahmos.pbtxt`       | Supersonic cruise missile                      |
 |                 | `fateh110b.pbtxt`     | Tactical ballistic missile                     |
@@ -755,9 +810,9 @@ This configuration defines a direct attack behavior where threats navigate towar
 
 2. The waypoints are processed in descending distance order
    In this example:
-   - At 10,000 m, maintain 500m altitude at military power.
-   - At 4,000 m, continue at 500m altitude at military power.
-   - At 2,000 m, descend to 100m altitude and increase to maximum power for terminal attack.
+   - At 10,000 m, maintain 500 m altitude at military power.
+   - At 4,000 m, continue at 500 m altitude at military power.
+   - At 2,000 m, descend to 100 m altitude and increase to maximum power for terminal attack.
 
 This creates a phased attack profile where threats:
 1. Initially approach at a higher altitude with efficient power.
