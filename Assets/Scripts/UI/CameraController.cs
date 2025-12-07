@@ -32,19 +32,19 @@ public class CameraController : MonoBehaviour {
 
   // Normal speed of the camera movement.
   [SerializeField]
-  private float _cameraSpeedNormal = 100.0f;
+  private float _cameraSpeedNormal = 100f;
 
   // Maximum speed of the camera movement.
   [SerializeField]
-  private float _cameraSpeedMax = 1000.0f;
+  private float _cameraSpeedMax = 1000f;
 
   // Horizontal rotation speed.
   [SerializeField]
-  private float _speedH = 2.0f;
+  private float _speedH = 2f;
 
   // Vertical rotation speed.
   [SerializeField]
-  private float _speedV = 2.0f;
+  private float _speedV = 2f;
 
   // If true, the camera should auto-rotate.
   [SerializeField]
@@ -56,15 +56,15 @@ public class CameraController : MonoBehaviour {
 
   // Distance from the camera to the orbit target.
   [SerializeField]
-  private float _orbitDistance = 5.0f;
+  private float _orbitDistance = 5f;
 
   // Horizontal orbit rotation speed.
   [SerializeField]
-  private float _orbitXSpeed = 120.0f;
+  private float _orbitXSpeed = 120f;
 
   // Vertical orbit rotation speed.
   [SerializeField]
-  private float _orbitYSpeed = 120.0f;
+  private float _orbitYSpeed = 120f;
 
   // Minimum vertical angle limit for orbit.
   [SerializeField]
@@ -84,7 +84,7 @@ public class CameraController : MonoBehaviour {
 
   // Speed of camera zoom.
   [SerializeField]
-  private float _zoomSpeed = 500.0f;
+  private float _zoomSpeed = 500f;
 
   // Renderer for the orbit target.
   [SerializeField]
@@ -96,15 +96,7 @@ public class CameraController : MonoBehaviour {
 
   // Speed of camera movement during autoplay.
   [SerializeField]
-  private float _autoplayCamSpeed = 2f;
-
-  // Duration of horizontal auto-rotation.
-  [SerializeField]
-  private float _xAutoRotateTime = 5f;
-
-  // Duration of vertical auto-rotation.
-  [SerializeField]
-  private float _yAutoRotateTime = 5f;
+  private float _autoplayCamSpeed = 0.02f;
 
   // Current horizontal orbit angle.
   private float _orbitX = 0f;
@@ -161,7 +153,10 @@ public class CameraController : MonoBehaviour {
         _autoplayRoutine = StartCoroutine(AutoPlayRoutine());
       } else if (!value && _autoRotate) {
         _autoRotate = false;
-        StopCoroutine(_autoplayRoutine);
+        if (_autoplayRoutine != null) {
+          StopCoroutine(_autoplayRoutine);
+          _autoplayRoutine = null;
+        }
       }
     }
   }
@@ -262,7 +257,7 @@ public class CameraController : MonoBehaviour {
   public void RotateCamera(float xRotate, float yRotate) {
     _yaw += xRotate * _speedH;
     _pitch -= yRotate * _speedV;
-    transform.eulerAngles = new Vector3(_pitch, _yaw, 0.0f);
+    transform.eulerAngles = new Vector3(_pitch, _yaw, 0f);
   }
 
   public void TranslateCamera(TranslationInput input) {
@@ -328,7 +323,7 @@ public class CameraController : MonoBehaviour {
                          ~LayerMask.GetMask("Floor"), QueryTriggerInteraction.Ignore)) {
       _orbitDistance -= hit.distance;
     }
-    Vector3 negDistance = new Vector3(0.0f, 0.0f, -_orbitDistance);
+    Vector3 negDistance = new Vector3(0f, 0f, -_orbitDistance);
     Vector3 position = rotation * negDistance + _target.position;
     _orbitDistance = Mathf.Clamp(_orbitDistance, _orbitDistanceMin, _orbitDistanceMax);
     UpdateTargetAlpha();
@@ -419,34 +414,8 @@ public class CameraController : MonoBehaviour {
 
   private IEnumerator AutoPlayRoutine() {
     while (true) {
-      float elapsedTime = 0f;
-      while (elapsedTime <= _xAutoRotateTime) {
-        _orbitX += Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
-      elapsedTime = 0f;
-      while (elapsedTime <= _yAutoRotateTime) {
-        _orbitY -= Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
-      elapsedTime = 0f;
-      while (elapsedTime <= _xAutoRotateTime) {
-        _orbitX -= Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
-      elapsedTime = 0f;
-      while (elapsedTime <= _yAutoRotateTime) {
-        _orbitY += Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
+      _orbitX += Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
+      UpdateCameraPosition(_orbitX, _orbitY);
       yield return null;
     }
   }

@@ -4858,11 +4858,10 @@ MonoBehaviour:
   _zoomSpeed: 10
   _targetRenderer: {fileID: 1255004940}
   _floorRenderer: {fileID: 320210796}
-  _autoplayCamSpeed: 2
-  _xAutoRotateTime: 5
-  _yAutoRotateTime: 5
+  _autoplayCamSpeed: 0.02
   _forwardToCameraAngle: 0
   _cameraMode: 0
+  _cameraFollowType: 0
   _centroidUpdateFrequency: 0.1
   _defaultInterpolationSpeed: 20
   _currentInterpolationSpeed: 0
