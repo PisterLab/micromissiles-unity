@@ -548,6 +548,7 @@ MonoBehaviour:
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   _gridColor: {r: 1, g: 1, b: 1, a: 0.3}
+  _textColor: {r: 0.2, g: 0.2, b: 0.2, a: 0.5}
   _numberOfBearingLines: 18
   _numberOfRangeRings: 5
   _rangeScales:
