@@ -22,9 +22,11 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       return new List<IAgent>();
     }
 
-    Dictionary<IHierarchical, IHierarchical> targetToHierarchicalMap =
+    Dictionary<IHierarchical, List<IHierarchical>> targetToHierarchicalMap =
         hierarchicals.Where(hierarchical => hierarchical.Target != null)
-            .ToDictionary(hierarchical => hierarchical.Target, hierarchical => hierarchical);
+            .GroupBy(hierarchical => hierarchical.Target)
+            .ToDictionary(group => group.Key, group => group.ToList());
+
     List<IHierarchical> targets = targetToHierarchicalMap.Keys.ToList();
     if (targets.Count == 0) {
       return new List<IAgent>();
@@ -58,7 +60,7 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       };
       IAgent subInterceptor =
           SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
-      if (subInterceptor != null && subInterceptor is IInterceptor subInterceptorInterceptor) {
+      if (subInterceptor != null && subInterceptor is IInterceptor) {
         if (subInterceptor.Movement is MissileMovement movement) {
           movement.FlightPhase = Simulation.FlightPhase.Boost;
         }
@@ -72,7 +74,9 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
     List<AssignmentItem> assignments = Assignment.Assign(releasedAgentHierarchicals, targets);
     foreach (var assignment in assignments) {
       assignment.First.Target = assignment.Second;
-      targetToHierarchicalMap[assignment.Second].AddLaunchedHierarchical(assignment.First);
+      foreach (var hierarchical in targetToHierarchicalMap[assignment.Second]) {
+        hierarchical.AddLaunchedHierarchical(assignment.First);
+      }
     }
     return releasedAgents;
   }
