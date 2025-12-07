@@ -100,9 +100,25 @@ public class InputManager : MonoBehaviour {
 
     if (Input.GetKeyDown(KeyCode.Alpha1)) {
       if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.FollowCenterAllAgents();
+        CameraController.Instance.Follow(CameraFollowType.ALL_AGENTS);
       } else {
-        CameraController.Instance.SnapToCenterAllAgents();
+        CameraController.Instance.Snap(CameraFollowType.ALL_AGENTS);
+      }
+    }
+
+    if (Input.GetKeyDown(KeyCode.Alpha2)) {
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        CameraController.Instance.Follow(CameraFollowType.ALL_INTERCEPTORS);
+      } else {
+        CameraController.Instance.Snap(CameraFollowType.ALL_INTERCEPTORS);
+      }
+    }
+
+    if (Input.GetKeyDown(KeyCode.Alpha3)) {
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        CameraController.Instance.Follow(CameraFollowType.ALL_THREATS);
+      } else {
+        CameraController.Instance.Snap(CameraFollowType.ALL_THREATS);
       }
     }
   }

@@ -128,6 +128,9 @@ public class CameraController : MonoBehaviour {
   [SerializeField]
   private CameraMode _cameraMode = CameraMode.FREE;
 
+  [SerializeField]
+  private CameraFollowType _cameraFollowType = CameraFollowType.ALL_AGENTS;
+
   private Vector3 _lastCentroid;
   private Vector3 _currentCentroid;
   private Vector3 _targetCentroid;
@@ -166,33 +169,84 @@ public class CameraController : MonoBehaviour {
   public CameraMode CameraMode {
     get => _cameraMode;
     set {
-      if (value == CameraMode.FREE) {
-        if (_centroidUpdateCoroutine != null) {
-          StopCoroutine(_centroidUpdateCoroutine);
-          _centroidUpdateCoroutine = null;
+      switch (value) {
+        case CameraMode.FREE: {
+          if (_centroidUpdateCoroutine != null) {
+            StopCoroutine(_centroidUpdateCoroutine);
+            _centroidUpdateCoroutine = null;
+          }
+          break;
         }
-      } else {
-        _currentCentroid = _target.position;
-        _targetCentroid = _target.position;
+        case CameraMode.FOLLOW: {
+          _currentCentroid = _target.position;
+          _targetCentroid = _target.position;
+          break;
+        }
+        default: {
+          break;
+        }
       }
       _cameraMode = value;
     }
   }
 
-  public void FollowCenterAllAgents() {
-    SnapToCenterAllAgents(false);
-    CameraMode = CameraMode.FOLLOW_ALL_AGENTS;
-    StartCentroidUpdateCoroutine();
-    UIManager.Instance.LogActionMessage("[CAM] Follow center of all agents.");
+  public CameraFollowType CameraFollowType {
+    get => _cameraFollowType;
+    set { _cameraFollowType = value; }
   }
 
-  public void SnapToCenterAllAgents(bool forceFreeMode = true) {
-    Vector3 allAgentsCenter = GetAllAgentsCenter();
-    SetCameraTargetPosition(allAgentsCenter);
-    if (forceFreeMode) {
-      CameraMode = CameraMode.FREE;
+  public void Follow(CameraFollowType type) {
+    Snap(type);
+    CameraMode = CameraMode.FOLLOW;
+    CameraFollowType = type;
+    StartCentroidUpdateCoroutine();
+
+    switch (type) {
+      case CameraFollowType.ALL_AGENTS: {
+        UIManager.Instance.LogActionMessage("[CAM] Follow center of all agents.");
+        break;
+      }
+      case CameraFollowType.ALL_INTERCEPTORS: {
+        UIManager.Instance.LogActionMessage("[CAM] Follow center of all interceptors.");
+        break;
+      }
+      case CameraFollowType.ALL_THREATS: {
+        UIManager.Instance.LogActionMessage("[CAM] Follow center of all threats.");
+        break;
+      }
+      default: {
+        UIManager.Instance.LogActionMessage("[CAM] Follow center of all agents.");
+        break;
+      }
     }
-    UIManager.Instance.LogActionMessage("[CAM] Snap to center all agents.");
+  }
+
+  public void Snap(CameraFollowType type) {
+    IEnumerable<IAgent> agents;
+    switch (type) {
+      case CameraFollowType.ALL_AGENTS: {
+        agents = SimManager.Instance.Agents;
+        UIManager.Instance.LogActionMessage("[CAM] Snap to center all agents.");
+        break;
+      }
+      case CameraFollowType.ALL_INTERCEPTORS: {
+        agents = SimManager.Instance.Interceptors;
+        UIManager.Instance.LogActionMessage("[CAM] Snap to center all interceptors.");
+        break;
+      }
+      case CameraFollowType.ALL_THREATS: {
+        agents = SimManager.Instance.Threats;
+        UIManager.Instance.LogActionMessage("[CAM] Snap to center all threats.");
+        break;
+      }
+      default: {
+        agents = SimManager.Instance.Agents;
+        UIManager.Instance.LogActionMessage("[CAM] Snap to center all agents.");
+        break;
+      }
+    }
+    Vector3 centroid = FindCentroid(agents);
+    SetCameraTargetPosition(centroid);
   }
 
   public void OrbitCamera(float xOrbit, float yOrbit) {
@@ -337,9 +391,25 @@ public class CameraController : MonoBehaviour {
   private void UpdateTargetCentroid() {
     _lastCentroid = _currentCentroid;
 
-    if (CameraMode == CameraMode.FOLLOW_ALL_AGENTS) {
-      _targetCentroid = GetAllAgentsCenter();
+    switch (CameraFollowType) {
+      case CameraFollowType.ALL_AGENTS: {
+        _targetCentroid = FindCentroid(SimManager.Instance.Agents);
+        break;
+      }
+      case CameraFollowType.ALL_INTERCEPTORS: {
+        _targetCentroid = FindCentroid(SimManager.Instance.Interceptors);
+        break;
+      }
+      case CameraFollowType.ALL_THREATS: {
+        _targetCentroid = FindCentroid(SimManager.Instance.Threats);
+        break;
+      }
+      default: {
+        _targetCentroid = FindCentroid(SimManager.Instance.Agents);
+        break;
+      }
     }
+
     // Apply IIR filter to adjust interpolation speed.
     float distance = Mathf.Abs(Vector3.Distance(_lastCentroid, _targetCentroid));
     float targetSpeed = Mathf.Clamp(distance, 1f, 100000f);
@@ -409,23 +479,27 @@ public class CameraController : MonoBehaviour {
     }
   }
 
-  private Vector3 GetAllAgentsCenter() {
-    var agentPositions = SimManager.Instance.Agents.Select(agent => agent.Position).ToList();
-    if (agentPositions.Count == 0) {
+  private Vector3 FindCentroid(IEnumerable<IAgent> agents) {
+    var positions = agents.Select(agent => agent.Position).ToList();
+    if (positions.Count == 0) {
       return Vector3.zero;
     }
 
     var sum = Vector3.zero;
-    foreach (var position in agentPositions) {
+    foreach (var position in positions) {
       sum += position;
     }
-    return sum / agentPositions.Count;
+    return sum / positions.Count;
   }
 }
 
 public enum CameraMode {
   FREE,
-  FOLLOW_INTERCEPTOR_SWARM,
-  FOLLOW_THREAT_SWARM,
-  FOLLOW_ALL_AGENTS,
+  FOLLOW,
+}
+
+public enum CameraFollowType {
+  ALL_AGENTS,
+  ALL_INTERCEPTORS,
+  ALL_THREATS,
 }
