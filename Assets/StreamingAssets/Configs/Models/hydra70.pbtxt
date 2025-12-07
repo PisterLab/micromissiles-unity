@@ -22,6 +22,6 @@ body_config {
   body_area: 0.12
 }
 visualization_config {
-  symbol_present: "friendly_carrier_interceptor_mr_present"
-  symbol_destroyed: "friendly_carrier_interceptor_mr_destroyed"
+  symbol_present: "friendly_missile_interceptor_lr_present"
+  symbol_destroyed: "friendly_missile_interceptor_lr_destroyed"
 }

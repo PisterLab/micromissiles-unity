@@ -23,6 +23,18 @@ public class TacticalSymbol : MonoBehaviour {
 
   private SpriteManager _spriteManager;
 
+  public void SetSprite(string spriteName) {
+    spriteName = spriteName.ToUpper();
+    // Update main symbol image.
+    Image symbolImage = GetComponent<Image>();
+    if (symbolImage != null) {
+      Sprite symbolSprite = _spriteManager.LoadSymbolSprite(spriteName);
+      if (symbolSprite != null) {
+        symbolImage.sprite = symbolSprite;
+      }
+    }
+  }
+
   public void SetDirectionArrowRotation(float rotationDegrees) {
     if (_directionArrow != null) {
       _directionArrow.GetComponent<RectTransform>().rotation =
@@ -35,18 +47,6 @@ public class TacticalSymbol : MonoBehaviour {
       _directionArrow.SetActive(false);
     } else {
       Debug.LogWarning($"Direction arrow not found on TacticalSymbol {name}.");
-    }
-  }
-
-  public void SetSprite(string spriteName) {
-    spriteName = spriteName.ToUpper();
-    // Update main symbol image.
-    Image symbolImage = GetComponent<Image>();
-    if (symbolImage != null) {
-      Sprite symbolSprite = _spriteManager.LoadSymbolSprite(spriteName);
-      if (symbolSprite != null) {
-        symbolImage.sprite = symbolSprite;
-      }
     }
   }
 

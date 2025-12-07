@@ -28,7 +28,7 @@ public class TacticalPanel : MonoBehaviour {
   private Dictionary<IAgent, GameObject> _symbols = new Dictionary<IAgent, GameObject>();
 
   // Origin symbol.
-  // This origin symbol is needed until an asset agent is implemented.
+  // TODO(titan): This origin symbol is needed until an asset agent is implemented.
   private GameObject _origin;
 
   public static TacticalPanel Instance { get; private set; }
@@ -76,7 +76,6 @@ public class TacticalPanel : MonoBehaviour {
     _radarUIGroupRectTransform.localScale = Vector3.one;
     _radarUIGroupRectTransform.localPosition = Vector3.zero;
 
-    SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewThreat += RegisterNewAgent;
@@ -90,12 +89,16 @@ public class TacticalPanel : MonoBehaviour {
     }
   }
 
-  private void OnDisable() {
-    DestroyAllSymbols();
+  private void OnEnable() {
+    if (SimManager.Instance != null) {
+      InitializeAgents(SimManager.Instance.Interceptors);
+      InitializeAgents(SimManager.Instance.Threats);
+    }
+    _symbolsCoroutine = StartCoroutine(SymbolsManager(_symbolsUpdatePeriod));
   }
 
-  private void RegisterSimulationStarted() {
-    _symbolsCoroutine = StartCoroutine(SymbolsManager(_symbolsUpdatePeriod));
+  private void OnDisable() {
+    DestroyAllSymbols();
   }
 
   private void RegisterSimulationEnded() {
@@ -116,12 +119,16 @@ public class TacticalPanel : MonoBehaviour {
 
   private void InitializeOrigin() {
     GameObject origin = CreateSymbolPrefab();
-    origin.GetComponent<TacticalSymbol>().SetSprite("friendly_destroyer_present");
+    origin.GetComponent<TacticalSymbol>().SetSprite("friendly_carrier_present");
     origin.GetComponent<TacticalSymbol>().DisableDirectionArrow();
-    origin.GetComponent<TacticalSymbol>().SetSpeedAlt("");
-    origin.GetComponent<TacticalSymbol>().SetType("");
-    origin.GetComponent<TacticalSymbol>().SetUniqueDesignator("");
     _origin = origin;
+  }
+
+  private void InitializeAgents(IEnumerable<IAgent> agents) {
+    foreach (var agent in agents) {
+      agent.OnTerminated += DestroySymbol;
+      CreateSymbol(agent);
+    }
   }
 
   private GameObject CreateSymbolPrefab() {
@@ -141,18 +148,24 @@ public class TacticalPanel : MonoBehaviour {
     // Set type-specific properties.
     switch (agent.StaticConfig.AgentType) {
       case Configs.AgentType.Vessel:
-      case Configs.AgentType.ShoreBattery:
-      case Configs.AgentType.CarrierInterceptor:
+      case Configs.AgentType.ShoreBattery: {
+        tacticalSymbol.SetType("Launcher");
+        break;
+      }
+      case Configs.AgentType.CarrierInterceptor: {
+        tacticalSymbol.SetType("Carrier");
+        break;
+      }
       case Configs.AgentType.MissileInterceptor: {
         tacticalSymbol.SetType("Interceptor");
         break;
       }
       case Configs.AgentType.FixedWingThreat: {
-        tacticalSymbol.SetType("FixedWingThreat");
+        tacticalSymbol.SetType("Fixed-Wing Threat");
         break;
       }
       case Configs.AgentType.RotaryWingThreat: {
-        tacticalSymbol.SetType("RotaryWingThreat");
+        tacticalSymbol.SetType("Rotary-Wing Threat");
         break;
       }
     }
@@ -176,8 +189,10 @@ public class TacticalPanel : MonoBehaviour {
   }
 
   private void UpdateSymbols() {
-    UpdateAgentSymbols(SimManager.Instance.Interceptors);
-    UpdateAgentSymbols(SimManager.Instance.Threats);
+    if (SimManager.Instance != null) {
+      UpdateAgentSymbols(SimManager.Instance.Interceptors);
+      UpdateAgentSymbols(SimManager.Instance.Threats);
+    }
   }
 
   private void UpdateAgentSymbols(IEnumerable<IAgent> agents) {

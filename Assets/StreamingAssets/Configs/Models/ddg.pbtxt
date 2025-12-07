@@ -10,6 +10,6 @@ body_config {
   mass: 9000000
 }
 visualization_config {
-  symbol_present: "friendly_ddg_present"
-  symbol_destroyed: "friendly_ddg_destroyed"
+  symbol_present: "friendly_destroyer_present"
+  symbol_destroyed: "friendly_destroyer_destroyed"
 }

@@ -15,12 +15,12 @@ public class TacticalPolarGridGraphic : Graphic {
   private int _numberOfRangeRings = 5;
 
   [SerializeField]
-  private float[] _rangeScales = { 100f, 1000f, 10000f, 40000f };  // in meters
+  private float[] _rangeScales = { 100f, 1000f, 10000f, 40000f };  // meters
 
   [SerializeField]
   private float _lineWidth = 2f;
 
-  private int _currentRangeIndex = 1;  // Start with 10km range.
+  private int _currentRangeIndex = 1;  // Start with 10 km range.
 
   [SerializeField]
   private GameObject _rangeTextPrefab;
