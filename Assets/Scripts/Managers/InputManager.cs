@@ -67,62 +67,6 @@ public class InputManager : MonoBehaviour {
     }
   }
 
-  private void HandleNonLockableInput() {
-    if (Input.GetKeyDown(KeyCode.Escape)) {
-      SimManager.Instance.QuitSimulation();
-    }
-
-    if (Input.GetKeyDown(KeyCode.R)) {
-      SimManager.Instance.EndSimulation();
-      SimManager.Instance.RestartSimulation();
-    }
-
-    if (Input.GetKeyDown(KeyCode.L)) {
-      UIManager.Instance.ToggleConfigSelectorPanel();
-    }
-
-    if (Input.GetKeyDown(KeyCode.C)) {
-      ParticleManager.Instance.ClearHitMarkers();
-    }
-
-    if (Input.GetKeyDown(KeyCode.P)) {
-      CameraController.Instance.AutoRotate = !CameraController.Instance.AutoRotate;
-    }
-
-    if (Input.GetKeyDown(KeyCode.Space)) {
-      // Pause the time.
-      if (!SimManager.Instance.IsPaused) {
-        SimManager.Instance.PauseSimulation();
-      } else {
-        SimManager.Instance.ResumeSimulation();
-      }
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha1)) {
-      if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.Follow(CameraFollowType.ALL_AGENTS);
-      } else {
-        CameraController.Instance.Snap(CameraFollowType.ALL_AGENTS);
-      }
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha2)) {
-      if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.Follow(CameraFollowType.ALL_INTERCEPTORS);
-      } else {
-        CameraController.Instance.Snap(CameraFollowType.ALL_INTERCEPTORS);
-      }
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha3)) {
-      if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.Follow(CameraFollowType.ALL_THREATS);
-      } else {
-        CameraController.Instance.Snap(CameraFollowType.ALL_THREATS);
-      }
-    }
-  }
-
   private void Handle3DModeMouseInput() {
     if (Input.GetMouseButton(0)) {
       CameraController.Instance.OrbitCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -216,6 +160,52 @@ public class InputManager : MonoBehaviour {
 
     if (keyboardPanDirection != Vector2.zero) {
       TacticalPanel.Instance.PanWithKeyboard(keyboardPanDirection.normalized);
+    }
+  }
+
+  private void HandleNonLockableInput() {
+    if (Input.GetKeyDown(KeyCode.Escape)) {
+      SimManager.Instance.QuitSimulation();
+    }
+
+    if (Input.GetKeyDown(KeyCode.R)) {
+      SimManager.Instance.EndSimulation();
+      SimManager.Instance.RestartSimulation();
+    }
+
+    if (Input.GetKeyDown(KeyCode.L)) {
+      UIManager.Instance.ToggleConfigSelectorPanel();
+    }
+
+    if (Input.GetKeyDown(KeyCode.C)) {
+      ParticleManager.Instance.ClearHitMarkers();
+    }
+
+    if (Input.GetKeyDown(KeyCode.P)) {
+      CameraController.Instance.AutoRotate = !CameraController.Instance.AutoRotate;
+    }
+
+    if (Input.GetKeyDown(KeyCode.Space)) {
+      // Pause the time.
+      if (!SimManager.Instance.IsPaused) {
+        SimManager.Instance.PauseSimulation();
+      } else {
+        SimManager.Instance.ResumeSimulation();
+      }
+    }
+
+    HandleCameraFollowInput(KeyCode.Alpha1, CameraFollowType.ALL_AGENTS);
+    HandleCameraFollowInput(KeyCode.Alpha2, CameraFollowType.ALL_INTERCEPTORS);
+    HandleCameraFollowInput(KeyCode.Alpha3, CameraFollowType.ALL_THREATS);
+  }
+
+  private void HandleCameraFollowInput(KeyCode key, CameraFollowType followType) {
+    if (Input.GetKeyDown(key)) {
+      if (Input.GetKey(KeyCode.LeftControl)) {
+        CameraController.Instance.Follow(followType);
+      } else {
+        CameraController.Instance.Snap(followType);
+      }
     }
   }
 }
