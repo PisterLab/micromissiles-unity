@@ -1,30 +1,27 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
+
 public class TacticalSymbol : MonoBehaviour {
   [SerializeField]
   private GameObject _directionArrow;
+
   [SerializeField]
   private TextMeshProUGUI _uniqueDesignatorText;
+
   [SerializeField]
   private TextMeshProUGUI _iffText;
+
   [SerializeField]
   private TextMeshProUGUI _typeText;
+
   [SerializeField]
   private TextMeshProUGUI _speedAltText;
+
   [SerializeField]
   private TextMeshProUGUI _additionalInfoText;
 
   private SpriteManager _spriteManager;
-
-  void Awake() {
-    _spriteManager = new SpriteManager();
-    _uniqueDesignatorText.text = "";
-    _iffText.text = "";
-    _typeText.text = "";
-    _speedAltText.text = "";
-    _additionalInfoText.text = "";
-  }
 
   public void SetDirectionArrowRotation(float rotationDegrees) {
     if (_directionArrow != null) {
@@ -37,13 +34,13 @@ public class TacticalSymbol : MonoBehaviour {
     if (_directionArrow != null) {
       _directionArrow.SetActive(false);
     } else {
-      Debug.LogWarning("Direction arrow not found on TacticalSymbol" + name);
+      Debug.LogWarning($"Direction arrow not found on TacticalSymbol {name}.");
     }
   }
 
   public void SetSprite(string spriteName) {
     spriteName = spriteName.ToUpper();
-    // Update main symbol image
+    // Update main symbol image.
     Image symbolImage = GetComponent<Image>();
     if (symbolImage != null) {
       Sprite symbolSprite = _spriteManager.LoadSymbolSprite(spriteName);
@@ -73,23 +70,30 @@ public class TacticalSymbol : MonoBehaviour {
     SetText(_additionalInfoText, text);
   }
 
+  private void Awake() {
+    _spriteManager = new SpriteManager();
+    _uniqueDesignatorText.text = "";
+    _iffText.text = "";
+    _typeText.text = "";
+    _speedAltText.text = "";
+    _additionalInfoText.text = "";
+  }
+
   private void SetText(TextMeshProUGUI textComponent, string text) {
     if (textComponent != null) {
       textComponent.text = text.ToUpper();
     }
   }
-
-  void Update() {}
 }
 
 public class SpriteManager {
-  private const string SymbolPathFormat = "APP6-D_Symbology/{0}";
+  private const string _symbolPathFormat = "APP6-D_Symbology/{0}";
 
   public Sprite LoadSymbolSprite(string symbolName) {
-    string path = string.Format(SymbolPathFormat, symbolName);
+    string path = string.Format(_symbolPathFormat, symbolName);
     Sprite sprite = Resources.Load<Sprite>(path);
     if (sprite == null) {
-      Debug.LogWarning($"Failed to load sprite at path: {path}");
+      Debug.LogWarning($"Failed to load sprite at path: {path}.");
     }
     return sprite;
   }
