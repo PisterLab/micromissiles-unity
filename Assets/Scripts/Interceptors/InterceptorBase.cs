@@ -214,23 +214,22 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       yield return new WaitUntil(() => _unassignedTargets.Count > 0);
       yield return new WaitForSeconds(period);
 
-      IEnumerable<IHierarchical> unassignedTargets = _unassignedTargets.ToList();
-      _unassignedTargets.Clear();
-
       // Check whether the unassigned targets are still unassigned.
-      unassignedTargets = unassignedTargets.Where(target => !target.ActivePursuers.Any());
-      int numUnassignedTargets = unassignedTargets.Count();
+      List<IHierarchical> unassignedTargets =
+          _unassignedTargets.Where(target => !target.ActivePursuers.Any()).ToList();
+      _unassignedTargets.Clear();
+      int numUnassignedTargets = unassignedTargets.Count;
       if (numUnassignedTargets > CapacityPlannedRemaining) {
         // If there are more unassigned targets than the capacity remaining, propagate the target
         // re-assignment to the parent interceptor for the excess targets.
-        unassignedTargets =
+        var orderedUnassignedTargets =
             unassignedTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
-        var excessTargets = unassignedTargets.Skip(CapacityPlannedRemaining);
+        var excessTargets = orderedUnassignedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
           OnReassignTarget?.Invoke(target);
         }
-        unassignedTargets = unassignedTargets.Take(CapacityPlannedRemaining);
-        if (!unassignedTargets.Any()) {
+        var remainingTargets = orderedUnassignedTargets.Take(CapacityPlannedRemaining);
+        if (!remainingTargets.Any()) {
           continue;
         }
       }
