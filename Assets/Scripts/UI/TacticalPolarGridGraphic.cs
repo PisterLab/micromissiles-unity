@@ -9,6 +9,9 @@ public class TacticalPolarGridGraphic : Graphic {
   private Color _gridColor = new Color(0.0f, 1.0f, 0.0f, 0.3f);
 
   [SerializeField]
+  private Color _textColor = new Color(0.2f, 0.2f, 0.2f, 0.5f);
+
+  [SerializeField]
   private int _numberOfBearingLines = 36;  // Every 10 degrees.
 
   [SerializeField]
@@ -175,7 +178,7 @@ public class TacticalPolarGridGraphic : Graphic {
       for (int i = 1; i <= _numberOfRangeRings; ++i) {
         GameObject textObj = Instantiate(_rangeTextPrefab, transform);
         TextMeshProUGUI textComponent = textObj.GetComponent<TextMeshProUGUI>();
-        textComponent.color = _gridColor;
+        textComponent.color = _textColor;
         textComponent.transform.localScale = Vector3.one;
         _rangeTexts.Add(textComponent);
       }
