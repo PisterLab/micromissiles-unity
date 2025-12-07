@@ -7,7 +7,7 @@ using UnityEngine;
 // example.
 public abstract class LauncherBase : CarrierBase {
   // Launchers cannot pursue threats.
-  public override bool IsPursuable => false;
+  public override bool IsPursuer => false;
 
   protected override void Awake() {
     base.Awake();
