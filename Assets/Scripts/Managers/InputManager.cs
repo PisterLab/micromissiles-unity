@@ -42,6 +42,9 @@ public class InputManager : MonoBehaviour {
           HandleTacticalModeScrollWheelInput();
           break;
         }
+        default: {
+          break;
+        }
       }
     }
 
@@ -52,6 +55,9 @@ public class InputManager : MonoBehaviour {
       }
       case UIMode.TACTICAL: {
         HandleTacticalModeLockableInput();
+        break;
+      }
+      default: {
         break;
       }
     }
