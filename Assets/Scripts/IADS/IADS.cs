@@ -16,7 +16,7 @@ public class IADS : MonoBehaviour {
   // Coroutine to perform the maintain the agent hierarchy.
   private Coroutine _hierarchyCoroutine;
 
-  // List of threats waiting to be incorporated into the hierarchy..
+  // List of threats waiting to be incorporated into the hierarchy.
   private List<IHierarchical> _newThreats = new List<IHierarchical>();
 
   public static IADS Instance { get; private set; }

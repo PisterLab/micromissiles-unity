@@ -12,11 +12,11 @@ public interface IInterceptor : IAgent {
   // collision, prior to intercepting a threat.
   event InterceptorEventHandler OnMiss;
 
-  // The OnUnassignedSubInterceptor event handler is called when a sub-interceptor has no assigned
+  // The OnAssignSubInterceptor event handler is called when a sub-interceptor has no assigned
   // target and should be assigned one.
   event InterceptorEventHandler OnAssignSubInterceptor;
 
-  // The OnUnassignedTarget event handler is called when a target needs to be re-assigned to another
+  // The OnReassignTarget event handler is called when a target needs to be re-assigned to another
   // interceptor.
   event TargetEventHandler OnReassignTarget;
 
