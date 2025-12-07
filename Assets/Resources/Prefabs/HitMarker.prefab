@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8345718946430300967}
   - component: {fileID: 876497984801430667}
   m_Layer: 0
-  m_Name: HitMarkerPrefab
+  m_Name: HitMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

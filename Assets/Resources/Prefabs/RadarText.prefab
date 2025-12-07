@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1866759371718686728}
   - component: {fileID: 9176912661323132902}
   m_Layer: 5
-  m_Name: RadarTextPrefab
+  m_Name: RadarText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
