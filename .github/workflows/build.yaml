@@ -58,6 +58,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space-action@v1.3.1
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: false # Unity Builder uses Docker.
+          swap-storage: false
+
       - uses: actions/cache@v4
         with:
           path: Library
