@@ -79,8 +79,8 @@ public abstract class ThreatBase : AgentBase, IThreat {
 
     // Limit the forward acceleration according to the desired speed.
     float speedError = desiredSpeed - Speed;
-    Vector3 forwardAccelerationInput = Vector3.Project(_accelerationInput, transform.forward);
-    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(_accelerationInput, transform.forward);
+    Vector3 forwardAccelerationInput = Vector3.Project(_accelerationInput, Transform.forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(_accelerationInput, Transform.forward);
     if (Mathf.Abs(speedError) < _speedErrorThreshold) {
       _accelerationInput = normalAccelerationInput;
     } else {

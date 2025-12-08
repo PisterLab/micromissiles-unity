@@ -30,7 +30,7 @@ public abstract class AerialMovement : MovementBase {
   protected float CalculateLiftInducedDrag(in Vector3 accelerationInput) {
     var staticConfig = Agent.StaticConfig;
     float liftAcceleration =
-        Vector3.ProjectOnPlane(accelerationInput, Agent.transform.forward).magnitude;
+        Vector3.ProjectOnPlane(accelerationInput, Agent.Transform.forward).magnitude;
     float liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }

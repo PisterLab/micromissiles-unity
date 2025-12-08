@@ -202,15 +202,15 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
       // Forward direction.
       Gizmos.color = Color.blue;
-      Gizmos.DrawRay(Position, transform.forward * axisLength);
+      Gizmos.DrawRay(Position, Transform.forward * axisLength);
 
       // Right direction.
       Gizmos.color = Color.red;
-      Gizmos.DrawRay(Position, transform.right * axisLength);
+      Gizmos.DrawRay(Position, Transform.right * axisLength);
 
       // Upwards direction.
       Gizmos.color = Color.yellow;
-      Gizmos.DrawRay(Position, transform.up * axisLength);
+      Gizmos.DrawRay(Position, Transform.up * axisLength);
     }
   }
 

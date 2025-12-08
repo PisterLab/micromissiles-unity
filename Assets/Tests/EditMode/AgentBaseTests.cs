@@ -22,8 +22,7 @@ public class AgentBaseTests : TestBase {
         new FixedHierarchical(position: new Vector3(0, 0, 20), velocity: new Vector3(0, 20, -1));
 
     Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
-    Assert.AreEqual(_target.Position - _agent.transform.position,
-                    relativeTransformation.Position.Cartesian);
+    Assert.AreEqual(_target.Position - _agent.Position, relativeTransformation.Position.Cartesian);
     Assert.AreEqual(20f, relativeTransformation.Position.Range, _epsilon);
     Assert.AreEqual(0f, relativeTransformation.Position.Azimuth, _epsilon);
     Assert.AreEqual(0f, relativeTransformation.Position.Elevation, _epsilon);
@@ -41,8 +40,7 @@ public class AgentBaseTests : TestBase {
         new FixedHierarchical(position: new Vector3(20, 0, 0), velocity: new Vector3(0, 0, 20));
 
     Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
-    Assert.AreEqual(_target.Position - _agent.transform.position,
-                    relativeTransformation.Position.Cartesian);
+    Assert.AreEqual(_target.Position - _agent.Position, relativeTransformation.Position.Cartesian);
     Assert.AreEqual(20f, relativeTransformation.Position.Range, _epsilon);
     Assert.AreEqual(Mathf.PI / 2, relativeTransformation.Position.Azimuth, _epsilon);
     Assert.AreEqual(0f, relativeTransformation.Position.Elevation, _epsilon);
@@ -60,8 +58,7 @@ public class AgentBaseTests : TestBase {
         new FixedHierarchical(position: new Vector3(0, 20, 0), velocity: new Vector3(0, 0, 20));
 
     Transformation relativeTransformation = _agent.GetRelativeTransformation(_target);
-    Assert.AreEqual(_target.Position - _agent.transform.position,
-                    relativeTransformation.Position.Cartesian);
+    Assert.AreEqual(_target.Position - _agent.Position, relativeTransformation.Position.Cartesian);
     Assert.AreEqual(20f, relativeTransformation.Position.Range, _epsilon);
     Assert.AreEqual(0f, relativeTransformation.Position.Azimuth, _epsilon);
     Assert.AreEqual(Mathf.PI / 2, relativeTransformation.Position.Elevation, _epsilon);
