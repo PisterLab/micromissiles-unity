@@ -202,7 +202,11 @@ public class AgentBase : MonoBehaviour, IAgent {
   protected virtual void LateUpdate() {}
 
   // OnDestroy is called when the object is being destroyed.
-  protected virtual void OnDestroy() {}
+  protected virtual void OnDestroy() {
+    if (EarlyFixedUpdateManager.Instance != null) {
+      EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
+    }
+  }
 
   // UpdateAgentConfig is called whenever the agent configuration is changed.
   protected virtual void UpdateAgentConfig() {
