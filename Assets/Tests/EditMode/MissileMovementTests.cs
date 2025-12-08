@@ -11,8 +11,8 @@ public class MissileMovementTests : TestBase {
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
     _agent.gameObject.AddComponent<Rigidbody>();
-    _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
+    _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     _agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
           new Configs.AccelerationConfig() {

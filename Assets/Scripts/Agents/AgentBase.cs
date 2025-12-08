@@ -174,11 +174,13 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // Awake is called before Start and right after a prefab is instantiated.
   protected virtual void Awake() {
-    _rigidbody = GetComponent<Rigidbody>();
     Transform = transform;
-    UpdateTransformData();
+    _rigidbody = GetComponent<Rigidbody>();
 
-    EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate += UpdateTransformData;
+    UpdateTransformData();
+    if (EarlyFixedUpdateManager.Instance != null) {
+      EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate += UpdateTransformData;
+    }
   }
 
   // Start is called before the first frame update.
