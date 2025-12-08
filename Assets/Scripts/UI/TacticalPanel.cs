@@ -223,7 +223,7 @@ public class TacticalPanel : MonoBehaviour {
     UpdateSymbolScale(symbol);
 
     // Update the symbol rotation.
-    Vector3 forward = agent.Transform.forward;
+    Vector3 forward = agent.Forward;
     symbol.GetComponent<TacticalSymbol>().SetDirectionArrowRotation(
         -1 * Mathf.Atan2(forward.z, forward.x) * Mathf.Rad2Deg);
 

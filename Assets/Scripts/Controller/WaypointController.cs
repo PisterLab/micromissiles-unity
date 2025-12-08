@@ -16,7 +16,7 @@ public class WaypointController : ControllerBase {
     }
 
     // To reach the waypoint as fast as possible, use the maximum forward acceleration.
-    Vector3 forward = Agent.Transform.forward;
+    Vector3 forward = Agent.Forward;
     Vector3 forwardAccelerationInput = forward * Agent.MaxForwardAcceleration();
     if (Vector3.Dot(relativePosition, Agent.Velocity) < 0) {
       forwardAccelerationInput *= -1;

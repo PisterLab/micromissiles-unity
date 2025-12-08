@@ -64,7 +64,7 @@ public class WaypointControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_WaypointOverhead_AcceleratesUpwards() {
+  public void Plan_WaypointOverhead_AcceleratesUpward() {
     _targetModel.Position = new Vector3(0, 1, 0);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     _targetModel.Acceleration = new Vector3(0, 1, 0);

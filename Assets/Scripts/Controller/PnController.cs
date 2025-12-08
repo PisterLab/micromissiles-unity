@@ -20,9 +20,6 @@ public class PnController : ControllerBase {
 
   // Controller-dependent implementation of the control law.
   protected override Vector3 Plan(in Transformation relativeTransformation) {
-    Vector3 right = Agent.Transform.right;
-    Vector3 up = Agent.Transform.up;
-
     // Extract the bearing and closing velocity from the relative transformation.
     float losAz = relativeTransformation.Position.Azimuth;
     float losEl = relativeTransformation.Position.Elevation;
@@ -52,6 +49,6 @@ public class PnController : ControllerBase {
 
     float accelerationAz = Gain * turnFactor * losRateAz;
     float accelerationEl = Gain * turnFactor * losRateEl;
-    return right * accelerationAz + up * accelerationEl;
+    return Agent.Right * accelerationAz + Agent.Up * accelerationEl;
   }
 }

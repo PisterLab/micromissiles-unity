@@ -41,6 +41,9 @@ public interface IAgent {
 
   GameObject gameObject { get; }
   Transform Transform { get; }
+  Vector3 Up { get; }
+  Vector3 Forward { get; }
+  Vector3 Right { get; }
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();

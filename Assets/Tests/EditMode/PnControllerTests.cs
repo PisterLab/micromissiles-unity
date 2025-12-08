@@ -42,7 +42,7 @@ public class PnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards() {
+  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward() {
     _targetModel.Position = new Vector3(0, 0, 1);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     // Vertical acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
@@ -71,7 +71,7 @@ public class PnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBroadside_MovingUpwards() {
+  public void Plan_TargetAtBroadside_MovingUpward() {
     _targetModel.Position = new Vector3(1, 0, 0);
     _targetModel.Velocity = new Vector3(-1, 1, 0);
     // Horizontal acceleration is clamped, so gain * closing velocity * azimuth line-of-sight rate =

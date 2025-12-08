@@ -20,7 +20,7 @@ public class ApnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards() {
+  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward() {
     _targetModel.Position = new Vector3(0, 0, 1);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     _targetModel.Acceleration = new Vector3(0, 1, 0);
@@ -30,7 +30,7 @@ public class ApnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards_WithNoAcceleration() {
+  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward_WithNoAcceleration() {
     _targetModel.Position = new Vector3(0, 0, 1);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     _targetModel.Acceleration = new Vector3(0, 0, 0);
@@ -41,7 +41,7 @@ public class ApnControllerTests : TestBase {
 
   [Test]
   public void
-  Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards_WithAccelerationAlongBoresight() {
+  Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward_WithAccelerationAlongBoresight() {
     _targetModel.Position = new Vector3(0, 0, 1);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     _targetModel.Acceleration = new Vector3(0, 0, -5);

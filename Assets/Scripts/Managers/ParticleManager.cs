@@ -127,15 +127,15 @@ public class ParticleManager : MonoBehaviour {
 
   private void RegisterInterceptorHit(IInterceptor interceptor) {
     if (SimManager.Instance.SimulatorConfig.EnableExplosionEffect) {
-      PlayMissileExplosion(interceptor.Transform.position);
+      PlayMissileExplosion(interceptor.Position);
     }
-    GameObject hitMarkerObject = SpawnHitMarker(interceptor.Transform.position);
+    GameObject hitMarkerObject = SpawnHitMarker(interceptor.Position);
     hitMarkerObject.GetComponent<UIEventMarker>().SetEventHit();
     _hitMarkerList.Add(hitMarkerObject);
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
-    GameObject hitMarkerObject = SpawnHitMarker(interceptor.Transform.position);
+    GameObject hitMarkerObject = SpawnHitMarker(interceptor.Position);
     hitMarkerObject.GetComponent<UIEventMarker>().SetEventMiss();
     _hitMarkerList.Add(hitMarkerObject);
   }
