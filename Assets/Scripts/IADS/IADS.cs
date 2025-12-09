@@ -345,7 +345,7 @@ public class IADS : MonoBehaviour {
 
     // Cluster threats.
     IClustererLegacy clusterer =
-        new AgglomerativeClusterer(new List<Agent>(threats), MaxSize, MaxRadius);
+        new AgglomerativeClustererLegacy(new List<Agent>(threats), MaxSize, MaxRadius);
     clusterer.Cluster();
     var clusters = clusterer.Clusters;
     Debug.Log($"Clustered {threats.Count} threats into {clusters.Count} clusters.");

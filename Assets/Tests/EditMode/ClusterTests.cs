@@ -5,14 +5,10 @@ using UnityEngine;
 public class ClusterTests {
   private const float _epsilon = 1e-3f;
 
-  private static FixedHierarchical GenerateHierarchical(in Vector3 position) {
-    return new FixedHierarchical(position, velocity: Vector3.zero, acceleration: Vector3.zero);
-  }
-
   private static Cluster GenerateCluster(IReadOnlyList<FixedHierarchical> hierarchicals) {
-    Cluster cluster = new Cluster();
-    foreach (var obj in hierarchicals) {
-      cluster.AddSubHierarchical(obj);
+    var cluster = new Cluster();
+    foreach (var hierarchical in hierarchicals) {
+      cluster.AddSubHierarchical(hierarchical);
     }
     cluster.Recenter();
     return cluster;
@@ -31,7 +27,7 @@ public class ClusterTests {
     const int size = 10;
     var hierarchicals = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      hierarchicals.Add(GenerateHierarchical(new Vector3(0, i, 0)));
+      hierarchicals.Add(new FixedHierarchical(new Vector3(0, i, 0)));
     }
     Cluster cluster = GenerateCluster(hierarchicals);
     Assert.AreEqual(size, cluster.Size);
@@ -41,7 +37,7 @@ public class ClusterTests {
   public void IsEmpty_ReturnsCorrectly() {
     var cluster = new Cluster();
     Assert.IsTrue(cluster.IsEmpty);
-    cluster.AddSubHierarchical(GenerateHierarchical(Vector3.zero));
+    cluster.AddSubHierarchical(new FixedHierarchical(Vector3.zero));
     Assert.IsFalse(cluster.IsEmpty);
   }
 
@@ -50,7 +46,7 @@ public class ClusterTests {
     const int size = 10;
     var hierarchicals = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      hierarchicals.Add(GenerateHierarchical(new Vector3(0, i, 0)));
+      hierarchicals.Add(new FixedHierarchical(new Vector3(0, i, 0)));
     }
     Cluster cluster = GenerateCluster(hierarchicals);
     float centroid = size / 2 - 2;
@@ -69,11 +65,11 @@ public class ClusterTests {
     var hierarchicals = new List<FixedHierarchical>();
     for (int i = -1; i <= 1; ++i) {
       for (int j = -1; j <= 1; ++j) {
-        hierarchicals.Add(GenerateHierarchical(new Vector3(i, j, 0)));
+        hierarchicals.Add(new FixedHierarchical(new Vector3(i, j, 0)));
       }
     }
     Cluster cluster = GenerateCluster(hierarchicals);
-    cluster.AddSubHierarchical(GenerateHierarchical(new Vector3(10, -10, 0)));
+    cluster.AddSubHierarchical(new FixedHierarchical(new Vector3(10, -10, 0)));
     Assert.AreNotEqual(new Vector3(1, -1, 0), cluster.Centroid);
     cluster.Recenter();
     Assert.AreEqual(new Vector3(1, -1, 0), cluster.Centroid);
@@ -85,8 +81,8 @@ public class ClusterTests {
     var hierarchicals1 = new List<FixedHierarchical>();
     var hierarchicals2 = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      hierarchicals1.Add(GenerateHierarchical(new Vector3(0, i, 0)));
-      hierarchicals2.Add(GenerateHierarchical(new Vector3(i, 0, 0)));
+      hierarchicals1.Add(new FixedHierarchical(new Vector3(0, i, 0)));
+      hierarchicals2.Add(new FixedHierarchical(new Vector3(i, 0, 0)));
     }
     Cluster cluster1 = GenerateCluster(hierarchicals1);
     Cluster cluster2 = GenerateCluster(hierarchicals2);
@@ -102,8 +98,8 @@ public class ClusterTests {
     var hierarchicals1 = new List<FixedHierarchical>();
     var hierarchicals2 = new List<FixedHierarchical>();
     for (int i = 0; i < size; ++i) {
-      hierarchicals1.Add(GenerateHierarchical(new Vector3(0, i, 0)));
-      hierarchicals2.Add(GenerateHierarchical(new Vector3(i, 0, 0)));
+      hierarchicals1.Add(new FixedHierarchical(new Vector3(0, i, 0)));
+      hierarchicals2.Add(new FixedHierarchical(new Vector3(i, 0, 0)));
     }
     Cluster cluster1 = GenerateCluster(hierarchicals1);
     Cluster cluster2 = GenerateCluster(hierarchicals2);
