@@ -66,7 +66,6 @@ public class TacticalPanel : MonoBehaviour {
       return;
     }
     Instance = this;
-    DontDestroyOnLoad(gameObject);
 
     _radarUIGroupRectTransform = _radarUIGroup.GetComponent<RectTransform>();
     _polarGridGraphic = _radarUIGroup.GetComponent<TacticalPolarGridGraphic>();
