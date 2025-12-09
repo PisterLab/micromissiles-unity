@@ -283,9 +283,8 @@ public class AgentBase : MonoBehaviour, IAgent {
       Elevation = elevation,
     };
 
-    float rangeRate = range > _epsilon
-                          ? Vector3.Dot(relativeLocalVelocity, relativeLocalPosition.normalized)
-                          : 0f;
+    float rangeRate =
+        range > _epsilon ? Vector3.Dot(relativeLocalVelocity, relativeLocalPosition) / range : 0f;
     float azimuthRate = 0f;
     float elevationRate = 0f;
     if (horizontal > _epsilon) {
@@ -299,7 +298,7 @@ public class AgentBase : MonoBehaviour, IAgent {
       azimuthRate = 0f;
       float horizontalSpeed = Mathf.Sqrt(relativeLocalVelocity.x * relativeLocalVelocity.x +
                                          relativeLocalVelocity.z * relativeLocalVelocity.z);
-      elevationRate = -horizontalSpeed / (Mathf.Abs(y) > _epsilon ? y : _epsilon);
+      elevationRate = -horizontalSpeed / (Mathf.Abs(y) > _epsilon ? y : Mathf.Sign(y) * _epsilon);
     }
     var velocityTransformation = new VelocityTransformation {
       Cartesian = relativeVelocity,
