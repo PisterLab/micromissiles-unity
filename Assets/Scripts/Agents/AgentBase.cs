@@ -231,7 +231,7 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   private void UpdateTransformData() {
-    Position = Transform.position;
+    _position = Transform.position;
     Up = Transform.up;
     Forward = Transform.forward;
     Right = Transform.right;
