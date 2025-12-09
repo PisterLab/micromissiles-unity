@@ -1,48 +1,23 @@
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
 using UnityEngine;
 
-// The round-robin assignment class assigns interceptors to the targets in a
-// round-robin order using the new paradigm.
-public class RoundRobinAssignment : IAssignmentLegacy {
-  // Previous target index that was assigned.
-  private int prevTargetIndex = -1;
-
-  // Assign a target to each interceptor that has not been assigned a target yet.
-  [Pure]
-  public IEnumerable<IAssignmentLegacy.AssignmentItemLegacy> Assign(
-      in IReadOnlyList<Interceptor> interceptors, in IReadOnlyList<Threat> threats) {
-    List<IAssignmentLegacy.AssignmentItemLegacy> assignments =
-        new List<IAssignmentLegacy.AssignmentItemLegacy>();
-
-    // Get the list of interceptors that are available for assignment.
-    List<Interceptor> assignableInterceptors =
-        IAssignmentLegacy.GetAssignableInterceptors(interceptors);
-    if (assignableInterceptors.Count == 0) {
-      return assignments;
+// The round-robin assignment assigns hierarchical objects to each other in a round-robin order.
+public class RoundRobinAssignment : AssignmentBase {
+  // Run the assignment algorithm and assign the hierarchical objects.
+  public override List<AssignmentItem> Assign(IReadOnlyList<IHierarchical> first,
+                                              IReadOnlyList<IHierarchical> second) {
+    if (first.Count == 0 || second.Count == 0) {
+      return new List<AssignmentItem>();
     }
 
-    // Get the list of active threats that need to be addressed.
-    List<Threat> activeThreats = IAssignmentLegacy.GetActiveThreats(threats);
-    if (activeThreats.Count == 0) {
-      Debug.LogWarning("No active threats found.");
-      return assignments;
+    int secondIndex = 0;
+    var assignments = new List<AssignmentItem>();
+    foreach (var firstHierarchical in first) {
+      var secondHierarchical = second[secondIndex];
+      assignments.Add(
+          new AssignmentItem { First = firstHierarchical, Second = secondHierarchical });
+      secondIndex = (secondIndex + 1) % second.Count;
     }
-
-    // Perform round-robin assignment.
-    foreach (Interceptor interceptor in assignableInterceptors) {
-      // Determine the next target index in a round-robin fashion.
-      int nextTargetIndex = (prevTargetIndex + 1) % activeThreats.Count;
-      Threat threat = activeThreats[nextTargetIndex];
-
-      // Assign the interceptor to the selected threat.
-      assignments.Add(new IAssignmentLegacy.AssignmentItemLegacy(interceptor, threat));
-
-      // Update the previous target index.
-      prevTargetIndex = nextTargetIndex;
-    }
-
     return assignments;
   }
 }

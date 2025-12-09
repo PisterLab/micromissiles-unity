@@ -16,7 +16,7 @@ public class IADS : MonoBehaviour {
   // TODO(titan): Choose the CSV file based on the interceptor type.
   private ILaunchAnglePlannerLegacy _launchAnglePlanner =
       new LaunchAngleCsvInterpolatorLegacy(Path.Combine("Planning", "hydra70_launch_angle.csv"));
-  private IAssignmentLegacy _assignmentScheme = new MaxSpeedAssignment();
+  private IAssignmentLegacy _assignmentScheme = new MaxSpeedAssignmentLegacy();
   private Coroutine _launchInterceptorsCoroutine;
 
   [SerializeField]
