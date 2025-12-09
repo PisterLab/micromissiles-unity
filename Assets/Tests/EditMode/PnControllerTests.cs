@@ -97,11 +97,11 @@ public class PnControllerTests : TestBase {
   public void Plan_TargetOverhead_MovingRight() {
     _targetModel.Position = new Vector3(0, 1, 0);
     _targetModel.Velocity = new Vector3(1, -1, 0);
-    // Horizontal acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 * 1
-    // = 1.
+    // Horizontal acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 * 0.2
+    // = 0.2.
     // Vertical acceleration is clamped, so gain * closing velocity * elevation line-of-sight rate =
-    // 1 * 1 * 0.2 = 0.2. The acceleration is multiplied by a turn factor of 100 to force a quicker
-    // turn.
-    Assert.AreEqual(new Vector3(1, 0.2f, 0) * 100, _controller.Plan());
+    // 1 * 1 * -1 = -1.
+    // The acceleration is multiplied by a turn factor of 100 to force a quicker turn.
+    Assert.AreEqual(new Vector3(0.2f, -1, 0) * 100, _controller.Plan());
   }
 }

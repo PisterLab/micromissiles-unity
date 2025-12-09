@@ -104,6 +104,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   // The right direction is cached and updated before every fixed update.
   public Vector3 Right { get; private set; }
 
+  // The inverse rotation is cached and updated before every fixed update.
+  public Quaternion InverseRotation { get; private set; }
+
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
   }
@@ -235,6 +238,7 @@ public class AgentBase : MonoBehaviour, IAgent {
     Up = Transform.up;
     Forward = Transform.forward;
     Right = Transform.right;
+    InverseRotation = Quaternion.Inverse(Transform.rotation);
   }
 
   private void AlignWithVelocity() {
@@ -256,109 +260,61 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   private Transformation GetRelativeTransformation(in Vector3 position, in Vector3 velocity,
                                                    in Vector3 acceleration) {
-    // Get the relative position transformation.
     Vector3 relativePosition = position - Position;
-    PositionTransformation positionTransformation =
-        GetRelativePositionTransformation(relativePosition);
+    Vector3 relativeLocalPosition = InverseRotation * relativePosition;
+    Vector3 relativeVelocity = velocity - Velocity;
+    Vector3 relativeLocalVelocity = InverseRotation * relativeVelocity;
 
-    // Get the relative velocity transformation.
-    VelocityTransformation velocityTransformation =
-        GetRelativeVelocityTransformation(relativePosition, velocity - Velocity);
+    float x = relativeLocalPosition.x;
+    float y = relativeLocalPosition.y;
+    float z = relativeLocalPosition.z;
 
-    // Get the relative acceleration transformation.
-    // Since the agent's acceleration is an input and can be set arbitrarily, the relative
-    // acceleration is just the other agent's acceleration.
-    AccelerationTransformation accelerationTransformation =
-        GetRelativeAccelerationTransformation(acceleration);
+    float horizontalSqr = x * x + z * z;
+    float horizontal = Mathf.Sqrt(horizontalSqr);
+    float rangeSqr = horizontalSqr + y * y;
+    float range = Mathf.Sqrt(rangeSqr);
+
+    float azimuth = Mathf.Atan2(x, z);
+    float elevation = Mathf.Atan2(y, horizontal);
+    var positionTransformation = new PositionTransformation {
+      Cartesian = relativePosition,
+      Range = range,
+      Azimuth = azimuth,
+      Elevation = elevation,
+    };
+
+    float rangeRate = range > _epsilon
+                          ? Vector3.Dot(relativeLocalVelocity, relativeLocalPosition.normalized)
+                          : 0f;
+    float azimuthRate = 0f;
+    float elevationRate = 0f;
+    if (horizontal > _epsilon) {
+      azimuthRate = -(x * relativeLocalVelocity.z - z * relativeLocalVelocity.x) / horizontalSqr;
+      elevationRate =
+          (relativeLocalVelocity.y * horizontal -
+           y * (x * relativeLocalVelocity.x + z * relativeLocalVelocity.z) / horizontal) /
+          rangeSqr;
+    } else {
+      // The other agent is exactly above or below.
+      azimuthRate = 0f;
+      float horizontalSpeed = Mathf.Sqrt(relativeLocalVelocity.x * relativeLocalVelocity.x +
+                                         relativeLocalVelocity.z * relativeLocalVelocity.z);
+      elevationRate = -horizontalSpeed / (Mathf.Abs(y) > _epsilon ? y : _epsilon);
+    }
+    var velocityTransformation = new VelocityTransformation {
+      Cartesian = relativeVelocity,
+      Range = rangeRate,
+      Azimuth = azimuthRate,
+      Elevation = elevationRate,
+    };
+
+    var accelerationTransformation = new AccelerationTransformation {
+      Cartesian = acceleration,
+    };
     return new Transformation {
       Position = positionTransformation,
       Velocity = velocityTransformation,
       Acceleration = accelerationTransformation,
-    };
-  }
-
-  private PositionTransformation GetRelativePositionTransformation(in Vector3 relativePosition) {
-    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, Up);
-    Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
-
-    // Calculate the elevation (vertical angle relative to forward).
-    float elevation =
-        Mathf.Atan2(verticalRelativePosition.magnitude, flatRelativePosition.magnitude);
-
-    // Calculate the azimuth (horizontal angle relative to forward).
-    float azimuth = 0;
-    if (flatRelativePosition.sqrMagnitude >= _epsilon) {
-      azimuth = Vector3.SignedAngle(Forward, flatRelativePosition, Up) * Mathf.Deg2Rad;
-    }
-    return new PositionTransformation {
-      Cartesian = relativePosition,
-      Range = relativePosition.magnitude,
-      Azimuth = azimuth,
-      Elevation = elevation,
-    };
-  }
-
-  private VelocityTransformation GetRelativeVelocityTransformation(in Vector3 relativePosition,
-                                                                   in Vector3 relativeVelocity) {
-    if (relativePosition.sqrMagnitude < _epsilon) {
-      return new VelocityTransformation {
-        Cartesian = relativeVelocity,
-        Range = relativeVelocity.magnitude,
-        Azimuth = 0,
-        Elevation = 0,
-      };
-    }
-
-    // Calculate range rate (radial velocity).
-    float rangeRate = Vector3.Dot(relativeVelocity, relativePosition.normalized);
-
-    // Project relative velocity onto the sphere passing through the target.
-    Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
-
-    // The target azimuth vector is orthogonal to the relative position vector and points to the
-    // starboard of the target along the azimuth-elevation sphere.
-    Vector3 targetAzimuth = Vector3.Cross(Up, relativePosition);
-    // The target elevation vector is orthogonal to the relative position vector and points upward
-    // from the target along the azimuth-elevation sphere.
-    Vector3 targetElevation = Vector3.Cross(relativePosition, Right);
-    // If the relative position vector is parallel to the yaw or pitch axis, the target azimuth
-    // vector or the target elevation vector will be undefined.
-    if (targetAzimuth.sqrMagnitude < _epsilon) {
-      targetAzimuth = Vector3.Cross(targetElevation, relativePosition);
-    } else if (targetElevation.sqrMagnitude < _epsilon) {
-      targetElevation = Vector3.Cross(relativePosition, targetAzimuth);
-    }
-
-    // Project the relative velocity vector on the azimuth-elevation sphere onto the target azimuth
-    // vector.
-    Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
-
-    // Calculate the time derivative of the azimuth to the target.
-    float azimuth = tangentialVelocityOnAzimuth.magnitude / relativePosition.magnitude;
-    if (Vector3.Dot(tangentialVelocityOnAzimuth, targetAzimuth) < 0) {
-      azimuth *= -1;
-    }
-
-    // Project the velocity vector on the azimuth-elevation sphere onto the target elevation vector.
-    Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
-
-    // Calculate the time derivative of the elevation to the target.
-    float elevation = tangentialVelocityOnElevation.magnitude / relativePosition.magnitude;
-    if (Vector3.Dot(tangentialVelocityOnElevation, targetElevation) < 0) {
-      elevation *= -1;
-    }
-    return new VelocityTransformation {
-      Cartesian = relativeVelocity,
-      Range = rangeRate,
-      Azimuth = azimuth,
-      Elevation = elevation,
-    };
-  }
-
-  private AccelerationTransformation GetRelativeAccelerationTransformation(
-      in Vector3 relativeAcceleration) {
-    return new AccelerationTransformation {
-      Cartesian = relativeAcceleration,
     };
   }
 }

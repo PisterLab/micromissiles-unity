@@ -12,6 +12,7 @@ public class AgentBaseTests : TestBase {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
     _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
+    _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
   }
 
   [Test]
