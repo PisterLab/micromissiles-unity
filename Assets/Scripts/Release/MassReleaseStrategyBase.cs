@@ -17,65 +17,73 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
     Assignment = assignment;
   }
 
-  public override List<IAgent> Release() {
+  protected override List<IAgent> Release(IEnumerable<IHierarchical> hierarchicals) {
     if (Agent is not CarrierBase carrier || carrier.NumSubInterceptorsRemaining <= 0) {
       return new List<IAgent>();
     }
 
-    IHierarchical target = Agent.HierarchicalAgent.Target;
-    if (target == null) {
+    Dictionary<IHierarchical, List<IHierarchical>> targetToHierarchicalMap =
+        hierarchicals.Where(hierarchical => hierarchical.Target != null)
+            .GroupBy(hierarchical => hierarchical.Target)
+            .ToDictionary(group => group.Key, group => group.ToList());
+
+    List<IHierarchical> targets = targetToHierarchicalMap.Keys.ToList();
+    if (targets.Count == 0) {
+      return new List<IAgent>();
+    }
+    LaunchPlan launchPlan = PlanRelease(targets);
+    if (!launchPlan.ShouldLaunch) {
       return new List<IAgent>();
     }
 
+    // Release all sub-interceptors.
+    Configs.SubAgentConfig subAgentConfig = carrier.AgentConfig.SubAgentConfig;
+    Vector3 position = carrier.Position;
+    Simulation.CartesianCoordinates positionCoordinates = Coordinates3.ToProto(position);
+
+    Vector3 velocity = carrier.Velocity;
+    Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
+    if (perpendicularDirection.sqrMagnitude < _epsilon) {
+      perpendicularDirection = Vector3.Cross(velocity, Vector3.forward);
+    }
+
     var releasedAgents = new List<IAgent>();
-    LaunchPlan launchPlan = PlanRelease(target);
-    if (launchPlan.ShouldLaunch) {
-      // Release all sub-interceptors.
-      Configs.SubAgentConfig subAgentConfig = Agent.AgentConfig.SubAgentConfig;
-      Vector3 position = Agent.Position;
-      Simulation.CartesianCoordinates positionCoordinates = Coordinates3.ToProto(position);
-
-      Vector3 velocity = Agent.Velocity;
-      Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
-      if (perpendicularDirection.sqrMagnitude < _epsilon) {
-        perpendicularDirection = Vector3.Cross(velocity, Vector3.forward);
-      }
-
-      for (int i = 0; i < subAgentConfig.NumSubAgents; ++i) {
-        // Fan the submunitions radially outwards from the carrier's velocity vector.
-        Vector3 lateralDirection =
-            Quaternion.AngleAxis(i * 360 / subAgentConfig.NumSubAgents, velocity) *
-            perpendicularDirection;
-        Simulation.CartesianCoordinates velocityCoordinates =
-            Coordinates3.ToProto(Vector3.RotateTowards(
-                velocity, lateralDirection, maxRadiansDelta: _fanOutAngleDegrees * Mathf.Deg2Rad,
-                maxMagnitudeDelta: Mathf.Cos(_fanOutAngleDegrees * Mathf.Deg2Rad)));
-        Simulation.State initialState = new Simulation.State() {
-          Position = positionCoordinates,
-          Velocity = velocityCoordinates,
-        };
-        IAgent subInterceptor =
-            SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
-        if (subInterceptor != null) {
-          if (subInterceptor.Movement is MissileMovement movement) {
-            movement.FlightPhase = Simulation.FlightPhase.Boost;
-          }
-          releasedAgents.Add(subInterceptor);
+    for (int i = 0; i < subAgentConfig.NumSubAgents; ++i) {
+      // Fan the submunitions radially outwards from the carrier's velocity vector.
+      Vector3 lateralDirection =
+          Quaternion.AngleAxis(i * 360 / subAgentConfig.NumSubAgents, velocity) *
+          perpendicularDirection;
+      Simulation.CartesianCoordinates velocityCoordinates =
+          Coordinates3.ToProto(Vector3.RotateTowards(
+              velocity, lateralDirection, maxRadiansDelta: _fanOutAngleDegrees * Mathf.Deg2Rad,
+              maxMagnitudeDelta: Mathf.Cos(_fanOutAngleDegrees * Mathf.Deg2Rad)));
+      Simulation.State initialState = new Simulation.State() {
+        Position = positionCoordinates,
+        Velocity = velocityCoordinates,
+      };
+      IAgent subInterceptor =
+          SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
+      if (subInterceptor is IInterceptor) {
+        if (subInterceptor.Movement is MissileMovement movement) {
+          movement.FlightPhase = Simulation.FlightPhase.Boost;
         }
+        releasedAgents.Add(subInterceptor);
       }
+    }
 
-      // Assign the released sub-interceptors to the sub-hierarchical objects of the target.
-      List<IHierarchical> activeTargets = target.ActiveSubHierarchicals.ToList();
-      if (activeTargets.Any()) {
-        var releasedAgentHierarchicals =
-            releasedAgents.Select(agent => agent.HierarchicalAgent).ToList();
-        List<AssignmentItem> assignments =
-            Assignment.Assign(releasedAgentHierarchicals, activeTargets);
-        foreach (var assignment in assignments) {
-          assignment.First.Target = assignment.Second;
-        }
+    // Assign the released sub-interceptors to the targets.
+    var releasedAgentHierarchicals =
+        releasedAgents.Select(agent => agent.HierarchicalAgent).ToList();
+    List<AssignmentItem> assignments = Assignment.Assign(releasedAgentHierarchicals, targets);
+    foreach (var assignment in assignments) {
+      assignment.First.Target = assignment.Second;
+      foreach (var hierarchical in targetToHierarchicalMap[assignment.Second]) {
+        hierarchical.AddLaunchedHierarchical(assignment.First);
       }
     }
     return releasedAgents;
   }
+
+  // Plan the release for the given targets.
+  protected abstract LaunchPlan PlanRelease(IEnumerable<IHierarchical> targets);
 }

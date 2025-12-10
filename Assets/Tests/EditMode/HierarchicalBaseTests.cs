@@ -15,30 +15,6 @@ public class HierarchicalBaseTests {
   }
 
   [Test]
-  public void Target_Set_AddsToPursuersOfTarget() {
-    var parent = new HierarchicalBase();
-    var target = new HierarchicalBase();
-    Assert.IsFalse(target.Pursuers.Contains(parent));
-    parent.Target = target;
-    Assert.IsTrue(target.Pursuers.Contains(parent));
-  }
-
-  [Test]
-  public void Target_Set_RemovesFromPursuersOfPreviousTarget() {
-    var parent = new HierarchicalBase();
-    var target1 = new HierarchicalBase();
-    var target2 = new HierarchicalBase();
-    Assert.IsFalse(target1.Pursuers.Contains(parent));
-    Assert.IsFalse(target2.Pursuers.Contains(parent));
-    parent.Target = target1;
-    Assert.IsTrue(target1.Pursuers.Contains(parent));
-    Assert.IsFalse(target2.Pursuers.Contains(parent));
-    parent.Target = target2;
-    Assert.IsFalse(target1.Pursuers.Contains(parent));
-    Assert.IsTrue(target2.Pursuers.Contains(parent));
-  }
-
-  [Test]
   public void Position_ReturnsMeanOfSubHierarchicals() {
     var parent = new HierarchicalBase();
     var child1 =
@@ -208,5 +184,26 @@ public class HierarchicalBaseTests {
 
     Assert.AreEqual(1, parent.Pursuers.Count);
     Assert.AreSame(child1, parent.Pursuers[0]);
+  }
+
+  [Test]
+  public void AddLaunchedHierarchical_AddsCorrectly() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+    parent.AddLaunchedHierarchical(child);
+
+    Assert.AreEqual(1, parent.LaunchedHierarchicals.Count);
+    Assert.AreSame(child, parent.LaunchedHierarchicals[0]);
+  }
+
+  [Test]
+  public void AddLaunchedHierarchical_DoesNotAddDuplicates() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+    parent.AddLaunchedHierarchical(child);
+    parent.AddLaunchedHierarchical(child);
+
+    Assert.AreEqual(1, parent.LaunchedHierarchicals.Count);
+    Assert.AreSame(child, parent.LaunchedHierarchicals[0]);
   }
 }

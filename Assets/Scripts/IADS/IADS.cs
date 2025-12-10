@@ -7,13 +7,12 @@ using UnityEngine;
 public class IADS : MonoBehaviour {
   // Clustering parameters.
   private const float _clusterThreatsPeriod = 5f;
-  private const int _clusterMaxSize = 7;
-  private const float _clusterMaxRadius = 500f;
+  private const float _coverageFactor = 1f;
 
   // The IADS only manages the launchers in the top level of the interceptor hierarchy.
   private List<IHierarchical> _launchers = new List<IHierarchical>();
 
-  // Coroutine to perform the hierarchical threat clustering.
+  // Coroutine to perform the top-level threat clustering.
   private Coroutine _clusterThreatsCoroutine;
 
   // List of threats awaiting clustering.
@@ -57,14 +56,14 @@ public class IADS : MonoBehaviour {
   }
 
   public void RegisterNewLauncher(IInterceptor interceptor) {
-    if (interceptor is IAgent agent && agent.HierarchicalAgent != null) {
-      _launchers.Add(agent.HierarchicalAgent);
+    if (interceptor.HierarchicalAgent != null) {
+      _launchers.Add(interceptor.HierarchicalAgent);
     }
   }
 
   public void RegisterNewThreat(IThreat threat) {
-    if (threat is IAgent agent && agent.HierarchicalAgent != null) {
-      _threatsToCluster.Add(agent.HierarchicalAgent);
+    if (threat.HierarchicalAgent != null) {
+      _threatsToCluster.Add(threat.HierarchicalAgent);
     }
   }
 
@@ -78,32 +77,14 @@ public class IADS : MonoBehaviour {
   }
 
   private void ClusterThreats() {
-    // TODO(titan): Implement recursive clustering. Currently, the IADS clusters the threats into
-    // clusters of no more than seven threats, one cluster for each carrier interceptor. It then
-    // clusters the threat clusters into threat swarms, one for each launcher. Instead, the IADS
-    // should cluster the threats according to the hierarchy of the interceptors with possible
-    // additional hierarchy levels if there are too many threats to handle. Cluster the threats into
-    // threat clusters.
-    var threatClusterer = new AgglomerativeClusterer(_clusterMaxSize, _clusterMaxRadius);
-    List<Cluster> clusters = threatClusterer.Cluster(_threatsToCluster);
-    Debug.Log($"Clustered {_threatsToCluster.Count} threats into {clusters.Count} clusters.");
-    UIManager.Instance.LogActionMessage(
-        $"[IADS] Clustered {_threatsToCluster.Count} threats into {clusters.Count} clusters.");
+    // TODO(titan): The clustering algorithm should be aware of the capacity of the launcher.
+    var swarmClusterer = new KMeansClusterer(Mathf.RoundToInt(_launchers.Count / _coverageFactor));
+    List<Cluster> swarms = swarmClusterer.Cluster(_threatsToCluster);
     _threatsToCluster.Clear();
-
-    // Cluster the threat clusters into threat swarms.
-    if (_launchers.Count == 0) {
-      return;
-    }
-    var clusterClusterer = new KMeansClusterer(_launchers.Count);
-    List<Cluster> swarms = clusterClusterer.Cluster(clusters);
-    Debug.Log($"Clustered {clusters.Count} clusters into {swarms.Count} swarms.");
-    UIManager.Instance.LogActionMessage(
-        $"[IADS] Clustered {clusters.Count} clusters into {swarms.Count} swarms.");
 
     // Assign one swarm to each launcher.
     var swarmToLauncherAssignment =
-        new MinDistanceAssignment(Assignment.Assignment_CoverAssignment_Assign);
+        new MinDistanceAssignment(Assignment.Assignment_EvenAssignment_Assign);
     List<AssignmentItem> swarmToLauncherAssignments =
         swarmToLauncherAssignment.Assign(_launchers, swarms);
     void AssignTarget(IHierarchical hierarchical, IHierarchical target) {

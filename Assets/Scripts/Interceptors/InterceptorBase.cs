@@ -2,13 +2,16 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
+  public event InterceptHitMissEventHandler OnHit;
+  public event InterceptHitMissEventHandler OnMiss;
+
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
 
-  public virtual int Capacity { get; private set; }
-
-  public event InterceptHitMissEventHandler OnHit;
-  public event InterceptHitMissEventHandler OnMiss;
+  public int Capacity { get; private set; }
+  public int CapacityPerSubInterceptor { get; private set; }
+  public int CapacityRemaining => CapacityPerSubInterceptor * NumSubInterceptorsRemaining;
+  public int NumSubInterceptorsRemaining { get; protected set; }
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
@@ -17,6 +20,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _accelerationInput = Controller?.Plan() ?? Vector3.zero;
     _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
     _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
+  }
+
+  protected override void Update() {
+    base.Update();
+
+    // Update the agent hierarchy.
+    UpdateHierarchical();
   }
 
   protected override void UpdateAgentConfig() {
@@ -30,6 +40,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return (int)config.SubAgentConfig.NumSubAgents * NumAgents(config.SubAgentConfig.AgentConfig);
     }
     Capacity = NumAgents(AgentConfig);
+    CapacityPerSubInterceptor = NumAgents(AgentConfig.SubAgentConfig?.AgentConfig);
+    NumSubInterceptorsRemaining = (int)(AgentConfig.SubAgentConfig?.NumSubAgents ?? 0);
 
     // Set the controller.
     switch (AgentConfig.DynamicConfig?.FlightConfig?.ControllerType) {
@@ -74,6 +86,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       Gizmos.color = Color.yellow;
       Gizmos.DrawRay(Position, transform.up * axisLength);
     }
+  }
+
+  // Update the agent hierarchy, including updating track files and performing recursive target
+  // clustering on the new targets.
+  private void UpdateHierarchical() {
+    HierarchicalAgent.Update(CapacityPerSubInterceptor);
   }
 
   // If the interceptor collides with the ground or another agent, it will be terminated. It is

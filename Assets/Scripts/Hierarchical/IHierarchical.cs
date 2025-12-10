@@ -14,6 +14,7 @@ public interface IHierarchical {
   IEnumerable<IHierarchical> ActiveSubHierarchicals { get; }
   IHierarchical Target { get; set; }
   IReadOnlyList<IHierarchical> Pursuers { get; }
+  IReadOnlyList<IHierarchical> LaunchedHierarchicals { get; }
 
   Vector3 Position { get; }
   Vector3 Velocity { get; }
@@ -23,9 +24,17 @@ public interface IHierarchical {
 
   void AddSubHierarchical(IHierarchical subHierarchical);
   void RemoveSubHierarchical(IHierarchical subHierarchical);
+  void ClearSubHierarchicals();
 
   void AddPursuer(IHierarchical pursuer);
   void RemovePursuer(IHierarchical pursuer);
 
-  bool IsEscapingPursuers();
+  void AddLaunchedHierarchical(IHierarchical hierarchical);
+
+  // This function is called to update the agent hierarchy, including updating track files and
+  // performing recursive target clustering on the new targets.
+  void Update(int maxClusterSize);
+
+  // Recursively cluster the targets.
+  void RecursiveCluster(int maxClusterSize);
 }

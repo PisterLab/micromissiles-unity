@@ -4,6 +4,8 @@ using UnityEngine;
 public class AgentBase : MonoBehaviour, IAgent {
   private const float _epsilon = 1e-12f;
 
+  public event AgentTerminatedEventHandler OnTerminated;
+
   // Rigid body component.
   protected Rigidbody _rigidbody;
 
@@ -100,8 +102,6 @@ public class AgentBase : MonoBehaviour, IAgent {
   private
     set { _isTerminated = value; }
   }
-
-  public event AgentTerminatedEventHandler OnTerminated;
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
