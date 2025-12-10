@@ -203,7 +203,7 @@ public class HierarchicalBase : IHierarchical {
     }
 
     // Remove as many target sub-hierarchical objects until the interceptor capacity.
-    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals;
+    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals.ToList();
     var filteredSubHierarchicals =
         targetSubHierarchicals
             .OrderBy(subHierarchical =>
