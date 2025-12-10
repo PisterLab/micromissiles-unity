@@ -17,7 +17,7 @@ public class SimMonitor : MonoBehaviour {
     public string Details;
   }
 
-  private const float _updatePeriod = 0.1f;  // 100 Hz
+  private const float _updatePeriod = 0.1f;  // 10 Hz
 
   private string _telemetryBinPath;
   private string _eventLogPath;

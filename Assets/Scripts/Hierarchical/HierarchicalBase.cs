@@ -65,7 +65,9 @@ public class HierarchicalBase : IHierarchical {
   }
 
   public void AddLaunchedHierarchical(IHierarchical hierarchical) {
-    _launchedHierarchicals.Add(hierarchical);
+    if (!_launchedHierarchicals.Contains(hierarchical)) {
+      _launchedHierarchicals.Add(hierarchical);
+    }
   }
 
   public void Update(int maxClusterSize) {
@@ -115,25 +117,5 @@ public class HierarchicalBase : IHierarchical {
       return Vector3.zero;
     }
     return sum / count;
-  }
-
-  private bool IsEscapingPursuers() {
-    return Pursuers.All(pursuer => {
-      // A hierarchical object is considered escaping a pursuer if the closing velocity is
-      // non-positive or if the hierarchical object will reach its target before the pursuer reaches
-      // the hierarchical object.
-      Vector3 relativePosition = pursuer.Position - Position;
-      Vector3 relativeVelocity = pursuer.Velocity - Velocity;
-      float rangeRate = Vector3.Dot(relativeVelocity, relativePosition.normalized);
-      float closingVelocity = -rangeRate;
-      if (closingVelocity <= 0) {
-        return true;
-      }
-      float pursuerDistance = relativePosition.magnitude;
-      float targetDistance = (Target.Position - Position).magnitude;
-      float timeToTarget = targetDistance / Speed;
-      float pursuerTimeToIntercept = pursuerDistance / pursuer.Speed;
-      return pursuerDistance > targetDistance && timeToTarget < pursuerTimeToIntercept;
-    });
   }
 }
