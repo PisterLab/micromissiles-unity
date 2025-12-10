@@ -55,7 +55,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // The interceptor records a hit only if it collides with a threat and destroys it with the
   // threat's kill probability.
   private void OnTriggerEnter(Collider other) {
-    if (CheckFloorCollision()) {
+    if (CheckFloorCollision(other)) {
       OnMiss?.Invoke(this);
       Terminate();
     }

@@ -143,7 +143,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   // for a threat to collide with another threat or with a non-pursuing interceptor. Interceptors
   // will handle colliding with a threat.
   private void OnTriggerEnter(Collider other) {
-    if (CheckFloorCollision()) {
+    if (CheckFloorCollision(other)) {
       OnMiss?.Invoke(this);
       Terminate();
     }
