@@ -44,6 +44,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       default: {
         Debug.LogWarning(
             $"Controller type {AgentConfig.DynamicConfig?.FlightConfig?.ControllerType} not found.");
+        Controller = null;
         break;
       }
     }

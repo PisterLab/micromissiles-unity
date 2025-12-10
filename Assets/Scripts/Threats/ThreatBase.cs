@@ -121,7 +121,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   }
 
   private IAgent FindClosestPursuer() {
-    if (HierarchicalAgent == null || HierarchicalAgent.Pursuers.Count == 0) {
+    if (HierarchicalAgent == null || HierarchicalAgent.Pursuers.Count == 0 || Sensor == null) {
       return null;
     }
 
@@ -136,7 +136,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
         }
       }
     }
-    return closestAgent?.Agent ?? null;
+    return closestAgent?.Agent;
   }
 
   // If the threat collides with the ground or another agent, it will be terminated. It is possible
