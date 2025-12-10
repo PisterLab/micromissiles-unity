@@ -125,7 +125,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     IHierarchical target = interceptor.HierarchicalAgent.Target;
     if (target != null) {
       bool targetIsCovered =
-          target.Pursuers.Where(pursuer => pursuer != interceptor.HierarchicalAgent).Any();
+          target.Pursuers.Any(pursuer => pursuer != interceptor.HierarchicalAgent);
       if (!targetIsCovered) {
         OnReassignTarget?.Invoke(target);
       }
