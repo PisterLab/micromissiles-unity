@@ -4693,7 +4693,6 @@ MonoBehaviour:
   _orbitDistanceMax: 50000
   _zoomSpeed: 10
   _targetRenderer: {fileID: 1255004940}
-  _floorRenderer: {fileID: 320210796}
   _autoplayCamSpeed: 2
   _xAutoRotateTime: 5
   _yAutoRotateTime: 5

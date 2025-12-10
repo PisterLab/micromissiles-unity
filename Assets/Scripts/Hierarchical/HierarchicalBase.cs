@@ -65,7 +65,9 @@ public class HierarchicalBase : IHierarchical {
   }
 
   public void AddLaunchedHierarchical(IHierarchical hierarchical) {
-    _launchedHierarchicals.Add(hierarchical);
+    if (!_launchedHierarchicals.Contains(hierarchical)) {
+      _launchedHierarchicals.Add(hierarchical);
+    }
   }
 
   public void RemoveTargetHierarchical(IHierarchical target) {

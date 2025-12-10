@@ -1,13 +1,12 @@
-using UnityEngine;
-using System.Collections;
-using System.IO;
 using System;
-using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
+using System.IO;
+using System.Linq;
+using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
-  [System.Serializable]
+  [Serializable]
   private class EventRecord {
     public float Time;
     public float PositionX;
@@ -17,7 +16,7 @@ public class SimMonitor : MonoBehaviour {
     public string Details;
   }
 
-  private const float _updatePeriod = 0.1f;  // 100 Hz
+  private const float _updatePeriod = 0.1f;  // 10 Hz
 
   private string _telemetryBinPath;
   private string _eventLogPath;
@@ -59,7 +58,10 @@ public class SimMonitor : MonoBehaviour {
 
   private void RegisterSimulationEnded() {
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
-      StopCoroutine(_monitorRoutine);
+      if (_monitorRoutine != null) {
+        StopCoroutine(_monitorRoutine);
+        _monitorRoutine = null;
+      }
       CloseTelemetryLogFiles();
       StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
           _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));

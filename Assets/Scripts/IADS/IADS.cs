@@ -49,6 +49,10 @@ public class IADS : MonoBehaviour {
   }
 
   private void RegisterSimulationEnded() {
+    if (_hierarchyCoroutine != null) {
+      StopCoroutine(_hierarchyCoroutine);
+      _hierarchyCoroutine = null;
+    }
     _launchers.Clear();
     _newThreats.Clear();
   }
