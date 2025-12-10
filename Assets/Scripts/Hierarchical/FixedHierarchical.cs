@@ -5,6 +5,7 @@ using UnityEngine;
 public class FixedHierarchical : HierarchicalBase, IHierarchical {
   public new Vector3 Position { get; set; }
   public new Vector3 Velocity { get; set; }
+  public new float Speed => Velocity.magnitude;
   public new Vector3 Acceleration { get; set; }
   public override bool IsTerminated => false;
 
