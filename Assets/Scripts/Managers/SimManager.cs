@@ -353,7 +353,17 @@ public class SimManager : MonoBehaviour {
     return AttackBehaviorFactory.Create(attackBehaviorConfig);
   }
 
-  public Agent CreateDummyAgent(Vector3 position, Vector3 velocity) {
+  public IAgent CreateDummyAgent(in Vector3 position, in Vector3 velocity) {
+    GameObject dummyAgentPrefab = Resources.Load<GameObject>($"Prefabs/DummyAgent");
+    GameObject dummyAgentObject = Instantiate(dummyAgentPrefab, position, Quaternion.identity);
+    if (!dummyAgentObject.TryGetComponent<Agent>(out _)) {
+      dummyAgentObject.AddComponent<DummyAgent>();
+    }
+    dummyAgentObject.GetComponent<DummyAgent>().Velocity = velocity;
+    return dummyAgentObject.GetComponent<AgentBase>();
+  }
+
+  public Agent CreateDummyAgentLegacy(in Vector3 position, in Vector3 velocity) {
     if (_dummyAgentTable.ContainsKey((position, velocity))) {
       return _dummyAgentTable[(position, velocity)].GetComponent<Agent>();
     }
@@ -369,9 +379,42 @@ public class SimManager : MonoBehaviour {
     return dummyAgentObject.GetComponent<Agent>();
   }
 
+  // Create an interceptor based on the provided configuration.
+  public IAgent CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
+    if (config == null) {
+      return null;
+    }
+
+    // Load the static configuration.
+    Configs.StaticConfig staticConfig = ConfigLoader.LoadStaticConfig(config.ConfigFile);
+    if (staticConfig == null) {
+      return null;
+    }
+
+    GameObject interceptorObject = null;
+    if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
+      interceptorObject = CreateAgent(config, initialState, prefab);
+    }
+    if (interceptorObject == null) {
+      return null;
+    }
+
+    InterceptorBase interceptor = interceptorObject.GetComponent<InterceptorBase>();
+    interceptor.StaticConfig = staticConfig;
+
+    // Assign a unique and simple ID.
+    int interceptorId = 0;
+    interceptorObject.name = $"{staticConfig.Name}_Interceptor_{interceptorId}";
+
+    // Add the interceptor's unit cost to the total cost.
+    _costLaunchedInterceptors += staticConfig.Cost;
+    return interceptor;
+  }
+
   // Creates a interceptor based on the provided configuration.
   // Returns the created interceptor instance, or null if creation failed.
-  public Interceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
+  public Interceptor CreateInterceptorLegacy(Configs.AgentConfig config,
+                                             Simulation.State initialState) {
     if (config == null) {
       return null;
     }
@@ -385,7 +428,7 @@ public class SimManager : MonoBehaviour {
     // Create an agent corresponding to the interceptor.
     GameObject interceptorObject = null;
     if (AgentTypePrefabMap.TryGetValue(staticConfig.AgentType, out var prefab)) {
-      interceptorObject = CreateAgent(config, initialState, prefab);
+      interceptorObject = CreateAgentLegacy(config, initialState, prefab);
     }
     if (interceptorObject == null) {
       return null;
@@ -473,10 +516,32 @@ public class SimManager : MonoBehaviour {
     return threatObject.GetComponent<Threat>();
   }
 
+  // Create an agent based on the provided configuration and prefab name.
+  private GameObject CreateAgent(Configs.AgentConfig config, Simulation.State initialState,
+                                 string prefabName) {
+    GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
+    if (prefab == null) {
+      Debug.LogError($"Prefab {prefabName} not found in Resources/Prefabs directory.");
+      return null;
+    }
+
+    GameObject agentObject =
+        Instantiate(prefab, Coordinates3.FromProto(initialState.Position), Quaternion.identity);
+    IAgent agent = agentObject.GetComponent<AgentBase>();
+    agent.AgentConfig = config;
+    Vector3 velocity = Coordinates3.FromProto(initialState.Velocity);
+    agent.Velocity = velocity;
+
+    // Set the rotation to face the initial velocity.
+    Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
+    agentObject.transform.rotation = targetRotation;
+    return agentObject;
+  }
+
   // Creates a agent based on the provided configuration and prefab name.
   // Returns the created GameObject instance, or null if creation failed.
-  public GameObject CreateAgent(Configs.AgentConfig config, Simulation.State initialState,
-                                string prefabName) {
+  private GameObject CreateAgentLegacy(Configs.AgentConfig config, Simulation.State initialState,
+                                       string prefabName) {
     GameObject prefab = Resources.Load<GameObject>($"Prefabs/{prefabName}");
     if (prefab == null) {
       Debug.LogError($"Prefab {prefabName} not found in Resources/Prefabs directory.");
@@ -525,7 +590,7 @@ public class SimManager : MonoBehaviour {
     Vector3 velocityNoise = Utilities.GenerateRandomNoise(config.StandardDeviation.Velocity);
     initialState.Velocity =
         Coordinates3.ToProto(Coordinates3.FromProto(config.InitialState.Velocity) + velocityNoise);
-    return CreateAgent(config, initialState, prefabName);
+    return CreateAgentLegacy(config, initialState, prefabName);
   }
 
   public void LoadNewConfig(string configFile) {

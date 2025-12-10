@@ -2,15 +2,30 @@ using UnityEngine;
 
 // Missile movement.
 //
-// A missile is defined by having multiple modes during its flight: ready mode (before it is
-// launched), boost mode (when its burner is on), midcourse mode (after the burner has completed
-// burning), and terminal mode (when the agent is homing in on the target).
+// A missile is defined by having multiple phases during its flight: ready phases (before it is
+// launched), boost phases (when its burner is on), midcourse phases (after the burner has completed
+// burning), and terminal phases (when the agent is homing in on the target).
 //
 // We define two additional states for our simulator: initialized state (when the missile has been
 // created) and terminated state (when the missile has finished its flight).
+//
+// The missile is responsible for determining when it enters the boost phase.
 public class MissileMovement : AerialMovement {
   // Flight phase of the agent.
-  public Simulation.FlightPhase FlightPhase { get; set; }
+  private Simulation.FlightPhase _flightPhase;
+
+  // Boost time in seconds relative to the agent's creation time.
+  private float _boostTime;
+
+  public Simulation.FlightPhase FlightPhase {
+    get { return _flightPhase; }
+    set {
+      _flightPhase = value;
+      if (FlightPhase == Simulation.FlightPhase.Boost) {
+        _boostTime = Agent.ElapsedTime;
+      }
+    }
+  }
 
   public MissileMovement(IAgent agent) : base(agent) {
     FlightPhase = Simulation.FlightPhase.Initialized;
@@ -19,6 +34,13 @@ public class MissileMovement : AerialMovement {
   // Determine the agent's actual acceleration input given its intended acceleration input by
   // applying physics and other constraints.
   public override Vector3 Act(in Vector3 accelerationInput) {
+    // Step through the flight phases.
+    if (FlightPhase == Simulation.FlightPhase.Boost &&
+        Agent.ElapsedTime > _boostTime + (Agent.StaticConfig?.BoostConfig?.BoostTime ?? 0)) {
+      FlightPhase = Simulation.FlightPhase.Midcourse;
+    }
+
+    // Act according to the flight phase.
     switch (FlightPhase) {
       case Simulation.FlightPhase.Initialized: {
         // In the initialized phase, the agent is not subject to any acceleration.

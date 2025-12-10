@@ -8,6 +8,8 @@ public class MaxSpeedAssignmentTests : TestBase {
 
   private HierarchicalAgent GenerateAgent(in Vector3 position, in Vector3 velocity) {
     var agent = new GameObject("Agent").AddComponent<AgentBase>();
+    Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
+    InvokePrivateMethod(agent, "Awake");
     agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
           new Configs.AccelerationConfig() {
@@ -26,8 +28,6 @@ public class MaxSpeedAssignmentTests : TestBase {
             Mass = 1,
           },
     };
-    agent.gameObject.AddComponent<Rigidbody>();
-    InvokePrivateMethod(agent, "Awake");
     agent.Position = position;
     agent.Velocity = velocity;
     return new HierarchicalAgent(agent);
@@ -105,9 +105,9 @@ public class MaxSpeedAssignmentTests : TestBase {
   [Test]
   public void Assign_EmptyStaticConfig_DoesNotError() {
     var agent = new GameObject("Agent").AddComponent<AgentBase>();
-    agent.StaticConfig = new Configs.StaticConfig();
     agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(agent, "Awake");
+    agent.StaticConfig = new Configs.StaticConfig();
     var first = new List<HierarchicalAgent> { new HierarchicalAgent(agent) };
     var second = new List<FixedHierarchical> { new FixedHierarchical() };
     List<AssignmentItem> assignments = _assignment.Assign(first, second);

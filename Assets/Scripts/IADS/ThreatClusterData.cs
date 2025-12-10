@@ -20,7 +20,7 @@ public class ThreatClusterData {
 
   public ThreatClusterData(ClusterLegacy cluster) {
     _cluster = cluster;
-    _agent = SimManager.Instance.CreateDummyAgent(cluster.Centroid(), cluster.Velocity());
+    _agent = SimManager.Instance.CreateDummyAgentLegacy(cluster.Centroid(), cluster.Velocity());
   }
 
   public ClusterLegacy Cluster {

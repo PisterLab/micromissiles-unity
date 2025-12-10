@@ -2,7 +2,7 @@
 //
 // The predictor predicts the trajectories of hierarchical objects.
 public interface IPredictor {
-  IHierarchical Hierarchical { get; init; }
+  IHierarchical Hierarchical { get; set; }
 
   // Predict the future state of the hierarchical object.
   PredictorState Predict(float time);

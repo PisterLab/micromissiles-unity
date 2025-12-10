@@ -23,7 +23,7 @@ public abstract class AgentTestBase : TestBase {
   }
 
   protected Interceptor CreateTestInterceptor(Configs.AgentConfig config) {
-    Interceptor interceptor = SimManager.Instance.CreateInterceptor(
+    Interceptor interceptor = SimManager.Instance.CreateInterceptorLegacy(
         config, new Simulation.State() { Position = Coordinates3.ToProto(Vector3.zero),
                                          Velocity = Coordinates3.ToProto(Vector3.zero) });
     InvokePrivateMethod(interceptor, "Start");
