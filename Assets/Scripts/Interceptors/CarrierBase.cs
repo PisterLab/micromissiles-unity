@@ -35,7 +35,7 @@ public abstract class CarrierBase : InterceptorBase {
   }
 
   private IEnumerator ReleaseManager(float period) {
-    while (true) {
+    while (NumSubInterceptorsRemaining > 0) {
       // Determine whether to release the sub-interceptors.
       if (ReleaseStrategy != null) {
         List<IAgent> releasedAgents = ReleaseStrategy.Release();
@@ -43,5 +43,6 @@ public abstract class CarrierBase : InterceptorBase {
       }
       yield return new WaitForSeconds(period);
     }
+    _releaseCoroutine = null;
   }
 }

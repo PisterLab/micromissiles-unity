@@ -8,9 +8,10 @@ using UnityEngine;
 // to target the target hierarchical object. The released sub-interceptors are then assigned to the
 // sub-hierarchical objects of the target hierarchical object.
 public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
+  private const float _epsilon = 1e-12f;
   private const float _fanOutAngleDegrees = 60f;
 
-  public IAssignment Assignment { get; set; }
+  public IAssignment Assignment { get; init; }
 
   public MassReleaseStrategyBase(IAgent agent, IAssignment assignment) : base(agent) {
     Assignment = assignment;
@@ -43,6 +44,9 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
 
     Vector3 velocity = carrier.Velocity;
     Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
+    if (perpendicularDirection.sqrMagnitude < _epsilon) {
+      perpendicularDirection = Vector3.Cross(velocity, Vector3.forward);
+    }
 
     var releasedAgents = new List<IAgent>();
     for (int i = 0; i < subAgentConfig.NumSubAgents; ++i) {
