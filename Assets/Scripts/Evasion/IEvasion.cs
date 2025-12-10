@@ -5,7 +5,7 @@ using UnityEngine;
 // When a threat detects a pursuing interceptor in its vicinity, it may attempt to evade the
 // interceptor before resuming its attack behavior.
 public interface IEvasion {
-  IAgent Agent { get; set; }
+  IAgent Agent { get; init; }
 
   // Determine whether to perform any evasive maneuvers.
   bool ShouldEvade(IAgent pursuer);

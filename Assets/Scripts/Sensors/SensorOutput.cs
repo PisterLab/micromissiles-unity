@@ -2,8 +2,8 @@
 // agent's state.
 public struct SensorOutput {
   // Relative position transformation.
-  public PositionTransformation Position { get; set; }
+  public PositionTransformation Position { get; init; }
 
   // Relative velocity transformation.
-  public VelocityTransformation Velocity { get; set; }
+  public VelocityTransformation Velocity { get; init; }
 }

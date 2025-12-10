@@ -5,7 +5,7 @@ using UnityEngine;
 // The controller determines the acceleration input given the agent's current state and its intended
 // target or waypoint.
 public interface IController {
-  IAgent Agent { get; set; }
+  IAgent Agent { get; init; }
 
   // Plan the next optimal control to intercept the target.
   Vector3 Plan();
