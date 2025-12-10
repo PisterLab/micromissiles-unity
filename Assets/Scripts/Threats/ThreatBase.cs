@@ -4,6 +4,9 @@ using UnityEngine;
 
 // Base implementation of a threat.
 public abstract class ThreatBase : AgentBase, IThreat {
+  // Speed difference threshold for applying forward acceleration.
+  private const float _speedErrorThreshold = 1f;
+
   // Power table map from the power to the speed.
   private Dictionary<Configs.Power, float> _powerTable;
 
@@ -23,26 +26,68 @@ public abstract class ThreatBase : AgentBase, IThreat {
     }
   }
 
+  public event ThreatHitMissEventHandler OnHit;
+  public event ThreatHitMissEventHandler OnMiss;
+
   public float LookupPowerTable(Configs.Power power) {
     PowerTable.TryGetValue(power, out float speed);
     return speed;
+  }
+
+  public void HandleIntercept() {
+    OnMiss?.Invoke(this);
+    Terminate();
+  }
+
+  protected override void Start() {
+    base.Start();
+
+    // The threat should target the nearest launcher.
+    IHierarchical target = null;
+    var launchers = IADS.Instance.Launchers;
+    if (launchers.Count == 0) {
+      target = new FixedHierarchical(position: Vector3.zero);
+    } else {
+      float minDistanceSqr = Mathf.Infinity;
+      foreach (var launcher in launchers) {
+        float distanceSqr = (launcher.Position - Position).sqrMagnitude;
+        if (distanceSqr < minDistanceSqr) {
+          minDistanceSqr = distanceSqr;
+          target = launcher;
+        }
+      }
+    }
+    HierarchicalAgent.Target = target;
   }
 
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
     Vector3 accelerationInput = Vector3.zero;
-    Configs.Power power = Configs.Power.Idle;
+    float desiredSpeed = 0f;
     // Check whether the threat should evade any pursuer.
     IAgent closestPursuer = FindClosestPursuer();
     if (Evasion != null && closestPursuer != null && Evasion.ShouldEvade(closestPursuer)) {
       accelerationInput = Evasion.Evade(closestPursuer);
+      desiredSpeed = LookupPowerTable(Configs.Power.Max);
     } else {
       // Follow the attack behavior.
       (Vector3 waypoint, Configs.Power waypointPower) =
           AttackBehavior.GetNextWaypoint(TargetModel.Position);
-      power = waypointPower;
       accelerationInput = Controller?.Plan(waypoint) ?? Vector3.zero;
+      desiredSpeed = LookupPowerTable(waypointPower);
+    }
+
+    // Limit the forward acceleration according to the desired speed.
+    float speedError = desiredSpeed - Speed;
+    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, transform.forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(accelerationInput, transform.forward);
+    if (Mathf.Abs(speedError) < _speedErrorThreshold) {
+      accelerationInput = normalAccelerationInput;
+    } else {
+      float speedFactor = Mathf.Clamp01(Mathf.Abs(speedError) / _speedErrorThreshold);
+      accelerationInput =
+          normalAccelerationInput + forwardAccelerationInput * Mathf.Sign(speedError) * speedFactor;
     }
 
     Vector3 acceleration = Movement?.Act(accelerationInput) ?? Vector3.zero;
@@ -92,5 +137,30 @@ public abstract class ThreatBase : AgentBase, IThreat {
       }
     }
     return closestAgent?.Agent;
+  }
+
+  // If the threat collides with the ground or another agent, it will be terminated. It is possible
+  // for a threat to collide with another threat or with a non-pursuing interceptor. Interceptors
+  // will handle colliding with a threat.
+  private void OnTriggerEnter(Collider other) {
+    if (CheckFloorCollision(other)) {
+      OnMiss?.Invoke(this);
+      Terminate();
+    }
+
+    IAgent otherAgent = other.gameObject.GetComponentInParent<IAgent>();
+    // Dummy agents are virtual targets and should not trigger collisions.
+    if (otherAgent == null || otherAgent is DummyAgent) {
+      return;
+    }
+    // Check if the collision is with another threat or with the intended target.
+    if (otherAgent is IThreat) {
+      OnMiss?.Invoke(this);
+      Terminate();
+    } else if (HierarchicalAgent.Target is HierarchicalAgent targetAgent &&
+               otherAgent == targetAgent.Agent) {
+      OnHit?.Invoke(this);
+      Terminate();
+    }
   }
 }

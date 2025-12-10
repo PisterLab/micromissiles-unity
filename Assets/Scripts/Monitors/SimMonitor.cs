@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 public class SimMonitor : MonoBehaviour {
-  private const float _updateRate = 0.1f;  // 100 Hz
+  private const float _updatePeriod = 0.1f;  // 10 Hz
   private string _telemetryBinPath;
   private string _eventLogPath;
   private Coroutine _monitorRoutine;
@@ -86,44 +86,40 @@ public class SimMonitor : MonoBehaviour {
   private IEnumerator MonitorRoutine() {
     while (true) {
       RecordTelemetry();
-      yield return new WaitForSeconds(_updateRate);
+      yield return new WaitForSeconds(_updatePeriod);
     }
   }
 
   private void RecordTelemetry() {
-    float time = SimManager.Instance.GetElapsedSimulationTime();
-    var agents = SimManager.Instance.GetActiveAgents();
+    float time = SimManager.Instance.ElapsedSimulationTime;
+    var agents = SimManager.Instance.Agents.Where(agent => !agent.IsTerminated).ToList();
     if (_telemetryBinaryWriter == null) {
-      Debug.LogWarning("Telemetry binary writer is null");
+      Debug.LogWarning("Telemetry binary writer is null.");
       return;
     }
-    for (int i = 0; i < agents.Count; ++i) {
-      var agent = agents[i];
-
-      if (!agent.gameObject.activeInHierarchy)
+    foreach (var agent in agents) {
+      if (!agent.gameObject.activeInHierarchy) {
         continue;
+      }
 
-      Vector3 pos = agent.transform.position;
-
-      if (pos == Vector3.zero)
+      Vector3 position = agent.transform.position;
+      if (position == Vector3.zero) {
         continue;
+      }
 
-      Vector3 vel = agent.GetVelocity();  // Ensure GetVelocity() doesn't allocate
-
-      int agentID = agent.GetInstanceID();
-      int flightPhase = (int)agent.GetFlightPhase();
-      byte agentType = (byte)(agent is Threat ? 0 : 1);
+      Vector3 velocity = agent.Velocity;
+      int agentID = agent.gameObject.GetInstanceID();
+      byte agentType = (byte)(agent is IThreat ? 0 : 1);
 
       // Write telemetry data directly to the binary file
       _telemetryBinaryWriter.Write(time);
       _telemetryBinaryWriter.Write(agentID);
-      _telemetryBinaryWriter.Write(pos.x);
-      _telemetryBinaryWriter.Write(pos.y);
-      _telemetryBinaryWriter.Write(pos.z);
-      _telemetryBinaryWriter.Write(vel.x);
-      _telemetryBinaryWriter.Write(vel.y);
-      _telemetryBinaryWriter.Write(vel.z);
-      _telemetryBinaryWriter.Write(flightPhase);
+      _telemetryBinaryWriter.Write(position.x);
+      _telemetryBinaryWriter.Write(position.y);
+      _telemetryBinaryWriter.Write(position.z);
+      _telemetryBinaryWriter.Write(velocity.x);
+      _telemetryBinaryWriter.Write(velocity.y);
+      _telemetryBinaryWriter.Write(velocity.z);
       _telemetryBinaryWriter.Write(agentType);
     }
   }
@@ -135,31 +131,29 @@ public class SimMonitor : MonoBehaviour {
       using BinaryReader reader = new BinaryReader(fs);
       using StreamWriter writer = new StreamWriter(csvFilePath, false);
       {
-        // Write CSV header
-        writer.WriteLine(
-            "Time,AgentID,AgentX,AgentY,AgentZ,AgentVX,AgentVY,AgentVZ,AgentState,AgentType");
+        // Write the CSV header.
+        writer.WriteLine("Time,AgentID,AgentX,AgentY,AgentZ,AgentVX,AgentVY,AgentVZ,AgentType");
 
         while (reader.BaseStream.Position != reader.BaseStream.Length) {
           float time = reader.ReadSingle();
           int agentID = reader.ReadInt32();
-          float posX = reader.ReadSingle();
-          float posY = reader.ReadSingle();
-          float posZ = reader.ReadSingle();
-          float velX = reader.ReadSingle();
-          float velY = reader.ReadSingle();
-          float velZ = reader.ReadSingle();
-          int flightPhase = reader.ReadInt32();
+          float positionX = reader.ReadSingle();
+          float positionY = reader.ReadSingle();
+          float positionZ = reader.ReadSingle();
+          float velocityX = reader.ReadSingle();
+          float velocityY = reader.ReadSingle();
+          float velocityZ = reader.ReadSingle();
           byte agentTypeByte = reader.ReadByte();
           string agentType = agentTypeByte == 0 ? "T" : "M";
 
-          // Write the data to CSV
+          // Write the data to CSV.
           writer.WriteLine(
-              $"{time:F2},{agentID},{posX:F2},{posY:F2},{posZ:F2},{velX:F2},{velY:F2},{velZ:F2},{flightPhase},{agentType}");
+              $"{time:F2},{agentID},{positionX:F2},{positionY:F2},{positionZ:F2},{velocityX:F2},{velocityY:F2},{velocityZ:F2},{agentType}");
         }
       }
     } catch (IOException e) {
       Debug.LogWarning(
-          $"An IO error occurred while converting binary telemetry to CSV: {e.Message}");
+          $"An IO error occurred while converting binary telemetry to CSV: {e.Message}.");
     }
   }
 
@@ -203,47 +197,49 @@ public class SimMonitor : MonoBehaviour {
     ConvertBinaryTelemetryToCsv(binaryFilePath, csvFilePath);
   }
 
-  public void RegisterNewThreat(Threat threat) {
+  public void RegisterNewThreat(IThreat threat) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       RegisterNewAgent(threat, "NEW_THREAT");
     }
   }
 
-  public void RegisterNewInterceptor(Interceptor interceptor) {
+  public void RegisterNewInterceptor(IInterceptor interceptor) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
-      interceptor.OnInterceptMiss += RegisterInterceptorMiss;
-      interceptor.OnInterceptHit += RegisterInterceptorHit;
+      interceptor.OnHit += RegisterInterceptorHit;
+      interceptor.OnMiss += RegisterInterceptorMiss;
     }
   }
 
-  private void RegisterNewAgent(Agent agent, string eventType) {
-    float time = SimManager.Instance.GetElapsedSimulationTime();
+  private void RegisterNewAgent(IAgent agent, string eventType) {
+    float time = SimManager.Instance.ElapsedSimulationTime;
     Vector3 pos = agent.transform.position;
-    var record = new EventRecord { Time = time,       PositionX = pos.x,     PositionY = pos.y,
-                                   PositionZ = pos.z, EventType = eventType, Details = agent.name };
+    var record = new EventRecord {
+      Time = time,       PositionX = pos.x,     PositionY = pos.y,
+      PositionZ = pos.z, EventType = eventType, Details = agent.gameObject.name,
+    };
     _eventLogCache.Add(record);
   }
 
-  public void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
+  public void RegisterInterceptorHit(IInterceptor interceptor) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
-      RegisterInterceptorEvent(interceptor, threat, true);
+      RegisterInterceptorEvent(interceptor, true);
     }
   }
 
-  public void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
+  public void RegisterInterceptorMiss(IInterceptor interceptor) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
-      RegisterInterceptorEvent(interceptor, threat, false);
+      RegisterInterceptorEvent(interceptor, false);
     }
   }
 
-  public void RegisterInterceptorEvent(Interceptor interceptor, Threat threat, bool hit) {
-    float time = SimManager.Instance.GetElapsedSimulationTime();
+  public void RegisterInterceptorEvent(IInterceptor interceptor, bool hit) {
+    float time = SimManager.Instance.ElapsedSimulationTime;
     Vector3 pos = interceptor.transform.position;
     string eventType = hit ? "INTERCEPTOR_HIT" : "INTERCEPTOR_MISS";
     var record = new EventRecord {
       Time = time,       PositionX = pos.x,     PositionY = pos.y,
-      PositionZ = pos.z, EventType = eventType, Details = $"{interceptor.name} and {threat.name}"
+      PositionZ = pos.z, EventType = eventType, Details = $"{interceptor.gameObject.name}",
     };
     _eventLogCache.Add(record);
   }

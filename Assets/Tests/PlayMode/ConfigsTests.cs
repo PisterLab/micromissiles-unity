@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using System.IO;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
@@ -16,7 +15,6 @@ public class ConfigsTests : TestBase {
   public IEnumerator TestAllSimulationConfigFilesLoad() {
     string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs/Simulations");
     string[] configFiles = Directory.GetFiles(configPath, "*.pbtxt");
-
     Assert.IsTrue(configFiles.Length > 0, "No simulation configuration files found.");
 
     bool isPaused = false;
@@ -27,25 +25,10 @@ public class ConfigsTests : TestBase {
         isPaused = true;
       }
       yield return new WaitForSecondsRealtime(0.1f);
-      SimManager.Instance.LoadNewConfig(configFiles[i]);
+      SimManager.Instance.LoadNewSimulationConfig(configFiles[i]);
       yield return new WaitForSecondsRealtime(0.1f);
-      double elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
+      double elapsedTime = SimManager.Instance.ElapsedSimulationTime;
       if (isPaused) {
-        List<Agent> agents = SimManager.Instance.GetActiveAgents();
-        foreach (Agent agent in agents) {
-          if (agent is Interceptor interceptor) {
-            // All interceptors start in the INITIALIZED phase.
-            Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
-                "All interceptors should be in the INITIALIZED flight phase after loading while paused.");
-
-          } else if (agent is Threat threat) {
-            // All threats start in the INITIALIZED phase.
-            Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
-                "All threats should be in the INITIALIZED flight phase after loading while paused.");
-          }
-        }
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime), epsilon,
             "Fixed delta time should be approximately 0 after loading while paused.");
@@ -66,7 +49,7 @@ public class ConfigsTests : TestBase {
         SimManager.Instance.ResumeSimulation();
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
-        Assert.IsTrue(SimManager.Instance.GetElapsedSimulationTime() > 0 + epsilon,
+        Assert.IsTrue(SimManager.Instance.ElapsedSimulationTime > 0 + epsilon,
                       "Simulation time should have advanced after resuming.");
       }
     }

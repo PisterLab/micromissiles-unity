@@ -36,6 +36,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   // Last sensing time.
   private float _lastSensingTime = Mathf.NegativeInfinity;
 
+  // If true, the agent is terminated.
+  private bool _isTerminated = false;
+
   public HierarchicalAgent HierarchicalAgent {
     get => _hierarchicalAgent;
     set => _hierarchicalAgent = value;
@@ -92,6 +95,13 @@ public class AgentBase : MonoBehaviour, IAgent {
   private
     set { _elapsedTime = value; }
   }
+  public bool IsTerminated {
+    get { return _isTerminated; }
+  private
+    set { _isTerminated = value; }
+  }
+
+  public event AgentTerminatedEventHandler OnTerminated;
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
@@ -134,6 +144,19 @@ public class AgentBase : MonoBehaviour, IAgent {
     return GetRelativeTransformation(waypoint, Vector3.zero, Vector3.zero);
   }
 
+  public void Terminate() {
+    if (HierarchicalAgent != null) {
+      HierarchicalAgent.Target = null;
+    }
+    if (Movement is MissileMovement movement) {
+      movement.FlightPhase = Simulation.FlightPhase.Terminated;
+    }
+    IsTerminated = true;
+    OnTerminated?.Invoke(this);
+    Position = Vector3.zero;
+    gameObject.SetActive(false);
+  }
+
   // Awake is called before Start and right after a prefab is instantiated.
   protected virtual void Awake() {
     _rigidbody = GetComponent<Rigidbody>();
@@ -151,6 +174,15 @@ public class AgentBase : MonoBehaviour, IAgent {
     AlignWithVelocity();
   }
 
+  // Update is called every frame.
+  protected virtual void Update() {}
+
+  // LateUpdate is called every frame after all Update functions have been called.
+  protected virtual void LateUpdate() {}
+
+  // OnDestroy is called when the object is being destroyed.
+  protected virtual void OnDestroy() {}
+
   // UpdateAgentConfig is called whenever the agent configuration is changed.
   protected virtual void UpdateAgentConfig() {
     // Set the sensor.
@@ -166,9 +198,10 @@ public class AgentBase : MonoBehaviour, IAgent {
     }
   }
 
-  // TODO(titan): Event handlers for hits and misses.
-
-  // TODO(titan): Methods for updating the agent and terminating the agent.
+  protected bool CheckFloorCollision(Collider other) {
+    // Check if the agent hit the floor with a negative vertical speed.
+    return other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0;
+  }
 
   private void AlignWithVelocity() {
     const float speedThreshold = 0.1f;
@@ -249,22 +282,22 @@ public class AgentBase : MonoBehaviour, IAgent {
     // Project relative velocity onto the sphere passing through the target.
     Vector3 tangentialVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
 
-    // The target azimuth vector is orthogonal to the relative position vector and
-    // points to the starboard of the target along the azimuth-elevation sphere.
+    // The target azimuth vector is orthogonal to the relative position vector and points to the
+    // starboard of the target along the azimuth-elevation sphere.
     Vector3 targetAzimuth = Vector3.Cross(transform.up, relativePosition);
-    // The target elevation vector is orthogonal to the relative position vector
-    // and points upwards from the target along the azimuth-elevation sphere.
+    // The target elevation vector is orthogonal to the relative position vector and points upwards
+    // from the target along the azimuth-elevation sphere.
     Vector3 targetElevation = Vector3.Cross(relativePosition, transform.right);
-    // If the relative position vector is parallel to the yaw or pitch axis, the
-    // target azimuth vector or the target elevation vector will be undefined.
+    // If the relative position vector is parallel to the yaw or pitch axis, the target azimuth
+    // vector or the target elevation vector will be undefined.
     if (targetAzimuth.sqrMagnitude < _epsilon) {
       targetAzimuth = Vector3.Cross(targetElevation, relativePosition);
     } else if (targetElevation.sqrMagnitude < _epsilon) {
       targetElevation = Vector3.Cross(relativePosition, targetAzimuth);
     }
 
-    // Project the relative velocity vector on the azimuth-elevation sphere onto
-    // the target azimuth vector.
+    // Project the relative velocity vector on the azimuth-elevation sphere onto the target azimuth
+    // vector.
     Vector3 tangentialVelocityOnAzimuth = Vector3.Project(tangentialVelocity, targetAzimuth);
 
     // Calculate the time derivative of the azimuth to the target.
@@ -273,8 +306,7 @@ public class AgentBase : MonoBehaviour, IAgent {
       azimuth *= -1;
     }
 
-    // Project the velocity vector on the azimuth-elevation sphere onto the target
-    // elevation vector.
+    // Project the velocity vector on the azimuth-elevation sphere onto the target elevation vector.
     Vector3 tangentialVelocityOnElevation = Vector3.Project(tangentialVelocity, targetElevation);
 
     // Calculate the time derivative of the elevation to the target.
