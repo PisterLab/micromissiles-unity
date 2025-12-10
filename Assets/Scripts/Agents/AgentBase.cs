@@ -118,6 +118,10 @@ public class AgentBase : MonoBehaviour, IAgent {
     if (HierarchicalAgent == null || HierarchicalAgent.Target == null || Sensor == null) {
       return;
     }
+    if (HierarchicalAgent.Target.IsTerminated) {
+      HierarchicalAgent.Target = null;
+      return;
+    }
 
     // Check whether the sensing period has elapsed.
     float sensingFrequency = AgentConfig?.DynamicConfig?.SensorConfig?.Frequency ?? Mathf.Infinity;
@@ -153,8 +157,7 @@ public class AgentBase : MonoBehaviour, IAgent {
     }
     IsTerminated = true;
     OnTerminated?.Invoke(this);
-    Position = Vector3.zero;
-    gameObject.SetActive(false);
+    Destroy(gameObject);
   }
 
   // Awake is called before Start and right after a prefab is instantiated.

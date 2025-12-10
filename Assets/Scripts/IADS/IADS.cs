@@ -108,7 +108,7 @@ public class IADS : MonoBehaviour {
         swarmToLauncherAssignment.Assign(_launchers, swarms);
     void AssignTarget(IHierarchical hierarchical, IHierarchical target) {
       hierarchical.Target = target;
-      foreach (var subHierarchical in hierarchical.SubHierarchicals) {
+      foreach (var subHierarchical in hierarchical.ActiveSubHierarchicals) {
         AssignTarget(subHierarchical, target);
       }
     }

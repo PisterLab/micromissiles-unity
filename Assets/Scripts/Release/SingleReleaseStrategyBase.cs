@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Base implementation of a single release strategy.
@@ -14,7 +15,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
 
   public override List<IAgent> Release() {
     IHierarchical target = Agent.HierarchicalAgent.Target;
-    if (target == null || target.SubHierarchicals.Count == 0) {
+    if (target == null || !target.ActiveSubHierarchicals.Any()) {
       return new List<IAgent>();
     }
     var carrier = Agent as CarrierBase;
@@ -23,12 +24,9 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
     }
 
     var releasedAgents = new List<IAgent>();
-    foreach (var subHierarchical in target.SubHierarchicals) {
+    foreach (var subHierarchical in target.ActiveSubHierarchicals) {
       if (carrier.NumSubInterceptorsRemaining - releasedAgents.Count <= 0) {
         break;
-      }
-      if (subHierarchical.IsTerminated) {
-        continue;
       }
       if (subHierarchical.Pursuers.Count != 0 && !subHierarchical.IsEscapingPursuers()) {
         continue;

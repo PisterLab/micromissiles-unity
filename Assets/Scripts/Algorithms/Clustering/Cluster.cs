@@ -11,18 +11,16 @@ public class Cluster : HierarchicalBase {
     set => _centroid = value;
   }
 
-  public int Size => SubHierarchicals.Count;
+  public int Size => ActiveSubHierarchicals.Count();
   public bool IsEmpty => Size == 0;
 
   public float Radius() {
     if (IsEmpty) {
       return 0;
     }
-    return SubHierarchicals.Where(subHierarchical => !subHierarchical.IsTerminated)
-        .DefaultIfEmpty()
-        .Max(subHierarchical => subHierarchical == null
-                                    ? 0
-                                    : Vector3.Distance(Centroid, subHierarchical.Position));
+    return ActiveSubHierarchicals.DefaultIfEmpty().Max(
+        subHierarchical =>
+            subHierarchical == null ? 0 : Vector3.Distance(Centroid, subHierarchical.Position));
   }
 
   public void Recenter() {
