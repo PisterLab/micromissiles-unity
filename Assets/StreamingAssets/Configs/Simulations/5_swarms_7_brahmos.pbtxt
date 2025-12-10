@@ -36,7 +36,7 @@ interceptor_swarm_configs {
         }
         sub_agent_config {
           num_sub_agents: 7
-          agent_config: {
+          agent_config {
             config_file: "micromissile.pbtxt"
             dynamic_config {
               flight_config {
