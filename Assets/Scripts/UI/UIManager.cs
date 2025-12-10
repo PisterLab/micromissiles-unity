@@ -1,10 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
 
 public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
@@ -14,7 +13,6 @@ public class UIManager : MonoBehaviour {
   private GameObject _cameraPanel = null!;
 
   [SerializeField]
-
   private GameObject _configSelectorPanel = null!;
   private TMP_Dropdown _configDropdown;
   public TextMeshProUGUI simTimeText;
@@ -33,33 +31,28 @@ public class UIManager : MonoBehaviour {
   public TextMeshProUGUI ppppActionMessageTextHandle;
   public TextMeshProUGUI pppppActionMessageTextHandle;
 
+  public TMP_FontAsset GlobalFont;
   private int _numInterceptorHits = 0;
   private int _numInterceptorMisses = 0;
   private int _numInterceptorsRemaining = 0;
   private int _numThreatsRemaining = 0;
-  public TMP_FontAsset GlobalFont;
 
-  private UIMode curMode = UIMode.THREE_DIMENSIONAL;
+  private UIMode _uiMode = UIMode.THREE_DIMENSIONAL;
 
-  void Awake() {
-    if (Instance == null)
-      Instance = this;
-    else
-      Destroy(gameObject);
+  public UIMode UIMode {
+    get => _uiMode;
+    set {
+      _uiMode = value;
+      _cameraPanel.SetActive(_uiMode == UIMode.THREE_DIMENSIONAL);
+    }
   }
 
-  void Start() {
-    SetUIMode(UIMode.THREE_DIMENSIONAL);
-    _configSelectorPanel.SetActive(false);
-    SetupConfigSelectorPanel();
-    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
-    SimManager.Instance.OnNewThreat += RegisterNewThreat;
-    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
-    actionMessageTextHandle.text = "";
-    pActionMessageTextHandle.text = "";
-    ppActionMessageTextHandle.text = "";
-    ppppActionMessageTextHandle.text = "";
-    pppppActionMessageTextHandle.text = "";
+  public void ToggleUIMode() {
+    UIMode = (_uiMode == UIMode.THREE_DIMENSIONAL) ? UIMode.TACTICAL : UIMode.THREE_DIMENSIONAL;
+  }
+
+  public void ToggleConfigSelectorPanel() {
+    _configSelectorPanel.SetActive(!_configSelectorPanel.activeSelf);
   }
 
   public void LogAction(string message, Color color) {
@@ -94,8 +87,30 @@ public class UIManager : MonoBehaviour {
     LogAction(message, Color.red);
   }
 
-  public void ToggleConfigSelectorPanel() {
-    _configSelectorPanel.SetActive(!_configSelectorPanel.activeSelf);
+  private void Awake() {
+    if (Instance == null)
+      Instance = this;
+    else
+      Destroy(gameObject);
+  }
+
+  private void Start() {
+    UIMode = UIMode.THREE_DIMENSIONAL;
+    _configSelectorPanel.SetActive(false);
+    SetupConfigSelectorPanel();
+    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+    SimManager.Instance.OnNewThreat += RegisterNewThreat;
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+    actionMessageTextHandle.text = "";
+    pActionMessageTextHandle.text = "";
+    ppActionMessageTextHandle.text = "";
+    ppppActionMessageTextHandle.text = "";
+    pppppActionMessageTextHandle.text = "";
+  }
+
+  private void Update() {
+    UpdateSimTimeText();
+    UpdateTotalCostText();
   }
 
   private void SetupConfigSelectorPanel() {
@@ -116,23 +131,11 @@ public class UIManager : MonoBehaviour {
     }
     _configDropdown.AddOptions(configFileNames);
   }
+
   private void LoadSelectedConfig() {
     string selectedConfig = _configDropdown.options[_configDropdown.value].text;
     SimManager.Instance.LoadNewSimulationConfig(selectedConfig);
     _configSelectorPanel.SetActive(false);
-  }
-
-  public void ToggleUIMode() {
-    SetUIMode(curMode == UIMode.THREE_DIMENSIONAL ? UIMode.TACTICAL : UIMode.THREE_DIMENSIONAL);
-  }
-
-  public void SetUIMode(UIMode mode) {
-    curMode = mode;
-    _cameraPanel.SetActive(mode == UIMode.THREE_DIMENSIONAL);
-  }
-
-  public UIMode GetUIMode() {
-    return curMode;
   }
 
   private void UpdateSimTimeText() {
@@ -173,14 +176,6 @@ public class UIManager : MonoBehaviour {
     return $"{cost:F2}";
   }
 
-  private void RegisterSimulationEnded() {
-    _numInterceptorsRemaining = 0;
-    _numThreatsRemaining = 0;
-    _numInterceptorHits = 0;
-    _numInterceptorMisses = 0;
-    UpdateSummaryText();
-  }
-
   private void UpdateSummaryText() {
     interceptorRemainingTextHandle.text = _numInterceptorsRemaining.ToString();
     threatRemainingTextHandle.text = _numThreatsRemaining.ToString();
@@ -202,15 +197,6 @@ public class UIManager : MonoBehaviour {
     UpdateSummaryText();
   }
 
-  private void RegisterAgentTerminated(IAgent agent) {
-    if (agent is IInterceptor) {
-      --_numInterceptorsRemaining;
-    } else if (agent is IThreat) {
-      --_numThreatsRemaining;
-    }
-    UpdateSummaryText();
-  }
-
   private void RegisterInterceptorHit(IInterceptor interceptor) {
     ++_numInterceptorHits;
     UpdateSummaryText();
@@ -221,10 +207,25 @@ public class UIManager : MonoBehaviour {
     UpdateSummaryText();
   }
 
-  void Update() {
-    UpdateSimTimeText();
-    UpdateTotalCostText();
+  private void RegisterAgentTerminated(IAgent agent) {
+    if (agent is IInterceptor) {
+      --_numInterceptorsRemaining;
+    } else if (agent is IThreat) {
+      --_numThreatsRemaining;
+    }
+    UpdateSummaryText();
+  }
+
+  private void RegisterSimulationEnded() {
+    _numInterceptorsRemaining = 0;
+    _numThreatsRemaining = 0;
+    _numInterceptorHits = 0;
+    _numInterceptorMisses = 0;
+    UpdateSummaryText();
   }
 }
 
-public enum UIMode { THREE_DIMENSIONAL, TACTICAL }
+public enum UIMode {
+  THREE_DIMENSIONAL,
+  TACTICAL,
+}
