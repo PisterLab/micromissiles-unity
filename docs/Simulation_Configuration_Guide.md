@@ -141,7 +141,7 @@ interceptor_swarm_configs {
     }
     sub_agent_config {
       num_sub_agents: 7
-      agent_config: {
+      agent_config {
         config_file: "micromissile.pbtxt"
         dynamic_config {
           flight_config {
@@ -188,8 +188,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 1000
+          enabled: true
+          range_threshold: 1000
         }
       }
       sensor_config {
@@ -240,7 +240,7 @@ interceptor_swarm_configs {
     }
     sub_agent_config {
       num_sub_agents: 7
-      agent_config: {
+      agent_config {
         config_file: "micromissile.pbtxt"
         dynamic_config {
           flight_config {
@@ -287,8 +287,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -330,8 +330,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -373,8 +373,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -416,8 +416,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -459,8 +459,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {

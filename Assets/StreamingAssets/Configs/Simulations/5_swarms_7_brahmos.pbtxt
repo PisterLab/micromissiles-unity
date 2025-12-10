@@ -85,8 +85,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -128,8 +128,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -171,8 +171,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -214,8 +214,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {
@@ -257,8 +257,8 @@ threat_swarm_configs {
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 2000
+          enabled: true
+          range_threshold: 2000
         }
       }
       sensor_config {

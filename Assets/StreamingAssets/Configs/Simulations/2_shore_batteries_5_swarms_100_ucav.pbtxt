@@ -2,15 +2,10 @@ end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
   agent_config {
-    config_file: "ddg.pbtxt"
+    config_file: "shore_battery.pbtxt"
     initial_state {
       position {
         x: 0
-        y: 0
-        z: 0
-      }
-      velocity {
-        x: 5
         y: 0
         z: 0
       }
@@ -22,7 +17,55 @@ interceptor_swarm_configs {
       }
     }
     sub_agent_config {
-      num_sub_agents: 126
+      num_sub_agents: 1000
+      agent_config {
+        config_file: "hydra70.pbtxt"
+        dynamic_config {
+          flight_config {
+            controller_type: PROPORTIONAL_NAVIGATION
+          }
+          sensor_config {
+            type: IDEAL
+            frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              flight_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+interceptor_swarm_configs {
+  agent_config {
+    config_file: "shore_battery.pbtxt"
+    initial_state {
+      position {
+        x: 5000
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      sensor_config {
+        type: IDEAL
+        frequency: 1000
+      }
+    }
+    sub_agent_config {
+      num_sub_agents: 1000
       agent_config {
         config_file: "hydra70.pbtxt"
         dynamic_config {
@@ -54,13 +97,13 @@ interceptor_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 100
+  num_agents: 20
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
-        x: 0
+        x: -1000
         y: 800
         z: 10000
       }
@@ -97,13 +140,13 @@ threat_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 100
+  num_agents: 20
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
-        x: 0
+        x: 6000
         y: 900
         z: 11000
       }
@@ -140,13 +183,13 @@ threat_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 100
+  num_agents: 20
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
-        x: 0
+        x: -1500
         y: 1000
         z: 12000
       }
@@ -183,13 +226,13 @@ threat_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 100
+  num_agents: 20
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
-        x: 0
+        x: 6000
         y: 1100
         z: 13000
       }
@@ -226,13 +269,13 @@ threat_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 100
+  num_agents: 20
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
-        x: 0
+        x: -1500
         y: 1200
         z: 14000
       }
