@@ -105,9 +105,9 @@ public class MaxSpeedAssignmentTests : TestBase {
   [Test]
   public void Assign_EmptyStaticConfig_DoesNotError() {
     var agent = new GameObject("Agent").AddComponent<AgentBase>();
-    agent.StaticConfig = new Configs.StaticConfig();
     agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(agent, "Awake");
+    agent.StaticConfig = new Configs.StaticConfig();
     var first = new List<HierarchicalAgent> { new HierarchicalAgent(agent) };
     var second = new List<FixedHierarchical> { new FixedHierarchical() };
     List<AssignmentItem> assignments = _assignment.Assign(first, second);
