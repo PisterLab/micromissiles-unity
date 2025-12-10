@@ -436,7 +436,7 @@ public abstract class Agent : MonoBehaviour {
   }
 
   private float CalculateLiftInducedDrag(Vector3 accelerationInput) {
-    float liftAcceleration = Vector3.ProjectOnPlane(accelerationInput, transform.up).magnitude;
+    float liftAcceleration = Vector3.ProjectOnPlane(accelerationInput, transform.forward).magnitude;
     float liftDragRatio = staticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
     return Mathf.Abs(liftAcceleration / liftDragRatio);
   }

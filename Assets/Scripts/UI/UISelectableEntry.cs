@@ -6,26 +6,24 @@ using TMPro;
 using UnityEngine.EventSystems;
 using System.Linq;
 public class UISelectableEntry : EventTrigger {
-  private List<UISelectableEntry> children;
-  private List<string> textContent;
+  private List<UISelectableEntry> children = null!;
+  private List<string> textContent = null!;
 
-  private UIDialog parentDialog;
+  private UIDialog parentDialog = null!;
 
-  private RectTransform rectTransform;
+  private RectTransform rectTransform = null!;
 
-  private CanvasRenderer canvasRenderer;
-
-  private Image image;
+  private Image image = null!;
 
   // Replace the single TextMeshProUGUI with a list to hold multiple columns
-  private List<TextMeshProUGUI> textHandles;
+  private List<TextMeshProUGUI> textHandles = null!;
 
   private bool isSelectable = true;
 
   private static Color baseColor = new Color32(31, 31, 45, 140);
 
-  private Action<object> OnClickCallback;
-  private object callbackArgument;
+  private Action<object> OnClickCallback = null!;
+  private object callbackArgument = null!;
 
   public void Awake() {
     rectTransform = gameObject.AddComponent<RectTransform>();
