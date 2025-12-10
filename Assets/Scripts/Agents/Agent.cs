@@ -441,7 +441,7 @@ public abstract class Agent : MonoBehaviour {
   }
 }
 
-public class DummyAgent : Agent {
+public class DummyAgentLegacy : Agent {
   protected override void Start() {
     base.Start();
   }

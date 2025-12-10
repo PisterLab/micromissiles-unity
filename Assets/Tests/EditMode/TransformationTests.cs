@@ -8,14 +8,14 @@ public class TransformationTests : AgentTestBase {
   [Test]
   public void Target_At_Boresight() {
     // Create agent
-    DummyAgent agent = new GameObject("Agent").AddComponent<DummyAgent>();
+    var agent = new GameObject("Agent").AddComponent<DummyAgentLegacy>();
     Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
     agent.transform.position = new Vector3(0, 0, 0);
     agentRb.linearVelocity = new Vector3(0, 0, 0);
     InvokePrivateMethod(agent, "Start");
 
     // Create target
-    DummyAgent target = new GameObject("Target").AddComponent<DummyAgent>();
+    var target = new GameObject("Target").AddComponent<DummyAgentLegacy>();
     target.SetPosition(new Vector3(0, 0, 20));
     Rigidbody targetRb = target.gameObject.AddComponent<Rigidbody>();
     targetRb.linearVelocity = new Vector3(0, 20, -1);
@@ -40,13 +40,13 @@ public class TransformationTests : AgentTestBase {
   [Test]
   public void Target_At_Starboard() {
     // Create agent
-    DummyAgent agent = new GameObject("Agent").AddComponent<DummyAgent>();
+    var agent = new GameObject("Agent").AddComponent<DummyAgentLegacy>();
     Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
     agent.transform.position = new Vector3(0, 0, 0);
     agentRb.linearVelocity = new Vector3(0, 0, 0);
 
     // Create target
-    DummyAgent target = new GameObject("Target").AddComponent<DummyAgent>();
+    var target = new GameObject("Target").AddComponent<DummyAgentLegacy>();
     target.SetPosition(new Vector3(20, 0, 0));
     Rigidbody targetRb = target.gameObject.AddComponent<Rigidbody>();
     targetRb.linearVelocity = new Vector3(0, 0, 20);
@@ -70,14 +70,14 @@ public class TransformationTests : AgentTestBase {
   [Test]
   public void Target_At_Elevation() {
     // Create agent
-    DummyAgent agent = new GameObject("Agent").AddComponent<DummyAgent>();
+    var agent = new GameObject("Agent").AddComponent<DummyAgentLegacy>();
     Rigidbody agentRb = agent.gameObject.AddComponent<Rigidbody>();
     agent.transform.position = new Vector3(0, 0, 0);
     agentRb.linearVelocity = new Vector3(0, 0, 0);
     InvokePrivateMethod(agent, "Start");
 
     // Create target
-    DummyAgent target = new GameObject("Target").AddComponent<DummyAgent>();
+    var target = new GameObject("Target").AddComponent<DummyAgentLegacy>();
     target.SetPosition(new Vector3(0, 20, 0));
     Rigidbody targetRb = target.gameObject.AddComponent<Rigidbody>();
     targetRb.linearVelocity = new Vector3(0, 0, 20);
