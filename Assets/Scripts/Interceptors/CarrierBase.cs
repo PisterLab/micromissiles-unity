@@ -11,10 +11,6 @@ public abstract class CarrierBase : InterceptorBase {
   // Release strategy for sub-interceptors.
   public IReleaseStrategy ReleaseStrategy { get; set; }
 
-  protected override void Awake() {
-    base.Awake();
-  }
-
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
