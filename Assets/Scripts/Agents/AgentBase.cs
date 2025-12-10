@@ -101,7 +101,7 @@ public class AgentBase : MonoBehaviour, IAgent {
     set { _isTerminated = value; }
   }
 
-  public event AgentEventHandler OnTerminated;
+  public event AgentTerminatedEventHandler OnTerminated;
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
@@ -145,7 +145,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   public void Terminate() {
-    HierarchicalAgent.Target = null;
+    if (HierarchicalAgent != null) {
+      HierarchicalAgent.Target = null;
+    }
     if (Movement is MissileMovement movement) {
       movement.FlightPhase = Simulation.FlightPhase.Terminated;
     }
@@ -194,6 +196,11 @@ public class AgentBase : MonoBehaviour, IAgent {
         break;
       }
     }
+  }
+
+  protected bool CheckFloorCollision(Collider other) {
+    // Check if the agent hit the floor with a negative vertical speed.
+    return other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0;
   }
 
   private void AlignWithVelocity() {

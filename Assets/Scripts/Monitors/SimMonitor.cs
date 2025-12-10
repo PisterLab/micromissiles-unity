@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 public class SimMonitor : MonoBehaviour {
-  private const float _updatePeriod = 0.1f;  // 100 Hz
+  private const float _updatePeriod = 0.1f;  // 10 Hz
   private string _telemetryBinPath;
   private string _eventLogPath;
   private Coroutine _monitorRoutine;
