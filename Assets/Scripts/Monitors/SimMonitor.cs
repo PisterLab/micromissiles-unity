@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
@@ -59,7 +58,10 @@ public class SimMonitor : MonoBehaviour {
 
   private void RegisterSimulationEnded() {
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
-      StopCoroutine(_monitorRoutine);
+      if (_monitorRoutine != null) {
+        StopCoroutine(_monitorRoutine);
+        _monitorRoutine = null;
+      }
       CloseTelemetryLogFiles();
       StartCoroutine(ConvertBinaryTelemetryToCsvCoroutine(
           _telemetryBinPath, Path.ChangeExtension(_telemetryBinPath, ".csv")));
