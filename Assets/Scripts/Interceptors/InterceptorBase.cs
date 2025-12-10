@@ -7,10 +7,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   public virtual int Capacity { get; private set; }
 
-  protected override void Awake() {
-    base.Awake();
-  }
-
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
@@ -20,7 +16,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
   }
 
-  protected virtual void UpdateAgentConfig() {
+  protected override void UpdateAgentConfig() {
     base.UpdateAgentConfig();
 
     // Calculate the capacity.
@@ -45,6 +41,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       default: {
         Debug.LogError(
             $"Controller type {AgentConfig.DynamicConfig?.FlightConfig?.ControllerType} not found.");
+        Controller = null;
         break;
       }
     }

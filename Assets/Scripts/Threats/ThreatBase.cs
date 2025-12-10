@@ -28,10 +28,6 @@ public abstract class ThreatBase : AgentBase, IThreat {
     return speed;
   }
 
-  protected override void Awake() {
-    base.Awake();
-  }
-
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
@@ -54,6 +50,8 @@ public abstract class ThreatBase : AgentBase, IThreat {
   }
 
   protected override void UpdateAgentConfig() {
+    base.UpdateAgentConfig();
+
     // Set the attack behavior.
     Configs.AttackBehaviorConfig attackBehaviorConfig =
         ConfigLoader.LoadAttackBehaviorConfig(AgentConfig.AttackBehaviorConfigFile ?? "");
@@ -78,7 +76,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   }
 
   private IAgent FindClosestPursuer() {
-    if (HierarchicalAgent == null || HierarchicalAgent.Pursuers.Count == 0) {
+    if (HierarchicalAgent == null || HierarchicalAgent.Pursuers.Count == 0 || Sensor == null) {
       return null;
     }
 
@@ -93,6 +91,6 @@ public abstract class ThreatBase : AgentBase, IThreat {
         }
       }
     }
-    return closestAgent?.Agent ?? null;
+    return closestAgent?.Agent;
   }
 }
