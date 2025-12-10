@@ -1,6 +1,6 @@
 // Base implementation of a predictor.
 public abstract class PredictorBase : IPredictor {
-  public IHierarchical Hierarchical { get; set; }
+  public IHierarchical Hierarchical { get; init; }
 
   public PredictorBase(IHierarchical hierarchical) {
     Hierarchical = hierarchical;
