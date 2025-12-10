@@ -76,8 +76,11 @@ public class HierarchicalBase : IHierarchical {
       Vector3 relativeVelocity = pursuer.Velocity - Velocity;
       float rangeRate = Vector3.Dot(relativeVelocity, relativePosition.normalized);
       float closingVelocity = -rangeRate;
-      if (closingVelocity <= 0) {
+      if (closingVelocity <= 0 || pursuer.Speed <= 0) {
         return true;
+      }
+      if (Target == null || Speed <= 0) {
+        return false;
       }
       float pursuerDistance = relativePosition.magnitude;
       float targetDistance = (Target.Position - Position).magnitude;

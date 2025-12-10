@@ -30,7 +30,8 @@ public class ProximityReleaseStrategy : MassReleaseStrategyBase {
     // Check whether the bearing exceeds the maximum bearing.
     float lateralDistance =
         (Vector3.ProjectOnPlane(positionToPredictedTarget, Agent.Velocity)).magnitude;
-    float bearing = Mathf.Asin(lateralDistance / predictedDistanceToTarget) * Mathf.Rad2Deg;
+    float sinBearing = Mathf.Clamp01(lateralDistance / predictedDistanceToTarget);
+    float bearing = Mathf.Asin(sinBearing) * Mathf.Rad2Deg;
     if (bearing > _maxBearingDegrees && predictedDistanceToTarget < _maxDistanceToThreat) {
       return new LaunchPlan { ShouldLaunch = true };
     }
