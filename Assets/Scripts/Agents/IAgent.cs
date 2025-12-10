@@ -5,7 +5,7 @@ using UnityEngine;
 // An agent represents a physical entity, such as a ship, an interceptor, or a threat subject to the
 // laws of physics.
 
-public delegate void AgentEventHandler(IAgent agent);
+public delegate void AgentTerminatedEventHandler(IAgent agent);
 
 public interface IAgent {
   HierarchicalAgent HierarchicalAgent { get; set; }
@@ -30,7 +30,7 @@ public interface IAgent {
   GameObject gameObject { get; }
   Transform transform { get; }
 
-  event AgentEventHandler OnTerminated;
+  event AgentTerminatedEventHandler OnTerminated;
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
