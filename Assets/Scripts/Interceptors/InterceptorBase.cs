@@ -20,7 +20,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _rigidbody.AddForce(acceleration, ForceMode.Acceleration);
   }
 
-  protected virtual void UpdateAgentConfig() {
+  protected override void UpdateAgentConfig() {
     base.UpdateAgentConfig();
 
     // Calculate the capacity.
