@@ -127,10 +127,6 @@ public class IADS : MonoBehaviour {
   }
 
   private void ReassignTarget(IHierarchical target) {
-    if (target.ActivePursuers.Any()) {
-      return;
-    }
-
     // Assign the closest launcher with non-zero remaining capacity to pursue the target.
     var closestLauncher =
         Launchers

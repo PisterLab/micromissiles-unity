@@ -8,6 +8,7 @@ public class MissileInterceptor : InterceptorBase {
   protected override void Awake() {
     base.Awake();
 
+    EscapeDetector = new TimeEscapeDetector(this);
     Movement = new MissileMovement(this);
   }
 }

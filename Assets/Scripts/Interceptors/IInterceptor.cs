@@ -21,6 +21,8 @@ public interface IInterceptor : IAgent {
   // interceptor.
   event TargetReassignEventHandler OnReassignTarget;
 
+  IEscapeDetector EscapeDetector { get; set; }
+
   // Maximum number of threats that this interceptor can target.
   int Capacity { get; }
 

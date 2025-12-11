@@ -54,9 +54,9 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
     hierarchical.AddLaunchedHierarchical(subInterceptor.HierarchicalAgent);
 
     Debug.Log(
-        $"Launching a {subInterceptor.StaticConfig.AgentType} at an elevation of {launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.");
+        $"Launching a {subInterceptor.StaticConfig.AgentType} from {Agent} at an elevation of {launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.");
     UIManager.Instance.LogActionMessage(
-        $"[IADS] Launching a {subInterceptor.StaticConfig.AgentType} at an elevation of {launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.");
+        $"[IADS] Launching a {subInterceptor.StaticConfig.AgentType} from {Agent} at an elevation of {launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.");
     return subInterceptor;
   }
 }
