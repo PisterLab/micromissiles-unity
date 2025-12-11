@@ -30,6 +30,8 @@ public class SimMonitor : MonoBehaviour {
   [SerializeField]
   private List<EventRecord> _eventLogCache;
 
+  private bool _isLoggingDestroyed = false;
+
   private void Awake() {
     InitializeSessionDirectory();
   }
@@ -46,6 +48,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
+    _isLoggingDestroyed = false;
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
       InitializeTelemetryLogging();
       _monitorRoutine = StartCoroutine(MonitorRoutine());
@@ -126,6 +129,11 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void DestroyLogging() {
+    if (_isLoggingDestroyed) {
+      return;
+    }
+    _isLoggingDestroyed = true;
+
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
       if (_monitorRoutine != null) {
         StopCoroutine(_monitorRoutine);
