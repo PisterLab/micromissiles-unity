@@ -83,7 +83,9 @@ public class HierarchicalBase : IHierarchical {
   }
 
   public void AddLaunchedHierarchical(IHierarchical hierarchical) {
-    _launchedHierarchicals.Add(hierarchical);
+    if (!_launchedHierarchicals.Contains(hierarchical)) {
+      _launchedHierarchicals.Add(hierarchical);
+    }
   }
 
   public void RemoveTargetHierarchical(IHierarchical target) {
@@ -201,7 +203,7 @@ public class HierarchicalBase : IHierarchical {
     }
 
     // Remove as many target sub-hierarchical objects until the interceptor capacity.
-    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals;
+    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals.ToList();
     var filteredSubHierarchicals =
         targetSubHierarchicals
             .OrderBy(subHierarchical =>
