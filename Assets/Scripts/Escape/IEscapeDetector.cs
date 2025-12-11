@@ -1,5 +1,3 @@
-using UnityEngine;
-
 // Interface for an escape detector.
 //
 // The escape detector returns a boolean corresponding whether a target is escaping its pursuer.
