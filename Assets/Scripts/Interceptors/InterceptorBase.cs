@@ -5,10 +5,10 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  public event InterceptorEventHandler OnHit;
-  public event InterceptorEventHandler OnMiss;
-  public event InterceptorEventHandler OnAssignSubInterceptor;
-  public event TargetEventHandler OnReassignTarget;
+  public event InterceptHitMissEventHandler OnHit;
+  public event InterceptHitMissEventHandler OnMiss;
+  public event InterceptorAssignEventHandler OnAssignSubInterceptor;
+  public event TargetReassignEventHandler OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
@@ -61,6 +61,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void Start() {
     base.Start();
+
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
@@ -93,6 +94,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     if (_unassignedTargetsCoroutine != null) {
       StopCoroutine(_unassignedTargetsCoroutine);
+      _unassignedTargetsCoroutine = null;
     }
   }
 
@@ -125,6 +127,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       default: {
         Debug.LogWarning(
             $"Controller type {AgentConfig.DynamicConfig?.FlightConfig?.ControllerType} not found.");
+        Controller = null;
         break;
       }
     }
@@ -161,8 +164,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // The interceptor records a hit only if it collides with a threat and destroys it with the
   // threat's kill probability.
   private void OnTriggerEnter(Collider other) {
-    // Check if the interceptor hit the floor with a negative vertical speed.
-    if (other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0) {
+    if (CheckFloorCollision(other)) {
       OnMiss?.Invoke(this);
       Terminate();
     }
