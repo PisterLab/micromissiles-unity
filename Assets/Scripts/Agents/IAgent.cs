@@ -26,6 +26,7 @@ public interface IAgent {
   Vector3 Acceleration { get; set; }
   Vector3 AccelerationInput { get; set; }
 
+  bool IsPursuable { get; }
   float ElapsedTime { get; }
   bool IsTerminated { get; }
 
