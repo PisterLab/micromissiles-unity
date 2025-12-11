@@ -14,9 +14,9 @@ public class UIWindow : MonoBehaviour {
   private string windowTitle = "Window";
 
   // Close button.
-  private GameObject closeButton;
+  private GameObject closeButton = null!;
   [SerializeField]
-  private CloseButtonCallback closeButtonCallback;
+  private CloseButtonCallback closeButtonCallback = CloseButtonCallback.CLOSE_WINDOW;
   [Serializable]
   private enum CloseButtonCallback { CLOSE_WINDOW, TOGGLE_WINDOW }
 
