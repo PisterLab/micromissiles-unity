@@ -8,7 +8,7 @@ public class SpeedEscapeDetectorTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
     _agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =

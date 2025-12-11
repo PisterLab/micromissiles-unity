@@ -1,2 +1,16 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Unity: hide .meta files in PR diffs
+*.meta linguist-generated=true
+
+# Protobuf / auto-generated C# - hide in PR diffs
+Assets/Scripts/Generated/** linguist-generated=true
+
+# Build artifacts
+*.dll linguist-vendored=true
+*.so linguist-vendored=true
+*.dylib linguist-vendored=true
+
+# Unity asset files
+*.asset linguist-vendored=true
