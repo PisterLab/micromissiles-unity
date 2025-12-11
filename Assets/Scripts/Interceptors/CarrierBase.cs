@@ -21,11 +21,13 @@ public abstract class CarrierBase : InterceptorBase {
 
   protected override void Awake() {
     base.Awake();
+
     EscapeDetector = new GeometricEscapeDetector(this);
   }
 
   protected override void Start() {
     base.Start();
+
     _releaseCoroutine = StartCoroutine(ReleaseManager(_releasePeriod));
   }
 
@@ -34,11 +36,12 @@ public abstract class CarrierBase : InterceptorBase {
 
     if (_releaseCoroutine != null) {
       StopCoroutine(_releaseCoroutine);
+      _releaseCoroutine = null;
     }
   }
 
   private IEnumerator ReleaseManager(float period) {
-    while (true) {
+    while (NumSubInterceptorsRemaining > 0) {
       // Determine whether to release the sub-interceptors.
       if (ReleaseStrategy != null) {
         List<IAgent> releasedAgents = ReleaseStrategy.Release();
@@ -57,5 +60,6 @@ public abstract class CarrierBase : InterceptorBase {
 
       yield return new WaitForSeconds(period);
     }
+    _releaseCoroutine = null;
   }
 }

@@ -3,17 +3,17 @@ using TMPro;
 using UnityEngine.UI;
 public class TacticalSymbol : MonoBehaviour {
   [SerializeField]
-  private GameObject _directionArrow;
+  private GameObject _directionArrow = null!;
   [SerializeField]
-  private TextMeshProUGUI _uniqueDesignatorText;
+  private TextMeshProUGUI _uniqueDesignatorText = null!;
   [SerializeField]
-  private TextMeshProUGUI _iffText;
+  private TextMeshProUGUI _iffText = null!;
   [SerializeField]
-  private TextMeshProUGUI _typeText;
+  private TextMeshProUGUI _typeText = null!;
   [SerializeField]
-  private TextMeshProUGUI _speedAltText;
+  private TextMeshProUGUI _speedAltText = null!;
   [SerializeField]
-  private TextMeshProUGUI _additionalInfoText;
+  private TextMeshProUGUI _additionalInfoText = null!;
 
   private SpriteManager _spriteManager;
 
