@@ -127,7 +127,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
     HierarchicalAgent closestAgent = null;
     float minDistance = float.MaxValue;
     foreach (var pursuer in HierarchicalAgent.Pursuers) {
-      if (pursuer is HierarchicalAgent agent) {
+      if (!pursuer.IsTerminated && pursuer is HierarchicalAgent agent) {
         SensorOutput sensorOutput = Sensor.Sense(agent);
         if (sensorOutput.Position.Range < minDistance) {
           closestAgent = agent;
