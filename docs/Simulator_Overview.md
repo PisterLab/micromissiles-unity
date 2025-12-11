@@ -169,13 +169,13 @@ The size and radius-constrained clustering must satisfy the following two hard c
 - **Radius constraint**: Cluster radius must be less than or equal to 1 km
 
 The size constraint results from the maximum capacity of a Hydra 70 carrier interceptor.
-The radius constraint ensures that when the submunitions are released, each missile interceptor will have sufficient terminal speed to reach all of the threats within the cluster.
+The radius constraint ensures that when the submunitions are released, each missile interceptor will have sufficient terminal speed to reach all threats within the cluster.
 As each cluster represents an additional launched interceptor, the algorithm should minimize the number of clusters _k_ to minimize the engagement cost.
 
 #### Agglomerative Clustering
 
 A simple greedy algorithm to satisfy both the size and radius constraints is agglomerative clustering.
-Each agent to be clustered starts in its own cluster, and while the distance between the two closest clusters is less than the radius constraint, the two closest clusters are merged together as long as the resulting cluster satisfies the size constraint.
+Each agent to be clustered starts in its own cluster, and while the distance between the two closest clusters is less than the radius constraint, the two closest clusters are merged as long as the resulting cluster satisfies the size constraint.
 If the two closest clusters cannot be merged due to the size constraint, the algorithm proceeds to the next two closest clusters.
 This clustering algorithm continues until no more clusters can be merged.
 
@@ -543,7 +543,7 @@ The attack behavior may also let the threat move in a slalom pattern as it moves
 
 ## Reassignment
 
-During the course of the simulation, the threats may re-arrange themselves, causing them to be missed by the interceptors.
+During the simulation, the threats may re-arrange themselves, causing them to be missed by the interceptors.
 Interceptors may also miss their intended target due to the kill probability or no longer have a target because another interceptor doubling up already destroyed their target.
 As a result, the defense strategy needs to account for interceptors that need to be re-assigned a different target and threats that need to be re-assigned to and re-clustered by another interceptor.
 
@@ -580,7 +580,7 @@ If the parent interceptor has no capacity remaining, i.e., it is unable to launc
 
 ## Escape Detection
 
-Each interceptor needs to detect when its assigned threat is escaping, i.e., when the interceptor is no longer able to successfully intercept the target.
+Each interceptor needs to detect when its assigned threat is escaping, i.e., when the interceptor can no longer successfully intercept the target.
 In this case, the interceptor will request the threat to be re-assigned to another interceptor and also request a new target for itself from the parent interceptor.
 
 The simulator currently supports multiple escape detectors, intended for different interceptors.
