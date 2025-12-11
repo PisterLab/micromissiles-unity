@@ -14,22 +14,8 @@ public abstract class ReleaseStrategyBase : IReleaseStrategy {
       return new List<IAgent>();
     }
 
-    List<IHierarchical> FindLeafHierarchicals(IHierarchical hierarchical) {
-      // Traverse the agent hierarchy to find only the leaf hierarchical objects.
-      if (hierarchical.SubHierarchicals.Count > 0) {
-        var leafHierarchicals = new List<IHierarchical>();
-        foreach (var subHierarchical in hierarchical.SubHierarchicals) {
-          leafHierarchicals.AddRange(FindLeafHierarchicals(subHierarchical));
-        }
-        return leafHierarchicals;
-      }
-
-      if (hierarchical.Target == null) {
-        return new List<IHierarchical>();
-      }
-      return new List<IHierarchical> { hierarchical };
-    }
-    List<IHierarchical> leafHierarchicals = FindLeafHierarchicals(Agent.HierarchicalAgent);
+    List<IHierarchical> leafHierarchicals =
+        Agent.HierarchicalAgent.LeafHierarchicals(activeOnly: false, withTargetOnly: true);
     return Release(leafHierarchicals);
   }
 

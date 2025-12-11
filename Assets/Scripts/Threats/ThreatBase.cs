@@ -120,14 +120,14 @@ public abstract class ThreatBase : AgentBase, IThreat {
   }
 
   private IAgent FindClosestPursuer() {
-    if (HierarchicalAgent == null || HierarchicalAgent.Pursuers.Count == 0 || Sensor == null) {
+    if (HierarchicalAgent == null || !HierarchicalAgent.ActivePursuers.Any() || Sensor == null) {
       return null;
     }
 
     HierarchicalAgent closestAgent = null;
     float minDistance = float.MaxValue;
-    foreach (var pursuer in HierarchicalAgent.Pursuers) {
-      if (!pursuer.IsTerminated && pursuer is HierarchicalAgent agent) {
+    foreach (var pursuer in HierarchicalAgent.ActivePursuers) {
+      if (pursuer is HierarchicalAgent agent) {
         SensorOutput sensorOutput = Sensor.Sense(agent);
         if (sensorOutput.Position.Range < minDistance) {
           closestAgent = agent;

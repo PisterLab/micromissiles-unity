@@ -60,7 +60,7 @@ public class IADS : MonoBehaviour {
   public void RegisterNewLauncher(IInterceptor interceptor) {
     if (interceptor.HierarchicalAgent != null) {
       interceptor.OnAssignSubInterceptor += AssignSubInterceptor;
-      // interceptor.OnReassignTarget += ReassignTarget;
+      interceptor.OnReassignTarget += ReassignTarget;
       _launchers.Add(interceptor.HierarchicalAgent);
     }
   }
@@ -112,7 +112,8 @@ public class IADS : MonoBehaviour {
       return;
     }
 
-    // Pass the sub-interceptor through all the launchers to find a new target.
+    // Pass the sub-interceptor through all the launchers in order of increasing distance between
+    // the sub-interceptor and the launcher's target.
     var sortedLaunchers =
         Launchers.Where(launcher => launcher.Target != null && !launcher.Target.IsTerminated)
             .OrderBy(launcher =>
@@ -123,5 +124,26 @@ public class IADS : MonoBehaviour {
         break;
       }
     }
+  }
+
+  private void ReassignTarget(IHierarchical target) {
+    if (target.ActivePursuers.Any()) {
+      return;
+    }
+
+    // Assign the closest launcher with non-zero remaining capacity to pursue the target.
+    var closestLauncher =
+        Launchers
+            .Select(launcher => new {
+              Hierarchical = launcher,
+              Interceptor = (launcher as HierarchicalAgent)?.Agent as IInterceptor,
+            })
+            .Where(launcher => launcher.Interceptor?.CapacityPlannedRemaining > 0)
+            .OrderBy(launcher => Vector3.Distance(target.Position, launcher.Hierarchical.Position))
+            .FirstOrDefault();
+    if (closestLauncher == null) {
+      return;
+    }
+    closestLauncher.Interceptor.ReassignTarget(target);
   }
 }
