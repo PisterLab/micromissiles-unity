@@ -8,7 +8,7 @@ public class GeometricEscapeDetectorTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
     _escapeDetector = new GeometricEscapeDetector(_agent);
   }
