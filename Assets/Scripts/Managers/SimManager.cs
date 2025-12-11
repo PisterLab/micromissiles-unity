@@ -64,10 +64,11 @@ public class SimManager : MonoBehaviour {
   public float CostDestroyedThreats { get; private set; } = 0f;
 
   public void StartSimulation() {
+    OnSimulationStarted?.Invoke();
+    Debug.Log("Simulation started.");
+    UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
     InitializeLaunchers();
     InitializeThreats();
-    UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
-    OnSimulationStarted?.Invoke();
   }
 
   public void ResumeSimulation() {
@@ -89,7 +90,7 @@ public class SimManager : MonoBehaviour {
   public void RestartSimulation() {
     OnSimulationEnded?.Invoke();
     Debug.Log("Simulation ended.");
-    UIManager.Instance.LogActionMessage("[SIM] Simulation restarted.");
+    UIManager.Instance.LogActionMessage("[SIM] Simulation ended.");
 
     ElapsedSimulationTime = 0f;
     CostLaunchedInterceptors = 0f;
