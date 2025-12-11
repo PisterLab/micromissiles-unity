@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Base implementation of an agent.
 public class AgentBase : MonoBehaviour, IAgent {
-  public event AgentEventHandler OnTerminated;
+  public event AgentTerminatedEventHandler OnTerminated;
 
   private const float _epsilon = 1e-12f;
 
@@ -140,7 +140,9 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   public void Terminate() {
-    HierarchicalAgent.Target = null;
+    if (HierarchicalAgent != null) {
+      HierarchicalAgent.Target = null;
+    }
     if (Movement is MissileMovement movement) {
       movement.FlightPhase = Simulation.FlightPhase.Terminated;
     }
@@ -195,6 +197,11 @@ public class AgentBase : MonoBehaviour, IAgent {
       Gizmos.color = Color.green;
       Gizmos.DrawRay(Position, _accelerationInput);
     }
+  }
+
+  protected bool CheckFloorCollision(Collider other) {
+    // Check if the agent hit the floor with a negative vertical speed.
+    return other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0;
   }
 
   private void AlignWithVelocity() {

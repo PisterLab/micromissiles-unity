@@ -276,7 +276,7 @@ public class SimManager : MonoBehaviour {
 
   private void FixedUpdate() {
     if (!IsSimulationPaused && ElapsedSimulationTime < SimulationConfig.EndTime) {
-      ElapsedSimulationTime += Time.deltaTime;
+      ElapsedSimulationTime += Time.fixedDeltaTime;
     } else if (ElapsedSimulationTime >= SimulationConfig.EndTime) {
       Debug.Log("Simulation completed.");
       RestartSimulation();
