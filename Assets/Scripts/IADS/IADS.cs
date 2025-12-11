@@ -108,14 +108,18 @@ public class IADS : MonoBehaviour {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
+    if (subInterceptor.CapacityRemaining <= 0) {
+      return;
+    }
+
     // Pass the sub-interceptor through all the launchers to find a new target.
     var sortedLaunchers =
         Launchers.Where(launcher => launcher.Target != null && !launcher.Target.IsTerminated)
             .OrderBy(launcher =>
                          Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
     foreach (var launcher in sortedLaunchers) {
-      // TODO(titan): The capacity remaining should be used instead.
-      if (launcher.AssignNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.Capacity)) {
+      if (launcher.AssignNewTarget(subInterceptor.HierarchicalAgent,
+                                   subInterceptor.CapacityRemaining)) {
         break;
       }
     }
