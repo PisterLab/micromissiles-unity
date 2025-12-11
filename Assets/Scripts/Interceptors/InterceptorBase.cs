@@ -238,7 +238,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
               .Where(target => !target.IsTerminated && target.ActivePursuers.All(pursuer => {
                 var pursuerAgent = pursuer as HierarchicalAgent;
                 var interceptor = pursuerAgent?.Agent as IInterceptor;
-                return interceptor?.EscapeDetector?.IsEscaping(target) ?? true;
+                return interceptor == null || interceptor.CapacityRemaining == 0 ||
+                       (interceptor.EscapeDetector?.IsEscaping(target) ?? true);
               }))
               .ToList();
       if (filteredTargets.Count > CapacityPlannedRemaining) {
@@ -251,6 +252,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
           OnReassignTarget?.Invoke(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
+      } else {
+        unassignedTargets = filteredTargets;
       }
       if (!unassignedTargets.Any()) {
         continue;

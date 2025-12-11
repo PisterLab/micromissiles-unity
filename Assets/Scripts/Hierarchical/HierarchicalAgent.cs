@@ -17,16 +17,28 @@ public class HierarchicalAgent : HierarchicalBase {
     get { return base.Target; }
     set {
       if (base.Target != null) {
-        base.Target.RemovePursuer(this);
+        if (Agent.IsPursuable) {
+          // Remove the interceptor as a pursuer from all target sub-hierarchical objects.
+          void RemovePursuerFromHierarchical(IHierarchical target) {
+            target.RemovePursuer(this);
+            foreach (var subHierarchical in target.SubHierarchicals) {
+              RemovePursuerFromHierarchical(subHierarchical);
+            }
+          }
+          RemovePursuerFromHierarchical(base.Target);
+        } else {
+          // For non-pursuable agents, such as launchers, only remove from the top-level target.
+          base.Target.RemovePursuer(this);
+        }
         ClearSubHierarchicals();
         SimManager.Instance.DestroyDummyAgent(Agent.TargetModel);
         Agent.TargetModel = null;
       }
       base.Target = value;
       if (base.Target != null) {
-        if (Agent.IsPursuable) {
-          base.Target.AddPursuer(this);
-        }
+        // Threats also set their target to the asset, so we should also track the threats pursuing
+        // the asset.
+        base.Target.AddPursuer(this);
         if (Agent is IInterceptor interceptor) {
           // Subscribe to the target events.
           foreach (var targetHierarchical in Target.ActiveSubHierarchicals) {
