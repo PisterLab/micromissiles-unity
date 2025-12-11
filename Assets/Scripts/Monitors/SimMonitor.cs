@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
-  [System.Serializable]
+  [Serializable]
   private class EventRecord {
     public float Time;
     public float PositionX;
@@ -16,7 +16,7 @@ public class SimMonitor : MonoBehaviour {
     public string Details;
   }
 
-  private const float _updatePeriod = 0.1f;  // 100 Hz
+  private const float _updatePeriod = 0.1f;  // 10 Hz
 
   private Coroutine _monitorRoutine;
 

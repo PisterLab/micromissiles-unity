@@ -8,23 +8,24 @@ using UnityEngine;
 // to target the target hierarchical object. The released sub-interceptors are then assigned to the
 // sub-hierarchical objects of the target hierarchical object.
 public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
+  private const float _epsilon = 1e-12f;
   private const float _fanOutAngleDegrees = 60f;
 
-  public IAssignment Assignment { get; set; }
+  public IAssignment Assignment { get; init; }
 
   public MassReleaseStrategyBase(IAgent agent, IAssignment assignment) : base(agent) {
     Assignment = assignment;
   }
 
   protected override List<IAgent> Release(IEnumerable<IHierarchical> hierarchicals) {
-    var carrier = Agent as CarrierBase;
-    if (carrier.NumSubInterceptorsRemaining <= 0) {
+    if (Agent is not CarrierBase carrier || carrier.NumSubInterceptorsRemaining <= 0) {
       return new List<IAgent>();
     }
 
-    Dictionary<IHierarchical, IHierarchical> targetToHierarchicalMap =
+    Dictionary<IHierarchical, List<IHierarchical>> targetToHierarchicalMap =
         hierarchicals.Where(hierarchical => hierarchical.Target != null)
-            .ToDictionary(hierarchical => hierarchical.Target, hierarchical => hierarchical);
+            .GroupBy(hierarchical => hierarchical.Target)
+            .ToDictionary(group => group.Key, group => group.ToList());
     List<IHierarchical> targets = targetToHierarchicalMap.Keys.ToList();
     if (targets.Count == 0) {
       return new List<IAgent>();
@@ -33,6 +34,7 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
     if (!launchPlan.ShouldLaunch) {
       return new List<IAgent>();
     }
+
     // Release all sub-interceptors.
     Configs.SubAgentConfig subAgentConfig = carrier.AgentConfig.SubAgentConfig;
     Vector3 position = carrier.Position;
@@ -40,6 +42,9 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
 
     Vector3 velocity = carrier.Velocity;
     Vector3 perpendicularDirection = Vector3.Cross(velocity, Vector3.up);
+    if (perpendicularDirection.sqrMagnitude < _epsilon) {
+      perpendicularDirection = Vector3.Cross(velocity, Vector3.forward);
+    }
 
     var releasedAgents = new List<IAgent>();
     for (int i = 0; i < subAgentConfig.NumSubAgents; ++i) {
@@ -57,7 +62,7 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       };
       IAgent subInterceptor =
           SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
-      if (subInterceptor != null && subInterceptor is IInterceptor subInterceptorInterceptor) {
+      if (subInterceptor is IInterceptor) {
         releasedAgents.Add(subInterceptor);
       }
     }
@@ -68,8 +73,11 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
     List<AssignmentItem> assignments = Assignment.Assign(releasedAgentHierarchicals, targets);
     foreach (var assignment in assignments) {
       assignment.First.Target = assignment.Second;
-      targetToHierarchicalMap[assignment.Second].AddLaunchedHierarchical(assignment.First);
+      foreach (var hierarchical in targetToHierarchicalMap[assignment.Second]) {
+        hierarchical.AddLaunchedHierarchical(assignment.First);
+      }
     }
+
     return releasedAgents;
   }
 
