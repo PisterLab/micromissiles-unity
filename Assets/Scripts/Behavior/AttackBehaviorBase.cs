@@ -3,7 +3,6 @@ using UnityEngine;
 // Base implementation of an attack behavior.
 public abstract class AttackBehaviorBase : IAttackBehavior {
   // Attack behavior configuration.
-  [SerializeField]
   private Configs.AttackBehaviorConfig _config;
 
   // Flight plan.

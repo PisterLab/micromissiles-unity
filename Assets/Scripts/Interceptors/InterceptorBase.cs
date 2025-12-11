@@ -18,14 +18,54 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   public IEscapeDetector EscapeDetector { get; set; }
 
-  public int Capacity { get; protected set; }
-  public int CapacityPerSubInterceptor { get; protected set; }
+  // Maximum number of threats that this interceptor can target.
+  [SerializeField]
+  private int _capacity;
+
+  // Capacity of each sub-interceptor.
+  [SerializeField]
+  private int _capacityPerSubInterceptor;
+
+  // Number of sub-interceptors.
+  [SerializeField]
+  private int _numSubInterceptors;
+
+  // Number of sub-interceptors remaining that can be planned to launch.
+  [SerializeField]
+  private int _numSubInterceptorsPlannedRemaining;
+
+  // Number of sub-interceptors remaining.
+  [SerializeField]
+  private int _numSubInterceptorsRemaining;
+
+  public int Capacity {
+    get => _capacity;
+  protected
+    set { _capacity = value; }
+  }
+  public int CapacityPerSubInterceptor {
+    get => _capacityPerSubInterceptor;
+  protected
+    set { _capacityPerSubInterceptor = value; }
+  }
   public virtual int CapacityPlannedRemaining => CapacityPerSubInterceptor *
                                                  NumSubInterceptorsPlannedRemaining;
   public virtual int CapacityRemaining => CapacityPerSubInterceptor * NumSubInterceptorsRemaining;
-  public int NumSubInterceptors { get; protected set; }
-  public int NumSubInterceptorsPlannedRemaining { get; protected set; }
-  public int NumSubInterceptorsRemaining { get; protected set; }
+  public int NumSubInterceptors {
+    get => _numSubInterceptors;
+  protected
+    set { _numSubInterceptors = value; }
+  }
+  public int NumSubInterceptorsPlannedRemaining {
+    get => _numSubInterceptorsPlannedRemaining;
+  protected
+    set { _numSubInterceptorsPlannedRemaining = value; }
+  }
+  public int NumSubInterceptorsRemaining {
+    get => _numSubInterceptorsRemaining;
+  protected
+    set { _numSubInterceptorsRemaining = value; }
+  }
 
   // Set of unassigned targets for which an additional sub-interceptor should be launched.
   private HashSet<IHierarchical> _unassignedTargets = new HashSet<IHierarchical>();
