@@ -1,3 +1,5 @@
+"""Matplotlib configuration."""
+
 import matplotlib
 
 matplotlib.rcParams["axes.axisbelow"] = True

@@ -192,8 +192,7 @@ def main(argv):
         telemetry_file_path = _find_latest_telemetry_file()
         event_file_path = _find_latest_event_log()
     if not telemetry_file_path or not event_file_path:
-        raise ValueError(
-            "Both a telemetry file and an event log must be provided.")
+        raise ValueError("Missing required telemetry or event log file.")
 
     event_df = pd.read_csv(event_file_path)
     # Sanitize the event column to ensure consistency.
