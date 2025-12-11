@@ -2,23 +2,24 @@
 //
 // Interceptors defend the asset against incoming threats.
 
-public delegate void InterceptorEventHandler(IInterceptor interceptor);
-public delegate void TargetEventHandler(IHierarchical target);
+public delegate void InterceptHitMissEventHandler(IInterceptor interceptor);
+public delegate void InterceptorAssignEventHandler(IInterceptor interceptor);
+public delegate void TargetReassignEventHandler(IHierarchical target);
 
 public interface IInterceptor : IAgent {
   // The OnHit event handler is called when the interceptor successfully intercepts a threat.
-  event InterceptorEventHandler OnHit;
+  event InterceptHitMissEventHandler OnHit;
   // The OnMiss event handler is called when the interceptor is destroyed, e.g., through a
   // collision, prior to intercepting a threat.
-  event InterceptorEventHandler OnMiss;
+  event InterceptHitMissEventHandler OnMiss;
 
-  // The OnUnassignedSubInterceptor event handler is called when a sub-interceptor has no assigned
+  // The OnAssignSubInterceptor event handler is called when a sub-interceptor has no assigned
   // target and should be assigned one.
-  event InterceptorEventHandler OnAssignSubInterceptor;
+  event InterceptorAssignEventHandler OnAssignSubInterceptor;
 
-  // The OnUnassignedTarget event handler is called when a target needs to be re-assigned to another
+  // The OnReassignTarget event handler is called when a target needs to be re-assigned to another
   // interceptor.
-  event TargetEventHandler OnReassignTarget;
+  event TargetReassignEventHandler OnReassignTarget;
 
   // Maximum number of threats that this interceptor can target.
   int Capacity { get; }

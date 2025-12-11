@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // The cost-based assignment assigns hierarchical objects to each other based on the pairwise costs
@@ -37,8 +38,11 @@ public class CostBasedAssignment : AssignmentBase {
     for (int firstIndex = 0; firstIndex < numFirst; ++firstIndex) {
       for (int secondIndex = 0; secondIndex < numSecond; ++secondIndex) {
         float cost = _costFunction(first[firstIndex], second[secondIndex]);
-        assignmentCosts[firstIndex * numSecond + secondIndex] =
-            Mathf.Clamp(cost, -_maxCost, _maxCost);
+        float clampedCost = Mathf.Clamp(cost, -_maxCost, _maxCost);
+        if (cost != clampedCost) {
+          Debug.LogWarning($"Assignment cost was clamped from {cost} to {clampedCost}.");
+        }
+        assignmentCosts[firstIndex * numSecond + secondIndex] = clampedCost;
       }
     }
 
@@ -49,7 +53,10 @@ public class CostBasedAssignment : AssignmentBase {
         _assignFunction(numFirst, numSecond, assignmentCosts, assignedFirstIndices,
                         assignedSecondIndices, out int numAssignments);
     if (status != Plugin.StatusCode.StatusOk) {
-      Debug.Log($"Failed to run the assignment with status code {status}.");
+      Debug.LogError(
+          $"Failed to run the assignment with status code {status}. " +
+          $"Number of first: {numFirst}, number of second: {numSecond}, " +
+          $"minimum cost: {assignmentCosts.Min()}, maximum cost: {assignmentCosts.Max()}.");
       return new List<AssignmentItem>();
     }
 
