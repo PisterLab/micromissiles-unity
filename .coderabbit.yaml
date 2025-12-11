@@ -1,0 +1,13 @@
+reviews:
+  profile: assertive
+  high_level_summary: false
+  review_status: false
+  commit_status: false
+  collapse_walkthrough: true
+  changed_files_summary: false
+  sequence_diagrams: false
+  poem: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches: [.*]
