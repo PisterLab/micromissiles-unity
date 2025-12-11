@@ -3,8 +3,8 @@
 public class InputManager : MonoBehaviour {
   public static InputManager Instance { get; private set; }
 
-  public bool MouseActive = true;
-  public bool LockUserInput = false;
+  public bool MouseActive { get; set; } = true;
+  public bool LockUserInput { get; set; } = false;
 
   private Vector2 _lastMousePosition;
   private bool _isDragging = false;

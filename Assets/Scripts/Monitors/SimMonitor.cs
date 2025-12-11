@@ -1,12 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
-  [System.Serializable]
+  [Serializable]
   private class EventRecord {
     public float Time;
     public float PositionX;
@@ -35,6 +35,8 @@ public class SimMonitor : MonoBehaviour {
   [SerializeField]
   private List<EventRecord> _eventLogCache;
 
+  private bool _isLoggingDestroyed = false;
+
   private void Awake() {
     if (Instance != null && Instance != this) {
       Destroy(gameObject);
@@ -56,6 +58,7 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
+    _isLoggingDestroyed = false;
     Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
     InitializeSessionDirectory();
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
@@ -146,8 +149,16 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void DestroyLogging() {
+    if (_isLoggingDestroyed) {
+      return;
+    }
+    _isLoggingDestroyed = true;
+
     if (SimManager.Instance.SimulatorConfig.EnableTelemetryLogging) {
-      StopCoroutine(_monitorRoutine);
+      if (_monitorRoutine != null) {
+        StopCoroutine(_monitorRoutine);
+        _monitorRoutine = null;
+      }
       DestroyTelemetryLogging();
       ConvertBinaryTelemetryToCsv(_telemetryBinPath,
                                   Path.ChangeExtension(_telemetryBinPath, ".csv"));

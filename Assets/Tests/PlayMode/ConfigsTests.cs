@@ -49,7 +49,11 @@ public class ConfigsTests : TestBase {
         SimManager.Instance.ResumeSimulation();
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
+<<<<<<< HEAD
         Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + epsilon,
+=======
+        Assert.IsTrue(SimManager.Instance.ElapsedSimulationTime > 0 + epsilon,
+>>>>>>> titan/hierarchical
                       "Simulation time should have advanced after resuming.");
       }
     }
