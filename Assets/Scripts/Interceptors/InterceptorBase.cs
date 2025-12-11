@@ -5,10 +5,10 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  public event InterceptorEventHandler OnHit;
-  public event InterceptorEventHandler OnMiss;
-  public event InterceptorEventHandler OnAssignSubInterceptor;
-  public event TargetEventHandler OnReassignTarget;
+  public event InterceptHitMissEventHandler OnHit;
+  public event InterceptHitMissEventHandler OnMiss;
+  public event InterceptorAssignEventHandler OnAssignSubInterceptor;
+  public event TargetReassignEventHandler OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
@@ -61,6 +61,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void Start() {
     base.Start();
+
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
@@ -93,6 +94,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     if (_unassignedTargetsCoroutine != null) {
       StopCoroutine(_unassignedTargetsCoroutine);
+      _unassignedTargetsCoroutine = null;
     }
   }
 
@@ -125,6 +127,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       default: {
         Debug.LogWarning(
             $"Controller type {AgentConfig.DynamicConfig?.FlightConfig?.ControllerType} not found.");
+        Controller = null;
         break;
       }
     }
@@ -161,8 +164,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // The interceptor records a hit only if it collides with a threat and destroys it with the
   // threat's kill probability.
   private void OnTriggerEnter(Collider other) {
-    // Check if the interceptor hit the floor with a negative vertical speed.
-    if (other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0) {
+    if (CheckFloorCollision(other)) {
       OnMiss?.Invoke(this);
       Terminate();
     }
@@ -214,23 +216,22 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       yield return new WaitUntil(() => _unassignedTargets.Count > 0);
       yield return new WaitForSeconds(period);
 
-      IEnumerable<IHierarchical> unassignedTargets = _unassignedTargets.ToList();
-      _unassignedTargets.Clear();
-
       // Check whether the unassigned targets are still unassigned.
-      unassignedTargets = unassignedTargets.Where(target => !target.ActivePursuers.Any());
-      int numUnassignedTargets = unassignedTargets.Count();
+      List<IHierarchical> unassignedTargets =
+          _unassignedTargets.Where(target => !target.ActivePursuers.Any()).ToList();
+      _unassignedTargets.Clear();
+      int numUnassignedTargets = unassignedTargets.Count;
       if (numUnassignedTargets > CapacityPlannedRemaining) {
         // If there are more unassigned targets than the capacity remaining, propagate the target
         // re-assignment to the parent interceptor for the excess targets.
-        unassignedTargets =
+        var orderedUnassignedTargets =
             unassignedTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
-        var excessTargets = unassignedTargets.Skip(CapacityPlannedRemaining);
+        var excessTargets = orderedUnassignedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
           OnReassignTarget?.Invoke(target);
         }
-        unassignedTargets = unassignedTargets.Take(CapacityPlannedRemaining);
-        if (!unassignedTargets.Any()) {
+        var remainingTargets = orderedUnassignedTargets.Take(CapacityPlannedRemaining);
+        if (!remainingTargets.Any()) {
           continue;
         }
       }
