@@ -26,7 +26,6 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
         hierarchicals.Where(hierarchical => hierarchical.Target != null)
             .GroupBy(hierarchical => hierarchical.Target)
             .ToDictionary(group => group.Key, group => group.ToList());
-
     List<IHierarchical> targets = targetToHierarchicalMap.Keys.ToList();
     if (targets.Count == 0) {
       return new List<IAgent>();
@@ -64,9 +63,6 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
       IAgent subInterceptor =
           SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
       if (subInterceptor is IInterceptor) {
-        if (subInterceptor.Movement is MissileMovement movement) {
-          movement.FlightPhase = Simulation.FlightPhase.Boost;
-        }
         releasedAgents.Add(subInterceptor);
       }
     }
@@ -81,6 +77,7 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
         hierarchical.AddLaunchedHierarchical(assignment.First);
       }
     }
+
     return releasedAgents;
   }
 

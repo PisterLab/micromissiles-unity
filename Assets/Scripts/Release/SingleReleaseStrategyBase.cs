@@ -51,9 +51,6 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
       return null;
     }
     subInterceptor.HierarchicalAgent.Target = target;
-    if (subInterceptor.Movement is MissileMovement movement) {
-      movement.FlightPhase = Simulation.FlightPhase.Boost;
-    }
     hierarchical.AddLaunchedHierarchical(subInterceptor.HierarchicalAgent);
 
     Debug.Log(
