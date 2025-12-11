@@ -1,4 +1,4 @@
-# Simulation Logging 
+# Simulation Logging
 
 This guide provides instructions on how to access and interpret the simulation logs, how they are structured by the `SimMonitor` class, and how to utilize the provided `visualize_log.py` script to analyze simulation data. Additionally, it offers guidance on creating your own scripts for custom analysis.
 
@@ -59,8 +59,7 @@ The logging system is managed by the `SimMonitor` class in the simulation codeba
 ```csharp
 public class SimMonitor : MonoBehaviour
 {
-    // Responsible for logging simulation data
-    // ...
+    // Responsible for logging simulation data.
 }
 ```
 
@@ -219,29 +218,29 @@ plt.show()
 import numpy as np
 import pandas as pd
 
-# Load telemetry and event data
+# Load telemetry and event data.
 telemetry_df = pd.read_csv("path/to/sim_telemetry_*.csv")
 event_df = pd.read_csv("path/to/sim_events_*.csv")
 
-# Filter miss events
+# Filter miss events.
 miss_events = event_df[event_df["Event"] == "MISS"]
 
-# Calculate miss distances
+# Calculate miss distances.
 miss_distances = []
 for idx, miss in miss_events.iterrows():
     agent_id = miss["AgentID"]
     time = miss["Time"]
-    # Get agent position at the time of miss
+    # Get agent position at the time of miss.
     agent_state = telemetry_df[(telemetry_df["AgentID"] == agent_id) & (telemetry_df["Time"] == time)]
     if not agent_state.empty:
         x = agent_state["AgentX"].values[0]
         y = agent_state["AgentY"].values[0]
         z = agent_state["AgentZ"].values[0]
-        # Calculate distance to target or predefined point
+        # Calculate distance to target or predefined point.
         distance = np.sqrt(x**2 + y**2 + z**2)
         miss_distances.append(distance)
 
-# Output average miss distance
+# Output average miss distance.
 average_miss_distance = np.mean(miss_distances)
 print(f"Average Miss Distance: {average_miss_distance:.2f} meters")
 ```
