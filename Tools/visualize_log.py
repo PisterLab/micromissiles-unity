@@ -143,6 +143,9 @@ def main(argv):
     if FLAGS.telemetry_file and FLAGS.event_log:
         telemetry_file_path = Path(FLAGS.telemetry_file)
         event_log_path = Path(FLAGS.event_log)
+    elif FLAGS.telemetry_file or FLAGS.event_log:
+        raise ValueError("Both the telemetry file and the event log must be "
+                         "specified together, or neither.")
     else:
         telemetry_file_path = utils.find_latest_telemetry_file(
             FLAGS.log_search_dir)
