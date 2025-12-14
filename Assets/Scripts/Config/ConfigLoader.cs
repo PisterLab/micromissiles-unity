@@ -45,6 +45,12 @@ public static class ConfigLoader {
         Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary);
   }
 
+  public static Configs.RunConfig LoadRunConfig(string configFile) {
+    return LoadProtobufConfig<Configs.RunConfig>(Path.Combine("Configs/Runs", configFile),
+                                                 Protobuf.Protobuf_RunConfig_GetSerializedLength,
+                                                 Protobuf.Protobuf_RunConfig_LoadToBinary);
+  }
+
   public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {
     var config = LoadProtobufConfig<Configs.SimulationConfig>(
         Path.Combine("Configs/Simulations", configFile),

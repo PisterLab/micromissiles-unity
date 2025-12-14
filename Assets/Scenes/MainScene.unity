@@ -3022,7 +3022,7 @@ GameObject:
   - component: {fileID: 461629475}
   - component: {fileID: 461629474}
   m_Layer: 5
-  m_Name: TextActionLog1 (1)
+  m_Name: TextActionLog2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5063,7 +5063,7 @@ GameObject:
   - component: {fileID: 1022643937}
   - component: {fileID: 1022643936}
   m_Layer: 5
-  m_Name: TextActionLog1 (3)
+  m_Name: TextActionLog4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5319,7 +5319,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Current simulation time:'
+  m_text: 'Elapsed Time:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
   m_sharedMaterial: {fileID: 3098863606857845682, guid: f77343ae246cd8641a77a1a65543f2f0, type: 2}
@@ -5398,6 +5398,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1042320583}
   m_CullTransparentMesh: 1
+--- !u!1001 &1052069930
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 703869705355037158, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_Name
+      value: RunManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4834178371129939403, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 55d60423b7d3f4ea798be9301e4415a7, type: 3}
 --- !u!1 &1071150555
 GameObject:
   m_ObjectHideFlags: 0
@@ -9399,7 +9456,7 @@ GameObject:
   - component: {fileID: 2021165818}
   - component: {fileID: 2021165817}
   m_Layer: 5
-  m_Name: TextActionLog1 (2)
+  m_Name: TextActionLog3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9608,7 +9665,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 445071915}
         m_TargetAssemblyTypeName: SimManager, bamlab.micromissiles
-        m_MethodName: RestartSimulation
+        m_MethodName: ResetAndStartSimulation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9847,7 +9904,7 @@ GameObject:
   - component: {fileID: 2132793184}
   - component: {fileID: 2132793183}
   m_Layer: 5
-  m_Name: TextActionLog1 (4)
+  m_Name: TextActionLog5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10217,6 +10274,7 @@ SceneRoots:
   - {fileID: 1255004942}
   - {fileID: 564968303}
   - {fileID: 299918104362186796}
+  - {fileID: 1052069930}
   - {fileID: 2555751187746303554}
   - {fileID: 8915365264778387265}
   - {fileID: 359787966}

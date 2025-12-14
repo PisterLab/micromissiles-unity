@@ -10,12 +10,12 @@ public class InputManager : MonoBehaviour {
   private bool _isDragging = false;
 
   private void Awake() {
-    if (Instance == null) {
-      Instance = this;
-      DontDestroyOnLoad(gameObject);
-    } else {
+    if (Instance != null && Instance != this) {
       Destroy(gameObject);
+      return;
     }
+    Instance = this;
+    DontDestroyOnLoad(gameObject);
   }
 
   private void Update() {
@@ -58,7 +58,8 @@ public class InputManager : MonoBehaviour {
     if (Input.GetKeyDown(KeyCode.C)) {}
 
     if (Input.GetKeyDown(KeyCode.R)) {
-      SimManager.Instance.RestartSimulation();
+      SimManager.Instance.EndSimulation();
+      SimManager.Instance.ResetAndStartSimulation();
     }
 
     if (Input.GetKeyDown(KeyCode.L)) {
@@ -71,7 +72,7 @@ public class InputManager : MonoBehaviour {
 
     if (Input.GetKeyDown(KeyCode.Space)) {
       // Pause the time.
-      if (!SimManager.Instance.IsSimulationPaused) {
+      if (!SimManager.Instance.IsPaused) {
         SimManager.Instance.PauseSimulation();
       } else {
         SimManager.Instance.ResumeSimulation();
