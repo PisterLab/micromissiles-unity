@@ -71,7 +71,6 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterSimulationEnded() {
-    RecordTelemetry();
     DestroyLogging();
   }
 
@@ -122,7 +121,7 @@ public class SimMonitor : MonoBehaviour {
     if (RunManager.Instance.HasRunConfig()) {
       _sessionDirectory =
           Path.Combine(Application.persistentDataPath, "Logs",
-                       $"{RunManager.Instance.RunConfig.Name}_{RunManager.Instance.Timestamp}",
+                       $"{RunManager.Instance.RunConfig.Name}_{SimManager.Instance.Timestamp}",
                        $"run_{RunManager.Instance.RunIndex + 1}_seed_{RunManager.Instance.Seed}");
     } else {
       _sessionDirectory = Path.Combine(Application.persistentDataPath, "Logs",
@@ -159,6 +158,7 @@ public class SimMonitor : MonoBehaviour {
         StopCoroutine(_monitorRoutine);
         _monitorRoutine = null;
       }
+      RecordTelemetry();
       DestroyTelemetryLogging();
       ConvertBinaryTelemetryToCsv(_telemetryBinPath,
                                   Path.ChangeExtension(_telemetryBinPath, ".csv"));
