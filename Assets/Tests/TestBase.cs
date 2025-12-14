@@ -68,7 +68,8 @@ public abstract class TestBase {
     // If not found in the immediate type, search the inheritance hierarchy.
     while (property == null && type.BaseType != null) {
       type = type.BaseType;
-      property = type.GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
+      property = type.GetProperty(
+          propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     if (property == null) {

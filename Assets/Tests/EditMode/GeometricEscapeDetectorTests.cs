@@ -8,7 +8,7 @@ public class GeometricEscapeDetectorTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
     _escapeDetector = new GeometricEscapeDetector(_agent);
   }
@@ -82,7 +82,7 @@ public class GeometricEscapeDetectorTests : TestBase {
 
   [Test]
   public void IsEscaping_AgentOrthogonalToTarget_ReturnsFalse() {
-    _agent.Position = new Vector3(0, 1, 0);
+    _agent.Position = new Vector3(0, 1, 10);
     var target =
         new FixedHierarchical(position: new Vector3(0, 0, 10), velocity: new Vector3(0, 0, -1)) {
           Target = new FixedHierarchical(position: new Vector3(1, 0, 0))

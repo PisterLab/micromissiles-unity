@@ -19,8 +19,6 @@ public class RunManager : MonoBehaviour {
 
   public int Seed { get; private set; } = 0;
 
-  public string Timestamp { get; private set; } = "";
-
   public bool HasRunConfig() {
     return RunConfig != null;
   }
@@ -32,6 +30,11 @@ public class RunManager : MonoBehaviour {
       return;
     }
     Configs.RunConfig runConfig = ConfigLoader.LoadRunConfig(runConfigFile);
+    if (runConfig == null) {
+      Debug.LogWarning(
+          $"Failed to load run configuration from: {runConfigFile}. Application will not start batch mode.");
+      return;
+    }
 
     // Create a game object to run coroutines.
     var gameObject = new GameObject("RunManager");
@@ -45,7 +48,6 @@ public class RunManager : MonoBehaviour {
     IsRunning = false;
     RunIndex = 0;
     Seed = RunConfig.Seed;
-    Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
   }
 
   private void Start() {
@@ -125,9 +127,8 @@ public class RunManager : MonoBehaviour {
 
   private static string GetArgValue(string[] args, string name) {
     for (int i = 0; i < args.Length; ++i) {
-      if (args[i].Equals(name, StringComparison.OrdinalIgnoreCase)) {
-        if (i + 1 < args.Length)
-          return args[i + 1];
+      if (args[i].Equals(name, StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length) {
+        return args[i + 1];
       }
       if (args[i].StartsWith(name + "=", StringComparison.OrdinalIgnoreCase)) {
         return args[i].Substring(name.Length + 1);
