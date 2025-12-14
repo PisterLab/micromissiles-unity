@@ -55,7 +55,7 @@ def find_latest_file(dir: str, file_pattern: str) -> Path | None:
     files = find_all_files(dir, file_pattern)
     if not files:
         return None
-    latest_file = max(files, key=lambda path: path.stat().st_ctime)
+    latest_file = max(files, key=lambda path: path.stat().st_mtime)
     logging.info(f"Using latest file found: {latest_file}.")
     return latest_file
 
@@ -80,7 +80,7 @@ def find_latest_event_log(log_dir: str) -> Path | None:
 
 def find_all_subdirectories(dir: str, subdir_pattern: str) -> list[Path]:
     """Returns all subdirectories within the directory and its subdirectories
-    that match the file pattern.
+    that match the subdirectory pattern.
 
     If no subdirectories match the given pattern, returns an empty list.
 
