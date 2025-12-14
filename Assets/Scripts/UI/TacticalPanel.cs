@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TacticalPanel : MonoBehaviour {
   // Symbol position update period in seconds.
@@ -85,6 +84,7 @@ public class TacticalPanel : MonoBehaviour {
   private void OnDestroy() {
     if (_symbolsCoroutine != null) {
       StopCoroutine(_symbolsCoroutine);
+      _symbolsCoroutine = null;
     }
   }
 
@@ -97,6 +97,10 @@ public class TacticalPanel : MonoBehaviour {
   }
 
   private void OnDisable() {
+    if (_symbolsCoroutine != null) {
+      StopCoroutine(_symbolsCoroutine);
+      _symbolsCoroutine = null;
+    }
     DestroyAllSymbols();
   }
 
@@ -165,6 +169,12 @@ public class TacticalPanel : MonoBehaviour {
       }
       case Configs.AgentType.RotaryWingThreat: {
         tacticalSymbol.SetType("Rotary-Wing Threat");
+        break;
+      }
+      default: {
+        Debug.LogError(
+            $"Unknown agent type {agent.StaticConfig.AgentType} for agent {agent.gameObject.name}.");
+        tacticalSymbol.SetType("Unknown");
         break;
       }
     }

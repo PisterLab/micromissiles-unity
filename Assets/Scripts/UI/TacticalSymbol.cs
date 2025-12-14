@@ -21,14 +21,12 @@ public class TacticalSymbol : MonoBehaviour {
   [SerializeField]
   private TextMeshProUGUI _additionalInfoText;
 
-  private SpriteManager _spriteManager;
-
   public void SetSprite(string spriteName) {
     spriteName = spriteName.ToUpper();
     // Update main symbol image.
     Image symbolImage = GetComponent<Image>();
     if (symbolImage != null) {
-      Sprite symbolSprite = _spriteManager.LoadSymbolSprite(spriteName);
+      Sprite symbolSprite = SpriteManager.LoadSymbolSprite(spriteName);
       if (symbolSprite != null) {
         symbolImage.sprite = symbolSprite;
       }
@@ -71,7 +69,6 @@ public class TacticalSymbol : MonoBehaviour {
   }
 
   private void Awake() {
-    _spriteManager = new SpriteManager();
     _uniqueDesignatorText.text = "";
     _iffText.text = "";
     _typeText.text = "";
@@ -83,18 +80,5 @@ public class TacticalSymbol : MonoBehaviour {
     if (textComponent != null) {
       textComponent.text = text.ToUpper();
     }
-  }
-}
-
-public class SpriteManager {
-  private const string _symbolPathFormat = "APP6-D_Symbology/{0}";
-
-  public Sprite LoadSymbolSprite(string symbolName) {
-    string path = string.Format(_symbolPathFormat, symbolName);
-    Sprite sprite = Resources.Load<Sprite>(path);
-    if (sprite == null) {
-      Debug.LogWarning($"Failed to load sprite at path: {path}.");
-    }
-    return sprite;
   }
 }

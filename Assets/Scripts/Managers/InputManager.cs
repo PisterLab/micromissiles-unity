@@ -43,6 +43,7 @@ public class InputManager : MonoBehaviour {
           break;
         }
         default: {
+          Debug.LogError($"Invalid UI mode: {UIManager.Instance.UIMode}.");
           break;
         }
       }
@@ -58,6 +59,7 @@ public class InputManager : MonoBehaviour {
         break;
       }
       default: {
+        Debug.LogError($"Invalid UI mode: {UIManager.Instance.UIMode}.");
         break;
       }
     }
