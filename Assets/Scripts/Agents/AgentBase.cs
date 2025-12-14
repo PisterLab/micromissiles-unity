@@ -1,6 +1,8 @@
 using UnityEngine;
 
 // Base implementation of an agent.
+//
+// See the agent interface for property and method documentation.
 public class AgentBase : MonoBehaviour, IAgent {
   public event AgentEventHandler OnTerminated;
 

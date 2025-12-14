@@ -45,8 +45,15 @@ public interface IAgent {
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
 
+  // Create a dummy agent to represent the target for sensor tracking and control.
+  // This function should be called when a target is assigned to this agent.
   void CreateTargetModel(IHierarchical target);
+
+  // Destroy the target model dummy agent and clear the target model reference.
+  // This function should be called when the target is unassigned or no longer valid.
   void DestroyTargetModel();
+
+  // Update the target model dummy agent according to the sensor.
   void UpdateTargetModel();
 
   void Terminate();
