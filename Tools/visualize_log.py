@@ -148,8 +148,7 @@ def main(argv):
             FLAGS.log_search_dir)
         event_log_path = utils.find_latest_event_log(FLAGS.log_search_dir)
     if not telemetry_file_path or not event_log_path:
-        raise ValueError(
-            "Both a telemetry file and an event log must be provided.")
+        raise ValueError("Missing required telemetry or event log file.")
 
     telemetry_df = utils.read_telemetry_file(telemetry_file_path)
     event_df = utils.read_event_log(event_log_path)
