@@ -1,7 +1,7 @@
 # Simulation Logging
 
 This guide provides instructions on how to access and interpret the simulation logs.
-The `SimMonitor` class outputs a telemetry file and an event log, which can be visualized using the provided `visualize_log.py` script or replayed using the provided `animate_log.py` script.
+The `SimMonitor` class outputs a telemetry file and an event log, which can be visualized using the provided `visualize_log.py` script or replayed using the provided `replay_log.py` script.
 To aggregate logs from multiple runs kicked off using a run configuration, we have provided a `process_run.py` script.
 
 ## Overview

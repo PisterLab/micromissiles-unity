@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class UIDialog : MonoBehaviour {
   [SerializeField]
-  private string dialogTitle;
+  private string dialogTitle = null!;
 
   [SerializeField]
 
-  private TextMeshProUGUI dialogTitleHandle;
+  private TextMeshProUGUI dialogTitleHandle = null!;
   [SerializeField]
-  private RectTransform contentHandle;
+  private RectTransform contentHandle = null!;
 
   /// Tabs
   [SerializeField]
@@ -21,17 +21,17 @@ public class UIDialog : MonoBehaviour {
   [SerializeField]
   private float _tabHeight = 8f;
   // List of dialog tabs.
-  private List<GameObject> dialogTabs;
+  private List<GameObject> dialogTabs = null!;
 
   /// Entries
-  private List<UISelectableEntry> entries;
+  private List<UISelectableEntry> entries = null!;
 
   [SerializeField]
   private float entryHeight = 8f;
   [SerializeField]
   private float entryIndentWidth = 4f;
 
-  private List<UISelectableEntry> cleanupPool;
+  private List<UISelectableEntry> cleanupPool = null!;
 
   private bool isOpen;
 

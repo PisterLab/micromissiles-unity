@@ -1,0 +1,17 @@
+root = true
+
+[*.cs]
+# IDE analyzer rules for linting - treat as errors
+dotnet_diagnostic.IDE0005.severity = error  # Using directive is unnecessary
+dotnet_diagnostic.IDE0051.severity = error  # Remove unused private member
+dotnet_diagnostic.IDE0059.severity = error  # Unnecessary value assignment
+dotnet_diagnostic.IDE0060.severity = error  # Remove unused parameter
+
+# IDE0060 configuration - flag both public and non-public unused parameters
+dotnet_code_quality_unused_parameters = all
+
+# IDE0059 configuration - prefer discard for unused assignments
+csharp_style_unused_value_assignment_preference = discard_variable:error
+csharp_style_unused_value_expression_statement_preference = discard_variable:silent
+ 
+; (Removed CA* elevation for Unity compile-only policy)
