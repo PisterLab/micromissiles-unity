@@ -76,7 +76,7 @@ public class InputManager : MonoBehaviour {
 
     if (Input.GetKeyDown(KeyCode.R)) {
       SimManager.Instance.EndSimulation();
-      SimManager.Instance.RestartSimulation();
+      SimManager.Instance.ResetAndStartSimulation();
     }
 
     if (Input.GetKeyDown(KeyCode.L)) {

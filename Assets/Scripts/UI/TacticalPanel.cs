@@ -14,7 +14,7 @@ public class TacticalPanel : MonoBehaviour {
 
   [SerializeField]
   [Tooltip("The UI group that contains the radar symbology elements")]
-  private GameObject _radarUIGroup;
+  private GameObject _radarUIGroup = null!;
 
   private RectTransform _radarUIGroupRectTransform;
 
