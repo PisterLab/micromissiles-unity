@@ -1,3 +1,5 @@
+"""An aggregator combines metrics over multiple simulation runs."""
+
 import pandas as pd
 from metric import Metric
 from multi_metric import MultiMetric

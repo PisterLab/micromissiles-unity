@@ -10,14 +10,14 @@ public class UIManager : MonoBehaviour {
 
   [SerializeField]
   [Tooltip("The UI panel that renders the camera view for the THREE_DIMENSIONAL mode")]
-  private GameObject _cameraPanel;
+  private GameObject _cameraPanel = null!;
 
   [SerializeField]
   [Tooltip("The UI panel that renders the tactical view for the TACTICAL mode")]
-  private GameObject _tacticalPanel;
+  private GameObject _tacticalPanel = null!;
 
   [SerializeField]
-  private GameObject _configSelectorPanel;
+  private GameObject _configSelectorPanel = null!;
   private TMP_Dropdown _configDropdown;
   public TextMeshProUGUI simTimeText;
   public TextMeshProUGUI interceptorCostText;
