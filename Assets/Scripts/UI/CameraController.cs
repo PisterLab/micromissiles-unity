@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour {
 
   // Target transform for orbit rotation.
   [SerializeField]
-  private Transform _target;
+  private Transform _target = null;
 
   // Distance from the camera to the orbit target.
   [SerializeField]
@@ -88,11 +88,7 @@ public class CameraController : MonoBehaviour {
 
   // Renderer for the orbit target.
   [SerializeField]
-  private Renderer _targetRenderer;
-
-  // Renderer for the floor.
-  [SerializeField]
-  private Renderer _floorRenderer;
+  private Renderer _targetRenderer = null;
 
   // Speed of camera movement during autoplay.
   [SerializeField]
