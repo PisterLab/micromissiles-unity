@@ -119,7 +119,7 @@ All other nested interceptors are launched by the surrounding parent interceptor
 
 Note that the number of agents in the swarm, the initial states, and the launch times are not specified for interceptor swarms.
 The IADS will automatically determine how many interceptors to launch and when to launch them against the incoming threats by [clustering](./Simulator_Overview.md#clustering) them.
-The launchers and the carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#submunitions-release).
+The launchers and the carrier interceptors will then independently determine [when to release the submunitions](./Simulator_Overview.md#release-strategy).
 
 ### Examples
 
