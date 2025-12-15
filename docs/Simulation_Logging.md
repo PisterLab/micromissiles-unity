@@ -1,7 +1,7 @@
 # Simulation Logging
 
 This guide provides instructions on how to access and interpret the simulation logs.
-The `SimMonitor` class outputs a telemetry file and an event log, which can be visualized using the provided `visualize_log.py` script.
+The `SimMonitor` class outputs a telemetry file and an event log, which can be visualized using the provided `visualize_log.py` script or replayed using the provided `replay_log.py` script.
 To aggregate logs from multiple runs kicked off using a run configuration, we have provided a `process_run.py` script.
 
 ## Overview
@@ -144,6 +144,34 @@ Number of interceptor misses recorded: 20.
 ```
 
 Finally, the script plots the agent trajectories and marks events, such as interceptor hits and misses, in a 3D plot.
+
+## Telemetry Replay
+
+`replay_log.py` is an example script provided to replay the telemetry file and interactively visualize all agent trajectories in a 3D web animation.
+It is included in the `Tools` directory of the release.
+
+### Requirements
+
+To run `replay_log.py`, ensure that you have Python 3 installed on your system and that you have the following Python libraries:
+- **`absl-py`**
+- **`pandas`**
+
+### Replaying the Log
+
+Run the script as follows:
+```bash
+python3 Tools/replay_log.py \
+    --telemetry_file path/to/sim_telemetry_file.csv \
+    --output path/to/animation.html
+```
+
+If the telemetry file is not provided, the script will automatically locate the most recent `sim_telemetry_*.csv` file within the provided `--log_search_dir`.
+If `--log_search_dir` is not provided, it defaults to the persistent data path.
+
+The script generates an HTML file containing an interactive 3D animation of the telemetry file and outputs it to the given output file path.
+The HTML file can be opened in any web browser to view the animation.
+
+![Telemetry animation](./images/telemetry_animation.png)
 
 ## Run Processor
 
