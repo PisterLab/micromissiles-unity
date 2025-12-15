@@ -133,7 +133,6 @@ def plot_telemetry(telemetry_df: pd.DataFrame, event_df: pd.DataFrame) -> None:
     ax.set_aspect("equal")
     ax.view_init(elev=20, azim=-45)
     ax.legend(loc="lower center")
-    fig.tight_layout()
     plt.show()
 
 
