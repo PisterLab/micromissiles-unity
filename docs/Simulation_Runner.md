@@ -61,7 +61,7 @@ The run configuration includes:
 #### Windows
 ```powershell
 cd .\Build\<timestamp>
-.\micromissiles.exe --config batch_7_quadcopters.txt `
+.\micromissiles.exe --config batch_7_quadcopters.pbtxt `
     -batchmode `
     -nographics `
     -logFile micromissiles.log
@@ -71,7 +71,7 @@ cd .\Build\<timestamp>
 ```bash
 cd Build/<timestamp>
 ./micromissiles.app/Contents/MacOS/micromissiles \
-    --config batch_7_quadcopters.txt \
+    --config batch_7_quadcopters.pbtxt \
     -batchmode \
     -nographics \
     -logFile micromissiles.log
@@ -80,7 +80,7 @@ cd Build/<timestamp>
 #### Linux
 ```bash
 cd Build/<timestamp>
-./micromissiles --config batch_7_quadcopters.txt \
+./micromissiles --config batch_7_quadcopters.pbtxt \
     -batchmode \
     -nographics \
     -logFile micromissiles.log
