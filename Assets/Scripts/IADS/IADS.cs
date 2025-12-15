@@ -41,6 +41,7 @@ public class IADS : MonoBehaviour {
   private void OnDestroy() {
     if (_hierarchyCoroutine != null) {
       StopCoroutine(_hierarchyCoroutine);
+      _hierarchyCoroutine = null;
     }
   }
 

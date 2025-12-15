@@ -154,7 +154,10 @@ public class CameraController : MonoBehaviour {
         _autoplayRoutine = StartCoroutine(AutoPlayRoutine());
       } else if (!value && _autoRotate) {
         _autoRotate = false;
-        StopCoroutine(_autoplayRoutine);
+        if (_autoplayRoutine != null) {
+          StopCoroutine(_autoplayRoutine);
+          _autoplayRoutine = null;
+        }
       }
     }
   }
