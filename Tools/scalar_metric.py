@@ -7,7 +7,7 @@ from abc import abstractmethod
 
 import numpy as np
 import pandas as pd
-from constants import EventType
+from constants import Column, EventType
 from metric import Metric
 
 
@@ -39,10 +39,10 @@ class NumInterceptors(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        return sum(event_df["Event"] == EventType.NEW_INTERCEPTOR)
+        return sum(event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR)
 
 
-class NumHits(ScalarMetric):
+class NumInterceptorHits(ScalarMetric):
     """A metric for the number of interceptor hits."""
 
     @property
@@ -56,10 +56,10 @@ class NumHits(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        return sum(event_df["Event"] == EventType.INTERCEPTOR_HIT)
+        return sum(event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT)
 
 
-class NumMisses(ScalarMetric):
+class NumInterceptorMisses(ScalarMetric):
     """A metric for the number of interceptor misses."""
 
     @property
@@ -73,16 +73,16 @@ class NumMisses(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        return sum(event_df["Event"] == EventType.INTERCEPTOR_MISS)
+        return sum(event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS)
 
 
-class HitRate(ScalarMetric):
+class InterceptorHitRate(ScalarMetric):
     """A metric for the hit rate of the interceptors."""
 
     @property
     def name(self) -> str:
         """Returns the name of the metric."""
-        return "Hit rate"
+        return "Interceptor hit rate"
 
     def emit(self, event_df: pd.DataFrame) -> float:
         """Emits the metric from the given event log.
@@ -90,12 +90,14 @@ class HitRate(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        num_hits = sum(event_df["Event"] == EventType.INTERCEPTOR_HIT)
-        num_misses = sum(event_df["Event"] == EventType.INTERCEPTOR_MISS)
-        total = num_hits + num_misses
+        num_interceptor_hits = sum(
+            event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT)
+        num_interceptor_misses = sum(
+            event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS)
+        total = num_interceptor_hits + num_interceptor_misses
         if total == 0:
             return 0
-        return num_hits / total
+        return num_interceptor_hits / total
 
 
 class InterceptorEfficiency(ScalarMetric):
@@ -116,11 +118,13 @@ class InterceptorEfficiency(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        num_interceptors = sum(event_df["Event"] == EventType.NEW_INTERCEPTOR)
-        num_hits = sum(event_df["Event"] == EventType.INTERCEPTOR_HIT)
+        num_interceptors = sum(
+            event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR)
+        num_interceptor_hits = sum(
+            event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT)
         if num_interceptors == 0:
             return 0
-        return num_hits / num_interceptors
+        return num_interceptor_hits / num_interceptors
 
 
 class MinInterceptorDistance(ScalarMetric):
@@ -137,9 +141,15 @@ class MinInterceptorDistance(ScalarMetric):
         Args:
             event_df: Dataframe containing the events.
         """
-        hits = event_df[event_df["Event"] == EventType.INTERCEPTOR_HIT]
-        if hits.empty:
+        interceptor_hits = (
+            event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT])
+        if interceptor_hits.empty:
             return np.inf
-        hit_positions = hits[["PositionX", "PositionY", "PositionZ"]]
-        hit_distances = np.linalg.norm(hit_positions.to_numpy(), axis=1)
-        return np.min(hit_distances)
+        interceptor_hit_positions = interceptor_hits[[
+            Column.POSITION_X,
+            Column.POSITION_Y,
+            Column.POSITION_Z,
+        ]]
+        interceptor_hit_distances = np.linalg.norm(
+            interceptor_hit_positions.to_numpy(), axis=1)
+        return np.min(interceptor_hit_distances)

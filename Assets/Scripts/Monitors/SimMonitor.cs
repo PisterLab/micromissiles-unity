@@ -6,14 +6,24 @@ using System.Linq;
 using UnityEngine;
 
 public class SimMonitor : MonoBehaviour {
+  private static class EventTypes {
+    public const string NewInterceptor = "NEW_INTERCEPTOR";
+    public const string NewThreat = "NEW_THREAT";
+    public const string InterceptorHit = "INTERCEPTOR_HIT";
+    public const string InterceptorMiss = "INTERCEPTOR_MISS";
+    public const string ThreatHit = "THREAT_HIT";
+    public const string ThreatMiss = "THREAT_MISS";
+  }
+
   [Serializable]
   private class EventRecord {
     public float Time;
+    public string EventType;
+    public string AgentType;
+    public string AgentID;
     public float PositionX;
     public float PositionY;
     public float PositionZ;
-    public string EventType;
-    public string Details;
   }
 
   // Telemetry update period in seconds.
@@ -33,7 +43,7 @@ public class SimMonitor : MonoBehaviour {
 
   private string _eventLogPath;
   [SerializeField]
-  private List<EventRecord> _eventLogCache;
+  private List<EventRecord> _eventLog;
 
   private bool _isLoggingDestroyed = false;
 
@@ -75,45 +85,47 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RegisterNewInterceptor(IInterceptor interceptor) {
-    RegisterNewAgent(interceptor, "NEW_INTERCEPTOR");
+    RegisterAgentEvent(interceptor, EventTypes.NewInterceptor);
     interceptor.OnHit += RegisterInterceptorHit;
     interceptor.OnMiss += RegisterInterceptorMiss;
   }
 
   private void RegisterNewThreat(IThreat threat) {
-    RegisterNewAgent(threat, "NEW_THREAT");
-  }
-
-  private void RegisterNewAgent(IAgent agent, string eventType) {
-    if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
-      float time = SimManager.Instance.ElapsedTime;
-      Vector3 pos = agent.transform.position;
-      var record = new EventRecord {
-        Time = time,       PositionX = pos.x,     PositionY = pos.y,
-        PositionZ = pos.z, EventType = eventType, Details = agent.gameObject.name,
-      };
-      _eventLogCache.Add(record);
-    }
+    RegisterAgentEvent(threat, EventTypes.NewThreat);
+    threat.OnHit += RegisterThreatHit;
+    threat.OnMiss += RegisterThreatMiss;
   }
 
   private void RegisterInterceptorHit(IInterceptor interceptor) {
-    RegisterInterceptorEvent(interceptor, hit: true);
+    RegisterAgentEvent(interceptor, EventTypes.InterceptorHit);
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
-    RegisterInterceptorEvent(interceptor, hit: false);
+    RegisterAgentEvent(interceptor, EventTypes.InterceptorMiss);
   }
 
-  private void RegisterInterceptorEvent(IInterceptor interceptor, bool hit) {
+  private void RegisterThreatHit(IThreat threat) {
+    RegisterAgentEvent(threat, EventTypes.ThreatHit);
+  }
+
+  private void RegisterThreatMiss(IThreat threat) {
+    RegisterAgentEvent(threat, EventTypes.ThreatMiss);
+  }
+
+  private void RegisterAgentEvent(IAgent agent, string eventType) {
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
       float time = SimManager.Instance.ElapsedTime;
-      Vector3 pos = interceptor.transform.position;
-      string eventType = hit ? "INTERCEPTOR_HIT" : "INTERCEPTOR_MISS";
+      Vector3 position = agent.Position;
       var record = new EventRecord {
-        Time = time,       PositionX = pos.x,     PositionY = pos.y,
-        PositionZ = pos.z, EventType = eventType, Details = $"{interceptor.gameObject.name}",
+        Time = time,
+        EventType = eventType,
+        AgentType = agent.StaticConfig.AgentType.ToString(),
+        AgentID = agent.gameObject.name,
+        PositionX = position.x,
+        PositionY = position.y,
+        PositionZ = position.z,
       };
-      _eventLogCache.Add(record);
+      _eventLog.Add(record);
     }
   }
 
@@ -143,7 +155,7 @@ public class SimMonitor : MonoBehaviour {
   private void InitializeEventLogging() {
     string eventLog = $"sim_events_{Timestamp}.csv";
     _eventLogPath = Path.Combine(_sessionDirectory, eventLog);
-    _eventLogCache = new List<EventRecord>();
+    _eventLog = new List<EventRecord>();
     Debug.Log($"Event log initialized successfully: {eventLog}.");
   }
 
@@ -160,7 +172,7 @@ public class SimMonitor : MonoBehaviour {
       }
       RecordTelemetry();
       DestroyTelemetryLogging();
-      ConvertBinaryTelemetryToCsv(_telemetryBinPath,
+      ConvertTelemetryBinaryToCsv(_telemetryBinPath,
                                   Path.ChangeExtension(_telemetryBinPath, ".csv"));
     }
     if (SimManager.Instance.SimulatorConfig.EnableEventLogging) {
@@ -200,53 +212,51 @@ public class SimMonitor : MonoBehaviour {
         continue;
       }
 
-      Vector3 position = agent.transform.position;
+      Vector3 position = agent.Position;
       if (position == Vector3.zero) {
         continue;
       }
-
       Vector3 velocity = agent.Velocity;
-      int agentID = agent.gameObject.GetInstanceID();
-      byte agentType = (byte)(agent is IThreat ? 0 : 1);
 
       // Write telemetry data directly to the binary file.
       _telemetryBinaryWriter.Write(time);
-      _telemetryBinaryWriter.Write(agentID);
+      _telemetryBinaryWriter.Write((int)agent.StaticConfig.AgentType);
+      _telemetryBinaryWriter.Write(agent.gameObject.name);
       _telemetryBinaryWriter.Write(position.x);
       _telemetryBinaryWriter.Write(position.y);
       _telemetryBinaryWriter.Write(position.z);
       _telemetryBinaryWriter.Write(velocity.x);
       _telemetryBinaryWriter.Write(velocity.y);
       _telemetryBinaryWriter.Write(velocity.z);
-      _telemetryBinaryWriter.Write(agentType);
     }
   }
 
-  private void ConvertBinaryTelemetryToCsv(string binaryFilePath, string csvFilePath) {
+  private void ConvertTelemetryBinaryToCsv(string binaryFilePath, string csvFilePath) {
     try {
-      using FileStream fs =
+      using var fs =
           new FileStream(binaryFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-      using BinaryReader reader = new BinaryReader(fs);
-      using StreamWriter writer = new StreamWriter(csvFilePath, false);
+      using var reader = new BinaryReader(fs);
+      using var writer = new StreamWriter(csvFilePath, false);
       {
         // Write the CSV header.
-        writer.WriteLine("Time,AgentID,AgentX,AgentY,AgentZ,AgentVX,AgentVY,AgentVZ,AgentType");
+        writer.WriteLine(
+            "Time,AgentType,AgentID,PositionX,PositionY,PositionZ,VelocityX,VelocityY,VelocityZ");
 
         while (reader.BaseStream.Position != reader.BaseStream.Length) {
           float time = reader.ReadSingle();
-          int agentID = reader.ReadInt32();
+          var agentType = (Configs.AgentType)reader.ReadInt32();
+          string agentID = reader.ReadString();
           float positionX = reader.ReadSingle();
           float positionY = reader.ReadSingle();
           float positionZ = reader.ReadSingle();
           float velocityX = reader.ReadSingle();
           float velocityY = reader.ReadSingle();
           float velocityZ = reader.ReadSingle();
-          byte agentTypeByte = reader.ReadByte();
-          string agentType = agentTypeByte == 0 ? "T" : "M";
 
           // Write the data to CSV.
-          writer.WriteLine(
-              $"{time:F2},{agentID},{positionX:F2},{positionY:F2},{positionZ:F2},{velocityX:F2},{velocityY:F2},{velocityZ:F2},{agentType}");
+          writer.WriteLine($"{time:F2},{agentType.ToString()},{agentID}," +
+                           $"{positionX:F2},{positionY:F2},{positionZ:F2}," +
+                           $"{velocityX:F2},{velocityY:F2},{velocityZ:F2}");
         }
         Debug.Log($"Telemetry CSV file converted successfully: {csvFilePath}.");
       }
@@ -257,13 +267,14 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void WriteEventsToFile() {
-    using (StreamWriter writer = new StreamWriter(_eventLogPath, false)) {
+    using (var writer = new StreamWriter(_eventLogPath, append: false)) {
       // Write the CSV header.
-      writer.WriteLine("Time,PositionX,PositionY,PositionZ,Event,Details");
+      writer.WriteLine("Time,Event,AgentType,AgentID,PositionX,PositionY,PositionZ");
 
-      foreach (var record in _eventLogCache) {
+      foreach (var record in _eventLog) {
         writer.WriteLine(
-            $"{record.Time:F2},{record.PositionX:F2},{record.PositionY:F2},{record.PositionZ:F2},{record.EventType},{record.Details}");
+            $"{record.Time:F2},{record.EventType},{record.AgentType},{record.AgentID}," +
+            $"{record.PositionX:F2},{record.PositionY:F2},{record.PositionZ:F2}");
       }
     }
   }

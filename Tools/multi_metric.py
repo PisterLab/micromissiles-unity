@@ -8,7 +8,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
-from constants import EventType
+from constants import Column, EventType
 from metric import Metric
 
 
@@ -44,9 +44,13 @@ class InterceptPosition2D(MultiMetric):
         Returns:
             An array of shape (num_hits, 2) containing the 2D positions (x, z).
         """
-        hits = event_df[event_df["Event"] == EventType.INTERCEPTOR_HIT]
-        hit_positions = hits[["PositionX", "PositionZ"]]
-        return list(hit_positions.to_numpy())
+        interceptor_hits = (
+            event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT])
+        interceptor_hit_positions = interceptor_hits[[
+            Column.POSITION_X,
+            Column.POSITION_Z,
+        ]]
+        return list(interceptor_hit_positions.to_numpy())
 
 
 class InterceptorSpawnPosition2D(MultiMetric):
@@ -71,6 +75,9 @@ class InterceptorSpawnPosition2D(MultiMetric):
             (x, z).
         """
         new_interceptors = (
-            event_df[event_df["Event"] == EventType.NEW_INTERCEPTOR])
-        spawn_positions = new_interceptors[["PositionX", "PositionZ"]]
-        return list(spawn_positions.to_numpy())
+            event_df[event_df[Column.EVENT] == EventType.NEW_INTERCEPTOR])
+        interceptor_spawn_positions = new_interceptors[[
+            Column.POSITION_X,
+            Column.POSITION_Z,
+        ]]
+        return list(interceptor_spawn_positions.to_numpy())
