@@ -22,6 +22,3 @@ TELEMETRY_FILE_PREFIX = "sim_telemetry"
 
 # Event log prefix.
 EVENT_LOG_FILE_PREFIX = "sim_events"
-
-# Log directory name for a single run.
-RUN_LOG_DIRECTORY_NAME_PATTERN = "run_*_seed_*"
