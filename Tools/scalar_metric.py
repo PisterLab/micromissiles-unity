@@ -45,7 +45,7 @@ class NumMissileInterceptors(ScalarMetric):
 
 
 class NumMissileInterceptorHits(ScalarMetric):
-    """A metric for the number of interceptor hits."""
+    """A metric for the number of missile interceptor hits."""
 
     @property
     def name(self) -> str:

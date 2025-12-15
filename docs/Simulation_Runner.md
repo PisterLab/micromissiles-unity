@@ -53,25 +53,37 @@ The run configuration includes:
 
 ## Running from Command Line
 
-The `--config <config_file>` flag specifies the path to the run configuration file relative to the `Assets/StreamingAssets/Configs/Runs` directory.
-Run the standalone player from the command line as follows:
+#### Flags
+
+- **`--config <config_file>`**: Specifies the path to the run configuration file relative to the `Assets/StreamingAssets/Configs/Runs` directory.
+- **`-logFile <log_file>`** (optional): Specifies where Unity will place its [Editor log](https://docs.unity3d.com/540/Documentation/Manual/LogFiles.html).
 
 #### Windows
 ```powershell
 cd .\Build\<timestamp>
-.\micromissiles.exe --config batch_7_quadcopters.pbtxt -batchmode -nographics -logFile micromissiles.log
+.\micromissiles.exe --config batch_7_quadcopters.pbtxt `
+    -batchmode `
+    -nographics `
+    -logFile micromissiles.log
 ```
 
 #### Mac
 ```bash
 cd Build/<timestamp>
-./micromissiles.app/Contents/MacOS/micromissiles --config batch_7_quadcopters.pbtxt -batchmode -nographics -logFile micromissiles.log
+./micromissiles.app/Contents/MacOS/micromissiles \
+    --config batch_7_quadcopters.pbtxt \
+    -batchmode \
+    -nographics \
+    -logFile micromissiles.log
 ```
 
 #### Linux
 ```bash
 cd Build/<timestamp>
-./micromissiles --config batch_7_quadcopters.pbtxt -batchmode -nographics -logFile micromissiles.log
+./micromissiles --config batch_7_quadcopters.pbtxt \
+    -batchmode \
+    -nographics \
+    -logFile micromissiles.log
 ```
 
 Logs are exported to the `Logs` directory in your operating system's [persistent data path](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html).

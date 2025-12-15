@@ -53,7 +53,6 @@ plugin::StatusCode CpAssignment::AssignImpl(
   // Set the solver parameters.
   operations_research::sat::Model model;
   operations_research::sat::SatParameters params;
-  params.set_log_search_progress(true);
   // Disabling the presolver and disabling parallelism are necessary to prevent
   // crashes and infinite loops. On Macs, checks for non-empty enforcement
   // literals would sometimes fail in the post-solver. Other times, a deadlock
