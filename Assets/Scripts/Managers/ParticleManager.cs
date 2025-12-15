@@ -158,8 +158,8 @@ public class ParticleManager : MonoBehaviour {
   }
 
   private GameObject SpawnHitMarker(in Vector3 position) {
-    GameObject hitMarker = Instantiate(Resources.Load<GameObject>("Prefabs/HitMarkerPrefab"),
-                                       position, Quaternion.identity);
+    GameObject hitMarker =
+        Instantiate(Resources.Load<GameObject>("Prefabs/HitMarker"), position, Quaternion.identity);
     _hitMarkerList.Add(hitMarker);
     return hitMarker;
   }

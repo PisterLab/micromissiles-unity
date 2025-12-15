@@ -1,29 +1,36 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
+
 public class TacticalSymbol : MonoBehaviour {
   [SerializeField]
   private GameObject _directionArrow = null!;
+
   [SerializeField]
   private TextMeshProUGUI _uniqueDesignatorText = null!;
+
   [SerializeField]
   private TextMeshProUGUI _iffText = null!;
+
   [SerializeField]
   private TextMeshProUGUI _typeText = null!;
+
   [SerializeField]
   private TextMeshProUGUI _speedAltText = null!;
+
   [SerializeField]
   private TextMeshProUGUI _additionalInfoText = null!;
 
-  private SpriteManager _spriteManager;
-
-  void Awake() {
-    _spriteManager = new SpriteManager();
-    _uniqueDesignatorText.text = "";
-    _iffText.text = "";
-    _typeText.text = "";
-    _speedAltText.text = "";
-    _additionalInfoText.text = "";
+  public void SetSprite(string spriteName) {
+    spriteName = spriteName.ToUpper();
+    // Update main symbol image.
+    Image symbolImage = GetComponent<Image>();
+    if (symbolImage != null) {
+      Sprite symbolSprite = SpriteManager.LoadSymbolSprite(spriteName);
+      if (symbolSprite != null) {
+        symbolImage.sprite = symbolSprite;
+      }
+    }
   }
 
   public void SetDirectionArrowRotation(float rotationDegrees) {
@@ -37,19 +44,7 @@ public class TacticalSymbol : MonoBehaviour {
     if (_directionArrow != null) {
       _directionArrow.SetActive(false);
     } else {
-      Debug.LogWarning("Direction arrow not found on TacticalSymbol" + name);
-    }
-  }
-
-  public void SetSprite(string spriteName) {
-    spriteName = spriteName.ToUpper();
-    // Update main symbol image
-    Image symbolImage = GetComponent<Image>();
-    if (symbolImage != null) {
-      Sprite symbolSprite = _spriteManager.LoadSymbolSprite(spriteName);
-      if (symbolSprite != null) {
-        symbolImage.sprite = symbolSprite;
-      }
+      Debug.LogWarning($"Direction arrow not found on TacticalSymbol {name}.");
     }
   }
 
@@ -73,24 +68,17 @@ public class TacticalSymbol : MonoBehaviour {
     SetText(_additionalInfoText, text);
   }
 
+  private void Awake() {
+    _uniqueDesignatorText.text = "";
+    _iffText.text = "";
+    _typeText.text = "";
+    _speedAltText.text = "";
+    _additionalInfoText.text = "";
+  }
+
   private void SetText(TextMeshProUGUI textComponent, string text) {
     if (textComponent != null) {
       textComponent.text = text.ToUpper();
     }
-  }
-
-  void Update() {}
-}
-
-public class SpriteManager {
-  private const string SymbolPathFormat = "APP6-D_Symbology/{0}";
-
-  public Sprite LoadSymbolSprite(string symbolName) {
-    string path = string.Format(SymbolPathFormat, symbolName);
-    Sprite sprite = Resources.Load<Sprite>(path);
-    if (sprite == null) {
-      Debug.LogWarning($"Failed to load sprite at path: {path}");
-    }
-    return sprite;
   }
 }

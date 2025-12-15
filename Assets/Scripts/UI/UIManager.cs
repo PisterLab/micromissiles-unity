@@ -9,8 +9,12 @@ public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
 
   [SerializeField]
-  [Tooltip("The UI panel that renders the camera view for THREE_DIMENSIONAL mode")]
+  [Tooltip("The UI panel that renders the camera view for the THREE_DIMENSIONAL mode")]
   private GameObject _cameraPanel = null!;
+
+  [SerializeField]
+  [Tooltip("The UI panel that renders the tactical view for the TACTICAL mode")]
+  private GameObject _tacticalPanel = null!;
 
   [SerializeField]
   private GameObject _configSelectorPanel = null!;
@@ -44,11 +48,15 @@ public class UIManager : MonoBehaviour {
     set {
       _uiMode = value;
       _cameraPanel.SetActive(_uiMode == UIMode.THREE_DIMENSIONAL);
+      _tacticalPanel.SetActive(_uiMode == UIMode.TACTICAL);
     }
   }
 
   public void ToggleUIMode() {
-    UIMode = (_uiMode == UIMode.THREE_DIMENSIONAL) ? UIMode.TACTICAL : UIMode.THREE_DIMENSIONAL;
+    Array uiModeValues = Enum.GetValues(typeof(UIMode));
+    int currentIndex = Array.IndexOf(uiModeValues, UIMode);
+    int nextIndex = (currentIndex + 1) % uiModeValues.Length;
+    UIMode = (UIMode)uiModeValues.GetValue(nextIndex);
   }
 
   public void ToggleConfigSelectorPanel() {
@@ -223,9 +231,4 @@ public class UIManager : MonoBehaviour {
     _numInterceptorMisses = 0;
     UpdateSummaryText();
   }
-}
-
-public enum UIMode {
-  THREE_DIMENSIONAL,
-  TACTICAL,
 }
