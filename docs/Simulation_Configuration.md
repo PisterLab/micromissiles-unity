@@ -1,6 +1,6 @@
-# Simulation Configuration Guide
+# Simulation Configuration
 
-In this guide, we will explore the different types of configuration files used in the simulation and how to modify them to customize your simulation scenarios.
+This guide describes the different types of configuration files used in the simulation and explains how to modify them to customize the simulation scenarios.
 
 ## Introduction
 
@@ -557,7 +557,7 @@ threat_swarm_configs {
 
 ### Protobuf Definition
 
-The [`Assets/Proto/Configs/simulation_config.proto`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Proto/Configs/simulation_config.proto) file defines the simulation config proto message that is used to parse the simulation configuration files in Protobuf text format.
+The [`simulation_config.proto`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Proto/Configs/simulation_config.proto) file defines the simulation config proto message that is used to parse the simulation configuration files in Protobuf text format.
 
 ## Static Agent Configurations (Agent Models)
 
@@ -760,7 +760,7 @@ To define a new interceptor or threat model:
 
 ### Protobuf Definition
 
-The [`Assets/Proto/Configs/static_config.proto`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Proto/Configs/static_config.proto) file defines the static config proto message that is used to parse the static agent configuration files in Protobuf text format as well as other useful enumerations.
+The [`static_config.proto`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Proto/Configs/static_config.proto) file defines the static config proto message that is used to parse the static agent configuration files in Protobuf text format as well as other useful enumerations.
 
 ## Attack Behavior Configurations
 
@@ -819,7 +819,7 @@ This creates a phased attack profile where threats:
 2. Maintain altitude through mid-range.
 3. Make a final aggressive descent at maximum power for terminal attack.
 
-## Troubleshooting Guide
+## Troubleshooting
 
 ### Common Configuration Errors
 
@@ -856,5 +856,5 @@ end_time: 0     // Error: Must be greater than 0.
 
 For further assistance, refer to the comments and documentation within the code files:
 
-- [`SimManager.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/SimManager.cs): Manages simulation state and agent creation.
+- [`SimManager.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Managers/SimManager.cs): Manages simulation state and agent creation.
 - [`InputManager.cs`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Managers/InputManager.cs): Handles user input and interactions.

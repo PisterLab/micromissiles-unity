@@ -1,4 +1,4 @@
-# Development Guide
+# Development
 
 This guide will help you set up and run the project in development mode.
 You'll learn how to install Unity Hub, open the project, and navigate the main scene.
@@ -39,9 +39,9 @@ Alternatively, you can download the repository as a ZIP file and extract it to a
 
 2. **Add the Project to Unity Hub**:
    - Navigate to the **Projects** tab.
-   - Click the **ADD** button.
+   - Click the **Add** button and select **Add project from disk**.
    - Browse to the folder where you cloned or extracted the project.
-   - Select the folder containing the `Assets` folder and click on **Select Folder**.
+   - Select the root folder _containing_ the `Assets` folder and click on **Select Folder** or **Open**.
 
 3. **Install the Required Unity Version**:
    - Unity Hub will detect if the project requires a Unity version that is not currently installed.
@@ -70,6 +70,6 @@ After the project opens in Unity:
 
 ## Additional Resources
 
-- [Plugins Guide](./Plugins_Guide.md)
+- [Plugins](./Plugins.md)
 - [Keybinds and Controls](./Keybinds_and_Controls.md)
-- [Simulation Configuration Guide](./Simulation_Configuration_Guide.md)
+- [Simulation Configuration](./Simulation_Configuration.md)
