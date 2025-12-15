@@ -19,7 +19,7 @@ public class TacticalSymbol : MonoBehaviour {
   private TextMeshProUGUI _speedAltText;
 
   [SerializeField]
-  private TextMeshProUGUI _additionalInfoText;
+  private TextMeshProUGUI _additionalInfoText = null!;
 
   public void SetSprite(string spriteName) {
     spriteName = spriteName.ToUpper();
