@@ -79,7 +79,7 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   // If true, the agent is able to pursue targets.
-  public virtual bool IsPursuable => true;
+  public virtual bool IsPursuer => true;
 
   // Elapsed time since the creation of the agent.
   public float ElapsedTime { get; private set; } = 0f;

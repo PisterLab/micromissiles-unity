@@ -19,7 +19,7 @@ public class HierarchicalAgent : HierarchicalBase {
     get { return base.Target; }
     set {
       if (base.Target != null) {
-        if (Agent.IsPursuable) {
+        if (Agent.IsPursuer) {
           // Remove the interceptor as a pursuer from all target sub-hierarchical objects.
           void RemovePursuerFromHierarchical(IHierarchical target) {
             target.RemovePursuer(this);
@@ -52,7 +52,7 @@ public class HierarchicalAgent : HierarchicalBase {
           // Perform recursive clustering on the new targets.
           RecursiveCluster(maxClusterSize: interceptor.CapacityPerSubInterceptor);
 
-          if (Agent.IsPursuable) {
+          if (Agent.IsPursuer) {
             // Add the interceptor as a pursuer to all target sub-hierarchical objects.
             void AddPursuerToHierarchical(IHierarchical target) {
               target.AddPursuer(this);

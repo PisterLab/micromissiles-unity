@@ -35,7 +35,7 @@ public interface IAgent {
   Vector3 Acceleration { get; set; }
   Vector3 AccelerationInput { get; set; }
 
-  bool IsPursuable { get; }
+  bool IsPursuer { get; }
   float ElapsedTime { get; }
   bool IsTerminated { get; }
 
