@@ -33,8 +33,7 @@ public class HierarchicalAgent : HierarchicalBase {
           base.Target.RemovePursuer(this);
         }
         ClearSubHierarchicals();
-        SimManager.Instance.DestroyDummyAgent(Agent.TargetModel);
-        Agent.TargetModel = null;
+        Agent.DestroyTargetModel();
       }
       base.Target = value;
       if (base.Target != null) {
@@ -64,8 +63,7 @@ public class HierarchicalAgent : HierarchicalBase {
             AddPursuerToHierarchical(base.Target);
           }
         }
-        Agent.TargetModel =
-            SimManager.Instance.CreateDummyAgent(base.Target.Position, base.Target.Velocity);
+        Agent.CreateTargetModel(base.Target);
       }
     }
   }

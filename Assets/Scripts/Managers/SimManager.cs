@@ -245,8 +245,7 @@ public class SimManager : MonoBehaviour {
   }
 
   public void DestroyDummyAgent(IAgent dummyAgent) {
-    Destroy(dummyAgent.gameObject);
-    _dummyAgents.Remove(dummyAgent);
+    dummyAgent.Terminate();
   }
 
   // Create an agent based on the provided configuration and prefab name.

@@ -1,6 +1,8 @@
 using UnityEngine;
 
 // Base implementation of an agent.
+//
+// See the agent interface for property and method documentation.
 public class AgentBase : MonoBehaviour, IAgent {
   public event AgentTerminatedEventHandler OnTerminated;
 
@@ -53,18 +55,9 @@ public class AgentBase : MonoBehaviour, IAgent {
     }
   }
 
-  // Movement behavior of the agent.
   public IMovement Movement { get; set; }
-
-  // The controller calculates the acceleration input, given the agent's current state and its
-  // target's current state.
   public IController Controller { get; set; }
-
-  // The sensor calculates the relative transformation from the current agent to a target.
   public ISensor Sensor { get; set; }
-
-  // Target model. The target model is updated by the sensor and should be used by the controller to
-  // model imperfect knowledge of the engagement.
   public IAgent TargetModel { get; set; }
 
   public Vector3 Position {
@@ -103,6 +96,17 @@ public class AgentBase : MonoBehaviour, IAgent {
         (StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) * Constants.kGravity;
     float referenceSpeed = StaticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
     return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
+  }
+
+  public void CreateTargetModel(IHierarchical target) {
+    TargetModel = SimManager.Instance.CreateDummyAgent(target.Position, target.Velocity);
+  }
+
+  public void DestroyTargetModel() {
+    if (TargetModel != null) {
+      SimManager.Instance.DestroyDummyAgent(TargetModel);
+      TargetModel = null;
+    }
   }
 
   public void UpdateTargetModel() {
