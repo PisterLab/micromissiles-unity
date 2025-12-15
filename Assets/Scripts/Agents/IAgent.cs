@@ -5,10 +5,10 @@ using UnityEngine;
 // An agent represents a physical entity, such as a ship, an interceptor, or a threat subject to the
 // laws of physics.
 
-public delegate void AgentEventHandler(IAgent agent);
+public delegate void AgentTerminatedEventHandler(IAgent agent);
 
 public interface IAgent {
-  event AgentEventHandler OnTerminated;
+  event AgentTerminatedEventHandler OnTerminated;
 
   HierarchicalAgent HierarchicalAgent { get; set; }
 
@@ -45,8 +45,15 @@ public interface IAgent {
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
 
+  // Create a dummy agent to represent the target for sensor tracking and control.
+  // This function should be called when a target is assigned to this agent.
   void CreateTargetModel(IHierarchical target);
+
+  // Destroy the target model dummy agent and clear the target model reference.
+  // This function should be called when the target is unassigned or no longer valid.
   void DestroyTargetModel();
+
+  // Update the target model dummy agent according to the sensor.
   void UpdateTargetModel();
 
   void Terminate();

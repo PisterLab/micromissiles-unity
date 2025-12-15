@@ -1,3 +1,8 @@
+"""A scalar metric outputs a single number from a single simulation run.
+
+This file defines the scalar metric base class and all implementations thereof.
+"""
+
 from abc import abstractmethod
 
 import numpy as np
