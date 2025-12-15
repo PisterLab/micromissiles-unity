@@ -61,7 +61,7 @@ The run configuration includes:
 #### Windows
 ```powershell
 cd .\Build\<timestamp>
-.\micromissiles.exe --config batch_7_quadcopters.txt `
+.\micromissiles.exe --config batch_7_quadcopters.pbtxt `
     -batchmode `
     -nographics `
     -logFile micromissiles.log
@@ -71,7 +71,7 @@ cd .\Build\<timestamp>
 ```bash
 cd Build/<timestamp>
 ./micromissiles.app/Contents/MacOS/micromissiles \
-    --config batch_7_quadcopters.txt \
+    --config batch_7_quadcopters.pbtxt \
     -batchmode \
     -nographics \
     -logFile micromissiles.log
@@ -80,7 +80,7 @@ cd Build/<timestamp>
 #### Linux
 ```bash
 cd Build/<timestamp>
-./micromissiles --config batch_7_quadcopters.txt \
+./micromissiles --config batch_7_quadcopters.pbtxt \
     -batchmode \
     -nographics \
     -logFile micromissiles.log
@@ -89,4 +89,4 @@ cd Build/<timestamp>
 Logs are exported to the `Logs` directory in your operating system's [persistent data path](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html).
 The run configuration creates a parent directory called `<run_config_name>_<timestamp>`, in which the per-run logs are stored in separate subdirectories called `run_<run_index>_seed_<seed>`.
 
-For more details on logging and log processing, consult the [Simulation Logging](./Simulation_Logging) guide.
+For more details on logging and log processing, consult the [Simulation Logging](./Simulation_Logging.md) guide.

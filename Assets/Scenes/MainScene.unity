@@ -4693,7 +4693,6 @@ MonoBehaviour:
   _orbitDistanceMax: 50000
   _zoomSpeed: 10
   _targetRenderer: {fileID: 1255004940}
-  _floorRenderer: {fileID: 320210796}
   _autoplayCamSpeed: 2
   _xAutoRotateTime: 5
   _yAutoRotateTime: 5
@@ -9666,7 +9665,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 445071915}
         m_TargetAssemblyTypeName: SimManager, bamlab.micromissiles
-        m_MethodName: RestartSimulation
+        m_MethodName: ResetAndStartSimulation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

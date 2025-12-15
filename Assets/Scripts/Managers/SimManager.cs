@@ -116,7 +116,7 @@ public class SimManager : MonoBehaviour {
 
   public void PostSimulation() {
     if (AutoRestartOnEnd) {
-      RestartSimulation();
+      ResetAndStartSimulation();
     }
   }
 
@@ -134,10 +134,14 @@ public class SimManager : MonoBehaviour {
     Application.Quit();
   }
 
-  public void RestartSimulation() {
+  public void ResetAndStartSimulation() {
     ElapsedTime = 0f;
     CostLaunchedInterceptors = 0f;
     CostDestroyedThreats = 0f;
+
+    _numInterceptorsSpawned = 0;
+    _numThreatsSpawned = 0;
+    _numThreatsTerminated = 0;
 
     StartSimulation();
   }
@@ -151,7 +155,7 @@ public class SimManager : MonoBehaviour {
 
     if (SimulationConfig != null) {
       Debug.Log($"Loaded new simulation configuration: {simulationConfigFile}.");
-      RestartSimulation();
+      ResetAndStartSimulation();
     } else {
       Debug.LogError($"Failed to load simulation configuration: {simulationConfigFile}.");
     }
@@ -242,7 +246,6 @@ public class SimManager : MonoBehaviour {
 
   public void DestroyDummyAgent(IAgent dummyAgent) {
     dummyAgent.Terminate();
-    _dummyAgents.Remove(dummyAgent);
   }
 
   // Create an agent based on the provided configuration and prefab name.
