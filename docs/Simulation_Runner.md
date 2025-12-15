@@ -53,40 +53,28 @@ The run configuration includes:
 
 ## Running from Command Line
 
-#### Flags
-
-- **`--config <config_file>`**: Specifies the path to the run configuration file relative to the `Assets/StreamingAssets/Configs/Runs` directory.
-- **`-logFile <log_file>`** (optional): Specifies where Unity will place its [Editor log](https://docs.unity3d.com/540/Documentation/Manual/LogFiles.html).
+The `--config <config_file>` flag specifies the path to the run configuration file relative to the `Assets/StreamingAssets/Configs/Runs` directory.
+Run the standalone player from the command line as follows:
 
 #### Windows
 ```powershell
 cd .\Build\<timestamp>
-.\micromissiles.exe --config batch_7_quadcopters.txt `
-    -batchmode `
-    -nographics `
-    -logFile micromissiles.log
+.\micromissiles.exe --config batch_7_quadcopters.pbtxt -batchmode -nographics -logFile micromissiles.log
 ```
 
 #### Mac
 ```bash
 cd Build/<timestamp>
-./micromissiles.app/Contents/MacOS/micromissiles \
-    --config batch_7_quadcopters.txt \
-    -batchmode \
-    -nographics \
-    -logFile micromissiles.log
+./micromissiles.app/Contents/MacOS/micromissiles --config batch_7_quadcopters.pbtxt -batchmode -nographics -logFile micromissiles.log
 ```
 
 #### Linux
 ```bash
 cd Build/<timestamp>
-./micromissiles --config batch_7_quadcopters.txt \
-    -batchmode \
-    -nographics \
-    -logFile micromissiles.log
+./micromissiles --config batch_7_quadcopters.pbtxt -batchmode -nographics -logFile micromissiles.log
 ```
 
 Logs are exported to the `Logs` directory in your operating system's [persistent data path](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html).
 The run configuration creates a parent directory called `<run_config_name>_<timestamp>`, in which the per-run logs are stored in separate subdirectories called `run_<run_index>_seed_<seed>`.
 
-For more details on logging and log processing, consult the [Simulation Logging](./Simulation_Logging) guide.
+For more details on logging and log processing, consult the [Simulation Logging](./Simulation_Logging.md) guide.

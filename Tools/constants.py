@@ -44,9 +44,6 @@ TELEMETRY_FILE_PREFIX = "sim_telemetry"
 # Event log prefix.
 EVENT_LOG_FILE_PREFIX = "sim_events"
 
-# Log directory name for a single run.
-RUN_LOG_DIRECTORY_NAME_PATTERN = "run_*_seed_*"
-
 
 def is_interceptor(agent_type: str) -> bool:
     """Returns whether the given agent type is an interceptor."""

@@ -1,3 +1,5 @@
+"""Metrics extract specific values from the simulation event logs."""
+
 from abc import ABC, abstractmethod
 from typing import Any
 
@@ -5,7 +7,7 @@ import pandas as pd
 
 
 class Metric(ABC):
-    """A metric represents a single output from a single simulation run."""
+    """A metric represents an output from a single simulation run."""
 
     @property
     @abstractmethod
