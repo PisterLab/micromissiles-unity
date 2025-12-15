@@ -21,7 +21,7 @@ public class TacticalPolarGridGraphic : Graphic {
 
   // Updated field for TextMeshPro range text labels
   [SerializeField]
-  private GameObject _rangeTextPrefab;  // Assign a TextMeshPro prefab in the inspector
+  private GameObject _rangeTextPrefab = null!;  // Assign a TextMeshPro prefab in the inspector
 
   private List<TextMeshProUGUI> _rangeTexts = new List<TextMeshProUGUI>();
 

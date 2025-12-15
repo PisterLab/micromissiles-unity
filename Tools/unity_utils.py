@@ -124,8 +124,8 @@ def find_unity_path(unity_path: str) -> Path:
 
     executables = _find_unity_executables()
     if not executables:
-        raise ValueError(f"No Unity installations detected. "
-                         f"Use --unity-path or set $UNITY_PATH.")
+        raise ValueError("No Unity installations detected. "
+                         "Use --unity-path or set $UNITY_PATH.")
     if len(executables) > 1:
         logging.warning("Found multiple Unity installations.")
     logging.info("Found Unity installation at %s.", executables[0])
