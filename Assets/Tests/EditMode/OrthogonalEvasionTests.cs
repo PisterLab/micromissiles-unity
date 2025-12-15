@@ -11,7 +11,7 @@ public class OrthogonalEvasionTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
     _agent.StaticConfig = new Configs.StaticConfig() {
@@ -42,7 +42,7 @@ public class OrthogonalEvasionTests : TestBase {
     };
     _agent.Sensor = new IdealSensor(_agent);
     _pursuer = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody pursuerRb = _pursuer.gameObject.AddComponent<Rigidbody>();
+    _pursuer.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_pursuer, "Awake");
     _evasion = new OrthogonalEvasion(_agent);
   }

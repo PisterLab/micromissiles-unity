@@ -9,10 +9,10 @@ public class NoEvasionTests : TestBase {
   [SetUp]
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody agentRb = _agent.gameObject.AddComponent<Rigidbody>();
+    _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
     _pursuer = new GameObject("Agent").AddComponent<AgentBase>();
-    Rigidbody pursuerRb = _pursuer.gameObject.AddComponent<Rigidbody>();
+    _pursuer.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_pursuer, "Awake");
     _evasion = new NoEvasion(_agent);
   }
