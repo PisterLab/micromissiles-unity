@@ -195,4 +195,15 @@ public class HierarchicalBaseTests {
     Assert.AreEqual(1, parent.LaunchedHierarchicals.Count);
     Assert.AreSame(child, parent.LaunchedHierarchicals[0]);
   }
+
+  [Test]
+  public void AddLaunchedHierarchical_DoesNotAddDuplicates() {
+    var parent = new HierarchicalBase();
+    var child = new HierarchicalBase();
+    parent.AddLaunchedHierarchical(child);
+    parent.AddLaunchedHierarchical(child);
+
+    Assert.AreEqual(1, parent.LaunchedHierarchicals.Count);
+    Assert.AreSame(child, parent.LaunchedHierarchicals[0]);
+  }
 }

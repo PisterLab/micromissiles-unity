@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour {
 
   // Target transform for orbit rotation.
   [SerializeField]
-  private Transform _target;
+  private Transform _target = null!;
 
   // Distance from the camera to the orbit target.
   [SerializeField]
@@ -88,11 +88,7 @@ public class CameraController : MonoBehaviour {
 
   // Renderer for the orbit target.
   [SerializeField]
-  private Renderer _targetRenderer;
-
-  // Renderer for the floor.
-  [SerializeField]
-  private Renderer _floorRenderer;
+  private Renderer _targetRenderer = null!;
 
   // Speed of camera movement during autoplay.
   [SerializeField]
@@ -408,16 +404,16 @@ public class CameraController : MonoBehaviour {
   }
 
   private Vector3 FindCentroid(IEnumerable<IAgent> agents) {
-    var positions = agents.Select(agent => agent.Position).ToList();
-    if (positions.Count == 0) {
+    var sum = Vector3.zero;
+    int count = 0;
+    foreach (var agent in agents) {
+      sum += agent.Position;
+      count++;
+    }
+    if (count == 0) {
       return Vector3.zero;
     }
-
-    var sum = Vector3.zero;
-    foreach (var position in positions) {
-      sum += position;
-    }
-    return sum / positions.Count;
+    return sum / count;
   }
 }
 

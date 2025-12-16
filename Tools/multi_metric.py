@@ -1,3 +1,8 @@
+"""A multi-metric outputs a list of values from a single simulation run.
+
+This file defines the multi-metric base class and all implementations thereof.
+"""
+
 from abc import abstractmethod
 from typing import Any
 
@@ -35,6 +40,9 @@ class InterceptPosition2D(MultiMetric):
 
         Args:
             event_df: Dataframe containing the events.
+
+        Returns:
+            An array of shape (num_hits, 2) containing the 2D positions (x, z).
         """
         interceptor_hits = (
             event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT])
@@ -61,6 +69,10 @@ class MissileInterceptorSpawnPosition2D(MultiMetric):
 
         Args:
             event_df: Dataframe containing the events.
+
+        Returns:
+            An array of shape (num_interceptors, 2) containing the 2D positions
+            (x, z).
         """
         new_missile_interceptors = event_df[
             (event_df[Column.AGENT_TYPE] == AgentType.MISSILE_INTERCEPTOR) &
