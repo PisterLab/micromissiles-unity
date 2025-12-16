@@ -120,11 +120,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   }
 
   private IAgent FindClosestPursuer() {
-<<<<<<< HEAD
-    if (HierarchicalAgent == null || !HierarchicalAgent.ActivePursuers.Any()) {
-=======
     if (HierarchicalAgent == null || !HierarchicalAgent.ActivePursuers.Any() || Sensor == null) {
->>>>>>> titan/hierarchical
       return null;
     }
 
