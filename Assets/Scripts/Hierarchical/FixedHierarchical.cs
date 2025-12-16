@@ -3,6 +3,8 @@ using UnityEngine;
 // The fixed hierarchical object represents a hierarchical object with a fixed position, velocity,
 // and acceleration and should primarily be used for testing.
 public class FixedHierarchical : HierarchicalBase, IHierarchical {
+  // Shadowing is necessary because the parent's position, velocity, and acceleration are not
+  // settable. The speed must be shadowed to prevent using the parent's velocity property.
   public new Vector3 Position { get; set; }
   public new Vector3 Velocity { get; set; }
   public new float Speed => Velocity.magnitude;

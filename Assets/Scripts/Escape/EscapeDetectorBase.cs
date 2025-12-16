@@ -1,5 +1,3 @@
-using UnityEngine;
-
 // Base implementation for an escape detector.
 public abstract class EscapeDetectorBase : IEscapeDetector {
   // Agent that is pursuing the target.
