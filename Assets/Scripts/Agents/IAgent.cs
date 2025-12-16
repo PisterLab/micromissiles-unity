@@ -44,6 +44,7 @@ public interface IAgent {
   Vector3 Up { get; }
   Vector3 Forward { get; }
   Vector3 Right { get; }
+  Quaternion InverseRotation { get; }
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();
