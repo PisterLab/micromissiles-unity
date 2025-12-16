@@ -404,16 +404,16 @@ public class CameraController : MonoBehaviour {
   }
 
   private Vector3 FindCentroid(IEnumerable<IAgent> agents) {
-    var positions = agents.Select(agent => agent.Position).ToList();
-    if (positions.Count == 0) {
+    var sum = Vector3.zero;
+    int count = 0;
+    foreach (var agent in agents) {
+      sum += agent.Position;
+      count++;
+    }
+    if (count == 0) {
       return Vector3.zero;
     }
-
-    var sum = Vector3.zero;
-    foreach (var position in positions) {
-      sum += position;
-    }
-    return sum / positions.Count;
+    return sum / count;
   }
 }
 
