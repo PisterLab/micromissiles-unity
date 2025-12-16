@@ -32,19 +32,19 @@ public class CameraController : MonoBehaviour {
 
   // Normal speed of the camera movement.
   [SerializeField]
-  private float _cameraSpeedNormal = 100.0f;
+  private float _cameraSpeedNormal = 100f;
 
   // Maximum speed of the camera movement.
   [SerializeField]
-  private float _cameraSpeedMax = 1000.0f;
+  private float _cameraSpeedMax = 1000f;
 
   // Horizontal rotation speed.
   [SerializeField]
-  private float _speedH = 2.0f;
+  private float _speedH = 2f;
 
   // Vertical rotation speed.
   [SerializeField]
-  private float _speedV = 2.0f;
+  private float _speedV = 2f;
 
   // If true, the camera should auto-rotate.
   [SerializeField]
@@ -52,19 +52,19 @@ public class CameraController : MonoBehaviour {
 
   // Target transform for orbit rotation.
   [SerializeField]
-  private Transform _target = null;
+  private Transform _target = null!;
 
   // Distance from the camera to the orbit target.
   [SerializeField]
-  private float _orbitDistance = 5.0f;
+  private float _orbitDistance = 5f;
 
   // Horizontal orbit rotation speed.
   [SerializeField]
-  private float _orbitXSpeed = 120.0f;
+  private float _orbitXSpeed = 120f;
 
   // Vertical orbit rotation speed.
   [SerializeField]
-  private float _orbitYSpeed = 120.0f;
+  private float _orbitYSpeed = 120f;
 
   // Minimum vertical angle limit for orbit.
   [SerializeField]
@@ -84,23 +84,15 @@ public class CameraController : MonoBehaviour {
 
   // Speed of camera zoom.
   [SerializeField]
-  private float _zoomSpeed = 500.0f;
+  private float _zoomSpeed = 500f;
 
   // Renderer for the orbit target.
   [SerializeField]
-  private Renderer _targetRenderer = null;
+  private Renderer _targetRenderer = null!;
 
   // Speed of camera movement during autoplay.
   [SerializeField]
-  private float _autoplayCamSpeed = 2f;
-
-  // Duration of horizontal auto-rotation.
-  [SerializeField]
-  private float _xAutoRotateTime = 5f;
-
-  // Duration of vertical auto-rotation.
-  [SerializeField]
-  private float _yAutoRotateTime = 5f;
+  private float _autoplayCamSpeed = 0.02f;
 
   // Current horizontal orbit angle.
   private float _orbitX = 0f;
@@ -123,6 +115,9 @@ public class CameraController : MonoBehaviour {
 
   [SerializeField]
   private CameraMode _cameraMode = CameraMode.FREE;
+
+  [SerializeField]
+  private CameraFollowType _cameraFollowType = CameraFollowType.ALL_AGENTS;
 
   private Vector3 _lastCentroid;
   private Vector3 _currentCentroid;
@@ -165,33 +160,47 @@ public class CameraController : MonoBehaviour {
   public CameraMode CameraMode {
     get => _cameraMode;
     set {
-      if (value == CameraMode.FREE) {
-        if (_centroidUpdateCoroutine != null) {
-          StopCoroutine(_centroidUpdateCoroutine);
-          _centroidUpdateCoroutine = null;
+      switch (value) {
+        case CameraMode.FREE: {
+          if (_centroidUpdateCoroutine != null) {
+            StopCoroutine(_centroidUpdateCoroutine);
+            _centroidUpdateCoroutine = null;
+          }
+          break;
         }
-      } else {
-        _currentCentroid = _target.position;
-        _targetCentroid = _target.position;
+        case CameraMode.FOLLOW: {
+          _currentCentroid = _target.position;
+          _targetCentroid = _target.position;
+          break;
+        }
+        default: {
+          break;
+        }
       }
       _cameraMode = value;
     }
   }
 
-  public void FollowCenterAllAgents() {
-    SnapToCenterAllAgents(false);
-    CameraMode = CameraMode.FOLLOW_ALL_AGENTS;
-    StartCentroidUpdateCoroutine();
-    UIManager.Instance.LogActionMessage("[CAM] Follow center of all agents.");
+  public CameraFollowType CameraFollowType {
+    get => _cameraFollowType;
+    set { _cameraFollowType = value; }
   }
 
-  public void SnapToCenterAllAgents(bool forceFreeMode = true) {
-    Vector3 allAgentsCenter = GetAllAgentsCenter();
-    SetCameraTargetPosition(allAgentsCenter);
-    if (forceFreeMode) {
-      CameraMode = CameraMode.FREE;
-    }
-    UIManager.Instance.LogActionMessage("[CAM] Snap to center all agents.");
+  public void Follow(CameraFollowType type) {
+    var (agents, description) = GetAgentGroupInfo(type);
+    Vector3 centroid = FindCentroid(agents);
+    SetCameraTargetPosition(centroid);
+    CameraMode = CameraMode.FOLLOW;
+    CameraFollowType = type;
+    StartCentroidUpdateCoroutine();
+    UIManager.Instance.LogActionMessage($"[CAM] Follow center of {description}.");
+  }
+
+  public void Snap(CameraFollowType type) {
+    var (agents, description) = GetAgentGroupInfo(type);
+    Vector3 centroid = FindCentroid(agents);
+    SetCameraTargetPosition(centroid);
+    UIManager.Instance.LogActionMessage($"[CAM] Snap to center of {description}.");
   }
 
   public void OrbitCamera(float xOrbit, float yOrbit) {
@@ -207,7 +216,7 @@ public class CameraController : MonoBehaviour {
   public void RotateCamera(float xRotate, float yRotate) {
     _yaw += xRotate * _speedH;
     _pitch -= yRotate * _speedV;
-    transform.eulerAngles = new Vector3(_pitch, _yaw, 0.0f);
+    transform.eulerAngles = new Vector3(_pitch, _yaw, 0f);
   }
 
   public void TranslateCamera(TranslationInput input) {
@@ -273,7 +282,7 @@ public class CameraController : MonoBehaviour {
                          ~LayerMask.GetMask("Floor"), QueryTriggerInteraction.Ignore)) {
       _orbitDistance -= hit.distance;
     }
-    Vector3 negDistance = new Vector3(0.0f, 0.0f, -_orbitDistance);
+    Vector3 negDistance = new Vector3(0f, 0f, -_orbitDistance);
     Vector3 position = rotation * negDistance + _target.position;
     _orbitDistance = Mathf.Clamp(_orbitDistance, _orbitDistanceMin, _orbitDistanceMax);
     UpdateTargetAlpha();
@@ -335,10 +344,9 @@ public class CameraController : MonoBehaviour {
 
   private void UpdateTargetCentroid() {
     _lastCentroid = _currentCentroid;
+    var (agents, _) = GetAgentGroupInfo(CameraFollowType);
+    _targetCentroid = FindCentroid(agents);
 
-    if (CameraMode == CameraMode.FOLLOW_ALL_AGENTS) {
-      _targetCentroid = GetAllAgentsCenter();
-    }
     // Apply IIR filter to adjust interpolation speed.
     float distance = Mathf.Abs(Vector3.Distance(_lastCentroid, _targetCentroid));
     float targetSpeed = Mathf.Clamp(distance, 1f, 100000f);
@@ -348,34 +356,8 @@ public class CameraController : MonoBehaviour {
 
   private IEnumerator AutoPlayRoutine() {
     while (true) {
-      float elapsedTime = 0f;
-      while (elapsedTime <= _xAutoRotateTime) {
-        _orbitX += Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
-      elapsedTime = 0f;
-      while (elapsedTime <= _yAutoRotateTime) {
-        _orbitY -= Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
-      elapsedTime = 0f;
-      while (elapsedTime <= _xAutoRotateTime) {
-        _orbitX -= Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
-      elapsedTime = 0f;
-      while (elapsedTime <= _yAutoRotateTime) {
-        _orbitY += Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
-        UpdateCameraPosition(_orbitX, _orbitY);
-        elapsedTime += Time.unscaledDeltaTime;
-        yield return null;
-      }
+      _orbitX += Time.unscaledDeltaTime * _autoplayCamSpeed * _orbitDistance * 0.02f;
+      UpdateCameraPosition(_orbitX, _orbitY);
       yield return null;
     }
   }
@@ -408,23 +390,40 @@ public class CameraController : MonoBehaviour {
     }
   }
 
-  private Vector3 GetAllAgentsCenter() {
-    var agentPositions = SimManager.Instance.Agents.Select(agent => agent.Position).ToList();
-    if (agentPositions.Count == 0) {
+  private (IEnumerable<IAgent> agents, string description)
+      GetAgentGroupInfo(CameraFollowType type) {
+    switch (type) {
+      case CameraFollowType.ALL_INTERCEPTORS:
+        return (SimManager.Instance.Interceptors, "all interceptors");
+      case CameraFollowType.ALL_THREATS:
+        return (SimManager.Instance.Threats, "all threats");
+      case CameraFollowType.ALL_AGENTS:
+      default:
+        return (SimManager.Instance.Agents, "all agents");
+    }
+  }
+
+  private Vector3 FindCentroid(IEnumerable<IAgent> agents) {
+    var positions = agents.Select(agent => agent.Position).ToList();
+    if (positions.Count == 0) {
       return Vector3.zero;
     }
 
     var sum = Vector3.zero;
-    foreach (var position in agentPositions) {
+    foreach (var position in positions) {
       sum += position;
     }
-    return sum / agentPositions.Count;
+    return sum / positions.Count;
   }
 }
 
 public enum CameraMode {
   FREE,
-  FOLLOW_INTERCEPTOR_SWARM,
-  FOLLOW_THREAT_SWARM,
-  FOLLOW_ALL_AGENTS,
+  FOLLOW,
+}
+
+public enum CameraFollowType {
+  ALL_AGENTS,
+  ALL_INTERCEPTORS,
+  ALL_THREATS,
 }
