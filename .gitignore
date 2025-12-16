@@ -72,10 +72,7 @@ crashlytics-build.properties
 # IDE-related files.
 .vscode/
 .vsconfig
-<<<<<<< HEAD
-=======
 Tools/tmp-analyzers/
->>>>>>> titan/hierarchical
 
 # Mac.
 .DS_Store
