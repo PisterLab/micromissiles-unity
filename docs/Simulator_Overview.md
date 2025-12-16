@@ -459,9 +459,9 @@ Vector3 agentVelocity = Agent.Velocity;
 float altitude = agentPosition.y;
 float groundProximityThreshold = Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor;
 if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
-  // Add some upwards acceleration to avoid the ground.
+  // Add some upward acceleration to avoid the ground.
   float blendFactor = 1 - (altitude / groundProximityThreshold);
-  return accelerationInput + blendFactor * Agent.MaxNormalAcceleration() * Agent.transform.up;
+  return accelerationInput + blendFactor * Agent.MaxNormalAcceleration() * Agent.Up;
 }
 return accelerationInput;
 ```
@@ -493,7 +493,7 @@ Vector3 normalVelocity = Vector3.ProjectOnPlane(agentVelocity, pursuerVelocity);
 if (normalVelocity.sqrMagnitude < epsilon) {
   // If the agent's velocity is aligned with the pursuer's velocity, choose a random normal
   // direction in which to evade.
-  normalVelocity = pursuer.transform.right;
+  normalVelocity = pursuer.Right;
 }
 // If the agent's velocity is aligned with the normal velocity, i.e., orthogonal to the
 // pursuer's velocity, then the normal acceleration should be zero as the agent should continue
@@ -518,10 +518,10 @@ float altitude = agentPosition.y;
 float groundProximityThreshold = Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor;
 if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
   // Determine the evasion direction based on the angle to pursuer.
-  float angle = Vector3.SignedAngle(Agent.transform.forward, relativePosition, Vector3.up);
+  float angle = Vector3.SignedAngle(Agent.Forward, relativePosition, Vector3.up);
 
   // Choose the direction that leads away from the pursuer.
-  Vector3 rightDirection = Agent.transform.right;
+  Vector3 rightDirection = Agent.Right;
   Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
 
   // Blend between horizontal evasion and slight upward movement.
@@ -529,8 +529,7 @@ if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
   normalAccelerationDirection =
       Vector3
           .Lerp(normalAccelerationDirection,
-                bestHorizontalDirection + Agent.transform.up * groundAvoidanceUpFactor,
-                blendFactor)
+                bestHorizontalDirection + Agent.Up * groundAvoidanceUpFactor, blendFactor)
           .normalized;
 }
 ```

@@ -141,9 +141,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         Mathf.Min(NumSubInterceptorsRemaining, NumSubInterceptors - leafHierarchicals.Count);
 
     // Navigate towards the target.
-    _accelerationInput = Controller?.Plan() ?? Vector3.zero;
-    _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
-    _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
+    AccelerationInput = Controller?.Plan() ?? Vector3.zero;
+    Acceleration = Movement?.Act(AccelerationInput) ?? Vector3.zero;
+    _rigidbody.AddForce(Acceleration, ForceMode.Acceleration);
   }
 
   protected override void OnDestroy() {
@@ -202,17 +202,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         Gizmos.DrawLine(Position, HierarchicalAgent.Target.Position);
       }
 
+      // Up direction.
+      Gizmos.color = Color.yellow;
+      Gizmos.DrawRay(Position, Up * axisLength);
+
       // Forward direction.
       Gizmos.color = Color.blue;
-      Gizmos.DrawRay(Position, transform.forward * axisLength);
+      Gizmos.DrawRay(Position, Forward * axisLength);
 
       // Right direction.
       Gizmos.color = Color.red;
-      Gizmos.DrawRay(Position, transform.right * axisLength);
-
-      // Upwards direction.
-      Gizmos.color = Color.yellow;
-      Gizmos.DrawRay(Position, transform.up * axisLength);
+      Gizmos.DrawRay(Position, Right * axisLength);
     }
   }
 

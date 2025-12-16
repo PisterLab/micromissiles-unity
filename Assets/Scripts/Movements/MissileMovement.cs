@@ -86,8 +86,7 @@ public class MissileMovement : AerialMovement {
     // Determine the boost acceleration.
     float boostAcceleration =
         (Agent.StaticConfig?.BoostConfig?.BoostAcceleration ?? 0) * Constants.kGravity;
-    Vector3 totalAccelerationInput =
-        boostAcceleration * Agent.transform.forward + limitedAccelerationInput;
+    Vector3 totalAccelerationInput = boostAcceleration * Agent.Forward + limitedAccelerationInput;
     return CalculateNetAccelerationInput(totalAccelerationInput);
   }
 
@@ -122,9 +121,9 @@ public class MissileMovement : AerialMovement {
         Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor +
         0.5f * Constants.kGravity * groundProximityThresholdFactor * groundProximityThresholdFactor;
     if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
-      // Add some upwards acceleration to avoid the ground.
+      // Add some upward acceleration to avoid the ground.
       float blendFactor = 1 - (altitude / groundProximityThreshold);
-      return accelerationInput + blendFactor * Agent.MaxNormalAcceleration() * Agent.transform.up;
+      return accelerationInput + blendFactor * Agent.MaxNormalAcceleration() * Agent.Up;
     }
     return accelerationInput;
   }
@@ -135,6 +134,6 @@ public class MissileMovement : AerialMovement {
     float airDrag = CalculateDrag();
     float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
     float dragAcceleration = -(airDrag + liftInducedDrag);
-    return accelerationInput + gravity + dragAcceleration * Agent.transform.forward;
+    return accelerationInput + gravity + dragAcceleration * Agent.Forward;
   }
 }

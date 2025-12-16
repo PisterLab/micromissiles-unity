@@ -11,14 +11,18 @@ public class AgentBase : MonoBehaviour, IAgent {
   // Rigid body component.
   protected Rigidbody _rigidbody;
 
+  // The position field is cached and is updated before every fixed update.
+  [SerializeField]
+  private Vector3 _position;
+
   // The acceleration field is not part of the rigid body component, so it is tracked separately.
   // The acceleration is applied as a force during each frame update.
   [SerializeField]
-  protected Vector3 _acceleration;
+  private Vector3 _acceleration;
 
   // The acceleration input is calculated by the controller and provided to the movement behavior.
   [SerializeField]
-  protected Vector3 _accelerationInput;
+  private Vector3 _accelerationInput;
 
   // The agent's position within the hierarchical strategy is given by the hierarchical agent.
   [SerializeReference]
@@ -61,8 +65,11 @@ public class AgentBase : MonoBehaviour, IAgent {
   public IAgent TargetModel { get; set; }
 
   public Vector3 Position {
-    get => transform.position;
-    set => transform.position = value;
+    get => _position;
+    set {
+      Transform.position = value;
+      _position = value;
+    }
   }
   public Vector3 Velocity {
     get => _rigidbody.linearVelocity;
@@ -86,6 +93,18 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // If true, the agent is terminated.
   public bool IsTerminated { get; private set; } = false;
+
+  // The agent transform is cached.
+  public Transform Transform { get; private set; }
+
+  // The up direction is cached and updated before every fixed update.
+  public Vector3 Up { get; private set; }
+
+  // The forward direction is cached and updated before every fixed update.
+  public Vector3 Forward { get; private set; }
+
+  // The right direction is cached and updated before every fixed update.
+  public Vector3 Right { get; private set; }
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
@@ -140,7 +159,7 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   public Transformation GetRelativeTransformation(in Vector3 waypoint) {
-    return GetRelativeTransformation(waypoint, Vector3.zero, Vector3.zero);
+    return GetRelativeTransformation(waypoint, velocity: Vector3.zero, acceleration: Vector3.zero);
   }
 
   public void Terminate() {
@@ -157,7 +176,13 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // Awake is called before Start and right after a prefab is instantiated.
   protected virtual void Awake() {
+    Transform = transform;
     _rigidbody = GetComponent<Rigidbody>();
+
+    UpdateTransformData();
+    if (EarlyFixedUpdateManager.Instance != null) {
+      EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate += UpdateTransformData;
+    }
   }
 
   // Start is called before the first frame update.
@@ -179,7 +204,11 @@ public class AgentBase : MonoBehaviour, IAgent {
   protected virtual void LateUpdate() {}
 
   // OnDestroy is called when the object is being destroyed.
-  protected virtual void OnDestroy() {}
+  protected virtual void OnDestroy() {
+    if (EarlyFixedUpdateManager.Instance != null) {
+      EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
+    }
+  }
 
   // UpdateAgentConfig is called whenever the agent configuration is changed.
   protected virtual void UpdateAgentConfig() {
@@ -208,6 +237,13 @@ public class AgentBase : MonoBehaviour, IAgent {
     return other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0;
   }
 
+  private void UpdateTransformData() {
+    _position = Transform.position;
+    Up = Transform.up;
+    Forward = Transform.forward;
+    Right = Transform.right;
+  }
+
   private void AlignWithVelocity() {
     const float speedThreshold = 0.1f;
     const float rotationSpeedDegreesPerSecond = 10000f;
@@ -219,8 +255,8 @@ public class AgentBase : MonoBehaviour, IAgent {
       Quaternion targetRotation = Quaternion.LookRotation(Velocity, Vector3.up);
 
       // Smoothly rotate towards the target rotation.
-      transform.rotation = Quaternion.RotateTowards(
-          transform.rotation, targetRotation,
+      Transform.rotation = Quaternion.RotateTowards(
+          Transform.rotation, targetRotation,
           maxDegreesDelta: rotationSpeedDegreesPerSecond * Time.fixedDeltaTime);
     }
   }
@@ -249,7 +285,7 @@ public class AgentBase : MonoBehaviour, IAgent {
   }
 
   private PositionTransformation GetRelativePositionTransformation(in Vector3 relativePosition) {
-    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, transform.up);
+    Vector3 flatRelativePosition = Vector3.ProjectOnPlane(relativePosition, Up);
     Vector3 verticalRelativePosition = relativePosition - flatRelativePosition;
 
     // Calculate the elevation (vertical angle relative to forward).
@@ -259,8 +295,7 @@ public class AgentBase : MonoBehaviour, IAgent {
     // Calculate the azimuth (horizontal angle relative to forward).
     float azimuth = 0;
     if (flatRelativePosition.sqrMagnitude >= _epsilon) {
-      azimuth = Vector3.SignedAngle(transform.forward, flatRelativePosition, transform.up) *
-                Mathf.Deg2Rad;
+      azimuth = Vector3.SignedAngle(Forward, flatRelativePosition, Up) * Mathf.Deg2Rad;
     }
     return new PositionTransformation {
       Cartesian = relativePosition,
@@ -289,10 +324,10 @@ public class AgentBase : MonoBehaviour, IAgent {
 
     // The target azimuth vector is orthogonal to the relative position vector and points to the
     // starboard of the target along the azimuth-elevation sphere.
-    Vector3 targetAzimuth = Vector3.Cross(transform.up, relativePosition);
-    // The target elevation vector is orthogonal to the relative position vector and points upwards
+    Vector3 targetAzimuth = Vector3.Cross(Up, relativePosition);
+    // The target elevation vector is orthogonal to the relative position vector and points upward
     // from the target along the azimuth-elevation sphere.
-    Vector3 targetElevation = Vector3.Cross(relativePosition, transform.right);
+    Vector3 targetElevation = Vector3.Cross(relativePosition, Right);
     // If the relative position vector is parallel to the yaw or pitch axis, the target azimuth
     // vector or the target elevation vector will be undefined.
     if (targetAzimuth.sqrMagnitude < _epsilon) {

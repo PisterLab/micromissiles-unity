@@ -12,8 +12,8 @@ public class OrthogonalEvasionTests : TestBase {
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
     _agent.gameObject.AddComponent<Rigidbody>();
-    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
+    _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     _agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
           new Configs.AccelerationConfig() {
@@ -82,8 +82,7 @@ public class OrthogonalEvasionTests : TestBase {
     _pursuer.Position = new Vector3(0, 0, 100);
     _pursuer.Velocity = new Vector3(1, 0, -1);
     Vector3 accelerationInput = _evasion.Evade(_pursuer);
-    Vector3 normalAccelerationInput =
-        Vector3.ProjectOnPlane(accelerationInput, _agent.transform.forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(accelerationInput, _agent.Forward);
     Assert.AreEqual(_agent.MaxNormalAcceleration(), normalAccelerationInput.magnitude, _epsilon);
   }
 
@@ -94,7 +93,7 @@ public class OrthogonalEvasionTests : TestBase {
     _pursuer.Position = new Vector3(0, 0, 100);
     _pursuer.Velocity = new Vector3(1, 0, -1);
     Vector3 accelerationInput = _evasion.Evade(_pursuer);
-    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, _agent.transform.forward);
+    Vector3 forwardAccelerationInput = Vector3.Project(accelerationInput, _agent.Forward);
     Assert.AreEqual(_agent.MaxForwardAcceleration(), forwardAccelerationInput.magnitude, _epsilon);
   }
 
@@ -105,8 +104,7 @@ public class OrthogonalEvasionTests : TestBase {
     _pursuer.Position = new Vector3(0, 0, 100);
     _pursuer.Velocity = _agent.Velocity;
     Vector3 accelerationInput = _evasion.Evade(_pursuer);
-    Vector3 normalAccelerationInput =
-        Vector3.ProjectOnPlane(accelerationInput, _agent.transform.forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(accelerationInput, _agent.Forward);
     Assert.AreNotEqual(Vector3.zero, normalAccelerationInput);
     Assert.AreEqual(0, Vector3.Dot(normalAccelerationInput, _pursuer.Velocity));
   }
@@ -118,8 +116,7 @@ public class OrthogonalEvasionTests : TestBase {
     _pursuer.Position = new Vector3(100, 0, 0);
     _pursuer.Velocity = new Vector3(-100, 0, 0);
     Vector3 accelerationInput = _evasion.Evade(_pursuer);
-    Vector3 normalAccelerationInput =
-        Vector3.ProjectOnPlane(accelerationInput, _agent.transform.forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(accelerationInput, _agent.Forward);
     Assert.AreEqual(Vector3.zero, normalAccelerationInput);
   }
 }

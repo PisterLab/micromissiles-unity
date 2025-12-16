@@ -36,7 +36,7 @@ public class OrthogonalEvasion : EvasionBase {
     if (normalVelocity.sqrMagnitude < epsilon) {
       // If the agent's velocity is aligned with the pursuer's velocity, choose a random normal
       // direction in which to evade.
-      normalVelocity = pursuer.transform.right;
+      normalVelocity = pursuer.Right;
     }
     // If the agent's velocity is aligned with the normal velocity, i.e., orthogonal to the
     // pursuer's velocity, then the normal acceleration should be zero as the agent should continue
@@ -55,10 +55,10 @@ public class OrthogonalEvasion : EvasionBase {
     float groundProximityThreshold = Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor;
     if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
       // Determine the evasion direction based on the angle to pursuer.
-      float angle = Vector3.SignedAngle(Agent.transform.forward, relativePosition, Vector3.up);
+      float angle = Vector3.SignedAngle(Agent.Forward, relativePosition, Vector3.up);
 
       // Choose the direction that leads away from the pursuer.
-      Vector3 rightDirection = Agent.transform.right;
+      Vector3 rightDirection = Agent.Right;
       Vector3 bestHorizontalDirection = angle > 0 ? -rightDirection : rightDirection;
 
       // Blend between horizontal evasion and slight upward movement.
@@ -66,14 +66,13 @@ public class OrthogonalEvasion : EvasionBase {
       normalAccelerationDirection =
           Vector3
               .Lerp(normalAccelerationDirection,
-                    bestHorizontalDirection + Agent.transform.up * groundAvoidanceUpFactor,
-                    blendFactor)
+                    bestHorizontalDirection + Agent.Up * groundAvoidanceUpFactor, blendFactor)
               .normalized;
     }
     Vector3 normalAcceleration = normalAccelerationDirection * Agent.MaxNormalAcceleration();
 
     // Apply the maximum forward acceleration.
-    Vector3 forwardAcceleration = Agent.transform.forward * Agent.MaxForwardAcceleration();
+    Vector3 forwardAcceleration = Agent.Forward * Agent.MaxForwardAcceleration();
     return normalAcceleration + forwardAcceleration;
   }
 }

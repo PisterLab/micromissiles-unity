@@ -40,7 +40,10 @@ public interface IAgent {
   bool IsTerminated { get; }
 
   GameObject gameObject { get; }
-  Transform transform { get; }
+  Transform Transform { get; }
+  Vector3 Up { get; }
+  Vector3 Forward { get; }
+  Vector3 Right { get; }
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();

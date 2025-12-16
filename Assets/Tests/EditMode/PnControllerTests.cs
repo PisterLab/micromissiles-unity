@@ -10,8 +10,8 @@ public class PnControllerTests : TestBase {
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
     _agent.gameObject.AddComponent<Rigidbody>();
-    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
+    _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     _targetModel = new GameObject("Target").AddComponent<AgentBase>();
     _targetModel.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_targetModel, "Awake");
@@ -42,7 +42,7 @@ public class PnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpwards() {
+  public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward() {
     _targetModel.Position = new Vector3(0, 0, 1);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     // Vertical acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
@@ -71,7 +71,7 @@ public class PnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBroadside_MovingUpwards() {
+  public void Plan_TargetAtBroadside_MovingUpward() {
     _targetModel.Position = new Vector3(1, 0, 0);
     _targetModel.Velocity = new Vector3(-1, 1, 0);
     // Horizontal acceleration is clamped, so gain * closing velocity * azimuth line-of-sight rate =

@@ -10,8 +10,8 @@ public class WaypointControllerTests : TestBase {
   public void SetUp() {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
     _agent.gameObject.AddComponent<Rigidbody>();
-    _agent.transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     InvokePrivateMethod(_agent, "Awake");
+    _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     _agent.StaticConfig = new Configs.StaticConfig() {
       AccelerationConfig =
           new Configs.AccelerationConfig() {
@@ -64,7 +64,7 @@ public class WaypointControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_WaypointOverhead_AcceleratesUpwards() {
+  public void Plan_WaypointOverhead_AcceleratesUpward() {
     _targetModel.Position = new Vector3(0, 1, 0);
     _targetModel.Velocity = new Vector3(0, 1, -1);
     _targetModel.Acceleration = new Vector3(0, 1, 0);

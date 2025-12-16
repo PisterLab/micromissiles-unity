@@ -67,30 +67,30 @@ public abstract class ThreatBase : AgentBase, IThreat {
     // Check whether the threat should evade any pursuer.
     IAgent closestPursuer = FindClosestPursuer();
     if (Evasion != null && closestPursuer != null && Evasion.ShouldEvade(closestPursuer)) {
-      _accelerationInput = Evasion.Evade(closestPursuer);
+      AccelerationInput = Evasion.Evade(closestPursuer);
       desiredSpeed = LookupPowerTable(Configs.Power.Max);
     } else {
       // Follow the attack behavior.
       (Vector3 waypoint, Configs.Power waypointPower) =
           AttackBehavior.GetNextWaypoint(TargetModel.Position);
-      _accelerationInput = Controller?.Plan(waypoint) ?? Vector3.zero;
+      AccelerationInput = Controller?.Plan(waypoint) ?? Vector3.zero;
       desiredSpeed = LookupPowerTable(waypointPower);
     }
 
     // Limit the forward acceleration according to the desired speed.
     float speedError = desiredSpeed - Speed;
-    Vector3 forwardAccelerationInput = Vector3.Project(_accelerationInput, transform.forward);
-    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(_accelerationInput, transform.forward);
+    Vector3 forwardAccelerationInput = Vector3.Project(AccelerationInput, Forward);
+    Vector3 normalAccelerationInput = Vector3.ProjectOnPlane(AccelerationInput, Forward);
     if (Mathf.Abs(speedError) < _speedErrorThreshold) {
-      _accelerationInput = normalAccelerationInput;
+      AccelerationInput = normalAccelerationInput;
     } else {
       float speedFactor = Mathf.Clamp01(Mathf.Abs(speedError) / _speedErrorThreshold);
-      _accelerationInput =
+      AccelerationInput =
           normalAccelerationInput + forwardAccelerationInput * Mathf.Sign(speedError) * speedFactor;
     }
 
-    _acceleration = Movement?.Act(_accelerationInput) ?? Vector3.zero;
-    _rigidbody.AddForce(_acceleration, ForceMode.Acceleration);
+    Acceleration = Movement?.Act(AccelerationInput) ?? Vector3.zero;
+    _rigidbody.AddForce(Acceleration, ForceMode.Acceleration);
   }
 
   protected override void UpdateAgentConfig() {

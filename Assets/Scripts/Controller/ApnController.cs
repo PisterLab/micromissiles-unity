@@ -11,8 +11,7 @@ public class ApnController : PnController {
 
     // Add a feedforward term proportional to the target's acceleration.
     Vector3 targetAcceleration = relativeTransformation.Acceleration.Cartesian;
-    Vector3 normalTargetAcceleration =
-        Vector3.ProjectOnPlane(targetAcceleration, Agent.transform.forward);
+    Vector3 normalTargetAcceleration = Vector3.ProjectOnPlane(targetAcceleration, Agent.Forward);
     return accelerationInput + Gain / 2 * normalTargetAcceleration;
   }
 }
