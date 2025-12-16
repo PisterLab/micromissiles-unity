@@ -149,7 +149,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
 
     IAgent otherAgent = other.gameObject.GetComponentInParent<IAgent>();
     // Dummy agents are virtual targets and should not trigger collisions.
-    if (otherAgent == null || otherAgent is DummyAgent) {
+    if (otherAgent == null || otherAgent is DummyAgent || otherAgent.IsTerminated) {
       return;
     }
     // Check if the collision is with another threat or with the intended target.
