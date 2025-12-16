@@ -1,3 +1,7 @@
+"""A distribution is an aggregator of scalar metrics over multiple simulation
+runs that analyzes the statistics of the values.
+"""
+
 import numpy as np
 import pandas as pd
 from aggregator import Aggregator

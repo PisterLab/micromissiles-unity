@@ -117,7 +117,9 @@ public class MissileMovement : AerialMovement {
     Vector3 agentPosition = Agent.Position;
     Vector3 agentVelocity = Agent.Velocity;
     float altitude = agentPosition.y;
-    float groundProximityThreshold = Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor;
+    float groundProximityThreshold =
+        Mathf.Abs(agentVelocity.y) * groundProximityThresholdFactor +
+        0.5f * Constants.kGravity * groundProximityThresholdFactor * groundProximityThresholdFactor;
     if (agentVelocity.y < 0 && altitude < groundProximityThreshold) {
       // Add some upward acceleration to avoid the ground.
       float blendFactor = 1 - (altitude / groundProximityThreshold);

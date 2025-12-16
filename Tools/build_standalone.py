@@ -27,7 +27,13 @@ DEFAULT_BUILD_NAME = "micromissiles"
 
 @dataclass(frozen=True)
 class PlatformTarget:
-    """Platform target."""
+    """Platform-specific build target configuration.
+
+    Attributes:
+        unity_name: Unity's internal platform name (e.g., "StandaloneWindows64").
+        build_flag: Commandline flag to target this platform.
+        extension: File extension for the executable (empty string for Linux).
+    """
     unity_name: str
     build_flag: str
     extension: str

@@ -557,7 +557,7 @@ MonoBehaviour:
   - 10000
   - 40000
   _lineWidth: 4
-  _rangeTextPrefab: {fileID: 4604315487424321950, guid: 1319115a96ff00049a5de1039f27088c, type: 3}
+  _rangeText: {fileID: 4604315487424321950, guid: 1319115a96ff00049a5de1039f27088c, type: 3}
 --- !u!222 &98040372
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4857,7 +4857,6 @@ MonoBehaviour:
   _orbitDistanceMax: 50000
   _zoomSpeed: 10
   _targetRenderer: {fileID: 1255004940}
-  _floorRenderer: {fileID: 320210796}
   _autoplayCamSpeed: 0.02
   _forwardToCameraAngle: 0
   _cameraMode: 0
@@ -9906,7 +9905,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 445071915}
         m_TargetAssemblyTypeName: SimManager, bamlab.micromissiles
-        m_MethodName: RestartSimulation
+        m_MethodName: ResetAndStartSimulation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

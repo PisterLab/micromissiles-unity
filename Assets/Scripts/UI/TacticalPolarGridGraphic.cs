@@ -26,7 +26,7 @@ public class TacticalPolarGridGraphic : Graphic {
   private int _currentRangeIndex = 1;  // Start with 10 km range.
 
   [SerializeField]
-  private GameObject _rangeTextPrefab;
+  private GameObject _rangeText = null!;
 
   private List<TextMeshProUGUI> _rangeTexts = new List<TextMeshProUGUI>();
 
@@ -176,7 +176,7 @@ public class TacticalPolarGridGraphic : Graphic {
     // Only create new labels if they do not exist.
     if (_rangeTexts.Count == 0) {
       for (int i = 1; i <= _numberOfRangeRings; ++i) {
-        GameObject textObj = Instantiate(_rangeTextPrefab, transform);
+        GameObject textObj = Instantiate(_rangeText, transform);
         TextMeshProUGUI textComponent = textObj.GetComponent<TextMeshProUGUI>();
         textComponent.color = _textColor;
         textComponent.transform.localScale = Vector3.one;

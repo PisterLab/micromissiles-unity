@@ -338,7 +338,7 @@ if __name__ == "__main__":
                         unity_utils.get_persistent_data_directory(),
                         "Log directory in which to search for logs.")
     flags.DEFINE_string("output", None, "Output HTML file.")
-    flags.DEFINE_float("fps", 30, "Target frame rate.")
+    flags.DEFINE_float("fps", 30, "Target frame rate.", lower_bound=0.0)
     flags.mark_flag_as_required("output")
 
     app.run(main)
