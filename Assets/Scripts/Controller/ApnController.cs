@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // The augmented proportional navigation controller applies an input that is proportional to the
-// line of sight's rotation rate and adds a term to compensate for the target's acceleration.
+// line-of-sight's rotation rate and adds a term to compensate for the target's acceleration.
 public class ApnController : PnController {
   public ApnController(IAgent agent, float gain) : base(agent, gain) {}
 
