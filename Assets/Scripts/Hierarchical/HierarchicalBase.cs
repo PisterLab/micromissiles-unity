@@ -164,13 +164,14 @@ public class HierarchicalBase : IHierarchical {
   }
 
   private IHierarchical FindBestHierarchicalTarget(IHierarchical hierarchical, int capacity) {
-    // Find all sub-hierarchical objects that have fewer than or as many targets as the interceptor
-    // capacity.
+    // Find all sub-hierarchical objects that have at least one active target but no more than the
+    // interceptor capacity.
     List<IHierarchical> FindPossibleHierarchicalTargets(IHierarchical hierarchical) {
       if (hierarchical.Target == null) {
         return new List<IHierarchical>();
       }
-      if (hierarchical.Target.ActiveSubHierarchicals.Count() <= capacity) {
+      int numActiveTargets = hierarchical.Target.ActiveSubHierarchicals.Count();
+      if (numActiveTargets > 0 && numActiveTargets <= capacity) {
         return new List<IHierarchical> { hierarchical.Target };
       }
 
