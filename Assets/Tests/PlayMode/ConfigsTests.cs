@@ -53,7 +53,6 @@ public class ConfigsTests : TestBase {
 
     HashSet<string> ciExcludedConfigs = GetCiExcludedSimulationConfigs(configPath);
     bool isPaused = false;
-    double epsilon = 0.0002;
     int numConfigsLoaded = 0;
     for (int i = 0; i < configFiles.Length; ++i) {
       string configFile = configFiles[i];
