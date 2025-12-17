@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using System;
-using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
 
 public class ConfigsTests : TestBase {
+  private const double _epsilon = 0.0002;
   private static bool IsCi() {
     string ci = Environment.GetEnvironmentVariable("CI");
     if (string.IsNullOrEmpty(ci)) {
