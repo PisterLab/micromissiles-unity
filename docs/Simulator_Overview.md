@@ -221,6 +221,7 @@ The simulator achieves predictor-planner convergence by performing a 2-step iter
 
 The iterative launch planner also performs a few sanity checks to check for corner cases.
 For example, this algorithm may not always converge to a solution, so to prevent an infinite loop, the algorithm should declare no launch if the distance between the intercept position and the estimated threat position exceed some threshold.
+
 ```cs
 // Check that the intercept position and the predicted position are within some threshold
 // distance of each other.
@@ -228,7 +229,9 @@ if (Vector3.Distance(interceptPosition, targetPosition) >= _interceptPositionThr
   return LaunchPlan.NoLaunch();
 }
 ```
+
 Furthermore, the algorithm checks that the threat is indeed heading towards the intercept position.
+
 ```cs
 // Check that the target is moving towards the intercept position. Otherwise, the interceptor
 // should wait to be launched.
@@ -238,8 +241,10 @@ if (Vector3.Dot(targetToInterceptPosition, targetToPredictedPosition) < 0) {
   return LaunchPlan.NoLaunch();
 }
 ```
+
 Finally, the interceptor might be launched into the posterior hemisphere away from the threat if the estimated intercept position is behind the launch position.
 The solution is to delay the launch until the intercept position is in the anterior hemisphere.
+
 ```cs
 // Check that the interceptor is moving towards the target. If the target is moving too fast,
 // the interceptor might be launched backwards because the intercept position and the predicted
@@ -293,6 +298,7 @@ The simulator uses a cost-based assignment scheme, where the cost represents the
 $$
 \text{Cost}(m, t) \propto \frac{1}{\text{Fractional speed of missile $m$ after pursuing threat $t$}}
 $$
+
 ```cs
 Vector3 directionToTarget = target.Position - agent.Position;
 float distanceToTarget = directionToTarget.magnitude;
@@ -393,7 +399,7 @@ Their velocities are set according to the law of conservation of momentum.
 
 ## Controls
 
-**Proportional Navigation**
+### Proportional Navigation
 
 ![Proportional navigation](./images/proportional_navigation.png){width=60%}
 
@@ -431,6 +437,7 @@ However, simply using PPN as a guidance law leads to some singularities when cer
   PPN accelerates the agent to move radially away from the target since that maintains the constant obtuse bearing.
   To overcome this issue, the negative closing velocity is replaced by a large positive turn factor, so that PPN will turn the agent back towards the target.
   Additionally, the navigation gain is increased significantly to expedite the turn.
+
   ```cs
   // The closing velocity is negative because the closing velocity is opposite to the range rate.
   float closingVelocity = -relativeTransformation.Velocity.Range;
@@ -444,12 +451,14 @@ However, simply using PPN as a guidance law leads to some singularities when cer
     turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
   }
   ```
+
   There is still a singularity when $\|\vec{r} \times \vec{v}_r\| = 0$, which causes the line-of-sight rotation and the acceleration input to be near zero.
   However, such a singularity is usually difficult to achieve in simulation and in practice due to disturbances.
 - **90° line-of-sight:**
   When the target is abeam to the agent, the agent could maintain a constant bearing to the target without a decreasing range by circling it.
   With PPN, this singularity causes the acceleration magnitude to be minimal, creating a spiral behavior around the target.
   To handle this singularity, we clamp the acceleration magnitude if the agent velocity and the relative position are roughly orthogonal to each other and also expedite the turn.
+
   ```cs
   // If the target is abeam to the agent, apply a stronger turn and clamp the line-of-sight rate
   // to avoid spiral behavior.
@@ -461,9 +470,10 @@ However, simply using PPN as a guidance law leads to some singularities when cer
     losRotation = losRotation.normalized * clampedLosRate;
   }
   ```
+
   In contrast, clamping the acceleration magnitude does not work with TPN because the calculated acceleration will be a lateral acceleration, which the interceptors are unable to perform.
 
-**Augmented Proportional Navigation**
+### Augmented Proportional Navigation
 
 Augmented proportional navigation adds a feedthrough term proportional to the agent’s acceleration:
 $$
@@ -473,12 +483,13 @@ where $\vec{a}_{\text{target}}$ is the target’s acceleration that is normal to
 
 Augmented proportional navigation is equivalent to proportional navigation if the target is not accelerating.
 
-**Ground Avoidance**
+### Ground Avoidance
 
 Gravity only acts on interceptors as the simulator assumes that the threats are able to compensate for gravity.
 Currently, interceptors do not consider gravity when determining their acceleration input for the next simulation step.
 As a result, gravity acts as a disturbance to each interceptor's dynamics system and may cause the interceptor to collide with the ground if not accounted for.
 In the current implementation, all missiles will attempt to avoid the ground if their vertical speed is too high.
+
 ```cs
 const float groundProximityThresholdFactor = 5f;
 Vector3 agentPosition = Agent.Position;
@@ -514,6 +525,7 @@ During the evasive maneuver, the threat performs the following:
 1. The threat accelerates to its maximum speed.
 2. The threat turns away from the incoming interceptor at its maximum normal acceleration and tries to align its velocity vector to be normal to the interceptor's velocity vector.
 Since the threat applies a normal acceleration, the interceptor must turn too and thus sacrifice speed due to the lift-induced drag.
+
 ```cs
 // Evade the pursuer by turning the velocity to be orthogonal to the pursuer's velocity.
 Vector3 normalVelocity = Vector3.ProjectOnPlane(agentVelocity, pursuerVelocity);
@@ -539,6 +551,7 @@ If the threat is too close to the ground, however, it must ensure that it does n
 Therefore, as it approaches the ground, the threat instead performs a linear combination of:
 1. turning to evade the interceptor, as described above, and
 2. turning parallel to the ground.
+
 ```cs
 // Avoid evading straight down when near the ground.
 float altitude = agentPosition.y;

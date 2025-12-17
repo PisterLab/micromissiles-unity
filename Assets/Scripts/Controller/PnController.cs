@@ -11,8 +11,8 @@ public class PnController : ControllerBase {
   // Turn factor for a stronger turn.
   private const float _strongTurnFactor = 100f;
 
-  // Angular threshold in degrees for determining whether the target is abeam to the agent and
-  // preventing spiral behavior.
+  // Cosine threshold for determining whether the target is abeam to the agent and preventing spiral
+  // behavior. A value of 0.2 corresponds to roughly +-10 degrees around 90 degrees.
   private const float _abeamThreshold = 0.2f;
 
   // Minimum line-of-sight rate.
