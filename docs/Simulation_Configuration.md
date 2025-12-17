@@ -69,7 +69,7 @@ Configs/
 ```
 
 > [!NOTE]
-> CI runs a PlayMode test that loads all simulation configs; extremely large scenarios can be excluded by listing their filenames in `Assets/StreamingAssets/Configs/Simulations/ci_excluded_simulation_configs.txt`.
+> CI runs a PlayMode test that loads all simulation configs; extremely large scenarios can be excluded by listing their filenames in [ci_excluded_simulation_configs.txt](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/StreamingAssets/Configs/Simulations/ci_excluded_simulation_configs.txt).
 
 ### File Locations
 
