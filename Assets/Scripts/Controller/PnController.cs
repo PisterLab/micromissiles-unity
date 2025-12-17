@@ -6,12 +6,13 @@ using UnityEngine;
 // the agent's velocity.
 // Refer to "Basic Principles of Homing Guidance" by N. F. Palumbo (2010) for more information.
 public class PnController : ControllerBase {
-  private const float _epsilon = 1e-6f;
+  private const float _epsilon = 1e-3f;
 
-  // Negative closing velocity turn factor.
-  private const float _negativeClosingVelocityTurnFactor = 100f;
+  // Turn factor for a stronger turn.
+  private const float _strongTurnFactor = 100f;
 
-  // Angular threshold in degrees for detecting spiral behavior.
+  // Angular threshold in degrees for determining whether the target is abeam to the agent and
+  // preventing spiral behavior.
   private const float _abeamThreshold = 0.2f;
 
   // Minimum line-of-sight rate.
@@ -49,14 +50,14 @@ public class PnController : ControllerBase {
     // turn factor and apply a stronger turn as the agent most likely passed the target already and
     // should turn around.
     if (closingVelocity < 0) {
-      turnFactor = Mathf.Max(1f, closingSpeed) * _negativeClosingVelocityTurnFactor;
+      turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
     }
-    // If the target is abeam to the target, apply a stronger turn and clamp the line-of-sight rate
+    // If the target is abeam to the agent, apply a stronger turn and clamp the line-of-sight rate
     // to avoid spiral behavior.
     bool isAbeam = Mathf.Abs(Vector3.Dot(Agent.Velocity.normalized, relativePosition.normalized)) <
                    _abeamThreshold;
     if (isAbeam) {
-      turnFactor = closingSpeed * _negativeClosingVelocityTurnFactor;
+      turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
       float clampedLosRate = Mathf.Max(losRotation.magnitude, _minLosRate);
       losRotation = losRotation.normalized * clampedLosRate;
     }

@@ -34,7 +34,7 @@ public class PnControllerTests : TestBase {
   }
 
   [Test]
-  public void Plan_TargetAtBoresight_NegativeClosingVelocity_ReturnsZero() {
+  public void Plan_TargetAtBoresight_NegativeClosingVelocity_AppliesStrongerTurn() {
     _targetModel.Position = new Vector3(0, 0, 1);
     _targetModel.Velocity = new Vector3(0, 1, 2);
     // Relative position = (0, 0, 1)

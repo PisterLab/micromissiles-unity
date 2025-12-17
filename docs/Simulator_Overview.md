@@ -412,10 +412,12 @@ $$
 $$
 \vec{a}_\perp = N v_c \left(\vec{\varphi} \times \frac{\vec{v}_m}{\|\vec{v}_m\|}\right),
 $$
-where $\vec{r}$ is the relative position vector (line-of-sight), $\vec{v}_r$ is the relative velocity vector (line-of-sight rate), $\vec{v}_m$ is the agent's velocity vector, $N$ is the navigation gain, and $v_c$ is the closing velocity.
+where $\vec{r}$ is the relative position vector (line-of-sight), $\vec{v}_r$ is the relative velocity vector (line-of-sight rate), $\vec{v}_m$ is the agent's velocity vector, and $N$ is the navigation gain.
 $\vec{\varphi}$ denotes the line-of-sight rotation vector, and for interceptors, we choose $N = 3$.
-If the distance between the agent and its target is decreasing, $v_c = \|\vec{v_r}\|$ is the closing velocity.
-Otherwise $v_c = -\|\vec{v_r}\|$.
+$v_c$ is the closing velocity determined as follows:
+$$
+v_c = -\frac{\vec{v}_r \cdot \vec{r}}{\|\vec{r}\|}
+$$
 
 In contrast, TPN is formulated as the following control law:
 $$
@@ -427,8 +429,7 @@ However, simply using PPN as a guidance law leads to some singularities when cer
 - **Increasing range:**
   If the agent misses its target, the closing velocity may be negative, i.e., the distance between the agent and its target may be increasing, as the target is now behind the agent.
   PPN accelerates the agent to move radially away from the target since that maintains the constant obtuse bearing.
-  To overcome this issue, we negate the sign of the closing velocity, so that it is always non-negative: $v_c = \|\vec{v}_r\|$.
-  PPN will thus turn the agent back towards the target in case of a negative closing velocity.
+  To overcome this issue, the negative closing velocity is replaced by a large positive turn factor, so that PPN will turn the agent back towards the target.
   Additionally, the navigation gain is increased significantly to expedite the turn.
   ```cs
   // The closing velocity is negative because the closing velocity is opposite to the range rate.
@@ -440,7 +441,7 @@ However, simply using PPN as a guidance law leads to some singularities when cer
   // turn factor and apply a stronger turn as the agent most likely passed the target already and
   // should turn around.
   if (closingVelocity < 0) {
-    turnFactor = Mathf.Max(1f, closingSpeed) * _negativeClosingVelocityTurnFactor;
+    turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
   }
   ```
   There is still a singularity when $\|\vec{r} \times \vec{v}_r\| = 0$, which causes the line-of-sight rotation and the acceleration input to be near zero.
@@ -450,12 +451,12 @@ However, simply using PPN as a guidance law leads to some singularities when cer
   With PPN, this singularity causes the acceleration magnitude to be minimal, creating a spiral behavior around the target.
   To handle this singularity, we clamp the acceleration magnitude if the agent velocity and the relative position are roughly orthogonal to each other and also expedite the turn.
   ```cs
-  // If the target is abeam to the target, apply a stronger turn and clamp the line-of-sight rate
+  // If the target is abeam to the agent, apply a stronger turn and clamp the line-of-sight rate
   // to avoid spiral behavior.
   bool isAbeam = Mathf.Abs(Vector3.Dot(Agent.Velocity.normalized, relativePosition.normalized)) <
                   _abeamThreshold;
   if (isAbeam) {
-    turnFactor = closingSpeed * _negativeClosingVelocityTurnFactor;
+    turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
     float clampedLosRate = Mathf.Max(losRotation.magnitude, _minLosRate);
     losRotation = losRotation.normalized * clampedLosRate;
   }
