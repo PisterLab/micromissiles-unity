@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,26 +73,26 @@ public class ConfigsTests : TestBase {
       double elapsedTime = SimManager.Instance.ElapsedTime;
       if (isPaused) {
         Assert.LessOrEqual(
-            Mathf.Abs(Time.fixedDeltaTime), epsilon,
+            Mathf.Abs(Time.fixedDeltaTime), _epsilon,
             "Fixed delta time should be approximately 0 after loading while paused.");
-        Assert.LessOrEqual(Mathf.Abs(Time.timeScale), epsilon,
+        Assert.LessOrEqual(Mathf.Abs(Time.timeScale), _epsilon,
                            "Time scale should be approximately 0 after loading while paused.");
-        Assert.IsFalse(elapsedTime > 0 + epsilon,
+        Assert.IsFalse(elapsedTime > 0 + _epsilon,
                        "Simulation time should not have advanced after loading while paused.");
       } else {
-        Assert.IsTrue(elapsedTime > 0 + epsilon,
+        Assert.IsTrue(elapsedTime > 0 + _epsilon,
                       "Simulation time should have advanced after loading while not paused.");
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime -
                       (1.0f / SimManager.Instance.SimulatorConfig.PhysicsUpdateRate)),
-            epsilon, "Physics update rate should be 1 / SimulatorConfig.PhysicsUpdateRate.");
+            _epsilon, "Physics update rate should be 1 / SimulatorConfig.PhysicsUpdateRate.");
       }
 
       if (isPaused) {
         SimManager.Instance.ResumeSimulation();
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
-        Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + epsilon,
+        Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + _epsilon,
                       "Simulation time should have advanced after resuming.");
       }
 
