@@ -1,0 +1,1 @@
+import{_ as i,c as a,o as t,aj as e}from"./chunks/framework.Cv6mcU5i.js";const g=JSON.parse('{"title":"Plugins","description":"","frontmatter":{},"headers":[],"relativePath":"Plugins.md","filePath":"Plugins.md"}'),n={name:"Plugins.md"};function l(h,s,p,r,d,k){return t(),a("div",null,[...s[0]||(s[0]=[e("",39)])])}const c=i(n,[["render",l]]);export{g as __pageData,c as default};
