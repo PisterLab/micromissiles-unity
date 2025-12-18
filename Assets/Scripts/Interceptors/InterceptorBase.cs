@@ -227,8 +227,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
 
     IAgent otherAgent = other.gameObject.GetComponentInParent<IAgent>();
-    // Dummy agents are virtual targets and should not trigger collisions.
-    if (otherAgent == null || otherAgent is DummyAgent) {
+    if (ShouldIgnoreCollision(otherAgent)) {
       return;
     }
     // Check if the collision is with a threat.

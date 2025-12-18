@@ -240,6 +240,11 @@ public class AgentBase : MonoBehaviour, IAgent {
     return other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0;
   }
 
+  protected bool ShouldIgnoreCollision(IAgent otherAgent) {
+    // Dummy agents are virtual targets and should not trigger collisions.
+    return otherAgent == null || otherAgent is DummyAgent || otherAgent.IsTerminated;
+  }
+
   private void UpdateTransformData() {
     _position = Transform.position;
     Up = Transform.up;
