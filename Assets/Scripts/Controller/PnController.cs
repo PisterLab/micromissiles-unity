@@ -8,14 +8,15 @@ using UnityEngine;
 public class PnController : ControllerBase {
   private const float _epsilon = 1e-3f;
 
-  // Turn factor for a stronger turn.
+  // Multiplication factor applied to the closing velocity when the target is moving away or abeam
+  // to force an aggressive turn and prevent spiraling or divergence.
   private const float _strongTurnFactor = 100f;
 
   // Cosine threshold for determining whether the target is abeam to the agent and preventing spiral
   // behavior. A value of 0.2 corresponds to roughly +-10 degrees around 90 degrees.
   private const float _abeamThreshold = 0.2f;
 
-  // Minimum line-of-sight rate.
+  // Minimum line-of-sight rate used for clamping when the target is abeam to the agent.
   private const float _minLosRate = 0.2f;
 
   public float Gain { get; set; }
