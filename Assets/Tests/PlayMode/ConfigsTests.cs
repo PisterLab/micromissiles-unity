@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
@@ -10,17 +11,9 @@ using UnityEngine.TestTools;
 public class ConfigsTests : TestBase {
   private const double _epsilon = 0.0002;
 
-  private static bool IsCi() {
-    string ci = Environment.GetEnvironmentVariable("CI");
-    if (string.IsNullOrEmpty(ci)) {
-      return false;
-    }
-    return ci.Equals("1") || ci.Equals("true", StringComparison.OrdinalIgnoreCase);
-  }
-
   private static HashSet<string> GetCiExcludedSimulationConfigs(string simulationConfigPath) {
     var excludedConfigs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    bool isCi = IsCi();
+    bool isCi = Environment.GetCommandLineArgs().Contains("-ci");
     Debug.Log($"Running on CI: {isCi}.");
     if (!isCi) {
       return excludedConfigs;
