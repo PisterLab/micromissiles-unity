@@ -5,7 +5,8 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "bamlab.micromissiles",
-        "bamlab.test"
+        "bamlab.test",
+        "bamlab.generated"
     ],
     "includePlatforms": [
         "Editor"
