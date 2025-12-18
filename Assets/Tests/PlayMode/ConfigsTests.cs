@@ -4,11 +4,12 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class ConfigsTests : TestBase {
   private const double _epsilon = 0.0002;
+
   private static bool IsCi() {
     string ci = Environment.GetEnvironmentVariable("CI");
     if (string.IsNullOrEmpty(ci)) {
@@ -17,26 +18,26 @@ public class ConfigsTests : TestBase {
     return ci.Equals("1") || ci.Equals("true", StringComparison.OrdinalIgnoreCase);
   }
 
-  private static HashSet<string> GetCiExcludedSimulationConfigs(string simulationsConfigPath) {
-    var excluded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+  private static HashSet<string> GetCiExcludedSimulationConfigs(string simulationConfigPath) {
+    var excludedConfigs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
     if (!IsCi()) {
-      return excluded;
+      return excludedConfigs;
     }
 
-    string exclusionFile =
-        Path.Combine(simulationsConfigPath, "ci_excluded_simulation_configs.txt");
+    string exclusionFile = Path.Combine(simulationConfigPath, "ci_excluded_simulation_configs.txt");
     if (!File.Exists(exclusionFile)) {
-      return excluded;
+      return excludedConfigs;
     }
 
     foreach (string line in File.ReadAllLines(exclusionFile)) {
-      string trimmed = line.Trim();
-      if (trimmed.Length == 0 || trimmed.StartsWith("#")) {
+      string trimmedLine = line.Trim();
+      if (trimmedLine.Length == 0 || trimmedLine.StartsWith("#")) {
         continue;
       }
-      excluded.Add(trimmed);
+      excludedConfigs.Add(trimmedLine);
+      Debug.Log($"Found simulation configuration to skip: {trimmedLine}.");
     }
-    return excluded;
+    return excludedConfigs;
   }
 
   [OneTimeSetUp]
@@ -58,7 +59,7 @@ public class ConfigsTests : TestBase {
       string configFile = configFiles[i];
       string configFilename = Path.GetFileName(configFile);
       if (ciExcludedConfigs.Contains(configFilename)) {
-        Debug.Log($"[CI] Skipping simulation config: {configFilename}.");
+        Debug.Log($"Skipping simulation configuration: {configFilename}.");
         continue;
       }
 
@@ -94,7 +95,6 @@ public class ConfigsTests : TestBase {
         Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + _epsilon,
                       "Simulation time should have advanced after resuming.");
       }
-
       ++numConfigsLoaded;
     }
 
