@@ -70,7 +70,7 @@ jobs:
           artifactsPath: ${{ matrix.testMode }}-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
-          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+bamlab.*;pathFilters:-Assets/Scripts/Generated/**"
+          coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+bamlab.*,-bamlab.generated"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
