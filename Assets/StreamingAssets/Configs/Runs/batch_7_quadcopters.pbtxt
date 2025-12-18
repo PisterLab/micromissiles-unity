@@ -1,0 +1,5 @@
+name: "batch_7_quadcopters"
+simulation_config_file: "7_quadcopters.pbtxt"
+num_runs: 100
+seed: 200
+seed_stride: 1

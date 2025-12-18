@@ -10,17 +10,18 @@ enum ControllerType {
   AUGMENTED_PROPORTIONAL_NAVIGATION = 1;
 }
 
+// Evasion configuration.
+message EvasionConfig {
+  // If true, evasion is enabled.
+  bool enabled = 1;
+
+  // Range threshold in meters. The agent will evade when a pursuer is within
+  // this range threshold with a positive closing velocity.
+  float range_threshold = 2;
+}
+
 // Flight configuration.
 message FlightConfig {
-  // Evasion configuration.
-  message EvasionConfig {
-    // If true, evasion is enabled.
-    bool enabled = 1;
-
-    // Range threshold in m at which the agent should evade.
-    float range_threshold = 2;
-  }
-
   // Controller type.
   ControllerType controller_type = 1;
 

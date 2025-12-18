@@ -1,221 +1,168 @@
-import argparse
-import glob
-import os
-import platform
+"""Visualizes the telemetry data and events."""
+
+from dataclasses import dataclass
+from pathlib import Path
 
 import matplotlib.pyplot as plt
+import mpl_config
 import numpy as np
 import pandas as pd
-from mpl_toolkits.mplot3d import Axes3D
+import unity_utils
+import utils
+from absl import app, flags, logging
+from constants import Column, EventType, get_agent_color
+
+FLAGS = flags.FLAGS
 
 
-def get_logs_directory():
-    if platform.system() == "Windows":
-        return os.path.expandvars(
-            r"%USERPROFILE%\AppData\LocalLow\BAMLAB\micromissiles\Telemetry\Logs"
+@dataclass(frozen=True)
+class EventMarker:
+    """Event marker."""
+    marker: str
+    color: str
+    label: str
+
+
+# Map from event type to event marker.
+EVENT_TYPE_TO_MARKER = {
+    EventType.NEW_INTERCEPTOR: EventMarker("s", "blue", "New Interceptor"),
+    EventType.NEW_THREAT: EventMarker("^", "darkorange", "New Threat"),
+    EventType.INTERCEPTOR_HIT: EventMarker("o", "lime", "Hit"),
+    EventType.INTERCEPTOR_MISS: EventMarker("X", "red", "Miss"),
+}
+
+
+def log_event_summary(event_df: pd.DataFrame) -> None:
+    """Logs a summary of the events.
+
+    Args:
+        event_df: Dataframe containing the events.
+    """
+    # Log total number of events.
+    total_events = len(event_df)
+    logging.info("Total number of events: %d.", total_events)
+
+    # Log the counts of each event type.
+    event_counts = event_df[Column.EVENT].value_counts()
+    logging.info("Event counts:")
+    for event_type, count in event_counts.items():
+        logging.info("  %s: %d", event_type, count)
+
+    # Calculate the time duration of the events.
+    start_time = event_df[Column.TIME].min()
+    end_time = event_df[Column.TIME].max()
+    duration = end_time - start_time
+    logging.info("Total duration of events: %.2f seconds (from %.2f to %.2f).",
+                 duration, start_time, end_time)
+
+    # Determine the times of the hits and misses.
+    interceptor_hits = (
+        event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_HIT])
+    interceptor_misses = (
+        event_df[event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS])
+    logging.info("Number of interceptor hits recorded: %d.",
+                 len(interceptor_hits))
+    if not interceptor_hits.empty:
+        first_hit_time = interceptor_hits[Column.TIME].min()
+        last_hit_time = interceptor_hits[Column.TIME].max()
+        logging.info("  First hit at %.2f, last hit at %.2f.", first_hit_time,
+                     last_hit_time)
+    logging.info("Number of interceptor misses recorded: %d.",
+                 len(interceptor_misses))
+    if not interceptor_misses.empty:
+        first_miss_time = interceptor_misses[Column.TIME].min()
+        last_miss_time = interceptor_misses[Column.TIME].max()
+        logging.info("  First miss at %.2f, last miss at %.2f.",
+                     first_miss_time, last_miss_time)
+
+
+def plot_telemetry(telemetry_df: pd.DataFrame, event_df: pd.DataFrame) -> None:
+    """Plots the trajectories in the telemetry data and the events.
+
+    Args:
+        telemetry_df: Dataframe containing the telemetry data.
+        event_df: Dataframe containing the events.
+    """
+    fig, ax = plt.subplots(
+        figsize=(16, 8),
+        subplot_kw={"projection": "3d"},
+    )
+
+    # Plot the agent trajectories.
+    for _, agent_data in telemetry_df.groupby(Column.AGENT_ID):
+        agent_type = agent_data[Column.AGENT_TYPE].iloc[0]
+        color = get_agent_color(agent_type)
+
+        ax.plot(
+            agent_data[Column.POSITION_X],
+            agent_data[Column.POSITION_Z],
+            agent_data[Column.POSITION_Y],
+            color=color,
+            alpha=0.5,
+            linewidth=0.5,
         )
-    elif platform.system() == "Darwin":
-        return os.path.expanduser(
-            "~/Library/Application Support/BAMLAB/micromissiles/Telemetry/Logs"
-        )
-    else:
-        raise NotImplementedError(
-            f"Unsupported platform: {platform.system()}.")
 
-
-def find_latest_file(directory, file_pattern):
-    list_of_files = glob.glob(os.path.join(directory, file_pattern))
-    if not list_of_files:
-        print(f"No files matching '{file_pattern}' found in {directory}.")
-        return None
-    latest_file = max(list_of_files, key=os.path.getctime)
-    print(f"Using latest file: {latest_file}.")
-    return latest_file
-
-
-def find_latest_telemetry_file():
-    logs_dir = get_logs_directory()
-    latest_log_dir = max(glob.glob(os.path.join(logs_dir, "*")),
-                         key=os.path.getctime)
-    return find_latest_file(latest_log_dir, "sim_telemetry_*.csv")
-
-
-def find_latest_event_log():
-    latest_telemetry_file = find_latest_telemetry_file()
-    if latest_telemetry_file:
-        return latest_telemetry_file.replace("sim_telemetry_", "sim_events_")
-    else:
-        return None
-
-
-def plot_telemetry(telemetry_file_path, event_file_path):
-    # Read the telemetry CSV file.
-    df = pd.read_csv(telemetry_file_path)
-
-    # Read the event CSV file.
-    event_df = pd.read_csv(event_file_path)
-
-    # Sanitize the "Event" column to ensure consistency.
-    event_df["Event"] = event_df["Event"].str.upper().str.strip()
-
-    # Debugging: Print unique event types to verify correct parsing.
-    unique_events = event_df["Event"].unique()
-    print(f"Unique Events Found: {unique_events}")
-
-    # Create a 3D plot.
-    fig = plt.figure(figsize=(14, 10))
-    ax = fig.add_subplot(111, projection="3d")
-
-    # Define colors for different agent types.
-    colors = {"T": "red", "M": "blue"}
-
-    # Group data by AgentID.
-    agent_types = set()
-    for agent_id, agent_data in df.groupby("AgentID"):
-        agent_type = agent_data["AgentType"].iloc[0]
-        color = colors.get(agent_type, "black")
-        downsampled = agent_data.iloc[::10]
-
-        ax.plot(downsampled["AgentX"],
-                downsampled["AgentZ"],
-                downsampled["AgentY"],
-                color=color,
-                alpha=0.5,
-                linewidth=0.5,
-                label=f"Agent Type: {agent_type}")
-        agent_types.add(agent_type)
-
-    # Define event markers with higher zorder for visibility.
-    event_markers = {
-        "HIT": ("o", "green", "Hit"),
-        "MISS": ("x", "red", "Miss"),
-        "NEW_THREAT": ("^", "orange", "New Threat"),
-        "NEW_INTERCEPTOR": ("s", "blue", "New Interceptor")
-    }
-
-    # Plot events.
-    for event_type, (marker, color, label) in event_markers.items():
-        event_data = event_df[event_df["Event"] == event_type]
+    # Plot the events.
+    for event_type, event_marker in EVENT_TYPE_TO_MARKER.items():
+        event_data = event_df[event_df[Column.EVENT] == event_type]
         if not event_data.empty:
             ax.scatter(
-                event_data["PositionX"],
-                event_data["PositionZ"],
-                event_data["PositionY"],
-                c=color,
-                marker=marker,
-                s=100,  # Increased marker size for better visibility.
-                label=label,
-                edgecolors="k",  # Adding black edges for contrast.
-                depthshade=True,
-                zorder=5  # Ensure markers are on top.
+                event_data[Column.POSITION_X],
+                event_data[Column.POSITION_Z],
+                event_data[Column.POSITION_Y],
+                s=60,
+                c=event_marker.color,
+                marker=event_marker.marker,
+                edgecolors="black",
+                label=event_marker.label,
             )
-
-    # Set labels.
-    ax.set_xlabel("X (m)", fontsize=12)
-    ax.set_ylabel("Z (m)", fontsize=12)
-    ax.set_zlabel("Y (m)", fontsize=12)
-
-    # Set view angle for better visualization.
-    ax.view_init(elev=20, azim=45)
 
     # Add a ground plane for reference.
     x_min, x_max = ax.get_xlim()
     z_min, z_max = ax.get_ylim()
-    xx, zz = np.meshgrid(np.linspace(x_min, x_max, 2),
-                         np.linspace(z_min, z_max, 2))
+    xx, zz = np.meshgrid([x_min, x_max], [z_min, z_max])
     yy = np.zeros_like(xx)
-    ax.plot_surface(xx, zz, yy, alpha=0.2, color="green")
+    ax.plot_surface(xx, zz, yy, alpha=0.2, color="chocolate")
 
-    plt.title("Agents Trajectories and Events (X: Right, Z: Forward, Y: Up)",
-              fontsize=14)
+    ax.set_xlabel("$x$ [m]")
+    ax.set_ylabel("$z$ [m]")
+    ax.set_zlabel("$y$ [m]")
 
-    # Optimize legend to prevent overcrowding.
-    handles, labels = ax.get_legend_handles_labels()
-    # Remove duplicate labels.
-    unique = dict(zip(labels, handles))
-    ax.legend(unique.values(),
-              unique.keys(),
-              loc="upper left",
-              bbox_to_anchor=(1, 1),
-              fontsize=10)
-
-    plt.tight_layout()
+    ax.set_aspect("equal")
+    ax.view_init(elev=20, azim=-45)
+    ax.legend(loc="lower center")
     plt.show()
 
 
-def print_summary(telemetry_file_path, event_file_path):
-    # Read the telemetry CSV file.
-    df = pd.read_csv(telemetry_file_path)
+def main(argv):
+    assert len(argv) == 1, argv
 
-    # Read the event CSV file.
-    event_df = pd.read_csv(event_file_path)
-
-    # Sanitize the "Event" column to ensure consistency.
-    event_df["Event"] = event_df["Event"].str.upper().str.strip()
-
-    # Print total number of events.
-    total_events = len(event_df)
-    print(f"Total number of events: {total_events}")
-
-    # Print counts of each event type.
-    event_counts = event_df["Event"].value_counts()
-    print("\nEvent Counts:")
-    for event_type, count in event_counts.items():
-        print(f"  {event_type}: {count}")
-
-    # Calculate the time duration of the events.
-    if "Time" in event_df.columns:
-        start_time = event_df["Time"].min()
-        end_time = event_df["Time"].max()
-        duration = end_time - start_time
-        print(f"\nTotal duration of events: {duration:.2f} seconds (from "
-              f"{start_time:.2f} to {end_time:.2f})")
+    if FLAGS.telemetry_file and FLAGS.event_log:
+        telemetry_file_path = Path(FLAGS.telemetry_file)
+        event_log_path = Path(FLAGS.event_log)
+    elif FLAGS.telemetry_file or FLAGS.event_log:
+        raise ValueError("Both the telemetry file and the event log must be "
+                         "specified together, or neither.")
     else:
-        print("\n'Time' column not found in event data.")
+        telemetry_file_path = utils.find_latest_telemetry_file(
+            FLAGS.log_search_dir)
+        event_log_path = utils.find_latest_event_log(FLAGS.log_search_dir)
+    if not telemetry_file_path or not event_log_path:
+        raise ValueError("Missing required telemetry or event log file.")
 
-    if "Time" in event_df.columns:
-        hits = event_df[event_df["Event"] == "HIT"]
-        misses = event_df[event_df["Event"] == "MISS"]
+    telemetry_df = utils.read_telemetry_file(telemetry_file_path)
+    event_df = utils.read_event_log(event_log_path)
 
-        if not hits.empty:
-            first_hit_time = hits["Time"].min()
-            last_hit_time = hits["Time"].max()
-            print(f"\nFirst hit at {first_hit_time:.2f} seconds, last hit at "
-                  f"{last_hit_time:.2f} seconds")
-        else:
-            print("\nNo hits recorded.")
-
-        if not misses.empty:
-            first_miss_time = misses["Time"].min()
-            last_miss_time = misses["Time"].max()
-            print(f"First miss at {first_miss_time:.2f} seconds, last miss at "
-                  f"{last_miss_time:.2f} seconds")
-        else:
-            print("No misses recorded.")
-    else:
-        print("\n'Time' column not found in event data.")
+    log_event_summary(event_df)
+    plot_telemetry(telemetry_df, event_df)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Visualize telemetry data and events.")
-    parser.add_argument("telemetry_file",
-                        nargs="?",
-                        default=None,
-                        help="Path to telemetry CSV file.")
-    parser.add_argument("event_file",
-                        nargs="?",
-                        default=None,
-                        help="Path to event CSV file.")
-    args = parser.parse_args()
+    flags.DEFINE_string("telemetry_file", None,
+                        "Path to the telemetry CSV file.")
+    flags.DEFINE_string("event_log", None, "Path to the event CSV log.")
+    flags.DEFINE_string("log_search_dir",
+                        unity_utils.get_persistent_data_directory(),
+                        "Log directory in which to search for logs.")
 
-    if args.telemetry_file and args.event_file:
-        telemetry_file_path = args.telemetry_file
-        event_file_path = args.event_file
-    else:
-        telemetry_file_path = find_latest_telemetry_file()
-        event_file_path = find_latest_event_log()
-        if telemetry_file_path is None or event_file_path is None:
-            exit(1)
-    print_summary(telemetry_file_path, event_file_path)
-    plot_telemetry(telemetry_file_path, event_file_path)
+    app.run(main)

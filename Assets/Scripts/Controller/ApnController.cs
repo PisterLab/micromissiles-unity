@@ -1,20 +1,17 @@
-using System;
 using UnityEngine;
 
-// The augmented proportional navigation controller applies augmented proportional navigation to
-// steer the agent towards its target.
+// The augmented proportional navigation controller applies an input that is proportional to the
+// line-of-sight's rotation rate and adds a term to compensate for the target's acceleration.
 public class ApnController : PnController {
-  public ApnController(Agent agent, float navigationGain) : base(agent, navigationGain) {}
+  public ApnController(IAgent agent, float gain) : base(agent, gain) {}
 
-  protected override Vector3 PlanImpl(in Transformation relativeTransformation) {
-    Vector3 pnAccelerationInput = base.PlanImpl(relativeTransformation);
+  // Controller-dependent implementation of the control law.
+  protected override Vector3 Plan(in Transformation relativeTransformation) {
+    Vector3 accelerationInput = base.Plan(relativeTransformation);
 
     // Add a feedforward term proportional to the target's acceleration.
-    Vector3 targetAcceleration = relativeTransformation.acceleration.cartesian;
-    Vector3 normalTargetAcceleration =
-        Vector3.ProjectOnPlane(targetAcceleration, _agent.transform.forward);
-    Vector3 accelerationInput =
-        pnAccelerationInput + _navigationGain / 2 * normalTargetAcceleration;
-    return accelerationInput;
+    Vector3 targetAcceleration = relativeTransformation.Acceleration.Cartesian;
+    Vector3 normalTargetAcceleration = Vector3.ProjectOnPlane(targetAcceleration, Agent.Forward);
+    return accelerationInput + Gain / 2 * normalTargetAcceleration;
   }
 }

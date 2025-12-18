@@ -24,10 +24,10 @@ namespace Simulation {
     static FlightPhaseReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Ch1TaW11bGF0aW9uL2ZsaWdodF9waGFzZS5wcm90bxIKc2ltdWxhdGlvbiph",
+            "Ch1TaW11bGF0aW9uL2ZsaWdodF9waGFzZS5wcm90bxIKc2ltdWxhdGlvbipw",
             "CgtGbGlnaHRQaGFzZRIPCgtJTklUSUFMSVpFRBAAEgkKBVJFQURZEAESCQoF",
-            "Qk9PU1QQAhINCglNSURDT1VSU0UQAxIMCghURVJNSU5BTBAEEg4KClRFUk1J",
-            "TkFURUQQBWIGcHJvdG8z"));
+            "Qk9PU1QQAhINCglNSURDT1VSU0UQAxIMCghURVJNSU5BTBAEEg0KCUJBTExJ",
+            "U1RJQxAFEg4KClRFUk1JTkFURUQQBmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Simulation.FlightPhase), }, null, null));
@@ -45,7 +45,8 @@ namespace Simulation {
     [pbr::OriginalName("BOOST")] Boost = 2,
     [pbr::OriginalName("MIDCOURSE")] Midcourse = 3,
     [pbr::OriginalName("TERMINAL")] Terminal = 4,
-    [pbr::OriginalName("TERMINATED")] Terminated = 5,
+    [pbr::OriginalName("BALLISTIC")] Ballistic = 5,
+    [pbr::OriginalName("TERMINATED")] Terminated = 6,
   }
 
   #endregion

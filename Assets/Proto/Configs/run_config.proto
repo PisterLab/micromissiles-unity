@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package configs;
+
+// Run configuration.
+message RunConfig {
+  // Run name.
+  string name = 1;
+
+  // Simulation configuration file.
+  string simulation_config_file = 2;
+
+  // Number of runs.
+  uint32 num_runs = 3;
+
+  // Seed for the random number generator.
+  int32 seed = 4;
+
+  // Seed stride between each run.
+  int32 seed_stride = 5;
+}
