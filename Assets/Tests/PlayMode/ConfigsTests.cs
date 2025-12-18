@@ -5,17 +5,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class ConfigsTests : TestBase {
   private const double _epsilon = 0.0002;
 
-  private readonly HashSet<string> _excludedConfigFiles =
-      new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
-        // The CI runner times out when clustering 1000 threats.
-        "5_swarms_1000_ucav.pbtxt",
-      };
+  private static HashSet<string> GetCiExcludedSimulationConfigs(string simulationConfigPath) {
+    var excludedConfigs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    bool isCi = Environment.GetCommandLineArgs().Contains("-ci");
+    Debug.Log($"Running on CI: {isCi}.");
+    if (!isCi) {
+      return excludedConfigs;
+    }
+
+    string exclusionFile = Path.Combine(simulationConfigPath, "ci_excluded_simulation_configs.txt");
+    if (!File.Exists(exclusionFile)) {
+      return excludedConfigs;
+    }
+
+    foreach (string line in File.ReadAllLines(exclusionFile)) {
+      string trimmedLine = line.Trim();
+      if (trimmedLine.Length == 0 || trimmedLine.StartsWith("#")) {
+        continue;
+      }
+      excludedConfigs.Add(trimmedLine);
+      Debug.Log($"Found simulation configuration to skip: {trimmedLine}.");
+    }
+    return excludedConfigs;
+  }
 
   [OneTimeSetUp]
   public void LoadScene() {
@@ -25,22 +43,27 @@ public class ConfigsTests : TestBase {
   [UnityTest]
   public IEnumerator TestAllSimulationConfigFilesLoad() {
     string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs/Simulations");
-    string[] allConfigFiles = Directory.GetFiles(configPath, "*.pbtxt");
-    Assert.IsTrue(allConfigFiles.Length > 0, "No simulation configuration files found.");
+    string[] configFiles = Directory.GetFiles(configPath, "*.pbtxt");
+    Array.Sort(configFiles, StringComparer.Ordinal);
+    Assert.IsTrue(configFiles.Length > 0, "No simulation configuration files found.");
 
-    // Exclude the specified simulation configuration files.
-    List<string> configFiles =
-        allConfigFiles.Where(path => !_excludedConfigFiles.Contains(Path.GetFileName(path)))
-            .ToList();
-
+    HashSet<string> ciExcludedConfigs = GetCiExcludedSimulationConfigs(configPath);
     bool isPaused = false;
-    for (int i = 0; i < configFiles.Count; ++i) {
-      if (i % 2 == 1) {
+    int numConfigsLoaded = 0;
+    for (int i = 0; i < configFiles.Length; ++i) {
+      string configFile = configFiles[i];
+      string configFilename = Path.GetFileName(configFile);
+      if (ciExcludedConfigs.Contains(configFilename)) {
+        Debug.Log($"Skipping simulation configuration: {configFilename}.");
+        continue;
+      }
+
+      if (numConfigsLoaded % 2 == 1) {
         SimManager.Instance.PauseSimulation();
         isPaused = true;
       }
       yield return new WaitForSecondsRealtime(0.1f);
-      SimManager.Instance.LoadNewSimulationConfig(configFiles[i]);
+      SimManager.Instance.LoadNewSimulationConfig(configFile);
       yield return new WaitForSecondsRealtime(0.1f);
       double elapsedTime = SimManager.Instance.ElapsedTime;
       if (isPaused) {
@@ -67,6 +90,9 @@ public class ConfigsTests : TestBase {
         Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + _epsilon,
                       "Simulation time should have advanced after resuming.");
       }
+      ++numConfigsLoaded;
     }
+
+    Assert.IsTrue(numConfigsLoaded > 0, "No simulation configuration files were loaded.");
   }
 }

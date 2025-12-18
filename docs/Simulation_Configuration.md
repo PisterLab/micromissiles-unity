@@ -44,6 +44,7 @@ Configs/
 │   ├── 5_swarms_7_brahmos.pbtxt             # Five incoming swarms of seven incoming supersonic cruise missiles each
 │   ├── 5_swarms_100_ucav.pbtxt              # 100 incoming combat drones stacked into five swarms
 │   ├── 5_swarms_500_ucav.pbtxt              # 500 incoming combat drones stacked into five swarms
+│   ├── 5_swarms_1000_ucav.pbtxt             # 1000 incoming combat drones stacked into five swarms
 │   ├── 7_quadcopters_15_ucav.pbtxt          # Seven quadcopters followed by 15 combat drones
 │   ├── 2_ddg_5_swarms_100_ucav.pbtxt        # Two DDG launchers against 100 incoming combat drones stacked into five swarms
 │   └── 2_shore_batteries_5_swarms_100_ucav.pbtxt # Two shore battery launchers against 100 incoming combat drones stacked into five swarms
@@ -66,6 +67,9 @@ Configs/
     ├── brahmos_direct_attack.pbtxt          # Cruise missile profile
     └── fateh110b_direct_attack.pbtxt        # Ballistic missile profile
 ```
+
+> [!NOTE]
+> CI runs a PlayMode test that loads all simulation configs; extremely large scenarios can be excluded by listing their filenames in [`ci_excluded_simulation_configs.txt`](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/StreamingAssets/Configs/Simulations/ci_excluded_simulation_configs.txt).
 
 ### File Locations
 
