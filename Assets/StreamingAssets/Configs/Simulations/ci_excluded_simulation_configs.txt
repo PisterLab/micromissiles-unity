@@ -1,0 +1,4 @@
+# Simulation config filenames to skip in CI (one per line).
+# This keeps local test coverage broad, while preventing CI runners from
+# hanging/crashing on extremely large scenarios.
+5_swarms_1000_ucav.pbtxt
