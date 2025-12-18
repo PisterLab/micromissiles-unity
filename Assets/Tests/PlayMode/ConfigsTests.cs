@@ -20,7 +20,9 @@ public class ConfigsTests : TestBase {
 
   private static HashSet<string> GetCiExcludedSimulationConfigs(string simulationConfigPath) {
     var excludedConfigs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-    if (!IsCi()) {
+    bool isCi = IsCi();
+    Debug.Log($"Running on CI: {isCi}.");
+    if (!isCi) {
       return excludedConfigs;
     }
 
