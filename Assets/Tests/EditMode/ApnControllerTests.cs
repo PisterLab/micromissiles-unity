@@ -11,6 +11,7 @@ public class ApnControllerTests : TestBase {
     _agent = new GameObject("Agent").AddComponent<AgentBase>();
     _agent.gameObject.AddComponent<Rigidbody>();
     InvokePrivateMethod(_agent, "Awake");
+    _agent.Velocity = new Vector3(0, 0, 1);
     _agent.Transform.rotation = Quaternion.LookRotation(new Vector3(0, 0, 1));
     _targetModel = new GameObject("Target").AddComponent<AgentBase>();
     _targetModel.gameObject.AddComponent<Rigidbody>();
@@ -22,20 +23,36 @@ public class ApnControllerTests : TestBase {
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward() {
     _targetModel.Position = new Vector3(0, 0, 1);
-    _targetModel.Velocity = new Vector3(0, 1, -1);
+    _targetModel.Velocity = new Vector3(0, 1, 0);
     _targetModel.Acceleration = new Vector3(0, 1, 0);
-    // Vertical PN acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
-    // = 1. Vertical APN feedforward acceleration = 0.5 * gain * y-acceleration = 1/2 * 1 * 1 = 0.5.
+    // Relative position = (0, 0, 1)
+    // Relative velocity = (0, 1, -1)
+    // Rhat = (0, 0, 1)
+    // Vhat = (0, 1, 0)
+    // Line-of-sight rotation = (-1, 0, 0)
+    // Closing velocity = 1
+    // Gain = 1
+    // isAbeam = false
+    // Turn factor = 1
+    // (-1, 0, 0) x (0, 0, 1) = (0, 1, 0)
     Assert.AreEqual(new Vector3(0, 1.5f, 0), _controller.Plan());
   }
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward_WithNoAcceleration() {
     _targetModel.Position = new Vector3(0, 0, 1);
-    _targetModel.Velocity = new Vector3(0, 1, -1);
+    _targetModel.Velocity = new Vector3(0, 1, 0);
     _targetModel.Acceleration = new Vector3(0, 0, 0);
-    // Vertical PN acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
-    // = 1.
+    // Relative position = (0, 0, 1)
+    // Relative velocity = (0, 1, -1)
+    // Rhat = (0, 0, 1)
+    // Vhat = (0, 1, 0)
+    // Line-of-sight rotation = (-1, 0, 0)
+    // Closing velocity = 1
+    // Gain = 1
+    // isAbeam = false
+    // Turn factor = 1
+    // (-1, 0, 0) x (0, 0, 1) = (0, 1, 0)
     Assert.AreEqual(new Vector3(0, 1, 0), _controller.Plan());
   }
 
@@ -43,31 +60,54 @@ public class ApnControllerTests : TestBase {
   public void
   Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingUpward_WithAccelerationAlongBoresight() {
     _targetModel.Position = new Vector3(0, 0, 1);
-    _targetModel.Velocity = new Vector3(0, 1, -1);
+    _targetModel.Velocity = new Vector3(0, 1, 0);
     _targetModel.Acceleration = new Vector3(0, 0, -5);
-    // Vertical PN acceleration = gain * closing velocity * elevation line-of-sight rate = 1 * 1 * 1
-    // = 1.
+    // Relative position = (0, 0, 1)
+    // Relative velocity = (0, 1, -1)
+    // Rhat = (0, 0, 1)
+    // Vhat = (0, 1, 0)
+    // Line-of-sight rotation = (-1, 0, 0)
+    // Closing velocity = 1
+    // Gain = 1
+    // isAbeam = false
+    // Turn factor = 1
+    // (-1, 0, 0) x (0, 0, 1) = (0, 1, 0)
     Assert.AreEqual(new Vector3(0, 1, 0), _controller.Plan());
   }
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingLeft() {
     _targetModel.Position = new Vector3(0, 0, 1);
-    _targetModel.Velocity = new Vector3(-1, 0, -1);
+    _targetModel.Velocity = new Vector3(-1, 0, 0);
     _targetModel.Acceleration = new Vector3(0, 1, 0);
-    // Horizontal PN acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 *
-    // -1 = -1. Vertical APN feedforward acceleration = 0.5 * gain * y-acceleration = 1/2 * 1 * 1 =
-    // 0.5.
+    // Relative position = (0, 0, 1)
+    // Relative velocity = (-1, 0, -1)
+    // Rhat = (0, 0, 1)
+    // Vhat = (-1, 0, 0)
+    // Line-of-sight rotation = (0, -1, 0)
+    // Closing velocity = 1
+    // Gain = 1
+    // isAbeam = false
+    // Turn factor = 1
+    // (0, -1, 0) x (0, 0, 1) = (-1, 0, 0)
     Assert.AreEqual(new Vector3(-1, 0.5f, 0), _controller.Plan());
   }
 
   [Test]
   public void Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingLeft_WithNoAcceleration() {
     _targetModel.Position = new Vector3(0, 0, 1);
-    _targetModel.Velocity = new Vector3(-1, 0, -1);
+    _targetModel.Velocity = new Vector3(-1, 0, 0);
     _targetModel.Acceleration = new Vector3(0, 0, 0);
-    // Horizontal PN acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 *
-    // -1 = -1.
+    // Relative position = (0, 0, 1)
+    // Relative velocity = (-1, 0, -1)
+    // Rhat = (0, 0, 1)
+    // Vhat = (-1, 0, 0)
+    // Line-of-sight rotation = (0, -1, 0)
+    // Closing velocity = 1
+    // Gain = 1
+    // isAbeam = false
+    // Turn factor = 1
+    // (0, -1, 0) x (0, 0, 1) = (-1, 0, 0)
     Assert.AreEqual(new Vector3(-1, 0, 0), _controller.Plan());
   }
 
@@ -75,10 +115,18 @@ public class ApnControllerTests : TestBase {
   public void
   Plan_TargetAtBoresight_NonzeroClosingVelocity_MovingLeft_WithAccelerationAlongBoresight() {
     _targetModel.Position = new Vector3(0, 0, 1);
-    _targetModel.Velocity = new Vector3(-1, 0, -1);
+    _targetModel.Velocity = new Vector3(-1, 0, 0);
     _targetModel.Acceleration = new Vector3(0, 0, -5);
-    // Horizontal PN acceleration = gain * closing velocity * azimuth line-of-sight rate = 1 * 1 *
-    // -1 = -1.
+    // Relative position = (0, 0, 1)
+    // Relative velocity = (-1, 0, -1)
+    // Rhat = (0, 0, 1)
+    // Vhat = (-1, 0, 0)
+    // Line-of-sight rotation = (0, -1, 0)
+    // Closing velocity = 1
+    // Gain = 1
+    // isAbeam = false
+    // Turn factor = 1
+    // (0, -1, 0) x (0, 0, 1) = (-1, 0, 0)
     Assert.AreEqual(new Vector3(-1, 0, 0), _controller.Plan());
   }
 }
