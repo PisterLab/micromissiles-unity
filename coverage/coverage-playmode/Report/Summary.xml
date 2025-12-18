@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>12/18/2025 - 09:47:07</Generatedon>
+    <Generatedon>12/18/2025 - 20:43:15</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
-    <Assemblies>4</Assemblies>
-    <Classes>180</Classes>
-    <Files>148</Files>
-    <Coveredlines>2067</Coveredlines>
-    <Uncoveredlines>7371</Uncoveredlines>
-    <Coverablelines>9438</Coverablelines>
-    <Totallines>19302</Totallines>
-    <Linecoverage>21.9</Linecoverage>
+    <Assemblies>1</Assemblies>
+    <Classes>99</Classes>
+    <Files>95</Files>
+    <Coveredlines>1333</Coveredlines>
+    <Uncoveredlines>2345</Uncoveredlines>
+    <Coverablelines>3678</Coverablelines>
+    <Totallines>6566</Totallines>
+    <Linecoverage>36.2</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
-    <Coveredmethods>568</Coveredmethods>
-    <Totalmethods>1682</Totalmethods>
-    <Methodcoverage>33.7</Methodcoverage>
+    <Coveredmethods>389</Coveredmethods>
+    <Totalmethods>724</Totalmethods>
+    <Methodcoverage>53.7</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="141" coverage="26.4" coveredlines="2001" coverablelines="7553" totallines="53627" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="564" totalmethods="1410" methodcoverage="40">
+    <Assembly name="bamlab.micromissiles" classes="99" coverage="36.2" coveredlines="1333" coverablelines="3678" totallines="6738" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="389" totalmethods="724" methodcoverage="53.7">
       <Class name="AccelerationTransformation" coverage="100" coveredlines="1" coverablelines="1" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="AerialMovement" coverage="4.7" coveredlines="1" coverablelines="21" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="4" methodcoverage="25" />
       <Class name="AgentBase" coverage="79.4" coveredlines="139" coverablelines="175" totallines="331" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="56" totalmethods="61" methodcoverage="91.8" />
@@ -31,35 +31,6 @@
       <Class name="CarrierInterceptor" coverage="0" coveredlines="0" coverablelines="11" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="Cluster" coverage="0" coveredlines="0" coverablelines="18" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
       <Class name="ConfigLoader" coverage="58.3" coveredlines="28" coverablelines="48" totallines="102" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="8" methodcoverage="75" />
-      <Class name="Configs.AccelerationConfig" coverage="24.1" coveredlines="30" coverablelines="124" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="23" methodcoverage="39.1" />
-      <Class name="Configs.AgentConfig" coverage="30.9" coveredlines="65" coverablelines="210" totallines="745" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="15" totalmethods="29" methodcoverage="51.7" />
-      <Class name="Configs.AgentConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="745" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.AttackBehaviorConfig" coverage="28" coveredlines="37" coverablelines="132" totallines="887" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="23" methodcoverage="39.1" />
-      <Class name="Configs.AttackBehaviorConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="887" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.BodyConfig" coverage="23.6" coveredlines="34" coverablelines="144" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="25" methodcoverage="32" />
-      <Class name="Configs.BoostConfig" coverage="0" coveredlines="0" coverablelines="104" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Configs.ControllerConfig" coverage="0" coveredlines="0" coverablelines="84" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="19" methodcoverage="0" />
-      <Class name="Configs.DynamicConfig" coverage="25" coveredlines="29" coverablelines="116" totallines="824" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="21" methodcoverage="33.3" />
-      <Class name="Configs.DynamicConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="824" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.EvasionConfig" coverage="20.1" coveredlines="21" coverablelines="104" totallines="824" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="21" methodcoverage="23.8" />
-      <Class name="Configs.FlightConfig" coverage="18" coveredlines="20" coverablelines="111" totallines="824" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="21" methodcoverage="23.8" />
-      <Class name="Configs.FlightPlan" coverage="22.6" coveredlines="22" coverablelines="97" totallines="887" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="20" methodcoverage="25" />
-      <Class name="Configs.FlightPlanWaypoint" coverage="25.6" coveredlines="32" coverablelines="125" totallines="887" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="10" totalmethods="23" methodcoverage="43.4" />
-      <Class name="Configs.HitConfig" coverage="20.1" coveredlines="21" coverablelines="104" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="21" methodcoverage="23.8" />
-      <Class name="Configs.LiftDragConfig" coverage="12" coveredlines="15" coverablelines="124" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="23" methodcoverage="17.3" />
-      <Class name="Configs.PowerTableEntry" coverage="23.8" coveredlines="25" coverablelines="105" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="21" methodcoverage="38" />
-      <Class name="Configs.RunConfig" coverage="0" coveredlines="0" coverablelines="166" totallines="409" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="27" methodcoverage="0" />
-      <Class name="Configs.RunConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="409" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.SimulationConfig" coverage="29.6" coveredlines="38" coverablelines="128" totallines="349" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="10" totalmethods="23" methodcoverage="43.4" />
-      <Class name="Configs.SimulationConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="349" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.SimulatorConfig" coverage="19" coveredlines="35" coverablelines="184" totallines="451" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="29" methodcoverage="41.3" />
-      <Class name="Configs.SimulatorConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="451" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.StaticConfig" coverage="28.4" coveredlines="91" coverablelines="320" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="21" totalmethods="38" methodcoverage="55.2" />
-      <Class name="Configs.StaticConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.SubAgentConfig" coverage="23.6" coveredlines="26" coverablelines="110" totallines="745" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="21" methodcoverage="33.3" />
-      <Class name="Configs.SwarmConfig" coverage="24.5" coveredlines="27" coverablelines="110" totallines="298" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="21" methodcoverage="38" />
-      <Class name="Configs.SwarmConfigReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="298" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Configs.VisualizationConfig" coverage="21.6" coveredlines="23" coverablelines="106" totallines="2841" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="21" methodcoverage="23.8" />
       <Class name="Constants" coverage="14.2" coveredlines="1" coverablelines="7" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="3" methodcoverage="33.3" />
       <Class name="ConstrainedKMeansClusterer" coverage="0" coveredlines="0" coverablelines="24" totallines="44" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="ControllerBase" coverage="57.1" coveredlines="8" coverablelines="14" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="5" methodcoverage="80" />
@@ -114,8 +85,6 @@
       <Class name="OrthogonalEvasion" coverage="2.8" coveredlines="1" coverablelines="35" totallines="78" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="3" methodcoverage="33.3" />
       <Class name="ParticleManager" coverage="21.7" coveredlines="34" coverablelines="156" totallines="224" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="24" methodcoverage="37.5" />
       <Class name="PlannerReleaseStrategy" coverage="50" coveredlines="4" coverablelines="8" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="4" methodcoverage="75" />
-      <Class name="Plugin.Status" coverage="0" coveredlines="0" coverablelines="106" totallines="323" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="21" methodcoverage="0" />
-      <Class name="Plugin.StatusReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="323" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="PnController" coverage="89.2" coveredlines="25" coverablelines="28" totallines="67" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="PositionTransformation" coverage="100" coveredlines="4" coverablelines="4" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="PredictorBase" coverage="100" coveredlines="4" coverablelines="4" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
@@ -131,17 +100,6 @@
       <Class name="ShoreBattery" coverage="100" coveredlines="4" coverablelines="4" totallines="10" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="SimManager" coverage="82.7" coveredlines="202" coverablelines="244" totallines="383" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="43" totalmethods="51" methodcoverage="84.3" />
       <Class name="SimMonitor" coverage="42" coveredlines="74" coverablelines="176" totallines="281" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="16" totalmethods="26" methodcoverage="61.5" />
-      <Class name="Simulation.CartesianCoordinates" coverage="16.3" coveredlines="30" coverablelines="184" totallines="735" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="29" methodcoverage="31" />
-      <Class name="Simulation.CoordinatesReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="735" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Simulation.FlightPhaseReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="56" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Simulation.SensorConfig" coverage="17.1" coveredlines="18" coverablelines="105" totallines="615" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="21" methodcoverage="28.5" />
-      <Class name="Simulation.SensorOutput" coverage="0" coveredlines="0" coverablelines="142" totallines="615" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Simulation.SensorReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="615" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Simulation.SphericalCoordinates" coverage="0" coveredlines="0" coverablelines="124" totallines="735" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="23" methodcoverage="0" />
-      <Class name="Simulation.State" coverage="20.4" coveredlines="29" coverablelines="142" totallines="358" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="7" totalmethods="23" methodcoverage="30.4" />
-      <Class name="Simulation.StateReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="358" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="Simulation.Transformation" coverage="0" coveredlines="0" coverablelines="194" totallines="459" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="27" methodcoverage="0" />
-      <Class name="Simulation.TransformationReflection" coverage="0" coveredlines="0" coverablelines="5" totallines="459" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="SingleReleaseStrategyBase" coverage="22.5" coveredlines="7" coverablelines="31" totallines="62" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="3" methodcoverage="66.6" />
       <Class name="SizeAndRadiusConstrainedClustererBase" coverage="0" coveredlines="0" coverablelines="10" totallines="26" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="SpeedEscapeDetector" coverage="0" coveredlines="0" coverablelines="18" totallines="45" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
@@ -160,51 +118,6 @@
       <Class name="VelocityTransformation" coverage="100" coveredlines="4" coverablelines="4" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="Vessel" coverage="100" coveredlines="4" coverablelines="4" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="WaypointController" coverage="78.5" coveredlines="11" coverablelines="14" totallines="30" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
-    </Assembly>
-    <Assembly name="bamlab.test" classes="1" coverage="0" coveredlines="0" coverablelines="53" totallines="81" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0">
-      <Class name="TestBase" coverage="0" coveredlines="0" coverablelines="53" totallines="81" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
-    </Assembly>
-    <Assembly name="bamlab.test.editmode" classes="36" coverage="0" coveredlines="0" coverablelines="1764" totallines="3183" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="259" methodcoverage="0">
-      <Class name="AgentBaseTests" coverage="0" coveredlines="0" coverablelines="132" totallines="179" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0" />
-      <Class name="AgglomerativeClustererTests" coverage="0" coveredlines="0" coverablelines="66" totallines="95" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
-      <Class name="ApnControllerTests" coverage="0" coveredlines="0" coverablelines="48" totallines="132" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
-      <Class name="ClusterTests" coverage="0" coveredlines="0" coverablelines="85" totallines="113" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
-      <Class name="ConstrainedKMeansClustererTests" coverage="0" coveredlines="0" coverablelines="44" totallines="72" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
-      <Class name="Coordinates2Tests" coverage="0" coveredlines="0" coverablelines="54" totallines="90" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
-      <Class name="Coordinates3Tests" coverage="0" coveredlines="0" coverablelines="66" totallines="126" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="11" methodcoverage="0" />
-      <Class name="DirectAttackBehaviorTests" coverage="0" coveredlines="0" coverablelines="45" totallines="115" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
-      <Class name="FixedHierarchicalTests" coverage="0" coveredlines="0" coverablelines="20" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
-      <Class name="FlightPlanTests" coverage="0" coveredlines="0" coverablelines="13" totallines="46" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="GeometricEscapeDetectorTests" coverage="0" coveredlines="0" coverablelines="47" totallines="92" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0" />
-      <Class name="GroundMovementTests" coverage="0" coveredlines="0" coverablelines="13" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="HierarchicalBaseTests" coverage="0" coveredlines="0" coverablelines="135" totallines="209" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="19" methodcoverage="0" />
-      <Class name="IdealMovementTests" coverage="0" coveredlines="0" coverablelines="23" totallines="54" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="IdealSensorTests" coverage="0" coveredlines="0" coverablelines="34" totallines="55" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
-      <Class name="IterativeLaunchPlannerTests" coverage="0" coveredlines="0" coverablelines="55" totallines="111" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
-      <Class name="KDTreeTests" coverage="0" coveredlines="0" coverablelines="39" totallines="57" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="KMeansClustererTests" coverage="0" coveredlines="0" coverablelines="47" totallines="93" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
-      <Class name="LaunchAngleCsvInterpolatorTests" coverage="0" coveredlines="0" coverablelines="47" totallines="89" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
-      <Class name="LaunchAngleDataInterpolatorBaseTests" coverage="0" coveredlines="0" coverablelines="41" totallines="85" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
-      <Class name="LaunchPlanTests" coverage="0" coveredlines="0" coverablelines="24" totallines="60" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
-      <Class name="LinearExtrapolatorTests" coverage="0" coveredlines="0" coverablelines="22" totallines="39" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="MaxSpeedAssignmentTests" coverage="0" coveredlines="0" coverablelines="64" totallines="116" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
-      <Class name="MinDistanceAssignmentTests" coverage="0" coveredlines="0" coverablelines="43" totallines="74" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
-      <Class name="MissileMovementTests" coverage="0" coveredlines="0" coverablelines="99" totallines="167" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="13" methodcoverage="0" />
-      <Class name="NearestNeighborInterpolator2DTests" coverage="0" coveredlines="0" coverablelines="52" totallines="81" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
-      <Class name="NoEvasionTests" coverage="0" coveredlines="0" coverablelines="15" totallines="29" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
-      <Class name="NoMovementTests" coverage="0" coveredlines="0" coverablelines="12" totallines="23" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="OrthogonalEvasionTests" coverage="0" coveredlines="0" coverablelines="72" totallines="122" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="8" methodcoverage="0" />
-      <Class name="PnControllerTests" coverage="0" coveredlines="0" coverablelines="56" totallines="154" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="10" methodcoverage="0" />
-      <Class name="PriorityQueueTests" coverage="0" coveredlines="0" coverablelines="62" totallines="81" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
-      <Class name="RoundRobinAssignmentTests" coverage="0" coveredlines="0" coverablelines="42" totallines="60" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
-      <Class name="SanityTests" coverage="0" coveredlines="0" coverablelines="7" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
-      <Class name="SpeedEscapeDetectorTests" coverage="0" coveredlines="0" coverablelines="26" totallines="69" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="5" methodcoverage="0" />
-      <Class name="TimeEscapeDetectorTests" coverage="0" coveredlines="0" coverablelines="69" totallines="129" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="13" methodcoverage="0" />
-      <Class name="WaypointControllerTests" coverage="0" coveredlines="0" coverablelines="45" totallines="74" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
-    </Assembly>
-    <Assembly name="bamlab.test.playmode" classes="2" coverage="97" coveredlines="66" coverablelines="68" totallines="122" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100">
-      <Class name="ConfigsTests" coverage="96.7" coveredlines="59" coverablelines="61" totallines="98" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
-      <Class name="SanityTests" coverage="100" coveredlines="7" coverablelines="7" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
     </Assembly>
   </Coverage>
 </CoverageReport>

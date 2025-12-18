@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 12/18/2025 - 09:47:07 |
+| Generated on: | 12/18/2025 - 20:43:15 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
-| Assemblies: | 4 |
-| Classes: | 180 |
-| Files: | 148 |
-| Covered lines: | 2067 |
-| Uncovered lines: | 7371 |
-| Coverable lines: | 9438 |
-| Total lines: | 19302 |
-| Line coverage: | 21.9% (2067 of 9438) |
+| Assemblies: | 1 |
+| Classes: | 99 |
+| Files: | 95 |
+| Covered lines: | 1333 |
+| Uncovered lines: | 2345 |
+| Coverable lines: | 3678 |
+| Total lines: | 6566 |
+| Line coverage: | 36.2% (1333 of 3678) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 568 |
-| Total methods: | 1682 |
-| Method coverage: | 33.7% (568 of 1682) |
+| Covered methods: | 389 |
+| Total methods: | 724 |
+| Method coverage: | 53.7% (389 of 724) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**2001**|**5552**|**7553**|**53627**|**26.4%**|**0**|**0**|****|**564**|**1410**|**40%**|
+|**bamlab.micromissiles**|**1333**|**2345**|**3678**|**6738**|**36.2%**|**0**|**0**|****|**389**|**724**|**53.7%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|139|36|175|331|79.4%|0|0||56|61|91.8%|
@@ -32,35 +32,6 @@
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|0|18|18|36|0%|0|0||0|7|0%|
 |ConfigLoader|28|20|48|102|58.3%|0|0||6|8|75%|
-|Configs.AccelerationConfig|30|94|124|2841|24.1%|0|0||9|23|39.1%|
-|Configs.AgentConfig|65|145|210|745|30.9%|0|0||15|29|51.7%|
-|Configs.AgentConfigReflection|0|5|5|745|0%|0|0||0|2|0%|
-|Configs.AttackBehaviorConfig|37|95|132|887|28%|0|0||9|23|39.1%|
-|Configs.AttackBehaviorConfigReflection|0|5|5|887|0%|0|0||0|2|0%|
-|Configs.BodyConfig|34|110|144|2841|23.6%|0|0||8|25|32%|
-|Configs.BoostConfig|0|104|104|2841|0%|0|0||0|21|0%|
-|Configs.ControllerConfig|0|84|84|2841|0%|0|0||0|19|0%|
-|Configs.DynamicConfig|29|87|116|824|25%|0|0||7|21|33.3%|
-|Configs.DynamicConfigReflection|0|5|5|824|0%|0|0||0|2|0%|
-|Configs.EvasionConfig|21|83|104|824|20.1%|0|0||5|21|23.8%|
-|Configs.FlightConfig|20|91|111|824|18%|0|0||5|21|23.8%|
-|Configs.FlightPlan|22|75|97|887|22.6%|0|0||5|20|25%|
-|Configs.FlightPlanWaypoint|32|93|125|887|25.6%|0|0||10|23|43.4%|
-|Configs.HitConfig|21|83|104|2841|20.1%|0|0||5|21|23.8%|
-|Configs.LiftDragConfig|15|109|124|2841|12%|0|0||4|23|17.3%|
-|Configs.PowerTableEntry|25|80|105|2841|23.8%|0|0||8|21|38%|
-|Configs.RunConfig|0|166|166|409|0%|0|0||0|27|0%|
-|Configs.RunConfigReflection|0|5|5|409|0%|0|0||0|2|0%|
-|Configs.SimulationConfig|38|90|128|349|29.6%|0|0||10|23|43.4%|
-|Configs.SimulationConfigReflection|0|5|5|349|0%|0|0||0|2|0%|
-|Configs.SimulatorConfig|35|149|184|451|19%|0|0||12|29|41.3%|
-|Configs.SimulatorConfigReflection|0|5|5|451|0%|0|0||0|2|0%|
-|Configs.StaticConfig|91|229|320|2841|28.4%|0|0||21|38|55.2%|
-|Configs.StaticConfigReflection|0|5|5|2841|0%|0|0||0|2|0%|
-|Configs.SubAgentConfig|26|84|110|745|23.6%|0|0||7|21|33.3%|
-|Configs.SwarmConfig|27|83|110|298|24.5%|0|0||8|21|38%|
-|Configs.SwarmConfigReflection|0|5|5|298|0%|0|0||0|2|0%|
-|Configs.VisualizationConfig|23|83|106|2841|21.6%|0|0||5|21|23.8%|
 |Constants|1|6|7|18|14.2%|0|0||1|3|33.3%|
 |ConstrainedKMeansClusterer|0|24|24|44|0%|0|0||0|2|0%|
 |ControllerBase|8|6|14|30|57.1%|0|0||4|5|80%|
@@ -115,8 +86,6 @@
 |OrthogonalEvasion|1|34|35|78|2.8%|0|0||1|3|33.3%|
 |ParticleManager|34|122|156|224|21.7%|0|0||9|24|37.5%|
 |PlannerReleaseStrategy|4|4|8|14|50%|0|0||3|4|75%|
-|Plugin.Status|0|106|106|323|0%|0|0||0|21|0%|
-|Plugin.StatusReflection|0|5|5|323|0%|0|0||0|2|0%|
 |PnController|25|3|28|67|89.2%|0|0||4|4|100%|
 |PositionTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |PredictorBase|4|0|4|11|100%|0|0||3|3|100%|
@@ -132,17 +101,6 @@
 |ShoreBattery|4|0|4|10|100%|0|0||1|1|100%|
 |SimManager|202|42|244|383|82.7%|0|0||43|51|84.3%|
 |SimMonitor|74|102|176|281|42%|0|0||16|26|61.5%|
-|Simulation.CartesianCoordinates|30|154|184|735|16.3%|0|0||9|29|31%|
-|Simulation.CoordinatesReflection|0|5|5|735|0%|0|0||0|2|0%|
-|Simulation.FlightPhaseReflection|0|5|5|56|0%|0|0||0|2|0%|
-|Simulation.SensorConfig|18|87|105|615|17.1%|0|0||6|21|28.5%|
-|Simulation.SensorOutput|0|142|142|615|0%|0|0||0|23|0%|
-|Simulation.SensorReflection|0|5|5|615|0%|0|0||0|2|0%|
-|Simulation.SphericalCoordinates|0|124|124|735|0%|0|0||0|23|0%|
-|Simulation.State|29|113|142|358|20.4%|0|0||7|23|30.4%|
-|Simulation.StateReflection|0|5|5|358|0%|0|0||0|2|0%|
-|Simulation.Transformation|0|194|194|459|0%|0|0||0|27|0%|
-|Simulation.TransformationReflection|0|5|5|459|0%|0|0||0|2|0%|
 |SingleReleaseStrategyBase|7|24|31|62|22.5%|0|0||2|3|66.6%|
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
 |SpeedEscapeDetector|0|18|18|45|0%|0|0||0|3|0%|
@@ -161,45 +119,3 @@
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|4|0|4|11|100%|0|0||1|1|100%|
 |WaypointController|11|3|14|30|78.5%|0|0||2|2|100%|
-|**bamlab.test**|**0**|**53**|**53**|**81**|**0%**|**0**|**0**|****|**0**|**9**|**0%**|
-|TestBase|0|53|53|81|0%|0|0||0|9|0%|
-|**bamlab.test.editmode**|**0**|**1764**|**1764**|**3183**|**0%**|**0**|**0**|****|**0**|**259**|**0%**|
-|AgentBaseTests|0|132|132|179|0%|0|0||0|10|0%|
-|AgglomerativeClustererTests|0|66|66|95|0%|0|0||0|8|0%|
-|ApnControllerTests|0|48|48|132|0%|0|0||0|7|0%|
-|ClusterTests|0|85|85|113|0%|0|0||0|9|0%|
-|ConstrainedKMeansClustererTests|0|44|44|72|0%|0|0||0|8|0%|
-|Coordinates2Tests|0|54|54|90|0%|0|0||0|9|0%|
-|Coordinates3Tests|0|66|66|126|0%|0|0||0|11|0%|
-|DirectAttackBehaviorTests|0|45|45|115|0%|0|0||0|8|0%|
-|FixedHierarchicalTests|0|20|20|39|0%|0|0||0|5|0%|
-|FlightPlanTests|0|13|13|46|0%|0|0||0|2|0%|
-|GeometricEscapeDetectorTests|0|47|47|92|0%|0|0||0|10|0%|
-|GroundMovementTests|0|13|13|36|0%|0|0||0|2|0%|
-|HierarchicalBaseTests|0|135|135|209|0%|0|0||0|19|0%|
-|IdealMovementTests|0|23|23|54|0%|0|0||0|4|0%|
-|IdealSensorTests|0|34|34|55|0%|0|0||0|5|0%|
-|IterativeLaunchPlannerTests|0|55|55|111|0%|0|0||0|9|0%|
-|KDTreeTests|0|39|39|57|0%|0|0||0|4|0%|
-|KMeansClustererTests|0|47|47|93|0%|0|0||0|7|0%|
-|LaunchAngleCsvInterpolatorTests|0|47|47|89|0%|0|0||0|8|0%|
-|LaunchAngleDataInterpolatorBaseTests|0|41|41|85|0%|0|0||0|9|0%|
-|LaunchPlanTests|0|24|24|60|0%|0|0||0|5|0%|
-|LinearExtrapolatorTests|0|22|22|39|0%|0|0||0|4|0%|
-|MaxSpeedAssignmentTests|0|64|64|116|0%|0|0||0|8|0%|
-|MinDistanceAssignmentTests|0|43|43|74|0%|0|0||0|6|0%|
-|MissileMovementTests|0|99|99|167|0%|0|0||0|13|0%|
-|NearestNeighborInterpolator2DTests|0|52|52|81|0%|0|0||0|6|0%|
-|NoEvasionTests|0|15|15|29|0%|0|0||0|3|0%|
-|NoMovementTests|0|12|12|23|0%|0|0||0|2|0%|
-|OrthogonalEvasionTests|0|72|72|122|0%|0|0||0|8|0%|
-|PnControllerTests|0|56|56|154|0%|0|0||0|10|0%|
-|PriorityQueueTests|0|62|62|81|0%|0|0||0|7|0%|
-|RoundRobinAssignmentTests|0|42|42|60|0%|0|0||0|6|0%|
-|SanityTests|0|7|7|17|0%|0|0||0|2|0%|
-|SpeedEscapeDetectorTests|0|26|26|69|0%|0|0||0|5|0%|
-|TimeEscapeDetectorTests|0|69|69|129|0%|0|0||0|13|0%|
-|WaypointControllerTests|0|45|45|74|0%|0|0||0|7|0%|
-|**bamlab.test.playmode**|**66**|**2**|**68**|**122**|**97%**|**0**|**0**|****|**4**|**4**|**100%**|
-|ConfigsTests|59|2|61|98|96.7%|0|0||3|3|100%|
-|SanityTests|7|0|7|24|100%|0|0||1|1|100%|
