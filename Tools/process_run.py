@@ -89,14 +89,14 @@ def main(argv):
     for metric in MULTI_METRICS:
         fig, axes = plt.subplots(1,
                                  len(run_log_dir),
-                                 figsize=(10, 4),
+                                 figsize=(12, 4),
                                  sharex=True,
                                  sharey=True)
         xmin = -2500
         xmax = 2500
         ymin = 2000
         ymax = 12000
-        colors = ["C0", "C3", "C3", "C1", "C1"]
+        colors = ["C0", "C3", "C3", "C1", "C1", "C1"]
         for i, dir in enumerate(run_log_dir):
             ax = axes[i]
             event_log_paths = utils.find_all_event_logs(dir)
@@ -111,11 +111,12 @@ def main(argv):
 if __name__ == "__main__":
     flags.DEFINE_multi_string(
         "run_log_dir", [
-            "~/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251118_232243_baseline",
-            "~/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251118_235620_kp_0_8",
-            "~/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251201_000307_kp_0_5",
-            "~/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251118_235842_no_interceptor_reassignment",
-            "~/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251119_084628_kp_0_8_no_interceptor_reassignment",
+            "/Users/titan/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251218_213319_baseline",
+            "/Users/titan/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251218_213913_kp_0_8",
+            "/Users/titan/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251218_214053_kp_0_5",
+            "/Users/titan/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251218_214542_no_interceptor_reassignment",
+            "/Users/titan/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251218_214724_kp_0_8_no_interceptor_reassignment",
+            "/Users/titan/Documents/micromissiles-assets/logs/batch_5_swarms_100_ucav_20251218_215034_kp_0_5_no_interceptor_reassignment",
         ],
         "Run log directory containing subdirectories for the logs of each run.")
     flags.DEFINE_string("run_log_search_dir",
