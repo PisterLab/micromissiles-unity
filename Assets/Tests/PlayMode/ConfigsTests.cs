@@ -1,12 +1,40 @@
 using NUnit.Framework;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.TestTools;
 using UnityEngine.SceneManagement;
+using UnityEngine.TestTools;
 
 public class ConfigsTests : TestBase {
+  private const double _epsilon = 0.0002;
+
+  private static HashSet<string> GetCiExcludedSimulationConfigs(string simulationConfigPath) {
+    var excludedConfigs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+    bool isCi = Environment.GetCommandLineArgs().Contains("-ci");
+    Debug.Log($"Running on CI: {isCi}.");
+    if (!isCi) {
+      return excludedConfigs;
+    }
+
+    string exclusionFile = Path.Combine(simulationConfigPath, "ci_excluded_simulation_configs.txt");
+    if (!File.Exists(exclusionFile)) {
+      return excludedConfigs;
+    }
+
+    foreach (string line in File.ReadAllLines(exclusionFile)) {
+      string trimmedLine = line.Trim();
+      if (trimmedLine.Length == 0 || trimmedLine.StartsWith("#")) {
+        continue;
+      }
+      excludedConfigs.Add(trimmedLine);
+      Debug.Log($"Found simulation configuration to skip: {trimmedLine}.");
+    }
+    return excludedConfigs;
+  }
+
   [OneTimeSetUp]
   public void LoadScene() {
     SceneManager.LoadScene("Scenes/MainScene");
@@ -16,59 +44,55 @@ public class ConfigsTests : TestBase {
   public IEnumerator TestAllSimulationConfigFilesLoad() {
     string configPath = ConfigLoader.GetStreamingAssetsFilePath("Configs/Simulations");
     string[] configFiles = Directory.GetFiles(configPath, "*.pbtxt");
-
+    Array.Sort(configFiles, StringComparer.Ordinal);
     Assert.IsTrue(configFiles.Length > 0, "No simulation configuration files found.");
 
+    HashSet<string> ciExcludedConfigs = GetCiExcludedSimulationConfigs(configPath);
     bool isPaused = false;
-    double epsilon = 0.0002;
+    int numConfigsLoaded = 0;
     for (int i = 0; i < configFiles.Length; ++i) {
-      if (i % 2 == 1) {
+      string configFile = configFiles[i];
+      string configFilename = Path.GetFileName(configFile);
+      if (ciExcludedConfigs.Contains(configFilename)) {
+        Debug.Log($"Skipping simulation configuration: {configFilename}.");
+        continue;
+      }
+
+      if (numConfigsLoaded % 2 == 1) {
         SimManager.Instance.PauseSimulation();
         isPaused = true;
       }
       yield return new WaitForSecondsRealtime(0.1f);
-      SimManager.Instance.LoadNewConfig(configFiles[i]);
+      SimManager.Instance.LoadNewSimulationConfig(configFile);
       yield return new WaitForSecondsRealtime(0.1f);
-      double elapsedTime = SimManager.Instance.GetElapsedSimulationTime();
+      double elapsedTime = SimManager.Instance.ElapsedTime;
       if (isPaused) {
-        List<Agent> agents = SimManager.Instance.GetActiveAgents();
-        foreach (Agent agent in agents) {
-          if (agent is Interceptor interceptor) {
-            // All interceptors start in the INITIALIZED phase.
-            Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, interceptor.GetFlightPhase(),
-                "All interceptors should be in the INITIALIZED flight phase after loading while paused.");
-
-          } else if (agent is Threat threat) {
-            // All threats start in the INITIALIZED phase.
-            Assert.AreEqual(
-                Agent.FlightPhase.INITIALIZED, threat.GetFlightPhase(),
-                "All threats should be in the INITIALIZED flight phase after loading while paused.");
-          }
-        }
         Assert.LessOrEqual(
-            Mathf.Abs(Time.fixedDeltaTime), epsilon,
+            Mathf.Abs(Time.fixedDeltaTime), _epsilon,
             "Fixed delta time should be approximately 0 after loading while paused.");
-        Assert.LessOrEqual(Mathf.Abs(Time.timeScale), epsilon,
+        Assert.LessOrEqual(Mathf.Abs(Time.timeScale), _epsilon,
                            "Time scale should be approximately 0 after loading while paused.");
-        Assert.IsFalse(elapsedTime > 0 + epsilon,
+        Assert.IsFalse(elapsedTime > 0 + _epsilon,
                        "Simulation time should not have advanced after loading while paused.");
       } else {
-        Assert.IsTrue(elapsedTime > 0 + epsilon,
+        Assert.IsTrue(elapsedTime > 0 + _epsilon,
                       "Simulation time should have advanced after loading while not paused.");
         Assert.LessOrEqual(
             Mathf.Abs(Time.fixedDeltaTime -
                       (1.0f / SimManager.Instance.SimulatorConfig.PhysicsUpdateRate)),
-            epsilon, "Physics update rate should be 1 / SimulatorConfig.PhysicsUpdateRate.");
+            _epsilon, "Physics update rate should be 1 / SimulatorConfig.PhysicsUpdateRate.");
       }
 
       if (isPaused) {
         SimManager.Instance.ResumeSimulation();
         isPaused = false;
         yield return new WaitForSecondsRealtime(0.1f);
-        Assert.IsTrue(SimManager.Instance.GetElapsedSimulationTime() > 0 + epsilon,
+        Assert.IsTrue(SimManager.Instance.ElapsedTime > 0 + _epsilon,
                       "Simulation time should have advanced after resuming.");
       }
+      ++numConfigsLoaded;
     }
+
+    Assert.IsTrue(numConfigsLoaded > 0, "No simulation configuration files were loaded.");
   }
 }

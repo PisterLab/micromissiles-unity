@@ -1,93 +1,106 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;  // Import TextMeshPro namespace
-using System.Collections.Generic;
 
 [RequireComponent(typeof(CanvasRenderer))]
 public class TacticalPolarGridGraphic : Graphic {
   [SerializeField]
   private Color _gridColor = new Color(0.0f, 1.0f, 0.0f, 0.3f);
+
   [SerializeField]
-  private int _numberOfBearingLines = 36;  // Every 10 degrees
+  private Color _textColor = new Color(0.2f, 0.2f, 0.2f, 0.5f);
+
+  [SerializeField]
+  private int _numberOfBearingLines = 36;  // Every 10 degrees.
+
   [SerializeField]
   private int _numberOfRangeRings = 5;
+
   [SerializeField]
-  private float[] _rangeScales = { 100f, 1000f, 10000f, 40000f };  // in meters
+  private float[] _rangeScales = { 100f, 1000f, 10000f, 40000f };  // meters
 
   [SerializeField]
   private float _lineWidth = 2f;
 
-  private int _currentRangeIndex = 1;  // Start with 10km range
+  private int _currentRangeIndex = 1;  // Start with 10 km range.
 
-  // Updated field for TextMeshPro range text labels
   [SerializeField]
-  private GameObject _rangeTextPrefab = null!;  // Assign a TextMeshPro prefab in the inspector
+  private GameObject _rangeText = null!;
 
   private List<TextMeshProUGUI> _rangeTexts = new List<TextMeshProUGUI>();
 
-  private float _currentScaleFactor = 1f;  // Store the current scale factor
+  private float _currentScaleFactor = 1f;
 
-  public float CurrentScaleFactor => _currentScaleFactor;  // Public getter
+  public float CurrentScaleFactor => _currentScaleFactor;
+
   protected override void OnEnable() {
     base.OnEnable();
     if (Application.isPlaying) {
       ClearRangeTexts();
-      UpdateRangeTexts();  // Create range texts when the component is enabled
+      UpdateRangeTexts();
     }
+  }
+
+  protected override void OnDestroy() {
+    base.OnDestroy();
+    ClearRangeTexts();
   }
 
   public void CycleRangeUp() {
     _currentRangeIndex = (_currentRangeIndex + 1) % _rangeScales.Length;
-    SetVerticesDirty();  // Mark the UI as needing to be redrawn
-    UpdateRangeTexts();  // Update range labels
+    SetVerticesDirty();
+    UpdateRangeTexts();
   }
 
   public void CycleRangeDown() {
     _currentRangeIndex = (_currentRangeIndex - 1 + _rangeScales.Length) % _rangeScales.Length;
-    SetVerticesDirty();  // Mark the UI as needing to be redrawn
-    UpdateRangeTexts();  // Update range labels
+    SetVerticesDirty();
+    UpdateRangeTexts();
   }
 
   protected override void OnPopulateMesh(VertexHelper vh) {
     vh.Clear();
 
-    float maxRange = _rangeScales[_currentRangeIndex] / 1000f;  // Convert to km for UI scale
+    // Convert to km for UI scale.
+    float maxRange = _rangeScales[_currentRangeIndex] / 1000f;
 
-    // Get the rect dimensions
+    // Get the rect dimensions.
     Rect rect = GetPixelAdjustedRect();
     Vector2 center = rect.center;
 
-    // Adjust scale based on rect size
+    // Adjust scale based on rect size.
     _currentScaleFactor = Mathf.Min(rect.width, rect.height) / (2 * maxRange);
 
     float scaleFactor = _currentScaleFactor;
 
-    // Draw the grid
+    // Draw the grid.
     DrawRangeRings(vh, center, maxRange, scaleFactor);
     DrawBearingLines(vh, center, maxRange, scaleFactor);
 
-    // Only update positions of existing range texts
+    // Only update positions of existing range texts.
     UpdateRangeTextsPositions(center, maxRange, scaleFactor);
   }
 
-  private void DrawRangeRings(VertexHelper vh, Vector2 center, float maxRange, float scaleFactor) {
-    // Extend the range rings to 10x the major marker range
+  private void DrawRangeRings(VertexHelper vh, in Vector2 center, float maxRange,
+                              float scaleFactor) {
+    // Extend the range rings to 10x the major marker range.
     float extendedMaxRange = maxRange * 10;
 
     for (int i = 1; i <= _numberOfRangeRings * 10; ++i) {
-      float radius = (i * extendedMaxRange) / (_numberOfRangeRings * 10);
+      float radius = i * extendedMaxRange / (_numberOfRangeRings * 10);
       DrawCircle(vh, center, radius * scaleFactor, 128, 1f);
 
-      // Make every 10th ring thicker to indicate major markers
+      // Make every 10th ring thicker to indicate major markers.
       if (i % 10 == 0) {
-        DrawCircle(vh, center, radius * scaleFactor, 128, 2f);  // Draw again for thickness
+        DrawCircle(vh, center, radius * scaleFactor, 128, 2f);
       }
     }
   }
 
   private void DrawBearingLines(VertexHelper vh, Vector2 center, float maxRange,
                                 float scaleFactor) {
-    // Extend the bearing lines to 10x the major marker range
+    // Extend the bearing lines to 10x the major marker range.
     float extendedMaxRange = maxRange * 10;
 
     float angleStep = 360f / _numberOfBearingLines;
@@ -99,7 +112,7 @@ public class TacticalPolarGridGraphic : Graphic {
     }
   }
 
-  private void DrawCircle(VertexHelper vh, Vector2 center, float radius, int segments,
+  private void DrawCircle(VertexHelper vh, in Vector2 center, float radius, int segments,
                           float widthMultiplier) {
     float angleStep = 360f / segments;
     Vector2 prevPoint = center + new Vector2(radius, 0);
@@ -112,11 +125,11 @@ public class TacticalPolarGridGraphic : Graphic {
     }
   }
 
-  private void DrawLine(VertexHelper vh, Vector2 start, Vector2 end, float thickness) {
-    // Calculate the total scale factor from Canvas and RectTransform
+  private void DrawLine(VertexHelper vh, in Vector2 start, in Vector2 end, float thickness) {
+    // Calculate the total scale factor from Canvas and RectTransform.
     float totalScale = canvas.scaleFactor * transform.lossyScale.x;
 
-    // Thickness adjusted for total scale to maintain constant pixel width
+    // Thickness adjusted for total scale to maintain constant pixel width.
     float adjustedThickness = thickness / totalScale;
 
     Vector2 direction = (end - start).normalized;
@@ -157,38 +170,36 @@ public class TacticalPolarGridGraphic : Graphic {
     _rangeTexts.Clear();
   }
 
-  // New method to update range text labels
   private void UpdateRangeTexts() {
     ClearRangeTexts();
 
-    // Only create new labels if they don't exist
+    // Only create new labels if they do not exist.
     if (_rangeTexts.Count == 0) {
       for (int i = 1; i <= _numberOfRangeRings; ++i) {
-        GameObject textObj = Instantiate(_rangeTextPrefab, transform);
+        GameObject textObj = Instantiate(_rangeText, transform);
         TextMeshProUGUI textComponent = textObj.GetComponent<TextMeshProUGUI>();
-        textComponent.color = _gridColor;
+        textComponent.color = _textColor;
         textComponent.transform.localScale = Vector3.one;
         _rangeTexts.Add(textComponent);
       }
     }
 
-    // Update the text values
+    // Update the text values.
     for (int i = 0; i < _rangeTexts.Count; ++i) {
       _rangeTexts[i].text = GetRangeLabelText(i + 1);
     }
   }
 
-  // New method to position and adjust range text labels
-  private void UpdateRangeTextsPositions(Vector2 center, float maxRange, float scaleFactor) {
+  private void UpdateRangeTextsPositions(in Vector2 center, float maxRange, float scaleFactor) {
     if (_rangeTexts.Count == 0) {
       return;
     }
 
     for (int i = 1; i <= _numberOfRangeRings; ++i) {
-      float radius = (i * maxRange) / _numberOfRangeRings;
+      float radius = i * maxRange / _numberOfRangeRings;
       float adjustedRadius = radius * scaleFactor;
 
-      // Position to the right (0 degrees)
+      // Position to the right (0 degrees).
       Vector2 position = center + new Vector2(adjustedRadius, 0);
 
       TextMeshProUGUI textComponent = _rangeTexts[i - 1];
@@ -206,20 +217,14 @@ public class TacticalPolarGridGraphic : Graphic {
     }
   }
 
-  // Helper method to get the range label text
   private string GetRangeLabelText(int ringIndex) {
     float maxRange = _rangeScales[_currentRangeIndex];
-    float rangeValue = (ringIndex * maxRange) / _numberOfRangeRings;
+    float rangeValue = ringIndex * maxRange / _numberOfRangeRings;
 
     if (rangeValue >= 1000f) {
       return $"{rangeValue / 1000f:F0} km";
     } else {
       return $"{rangeValue:F0} m";
     }
-  }
-
-  protected override void OnDestroy() {
-    base.OnDestroy();
-    ClearRangeTexts();
   }
 }

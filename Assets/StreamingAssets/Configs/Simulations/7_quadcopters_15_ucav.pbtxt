@@ -2,20 +2,29 @@ end_time: 300
 time_scale: 1
 interceptor_swarm_configs {
   agent_config {
-    config_file: "hydra70.pbtxt"
-    dynamic_config {
-      flight_config {
-        controller_type: PROPORTIONAL_NAVIGATION
+    config_file: "ddg.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 0
+        z: 0
       }
-      sensor_config {
-        type: IDEAL
-        frequency: 100
+      velocity {
+        x: 5
+        y: 0
+        z: 0
       }
     }
-    submunitions_config {
-      num_submunitions: 7
-      agent_config: {
-        config_file: "micromissile.pbtxt"
+    dynamic_config {
+      sensor_config {
+        type: IDEAL
+        frequency: 1000
+      }
+    }
+    sub_agent_config {
+      num_sub_agents: 126
+      agent_config {
+        config_file: "hydra70.pbtxt"
         dynamic_config {
           flight_config {
             controller_type: PROPORTIONAL_NAVIGATION
@@ -23,6 +32,21 @@ interceptor_swarm_configs {
           sensor_config {
             type: IDEAL
             frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              flight_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
           }
         }
       }
@@ -48,21 +72,21 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 1000
-        y: 200
-        z: 100
+        x: 300
+        y: 60
+        z: 30
       }
       velocity {
         x: 0
         y: 0
-        z: 25
+        z: 5
       }
     }
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 1000
+          enabled: true
+          range_threshold: 1000
         }
       }
       sensor_config {
@@ -91,21 +115,21 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 500
-        y: 200
-        z: 100
+        x: 150
+        y: 60
+        z: 30
       }
       velocity {
         x: 0
         y: 0
-        z: 25
+        z: 5
       }
     }
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 1000
+          enabled: true
+          range_threshold: 1000
         }
       }
       sensor_config {
@@ -134,21 +158,21 @@ threat_swarm_configs {
     }
     standard_deviation {
       position {
-        x: 500
-        y: 200
-        z: 100
+        x: 150
+        y: 60
+        z: 30
       }
       velocity {
         x: 0
         y: 0
-        z: 25
+        z: 5
       }
     }
     dynamic_config {
       flight_config {
         evasion_config {
-            enabled: true
-            range_threshold: 1000
+          enabled: true
+          range_threshold: 1000
         }
       }
       sensor_config {

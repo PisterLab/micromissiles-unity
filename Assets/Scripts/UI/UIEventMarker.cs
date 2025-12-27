@@ -4,13 +4,6 @@ using TMPro;
 public class UIEventMarker : MonoBehaviour {
   private TextMeshProUGUI _text;
 
-  void Awake() {
-    _text = GetComponentInChildren<TextMeshProUGUI>();
-    if (_text == null) {
-      Debug.LogError("No TextMeshProUGUI component found in children.");
-    }
-  }
-
   public void SetEventHit() {
     _text.text = "x";
     _text.color = Color.green;
@@ -21,7 +14,14 @@ public class UIEventMarker : MonoBehaviour {
     _text.color = Color.red;
   }
 
-  void LateUpdate() {
+  private void Awake() {
+    _text = GetComponentInChildren<TextMeshProUGUI>();
+    if (_text == null) {
+      Debug.LogError("No TextMeshProUGUI component found in children.");
+    }
+  }
+
+  private void LateUpdate() {
     transform.LookAt(Camera.main.transform);
   }
 }

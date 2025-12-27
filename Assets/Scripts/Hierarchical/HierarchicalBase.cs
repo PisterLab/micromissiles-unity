@@ -1,33 +1,58 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Base implementation of a hierarchical object.
 //
 // The position and velocity of a hierarchical object is defined as the mean of the positions and
 // velocities of the sub-hierarchical objects.
+[Serializable]
 public class HierarchicalBase : IHierarchical {
-  // List of hierarchical objects in the hierarchy level below.
-  private List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
+  // Soft maximum number of sub-hierarchical objects. This is used for recursive clustering.
+  private const int _maxNumSubHierarchicals = 10;
 
-  // Target of the hierarchical object.
+  // Maximum cluster radius in meters.
+  private const float _clusterMaxRadius = 1000f;
+
+  // List of hierarchical objects in the hierarchy level below.
+  [SerializeReference]
+  protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
+
+  // List of hierarchical objects pursuing this hierarchical object.
+  [SerializeReference]
+  private List<IHierarchical> _pursuers = new List<IHierarchical>();
+
+  // Target hierarchical object.
+  [SerializeReference]
   private IHierarchical _target;
 
-  // Target model of the hierarchical object. The target model is updated by the sensor and should
-  // be used by the controller to model imperfect knowledge of the engagement.
-  private IHierarchical _targetModel;
+  // List of launched hierarchical objects.
+  [SerializeReference]
+  private List<IHierarchical> _launchedHierarchicals = new List<IHierarchical>();
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
-  public IHierarchical Target {
+
+  // Return a list of active sub-hierarchical objects.
+  public IEnumerable<IHierarchical> ActiveSubHierarchicals =>
+      _subHierarchicals.Where(s => !s.IsTerminated);
+
+  public virtual IHierarchical Target {
     get => _target;
-    set => _target = value;
+    set { _target = value; }
   }
-  public IHierarchical TargetModel {
-    get => _targetModel;
-    set => _targetModel = value;
-  }
-  public Vector3 Position => GetPosition();
-  public Vector3 Velocity => GetVelocity();
+
+  public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
+  public IEnumerable<IHierarchical> ActivePursuers =>
+      Pursuers.Where(pursuer => !pursuer.IsTerminated);
+
+  public IReadOnlyList<IHierarchical> LaunchedHierarchicals => _launchedHierarchicals.AsReadOnly();
+
+  public virtual Vector3 Position => GetMean(s => s.Position);
+  public virtual Vector3 Velocity => GetMean(s => s.Velocity);
   public float Speed => Velocity.magnitude;
+  public virtual Vector3 Acceleration => GetMean(s => s.Acceleration);
+  public virtual bool IsTerminated => !ActiveSubHierarchicals.Any();
 
   public void AddSubHierarchical(IHierarchical subHierarchical) {
     if (!_subHierarchicals.Contains(subHierarchical)) {
@@ -39,23 +64,168 @@ public class HierarchicalBase : IHierarchical {
     _subHierarchicals.Remove(subHierarchical);
   }
 
-  protected virtual Vector3 GetPosition() {
-    return GetMean(s => s.Position);
+  public void ClearSubHierarchicals() {
+    _subHierarchicals.Clear();
   }
 
-  protected virtual Vector3 GetVelocity() {
-    return GetMean(s => s.Velocity);
+  public List<IHierarchical> LeafHierarchicals(bool activeOnly, bool withTargetOnly) {
+    var subHierarchicals = (activeOnly ? ActiveSubHierarchicals : SubHierarchicals).ToList();
+    if (subHierarchicals.Count > 0) {
+      var leafHierarchicals = new List<IHierarchical>();
+      foreach (var subHierarchical in subHierarchicals) {
+        leafHierarchicals.AddRange(subHierarchical.LeafHierarchicals(activeOnly, withTargetOnly));
+      }
+      return leafHierarchicals;
+    }
+
+    if (withTargetOnly && (Target == null || Target.IsTerminated)) {
+      return new List<IHierarchical>();
+    }
+    return new List<IHierarchical> { this };
+  }
+
+  public void AddPursuer(IHierarchical pursuer) {
+    if (!_pursuers.Contains(pursuer)) {
+      _pursuers.Add(pursuer);
+    }
+  }
+
+  public void RemovePursuer(IHierarchical pursuer) {
+    _pursuers.Remove(pursuer);
+  }
+
+  public void AddLaunchedHierarchical(IHierarchical hierarchical) {
+    if (!_launchedHierarchicals.Contains(hierarchical)) {
+      _launchedHierarchicals.Add(hierarchical);
+    }
+  }
+
+  public void RemoveTargetHierarchical(IHierarchical target) {
+    Target?.RemoveSubHierarchical(target);
+    foreach (var subHierarchical in SubHierarchicals) {
+      subHierarchical.RemoveTargetHierarchical(target);
+    }
+  }
+
+  public void RecursiveCluster(int maxClusterSize) {
+    if (SubHierarchicals.Count > 0) {
+      foreach (var subHierarchical in SubHierarchicals) {
+        subHierarchical.RecursiveCluster(maxClusterSize);
+      }
+      return;
+    }
+    if (Target == null) {
+      return;
+    }
+    int numActiveSubHierarchicals = Target.ActiveSubHierarchicals.Count();
+    if (numActiveSubHierarchicals <= maxClusterSize) {
+      return;
+    }
+
+    // Perform clustering on the assigned targets.
+    // TODO(titan): Define a better heuristic for choosing the clustering algorithm to minimize the
+    // size and radius of each cluster without generating too many clusters.
+    IClusterer clusterer = null;
+    if (numActiveSubHierarchicals >= _maxNumSubHierarchicals * Mathf.Max(maxClusterSize / 2, 1)) {
+      clusterer = new KMeansClusterer(_maxNumSubHierarchicals);
+    } else {
+      clusterer = new AgglomerativeClusterer(maxClusterSize, _clusterMaxRadius);
+    }
+    List<Cluster> clusters = clusterer.Cluster(Target.ActiveSubHierarchicals);
+
+    // Generate sub-hierarchical objects to manage the target clusters.
+    foreach (var cluster in clusters) {
+      var subHierarchical = new HierarchicalBase { Target = cluster };
+      AddSubHierarchical(subHierarchical);
+      subHierarchical.RecursiveCluster(maxClusterSize);
+    }
+  }
+
+  public bool AssignNewTarget(IHierarchical hierarchical, int capacity) {
+    // TODO(titan): Abstract the target picking strategy to its own interface and class.
+    // TODO(titan): Consider whether the OnAssignSubInterceptor and OnReassignTarget events should
+    // be modified to refer to the new parent interceptor.
+    hierarchical.Target = FindBestHierarchicalTarget(hierarchical, capacity) ??
+                          FindBestLeafHierarchicalTarget(hierarchical, capacity);
+    return hierarchical.Target != null;
   }
 
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
-    if (_subHierarchicals.Count == 0) {
+    Vector3 sum = Vector3.zero;
+    int count = 0;
+    foreach (var subHierarchical in ActiveSubHierarchicals) {
+      sum += selector(subHierarchical);
+      ++count;
+    }
+    if (count == 0) {
       return Vector3.zero;
     }
+    return sum / count;
+  }
 
-    Vector3 sum = Vector3.zero;
-    foreach (var subHierarchical in _subHierarchicals) {
-      sum += selector(subHierarchical);
+  private IHierarchical FindBestHierarchicalTarget(IHierarchical hierarchical, int capacity) {
+    // Find all sub-hierarchical objects that have at least one active target but no more than the
+    // interceptor capacity.
+    List<IHierarchical> FindPossibleHierarchicalTargets(IHierarchical hierarchical) {
+      if (hierarchical.Target == null) {
+        return new List<IHierarchical>();
+      }
+      int numActiveTargets = hierarchical.Target.ActiveSubHierarchicals.Count();
+      if (numActiveTargets > 0 && numActiveTargets <= capacity) {
+        return new List<IHierarchical> { hierarchical.Target };
+      }
+
+      var possibleTargets = new List<IHierarchical>();
+      foreach (var subHierarchical in hierarchical.SubHierarchicals) {
+        possibleTargets.AddRange(FindPossibleHierarchicalTargets(subHierarchical));
+      }
+      return possibleTargets;
     }
-    return sum / _subHierarchicals.Count;
+    List<IHierarchical> possibleTargets = FindPossibleHierarchicalTargets(this);
+    if (possibleTargets.Count == 0) {
+      return null;
+    }
+
+    // Use a maximum speed assignment to select the target resulting in the maximum intercept speed.
+    IAssignment targetAssignment =
+        new MaxSpeedAssignment(Assignment.Assignment_EvenAssignment_Assign);
+    List<AssignmentItem> assignments =
+        targetAssignment.Assign(new List<IHierarchical> { hierarchical }, possibleTargets);
+    if (assignments.Count != 1) {
+      return null;
+    }
+    return assignments[0].Second;
+  }
+
+  private IHierarchical FindBestLeafHierarchicalTarget(IHierarchical hierarchical, int capacity) {
+    List<IHierarchical> leafHierarchicalTargets =
+        LeafHierarchicals(activeOnly: true, withTargetOnly: true)
+            .Select(hierarchical => hierarchical.Target)
+            .ToList();
+    if (leafHierarchicalTargets.Count == 0) {
+      return null;
+    }
+
+    // Use a maximum speed assignment to select the target resulting in the maximum intercept speed.
+    IAssignment targetAssignment =
+        new MaxSpeedAssignment(Assignment.Assignment_EvenAssignment_Assign);
+    List<AssignmentItem> assignments =
+        targetAssignment.Assign(new List<IHierarchical> { hierarchical }, leafHierarchicalTargets);
+    if (assignments.Count != 1) {
+      return null;
+    }
+
+    // Remove as many target sub-hierarchical objects until the interceptor capacity.
+    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals.ToList();
+    var filteredSubHierarchicals =
+        targetSubHierarchicals
+            .OrderBy(subHierarchical =>
+                         Vector3.Distance(subHierarchical.Position, assignments[0].Second.Position))
+            .Take(capacity);
+    var targetHierarchical = new HierarchicalBase();
+    foreach (var subHierarchical in filteredSubHierarchicals) {
+      targetHierarchical.AddSubHierarchical(subHierarchical);
+    }
+    return targetHierarchical;
   }
 }

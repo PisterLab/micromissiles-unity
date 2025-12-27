@@ -1,36 +1,33 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
 
 public class UIManager : MonoBehaviour {
   public static UIManager Instance { get; private set; }
 
   [SerializeField]
-  [Tooltip("The UI panel that renders the tactical view for TACTICAL mode")]
-  private GameObject _tacticalPanel = null!;
-
-  [SerializeField]
-  [Tooltip("The UI panel that renders the camera view for THREE_DIMENSIONAL mode")]
+  [Tooltip("The UI panel that renders the camera view for the THREE_DIMENSIONAL mode")]
   private GameObject _cameraPanel = null!;
 
   [SerializeField]
+  [Tooltip("The UI panel that renders the tactical view for the TACTICAL mode")]
+  private GameObject _tacticalPanel = null!;
 
+  [SerializeField]
   private GameObject _configSelectorPanel = null!;
   private TMP_Dropdown _configDropdown;
-  public TextMeshProUGUI agentPanelText;
   public TextMeshProUGUI simTimeText;
   public TextMeshProUGUI interceptorCostText;
   public TextMeshProUGUI threatCostText;
   public TextMeshProUGUI netCostText;
 
-  public TextMeshProUGUI intrHitTextHandle;
-  public TextMeshProUGUI intrMissTextHandle;
-  public TextMeshProUGUI intrRemainTextHandle;
-  public TextMeshProUGUI thrtRemainTextHandle;
+  public TextMeshProUGUI interceptorHitTextHandle;
+  public TextMeshProUGUI interceptorMissTextHandle;
+  public TextMeshProUGUI interceptorRemainingTextHandle;
+  public TextMeshProUGUI threatRemainingTextHandle;
 
   public TextMeshProUGUI actionMessageTextHandle;
   public TextMeshProUGUI pActionMessageTextHandle;
@@ -38,33 +35,32 @@ public class UIManager : MonoBehaviour {
   public TextMeshProUGUI ppppActionMessageTextHandle;
   public TextMeshProUGUI pppppActionMessageTextHandle;
 
-  private int _intrHitCount = 0;
-  private int _intrMissCount = 0;
-  private int _intrRemainCount = 0;
-  private int _thrtRemainCount = 0;
   public TMP_FontAsset GlobalFont;
+  private int _numInterceptorHits = 0;
+  private int _numInterceptorMisses = 0;
+  private int _numInterceptorsRemaining = 0;
+  private int _numThreatsRemaining = 0;
 
-  private UIMode curMode = UIMode.THREE_DIMENSIONAL;
+  private UIMode _uiMode = UIMode.THREE_DIMENSIONAL;
 
-  void Awake() {
-    if (Instance == null)
-      Instance = this;
-    else
-      Destroy(gameObject);
+  public UIMode UIMode {
+    get => _uiMode;
+    set {
+      _uiMode = value;
+      _cameraPanel.SetActive(_uiMode == UIMode.THREE_DIMENSIONAL);
+      _tacticalPanel.SetActive(_uiMode == UIMode.TACTICAL);
+    }
   }
 
-  void Start() {
-    SetUIMode(UIMode.THREE_DIMENSIONAL);
-    _configSelectorPanel.SetActive(false);
-    SetupConfigSelectorPanel();
-    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
-    SimManager.Instance.OnNewThreat += RegisterNewThreat;
-    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
-    actionMessageTextHandle.text = "";
-    pActionMessageTextHandle.text = "";
-    ppActionMessageTextHandle.text = "";
-    ppppActionMessageTextHandle.text = "";
-    pppppActionMessageTextHandle.text = "";
+  public void ToggleUIMode() {
+    Array uiModeValues = Enum.GetValues(typeof(UIMode));
+    int currentIndex = Array.IndexOf(uiModeValues, UIMode);
+    int nextIndex = (currentIndex + 1) % uiModeValues.Length;
+    UIMode = (UIMode)uiModeValues.GetValue(nextIndex);
+  }
+
+  public void ToggleConfigSelectorPanel() {
+    _configSelectorPanel.SetActive(!_configSelectorPanel.activeSelf);
   }
 
   public void LogAction(string message, Color color) {
@@ -99,8 +95,31 @@ public class UIManager : MonoBehaviour {
     LogAction(message, Color.red);
   }
 
-  public void ToggleConfigSelectorPanel() {
-    _configSelectorPanel.SetActive(!_configSelectorPanel.activeSelf);
+  private void Awake() {
+    if (Instance != null && Instance != this) {
+      Destroy(gameObject);
+    } else {
+      Instance = this;
+    }
+  }
+
+  private void Start() {
+    UIMode = UIMode.THREE_DIMENSIONAL;
+    _configSelectorPanel.SetActive(false);
+    SetupConfigSelectorPanel();
+    SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
+    SimManager.Instance.OnNewThreat += RegisterNewThreat;
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+    actionMessageTextHandle.text = "";
+    pActionMessageTextHandle.text = "";
+    ppActionMessageTextHandle.text = "";
+    ppppActionMessageTextHandle.text = "";
+    pppppActionMessageTextHandle.text = "";
+  }
+
+  private void Update() {
+    UpdateSimTimeText();
+    UpdateTotalCostText();
   }
 
   private void SetupConfigSelectorPanel() {
@@ -121,46 +140,15 @@ public class UIManager : MonoBehaviour {
     }
     _configDropdown.AddOptions(configFileNames);
   }
+
   private void LoadSelectedConfig() {
     string selectedConfig = _configDropdown.options[_configDropdown.value].text;
-    SimManager.Instance.LoadNewConfig(selectedConfig);
+    SimManager.Instance.LoadNewSimulationConfig(selectedConfig);
     _configSelectorPanel.SetActive(false);
   }
 
-  public void ToggleUIMode() {
-    SetUIMode(curMode == UIMode.THREE_DIMENSIONAL ? UIMode.TACTICAL : UIMode.THREE_DIMENSIONAL);
-  }
-
-  public void SetUIMode(UIMode mode) {
-    curMode = mode;
-    _cameraPanel.SetActive(mode == UIMode.THREE_DIMENSIONAL);
-    _tacticalPanel.SetActive(mode == UIMode.TACTICAL);
-  }
-
-  public UIMode GetUIMode() {
-    return curMode;
-  }
-
-  public void SetAgentPanelText(string text) {
-    agentPanelText.text = text;
-  }
-
-  public string GetSwarmPanelText() {
-    return agentPanelText.text;
-  }
-
-  private void UpdateSwarmPanel() {
-    string agentPanelText = "";
-    foreach (Agent agent in SimManager.Instance.GetActiveAgents()) {
-      string jobText = agent.name + "| Phase: " + agent.GetFlightPhase().ToString();
-      agentPanelText += jobText + "\n";
-    }
-    SetAgentPanelText(agentPanelText);
-  }
-
   private void UpdateSimTimeText() {
-    simTimeText.text =
-        "Elapsed Sim Time: " + SimManager.Instance.GetElapsedSimulationTime().ToString("F2");
+    simTimeText.text = "Elapsed Time: " + SimManager.Instance.ElapsedTime.ToString("F2");
     float expectedSimTimeAdvance = Time.unscaledDeltaTime * Time.timeScale;
     float actualSimTimeAdvance = Time.deltaTime;
 
@@ -171,8 +159,8 @@ public class UIManager : MonoBehaviour {
   }
 
   private void UpdateTotalCostText() {
-    double interceptorCost = SimManager.Instance.GetCostLaunchedInterceptors();
-    double threatCost = SimManager.Instance.GetCostDestroyedThreats();
+    double interceptorCost = SimManager.Instance.CostLaunchedInterceptors;
+    double threatCost = SimManager.Instance.CostDestroyedThreats;
     double netCost = interceptorCost - threatCost;
 
     interceptorCostText.text = $"Interceptors\n(launched)\n${FormatCost(interceptorCost)}";
@@ -196,59 +184,51 @@ public class UIManager : MonoBehaviour {
     return $"{cost:F2}";
   }
 
-  private void RegisterSimulationEnded() {
-    _intrRemainCount = 0;
-    _thrtRemainCount = 0;
-    _intrHitCount = 0;
-    _intrMissCount = 0;
-    UpdateSummaryText();
-  }
-
   private void UpdateSummaryText() {
-    intrRemainTextHandle.text = _intrRemainCount.ToString();
-    thrtRemainTextHandle.text = _thrtRemainCount.ToString();
-    intrHitTextHandle.text = _intrHitCount.ToString();
-    intrMissTextHandle.text = _intrMissCount.ToString();
+    interceptorRemainingTextHandle.text = _numInterceptorsRemaining.ToString();
+    threatRemainingTextHandle.text = _numThreatsRemaining.ToString();
+    interceptorHitTextHandle.text = _numInterceptorHits.ToString();
+    interceptorMissTextHandle.text = _numInterceptorMisses.ToString();
   }
 
-  private void RegisterNewInterceptor(Interceptor interceptor) {
-    ++_intrRemainCount;
-    interceptor.OnInterceptHit += RegisterInterceptorHit;
-    interceptor.OnInterceptMiss += RegisterInterceptorMiss;
+  private void RegisterNewInterceptor(IInterceptor interceptor) {
+    ++_numInterceptorsRemaining;
+    interceptor.OnHit += RegisterInterceptorHit;
+    interceptor.OnMiss += RegisterInterceptorMiss;
     interceptor.OnTerminated += RegisterAgentTerminated;
     UpdateSummaryText();
   }
 
-  private void RegisterNewThreat(Threat threat) {
-    ++_thrtRemainCount;
+  private void RegisterNewThreat(IThreat threat) {
+    ++_numThreatsRemaining;
     threat.OnTerminated += RegisterAgentTerminated;
     UpdateSummaryText();
   }
 
-  private void RegisterAgentTerminated(Agent agent) {
-    if (agent is Interceptor) {
-      --_intrRemainCount;
-    } else if (agent is Threat) {
-      --_thrtRemainCount;
+  private void RegisterInterceptorHit(IInterceptor interceptor) {
+    ++_numInterceptorHits;
+    UpdateSummaryText();
+  }
+
+  private void RegisterInterceptorMiss(IInterceptor interceptor) {
+    ++_numInterceptorMisses;
+    UpdateSummaryText();
+  }
+
+  private void RegisterAgentTerminated(IAgent agent) {
+    if (agent is IInterceptor) {
+      --_numInterceptorsRemaining;
+    } else if (agent is IThreat) {
+      --_numThreatsRemaining;
     }
     UpdateSummaryText();
   }
 
-  private void RegisterInterceptorHit(Interceptor interceptor, Threat threat) {
-    ++_intrHitCount;
+  private void RegisterSimulationEnded() {
+    _numInterceptorsRemaining = 0;
+    _numThreatsRemaining = 0;
+    _numInterceptorHits = 0;
+    _numInterceptorMisses = 0;
     UpdateSummaryText();
-  }
-
-  private void RegisterInterceptorMiss(Interceptor interceptor, Threat threat) {
-    ++_intrMissCount;
-    UpdateSummaryText();
-  }
-
-  void Update() {
-    // UpdateSwarmPanel();
-    UpdateSimTimeText();
-    UpdateTotalCostText();
   }
 }
-
-public enum UIMode { THREE_DIMENSIONAL, TACTICAL }

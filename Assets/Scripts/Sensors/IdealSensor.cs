@@ -1,25 +1,37 @@
 using UnityEngine;
 
-public class IdealSensor : Sensor {
-  public override SensorOutput Sense(Agent agent) {
-    SensorOutput agentSensorOutput = new SensorOutput();
+// Ideal sensor.
+//
+// The ideal sensor provides perfect, noise-free measurements of the relative transformation between
+// the sensing agent and a target. This sensor is useful for testing and establishing baseline
+// behavior before adding realistic sensor noise and limitations.
+public class IdealSensor : SensorBase {
+  public IdealSensor(IAgent agent) : base(agent) {}
 
-    // Adapt the relative transformation to the agent for the sensor output.
-    Transformation relativeTransformation = _agent.GetRelativeTransformation(agent);
-    agentSensorOutput.position = relativeTransformation.position;
-    agentSensorOutput.velocity = relativeTransformation.velocity;
-
-    return agentSensorOutput;
+  // Sense the target hierarchical object.
+  public override SensorOutput Sense(IHierarchical hierarchical) {
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(hierarchical);
+    return GenerateSensorOutput(relativeTransformation);
   }
 
-  public override SensorOutput SenseWaypoint(Vector3 waypoint) {
-    SensorOutput waypointSensorOutput = new SensorOutput();
+  // Sense the target agent.
+  public override SensorOutput Sense(IAgent agent) {
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(agent);
+    return GenerateSensorOutput(relativeTransformation);
+  }
 
-    // Adapt the agent's relative transformation to the waypoint for the sensor output.
-    Transformation relativeTransformation = _agent.GetRelativeTransformationToWaypoint(waypoint);
-    waypointSensorOutput.position = relativeTransformation.position;
-    waypointSensorOutput.velocity = relativeTransformation.velocity;
+  // Sense the waypoint.
+  public override SensorOutput Sense(in Vector3 waypoint) {
+    Transformation relativeTransformation = Agent.GetRelativeTransformation(waypoint);
+    return GenerateSensorOutput(relativeTransformation);
+  }
 
-    return waypointSensorOutput;
+  // Generate the sensor output from the relative transformation.
+  private SensorOutput GenerateSensorOutput(in Transformation relativeTransformation) {
+    return new SensorOutput {
+      Position = relativeTransformation.Position,
+      Velocity = relativeTransformation.Velocity,
+      Acceleration = relativeTransformation.Acceleration,
+    };
   }
 }

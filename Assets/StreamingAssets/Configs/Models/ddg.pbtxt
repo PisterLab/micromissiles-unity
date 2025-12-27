@@ -1,0 +1,15 @@
+name: "DDG"
+agent_type: VESSEL
+cost: 0
+acceleration_config {
+  max_forward_acceleration: 0
+  max_reference_normal_acceleration: 10
+  reference_speed: 13
+}
+body_config {
+  mass: 9000000
+}
+visualization_config {
+  symbol_present: "friendly_destroyer_present"
+  symbol_destroyed: "friendly_destroyer_destroyed"
+}

@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "Configs/attack_behavior_config.pb.h"
+#include "Configs/run_config.pb.h"
 #include "Configs/simulation_config.pb.h"
 #include "Configs/static_config.pb.h"
 #include "Plugin/status.pb.h"
@@ -39,6 +40,20 @@ TEST(ProtobufTest, LoadProtobufTextFileAttackBehaviorConfig) {
             plugin::STATUS_OK);
   EXPECT_TRUE(attack_behavior_config.has_flight_plan());
   EXPECT_EQ(attack_behavior_config.flight_plan().waypoints().size(), 3);
+}
+
+TEST(ProtobufTest, LoadProtobufTextFileRunConfig) {
+  const auto kRunConfigFile = GetRunfilesPath(
+      "micromissiles-configs-data/Runs/batch_7_quadcopters.pbtxt");
+  configs::RunConfig run_config;
+  EXPECT_EQ(
+      LoadProtobufTextFile<configs::RunConfig>(kRunConfigFile, &run_config),
+      plugin::STATUS_OK);
+  EXPECT_EQ(run_config.name(), "batch_7_quadcopters");
+  EXPECT_EQ(run_config.simulation_config_file(), "7_quadcopters.pbtxt");
+  EXPECT_EQ(run_config.num_runs(), 100);
+  EXPECT_EQ(run_config.seed(), 200);
+  EXPECT_EQ(run_config.seed_stride(), 1);
 }
 
 TEST(ProtobufTest, LoadProtobufTextFileStaticConfig) {

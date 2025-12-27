@@ -1,91 +1,93 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using UnityEngine;
 
 public class InputManager : MonoBehaviour {
   public static InputManager Instance { get; private set; }
 
-  public bool mouseActive = true;
-  [System.Serializable]
-  public struct CameraPreset {
-    public Vector3 position;
-    public Quaternion rotation;
-  }
-
-  public bool lockUserInput = false;
-
-  private void Awake() {
-    if (Instance == null) {
-      Instance = this;
-      DontDestroyOnLoad(gameObject);
-    } else {
-      Destroy(gameObject);
-    }
-  }
+  public bool MouseActive { get; set; } = true;
+  public bool LockUserInput { get; set; } = false;
 
   private Vector2 _lastMousePosition;
   private bool _isDragging = false;
 
-  void Start() {}
+  private void Awake() {
+    if (Instance != null && Instance != this) {
+      Destroy(gameObject);
+      return;
+    }
+    Instance = this;
+    DontDestroyOnLoad(gameObject);
+  }
 
-  void Update() {
+  private void Update() {
     HandleInput();
   }
 
-  private void Handle3DModeMouseInput() {
-    if (Input.GetMouseButton(0)) {
-      CameraController.Instance.OrbitCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-
-    } else if (Input.GetMouseButton(1)) {
-      CameraController.Instance.RotateCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-    }
-  }
-
   private void HandleInput() {
-    if (!lockUserInput) {
+    if (!LockUserInput) {
       HandleLockableInput();
     }
     HandleNonLockableInput();
   }
 
-  void Handle3DModeScrollWheelInput() {
+  private void HandleLockableInput() {
+    if (MouseActive) {
+      switch (UIManager.Instance.UIMode) {
+        case UIMode.THREE_DIMENSIONAL: {
+          Handle3DModeMouseInput();
+          Handle3DModeScrollWheelInput();
+          break;
+        }
+        case UIMode.TACTICAL: {
+          HandleTacticalModeMouseInput();
+          HandleTacticalModeScrollWheelInput();
+          break;
+        }
+        default: {
+          Debug.LogError($"Invalid UI mode: {UIManager.Instance.UIMode}.");
+          break;
+        }
+      }
+    }
+
+    switch (UIManager.Instance.UIMode) {
+      case UIMode.THREE_DIMENSIONAL: {
+        Handle3DModeLockableInput();
+        break;
+      }
+      case UIMode.TACTICAL: {
+        HandleTacticalModeLockableInput();
+        break;
+      }
+      default: {
+        Debug.LogError($"Invalid UI mode: {UIManager.Instance.UIMode}.");
+        break;
+      }
+    }
+
+    if (Input.GetKeyDown(KeyCode.Tab)) {
+      UIManager.Instance.ToggleUIMode();
+    }
+  }
+
+  private void Handle3DModeMouseInput() {
+    if (Input.GetMouseButton(0)) {
+      CameraController.Instance.OrbitCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+    } else if (Input.GetMouseButton(1)) {
+      CameraController.Instance.RotateCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+    }
+  }
+
+  private void Handle3DModeScrollWheelInput() {
     if (Input.GetAxis("Mouse ScrollWheel") != 0) {
       CameraController.Instance.ZoomCamera(Input.GetAxis("Mouse ScrollWheel") * 500);
     }
   }
 
-  void HandleTacticalModeScrollWheelInput() {
-    if (Input.GetAxis("Mouse ScrollWheel") != 0) {
-      TacticalPanelController.Instance.ZoomIn(Input.GetAxis("Mouse ScrollWheel") * 0.1f);
-    }
-  }
-
-  private void HandleTacticalModeMouseInput() {
-    // Start drag on right mouse button
-    if (Input.GetMouseButtonDown(1)) {
-      _isDragging = true;
-      _lastMousePosition = Input.mousePosition;
-    }
-    // End drag when button released
-    else if (Input.GetMouseButtonUp(1)) {
-      _isDragging = false;
-    }
-
-    // Handle dragging
-    if (_isDragging) {
-      Vector2 currentMousePos = Input.mousePosition;
-      Vector2 delta = currentMousePos - _lastMousePosition;
-      TacticalPanelController.Instance.Pan(delta);
-      _lastMousePosition = currentMousePos;
-    }
-  }
-
-  void Handle3DModeLockableInput() {
+  private void Handle3DModeLockableInput() {
     if (Input.GetKey(KeyCode.LeftShift)) {
-      CameraController.Instance.SetCameraSpeed(CameraController.Instance.GetCameraSpeedMax());
+      CameraController.Instance.CameraSpeed = CameraController.Instance.CameraSpeedMax;
     } else {
-      CameraController.Instance.SetCameraSpeed(CameraController.Instance.GetCameraSpeedNormal());
+      CameraController.Instance.CameraSpeed = CameraController.Instance.CameraSpeedNormal;
     }
 
     // Translational movement.
@@ -109,12 +111,40 @@ public class InputManager : MonoBehaviour {
     }
   }
 
-  void HandleTacticalModeLockableInput() {
-    // Handle keyboard input for panning
-    Vector2 keyboardPanDirection = Vector2.zero;
+  private void HandleTacticalModeMouseInput() {
+    // Start drag on right mouse button.
+    if (Input.GetMouseButtonDown(1)) {
+      _isDragging = true;
+      _lastMousePosition = Input.mousePosition;
+    }
+    // End drag when button released.
+    else if (Input.GetMouseButtonUp(1)) {
+      _isDragging = false;
+    }
 
+    // Handle dragging.
+    if (_isDragging) {
+      Vector2 currentMousePos = Input.mousePosition;
+      Vector2 delta = currentMousePos - _lastMousePosition;
+      TacticalPanel.Instance.Pan(delta);
+      _lastMousePosition = currentMousePos;
+    }
+  }
+
+  private void HandleTacticalModeScrollWheelInput() {
+    if (Input.GetAxis("Mouse ScrollWheel") != 0) {
+      TacticalPanel.Instance.ZoomIn(Input.GetAxis("Mouse ScrollWheel") * 0.1f);
+    }
+  }
+
+  private void HandleTacticalModeLockableInput() {
+    // Handle keyboard input for panning.
+    Vector2 keyboardPanDirection = Vector2.zero;
     if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
       keyboardPanDirection.y += -1;
+    }
+    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+      keyboardPanDirection.x += 1;
     }
     if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
       keyboardPanDirection.y += 1;
@@ -122,53 +152,27 @@ public class InputManager : MonoBehaviour {
     if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
       keyboardPanDirection.x += -1;
     }
-    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-      keyboardPanDirection.x += 1;
-    }
 
     if (Input.GetKeyDown(KeyCode.Q)) {
-      TacticalPanelController.Instance.CycleRangeUp();
+      TacticalPanel.Instance.CycleRangeUp();
     }
     if (Input.GetKeyDown(KeyCode.E)) {
-      TacticalPanelController.Instance.CycleRangeDown();
+      TacticalPanel.Instance.CycleRangeDown();
     }
 
     if (keyboardPanDirection != Vector2.zero) {
-      TacticalPanelController.Instance.PanWithKeyboard(keyboardPanDirection.normalized);
+      TacticalPanel.Instance.PanWithKeyboard(keyboardPanDirection.normalized);
     }
   }
 
-  void HandleLockableInput() {
-    if (mouseActive) {
-      if (UIManager.Instance.GetUIMode() == UIMode.THREE_DIMENSIONAL) {
-        Handle3DModeMouseInput();
-        Handle3DModeScrollWheelInput();
-      } else {
-        HandleTacticalModeMouseInput();
-        HandleTacticalModeScrollWheelInput();
-      }
-    }
-
-    if (UIManager.Instance.GetUIMode() == UIMode.THREE_DIMENSIONAL) {
-      Handle3DModeLockableInput();
-    } else {
-      HandleTacticalModeLockableInput();
-    }
-
-    if (Input.GetKeyDown(KeyCode.Tab)) {
-      UIManager.Instance.ToggleUIMode();
-    }
-  }
-
-  void HandleNonLockableInput() {
+  private void HandleNonLockableInput() {
     if (Input.GetKeyDown(KeyCode.Escape)) {
       SimManager.Instance.QuitSimulation();
     }
 
-    if (Input.GetKeyDown(KeyCode.C)) {}
-
     if (Input.GetKeyDown(KeyCode.R)) {
-      SimManager.Instance.RestartSimulation();
+      SimManager.Instance.EndSimulation();
+      SimManager.Instance.ResetAndStartSimulation();
     }
 
     if (Input.GetKeyDown(KeyCode.L)) {
@@ -179,54 +183,31 @@ public class InputManager : MonoBehaviour {
       ParticleManager.Instance.ClearHitMarkers();
     }
 
+    if (Input.GetKeyDown(KeyCode.P)) {
+      CameraController.Instance.AutoRotate = !CameraController.Instance.AutoRotate;
+    }
+
     if (Input.GetKeyDown(KeyCode.Space)) {
       // Pause the time.
-
-      if (!SimManager.Instance.IsSimulationPaused()) {
+      if (!SimManager.Instance.IsPaused) {
         SimManager.Instance.PauseSimulation();
       } else {
         SimManager.Instance.ResumeSimulation();
       }
     }
 
-    if (Input.GetKeyDown(KeyCode.P)) {
-      CameraController.Instance.SetAutoRotate(!CameraController.Instance.IsAutoRotate());
-    }
+    HandleCameraFollowInput(KeyCode.Alpha1, CameraFollowType.ALL_AGENTS);
+    HandleCameraFollowInput(KeyCode.Alpha2, CameraFollowType.ALL_INTERCEPTORS);
+    HandleCameraFollowInput(KeyCode.Alpha3, CameraFollowType.ALL_THREATS);
+  }
 
-    if (Input.GetKeyDown(KeyCode.Alpha1)) {
+  private void HandleCameraFollowInput(KeyCode key, CameraFollowType followType) {
+    if (Input.GetKeyDown(key)) {
       if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.FollowNextInterceptorSwarm();
+        CameraController.Instance.Follow(followType);
       } else {
-        CameraController.Instance.SnapToNextInterceptorSwarm();
+        CameraController.Instance.Snap(followType);
       }
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha2)) {
-      if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.FollowNextThreatSwarm();
-      } else {
-        CameraController.Instance.SnapToNextThreatSwarm();
-      }
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha3)) {
-      if (Input.GetKey(KeyCode.LeftControl)) {
-        CameraController.Instance.FollowCenterAllAgents();
-      } else {
-        CameraController.Instance.SnapToCenterAllAgents();
-      }
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha4)) {
-      // Set pre-set view 4.
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha5)) {
-      // Set pre-set view 5.
-    }
-
-    if (Input.GetKeyDown(KeyCode.Alpha6)) {
-      // Set pre-set view 6.
     }
   }
 }

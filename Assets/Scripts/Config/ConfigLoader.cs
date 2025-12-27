@@ -13,9 +13,6 @@ public static class ConfigLoader {
   private delegate Plugin.StatusCode LoadProtobufDelegate(string file, byte[] buffer,
                                                           int bufferSize, out int serializedLength);
 
-  // Relative path to the default simulator configuration.
-  private const string SimulatorConfigRelativePath = "simulator.pbtxt";
-
   public static string GetStreamingAssetsFilePath(string relativePath) {
     return Path.Combine(Application.streamingAssetsPath, relativePath);
   }
@@ -48,6 +45,12 @@ public static class ConfigLoader {
         Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary);
   }
 
+  public static Configs.RunConfig LoadRunConfig(string configFile) {
+    return LoadProtobufConfig<Configs.RunConfig>(Path.Combine("Configs/Runs", configFile),
+                                                 Protobuf.Protobuf_RunConfig_GetSerializedLength,
+                                                 Protobuf.Protobuf_RunConfig_LoadToBinary);
+  }
+
   public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {
     var config = LoadProtobufConfig<Configs.SimulationConfig>(
         Path.Combine("Configs/Simulations", configFile),
@@ -59,9 +62,9 @@ public static class ConfigLoader {
     return config;
   }
 
-  public static Configs.SimulatorConfig LoadSimulatorConfig() {
+  public static Configs.SimulatorConfig LoadSimulatorConfig(string configFile) {
     return LoadProtobufConfig<Configs.SimulatorConfig>(
-        SimulatorConfigRelativePath, Protobuf.Protobuf_SimulatorConfig_GetSerializedLength,
+        configFile, Protobuf.Protobuf_SimulatorConfig_GetSerializedLength,
         Protobuf.Protobuf_SimulatorConfig_LoadToBinary);
   }
 

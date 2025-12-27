@@ -1,61 +1,67 @@
-using System;
 using UnityEngine;
 
-// The proportional navigation controller applies proportional navigation to steer the agent towards
-// its target.
-public class PnController : IController {
-  // Negative closing velocity turn factor.
-  protected const float negativeClosingVelocityTurnFactor = 100f;
+// The proportional navigation controller applies an input that is proportional to the line of
+// sight's rotation rate to steer the agent towards its target.
+// The controller uses pure proportional navigation, where the acceleration input is normal to
+// the agent's velocity.
+// Refer to "Basic Principles of Homing Guidance" by N. F. Palumbo (2010) for more information.
+public class PnController : ControllerBase {
+  private const float _epsilon = 1e-3f;
 
-  // Minimum line-of-sight rate.
-  protected const float minimumLosRate = 0.2f;
+  // Multiplication factor applied to the closing velocity when the target is moving away or abeam
+  // to force an aggressive turn and prevent spiraling or divergence.
+  private const float _strongTurnFactor = 100f;
 
-  // Proportional navigation gain.
-  protected float _navigationGain;
+  // Cosine threshold for determining whether the target is abeam to the agent and preventing spiral
+  // behavior. A value of 0.2 corresponds to roughly +-10 degrees around 90 degrees.
+  private const float _abeamThreshold = 0.2f;
 
-  public PnController(Agent agent, float navigationGain) : base(agent) {
-    _navigationGain = navigationGain;
+  // Minimum line-of-sight rate used for clamping when the target is abeam to the agent.
+  private const float _minLosRate = 0.2f;
+
+  public float Gain { get; set; }
+
+  public PnController(IAgent agent, float gain) : base(agent) {
+    Gain = gain;
   }
 
-  protected override Vector3 PlanImpl(in Transformation relativeTransformation) {
-    // Cache the transform and velocity.
-    Transform agentTransform = _agent.transform;
-    Vector3 right = agentTransform.right;
-    Vector3 up = agentTransform.up;
-    Vector3 forward = agentTransform.forward;
-    Vector3 position = agentTransform.position;
+  // Controller-dependent implementation of the control law.
+  protected override Vector3 Plan(in Transformation relativeTransformation) {
+    Vector3 relativePosition = relativeTransformation.Position.Cartesian;
+    Vector3 relativeVelocity = relativeTransformation.Velocity.Cartesian;
+    Vector3 normalRelativeVelocity = Vector3.ProjectOnPlane(relativeVelocity, relativePosition);
 
-    Vector3 velocity = _agent.GetVelocity();
-    float speed = velocity.magnitude;
+    float distance = relativeTransformation.Position.Range;
+    if (distance < _epsilon) {
+      return Vector3.zero;
+    }
 
-    // Extract the bearing and closing velocity from the relative transformation.
-    float losAz = relativeTransformation.position.azimuth;
-    float losEl = relativeTransformation.position.elevation;
-    float losRateAz = relativeTransformation.velocity.azimuth;
-    float losRateEl = relativeTransformation.velocity.elevation;
+    // Line-of-sight unit vector.
+    Vector3 losRHat = relativePosition / distance;
+    // Line-of-sight rate vector.
+    Vector3 losVHat = normalRelativeVelocity / distance;
+    Vector3 losRotation = Vector3.Cross(losRHat, losVHat);
+
     // The closing velocity is negative because the closing velocity is opposite to the range rate.
-    float closingVelocity = -relativeTransformation.velocity.range;
-
+    float closingVelocity = -relativeTransformation.Velocity.Range;
+    float closingSpeed = Mathf.Abs(closingVelocity);
     // Set the turn factor, which is equal to the closing velocity by default.
     float turnFactor = closingVelocity;
-    // Handle a negative closing velocity. In this case, since the target is moving away from the
-    // agent, apply a stronger turn.
+    // Handle a negative closing velocity. If the target is moving away from the agent, negate the
+    // turn factor and apply a stronger turn as the agent most likely passed the target already and
+    // should turn around.
     if (closingVelocity < 0) {
-      turnFactor = Mathf.Max(1f, Mathf.Abs(closingVelocity) * negativeClosingVelocityTurnFactor);
+      turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
     }
-
-    // Handle the spiral behavior if the target is at a bearing of 90 degrees +- 10 degrees.
-    if (Mathf.Abs(Mathf.Abs(losAz) - 90f * Mathf.Deg2Rad) < 10f * Mathf.Deg2Rad ||
-        Mathf.Abs(Mathf.Abs(losEl) - 90f * Mathf.Deg2Rad) < 10f * Mathf.Deg2Rad) {
-      // Check that the agent is not moving in a spiral by clamping the LOS rate.
-      losRateAz = Mathf.Sign(losRateAz) * Mathf.Max(Mathf.Abs(losRateAz), minimumLosRate);
-      losRateEl = Mathf.Sign(losRateEl) * Mathf.Max(Mathf.Abs(losRateEl), minimumLosRate);
-      turnFactor = Mathf.Abs(closingVelocity) * negativeClosingVelocityTurnFactor;
+    // If the target is abeam to the agent, apply a stronger turn and clamp the line-of-sight rate
+    // to avoid spiral behavior.
+    bool isAbeam = Mathf.Abs(Vector3.Dot(Agent.Velocity.normalized, relativePosition.normalized)) <
+                   _abeamThreshold;
+    if (isAbeam) {
+      turnFactor = Mathf.Max(1f, closingSpeed) * _strongTurnFactor;
+      float clampedLosRate = Mathf.Max(losRotation.magnitude, _minLosRate);
+      losRotation = losRotation.normalized * clampedLosRate;
     }
-
-    float accelerationAz = _navigationGain * turnFactor * losRateAz;
-    float accelerationEl = _navigationGain * turnFactor * losRateEl;
-    Vector3 accelerationInput = right * accelerationAz + up * accelerationEl;
-    return accelerationInput;
+    return Gain * turnFactor * Vector3.Cross(losRotation, Agent.Velocity.normalized);
   }
 }
