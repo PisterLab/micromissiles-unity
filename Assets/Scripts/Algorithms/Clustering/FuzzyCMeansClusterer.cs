@@ -1,58 +1,52 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // The fuzzy c-means clusterer class performs fuzzy c means clustering with defuzzified assignments.
-public class FuzzyCMeansClusterer : IClusterer {
-  private int _k;
-  private float _m;
-  private int _maxIterations;
-  private float _epsilon;
-  private System.Random _random = new System.Random();
+public class FuzzyCMeansClusterer : ClustererBase {
+  private readonly int _k;
+  private readonly float _m;
+  private readonly int _maxIterations;
+  private readonly float _epsilon;
+  private readonly System.Random _random = new System.Random();
 
-  public FuzzyCMeansClusterer(
-      List<GameObject> objects, int k, float fuzziness = 2.0f, int maxIterations = 50,
-      float epsilon = 1e-3f)
-      : base(objects) {
-    _k = k;
-    _m = Mathf.Max(1.01f, fuzziness);
-    _maxIterations = maxIterations;
-    _epsilon = epsilon;
-  }
-  public FuzzyCMeansClusterer(
-      List<Agent> agents, int k, float fuzziness = 2.0f, int maxIterations = 50,
-      float epsilon = 1e-3f)
-      : base(agents) {
+  public FuzzyCMeansClusterer(int k, float fuzziness = 2.0f, int maxIterations = 50,
+                              float epsilon = 1e-3f) {
     _k = k;
     _m = Mathf.Max(1.01f, fuzziness);
     _maxIterations = maxIterations;
     _epsilon = epsilon;
   }
 
-  // Cluster the game objects.
-  public override void Cluster() {
-    if (_objects.Count == 0 || _k <= 0) {
-      return;
+  // Generate the clusters from the list of hierarchical objects.
+  public override List<Cluster> Cluster(IEnumerable<IHierarchical> hierarchicals) {
+    if (hierarchicals == null) {
+      return new List<Cluster>();
+    }
+    var objects = hierarchicals.Where(h => h != null && !h.IsTerminated).ToList();
+    if (objects.Count == 0 || _k <= 0) {
+      return new List<Cluster>();
     }
 
-    int clusterCount = Mathf.Clamp(_k, 1, _objects.Count);
-    float[,] membership = InitializeMembership(_objects.Count, clusterCount);
+    int clusterCount = Mathf.Clamp(_k, 1, objects.Count);
+    float[,] membership = InitializeMembership(objects.Count, clusterCount);
     Vector3[] centroids = new Vector3[clusterCount];
 
     float delta = Mathf.Infinity;
     int iteration = 0;
     while (iteration < _maxIterations && delta > _epsilon) {
-      UpdateCentroids(membership, centroids, clusterCount);
-      delta = UpdateMembership(membership, centroids, clusterCount);
+      UpdateCentroids(objects, membership, centroids, clusterCount);
+      delta = UpdateMembership(objects, membership, centroids, clusterCount);
       ++iteration;
     }
 
+    var clusters = new List<Cluster>();
     for (int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex) {
-      _clusters.Add(new Cluster(centroids[clusterIndex]));
+      clusters.Add(new Cluster { Centroid = centroids[clusterIndex] });
     }
 
-    // Defuzzify by assigning each object to the cluster with the highest membership.
-    for (int objectIndex = 0; objectIndex < _objects.Count; ++objectIndex) {
+    // Defuzzify by assigning each hierarchical object to the cluster with the highest membership.
+    for (int objectIndex = 0; objectIndex < objects.Count; ++objectIndex) {
       int bestCluster = 0;
       float bestMembership = membership[objectIndex, 0];
       for (int clusterIndex = 1; clusterIndex < clusterCount; ++clusterIndex) {
@@ -61,8 +55,10 @@ public class FuzzyCMeansClusterer : IClusterer {
           bestCluster = clusterIndex;
         }
       }
-      _clusters[bestCluster].AddObject(_objects[objectIndex]);
+      clusters[bestCluster].AddSubHierarchical(objects[objectIndex]);
     }
+
+    return clusters;
   }
 
   private float[,] InitializeMembership(int numObjects, int clusterCount) {
@@ -84,35 +80,37 @@ public class FuzzyCMeansClusterer : IClusterer {
     return membership;
   }
 
-  private void UpdateCentroids(float[,] membership, Vector3[] centroids, int clusterCount) {
+  private void UpdateCentroids(IReadOnlyList<IHierarchical> objects, float[,] membership,
+                               Vector3[] centroids, int clusterCount) {
     for (int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex) {
       Vector3 weightedSum = Vector3.zero;
       float weightSum = 0.0f;
-      for (int objectIndex = 0; objectIndex < _objects.Count; ++objectIndex) {
+      for (int objectIndex = 0; objectIndex < objects.Count; ++objectIndex) {
         float weight = Mathf.Pow(membership[objectIndex, clusterIndex], _m);
-        weightedSum += weight * _objects[objectIndex].transform.position;
+        weightedSum += weight * objects[objectIndex].Position;
         weightSum += weight;
       }
 
       if (weightSum > Mathf.Epsilon) {
         centroids[clusterIndex] = weightedSum / weightSum;
       } else {
-        int randomIndex = _random.Next(_objects.Count);
-        centroids[clusterIndex] = _objects[randomIndex].transform.position;
+        int randomIndex = _random.Next(objects.Count);
+        centroids[clusterIndex] = objects[randomIndex].Position;
       }
     }
   }
 
-  private float UpdateMembership(float[,] membership, Vector3[] centroids, int clusterCount) {
+  private float UpdateMembership(IReadOnlyList<IHierarchical> objects, float[,] membership,
+                                 Vector3[] centroids, int clusterCount) {
     float maxChange = 0.0f;
     float exponent = 2.0f / (_m - 1.0f);
     const float MinDistance = 1e-6f;
 
-    for (int objectIndex = 0; objectIndex < _objects.Count; ++objectIndex) {
+    for (int objectIndex = 0; objectIndex < objects.Count; ++objectIndex) {
       int zeroDistanceCluster = -1;
       for (int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex) {
         float distance =
-            Vector3.Distance(_objects[objectIndex].transform.position, centroids[clusterIndex]);
+            Vector3.Distance(objects[objectIndex].Position, centroids[clusterIndex]);
         if (distance < MinDistance) {
           zeroDistanceCluster = clusterIndex;
           break;
@@ -130,11 +128,11 @@ public class FuzzyCMeansClusterer : IClusterer {
 
       for (int clusterIndex = 0; clusterIndex < clusterCount; ++clusterIndex) {
         float distanceToCluster =
-            Vector3.Distance(_objects[objectIndex].transform.position, centroids[clusterIndex]);
+            Vector3.Distance(objects[objectIndex].Position, centroids[clusterIndex]);
         float denominator = 0.0f;
         for (int otherClusterIndex = 0; otherClusterIndex < clusterCount; ++otherClusterIndex) {
           float distanceToOther =
-              Vector3.Distance(_objects[objectIndex].transform.position, centroids[otherClusterIndex]);
+              Vector3.Distance(objects[objectIndex].Position, centroids[otherClusterIndex]);
           float ratio = distanceToCluster / Mathf.Max(distanceToOther, MinDistance);
           denominator += Mathf.Pow(ratio, exponent);
         }

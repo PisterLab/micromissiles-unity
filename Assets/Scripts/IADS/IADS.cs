@@ -5,10 +5,35 @@ using UnityEngine;
 
 // The Integrated Air Defense System (IADS) manages the air defense strategy.
 // It implements the singleton pattern to ensure that only one instance exists.
+public enum ClusterAlgorithm {
+  KMeans,
+  ConstrainedKMeans,
+  Agglomerative,
+  FuzzyCMeans,
+}
+
 public class IADS : MonoBehaviour {
   // Hierarchy parameters.
   private const float _hierarchyUpdatePeriod = 5f;
   private const float _coverageFactor = 1f;
+
+  [SerializeField]
+  private ClusterAlgorithm _clusterAlgorithm = ClusterAlgorithm.KMeans;
+
+  [SerializeField]
+  private int _maxClusterSize = 10;
+
+  [SerializeField]
+  private float _maxClusterRadius = 1000f;
+
+  [SerializeField]
+  private float _fuzzyFuzziness = 2f;
+
+  [SerializeField]
+  private int _fuzzyMaxIterations = 50;
+
+  [SerializeField]
+  private float _fuzzyConvergenceEpsilon = 1e-3f;
 
   // The IADS only manages the launchers in the top level of the interceptor hierarchy.
   private List<IHierarchical> _launchers = new List<IHierarchical>();
@@ -83,7 +108,13 @@ public class IADS : MonoBehaviour {
 
   private void BuildHierarchy() {
     // TODO(titan): The clustering algorithm should be aware of the capacity of the launcher.
-    var swarmClusterer = new KMeansClusterer(Mathf.RoundToInt(_launchers.Count / _coverageFactor));
+    if (_launchers.Count == 0) {
+      _newThreats.Clear();
+      return;
+    }
+
+    int desiredClusterCount = Mathf.Max(1, Mathf.RoundToInt(_launchers.Count / _coverageFactor));
+    var swarmClusterer = CreateClusterer(desiredClusterCount, _newThreats.Count);
     List<Cluster> swarms = swarmClusterer.Cluster(_newThreats);
     _newThreats.Clear();
 
@@ -142,5 +173,26 @@ public class IADS : MonoBehaviour {
       return;
     }
     closestLauncher.Interceptor.ReassignTarget(target);
+  }
+
+  private IClusterer CreateClusterer(int clusterCount, int threatCount) {
+    clusterCount = Mathf.Max(1, clusterCount);
+    int maxSize = _maxClusterSize > 0
+                      ? _maxClusterSize
+                      : Mathf.Max(1, Mathf.CeilToInt((float)threatCount / clusterCount));
+    float maxRadius = Mathf.Max(0f, _maxClusterRadius);
+    switch (_clusterAlgorithm) {
+      case ClusterAlgorithm.ConstrainedKMeans:
+        return new ConstrainedKMeansClusterer(maxSize, maxRadius);
+      case ClusterAlgorithm.Agglomerative:
+        return new AgglomerativeClusterer(maxSize, maxRadius);
+      case ClusterAlgorithm.FuzzyCMeans:
+        return new FuzzyCMeansClusterer(clusterCount, _fuzzyFuzziness,
+                                        Mathf.Max(1, _fuzzyMaxIterations),
+                                        Mathf.Max(Mathf.Epsilon, _fuzzyConvergenceEpsilon));
+      case ClusterAlgorithm.KMeans:
+      default:
+        return new KMeansClusterer(clusterCount);
+    }
   }
 }
