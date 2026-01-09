@@ -7,6 +7,7 @@ import multi_metric
 import numpy as np
 import pandas as pd
 import scalar_metric
+import scipy.stats
 import unity_utils
 import utils
 from absl import app, flags, logging
@@ -82,16 +83,46 @@ def plot_heatmap_and_scatter(
     ax.scatter(xvalues, yvalues, s=PIXEL_SIZE, c=color, alpha=0.2, linewidths=0)
 
 
+def plot_histogram(
+    event_dfs: list[pd.DataFrame],
+    metric: multi_metric.MultiMetric,
+    ax: matplotlib.axes.Axes,
+    color: str,
+    linestyle: str,
+) -> None:
+    """Plots a histogram of the multi-metric aggregated over all simulation
+    runs.
+
+    Args:
+        event_dfs: List of dataframes containing the events.
+        metric: Multi-metric outputting 2D coordinates.
+    """
+    aggregator = Aggregator(event_dfs, metric)
+    values = np.array(aggregator.values)
+    if values.size == 0:
+        logging.warning("No metric values for metric: %s.", metric.name)
+        return
+
+    yvalues = values[:, 1]
+
+    # Plot a histogram of the metric values.
+    kde = scipy.stats.gaussian_kde(yvalues)
+    x = np.linspace(2000, 12000, 2000)
+    ax.plot(x, kde(x), color=color, linestyle=linestyle)
+
+
 def main(argv):
     assert len(argv) == 1, argv
 
     run_log_dir = FLAGS.run_log_dir
     for metric in MULTI_METRICS:
-        fig, axes = plt.subplots(1,
-                                 len(run_log_dir),
-                                 figsize=(12, 4),
-                                 sharex=True,
-                                 sharey=True)
+        fig, axes = plt.subplots(
+            1,
+            len(run_log_dir),
+            figsize=(12, 4),
+            sharex=True,
+            sharey=True,
+        )
         xmin = -2500
         xmax = 2500
         ymin = 2000
@@ -105,6 +136,26 @@ def main(argv):
             ax.set_xlim(xmin, xmax)
             ax.set_ylim(ymin, ymax)
             ax.set_aspect("equal")
+        plt.show()
+
+        fig, ax = plt.subplots(figsize=(12, 4))
+        colors = ["C0", "C3", "C1", "C0", "C3", "C1"]
+        linestyles = ["-", "-", "-", "--", "--", "--"]
+        labels = [
+            r"Baseline ($k_p$ = 0.9)",
+            r"$k_p$ = 0.8",
+            r"$k_p$ = 0.5",
+            r"No reassignment",
+            r"$k_p$ = 0.8, no reassignment",
+            r"$k_p$ = 0.5, no reassignment",
+        ]
+        for i, dir in enumerate(run_log_dir):
+            event_log_paths = utils.find_all_event_logs(dir)
+            event_dfs = [utils.read_event_log(path) for path in event_log_paths]
+            plot_histogram(event_dfs, metric, ax, colors[i], linestyles[i])
+            ax.set_xlim(2000, 12000)
+            ax.set_yticklabels([])
+        ax.legend(labels, ncol=2)
         plt.show()
 
 
