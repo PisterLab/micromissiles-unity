@@ -51,7 +51,8 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 # Citation
 
 If you use this work, please consider citing the following publication:
-```
+
+```bibtex
 @inproceedings{yuan26simulator,
   title={Interceptor Swarms for Naval Defense: A Simulation-Based Evaluation of Hierarchical Swarm-vs.-Swarm Strategies},
   author={Titan R. Yuan and Daniel Lovell and Kristofer S. J. Pister},
