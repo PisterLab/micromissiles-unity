@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,13 +7,35 @@ public class Cluster : HierarchicalBase {
   [SerializeField]
   private Vector3 _centroid;
 
+  private readonly Dictionary<IHierarchical, float> _memberships = new Dictionary<IHierarchical, float>();
+
   public Vector3 Centroid {
     get => _centroid;
     set => _centroid = value;
   }
 
+  public IReadOnlyDictionary<IHierarchical, float> Memberships => _memberships;
+
   public int Size => ActiveSubHierarchicals.Count();
   public bool IsEmpty => Size == 0;
+
+  public float GetMembership(IHierarchical hierarchical) {
+    if (hierarchical == null) {
+      return 0f;
+    }
+    return _memberships.TryGetValue(hierarchical, out float membership) ? membership : 0f;
+  }
+
+  internal void SetMembership(IHierarchical hierarchical, float membership) {
+    if (hierarchical == null) {
+      return;
+    }
+    _memberships[hierarchical] = Mathf.Clamp01(membership);
+  }
+
+  internal void ClearMemberships() {
+    _memberships.Clear();
+  }
 
   public float Radius() {
     if (IsEmpty) {

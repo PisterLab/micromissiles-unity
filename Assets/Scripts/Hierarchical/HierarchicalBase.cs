@@ -10,26 +10,34 @@ using UnityEngine;
 [Serializable]
 public class HierarchicalBase : IHierarchical {
   // Soft maximum number of sub-hierarchical objects. This is used for recursive clustering.
-  private const int _maxNumSubHierarchicals = 10;
+  private const int _maxNumSubHierarchicals = 10; // Var Def: target max clusters per node (k).
 
   // Maximum cluster radius in meters.
-  private const float _clusterMaxRadius = 1000f;
+  private const float _clusterMaxRadius = 1000f; // Var Def: radius cap for agglomerative clustering.
+
+  // Fuzzy clustering parameters for redundancy and drift handling.
+  private const bool _useFuzzyClustering = true; // Var Def: toggle FCM for partitioning.
+  private const float _fuzzyFuzziness = 2f; // Var Def: FCM fuzziness (m).
+  private const int _fuzzyMaxNumIterations = 25; // Var Def: FCM iteration cap.
+  private const float _fuzzyEpsilon = 1e-2f; // Var Def: FCM convergence threshold.
+  private const float _fuzzyMembershipThreshold = 0.35f; // Var Def: membership cutoff for overlap.
+  private const int _fuzzyMaxMembershipsPerThreat = 2; // Var Def: max clusters per threat.
 
   // List of hierarchical objects in the hierarchy level below.
   [SerializeReference]
-  protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
+  protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>(); // Var Def: child nodes.
 
   // List of hierarchical objects pursuing this hierarchical object.
   [SerializeReference]
-  private List<IHierarchical> _pursuers = new List<IHierarchical>();
+  private List<IHierarchical> _pursuers = new List<IHierarchical>(); // Var Def: pursuing agents.
 
   // Target hierarchical object.
   [SerializeReference]
-  private IHierarchical _target;
+  private IHierarchical _target; // Var Def: target assigned to this node.
 
   // List of launched hierarchical objects.
   [SerializeReference]
-  private List<IHierarchical> _launchedHierarchicals = new List<IHierarchical>();
+  private List<IHierarchical> _launchedHierarchicals = new List<IHierarchical>(); // Var Def: launched children.
 
   public IReadOnlyList<IHierarchical> SubHierarchicals => _subHierarchicals.AsReadOnly();
 
@@ -117,21 +125,18 @@ public class HierarchicalBase : IHierarchical {
     if (Target == null) {
       return;
     }
-    int numActiveSubHierarchicals = Target.ActiveSubHierarchicals.Count();
+    List<IHierarchical> activeTargets = Target.ActiveSubHierarchicals.ToList();
+    int numActiveSubHierarchicals = activeTargets.Count;
     if (numActiveSubHierarchicals <= maxClusterSize) {
       return;
     }
 
-    // Perform clustering on the assigned targets.
-    // TODO(titan): Define a better heuristic for choosing the clustering algorithm to minimize the
-    // size and radius of each cluster without generating too many clusters.
-    IClusterer clusterer = null;
-    if (numActiveSubHierarchicals >= _maxNumSubHierarchicals * Mathf.Max(maxClusterSize / 2, 1)) {
-      clusterer = new KMeansClusterer(_maxNumSubHierarchicals);
-    } else {
-      clusterer = new AgglomerativeClusterer(maxClusterSize, _clusterMaxRadius);
+    List<Cluster> clusters =
+        ClusterTargets(activeTargets, maxClusterSize, _fuzzyMembershipThreshold,
+                       _fuzzyMaxMembershipsPerThreat, SubHierarchicals);
+    if (clusters.Count == 0) {
+      return;
     }
-    List<Cluster> clusters = clusterer.Cluster(Target.ActiveSubHierarchicals);
 
     // Generate sub-hierarchical objects to manage the target clusters.
     foreach (var cluster in clusters) {
@@ -139,6 +144,86 @@ public class HierarchicalBase : IHierarchical {
       AddSubHierarchical(subHierarchical);
       subHierarchical.RecursiveCluster(maxClusterSize);
     }
+  }
+
+  public void RefreshClusters(int maxClusterSize) {
+    RefreshClusters(maxClusterSize, _fuzzyMembershipThreshold, _fuzzyMaxMembershipsPerThreat);
+  }
+
+  public void RefreshClusters(int maxClusterSize, float membershipThreshold,
+                              int maxMembershipsPerThreat) {
+    if (Target == null) {
+      ClearSubHierarchicals();
+      return;
+    }
+    List<IHierarchical> activeTargets = Target.ActiveSubHierarchicals.ToList();
+    if (activeTargets.Count <= maxClusterSize) {
+      ClearSubHierarchicals();
+      return;
+    }
+
+    List<Cluster> clusters =
+        ClusterTargets(activeTargets, maxClusterSize, membershipThreshold, maxMembershipsPerThreat,
+                       SubHierarchicals);
+    if (clusters.Count == 0) {
+      ClearSubHierarchicals();
+      return;
+    }
+
+    ClearSubHierarchicals();
+    foreach (var cluster in clusters) {
+      var subHierarchical = new HierarchicalBase { Target = cluster };
+      AddSubHierarchical(subHierarchical);
+      subHierarchical.RefreshClusters(maxClusterSize, membershipThreshold, maxMembershipsPerThreat);
+    }
+  }
+
+  private List<Cluster> ClusterTargets(IReadOnlyList<IHierarchical> activeTargets,
+                                       int maxClusterSize,
+                                       float membershipThreshold,
+                                       int maxMembershipsPerThreat,
+                                       IReadOnlyList<IHierarchical> existingSubHierarchicals) {
+    if (activeTargets.Count == 0) {
+      return new List<Cluster>();
+    }
+
+    // Perform clustering on the assigned targets.
+    // TODO(titan): Define a better heuristic for choosing the clustering algorithm to minimize the
+    // size and radius of each cluster without generating too many clusters.
+    bool usePartitioningClusterer =
+        activeTargets.Count >= _maxNumSubHierarchicals * Mathf.Max(maxClusterSize / 2, 1);
+    if (usePartitioningClusterer) {
+      if (_useFuzzyClustering) {
+        int k = Mathf.Min(_maxNumSubHierarchicals, activeTargets.Count);
+        var fuzzyClusterer =
+            new FuzzyCMeansClusterer(k, _fuzzyFuzziness, _fuzzyMaxNumIterations, _fuzzyEpsilon);
+        List<Vector3> initialCentroids = GetExistingCentroids(existingSubHierarchicals, k);
+        FuzzyCMeansResult result = fuzzyClusterer.ClusterFuzzy(activeTargets, initialCentroids,
+                                                               membershipThreshold,
+                                                               maxMembershipsPerThreat);
+        return result.Clusters;
+      }
+      return new KMeansClusterer(_maxNumSubHierarchicals).Cluster(activeTargets);
+    }
+    return new AgglomerativeClusterer(maxClusterSize, _clusterMaxRadius).Cluster(activeTargets);
+  }
+
+  private static List<Vector3> GetExistingCentroids(
+      IReadOnlyList<IHierarchical> subHierarchicals,
+      int k) {
+    if (subHierarchicals == null || subHierarchicals.Count != k) {
+      return null;
+    }
+
+    var centroids = new List<Vector3>(k);
+    foreach (var subHierarchical in subHierarchicals) {
+      if (subHierarchical?.Target is Cluster cluster) {
+        centroids.Add(cluster.Centroid);
+      } else {
+        return null;
+      }
+    }
+    return centroids;
   }
 
   public bool AssignNewTarget(IHierarchical hierarchical, int capacity) {
