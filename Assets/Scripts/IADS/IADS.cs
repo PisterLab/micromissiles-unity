@@ -7,6 +7,12 @@ using UnityEngine;
 // It implements the singleton pattern to ensure that only one instance exists.
 public class IADS : MonoBehaviour {
   // Hierarchy parameters.
+
+
+  //TODO Joseph: (solution 1) implement variable update period. Higher frequency on lower level
+  //TODO Joseph: (solution 2) implement drift boundary detection.
+
+
   private const float _hierarchyUpdatePeriod = 5f; // Var Def: seconds between top-level swarm rebuilds.
   private const float _subHierarchyUpdatePeriod = 1f; // Var Def: seconds between sub-hierarchy refreshes.
   private const float _coverageFactor = 1f; // Var Def: scales number of swarms vs launchers.
@@ -31,6 +37,8 @@ public class IADS : MonoBehaviour {
   public static IADS Instance { get; private set; }
 
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
+
+  
 
   private void Awake() {
     if (Instance != null && Instance != this) {
