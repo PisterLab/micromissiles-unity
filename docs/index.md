@@ -75,3 +75,18 @@ Follow the instructions below for your operating system to download and run the 
 - Familiarize yourself with the [**Keybinds and Controls**](./Keybinds_and_Controls.md) to navigate and interact with the simulation.
 - Learn how to configure the simulation settings by reading the [**Simulation Configuration**](./Simulation_Configuration.md) guide.
 - Contribute to the project by setting up the Unity project according to the [**Development**](./Development.md) guide.
+
+## Citation
+
+If you use this work, please consider citing the following publication:
+
+```bibtex
+@inproceedings{yuan26simulator,
+  title={Interceptor Swarms for Naval Defense: A Simulation-Based Evaluation of Hierarchical Swarm-vs.-Swarm Strategies},
+  author={Titan R. Yuan and Daniel Lovell and Kristofer S. J. Pister},
+  booktitle={AIAA SCITECH 2026 Forum},
+  year={2026},
+  doi={10.2514/6.2026-0750},
+  url={https://arc.aiaa.org/doi/abs/10.2514/6.2026-0750},
+}
+```
