@@ -47,3 +47,18 @@ You can find the latest release [here](https://github.com/PisterLab/micromissile
 - To configure simulation settings, see the [**Sim Config Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Configuration.html).
 - To kick off simulation runs from the command line, see the [**Sim Runner Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Runner.html).
 - To analyze simulation logs, see the [**Sim Logging Guide**](https://pisterlab.github.io/micromissiles-unity/Simulation_Logging.html).
+
+# Citation
+
+If you use this work, please consider citing the following publication:
+
+```bibtex
+@inproceedings{yuan26simulator,
+  title={Interceptor Swarms for Naval Defense: A Simulation-Based Evaluation of Hierarchical Swarm-vs.-Swarm Strategies},
+  author={Titan R. Yuan and Daniel Lovell and Kristofer S. J. Pister},
+  booktitle={AIAA SCITECH 2026 Forum},
+  year={2026},
+  doi={10.2514/6.2026-0750},
+  url={https://arc.aiaa.org/doi/abs/10.2514/6.2026-0750},
+}
+```
