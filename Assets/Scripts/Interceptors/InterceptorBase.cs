@@ -117,7 +117,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
-      RequestReassignment();
+      RequestReassignment(this);
     }
 
     // Check whether any targets are escaping from the interceptor.
@@ -131,7 +131,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         OnReassignTarget?.Invoke(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
-        RequestReassignment();
+        RequestReassignment(this);
       }
     }
 
@@ -261,13 +261,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       OnReassignTarget?.Invoke(targetHierarchical);
     }
 
-    RequestReassignment();
+    RequestReassignment(interceptor);
   }
 
-  private void RequestReassignment() {
-    if (IsReassignable) {
+  private void RequestReassignment(IInterceptor interceptor) {
+    if (interceptor.IsReassignable) {
       // Request a new target from the parent interceptor.
-      OnAssignSubInterceptor?.Invoke(this);
+      OnAssignSubInterceptor?.Invoke(interceptor);
     }
   }
 
