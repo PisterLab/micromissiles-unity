@@ -67,6 +67,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     set { _numSubInterceptorsRemaining = value; }
   }
 
+  // If true, the interceptor can be reassigned to other targets.
+  public virtual bool IsReassignable => true;
+
   // Set of unassigned targets for which an additional sub-interceptor should be launched.
   private HashSet<IHierarchical> _unassignedTargets = new HashSet<IHierarchical>();
 
@@ -114,7 +117,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
-      OnAssignSubInterceptor?.Invoke(this);
+      RequestReassignment();
     }
 
     // Check whether any targets are escaping from the interceptor.
@@ -128,7 +131,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         OnReassignTarget?.Invoke(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
-        OnAssignSubInterceptor?.Invoke(this);
+        RequestReassignment();
       }
     }
 
@@ -258,8 +261,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       OnReassignTarget?.Invoke(targetHierarchical);
     }
 
-    // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
+    RequestReassignment();
+  }
+
+  private void RequestReassignment() {
+    if (IsReassignable) {
+      // Request a new target from the parent interceptor.
+      OnAssignSubInterceptor?.Invoke(this);
+    }
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {

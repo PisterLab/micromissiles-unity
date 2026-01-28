@@ -9,6 +9,9 @@ public abstract class LauncherBase : CarrierBase {
   // Launchers cannot pursue threats.
   public override bool IsPursuer => false;
 
+  // Launchers cannot be reassigned to other targets and rely on threat reassignment only.
+  public override bool IsReassignable => false;
+
   protected override void Awake() {
     base.Awake();
 
