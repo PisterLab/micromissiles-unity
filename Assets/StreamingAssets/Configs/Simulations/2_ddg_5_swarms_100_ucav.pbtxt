@@ -1,5 +1,20 @@
 end_time: 300
 time_scale: 1
+asset_configs {
+  config_file: "cvn.pbtxt"
+  initial_state {
+    position {
+      x: 500
+      y: 0
+      z: 0
+    }
+    velocity {
+      x: 1
+      y: 0
+      z: 0
+    }
+  }
+}
 interceptor_swarm_configs {
   agent_config {
     config_file: "ddg.pbtxt"

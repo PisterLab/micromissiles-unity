@@ -52,7 +52,10 @@ cc_proto_library(
 proto_library(
     name = "simulation_config_proto",
     srcs = ["simulation_config.proto"],
-    deps = [":swarm_config_proto"],
+    deps = [
+        ":agent_config_proto",
+        ":swarm_config_proto",
+    ],
 )
 
 cc_proto_library(
