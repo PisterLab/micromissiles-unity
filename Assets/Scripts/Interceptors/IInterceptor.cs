@@ -8,8 +8,7 @@ public delegate void TargetReassignEventHandler(IHierarchical target);
 public interface IInterceptor : IAgent {
   // The OnHit event handler is called when the interceptor successfully intercepts a threat.
   event InterceptorEventHandler OnHit;
-  // The OnMiss event handler is called when the interceptor is misses its target but is not
-  // destroyed.
+  // The OnMiss event handler is called when the interceptor misses its target but is not destroyed.
   event InterceptorEventHandler OnMiss;
   // The OnDestroyed event handler is called when the interceptor is destroyed prior to intercepting
   // a threat, e.g., through a ground collision.
