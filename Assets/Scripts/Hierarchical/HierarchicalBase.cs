@@ -141,13 +141,15 @@ public class HierarchicalBase : IHierarchical {
     }
   }
 
-  public bool AssignNewTarget(IHierarchical hierarchical, int capacity) {
+  public IHierarchical FindNewTarget(IHierarchical hierarchical, int capacity) {
     // TODO(titan): Abstract the target picking strategy to its own interface and class.
     // TODO(titan): Consider whether the OnAssignSubInterceptor and OnReassignTarget events should
     // be modified to refer to the new parent interceptor.
-    hierarchical.Target = FindBestHierarchicalTarget(hierarchical, capacity) ??
-                          FindBestLeafHierarchicalTarget(hierarchical, capacity);
-    return hierarchical.Target != null;
+    if (capacity <= 1) {
+      return FindBestLeafHierarchicalTarget(hierarchical, capacity);
+    }
+    return FindBestHierarchicalTarget(hierarchical, capacity) ??
+           FindBestLeafHierarchicalTarget(hierarchical, capacity);
   }
 
   private Vector3 GetMean(System.Func<IHierarchical, Vector3> selector) {
@@ -215,13 +217,16 @@ public class HierarchicalBase : IHierarchical {
       return null;
     }
 
-    // Remove as many target sub-hierarchical objects until the interceptor capacity.
-    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals.ToList();
-    var filteredSubHierarchicals =
-        targetSubHierarchicals
-            .OrderBy(subHierarchical =>
-                         Vector3.Distance(subHierarchical.Position, assignments[0].Second.Position))
-            .Take(capacity);
+    // Take only as many target sub-hierarchical objects as the interceptor's capacity. The
+    // sub-hierarchical objects are prioritized based on the intercept speed and the distance as a
+    // fallback.
+    Func<IHierarchical, float> metric =
+        hierarchical is HierarchicalAgent hierarchicalAgent? subHierarchical =>
+            FractionalSpeed.Calculate(hierarchicalAgent.Agent, subHierarchical.Position)
+        : subHierarchical => Vector3.Distance(hierarchical.Position, subHierarchical.Position);
+    var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals;
+    var filteredSubHierarchicals = targetSubHierarchicals.OrderByDescending(metric).Take(capacity);
+
     var targetHierarchical = new HierarchicalBase();
     foreach (var subHierarchical in filteredSubHierarchicals) {
       targetHierarchical.AddSubHierarchical(subHierarchical);
