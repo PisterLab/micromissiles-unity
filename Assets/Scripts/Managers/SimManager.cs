@@ -328,10 +328,11 @@ public class SimManager : MonoBehaviour {
       IInterceptor asset = CreateInterceptor(assetConfig, assetConfig.InitialState);
       if (asset != null) {
         // Change the color of the asset to be orange.
-        Renderer renderer = asset.gameObject.GetComponentInChildren<MeshRenderer>();
-        if (renderer != null) {
+        Renderer[] renderers = asset.gameObject.GetComponentsInChildren<MeshRenderer>();
+        foreach (var renderer in renderers) {
           var propertyBlock = new MaterialPropertyBlock();
           propertyBlock.SetColor("_BaseColor", _assetColor);
+          propertyBlock.SetColor("_Color", _assetColor);
           renderer.SetPropertyBlock(propertyBlock);
         }
         OnNewAsset?.Invoke(asset);
