@@ -1,6 +1,6 @@
 name: "DDG"
 agent_type: VESSEL
-cost: 2500000000
+cost: 0
 acceleration_config {
   max_forward_acceleration: 0
   max_reference_normal_acceleration: 10
