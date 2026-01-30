@@ -40,6 +40,9 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
   };
 
+  // Asset color.
+  private static readonly Color _assetColor = new Color(0.75f, 0.4f, 0f);
+
   public static SimManager Instance { get; private set; }
 
   // Simulation configuration.
@@ -323,10 +326,16 @@ public class SimManager : MonoBehaviour {
   private void InitializeAssets() {
     foreach (var assetConfig in SimulationConfig.AssetConfigs) {
       IInterceptor asset = CreateInterceptor(assetConfig, assetConfig.InitialState);
-      // Change the color of the assets to be orange.
-      Renderer renderer = asset.gameObject.GetComponentInChildren<MeshRenderer>();
-      renderer.material.color = new Color(0.75f, 0.4f, 0f);
-      OnNewAsset?.Invoke(asset);
+      if (asset != null) {
+        // Change the color of the asset to be orange.
+        Renderer renderer = asset.gameObject.GetComponentInChildren<MeshRenderer>();
+        if (renderer != null) {
+          var propertyBlock = new MaterialPropertyBlock();
+          propertyBlock.SetColor("_BaseColor", _assetColor);
+          renderer.SetPropertyBlock(propertyBlock);
+        }
+        OnNewAsset?.Invoke(asset);
+      }
     }
   }
 
@@ -334,7 +343,9 @@ public class SimManager : MonoBehaviour {
     foreach (var swarmConfig in SimulationConfig.InterceptorSwarmConfigs) {
       IInterceptor launcher =
           CreateInterceptor(swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState);
-      OnNewLauncher?.Invoke(launcher);
+      if (launcher != null) {
+        OnNewLauncher?.Invoke(launcher);
+      }
     }
   }
 
