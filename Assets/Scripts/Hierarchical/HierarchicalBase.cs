@@ -223,7 +223,7 @@ public class HierarchicalBase : IHierarchical {
     Func<IHierarchical, float> metric =
         hierarchical is HierarchicalAgent hierarchicalAgent? subHierarchical =>
             FractionalSpeed.Calculate(hierarchicalAgent.Agent, subHierarchical.Position)
-        : subHierarchical => Vector3.Distance(hierarchical.Position, subHierarchical.Position);
+        : subHierarchical => -Vector3.Distance(hierarchical.Position, subHierarchical.Position);
     var targetSubHierarchicals = assignments[0].Second.ActiveSubHierarchicals;
     var filteredSubHierarchicals = targetSubHierarchicals.OrderByDescending(metric).Take(capacity);
 

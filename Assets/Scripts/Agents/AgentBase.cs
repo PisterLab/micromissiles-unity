@@ -115,7 +115,9 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   public float MaxNormalAcceleration() {
     float maxReferenceNormalAcceleration =
-        (StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ?? 0) * Constants.kGravity;
+        (StaticConfig.AccelerationConfig?.MaxReferenceNormalAcceleration ??
+         float.PositiveInfinity) *
+        Constants.kGravity;
     float referenceSpeed = StaticConfig.AccelerationConfig?.ReferenceSpeed ?? 1;
     return Mathf.Pow(Speed / referenceSpeed, 2) * maxReferenceNormalAcceleration;
   }

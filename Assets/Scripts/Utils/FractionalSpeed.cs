@@ -9,7 +9,8 @@ public static class FractionalSpeed {
                                  (Constants.CalculateAirDensityAtAltitude(agent.Position.y) *
                                   (agent.StaticConfig.LiftDragConfig?.DragCoefficient ?? 0) *
                                   (agent.StaticConfig.BodyConfig?.CrossSectionalArea ?? 0));
-    float angleTimeConstant = agent.StaticConfig.LiftDragConfig?.LiftDragRatio ?? 1;
+    float angleTimeConstant =
+        agent.StaticConfig.LiftDragConfig?.LiftDragRatio ?? float.PositiveInfinity;
     // During the turn, the minimum radius dictates the minimum distance needed to make the turn.
     float minTurningRadius = agent.Velocity.sqrMagnitude / agent.MaxNormalAcceleration();
 

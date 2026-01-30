@@ -122,8 +122,7 @@ public class IADS : MonoBehaviour {
     foreach (var launcher in sortedLaunchers) {
       IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                     subInterceptor.CapacityRemaining);
-      subInterceptor.EvaluateReassignedTarget(target);
-      if (target != null) {
+      if (subInterceptor.EvaluateReassignedTarget(target)) {
         break;
       }
     }

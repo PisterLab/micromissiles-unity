@@ -48,8 +48,9 @@ public interface IInterceptor : IAgent {
   // If true, the interceptor can be reassigned to other targets.
   bool IsReassignable { get; }
 
-  // Evaluate whether to be reassigned to the new target.
-  void EvaluateReassignedTarget(IHierarchical target);
+  // Evaluate whether to be reassigned to the new target. Return whether the new target was
+  // accepted.
+  bool EvaluateReassignedTarget(IHierarchical target);
 
   // Assign a new target to the sub-interceptor.
   void AssignSubInterceptor(IInterceptor subInterceptor);
