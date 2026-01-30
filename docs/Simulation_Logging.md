@@ -97,7 +97,7 @@ Key columns include:
 The event log records significant events within the simulation.
 Key columns include:
 - **`Time`**: Simulation time when the event occurred.
-- **`Event`**: Type of event, e.g., `NEW_INTERCEPTOR`, `NEW_THREAT`, `INTERCEPTOR_HIT`, `INTERCEPTOR_MISS`, `THREAT_HIT`, or `THREAT_MISS`.
+- **`Event`**: Type of event, e.g., `NEW_INTERCEPTOR`, `NEW_THREAT`, `INTERCEPTOR_HIT`, `INTERCEPTOR_MISS`, `INTERCEPTOR_DESTROYED`, `THREAT_HIT`, or `THREAT_DESTROYED`.
 - **`AgentType`**: Type of the agent, e.g., `CarrierInterceptor`, `MissileInterceptor`, `FixedWingThreat`, or `RotaryWingThreat`.
 - **`AgentID`**: Unique identifier for each agent, e.g., `Micromissile_Interceptor_6`.
 - **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position where the event occurred.
@@ -133,7 +133,7 @@ Total number of events: 490.
 Event counts:
   NEW_INTERCEPTOR: 170
   NEW_THREAT: 100
-  THREAT_MISS: 100
+  THREAT_DESTROYED: 100
   INTERCEPTOR_HIT: 100
   INTERCEPTOR_MISS: 20
 Total duration of events: 45.72 seconds (from 0.00 to 45.72).

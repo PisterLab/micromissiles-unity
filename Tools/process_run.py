@@ -22,6 +22,7 @@ SCALAR_METRICS = [
     scalar_metric.NumMissileInterceptors(),
     scalar_metric.NumMissileInterceptorHits(),
     scalar_metric.NumMissileInterceptorMisses(),
+    scalar_metric.NumMissileInterceptorsDestroyed(),
     scalar_metric.MissileInterceptorHitRate(),
     scalar_metric.MissileInterceptorEfficiency(),
     scalar_metric.MinInterceptDistance(),

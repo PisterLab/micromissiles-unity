@@ -5,9 +5,10 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  public event InterceptHitMissEventHandler OnHit;
-  public event InterceptHitMissEventHandler OnMiss;
-  public event InterceptorAssignEventHandler OnAssignSubInterceptor;
+  public event InterceptorEventHandler OnHit;
+  public event InterceptorEventHandler OnMiss;
+  public event InterceptorEventHandler OnDestroyed;
+  public event InterceptorEventHandler OnAssignSubInterceptor;
   public event TargetReassignEventHandler OnReassignTarget;
 
   // Default proportional navigation controller gain.
@@ -106,6 +107,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
+    OnDestroyed += RegisterDestroyed;
   }
 
   protected override void FixedUpdate() {
@@ -221,8 +223,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // The interceptor records a hit only if it collides with a threat and destroys it with the
   // threat's kill probability.
   private void OnTriggerEnter(Collider other) {
-    if (CheckFloorCollision(other)) {
-      OnMiss?.Invoke(this);
+    if (CheckGroundCollision(other)) {
+      OnDestroyed?.Invoke(this);
       Terminate();
     }
 
@@ -246,6 +248,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RegisterMiss(IInterceptor interceptor) {
+    RequestTargetReassignment(interceptor);
+
+    // Request a new target from the parent interceptor.
+    OnAssignSubInterceptor?.Invoke(interceptor);
+  }
+
+  private void RegisterDestroyed(IInterceptor interceptor) {
+    RequestTargetReassignment(interceptor);
+  }
+
+  private void RequestTargetReassignment(IInterceptor interceptor) {
     // Request the parent interceptor to re-assign the target to another interceptor if there are no
     // other pursuers.
     IHierarchical target = interceptor.HierarchicalAgent.Target;
@@ -257,9 +270,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     foreach (var targetHierarchical in targetHierarchicals) {
       OnReassignTarget?.Invoke(targetHierarchical);
     }
-
-    // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {

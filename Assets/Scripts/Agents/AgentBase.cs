@@ -235,8 +235,8 @@ public class AgentBase : MonoBehaviour, IAgent {
     }
   }
 
-  protected bool CheckFloorCollision(Collider other) {
-    // Check if the agent hit the floor with a negative vertical speed.
+  protected bool CheckGroundCollision(Collider other) {
+    // Check if the agent hit the ground with a negative vertical speed.
     return other.gameObject.name == "Floor" && Vector3.Dot(Velocity, Vector3.up) < 0;
   }
 

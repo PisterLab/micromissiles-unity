@@ -184,7 +184,7 @@ public class SimManager : MonoBehaviour {
     IInterceptor interceptor = interceptorObject.GetComponent<IInterceptor>();
     interceptor.HierarchicalAgent = new HierarchicalAgent(interceptor);
     interceptor.StaticConfig = staticConfig;
-    interceptor.OnTerminated += (interceptor) => _interceptors.Remove(interceptor);
+    interceptor.OnTerminated += RegisterInterceptorTerminated;
     _interceptors.Add(interceptor);
     ++_numInterceptorsSpawned;
 
@@ -222,7 +222,7 @@ public class SimManager : MonoBehaviour {
     IThreat threat = threatObject.GetComponent<IThreat>();
     threat.HierarchicalAgent = new HierarchicalAgent(threat);
     threat.StaticConfig = staticConfig;
-    threat.OnMiss += RegisterThreatMiss;
+    threat.OnDestroyed += RegisterThreatDestroyed;
     threat.OnTerminated += RegisterThreatTerminated;
     _threats.Add(threat);
     ++_numThreatsSpawned;
@@ -359,7 +359,11 @@ public class SimManager : MonoBehaviour {
     Time.maximumDeltaTime = Time.fixedDeltaTime * 3;
   }
 
-  private void RegisterThreatMiss(IThreat threat) {
+  private void RegisterInterceptorTerminated(IAgent interceptor) {
+    _interceptors.Remove(interceptor);
+  }
+
+  private void RegisterThreatDestroyed(IThreat threat) {
     CostDestroyedThreats += threat.StaticConfig.Cost;
   }
 
