@@ -207,9 +207,8 @@ public class SimMonitor : MonoBehaviour {
     }
 
     float time = SimManager.Instance.ElapsedTime;
-    var agents = SimManager.Instance.Agents.Where(agent => (agent as AgentBase) != null &&
-                                                           !agent.IsTerminated &&
-                                                           agent.gameObject.activeInHierarchy);
+    var agents = SimManager.Instance.Agents.OfType<AgentBase>().Where(
+        agent => agent != null && !agent.IsTerminated && agent.gameObject.activeInHierarchy);
     foreach (var agent in agents) {
       Vector3 position = agent.Position;
       if (position == Vector3.zero) {
