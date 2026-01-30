@@ -168,7 +168,8 @@ public class SimManager : MonoBehaviour {
   }
 
   // Create an interceptor based on the provided configuration.
-  public IInterceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
+  public IInterceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState,
+                                        bool ignoreMetrics = false) {
     if (config == null) {
       return null;
     }
@@ -197,8 +198,10 @@ public class SimManager : MonoBehaviour {
     // Assign a unique and simple ID.
     interceptorObject.name = $"{staticConfig.Name}_Interceptor_{_numInterceptorsSpawned}";
 
-    // Add the interceptor's unit cost to the total cost.
-    CostLaunchedInterceptors += staticConfig.Cost;
+    if (!ignoreMetrics) {
+      // Add the interceptor's unit cost to the total cost.
+      CostLaunchedInterceptors += staticConfig.Cost;
+    }
 
     OnNewInterceptor?.Invoke(interceptor);
     return interceptor;
@@ -325,7 +328,8 @@ public class SimManager : MonoBehaviour {
 
   private void InitializeAssets() {
     foreach (var assetConfig in SimulationConfig.AssetConfigs) {
-      IInterceptor asset = CreateInterceptor(assetConfig, assetConfig.InitialState);
+      IInterceptor asset =
+          CreateInterceptor(assetConfig, assetConfig.InitialState, ignoreMetrics: true);
       if (asset != null) {
         // Change the color of the asset to be orange.
         Renderer[] renderers = asset.gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -342,8 +346,8 @@ public class SimManager : MonoBehaviour {
 
   private void InitializeLaunchers() {
     foreach (var swarmConfig in SimulationConfig.InterceptorSwarmConfigs) {
-      IInterceptor launcher =
-          CreateInterceptor(swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState);
+      IInterceptor launcher = CreateInterceptor(
+          swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState, ignoreMetrics: true);
       if (launcher != null) {
         OnNewLauncher?.Invoke(launcher);
       }

@@ -1,6 +1,6 @@
 name: "CVN"
 agent_type: VESSEL
-cost: 0
+cost: 13000000000
 acceleration_config {
   max_forward_acceleration: 0
   max_reference_normal_acceleration: 10
