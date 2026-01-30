@@ -201,17 +201,16 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void RecordTelemetry() {
-    float time = SimManager.Instance.ElapsedTime;
-    List<IAgent> agents = SimManager.Instance.Agents.Where(agent => !agent.IsTerminated).ToList();
     if (_telemetryBinaryWriter == null) {
       Debug.LogWarning("Telemetry binary writer is null.");
       return;
     }
-    foreach (var agent in agents) {
-      if (!agent.gameObject.activeInHierarchy) {
-        continue;
-      }
 
+    float time = SimManager.Instance.ElapsedTime;
+    var agents = SimManager.Instance.Agents.Where(agent => (agent as AgentBase) != null &&
+                                                           !agent.IsTerminated &&
+                                                           agent.gameObject.activeInHierarchy);
+    foreach (var agent in agents) {
       Vector3 position = agent.Position;
       if (position == Vector3.zero) {
         continue;
