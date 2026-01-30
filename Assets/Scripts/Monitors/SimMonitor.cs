@@ -214,7 +214,7 @@ public class SimMonitor : MonoBehaviour {
       return;
     }
     foreach (var agent in agents) {
-      if (agent == null || !agent.gameObject.activeInHierarchy) {
+      if (!agent.gameObject.activeInHierarchy) {
         continue;
       }
 
