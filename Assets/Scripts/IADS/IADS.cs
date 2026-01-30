@@ -10,7 +10,10 @@ public class IADS : MonoBehaviour {
   private const float _hierarchyUpdatePeriod = 5f;
   private const float _coverageFactor = 1f;
 
-  // The IADS only manages the launchers in the top level of the interceptor hierarchy.
+  // List of assets.
+  private List<IHierarchical> _assets = new List<IHierarchical>();
+
+  // The IADS only manages the launchers at the top level of the interceptor hierarchy.
   private List<IHierarchical> _launchers = new List<IHierarchical>();
 
   // Coroutine to perform the maintain the agent hierarchy.
@@ -20,6 +23,8 @@ public class IADS : MonoBehaviour {
   private List<IHierarchical> _newThreats = new List<IHierarchical>();
 
   public static IADS Instance { get; private set; }
+
+  public IReadOnlyList<IHierarchical> Assets => _assets.AsReadOnly();
 
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
 
@@ -34,6 +39,7 @@ public class IADS : MonoBehaviour {
   private void Start() {
     SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+    SimManager.Instance.OnNewAsset += RegisterNewAsset;
     SimManager.Instance.OnNewLauncher += RegisterNewLauncher;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
   }
@@ -54,15 +60,22 @@ public class IADS : MonoBehaviour {
       StopCoroutine(_hierarchyCoroutine);
       _hierarchyCoroutine = null;
     }
+    _assets.Clear();
     _launchers.Clear();
     _newThreats.Clear();
   }
 
-  public void RegisterNewLauncher(IInterceptor interceptor) {
-    if (interceptor.HierarchicalAgent != null) {
-      interceptor.OnAssignSubInterceptor += AssignSubInterceptor;
-      interceptor.OnReassignTarget += ReassignTarget;
-      _launchers.Add(interceptor.HierarchicalAgent);
+  public void RegisterNewAsset(IInterceptor asset) {
+    if (asset.HierarchicalAgent != null) {
+      _assets.Add(asset.HierarchicalAgent);
+    }
+  }
+
+  public void RegisterNewLauncher(IInterceptor launcher) {
+    if (launcher.HierarchicalAgent != null) {
+      launcher.OnAssignSubInterceptor += AssignSubInterceptor;
+      launcher.OnReassignTarget += ReassignTarget;
+      _launchers.Add(launcher.HierarchicalAgent);
     }
   }
 
@@ -101,10 +114,13 @@ public class IADS : MonoBehaviour {
     foreach (var assignment in swarmToLauncherAssignments) {
       // Assign the swarm as the target to the launcher.
       assignment.First.Target = assignment.Second;
-      // Assign the launcher as the target to all threats within the swarm.
-      // TODO(titan): The threats would normally target the aircraft carrier within the strike
-      // group.
-      AssignTarget(assignment.Second, assignment.First);
+
+      // Find the asset closest to each swarm and assign it as the target to all threats within the
+      // swarm. If there are no assets, the threats will target the launcher.
+      var closestAsset =
+          _assets.OrderBy(asset => Vector3.Distance(assignment.Second.Position, asset.Position))
+              .FirstOrDefault();
+      AssignTarget(assignment.Second, closestAsset ?? assignment.First);
     }
   }
 

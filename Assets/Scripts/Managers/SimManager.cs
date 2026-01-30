@@ -14,6 +14,8 @@ public class SimManager : MonoBehaviour {
   // Interceptor events.
   public delegate void NewInterceptorEventHandler(IInterceptor interceptor);
   public event NewInterceptorEventHandler OnNewInterceptor;
+  public delegate void NewAssetEventHandler(IInterceptor asset);
+  public event NewAssetEventHandler OnNewAsset;
   public delegate void NewLauncherEventHandler(IInterceptor launcher);
   public event NewLauncherEventHandler OnNewLauncher;
 
@@ -82,6 +84,7 @@ public class SimManager : MonoBehaviour {
     Debug.Log("Simulation started.");
     UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
 
+    InitializeAssets();
     InitializeLaunchers();
     InitializeThreats();
   }
@@ -314,6 +317,16 @@ public class SimManager : MonoBehaviour {
     if (ShouldEndSimulation()) {
       EndSimulation();
       PostSimulation();
+    }
+  }
+
+  private void InitializeAssets() {
+    foreach (var assetConfig in SimulationConfig.AssetConfigs) {
+      IInterceptor asset = CreateInterceptor(assetConfig, assetConfig.InitialState);
+      // Change the color of the assets to be orange.
+      Renderer renderer = asset.gameObject.GetComponentInChildren<MeshRenderer>();
+      renderer.material.color = new Color(0.75f, 0.4f, 0f);
+      OnNewAsset?.Invoke(asset);
     }
   }
 
