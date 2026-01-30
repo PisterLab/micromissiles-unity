@@ -10,7 +10,7 @@ bazel_dep(
 )
 bazel_dep(
     name = "or-tools",
-    version = "9.15",
+    version = "9.14",
 )
 bazel_dep(
     name = "platforms",
