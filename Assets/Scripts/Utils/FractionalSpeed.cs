@@ -5,7 +5,7 @@ public static class FractionalSpeed {
   // target position.
   public static float Calculate(IAgent agent, in Vector3 targetPosition) {
     // The speed decays exponentially with the traveled distance and with the bearing change.
-    float distanceTimeConstant = 2 * (agent.StaticConfig.BodyConfig?.Mass ?? 0) /
+    float distanceTimeConstant = 2 * (agent.StaticConfig.BodyConfig?.Mass ?? 1) /
                                  (Constants.CalculateAirDensityAtAltitude(agent.Position.y) *
                                   (agent.StaticConfig.LiftDragConfig?.DragCoefficient ?? 0) *
                                   (agent.StaticConfig.BodyConfig?.CrossSectionalArea ?? 0));
