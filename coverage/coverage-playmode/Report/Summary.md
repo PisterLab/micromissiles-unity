@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/22/2026 - 19:17:06 |
+| Generated on: | 02/02/2026 - 23:14:47 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 99 |
 | Files: | 95 |
-| Covered lines: | 1333 |
-| Uncovered lines: | 2345 |
-| Coverable lines: | 3678 |
-| Total lines: | 6566 |
-| Line coverage: | 36.2% (1333 of 3678) |
+| Covered lines: | 1329 |
+| Uncovered lines: | 2355 |
+| Coverable lines: | 3684 |
+| Total lines: | 6576 |
+| Line coverage: | 36% (1329 of 3684) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 389 |
-| Total methods: | 724 |
-| Method coverage: | 53.7% (389 of 724) |
+| Covered methods: | 388 |
+| Total methods: | 727 |
+| Method coverage: | 53.3% (388 of 727) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1333**|**2345**|**3678**|**6738**|**36.2%**|**0**|**0**|****|**389**|**724**|**53.7%**|
+|**bamlab.micromissiles**|**1329**|**2355**|**3684**|**6748**|**36%**|**0**|**0**|****|**388**|**727**|**53.3%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|139|36|175|331|79.4%|0|0||56|61|91.8%|
@@ -52,11 +52,11 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|18|31|49|74|36.7%|0|0||9|9|100%|
 |HierarchicalBase|20|116|136|231|14.7%|0|0||8|26|30.7%|
-|IADS|49|42|91|146|53.8%|0|0||12|15|80%|
+|IADS|43|48|91|146|47.2%|0|0||11|15|73.3%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
 |InputManager|65|102|167|213|38.9%|0|0||16|19|84.2%|
-|InterceptorBase|62|106|168|318|36.9%|0|0||18|25|72%|
+|InterceptorBase|63|111|174|327|36.2%|0|0||17|27|62.9%|
 |Interpolator2DBase|0|21|21|42|0%|0|0||0|5|0%|
 |Interpolator2DDataPoint|0|11|11|23|0%|0|0||0|5|0%|
 |IterativeLaunchPlanner|1|28|29|84|3.4%|0|0||1|2|50%|
@@ -70,7 +70,7 @@
 |LaunchAngleInterpolatorBase|1|23|24|57|4.1%|0|0||1|3|33.3%|
 |LaunchAngleOutput|0|2|2|8|0%|0|0||0|4|0%|
 |LaunchAnglePlannerBase|4|8|12|30|33.3%|0|0||3|5|60%|
-|LauncherBase|7|1|8|22|87.5%|0|0||1|2|50%|
+|LauncherBase|8|1|9|25|88.8%|0|0||2|3|66.6%|
 |LaunchPlan|0|11|11|27|0%|0|0||0|8|0%|
 |LaunchPlannerBase|6|0|6|14|100%|0|0||5|5|100%|
 |LinearExtrapolator|1|6|7|22|14.2%|0|0||1|2|50%|
@@ -100,7 +100,7 @@
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|4|0|4|10|100%|0|0||1|1|100%|
 |SimManager|202|42|244|383|82.7%|0|0||43|51|84.3%|
-|SimMonitor|74|102|176|281|42%|0|0||16|26|61.5%|
+|SimMonitor|74|101|175|279|42.2%|0|0||16|26|61.5%|
 |SingleReleaseStrategyBase|7|24|31|62|22.5%|0|0||2|3|66.6%|
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
 |SpeedEscapeDetector|0|18|18|45|0%|0|0||0|3|0%|

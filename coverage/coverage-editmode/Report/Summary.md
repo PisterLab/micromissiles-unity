@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 01/22/2026 - 19:14:57 |
+| Generated on: | 02/02/2026 - 23:12:36 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 99 |
 | Files: | 95 |
 | Covered lines: | 1029 |
-| Uncovered lines: | 2649 |
-| Coverable lines: | 3678 |
-| Total lines: | 6566 |
-| Line coverage: | 27.9% (1029 of 3678) |
+| Uncovered lines: | 2655 |
+| Coverable lines: | 3684 |
+| Total lines: | 6576 |
+| Line coverage: | 27.9% (1029 of 3684) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 300 |
-| Total methods: | 724 |
-| Method coverage: | 41.4% (300 of 724) |
+| Total methods: | 727 |
+| Method coverage: | 41.2% (300 of 727) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1029**|**2649**|**3678**|**6738**|**27.9%**|**0**|**0**|****|**300**|**724**|**41.4%**|
+|**bamlab.micromissiles**|**1029**|**2655**|**3684**|**6748**|**27.9%**|**0**|**0**|****|**300**|**727**|**41.2%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|79|175|331|54.8%|0|0||39|61|63.9%|
@@ -56,7 +56,7 @@
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
 |InputManager|0|167|167|213|0%|0|0||0|19|0%|
-|InterceptorBase|0|168|168|318|0%|0|0||0|25|0%|
+|InterceptorBase|0|174|174|327|0%|0|0||0|27|0%|
 |Interpolator2DBase|18|3|21|42|85.7%|0|0||4|5|80%|
 |Interpolator2DDataPoint|11|0|11|23|100%|0|0||5|5|100%|
 |IterativeLaunchPlanner|29|0|29|84|100%|0|0||2|2|100%|
@@ -70,7 +70,7 @@
 |LaunchAngleInterpolatorBase|22|2|24|57|91.6%|0|0||3|3|100%|
 |LaunchAngleOutput|2|0|2|8|100%|0|0||4|4|100%|
 |LaunchAnglePlannerBase|12|0|12|30|100%|0|0||5|5|100%|
-|LauncherBase|0|8|8|22|0%|0|0||0|2|0%|
+|LauncherBase|0|9|9|25|0%|0|0||0|3|0%|
 |LaunchPlan|11|0|11|27|100%|0|0||8|8|100%|
 |LaunchPlannerBase|6|0|6|14|100%|0|0||5|5|100%|
 |LinearExtrapolator|6|1|7|22|85.7%|0|0||2|2|100%|
@@ -100,7 +100,7 @@
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|0|4|4|10|0%|0|0||0|1|0%|
 |SimManager|0|244|244|383|0%|0|0||0|51|0%|
-|SimMonitor|0|176|176|281|0%|0|0||0|26|0%|
+|SimMonitor|0|175|175|279|0%|0|0||0|26|0%|
 |SingleReleaseStrategyBase|0|31|31|62|0%|0|0||0|3|0%|
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
 |SpeedEscapeDetector|18|0|18|45|100%|0|0||3|3|100%|
