@@ -58,11 +58,11 @@ public class IADS : MonoBehaviour {
     _newThreats.Clear();
   }
 
-  public void RegisterNewLauncher(IInterceptor interceptor) {
-    if (interceptor.HierarchicalAgent != null) {
-      interceptor.OnAssignSubInterceptor += AssignSubInterceptor;
-      interceptor.OnReassignTarget += ReassignTarget;
-      _launchers.Add(interceptor.HierarchicalAgent);
+  public void RegisterNewLauncher(IInterceptor launcher) {
+    if (launcher.HierarchicalAgent != null) {
+      launcher.OnAssignSubInterceptor += AssignSubInterceptor;
+      launcher.OnReassignTarget += ReassignTarget;
+      _launchers.Add(launcher.HierarchicalAgent);
     }
   }
 

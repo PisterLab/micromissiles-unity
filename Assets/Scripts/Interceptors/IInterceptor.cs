@@ -46,6 +46,9 @@ public interface IInterceptor : IAgent {
   // Number of sub-interceptors remaining.
   int NumSubInterceptorsRemaining { get; }
 
+  // If true, the interceptor can be reassigned to other targets.
+  bool IsReassignable { get; }
+
   // Assign a new target to the sub-interceptor.
   void AssignSubInterceptor(IInterceptor subInterceptor);
 
