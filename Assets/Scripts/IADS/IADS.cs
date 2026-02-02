@@ -7,21 +7,38 @@ using UnityEngine;
 // It implements the singleton pattern to ensure that only one instance exists.
 public class IADS : MonoBehaviour {
   // Hierarchy parameters.
-  private const float _hierarchyUpdatePeriod = 5f;
-  private const float _coverageFactor = 1f;
+
+
+  //TODO Joseph: (solution 1) implement variable update period. Higher frequency on lower level
+  //TODO Joseph: (solution 2) implement drift boundary detection.
+
+
+  private const float _hierarchyUpdatePeriod = 5f; // Var Def: seconds between top-level swarm rebuilds.
+  private const float _subHierarchyUpdatePeriod = 1f; // Var Def: seconds between sub-hierarchy refreshes.
+  private const float _coverageFactor = 1f; // Var Def: scales number of swarms vs launchers.
+
+  private const float _fuzzyFuzziness = 2f; // Var Def: FCM fuzziness (m) for swarms.
+  private const int _fuzzyMaxNumIterations = 25; // Var Def: FCM iteration cap for swarms.
+  private const float _fuzzyEpsilon = 1e-2f; // Var Def: FCM convergence threshold for swarms.
+  private const float _swarmMembershipThreshold = 0.35f; // Var Def: membership cutoff for swarm overlap.
+  private const int _swarmMaxMembershipsPerThreat = 2; // Var Def: max swarms a threat can belong to.
 
   // The IADS only manages the launchers in the top level of the interceptor hierarchy.
-  private List<IHierarchical> _launchers = new List<IHierarchical>();
+  private List<IHierarchical> _launchers = new List<IHierarchical>(); // Var Def: top-level launcher nodes.
 
   // Coroutine to perform the maintain the agent hierarchy.
-  private Coroutine _hierarchyCoroutine;
+  private Coroutine _hierarchyCoroutine; // Var Def: coroutine handle for hierarchy updates.
+  private float _nextHierarchyUpdateTime; // Var Def: next scheduled swarm rebuild time.
+  private float _nextSubHierarchyUpdateTime; // Var Def: next scheduled sub-hierarchy refresh time.
 
   // List of threats waiting to be incorporated into the hierarchy.
-  private List<IHierarchical> _newThreats = new List<IHierarchical>();
+  private List<IHierarchical> _newThreats = new List<IHierarchical>(); // Var Def: threats pending incorporation.
 
   public static IADS Instance { get; private set; }
 
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
+
+  
 
   private void Awake() {
     if (Instance != null && Instance != this) {
@@ -46,7 +63,7 @@ public class IADS : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
+    _hierarchyCoroutine = StartCoroutine(HierarchyManager(_subHierarchyUpdatePeriod));
   }
 
   private void RegisterSimulationEnded() {
@@ -73,19 +90,47 @@ public class IADS : MonoBehaviour {
   }
 
   private IEnumerator HierarchyManager(float period) {
+    _nextHierarchyUpdateTime = Time.time;
+    _nextSubHierarchyUpdateTime = Time.time;
     while (true) {
-      if (_newThreats.Count != 0) {
+      float now = Time.time;
+      if (now >= _nextHierarchyUpdateTime) {
         BuildHierarchy();
+        _nextHierarchyUpdateTime = now + _hierarchyUpdatePeriod;
+      }
+      if (now >= _nextSubHierarchyUpdateTime) {
+        RefreshSubHierarchies();
+        _nextSubHierarchyUpdateTime = now + _subHierarchyUpdatePeriod;
       }
       yield return new WaitForSeconds(period);
     }
   }
 
   private void BuildHierarchy() {
-    // TODO(titan): The clustering algorithm should be aware of the capacity of the launcher.
-    var swarmClusterer = new KMeansClusterer(Mathf.RoundToInt(_launchers.Count / _coverageFactor));
-    List<Cluster> swarms = swarmClusterer.Cluster(_newThreats);
+    if (_launchers.Count == 0) {
+      _newThreats.Clear();
+      return;
+    }
+
+    List<IHierarchical> activeThreats = CollectActiveThreats();
+    if (activeThreats.Count == 0) {
+      _newThreats.Clear();
+      return;
+    }
+
+    int k = Mathf.RoundToInt(_launchers.Count / _coverageFactor);
+    k = Mathf.Clamp(k, 1, activeThreats.Count);
+
+    var swarmClusterer =
+        new FuzzyCMeansClusterer(k, _fuzzyFuzziness, _fuzzyMaxNumIterations, _fuzzyEpsilon);
+    List<Vector3> initialCentroids = GetExistingSwarmCentroids(k);
+    FuzzyCMeansResult swarmResult = swarmClusterer.ClusterFuzzy(
+        activeThreats, initialCentroids, _swarmMembershipThreshold, _swarmMaxMembershipsPerThreat);
+    List<Cluster> swarms = swarmResult.Clusters;
     _newThreats.Clear();
+    if (swarms.Count == 0) {
+      return;
+    }
 
     // Assign one swarm to each launcher.
     var swarmToLauncherAssignment =
@@ -105,6 +150,53 @@ public class IADS : MonoBehaviour {
       // TODO(titan): The threats would normally target the aircraft carrier within the strike
       // group.
       AssignTarget(assignment.Second, assignment.First);
+    }
+  }
+
+  private List<IHierarchical> CollectActiveThreats() {
+    var threats = new HashSet<IHierarchical>();
+    foreach (var launcher in _launchers) {
+      if (launcher.Target == null || launcher.Target.IsTerminated) {
+        continue;
+      }
+      foreach (var threat in launcher.Target.ActiveSubHierarchicals) {
+        threats.Add(threat);
+      }
+    }
+    foreach (var threat in _newThreats) {
+      if (threat == null || threat.IsTerminated) {
+        continue;
+      }
+      threats.Add(threat);
+    }
+    return threats.ToList();
+  }
+
+  private List<Vector3> GetExistingSwarmCentroids(int k) {
+    var centroids = new List<Vector3>(k);
+    foreach (var launcher in _launchers) {
+      if (launcher.Target is Cluster cluster) {
+        centroids.Add(cluster.Centroid);
+      }
+    }
+    return centroids.Count == k ? centroids : null;
+  }
+
+  private void RefreshSubHierarchies() {
+    foreach (var launcher in _launchers) {
+      if (launcher is not HierarchicalAgent hierarchicalAgent) {
+        continue;
+      }
+      if (hierarchicalAgent.Target == null || hierarchicalAgent.Target.IsTerminated) {
+        continue;
+      }
+      if (hierarchicalAgent.Agent is not IInterceptor interceptor) {
+        continue;
+      }
+      if (interceptor.CapacityPerSubInterceptor <= 0) {
+        continue;
+      }
+      hierarchicalAgent.RefreshClusters(interceptor.CapacityPerSubInterceptor);
     }
   }
 
