@@ -117,6 +117,8 @@ public class IADS : MonoBehaviour {
 
       // Find the asset closest to each swarm and assign it as the target to all threats within the
       // swarm. If there are no assets, the threats will target the launcher.
+      // TODO(titan): Move threat coordination into a separate module as the IADS should only manage
+      // the defense strategy.
       var closestAsset =
           _assets.OrderBy(asset => Vector3.Distance(assignment.Second.Position, asset.Position))
               .FirstOrDefault();
