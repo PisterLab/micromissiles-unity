@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/03/2026 - 07:37:53 |
+| Generated on: | 02/03/2026 - 08:10:57 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 100 |
 | Files: | 96 |
-| Covered lines: | 1331 |
-| Uncovered lines: | 2380 |
+| Covered lines: | 1332 |
+| Uncovered lines: | 2379 |
 | Coverable lines: | 3711 |
 | Total lines: | 6620 |
-| Line coverage: | 35.8% (1331 of 3711) |
+| Line coverage: | 35.8% (1332 of 3711) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 388 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1331**|**2380**|**3711**|**6792**|**35.8%**|**0**|**0**|****|**388**|**733**|**52.9%**|
+|**bamlab.micromissiles**|**1332**|**2379**|**3711**|**6792**|**35.8%**|**0**|**0**|****|**388**|**733**|**52.9%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|139|36|175|333|79.4%|0|0||56|61|91.8%|
@@ -115,7 +115,7 @@
 |UIElementDragger|0|3|3|9|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|18|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
-|UIManager|120|42|162|234|74%|0|0||19|27|70.3%|
+|UIManager|121|41|162|234|74.6%|0|0||19|27|70.3%|
 |Utilities|14|6|20|33|70%|0|0||3|5|60%|
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|4|0|4|11|100%|0|0||1|1|100%|

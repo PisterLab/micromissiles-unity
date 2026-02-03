@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>02/03/2026 - 07:37:53</Generatedon>
+    <Generatedon>02/03/2026 - 08:10:57</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>1</Assemblies>
     <Classes>100</Classes>
     <Files>96</Files>
-    <Coveredlines>1331</Coveredlines>
-    <Uncoveredlines>2380</Uncoveredlines>
+    <Coveredlines>1332</Coveredlines>
+    <Uncoveredlines>2379</Uncoveredlines>
     <Coverablelines>3711</Coverablelines>
     <Totallines>6620</Totallines>
     <Linecoverage>35.8</Linecoverage>
@@ -18,7 +18,7 @@
     <Methodcoverage>52.9</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="100" coverage="35.8" coveredlines="1331" coverablelines="3711" totallines="6792" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="388" totalmethods="733" methodcoverage="52.9">
+    <Assembly name="bamlab.micromissiles" classes="100" coverage="35.8" coveredlines="1332" coverablelines="3711" totallines="6792" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="388" totalmethods="733" methodcoverage="52.9">
       <Class name="AccelerationTransformation" coverage="100" coveredlines="1" coverablelines="1" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="AerialMovement" coverage="4.7" coveredlines="1" coverablelines="21" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="4" methodcoverage="25" />
       <Class name="AgentBase" coverage="79.4" coveredlines="139" coverablelines="175" totallines="333" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="56" totalmethods="61" methodcoverage="91.8" />
@@ -114,7 +114,7 @@
       <Class name="UIElementDragger" coverage="0" coveredlines="0" coverablelines="3" totallines="9" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="UIElementMouseCapturer" coverage="0" coveredlines="0" coverablelines="11" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="UIEventMarker" coverage="0" coveredlines="0" coverablelines="17" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="UIManager" coverage="74" coveredlines="120" coverablelines="162" totallines="234" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="19" totalmethods="27" methodcoverage="70.3" />
+      <Class name="UIManager" coverage="74.6" coveredlines="121" coverablelines="162" totallines="234" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="19" totalmethods="27" methodcoverage="70.3" />
       <Class name="Utilities" coverage="70" coveredlines="14" coverablelines="20" totallines="33" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="5" methodcoverage="60" />
       <Class name="VelocityTransformation" coverage="100" coveredlines="4" coverablelines="4" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
       <Class name="Vessel" coverage="100" coveredlines="4" coverablelines="4" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />

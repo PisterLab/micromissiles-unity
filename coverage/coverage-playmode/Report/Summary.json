@@ -1,12 +1,12 @@
 {
   "summary": {
-    "generatedon": "2026-02-03T07:37:53Z",
+    "generatedon": "2026-02-03T08:10:57Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 1,
     "classes": 100,
     "files": 96,
-    "coveredlines": 1331,
-    "uncoveredlines": 2380,
+    "coveredlines": 1332,
+    "uncoveredlines": 2379,
     "coverablelines": 3711,
     "totallines": 6620,
     "linecoverage": 35.8,
@@ -18,7 +18,7 @@
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 100, "coverage": 35.8, "coveredlines": 1331, "coverablelines": 3711, "totallines": 6792, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 52.9, "coveredmethods": 388, "totalmethods": 733, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 100, "coverage": 35.8, "coveredlines": 1332, "coverablelines": 3711, "totallines": 6792, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 52.9, "coveredmethods": 388, "totalmethods": 733, "classesinassembly": [
         { "name": "AccelerationTransformation", "coverage": 100, "coveredlines": 1, "coverablelines": 1, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "AerialMovement", "coverage": 4.7, "coveredlines": 1, "coverablelines": 21, "totallines": 36, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 25, "coveredmethods": 1, "totalmethods": 4 },
         { "name": "AgentBase", "coverage": 79.4, "coveredlines": 139, "coverablelines": 175, "totallines": 333, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 91.8, "coveredmethods": 56, "totalmethods": 61 },
@@ -114,7 +114,7 @@
         { "name": "UIElementDragger", "coverage": 0, "coveredlines": 0, "coverablelines": 3, "totallines": 9, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "UIElementMouseCapturer", "coverage": 0, "coveredlines": 0, "coverablelines": 11, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 3 },
         { "name": "UIEventMarker", "coverage": 0, "coveredlines": 0, "coverablelines": 17, "totallines": 27, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
-        { "name": "UIManager", "coverage": 74, "coveredlines": 120, "coverablelines": 162, "totallines": 234, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 70.3, "coveredmethods": 19, "totalmethods": 27 },
+        { "name": "UIManager", "coverage": 74.6, "coveredlines": 121, "coverablelines": 162, "totallines": 234, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 70.3, "coveredmethods": 19, "totalmethods": 27 },
         { "name": "Utilities", "coverage": 70, "coveredlines": 14, "coverablelines": 20, "totallines": 33, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 60, "coveredmethods": 3, "totalmethods": 5 },
         { "name": "VelocityTransformation", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 },
         { "name": "Vessel", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 11, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 1, "totalmethods": 1 },
