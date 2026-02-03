@@ -2,20 +2,21 @@
 //
 // Interceptors defend the asset against incoming threats.
 
-public delegate void InterceptHitMissEventHandler(IInterceptor interceptor);
-public delegate void InterceptorAssignEventHandler(IInterceptor interceptor);
+public delegate void InterceptorEventHandler(IInterceptor interceptor);
 public delegate void TargetReassignEventHandler(IHierarchical target);
 
 public interface IInterceptor : IAgent {
   // The OnHit event handler is called when the interceptor successfully intercepts a threat.
-  event InterceptHitMissEventHandler OnHit;
-  // The OnMiss event handler is called when the interceptor is destroyed, e.g., through a
-  // collision, prior to intercepting a threat.
-  event InterceptHitMissEventHandler OnMiss;
+  event InterceptorEventHandler OnHit;
+  // The OnMiss event handler is called when the interceptor misses its target but is not destroyed.
+  event InterceptorEventHandler OnMiss;
+  // The OnDestroyed event handler is called when the interceptor is destroyed prior to intercepting
+  // a threat, e.g., through a ground collision.
+  event InterceptorEventHandler OnDestroyed;
 
   // The OnAssignSubInterceptor event handler is called when a sub-interceptor has no assigned
   // target and should be assigned one.
-  event InterceptorAssignEventHandler OnAssignSubInterceptor;
+  event InterceptorEventHandler OnAssignSubInterceptor;
 
   // The OnReassignTarget event handler is called when a target needs to be re-assigned to another
   // interceptor.

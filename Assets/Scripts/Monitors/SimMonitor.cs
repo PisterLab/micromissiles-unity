@@ -11,8 +11,9 @@ public class SimMonitor : MonoBehaviour {
     public const string NewThreat = "NEW_THREAT";
     public const string InterceptorHit = "INTERCEPTOR_HIT";
     public const string InterceptorMiss = "INTERCEPTOR_MISS";
+    public const string InterceptorDestroyed = "INTERCEPTOR_DESTROYED";
     public const string ThreatHit = "THREAT_HIT";
-    public const string ThreatMiss = "THREAT_MISS";
+    public const string ThreatDestroyed = "THREAT_DESTROYED";
   }
 
   [Serializable]
@@ -88,12 +89,13 @@ public class SimMonitor : MonoBehaviour {
     RegisterAgentEvent(interceptor, EventTypes.NewInterceptor);
     interceptor.OnHit += RegisterInterceptorHit;
     interceptor.OnMiss += RegisterInterceptorMiss;
+    interceptor.OnDestroyed += RegisterInterceptorDestroyed;
   }
 
   private void RegisterNewThreat(IThreat threat) {
     RegisterAgentEvent(threat, EventTypes.NewThreat);
     threat.OnHit += RegisterThreatHit;
-    threat.OnMiss += RegisterThreatMiss;
+    threat.OnDestroyed += RegisterThreatDestroyed;
   }
 
   private void RegisterInterceptorHit(IInterceptor interceptor) {
@@ -104,12 +106,16 @@ public class SimMonitor : MonoBehaviour {
     RegisterAgentEvent(interceptor, EventTypes.InterceptorMiss);
   }
 
+  private void RegisterInterceptorDestroyed(IInterceptor interceptor) {
+    RegisterAgentEvent(interceptor, EventTypes.InterceptorDestroyed);
+  }
+
   private void RegisterThreatHit(IThreat threat) {
     RegisterAgentEvent(threat, EventTypes.ThreatHit);
   }
 
-  private void RegisterThreatMiss(IThreat threat) {
-    RegisterAgentEvent(threat, EventTypes.ThreatMiss);
+  private void RegisterThreatDestroyed(IThreat threat) {
+    RegisterAgentEvent(threat, EventTypes.ThreatDestroyed);
   }
 
   private void RegisterAgentEvent(IAgent agent, string eventType) {

@@ -4,8 +4,8 @@ using UnityEngine;
 
 // Base implementation of a threat.
 public abstract class ThreatBase : AgentBase, IThreat {
-  public event ThreatHitMissEventHandler OnHit;
-  public event ThreatHitMissEventHandler OnMiss;
+  public event ThreatEventHandler OnHit;
+  public event ThreatEventHandler OnDestroyed;
 
   // Speed difference threshold for applying forward acceleration.
   private const float _speedErrorThreshold = 1f;
@@ -35,7 +35,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
   }
 
   public void HandleIntercept() {
-    OnMiss?.Invoke(this);
+    OnDestroyed?.Invoke(this);
     Terminate();
   }
 
@@ -142,8 +142,8 @@ public abstract class ThreatBase : AgentBase, IThreat {
   // for a threat to collide with another threat or with a non-pursuing interceptor. Interceptors
   // will handle colliding with a threat.
   private void OnTriggerEnter(Collider other) {
-    if (CheckFloorCollision(other)) {
-      OnMiss?.Invoke(this);
+    if (CheckGroundCollision(other)) {
+      OnDestroyed?.Invoke(this);
       Terminate();
     }
 
@@ -153,7 +153,7 @@ public abstract class ThreatBase : AgentBase, IThreat {
     }
     // Check if the collision is with another threat or with the intended target.
     if (otherAgent is IThreat) {
-      OnMiss?.Invoke(this);
+      OnDestroyed?.Invoke(this);
       Terminate();
     } else if (HierarchicalAgent.Target is HierarchicalAgent targetAgent &&
                otherAgent == targetAgent.Agent) {

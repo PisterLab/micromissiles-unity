@@ -25,10 +25,16 @@ class EventMarker:
 
 # Map from event type to event marker.
 EVENT_TYPE_TO_MARKER = {
-    EventType.NEW_INTERCEPTOR: EventMarker("s", "blue", "New Interceptor"),
-    EventType.NEW_THREAT: EventMarker("^", "darkorange", "New Threat"),
-    EventType.INTERCEPTOR_HIT: EventMarker("o", "lime", "Hit"),
-    EventType.INTERCEPTOR_MISS: EventMarker("X", "red", "Miss"),
+    EventType.NEW_INTERCEPTOR:
+        EventMarker("s", "blue", "New Interceptor"),
+    EventType.NEW_THREAT:
+        EventMarker("^", "darkorange", "New Threat"),
+    EventType.INTERCEPTOR_HIT:
+        EventMarker("o", "lime", "Interceptor Hit"),
+    EventType.INTERCEPTOR_MISS:
+        EventMarker("X", "red", "Interceptor Miss"),
+    EventType.INTERCEPTOR_DESTROYED:
+        EventMarker("v", "darkviolet", "Interceptor Destroyed"),
 }
 
 
