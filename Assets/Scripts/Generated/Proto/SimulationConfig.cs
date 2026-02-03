@@ -25,15 +25,17 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch9Db25maWdzL3NpbXVsYXRpb25fY29uZmlnLnByb3RvEgdjb25maWdzGhpD",
-            "b25maWdzL3N3YXJtX2NvbmZpZy5wcm90byKlAQoQU2ltdWxhdGlvbkNvbmZp",
-            "ZxIQCghlbmRfdGltZRgBIAEoAhISCgp0aW1lX3NjYWxlGAIgASgCEjcKGWlu",
-            "dGVyY2VwdG9yX3N3YXJtX2NvbmZpZ3MYAyADKAsyFC5jb25maWdzLlN3YXJt",
-            "Q29uZmlnEjIKFHRocmVhdF9zd2FybV9jb25maWdzGAQgAygLMhQuY29uZmln",
-            "cy5Td2FybUNvbmZpZ2IGcHJvdG8z"));
+            "b25maWdzL2FnZW50X2NvbmZpZy5wcm90bxoaQ29uZmlncy9zd2FybV9jb25m",
+            "aWcucHJvdG8i0gEKEFNpbXVsYXRpb25Db25maWcSEAoIZW5kX3RpbWUYASAB",
+            "KAISEgoKdGltZV9zY2FsZRgCIAEoAhIrCg1hc3NldF9jb25maWdzGAMgAygL",
+            "MhQuY29uZmlncy5BZ2VudENvbmZpZxI3ChlpbnRlcmNlcHRvcl9zd2FybV9j",
+            "b25maWdzGAQgAygLMhQuY29uZmlncy5Td2FybUNvbmZpZxIyChR0aHJlYXRf",
+            "c3dhcm1fY29uZmlncxgFIAMoCzIULmNvbmZpZ3MuU3dhcm1Db25maWdiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Configs.SwarmConfigReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Configs.AgentConfigReflection.Descriptor, global::Configs.SwarmConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SimulationConfig), global::Configs.SimulationConfig.Parser, new[]{ "EndTime", "TimeScale", "InterceptorSwarmConfigs", "ThreatSwarmConfigs" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SimulationConfig), global::Configs.SimulationConfig.Parser, new[]{ "EndTime", "TimeScale", "AssetConfigs", "InterceptorSwarmConfigs", "ThreatSwarmConfigs" }, null, null, null, null)
           }));
     }
     #endregion
@@ -80,6 +82,7 @@ namespace Configs {
     public SimulationConfig(SimulationConfig other) : this() {
       endTime_ = other.endTime_;
       timeScale_ = other.timeScale_;
+      assetConfigs_ = other.assetConfigs_.Clone();
       interceptorSwarmConfigs_ = other.interceptorSwarmConfigs_.Clone();
       threatSwarmConfigs_ = other.threatSwarmConfigs_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -121,10 +124,24 @@ namespace Configs {
       }
     }
 
+    /// <summary>Field number for the "asset_configs" field.</summary>
+    public const int AssetConfigsFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::Configs.AgentConfig> _repeated_assetConfigs_codec
+        = pb::FieldCodec.ForMessage(26, global::Configs.AgentConfig.Parser);
+    private readonly pbc::RepeatedField<global::Configs.AgentConfig> assetConfigs_ = new pbc::RepeatedField<global::Configs.AgentConfig>();
+    /// <summary>
+    /// Asset configurations.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::Configs.AgentConfig> AssetConfigs {
+      get { return assetConfigs_; }
+    }
+
     /// <summary>Field number for the "interceptor_swarm_configs" field.</summary>
-    public const int InterceptorSwarmConfigsFieldNumber = 3;
+    public const int InterceptorSwarmConfigsFieldNumber = 4;
     private static readonly pb::FieldCodec<global::Configs.SwarmConfig> _repeated_interceptorSwarmConfigs_codec
-        = pb::FieldCodec.ForMessage(26, global::Configs.SwarmConfig.Parser);
+        = pb::FieldCodec.ForMessage(34, global::Configs.SwarmConfig.Parser);
     private readonly pbc::RepeatedField<global::Configs.SwarmConfig> interceptorSwarmConfigs_ = new pbc::RepeatedField<global::Configs.SwarmConfig>();
     /// <summary>
     /// Interceptor swarm configurations.
@@ -136,9 +153,9 @@ namespace Configs {
     }
 
     /// <summary>Field number for the "threat_swarm_configs" field.</summary>
-    public const int ThreatSwarmConfigsFieldNumber = 4;
+    public const int ThreatSwarmConfigsFieldNumber = 5;
     private static readonly pb::FieldCodec<global::Configs.SwarmConfig> _repeated_threatSwarmConfigs_codec
-        = pb::FieldCodec.ForMessage(34, global::Configs.SwarmConfig.Parser);
+        = pb::FieldCodec.ForMessage(42, global::Configs.SwarmConfig.Parser);
     private readonly pbc::RepeatedField<global::Configs.SwarmConfig> threatSwarmConfigs_ = new pbc::RepeatedField<global::Configs.SwarmConfig>();
     /// <summary>
     /// Threat swarm configurations.
@@ -166,6 +183,7 @@ namespace Configs {
       }
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(EndTime, other.EndTime)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(TimeScale, other.TimeScale)) return false;
+      if(!assetConfigs_.Equals(other.assetConfigs_)) return false;
       if(!interceptorSwarmConfigs_.Equals(other.interceptorSwarmConfigs_)) return false;
       if(!threatSwarmConfigs_.Equals(other.threatSwarmConfigs_)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -177,6 +195,7 @@ namespace Configs {
       int hash = 1;
       if (EndTime != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(EndTime);
       if (TimeScale != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(TimeScale);
+      hash ^= assetConfigs_.GetHashCode();
       hash ^= interceptorSwarmConfigs_.GetHashCode();
       hash ^= threatSwarmConfigs_.GetHashCode();
       if (_unknownFields != null) {
@@ -205,6 +224,7 @@ namespace Configs {
         output.WriteRawTag(21);
         output.WriteFloat(TimeScale);
       }
+      assetConfigs_.WriteTo(output, _repeated_assetConfigs_codec);
       interceptorSwarmConfigs_.WriteTo(output, _repeated_interceptorSwarmConfigs_codec);
       threatSwarmConfigs_.WriteTo(output, _repeated_threatSwarmConfigs_codec);
       if (_unknownFields != null) {
@@ -225,6 +245,7 @@ namespace Configs {
         output.WriteRawTag(21);
         output.WriteFloat(TimeScale);
       }
+      assetConfigs_.WriteTo(ref output, _repeated_assetConfigs_codec);
       interceptorSwarmConfigs_.WriteTo(ref output, _repeated_interceptorSwarmConfigs_codec);
       threatSwarmConfigs_.WriteTo(ref output, _repeated_threatSwarmConfigs_codec);
       if (_unknownFields != null) {
@@ -243,6 +264,7 @@ namespace Configs {
       if (TimeScale != 0F) {
         size += 1 + 4;
       }
+      size += assetConfigs_.CalculateSize(_repeated_assetConfigs_codec);
       size += interceptorSwarmConfigs_.CalculateSize(_repeated_interceptorSwarmConfigs_codec);
       size += threatSwarmConfigs_.CalculateSize(_repeated_threatSwarmConfigs_codec);
       if (_unknownFields != null) {
@@ -263,6 +285,7 @@ namespace Configs {
       if (other.TimeScale != 0F) {
         TimeScale = other.TimeScale;
       }
+      assetConfigs_.Add(other.assetConfigs_);
       interceptorSwarmConfigs_.Add(other.interceptorSwarmConfigs_);
       threatSwarmConfigs_.Add(other.threatSwarmConfigs_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -293,10 +316,14 @@ namespace Configs {
             break;
           }
           case 26: {
-            interceptorSwarmConfigs_.AddEntriesFrom(input, _repeated_interceptorSwarmConfigs_codec);
+            assetConfigs_.AddEntriesFrom(input, _repeated_assetConfigs_codec);
             break;
           }
           case 34: {
+            interceptorSwarmConfigs_.AddEntriesFrom(input, _repeated_interceptorSwarmConfigs_codec);
+            break;
+          }
+          case 42: {
             threatSwarmConfigs_.AddEntriesFrom(input, _repeated_threatSwarmConfigs_codec);
             break;
           }
@@ -328,10 +355,14 @@ namespace Configs {
             break;
           }
           case 26: {
-            interceptorSwarmConfigs_.AddEntriesFrom(ref input, _repeated_interceptorSwarmConfigs_codec);
+            assetConfigs_.AddEntriesFrom(ref input, _repeated_assetConfigs_codec);
             break;
           }
           case 34: {
+            interceptorSwarmConfigs_.AddEntriesFrom(ref input, _repeated_interceptorSwarmConfigs_codec);
+            break;
+          }
+          case 42: {
             threatSwarmConfigs_.AddEntriesFrom(ref input, _repeated_threatSwarmConfigs_codec);
             break;
           }

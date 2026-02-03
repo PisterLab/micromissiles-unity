@@ -77,6 +77,7 @@ TEST(ProtobufTest, LoadProtobufTextFileSimulationConfig) {
   EXPECT_EQ(LoadProtobufTextFile<configs::SimulationConfig>(
                 kSimulationConfigFile, &simulation_config),
             plugin::STATUS_OK);
+  EXPECT_EQ(simulation_config.asset_configs().size(), 1);
   EXPECT_EQ(simulation_config.interceptor_swarm_configs().size(), 1);
   EXPECT_EQ(simulation_config.threat_swarm_configs().size(), 1);
 }
