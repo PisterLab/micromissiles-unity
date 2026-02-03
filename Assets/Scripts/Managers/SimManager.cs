@@ -14,6 +14,8 @@ public class SimManager : MonoBehaviour {
   // Interceptor events.
   public delegate void NewInterceptorEventHandler(IInterceptor interceptor);
   public event NewInterceptorEventHandler OnNewInterceptor;
+  public delegate void NewAssetEventHandler(IInterceptor asset);
+  public event NewAssetEventHandler OnNewAsset;
   public delegate void NewLauncherEventHandler(IInterceptor launcher);
   public event NewLauncherEventHandler OnNewLauncher;
 
@@ -37,6 +39,9 @@ public class SimManager : MonoBehaviour {
     { Configs.AgentType.FixedWingThreat, "FixedWingThreat" },
     { Configs.AgentType.RotaryWingThreat, "RotaryWingThreat" },
   };
+
+  // Asset color.
+  private static readonly Color _assetColor = new Color(0.75f, 0.4f, 0f);
 
   public static SimManager Instance { get; private set; }
 
@@ -82,6 +87,7 @@ public class SimManager : MonoBehaviour {
     Debug.Log("Simulation started.");
     UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
 
+    InitializeAssets();
     InitializeLaunchers();
     InitializeThreats();
   }
@@ -162,7 +168,8 @@ public class SimManager : MonoBehaviour {
   }
 
   // Create an interceptor based on the provided configuration.
-  public IInterceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState) {
+  public IInterceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState,
+                                        bool ignoreMetrics = false) {
     if (config == null) {
       return null;
     }
@@ -191,8 +198,10 @@ public class SimManager : MonoBehaviour {
     // Assign a unique and simple ID.
     interceptorObject.name = $"{staticConfig.Name}_Interceptor_{_numInterceptorsSpawned}";
 
-    // Add the interceptor's unit cost to the total cost.
-    CostLaunchedInterceptors += staticConfig.Cost;
+    if (!ignoreMetrics) {
+      // Add the interceptor's unit cost to the total cost.
+      CostLaunchedInterceptors += staticConfig.Cost;
+    }
 
     OnNewInterceptor?.Invoke(interceptor);
     return interceptor;
@@ -317,11 +326,33 @@ public class SimManager : MonoBehaviour {
     }
   }
 
+  private void InitializeAssets() {
+    foreach (var assetConfig in SimulationConfig.AssetConfigs) {
+      IInterceptor asset =
+          CreateInterceptor(assetConfig, assetConfig.InitialState, ignoreMetrics: true);
+      if (asset != null) {
+        // Change the color of the asset to be orange.
+        Renderer[] renderers = asset.gameObject.GetComponentsInChildren<Renderer>();
+        foreach (var renderer in renderers) {
+          var propertyBlock = new MaterialPropertyBlock();
+          propertyBlock.SetColor("_BaseColor", _assetColor);
+          propertyBlock.SetColor("_Color", _assetColor);
+          renderer.SetPropertyBlock(propertyBlock);
+        }
+        OnNewAsset?.Invoke(asset);
+      }
+    }
+  }
+
   private void InitializeLaunchers() {
     foreach (var swarmConfig in SimulationConfig.InterceptorSwarmConfigs) {
-      IInterceptor launcher =
-          CreateInterceptor(swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState);
-      OnNewLauncher?.Invoke(launcher);
+      IInterceptor launcher = CreateInterceptor(
+          swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState, ignoreMetrics: true);
+      if (launcher != null) {
+        OnNewLauncher?.Invoke(launcher);
+        // All launchers are assets.
+        OnNewAsset?.Invoke(launcher);
+      }
     }
   }
 

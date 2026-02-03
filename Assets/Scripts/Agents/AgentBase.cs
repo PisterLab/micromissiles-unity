@@ -224,7 +224,7 @@ public class AgentBase : MonoBehaviour, IAgent {
         break;
       }
       default: {
-        Debug.LogError($"Sensor type {AgentConfig.DynamicConfig?.SensorConfig?.Type} not found.");
+        Debug.LogWarning($"Sensor type {AgentConfig.DynamicConfig?.SensorConfig?.Type} not found.");
         break;
       }
     }
