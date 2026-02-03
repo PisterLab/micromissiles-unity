@@ -1,28 +1,28 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/02/2026 - 23:12:36 |
+| Generated on: | 02/03/2026 - 01:47:23 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
-| Classes: | 99 |
-| Files: | 95 |
-| Covered lines: | 1029 |
-| Uncovered lines: | 2655 |
-| Coverable lines: | 3684 |
-| Total lines: | 6576 |
-| Line coverage: | 27.9% (1029 of 3684) |
+| Classes: | 100 |
+| Files: | 96 |
+| Covered lines: | 1025 |
+| Uncovered lines: | 2671 |
+| Coverable lines: | 3696 |
+| Total lines: | 6597 |
+| Line coverage: | 27.7% (1025 of 3696) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 300 |
-| Total methods: | 727 |
-| Method coverage: | 41.2% (300 of 727) |
+| Covered methods: | 301 |
+| Total methods: | 729 |
+| Method coverage: | 41.2% (301 of 729) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1029**|**2655**|**3684**|**6748**|**27.9%**|**0**|**0**|****|**300**|**727**|**41.2%**|
+|**bamlab.micromissiles**|**1025**|**2671**|**3696**|**6769**|**27.7%**|**0**|**0**|****|**301**|**729**|**41.2%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
-|AgentBase|96|79|175|331|54.8%|0|0||39|61|63.9%|
+|AgentBase|96|79|175|333|54.8%|0|0||39|61|63.9%|
 |AgglomerativeClusterer|59|0|59|97|100%|0|0||2|2|100%|
 |ApnController|7|0|7|17|100%|0|0||2|2|100%|
 |AssignmentItem|2|0|2|5|100%|0|0||4|4|100%|
@@ -47,16 +47,17 @@
 |FixedHierarchical|13|0|13|24|100%|0|0||12|12|100%|
 |FixedWingThreat|0|5|5|14|0%|0|0||0|1|0%|
 |FlightPlan|10|0|10|27|100%|0|0||4|4|100%|
+|FractionalSpeed|10|0|10|27|100%|0|0||1|1|100%|
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |GeometricEscapeDetector|10|0|10|35|100%|0|0||2|2|100%|
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|4|45|49|74|8.1%|0|0||3|9|33.3%|
-|HierarchicalBase|48|88|136|231|35.2%|0|0||18|26|69.2%|
-|IADS|0|91|91|146|0%|0|0||0|15|0%|
+|HierarchicalBase|48|91|139|236|34.5%|0|0||18|26|69.2%|
+|IADS|0|91|91|147|0%|0|0||0|15|0%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
 |InputManager|0|167|167|213|0%|0|0||0|19|0%|
-|InterceptorBase|0|174|174|327|0%|0|0||0|27|0%|
+|InterceptorBase|0|187|187|352|0%|0|0||0|28|0%|
 |Interpolator2DBase|18|3|21|42|85.7%|0|0||4|5|80%|
 |Interpolator2DDataPoint|11|0|11|23|100%|0|0||5|5|100%|
 |IterativeLaunchPlanner|29|0|29|84|100%|0|0||2|2|100%|
@@ -75,7 +76,7 @@
 |LaunchPlannerBase|6|0|6|14|100%|0|0||5|5|100%|
 |LinearExtrapolator|6|1|7|22|85.7%|0|0||2|2|100%|
 |MassReleaseStrategyBase|0|46|46|86|0%|0|0||0|4|0%|
-|MaxSpeedAssignment|14|1|15|40|93.3%|0|0||2|2|100%|
+|MaxSpeedAssignment|7|1|8|22|87.5%|0|0||2|2|100%|
 |MinDistanceAssignment|4|0|4|12|100%|0|0||2|2|100%|
 |MissileInterceptor|0|7|7|14|0%|0|0||0|3|0%|
 |MissileMovement|58|14|72|139|80.5%|0|0||9|11|81.8%|
@@ -103,7 +104,7 @@
 |SimMonitor|0|175|175|279|0%|0|0||0|26|0%|
 |SingleReleaseStrategyBase|0|31|31|62|0%|0|0||0|3|0%|
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
-|SpeedEscapeDetector|18|0|18|45|100%|0|0||3|3|100%|
+|SpeedEscapeDetector|11|0|11|24|100%|0|0||3|3|100%|
 |SpriteManager|0|8|8|14|0%|0|0||0|1|0%|
 |TacticalPanel|0|167|167|266|0%|0|0||0|28|0%|
 |TacticalPolarGridGraphic|0|142|142|230|0%|0|0||0|15|0%|

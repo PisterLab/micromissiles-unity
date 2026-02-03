@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>02/02/2026 - 23:12:36</Generatedon>
+    <Generatedon>02/03/2026 - 01:47:23</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>1</Assemblies>
-    <Classes>99</Classes>
-    <Files>95</Files>
-    <Coveredlines>1029</Coveredlines>
-    <Uncoveredlines>2655</Uncoveredlines>
-    <Coverablelines>3684</Coverablelines>
-    <Totallines>6576</Totallines>
-    <Linecoverage>27.9</Linecoverage>
+    <Classes>100</Classes>
+    <Files>96</Files>
+    <Coveredlines>1025</Coveredlines>
+    <Uncoveredlines>2671</Uncoveredlines>
+    <Coverablelines>3696</Coverablelines>
+    <Totallines>6597</Totallines>
+    <Linecoverage>27.7</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
-    <Coveredmethods>300</Coveredmethods>
-    <Totalmethods>727</Totalmethods>
+    <Coveredmethods>301</Coveredmethods>
+    <Totalmethods>729</Totalmethods>
     <Methodcoverage>41.2</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="99" coverage="27.9" coveredlines="1029" coverablelines="3684" totallines="6748" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="300" totalmethods="727" methodcoverage="41.2">
+    <Assembly name="bamlab.micromissiles" classes="100" coverage="27.7" coveredlines="1025" coverablelines="3696" totallines="6769" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="301" totalmethods="729" methodcoverage="41.2">
       <Class name="AccelerationTransformation" coverage="100" coveredlines="1" coverablelines="1" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="AerialMovement" coverage="100" coveredlines="21" coverablelines="21" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
-      <Class name="AgentBase" coverage="54.8" coveredlines="96" coverablelines="175" totallines="331" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="39" totalmethods="61" methodcoverage="63.9" />
+      <Class name="AgentBase" coverage="54.8" coveredlines="96" coverablelines="175" totallines="333" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="39" totalmethods="61" methodcoverage="63.9" />
       <Class name="AgglomerativeClusterer" coverage="100" coveredlines="59" coverablelines="59" totallines="97" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="ApnController" coverage="100" coveredlines="7" coverablelines="7" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="AssignmentItem" coverage="100" coveredlines="2" coverablelines="2" totallines="5" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
@@ -46,16 +46,17 @@
       <Class name="FixedHierarchical" coverage="100" coveredlines="13" coverablelines="13" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="12" totalmethods="12" methodcoverage="100" />
       <Class name="FixedWingThreat" coverage="0" coveredlines="0" coverablelines="5" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="FlightPlan" coverage="100" coveredlines="10" coverablelines="10" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
+      <Class name="FractionalSpeed" coverage="100" coveredlines="10" coverablelines="10" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="GenerateCone" coverage="0" coveredlines="0" coverablelines="100" totallines="144" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="9" methodcoverage="0" />
       <Class name="GeometricEscapeDetector" coverage="100" coveredlines="10" coverablelines="10" totallines="35" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="GroundMovement" coverage="100" coveredlines="6" coverablelines="6" totallines="18" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="HierarchicalAgent" coverage="8.1" coveredlines="4" coverablelines="49" totallines="74" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="9" methodcoverage="33.3" />
-      <Class name="HierarchicalBase" coverage="35.2" coveredlines="48" coverablelines="136" totallines="231" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="18" totalmethods="26" methodcoverage="69.2" />
-      <Class name="IADS" coverage="0" coveredlines="0" coverablelines="91" totallines="146" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
+      <Class name="HierarchicalBase" coverage="34.5" coveredlines="48" coverablelines="139" totallines="236" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="18" totalmethods="26" methodcoverage="69.2" />
+      <Class name="IADS" coverage="0" coveredlines="0" coverablelines="91" totallines="147" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
       <Class name="IdealMovement" coverage="100" coveredlines="4" coverablelines="4" totallines="15" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="IdealSensor" coverage="100" coveredlines="16" coverablelines="16" totallines="37" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
       <Class name="InputManager" coverage="0" coveredlines="0" coverablelines="167" totallines="213" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="19" methodcoverage="0" />
-      <Class name="InterceptorBase" coverage="0" coveredlines="0" coverablelines="174" totallines="327" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="27" methodcoverage="0" />
+      <Class name="InterceptorBase" coverage="0" coveredlines="0" coverablelines="187" totallines="352" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="28" methodcoverage="0" />
       <Class name="Interpolator2DBase" coverage="85.7" coveredlines="18" coverablelines="21" totallines="42" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="5" methodcoverage="80" />
       <Class name="Interpolator2DDataPoint" coverage="100" coveredlines="11" coverablelines="11" totallines="23" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
       <Class name="IterativeLaunchPlanner" coverage="100" coveredlines="29" coverablelines="29" totallines="84" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
@@ -74,7 +75,7 @@
       <Class name="LaunchPlannerBase" coverage="100" coveredlines="6" coverablelines="6" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="5" totalmethods="5" methodcoverage="100" />
       <Class name="LinearExtrapolator" coverage="85.7" coveredlines="6" coverablelines="7" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="MassReleaseStrategyBase" coverage="0" coveredlines="0" coverablelines="46" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
-      <Class name="MaxSpeedAssignment" coverage="93.3" coveredlines="14" coverablelines="15" totallines="40" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
+      <Class name="MaxSpeedAssignment" coverage="87.5" coveredlines="7" coverablelines="8" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="MinDistanceAssignment" coverage="100" coveredlines="4" coverablelines="4" totallines="12" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="MissileInterceptor" coverage="0" coveredlines="0" coverablelines="7" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="MissileMovement" coverage="80.5" coveredlines="58" coverablelines="72" totallines="139" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="9" totalmethods="11" methodcoverage="81.8" />
@@ -102,7 +103,7 @@
       <Class name="SimMonitor" coverage="0" coveredlines="0" coverablelines="175" totallines="279" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="26" methodcoverage="0" />
       <Class name="SingleReleaseStrategyBase" coverage="0" coveredlines="0" coverablelines="31" totallines="62" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="SizeAndRadiusConstrainedClustererBase" coverage="80" coveredlines="8" coverablelines="10" totallines="26" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
-      <Class name="SpeedEscapeDetector" coverage="100" coveredlines="18" coverablelines="18" totallines="45" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
+      <Class name="SpeedEscapeDetector" coverage="100" coveredlines="11" coverablelines="11" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="3" methodcoverage="100" />
       <Class name="SpriteManager" coverage="0" coveredlines="0" coverablelines="8" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
       <Class name="TacticalPanel" coverage="0" coveredlines="0" coverablelines="167" totallines="266" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="28" methodcoverage="0" />
       <Class name="TacticalPolarGridGraphic" coverage="0" coveredlines="0" coverablelines="142" totallines="230" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="15" methodcoverage="0" />
