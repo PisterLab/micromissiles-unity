@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/03/2026 - 01:50:29 |
+| Generated on: | 02/03/2026 - 07:37:53 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 100 |
 | Files: | 96 |
-| Covered lines: | 1329 |
-| Uncovered lines: | 2367 |
-| Coverable lines: | 3696 |
-| Total lines: | 6597 |
-| Line coverage: | 35.9% (1329 of 3696) |
+| Covered lines: | 1331 |
+| Uncovered lines: | 2380 |
+| Coverable lines: | 3711 |
+| Total lines: | 6620 |
+| Line coverage: | 35.8% (1331 of 3711) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 388 |
-| Total methods: | 729 |
-| Method coverage: | 53.2% (388 of 729) |
+| Total methods: | 733 |
+| Method coverage: | 52.9% (388 of 733) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1329**|**2367**|**3696**|**6769**|**35.9%**|**0**|**0**|****|**388**|**729**|**53.2%**|
+|**bamlab.micromissiles**|**1331**|**2380**|**3711**|**6792**|**35.8%**|**0**|**0**|****|**388**|**733**|**52.9%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|139|36|175|333|79.4%|0|0||56|61|91.8%|
@@ -57,7 +57,7 @@
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
 |InputManager|65|102|167|213|38.9%|0|0||16|19|84.2%|
-|InterceptorBase|63|124|187|352|33.6%|0|0||17|28|60.7%|
+|InterceptorBase|64|131|195|365|32.8%|0|0||17|30|56.6%|
 |Interpolator2DBase|0|21|21|42|0%|0|0||0|5|0%|
 |Interpolator2DDataPoint|0|11|11|23|0%|0|0||0|5|0%|
 |IterativeLaunchPlanner|1|28|29|84|3.4%|0|0||1|2|50%|
@@ -100,8 +100,8 @@
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|4|0|4|10|100%|0|0||1|1|100%|
-|SimManager|202|42|244|383|82.7%|0|0||43|51|84.3%|
-|SimMonitor|74|101|175|279|42.2%|0|0||16|26|61.5%|
+|SimManager|202|45|247|387|81.7%|0|0||43|52|82.6%|
+|SimMonitor|75|104|179|285|41.8%|0|0||16|27|59.2%|
 |SingleReleaseStrategyBase|7|24|31|62|22.5%|0|0||2|3|66.6%|
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
 |SpeedEscapeDetector|0|11|11|24|0%|0|0||0|3|0%|
