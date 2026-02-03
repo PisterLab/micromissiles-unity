@@ -120,8 +120,9 @@ public class IADS : MonoBehaviour {
             .OrderBy(launcher =>
                          Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
     foreach (var launcher in sortedLaunchers) {
-      if (launcher.AssignNewTarget(subInterceptor.HierarchicalAgent,
-                                   subInterceptor.CapacityRemaining)) {
+      IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
+                                                    subInterceptor.CapacityRemaining);
+      if (subInterceptor.EvaluateReassignedTarget(target)) {
         break;
       }
     }

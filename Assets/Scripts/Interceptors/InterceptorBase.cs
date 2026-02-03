@@ -76,14 +76,39 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
 
+  public bool EvaluateReassignedTarget(IHierarchical target) {
+    // Continue searching for targets if no target was found.
+    if (target == null) {
+      return false;
+    }
+
+    // If the interceptor has no target, always accept the new target.
+    if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
+      HierarchicalAgent.Target = target;
+      return true;
+    }
+
+    // Accept the new target if the intercept speed is higher.
+    float currentFractionalSpeed =
+        FractionalSpeed.Calculate(this, HierarchicalAgent.Target.Position);
+    float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
+    if (newFractionalSpeed > currentFractionalSpeed) {
+      HierarchicalAgent.Target = target;
+      return true;
+    }
+    return false;
+  }
+
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
     if (subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
-    // Assign a new target to the sub-interceptor within the parent interceptor's assigned targets.
-    if (!HierarchicalAgent.AssignNewTarget(subInterceptor.HierarchicalAgent,
-                                           subInterceptor.CapacityRemaining)) {
+    // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
+    IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
+                                                           subInterceptor.CapacityRemaining);
+    // Evaluate the new target and decide whether to continue searching for other targets.
+    if (!subInterceptor.EvaluateReassignedTarget(target)) {
       // Propagate the sub-interceptor target assignment to the parent interceptor above.
       OnAssignSubInterceptor?.Invoke(subInterceptor);
     }
