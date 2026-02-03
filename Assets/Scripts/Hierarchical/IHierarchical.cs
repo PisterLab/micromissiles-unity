@@ -41,7 +41,6 @@ public interface IHierarchical {
   // Recursively cluster the targets.
   void RecursiveCluster(int maxClusterSize);
 
-  // Assign a new target to the given hierarchical object. Return whether a new target was
-  // successfully assigned to the hierarchical object.
-  bool AssignNewTarget(IHierarchical hierarchical, int capacity);
+  // Find a new target for the given hierarchical object and return it if a possible target exists.
+  IHierarchical FindNewTarget(IHierarchical hierarchical, int capacity);
 }

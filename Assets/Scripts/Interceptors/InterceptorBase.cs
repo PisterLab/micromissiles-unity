@@ -5,9 +5,10 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  public event InterceptHitMissEventHandler OnHit;
-  public event InterceptHitMissEventHandler OnMiss;
-  public event InterceptorAssignEventHandler OnAssignSubInterceptor;
+  public event InterceptorEventHandler OnHit;
+  public event InterceptorEventHandler OnMiss;
+  public event InterceptorEventHandler OnDestroyed;
+  public event InterceptorEventHandler OnAssignSubInterceptor;
   public event TargetReassignEventHandler OnReassignTarget;
 
   // Default proportional navigation controller gain.
@@ -67,20 +68,48 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     set { _numSubInterceptorsRemaining = value; }
   }
 
+  // If true, the interceptor can be reassigned to other targets.
+  public virtual bool IsReassignable => true;
+
   // Set of unassigned targets for which an additional sub-interceptor should be launched.
   private HashSet<IHierarchical> _unassignedTargets = new HashSet<IHierarchical>();
 
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
 
+  public bool EvaluateReassignedTarget(IHierarchical target) {
+    // Continue searching for targets if no target was found.
+    if (target == null) {
+      return false;
+    }
+
+    // If the interceptor has no target, always accept the new target.
+    if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
+      HierarchicalAgent.Target = target;
+      return true;
+    }
+
+    // Accept the new target if the intercept speed is higher.
+    float currentFractionalSpeed =
+        FractionalSpeed.Calculate(this, HierarchicalAgent.Target.Position);
+    float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
+    if (newFractionalSpeed > currentFractionalSpeed) {
+      HierarchicalAgent.Target = target;
+      return true;
+    }
+    return false;
+  }
+
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
     if (subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
-    // Assign a new target to the sub-interceptor within the parent interceptor's assigned targets.
-    if (!HierarchicalAgent.AssignNewTarget(subInterceptor.HierarchicalAgent,
-                                           subInterceptor.CapacityRemaining)) {
+    // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
+    IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
+                                                           subInterceptor.CapacityRemaining);
+    // Evaluate the new target and decide whether to continue searching for other targets.
+    if (!subInterceptor.EvaluateReassignedTarget(target)) {
       // Propagate the sub-interceptor target assignment to the parent interceptor above.
       OnAssignSubInterceptor?.Invoke(subInterceptor);
     }
@@ -106,6 +135,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
+    OnDestroyed += RegisterDestroyed;
   }
 
   protected override void FixedUpdate() {
@@ -114,7 +144,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
-      OnAssignSubInterceptor?.Invoke(this);
+      RequestReassignment(this);
     }
 
     // Check whether any targets are escaping from the interceptor.
@@ -128,7 +158,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         OnReassignTarget?.Invoke(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
-        OnAssignSubInterceptor?.Invoke(this);
+        RequestReassignment(this);
       }
     }
 
@@ -221,8 +251,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // The interceptor records a hit only if it collides with a threat and destroys it with the
   // threat's kill probability.
   private void OnTriggerEnter(Collider other) {
-    if (CheckFloorCollision(other)) {
-      OnMiss?.Invoke(this);
+    if (CheckGroundCollision(other)) {
+      OnDestroyed?.Invoke(this);
       Terminate();
     }
 
@@ -246,6 +276,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RegisterMiss(IInterceptor interceptor) {
+    RequestTargetReassignment(interceptor);
+
+    // Request a new target from the parent interceptor.
+    OnAssignSubInterceptor?.Invoke(interceptor);
+  }
+
+  private void RegisterDestroyed(IInterceptor interceptor) {
+    RequestTargetReassignment(interceptor);
+  }
+
+  private void RequestTargetReassignment(IInterceptor interceptor) {
     // Request the parent interceptor to re-assign the target to another interceptor if there are no
     // other pursuers.
     IHierarchical target = interceptor.HierarchicalAgent.Target;
@@ -258,8 +299,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       OnReassignTarget?.Invoke(targetHierarchical);
     }
 
-    // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
+    RequestReassignment(interceptor);
+  }
+
+  private void RequestReassignment(IInterceptor interceptor) {
+    if (interceptor.IsReassignable) {
+      // Request a new target from the parent interceptor.
+      OnAssignSubInterceptor?.Invoke(interceptor);
+    }
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {

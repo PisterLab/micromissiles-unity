@@ -82,6 +82,27 @@ class NumMissileInterceptorMisses(ScalarMetric):
             (event_df[Column.EVENT] == EventType.INTERCEPTOR_MISS))
 
 
+class NumMissileInterceptorsDestroyed(ScalarMetric):
+    """A metric for the number of missile interceptors destroyed prior to
+    intercepting the target.
+    """
+
+    @property
+    def name(self) -> str:
+        """Returns the name of the metric."""
+        return "Number of missile interceptors destroyed"
+
+    def emit(self, event_df: pd.DataFrame) -> int:
+        """Emits the metric from the given event log.
+
+        Args:
+            event_df: Dataframe containing the events.
+        """
+        return sum(
+            (event_df[Column.AGENT_TYPE] == AgentType.MISSILE_INTERCEPTOR) &
+            (event_df[Column.EVENT] == EventType.INTERCEPTOR_DESTROYED))
+
+
 class MissileInterceptorHitRate(ScalarMetric):
     """A metric for the hit rate of the missile interceptors."""
 
