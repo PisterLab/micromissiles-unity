@@ -1,34 +1,34 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/03/2026 - 08:10:57 |
+| Generated on: | 02/03/2026 - 08:35:35 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 100 |
 | Files: | 96 |
-| Covered lines: | 1332 |
+| Covered lines: | 1365 |
 | Uncovered lines: | 2379 |
-| Coverable lines: | 3711 |
-| Total lines: | 6620 |
-| Line coverage: | 35.8% (1332 of 3711) |
+| Coverable lines: | 3744 |
+| Total lines: | 6669 |
+| Line coverage: | 36.4% (1365 of 3744) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 388 |
-| Total methods: | 733 |
-| Method coverage: | 52.9% (388 of 733) |
+| Covered methods: | 390 |
+| Total methods: | 736 |
+| Method coverage: | 52.9% (390 of 736) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1332**|**2379**|**3711**|**6792**|**35.8%**|**0**|**0**|****|**388**|**733**|**52.9%**|
+|**bamlab.micromissiles**|**1365**|**2379**|**3744**|**6841**|**36.4%**|**0**|**0**|****|**390**|**736**|**52.9%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
-|AgentBase|139|36|175|333|79.4%|0|0||56|61|91.8%|
+|AgentBase|142|33|175|333|81.1%|0|0||56|61|91.8%|
 |AgglomerativeClusterer|0|59|59|97|0%|0|0||0|2|0%|
 |ApnController|0|7|7|17|0%|0|0||0|2|0%|
 |AssignmentItem|0|2|2|5|0%|0|0||0|4|0%|
 |AttackBehaviorBase|13|0|13|37|100%|0|0||6|6|100%|
 |CameraController|91|155|246|429|36.9%|0|0||15|35|42.8%|
-|CarrierBase|24|11|35|62|68.5%|0|0||6|6|100%|
+|CarrierBase|26|9|35|62|74.2%|0|0||6|6|100%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|0|18|18|36|0%|0|0||0|7|0%|
 |ConfigLoader|28|20|48|102|58.3%|0|0||6|8|75%|
@@ -53,11 +53,11 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|18|31|49|74|36.7%|0|0||9|9|100%|
 |HierarchicalBase|20|119|139|236|14.3%|0|0||8|26|30.7%|
-|IADS|43|48|91|147|47.2%|0|0||11|15|73.3%|
+|IADS|51|51|102|165|50%|0|0||12|17|70.5%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
 |InputManager|65|102|167|213|38.9%|0|0||16|19|84.2%|
-|InterceptorBase|64|131|195|365|32.8%|0|0||17|30|56.6%|
+|InterceptorBase|65|130|195|365|33.3%|0|0||17|30|56.6%|
 |Interpolator2DBase|0|21|21|42|0%|0|0||0|5|0%|
 |Interpolator2DDataPoint|0|11|11|23|0%|0|0||0|5|0%|
 |IterativeLaunchPlanner|1|28|29|84|3.4%|0|0||1|2|50%|
@@ -100,7 +100,7 @@
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|4|0|4|10|100%|0|0||1|1|100%|
-|SimManager|202|45|247|387|81.7%|0|0||43|52|82.6%|
+|SimManager|222|47|269|418|82.5%|0|0||44|53|83%|
 |SimMonitor|75|104|179|285|41.8%|0|0||16|27|59.2%|
 |SingleReleaseStrategyBase|7|24|31|62|22.5%|0|0||2|3|66.6%|
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
@@ -115,7 +115,7 @@
 |UIElementDragger|0|3|3|9|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|18|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
-|UIManager|121|41|162|234|74.6%|0|0||19|27|70.3%|
+|UIManager|120|42|162|234|74%|0|0||19|27|70.3%|
 |Utilities|14|6|20|33|70%|0|0||3|5|60%|
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|4|0|4|11|100%|0|0||1|1|100%|
