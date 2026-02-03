@@ -350,6 +350,8 @@ public class SimManager : MonoBehaviour {
           swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState, ignoreMetrics: true);
       if (launcher != null) {
         OnNewLauncher?.Invoke(launcher);
+        // All launchers are assets.
+        OnNewAsset?.Invoke(asset);
       }
     }
   }
