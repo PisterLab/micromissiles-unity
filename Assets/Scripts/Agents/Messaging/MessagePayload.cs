@@ -1,6 +1,8 @@
 using System;
 
-// MessagePayload defines different types of new payload objects. Payload is carried my Message envolopes.
+/* MessagePayload defines different types of new payload objects. Payload is carried by 
+Message envolopes. Concrete payload content lives in here and are only read explicitly 
+by receivers. */
 
 public partial interface IMessagePayload {}
 
