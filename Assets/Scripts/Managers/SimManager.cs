@@ -24,7 +24,7 @@ public class SimManager : MonoBehaviour {
   public event NewThreatEventHandler OnNewThreat;
 
   // Default simulation configuration file.
-  private const string _defaultSimulationConfigFile = "7_quadcopters.pbtxt";
+  private const string _defaultSimulationConfigFile = "4_swarms_1_ucav.pbtxt";
 
   // Default simulator configuration file.
   private const string _defaultSimulatorConfigFile = "simulator.pbtxt";
