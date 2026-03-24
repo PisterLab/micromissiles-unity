@@ -5,6 +5,14 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
+  
+  // Sets Mailbox NodeType to "Interceptor"
+  public override CommsNode NodeType => CommsNode.Interceptor;
+
+  //CommsParent establishes Parent – Child relationship. Provides quick parent lookup.
+  public IAgent CommsParent { get; set; }
+
+
   public event InterceptorEventHandler OnHit;
   public event InterceptorEventHandler OnMiss;
   public event InterceptorEventHandler OnDestroyed;
@@ -101,13 +109,16 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
-      return;
-    }
+    if (subInterceptor == null || subInterceptor.Capacity <= 0) { return; }
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
+    if (target != null) {
+      SendAssignTargetToSub(subInterceptor, target);
+    } else {
+      SendAssignRequestToParent(subInterceptor);
+    }
     // Evaluate the new target and decide whether to continue searching for other targets.
     if (!subInterceptor.EvaluateReassignedTarget(target)) {
       // Propagate the sub-interceptor target assignment to the parent interceptor above.
@@ -123,7 +134,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
-      OnReassignTarget?.Invoke(target);
+      SendReassignRequestToParent(target);
       return;
     }
 
@@ -155,7 +166,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       List<IHierarchical> escapingTargets =
           targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
       foreach (var target in escapingTargets) {
-        OnReassignTarget?.Invoke(target);
+        SendReassignRequestToParent(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
         RequestReassignment(this);
@@ -279,7 +290,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     RequestTargetReassignment(interceptor);
 
     // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
+    SendAssignRequestToParent(interceptor);
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -335,7 +346,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
         var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
-          OnReassignTarget?.Invoke(target);
+          SendReassignRequestToParent(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       } else {
@@ -360,6 +371,52 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);
+    }
+  }
+
+  // AssignSubInterceptorRequest to parent.
+  private void SendAssignRequestToParent(IInterceptor subInterceptor) {
+    IAgent parent = CommsParent;
+    if (parent == null || subInterceptor == null) { return; }
+    SendMessage(new AssignSubInterceptorRequestMessage(this, parent, subInterceptor));
+  }
+
+  // ReassignTargetRequest to parent.
+  private void SendReassignRequestToParent(IHierarchical target) {
+    IAgent parent = CommsParent;
+    if (parent == null || target == null) { return; }
+    SendMessage(new ReassignTargetRequestMessage(this, parent, target));
+  }
+
+  // SendAssignTarget to child.
+  private void SendAssignTargetToSub(IInterceptor subInterceptor, IHierarchical target) {
+    if (subInterceptor == null || target == null) { return; }
+    SendMessage(new AssignTargetMessage(this, subInterceptor, target));
+  }
+
+  // Send into Mailbox.
+  private void SendMessage(Message message) {
+    if (message == null) { return; }
+    Mailbox mailbox = Mailbox.GetOrCreateInstance();
+    if (mailbox == null) { return; }
+    mailbox.Send(message);
+  }
+
+  // Execution happens here after recieving and reading message. PayloadData is read and handled.
+  protected override void OnMessage(Message message) {
+    if (message == null) {
+      return;
+    }
+    switch (message) {
+      case AssignSubInterceptorRequestMessage assignRequest:
+        AssignSubInterceptor(assignRequest.PayloadData.SubInterceptor);
+        break;
+      case ReassignTargetRequestMessage reassignRequest:
+        ReassignTarget(reassignRequest.PayloadData.Target);
+        break;
+      case AssignTargetMessage assignTarget:
+        EvaluateReassignedTarget(assignTarget.PayloadData.Target);
+        break;
     }
   }
 }
