@@ -196,7 +196,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // Start is called before the first frame update.
   protected virtual void Start() {
-    TryRegisterMailbox()
+    TryRegisterMailbox();
   }
 
   // FixedUpdate is called multiple times per frame. All physics calculations and updates occur

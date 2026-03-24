@@ -232,6 +232,7 @@ public class IADS : MonoBehaviour {
     }
     if (closestLauncher.Interceptor != null) {
       SendMessage(new ReassignTargetRequestMessage(_commsAgent, closestLauncher.Interceptor, target));
+    }
   }
 
   private void SendMessage(Message message) {
