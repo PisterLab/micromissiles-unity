@@ -3,6 +3,7 @@ using UnityEngine;
 
 
 // Latency Table keeps track of the delay between every agent.
+// Table is n * n sized, n is the size of CommsNode.
 
 public enum CommsNode {
     IADS = 0,
