@@ -113,16 +113,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
-                                                           subInterceptor.CapacityRemaining);
+                                                           subInterceptor.Capacity);
     if (target != null) {
       SendAssignTargetToSub(subInterceptor, target);
     } else {
       SendAssignRequestToParent(subInterceptor);
-    }
-    // Evaluate the new target and decide whether to continue searching for other targets.
-    if (!subInterceptor.EvaluateReassignedTarget(target)) {
-      // Propagate the sub-interceptor target assignment to the parent interceptor above.
-      OnAssignSubInterceptor?.Invoke(subInterceptor);
     }
   }
 
@@ -307,16 +302,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      OnReassignTarget?.Invoke(targetHierarchical);
+      SendReassignRequestToParent(targetHierarchical);
     }
-
-    RequestReassignment(interceptor);
   }
 
   private void RequestReassignment(IInterceptor interceptor) {
     if (interceptor.IsReassignable) {
       // Request a new target from the parent interceptor.
-      OnAssignSubInterceptor?.Invoke(interceptor);
+      SendAssignRequestToParent(interceptor);
     }
   }
 

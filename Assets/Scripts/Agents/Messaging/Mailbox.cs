@@ -28,13 +28,14 @@ public class Mailbox : MonoBehaviour {
 
     // Latency mode for setting latencyTable
     [SerializeField]
-    private LatencyMode _latencyMode = LatencyMode.NoLatency;
+    private LatencyMode _latencyMode = LatencyMode.UniformLatency;
 
     // Used for to set all latency to _uniformLatency value. Only works when _latencyMode = LatencyMode.UniformLatency.
     [SerializeField]
     private float _uniformLatency = 0.2f;
 
     // TODO (Joseph): make this table serializable or put in protobuf.
+    // Can set individual latency based on node-to-node types
     private static readonly LatencyOverride[] DefaultLatencyOverrides = {
         new LatencyOverride { From = CommsNode.IADS, To = CommsNode.IADS, Seconds = 0.2f },
         new LatencyOverride { From = CommsNode.IADS, To = CommsNode.Carrier, Seconds = 0.2f },
