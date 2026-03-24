@@ -22,6 +22,13 @@ public class IADS : MonoBehaviour {
   // List of threats waiting to be incorporated into the hierarchy.
   private List<IHierarchical> _newThreats = new List<IHierarchical>();
 
+  // Routes IADS.cs to IADS proxy – IadsCommsAgent.cs
+  private IadsCommsAgent _commsAgent;
+
+  // For Mailbox use. Prevent repeating subscriptions.
+  private bool _mailboxSubscribed = false;
+
+
   public static IADS Instance { get; private set; }
 
   public IReadOnlyList<IHierarchical> Assets => _assets.AsReadOnly();
@@ -31,20 +38,60 @@ public class IADS : MonoBehaviour {
   private void Awake() {
     if (Instance != null && Instance != this) {
       Destroy(gameObject);
-    } else {
-      Instance = this;
+      return;
+    }
+    Instance = this;
+    _commsAgent = GetComponent<IadsCommsAgent>();
+    if (_commsAgent == null) {
+      _commsAgent = gameObject.AddComponent<IadsCommsAgent>();
     }
   }
 
   private void Start() {
-    SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
-    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
-    SimManager.Instance.OnNewAsset += RegisterNewAsset;
-    SimManager.Instance.OnNewLauncher += RegisterNewLauncher;
-    SimManager.Instance.OnNewThreat += RegisterNewThreat;
+    if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
+      SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+      SimManager.Instance.OnNewLauncher += RegisterNewLauncher;
+      SimManager.Instance.OnNewThreat += RegisterNewThreat;
+
+      // Just in case simulation started before IADS subscribed to events.
+      foreach (var agent in SimManager.Instance.Interceptors) {
+        if (agent is IInterceptor interceptor) {
+          RegisterNewAsset(interceptor);
+          if (interceptor is LauncherBase) {
+            RegisterNewLauncher(interceptor);
+          }
+        }
+      }
+      foreach (var agent in SimManager.Instance.Threats) {
+        if (agent is IThreat threat) {
+          RegisterNewThreat(threat);
+        }
+      }
+      if (SimManager.Instance.IsRunning && _hierarchyCoroutine == null) {
+        RegisterSimulationStarted();
+      }
+    }
+    TrySubscribeMailbox();
+  }
+  
+  private void LateUpdate() {
+    if (!_mailboxSubscribed) {
+      TrySubscribeMailbox();
+    }
   }
 
   private void OnDestroy() {
+    if (_mailboxSubscribed && Mailbox.Instance != null) {
+      Mailbox.Instance.OnMessageDelivered -= HandleMailboxDelivery;
+    }
+    _mailboxSubscribed = false;
+    if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationStarted -= RegisterSimulationStarted;
+      SimManager.Instance.OnSimulationEnded -= RegisterSimulationEnded;
+      SimManager.Instance.OnNewLauncher -= RegisterNewLauncher;
+      SimManager.Instance.OnNewThreat -= RegisterNewThreat;
+    }
     if (_hierarchyCoroutine != null) {
       StopCoroutine(_hierarchyCoroutine);
       _hierarchyCoroutine = null;
@@ -52,7 +99,9 @@ public class IADS : MonoBehaviour {
   }
 
   private void RegisterSimulationStarted() {
-    _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
+    if (_hierarchyCoroutine == null) {
+      _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
+    }
   }
 
   private void RegisterSimulationEnded() {
@@ -66,12 +115,13 @@ public class IADS : MonoBehaviour {
   }
 
   public void RegisterNewAsset(IInterceptor asset) {
-    if (asset.HierarchicalAgent != null) {
-      _assets.Add(asset.HierarchicalAgent);
+    if (asset is InterceptorBase interceptorBase) {
+      interceptorBase.CommsParent = _commsAgent;
     }
   }
 
   public void RegisterNewLauncher(IInterceptor launcher) {
+    RegisterNewAsset(launcher);
     if (launcher.HierarchicalAgent != null) {
       launcher.OnAssignSubInterceptor += AssignSubInterceptor;
       launcher.OnReassignTarget += ReassignTarget;
@@ -80,10 +130,17 @@ public class IADS : MonoBehaviour {
   }
 
   public void RegisterNewThreat(IThreat threat) {
-    if (threat.HierarchicalAgent != null) {
+    if (threat.HierarchicalAgent != null && !_newThreats.Contains(threat.HierarchicalAgent)) {
       _newThreats.Add(threat.HierarchicalAgent);
     }
   }
+
+  // check if message goes to itself. If so then handle message.
+  private void HandleMailboxDelivery(IAgent receiver, Message message) {
+    if (!ReferenceEquals(receiver, _commsAgent)) { return; }
+    HandleMailboxMessage(message);
+  }
+
 
   private IEnumerator HierarchyManager(float period) {
     while (true) {
@@ -126,10 +183,20 @@ public class IADS : MonoBehaviour {
     }
   }
 
-  private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
-      return;
+  private void HandleMailboxMessage(Message message) {
+    if (message == null) { return; }
+    switch (message) {
+      case AssignSubInterceptorRequestMessage assignRequest:
+        AssignSubInterceptor(assignRequest.PayloadData.SubInterceptor);
+        break;
+      case ReassignTargetRequestMessage reassignRequest:
+        ReassignTarget(reassignRequest.PayloadData.Target);
+        break;
     }
+  }
+
+  private void AssignSubInterceptor(IInterceptor subInterceptor) {
+    if (_commsAgent == null || subInterceptor == null || subInterceptor.Capacity <= 0) { return; }
 
     // Pass the sub-interceptor through all the launchers in order of increasing distance between
     // the sub-interceptor and the launcher's target.
@@ -138,15 +205,18 @@ public class IADS : MonoBehaviour {
             .OrderBy(launcher =>
                          Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
     foreach (var launcher in sortedLaunchers) {
-      IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
-                                                    subInterceptor.CapacityRemaining);
-      if (subInterceptor.EvaluateReassignedTarget(target)) {
+      IHierarchical target =
+          launcher.FindNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.Capacity);
+      if (target != null) {
+        SendMessage(new AssignTargetMessage(_commsAgent, subInterceptor, target));
         break;
       }
     }
   }
 
   private void ReassignTarget(IHierarchical target) {
+    if (_commsAgent == null || target == null) { return; }
+
     // Assign the closest launcher with non-zero remaining capacity to pursue the target.
     var closestLauncher =
         Launchers
@@ -160,6 +230,26 @@ public class IADS : MonoBehaviour {
     if (closestLauncher == null) {
       return;
     }
-    closestLauncher.Interceptor.ReassignTarget(target);
+    if (closestLauncher.Interceptor != null) {
+      SendMessage(new ReassignTargetRequestMessage(_commsAgent, closestLauncher.Interceptor, target));
+  }
+
+  private void SendMessage(Message message) {
+    if (message == null) { return; }
+    Mailbox mailbox = Mailbox.GetOrCreateInstance();
+    if (mailbox == null) { return; }
+    mailbox.Send(message);
+  }
+
+  private void TrySubscribeMailbox() {
+    if (_mailboxSubscribed) {
+      return;
+    }
+    Mailbox mailbox = Mailbox.GetOrCreateInstance();
+    if (mailbox == null) {
+      return;
+    }
+    mailbox.OnMessageDelivered += HandleMailboxDelivery;
+    _mailboxSubscribed = true;
   }
 }
