@@ -7,6 +7,9 @@ using UnityEngine;
 //
 // A carrier carries other interceptors, such as a launcher or a carrier interceptor.
 public abstract class CarrierBase : InterceptorBase {
+  // Set CommsNode to Carrier. Enable easy access to LatencyTable for Mailbox.
+  public override CommsNode NodeType => CommsNode.Carrier;
+
   // Time between checking whether to release sub-interceptors.
   private const float _releasePeriod = 0.2f;
 
@@ -45,12 +48,9 @@ public abstract class CarrierBase : InterceptorBase {
         NumSubInterceptorsRemaining -= releasedAgents.Count;
 
         foreach (var agent in releasedAgents) {
-          if (agent is IInterceptor subInterceptor) {
-            subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
-            subInterceptor.OnReassignTarget += ReassignTarget;
-            if (subInterceptor.Movement is MissileMovement movement) {
-              movement.FlightPhase = Simulation.FlightPhase.Boost;
-            }
+          if (agent is InterceptorBase subInterceptor) {
+            // Register parent (carrier) that releases interceptor to interceptor
+            subInterceptor.CommsParent = this; 
           }
         }
       }
