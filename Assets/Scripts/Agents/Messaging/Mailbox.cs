@@ -82,7 +82,7 @@ public class Mailbox : MonoBehaviour {
     // Enqueue a message for delayed delivery. Message will be released when DeliverTime has reached.
     public void Send(Message message) {
         if (message == null || message.Sender == null || message.Receiver == null) { return; }
-        float baseLatency = _latencyTable.Get(GetCommsNode(message.Sender), GetCommsNode(message.Receiver));
+        float baseLatency = _latencyTable.Get(message.Sender.NodeType, message.Receiver.NodeType);
         float jitter = _latencyJitterStdSeconds > 0f ? SampleGaussian(mean: 0f, stdDev: _latencyJitterStdSeconds) : 0f;
         float totalLatency = Mathf.Max(0f, baseLatency + jitter);
         float deliverAt = GetCurrentTime() + totalLatency;
@@ -131,17 +131,6 @@ public class Mailbox : MonoBehaviour {
         float u2 = UnityEngine.Random.value;
         float standardNormal = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2f * Mathf.PI * u2);
         return mean + stdDev * standardNormal;
-    }
-
-    // Helper for identifying what type of Agent agent is.
-    private static CommsNode GetCommsNode(IAgent agent) {
-        if (agent is IadsCommsAgent) {
-            return CommsNode.IADS;
-        }
-        if (agent is LauncherBase || agent is CarrierBase) {
-            return CommsNode.Carrier;
-        }
-        return CommsNode.Interceptor;
     }
 
     private static float GetCurrentTime() {
