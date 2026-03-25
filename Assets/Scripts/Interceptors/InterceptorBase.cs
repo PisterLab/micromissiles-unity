@@ -112,8 +112,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     if (subInterceptor == null || subInterceptor.Capacity <= 0) { return; }
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
-    IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
-                                                           subInterceptor.Capacity);
+    IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.CapacityRemaining);
     if (target != null) {
       SendAssignTargetToSub(subInterceptor, target);
     } else {
@@ -395,7 +394,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     mailbox.Send(message);
   }
 
-  // Execution happens here after recieving and reading message. PayloadData is read and handled.
+  // Execution happens here after receiving and reading message. PayloadData is read and handled.
   protected override void OnMessage(Message message) {
     if (message == null) {
       return;
