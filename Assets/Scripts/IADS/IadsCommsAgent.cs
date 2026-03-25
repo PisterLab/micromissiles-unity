@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /* IADS Proxy for supporting mailbox message sending and recieving. */
@@ -62,17 +63,25 @@ public class IadsCommsAgent : MonoBehaviour, IAgent {
   public Vector3 Right => transform.right;
   public Quaternion InverseRotation => Quaternion.Inverse(transform.rotation);
 
-  public float MaxForwardAcceleration() { return 0f; }
-
-  public float MaxNormalAcceleration() { return 0f; }
-
-  public void CreateTargetModel(IHierarchical target) {}
-
-  public void DestroyTargetModel() {
-    TargetModel = null;
+  public float MaxForwardAcceleration() {
+    throw CreateUnsupportedException(nameof(MaxForwardAcceleration));
   }
 
-  public void UpdateTargetModel() {}
+  public float MaxNormalAcceleration() {
+    throw CreateUnsupportedException(nameof(MaxNormalAcceleration));
+  }
+
+  public void CreateTargetModel(IHierarchical target) {
+    throw CreateUnsupportedException(nameof(CreateTargetModel));
+  }
+
+  public void DestroyTargetModel() {
+    throw CreateUnsupportedException(nameof(DestroyTargetModel));
+  }
+
+  public void UpdateTargetModel() {
+    throw CreateUnsupportedException(nameof(UpdateTargetModel));
+  }
 
   public void Terminate() {
     if (IsTerminated) { return; }
@@ -81,14 +90,22 @@ public class IadsCommsAgent : MonoBehaviour, IAgent {
   }
 
   public Transformation GetRelativeTransformation(IAgent target) {
-    return default;
+    throw CreateUnsupportedException($"{nameof(GetRelativeTransformation)}(IAgent)");
   }
 
   public Transformation GetRelativeTransformation(IHierarchical target) {
-    return default;
+    throw CreateUnsupportedException($"{nameof(GetRelativeTransformation)}(IHierarchical)");
   }
 
   public Transformation GetRelativeTransformation(in Vector3 waypoint) {
-    return default;
+    throw CreateUnsupportedException($"{nameof(GetRelativeTransformation)}(Vector3)");
+  }
+
+  private NotSupportedException CreateUnsupportedException(string memberName) {
+    string targetModelState =
+        TargetModel == null ? " TargetModel is null on this proxy." :
+                              " TargetModel is set on this proxy, which indicates the mailbox-only IADS proxy is being used as a physical agent.";
+    return new NotSupportedException(
+        $"{nameof(IadsCommsAgent)}.{memberName} is unsupported because {nameof(IadsCommsAgent)} is a comms-only mailbox proxy, not a physical/sensing agent.{targetModelState}");
   }
 }
