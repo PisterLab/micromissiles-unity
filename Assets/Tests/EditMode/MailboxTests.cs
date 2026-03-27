@@ -114,6 +114,35 @@ public class MailboxTests : TestBase {
     Assert.IsTrue(GetMessageQueue(mailbox).IsEmpty());
   }
 
+  [Test]
+  public void DeliverDueMessages_ZeroLatencyFollowUpWaitsUntilNextUpdate() {
+    Mailbox mailbox = CreateMailbox(baseLatency: 0f);
+    IadsCommsAgent sender = CreateCommsAgent("Sender");
+    IadsCommsAgent receiver = CreateCommsAgent("Receiver");
+    AssignTargetMessage firstMessage = new(sender, receiver, new FixedHierarchical());
+    ReassignTargetRequestMessage secondMessage = new(sender, receiver, new FixedHierarchical());
+    List<Message> deliveredMessages = new();
+    bool sentFollowUp = false;
+
+    mailbox.OnMessageDelivered += (_, message) => {
+      deliveredMessages.Add(message);
+      if (!sentFollowUp) {
+        sentFollowUp = true;
+        mailbox.Send(secondMessage);
+      }
+    };
+    mailbox.Send(firstMessage);
+    InvokePrivateMethod(mailbox, "Update");
+
+    CollectionAssert.AreEqual(new Message[] { firstMessage }, deliveredMessages);
+    Assert.IsFalse(GetMessageQueue(mailbox).IsEmpty());
+
+    InvokePrivateMethod(mailbox, "Update");
+
+    CollectionAssert.AreEqual(new Message[] { firstMessage, secondMessage }, deliveredMessages);
+    Assert.IsTrue(GetMessageQueue(mailbox).IsEmpty());
+  }
+
   // Verifies that messages addressed to terminated receivers are dropped before delivery.
   [Test]
   public void Send_TerminatedReceiver_DoesNotDeliver() {
@@ -208,6 +237,20 @@ public class MailboxTests : TestBase {
 
     Assert.AreEqual(0f, GetPrivateField<float>(mailbox, "_latencyJitterStdSeconds"));
     Assert.AreEqual(0f, GetPrivateField<float>(mailbox, "_uniformLatency"));
+  }
+
+  [Test]
+  public void ClearPendingMessages_RemovesQueuedMessages() {
+    Mailbox mailbox = CreateMailbox(baseLatency: 0f);
+    IadsCommsAgent sender = CreateCommsAgent("Sender");
+    IadsCommsAgent receiver = CreateCommsAgent("Receiver");
+
+    mailbox.Send(new AssignTargetMessage(sender, receiver, new FixedHierarchical()));
+    Assert.IsFalse(GetMessageQueue(mailbox).IsEmpty());
+
+    mailbox.ClearPendingMessages();
+
+    Assert.IsTrue(GetMessageQueue(mailbox).IsEmpty());
   }
 
   // Verifies that AssignTargetMessage stores the expected sender, receiver, type, and payload.

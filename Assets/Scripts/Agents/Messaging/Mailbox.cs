@@ -79,6 +79,10 @@ public class Mailbox : MonoBehaviour {
         _uniformLatency = Mathf.Max(0f, _uniformLatency);
     }
 
+    public void ClearPendingMessages() {
+        _messageQueue = new PriorityQueue<PendingMessage>();
+    }
+
     // Enqueue a message for delayed delivery. Message will be released when DeliverTime has reached.
     public void Send(Message message) {
         if (message == null || message.Sender == null || message.Receiver == null) { return; }
