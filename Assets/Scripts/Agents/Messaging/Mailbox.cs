@@ -91,7 +91,7 @@ public class Mailbox : MonoBehaviour {
 
     // Override latency values into LatencyTable.
     private void ApplyLatencyOverrides() {
-        _messageQueue = new PriorityQueue<PendingMessage>();
+        ClearPendingMessages();
         switch (_latencyMode) {
             case LatencyMode.NoLatency: {
                 _latencyTable = new LatencyTable();
@@ -117,11 +117,17 @@ public class Mailbox : MonoBehaviour {
 
     // Repeadly pop due messages off the queue. Apply PDR so only certain amount of messages pass through.
     private void DeliverDueMessages() {
+        if (_messageQueue == null) {
+            return;
+        }
         float currentTime = GetCurrentTime();
+        var dueMessages = new System.Collections.Generic.List<PendingMessage>();
         while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
-        PendingMessage pending = _messageQueue.Dequeue();
-        if (!IsReceiverValid(pending.Receiver)) { continue; }
-        OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
+            dueMessages.Add(_messageQueue.Dequeue());
+        }
+        foreach (PendingMessage pending in dueMessages) {
+            if (!IsReceiverValid(pending.Receiver)) { continue; }
+            OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
         }
     }
 
