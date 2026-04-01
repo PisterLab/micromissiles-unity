@@ -98,6 +98,10 @@ public class SimManager : MonoBehaviour {
     Debug.Log("Simulation ended.");
     UIManager.Instance.LogActionMessage("[SIM] Simulation ended.");
 
+    if (Mailbox.Instance != null) {
+      Mailbox.Instance.ClearPendingMessages();
+    }
+
     // Clear existing interceptors and threats.
     foreach (var interceptor in _interceptors) {
       if (interceptor as MonoBehaviour != null) {
