@@ -118,11 +118,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     } else {
       SendAssignRequestToParent(subInterceptor);
     }
-    // Evaluate the new target and decide whether to continue searching for other targets.
-    if (!subInterceptor.EvaluateReassignedTarget(target)) {
-      // Propagate the sub-interceptor target assignment to the parent interceptor above.
-      SendReassignRequestToParent(target);
-    }
   }
 
   public void ReassignTarget(IHierarchical target) {
