@@ -51,7 +51,10 @@ public abstract class CarrierBase : InterceptorBase {
         foreach (var agent in releasedAgents) {
           if (agent is InterceptorBase subInterceptor) {
             // Register parent (carrier) that releases interceptor to interceptor
-            subInterceptor.CommsParent = this; 
+            subInterceptor.CommsParent = this;
+            if (subInterceptor.Movement is MissileMovement movement) {
+              movement.FlightPhase = Simulation.FlightPhase.Boost;
+            }
           }
         }
       }
