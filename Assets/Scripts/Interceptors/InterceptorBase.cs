@@ -415,6 +415,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         break;
       case AssignTargetMessage assignTarget:
         EvaluateReassignedTarget(assignTarget.PayloadData.Target);
+        // EvaluateReassignedTarget. If it is false then bounce back: send a RequestReassignment upwards.
+        if (!EvaluateReassignedTarget(assignTarget.PayloadData.Target)) {
+          RequestReassignment(this);
+        }
         break;
     }
   }        
