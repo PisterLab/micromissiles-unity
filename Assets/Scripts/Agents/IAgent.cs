@@ -8,6 +8,8 @@ using UnityEngine;
 public delegate void AgentTerminatedEventHandler(IAgent agent);
 
 public interface IAgent {
+  CommsNode NodeType { get; }
+
   event AgentTerminatedEventHandler OnTerminated;
 
   HierarchicalAgent HierarchicalAgent { get; set; }
