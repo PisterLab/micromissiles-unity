@@ -8,6 +8,7 @@ using UnityEngine;
 public delegate void AgentTerminatedEventHandler(IAgent agent);
 
 public interface IAgent {
+  // Defines type of Node it is for LatencyTable lookup.
   CommsNode NodeType { get; }
 
   event AgentTerminatedEventHandler OnTerminated;
