@@ -76,7 +76,7 @@ proto_library(
     deps = [
         ":agent_config_proto",
         ":swarm_config_proto",
-        ":communication_config_proto"
+        ":communication_config_proto",
     ],
 )
 
