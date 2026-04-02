@@ -51,9 +51,18 @@ public class MailboxTests {
   [Test]
   public void SimulationConfig_DoesNotRepeatMailboxLatencyOverrides() {
     string contents = File.ReadAllText(GetSimulationConfigPath("4_swarms_1_ucav.pbtxt"));
-    MatchCollection matches = Regex.Matches(contents, @"latency_overrides\s*\{\s*from:\s*(\w+)\s+to:\s*(\w+)\s+seconds:\s*([0-9.]+)\s*\}", RegexOptions.Multiline);
-    Assert.IsNotEmpty(matches, "Expected at least one mailbox latency override in the sample config.");
-    string[] fromToPairs = matches.Select(match => $"{match.Groups[1].Value}->{match.Groups[2].Value}").ToArray();
+    MatchCollection overrideBlocks = Regex.Matches(contents, @"latency_overrides\s*\{\s*(.*?)\s*\}", RegexOptions.Singleline);
+    Assert.IsNotEmpty(overrideBlocks, "Expected at least one mailbox latency override in the sample config.");
+    string[] fromToPairs = overrideBlocks.Cast<Match>().Select(match => {
+      string block = match.Groups[1].Value;
+      Match fromMatch = Regex.Match(block, @"from:\s*(\w+)");
+      Match toMatch = Regex.Match(block, @"to:\s*(\w+)");
+
+      Assert.IsTrue(fromMatch.Success, "Expected each mailbox latency override to define `from`.");
+      Assert.IsTrue(toMatch.Success, "Expected each mailbox latency override to define `to`.");
+
+      return $"{fromMatch.Groups[1].Value}->{toMatch.Groups[1].Value}";
+    }).ToArray();
     CollectionAssert.AllItemsAreUnique(fromToPairs);
   }
 }
