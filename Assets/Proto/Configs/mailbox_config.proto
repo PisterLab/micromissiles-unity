@@ -36,11 +36,13 @@ message MailboxConfig {
   // Omitted node pairs in INDIVIDUAL_LATENCY also use this value.
   float uniform_latency = 2;
 
-  // Standard deviation of zero-mean latency jitter in seconds. Must be non-negative.
+  // Standard deviation, in seconds, of zero-mean latency jitter.
+  // Must be non-negative.
   float latency_jitter_std_seconds = 3;
 
-  // Per-node-pair latency overrides.
-  // In INDIVIDUAL_LATENCY mode, each entry overrides the baseline latency for its (from, to) pair.
+  // Per-node-pair latency overrides. Each MailboxLatencyEntry
+  // overrides the baseline latency for its (from, to) pair.
+  // Omitted node pairs in INDIVIDUAL_LATENCY fall back to
+  // uniform_latency.
   repeated MailboxLatencyEntry latency_overrides = 4;
 }
-
