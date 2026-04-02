@@ -1,0 +1,254 @@
+end_time: 300
+time_scale: 1
+asset_configs {
+  config_file: "cvn.pbtxt"
+  initial_state {
+    position {
+      x: 0
+      y: 0
+      z: 0
+    }
+    velocity {
+      x: 0
+      y: 0
+      z: 0
+    }
+  }
+}
+interceptor_swarm_configs {
+  agent_config {
+    config_file: "ddg.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 5
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      sensor_config {
+        type: IDEAL
+        frequency: 1000
+      }
+    }
+    sub_agent_config {
+      num_sub_agents: 126
+      agent_config {
+        config_file: "hydra70.pbtxt"
+        dynamic_config {
+          flight_config {
+            controller_type: PROPORTIONAL_NAVIGATION
+          }
+          sensor_config {
+            type: IDEAL
+            frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              flight_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 1
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1000
+        z: 5000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 1
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1000
+        z: 6000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 1
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1000
+        z: 7000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 1
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1000
+        z: 8000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      flight_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+communication_config {
+  mailbox_config {
+    latency_mode: INDIVIDUAL_LATENCY
+    latency_jitter_std_seconds: 0.02
+
+    latency_overrides { from: MAILBOX_NODE_IADS to: MAILBOX_NODE_CARRIER seconds: 0.10 }
+    latency_overrides { from: MAILBOX_NODE_CARRIER to: MAILBOX_NODE_IADS seconds: 0.10 }
+    latency_overrides { from: MAILBOX_NODE_CARRIER to: MAILBOX_NODE_INTERCEPTOR seconds: 0.25 }
+    latency_overrides { from: MAILBOX_NODE_INTERCEPTOR to: MAILBOX_NODE_CARRIER seconds: 0.15 }
+    latency_overrides { from: MAILBOX_NODE_INTERCEPTOR to: MAILBOX_NODE_INTERCEPTOR seconds: 0.05 }
+  }
+}
