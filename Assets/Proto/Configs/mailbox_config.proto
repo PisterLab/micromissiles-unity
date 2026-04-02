@@ -10,8 +10,13 @@ enum MailboxNode {
 }
 
 message MailboxLatencyEntry {
+  // Sender node type.
   MailboxNode from = 1;
+
+  // Receiver node type.
   MailboxNode to = 2;
+
+  // One-way communication latency in seconds. Must be non-negative.
   float seconds = 3;
 }
 
@@ -23,8 +28,19 @@ message MailboxConfig {
     INDIVIDUAL_LATENCY = 3;
   }
 
+  // Latency mode used to construct the mailbox latency table.
   LatencyMode latency_mode = 1;
+
+  // Baseline latency in seconds. Must be non-negative.
+  // Used for all node pairs in UNIFORM_LATENCY mode.
+  // Omitted node pairs in INDIVIDUAL_LATENCY also use this value.
   float uniform_latency = 2;
+
+  // Standard deviation of zero-mean latency jitter in seconds. Must be non-negative.
   float latency_jitter_std_seconds = 3;
+
+  // Per-node-pair latency overrides.
+  // In INDIVIDUAL_LATENCY mode, each entry overrides the baseline latency for its (from, to) pair.
   repeated MailboxLatencyEntry latency_overrides = 4;
 }
+
