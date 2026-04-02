@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package configs;
 
+import "Configs/communication_config.proto";
+
 // Simulator configuration.
 message SimulatorConfig {
   // Enable telemetry logging.
@@ -21,4 +23,7 @@ message SimulatorConfig {
 
   // Persistent flight trails.
   bool persistent_flight_trails = 6;
+
+  // Adjust inter-agent communication latency
+  CommunicationConfig communication_config = 7;
 }
