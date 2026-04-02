@@ -415,4 +415,50 @@ public class SimManager : MonoBehaviour {
     }
     return false;
   }
+
+  // Used for setting latencyTable for different latency modes
+  public void ApplyConfig(Configs.MailboxConfig config) {
+    ClearPendingMessages();
+    if (config == null) {
+        ApplyDefaultConfig();
+        return;
+    }
+    _latencyJitterStdSeconds = Mathf.Max(0f, config.LatencyJitterStdSeconds);
+    switch (config.LatencyMode) {
+        case Configs.MailboxConfig.Types.LatencyMode.NoLatency:
+            _latencyTable = new LatencyTable();
+            break;
+        case Configs.MailboxConfig.Types.LatencyMode.UniformLatency:
+            _latencyTable = new LatencyTable(Mathf.Max(0f, config.UniformLatency));
+            break;
+        case Configs.MailboxConfig.Types.LatencyMode.IndividualLatency:
+            _latencyTable = new LatencyTable();
+            foreach (var entry in config.LatencyOverrides) {
+                if (entry.From == Configs.MailboxNode.MailboxNodeUnspecified ||
+                    entry.To == Configs.MailboxNode.MailboxNodeUnspecified) {
+                    continue;
+                }
+                _latencyTable.Set(ToCommsNode(entry.From), ToCommsNode(entry.To), Mathf.Max(0f, entry.Seconds));
+            }
+            break;
+        default:
+            ApplyDefaultConfig();
+            break;
+    }
+  }
+
+  private void ApplyDefaultConfig() {
+      _latencyJitterStdSeconds = 0f;
+      _latencyTable = new LatencyTable(0f);
+  }
+
+  // ToCommsNode returns back the CommsNode type for setting latencyTable
+  private static CommsNode ToCommsNode(Configs.MailboxNode node) {
+      return node switch {
+          Configs.MailboxNode.MailboxNodeIads => CommsNode.IADS,
+          Configs.MailboxNode.MailboxNodeCarrier => CommsNode.Carrier,
+          Configs.MailboxNode.MailboxNodeInterceptor => CommsNode.Interceptor,
+          _ => throw new ArgumentOutOfRangeException(nameof(node), node, null),
+      };
+  }
 }
