@@ -24,7 +24,7 @@ public sealed class LatencyTable {
         if (defaultSeconds == 0f) { return; }
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                _latency[i, j] = defaultSeconds;
+                _latency[i, j] = Mathf.Max(0f, defaultSeconds);
             }
         }
     }
