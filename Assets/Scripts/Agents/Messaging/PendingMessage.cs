@@ -4,7 +4,7 @@ using System;
 // and DeliverAt into the priority queue and pops the message when DeliverAt
 // time has reached.
 
-public readonly struct PendingMessage {
+public readonly struct PendingMessage : IComparable<PendingMessage> {
     public float DeliverAt { get; }
     public Message Message { get; }
 
@@ -15,4 +15,6 @@ public readonly struct PendingMessage {
         DeliverAt = deliverAt;
         Message = message ?? throw new ArgumentNullException(nameof(message));
     }
+
+    public int CompareTo(PendingMessage other) => DeliverAt.CompareTo(other.DeliverAt);
 }
