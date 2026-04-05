@@ -12,7 +12,7 @@ public enum MessageType {
 // Message is a base envelope for message sending. It always carries Sender, Receiver, Type, and Payload.
 // This file wraps the payload data with transport metadata. It intentionally layers and splits the
 // payload and the transportation data. Mailbox only focuses on transportation (enqueue, latency,
-// and delivery timing)
+// and delivery timing).
 
 public abstract class Message {
   public IAgent Sender { get; }
