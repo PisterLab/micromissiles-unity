@@ -23,26 +23,25 @@ message MailboxLatencyEntry {
 message MailboxConfig {
   enum LatencyMode {
     LATENCY_MODE_UNSPECIFIED = 0;
-    NO_LATENCY = 1;
-    UNIFORM_LATENCY = 2;
-    INDIVIDUAL_LATENCY = 3;
+    UNIFORM_LATENCY = 1;
+    INDIVIDUAL_LATENCY = 2;
   }
 
   // Latency mode used to construct the mailbox latency table.
   LatencyMode latency_mode = 1;
 
   // Baseline latency in seconds. Must be non-negative.
-  // Used for all node pairs in UNIFORM_LATENCY mode.
-  // Omitted node pairs in INDIVIDUAL_LATENCY also use this value.
+  // Used for all interceptor pairs in UNIFORM_LATENCY mode.
+  // Omitted interceptor pairs in INDIVIDUAL_LATENCY also use this value.
   float uniform_latency = 2;
 
   // Standard deviation, in seconds, of zero-mean latency jitter.
   // Must be non-negative.
   float latency_jitter_std_seconds = 3;
 
-  // Per-node-pair latency overrides. Each MailboxLatencyEntry
+  // Per-interceptor-pair latency overrides. Each MailboxLatencyEntry
   // overrides the baseline latency for its (from, to) pair.
-  // Omitted node pairs in INDIVIDUAL_LATENCY fall back to
+  // Omitted interceptor pairs in INDIVIDUAL_LATENCY fall back to
   // uniform_latency.
   repeated MailboxLatencyEntry latency_overrides = 4;
 }
