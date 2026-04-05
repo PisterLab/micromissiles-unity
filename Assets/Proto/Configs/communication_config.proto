@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package configs;
-
-import "Configs/mailbox_config.proto";
-
-message CommunicationConfig {
-  MailboxConfig mailbox_config = 1;
-}
