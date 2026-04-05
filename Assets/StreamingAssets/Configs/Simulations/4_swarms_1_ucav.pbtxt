@@ -241,14 +241,39 @@ threat_swarm_configs {
   }
 }
 communication_config {
-  mailbox_config {
-    latency_mode: INDIVIDUAL_LATENCY
-    latency_jitter_std_seconds: 0.02
+  link_config {
+    latency_seconds: 0.10
+    latency_std_seconds: 0.02
+    packet_delivery_ratio: 1.0
+  }
 
-    latency_overrides { from: MAILBOX_NODE_IADS to: MAILBOX_NODE_CARRIER seconds: 0.10 }
-    latency_overrides { from: MAILBOX_NODE_CARRIER to: MAILBOX_NODE_IADS seconds: 0.10 }
-    latency_overrides { from: MAILBOX_NODE_CARRIER to: MAILBOX_NODE_INTERCEPTOR seconds: 0.25 }
-    latency_overrides { from: MAILBOX_NODE_INTERCEPTOR to: MAILBOX_NODE_CARRIER seconds: 0.15 }
-    latency_overrides { from: MAILBOX_NODE_INTERCEPTOR to: MAILBOX_NODE_INTERCEPTOR seconds: 0.05 }
+  link_overrides {
+    from: SHORE_BATTERY
+    to: VESSEL
+    link_config {
+      latency_seconds: 0.05
+      latency_std_seconds: 0.01
+      packet_delivery_ratio: 1.0
+    }
+  }
+
+  link_overrides {
+    from: VESSEL
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.25
+      latency_std_seconds: 0.02
+      packet_delivery_ratio: 0.98
+    }
+  }
+
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: MISSILE_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.05
+      latency_std_seconds: 0.01
+      packet_delivery_ratio: 0.99
+    }
   }
 }
