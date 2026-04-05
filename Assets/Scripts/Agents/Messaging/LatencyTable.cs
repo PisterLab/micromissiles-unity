@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-
 // Latency Table keeps track of the delay between every agent.
 // Table is n * n sized, n is the size of CommsNode.
 
@@ -19,7 +18,7 @@ public sealed class LatencyTable {
     public LatencyTable(float defaultSeconds = 0f) {
         int n = Enum.GetValues(typeof(CommsNode)).Length;
         _latency = new float[n, n];
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; ++i) {
             for (int j = 0; j < n; j++) {
                 _latency[i, j] = defaultSeconds;
             }

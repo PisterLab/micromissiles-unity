@@ -1,8 +1,8 @@
 using System;
 
-/* This is the mailbox's internaal queue item. It stores the Message object 
-and DeliverAt into the priority queue and pops the message when DeliverAt
-time has reached. */
+// This is the mailbox's internal queue item. It stores the Message object 
+// and DeliverAt into the priority queue and pops the message when DeliverAt
+// time has reached.
 
 public readonly struct PendingMessage {
     public float DeliverAt { get; }
