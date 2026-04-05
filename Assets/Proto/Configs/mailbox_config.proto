@@ -2,51 +2,29 @@ syntax = "proto3";
 
 package configs;
 
-enum InterceptorType {
-  INTERCEPTOR_TYPE_UNSPECIFIED = 0;
-  INTERCEPTOR_TYPE_IADS = 1;
-  INTERCEPTOR_TYPE_CARRIER = 2;
-  INTERCEPTOR_TYPE_INTERCEPTOR = 3;
+import "Configs/static_config.proto";
+
+message LinkConfig {
+  // One-way mean latency in seconds. Must be non-negative.
+  float latency_seconds = 1;
+
+  // One-way latency jitter standard deviation in seconds. Must be non-negative.
+  float latency_std_seconds = 2;
+
+  // Probability of successful delivery in [0, 1].
+  float packet_delivery_ratio = 3;
 }
 
-message MailboxLatencyEntry {
-  // Sender interceptor type.
-  InterceptorType from = 1;
-
-  // Receiver interceptor type.
-  InterceptorType to = 2;
-
-  // One-way communication latency in seconds. Must be non-negative.
-  float seconds = 3;
+message LinkOverride {
+  AgentType from = 1;
+  AgentType to = 2;
+  LinkConfig link_config = 3;
 }
 
-message MailboxConfig {
-  // LatencyMode allows quick change in setting latency between different agents.
-  enum LatencyMode {
-    LATENCY_MODE_UNSPECIFIED = 0;
+message CommunicationConfig {
+  // Default link configuration for all pairs.
+  LinkConfig link_config = 1;
 
-    // UNIFORM_LATENCY sets all agent to agent latency to a uniform fixed number.
-    UNIFORM_LATENCY = 1;
-
-    // Individual Latency allows each interceptor to interceptor latency to be set individually.
-    INDIVIDUAL_LATENCY = 2;
-  }
-
-  // Latency mode used to construct the mailbox latency table.
-  LatencyMode latency_mode = 1;
-
-  // Baseline latency in seconds. Must be non-negative.
-  // Used for all interceptor pairs in UNIFORM_LATENCY mode.
-  // Omitted interceptor pairs in INDIVIDUAL_LATENCY also use this value.
-  float latency_seconds = 2;
-
-  // Standard deviation, in seconds, of zero-mean latency jitter.
-  // Must be non-negative.
-  float latency_std_seconds = 3;
-
-  // Per-interceptor-pair latency overrides. Each MailboxLatencyEntry
-  // overrides the baseline latency for its (from, to) pair.
-  // Omitted interceptor pairs in INDIVIDUAL_LATENCY fall back to
-  // latency_seconds.
-  repeated MailboxLatencyEntry latency_overrides = 4;
+  // Per-pair overrides. Omitted pairs fall back to link_config.
+  repeated LinkOverride link_overrides = 2;
 }
