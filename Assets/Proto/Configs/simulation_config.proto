@@ -23,6 +23,6 @@ message SimulationConfig {
   // Threat swarm configurations.
   repeated SwarmConfig threat_swarm_configs = 5;
 
-  // Adjust inter-agent communication latency
+  // Communication configuration, including inter-agent latency.
   CommunicationConfig communication_config = 6;
 }
