@@ -2,19 +2,19 @@ syntax = "proto3";
 
 package configs;
 
-enum MailboxNode {
-  MAILBOX_NODE_UNSPECIFIED = 0;
-  MAILBOX_NODE_IADS = 1;
-  MAILBOX_NODE_CARRIER = 2;
-  MAILBOX_NODE_INTERCEPTOR = 3;
+enum InterceptorType {
+  INTERCEPTOR_TYPE_UNSPECIFIED = 0;
+  INTERCEPTOR_TYPE_IADS = 1;
+  INTERCEPTOR_TYPE_CARRIER = 2;
+  INTERCEPTOR_TYPE_INTERCEPTOR = 3;
 }
 
 message MailboxLatencyEntry {
-  // Sender node type.
-  MailboxNode from = 1;
+  // Sender interceptor type.
+  InterceptorType from = 1;
 
-  // Receiver node type.
-  MailboxNode to = 2;
+  // Receiver interceptor type.
+  InterceptorType to = 2;
 
   // One-way communication latency in seconds. Must be non-negative.
   float seconds = 3;
