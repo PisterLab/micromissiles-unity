@@ -51,11 +51,6 @@ cc_proto_library(
 )
 
 proto_library(
-    name = "communication_config_proto",
-    srcs = ["communication_config.proto"],
-)
-
-proto_library(
     name = "run_config_proto",
     srcs = ["run_config.proto"],
 )
