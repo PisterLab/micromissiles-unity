@@ -15,11 +15,12 @@ message LinkConfig {
   float packet_delivery_ratio = 3;
 }
 
+// Latency per link is one-way only.
 message LinkOverride {
-  // Agent sending the message.
+  // Sending agent type.
   AgentType from = 1;
   
-  // Agent receiving the message.
+  // Recipient agent type.
   AgentType to = 2;
   
   // Latency settings for this specific Agent-to-Agent pair.

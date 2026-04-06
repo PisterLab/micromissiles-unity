@@ -119,16 +119,6 @@ communication_config {
   }
 
   link_overrides {
-    from: SHORE_BATTERY
-    to: VESSEL
-    link_config {
-      latency_seconds: 0.05
-      latency_std_seconds: 0.01
-      packet_delivery_ratio: 1.0
-    }
-  }
-
-  link_overrides {
     from: VESSEL
     to: CARRIER_INTERCEPTOR
     link_config {
