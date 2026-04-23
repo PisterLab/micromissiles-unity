@@ -23,7 +23,7 @@ message LinkOverride {
   // Recipient agent type.
   AgentType to = 2;
 
-  // Latency settings for this specific Agent-to-Agent pair.
+  // Latency settings for this specific agent-to-agent pair.
   LinkConfig link_config = 3;
 }
 
