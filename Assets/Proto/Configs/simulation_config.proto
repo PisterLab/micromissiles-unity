@@ -3,8 +3,8 @@ syntax = "proto3";
 package configs;
 
 import "Configs/agent_config.proto";
-import "Configs/swarm_config.proto";
 import "Configs/communication_config.proto";
+import "Configs/swarm_config.proto";
 
 // Simulation configuration.
 message SimulationConfig {

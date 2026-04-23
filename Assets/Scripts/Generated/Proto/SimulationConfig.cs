@@ -25,8 +25,8 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch9Db25maWdzL3NpbXVsYXRpb25fY29uZmlnLnByb3RvEgdjb25maWdzGhpD",
-            "b25maWdzL2FnZW50X2NvbmZpZy5wcm90bxoaQ29uZmlncy9zd2FybV9jb25m",
-            "aWcucHJvdG8aIkNvbmZpZ3MvY29tbXVuaWNhdGlvbl9jb25maWcucHJvdG8i",
+            "b25maWdzL2FnZW50X2NvbmZpZy5wcm90bxoiQ29uZmlncy9jb21tdW5pY2F0",
+            "aW9uX2NvbmZpZy5wcm90bxoaQ29uZmlncy9zd2FybV9jb25maWcucHJvdG8i",
             "jgIKEFNpbXVsYXRpb25Db25maWcSEAoIZW5kX3RpbWUYASABKAISEgoKdGlt",
             "ZV9zY2FsZRgCIAEoAhIrCg1hc3NldF9jb25maWdzGAMgAygLMhQuY29uZmln",
             "cy5BZ2VudENvbmZpZxI3ChlpbnRlcmNlcHRvcl9zd2FybV9jb25maWdzGAQg",
@@ -35,7 +35,7 @@ namespace Configs {
             "dGlvbl9jb25maWcYBiABKAsyHC5jb25maWdzLkNvbW11bmljYXRpb25Db25m",
             "aWdiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Configs.AgentConfigReflection.Descriptor, global::Configs.SwarmConfigReflection.Descriptor, global::Configs.CommunicationConfigReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Configs.AgentConfigReflection.Descriptor, global::Configs.CommunicationConfigReflection.Descriptor, global::Configs.SwarmConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SimulationConfig), global::Configs.SimulationConfig.Parser, new[]{ "EndTime", "TimeScale", "AssetConfigs", "InterceptorSwarmConfigs", "ThreatSwarmConfigs", "CommunicationConfig" }, null, null, null, null)
           }));
