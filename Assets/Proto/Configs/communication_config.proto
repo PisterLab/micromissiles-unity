@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package configs;
+
+import "Configs/static_config.proto";
+
+message LinkConfig {
+  // One-way mean latency in seconds. Must be non-negative.
+  float latency_seconds = 1;
+
+  // One-way latency jitter standard deviation in seconds. Must be non-negative.
+  float latency_std_seconds = 2;
+
+  // Probability of successful delivery in [0, 1].
+  float packet_delivery_ratio = 3;
+}
+
+// Latency per link is one-way only.
+message LinkOverride {
+  // Sender agent type.
+  AgentType from = 1;
+
+  // Recipient agent type.
+  AgentType to = 2;
+
+  // Latency settings for this specific agent-to-agent pair.
+  LinkConfig link_config = 3;
+}
+
+message CommunicationConfig {
+  // Default link configuration for all pairs.
+  LinkConfig link_config = 1;
+
+  // Per-pair overrides. Omitted pairs fall back to link_config.
+  repeated LinkOverride link_overrides = 2;
+}

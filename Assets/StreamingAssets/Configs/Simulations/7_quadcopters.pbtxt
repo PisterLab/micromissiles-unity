@@ -111,3 +111,30 @@ threat_swarm_configs {
     }
   }
 }
+communication_config {
+  link_config {
+    latency_seconds: 0.10
+    latency_std_seconds: 0.02
+    packet_delivery_ratio: 1.0
+  }
+
+  link_overrides {
+    from: VESSEL
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.25
+      latency_std_seconds: 0.02
+      packet_delivery_ratio: 0.98
+    }
+  }
+
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: MISSILE_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.05
+      latency_std_seconds: 0.01
+      packet_delivery_ratio: 0.99
+    }
+  }
+}

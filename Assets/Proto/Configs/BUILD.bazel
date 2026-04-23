@@ -29,6 +29,17 @@ cc_proto_library(
 )
 
 proto_library(
+    name = "communication_config_proto",
+    srcs = ["communication_config.proto"],
+    deps = [":static_config_proto"],
+)
+
+cc_proto_library(
+    name = "communication_config_cc_proto",
+    deps = [":communication_config_proto"],
+)
+
+proto_library(
     name = "dynamic_config_proto",
     srcs = ["dynamic_config.proto"],
     deps = ["//Simulation:sensor_proto"],
@@ -55,6 +66,7 @@ proto_library(
     deps = [
         ":agent_config_proto",
         ":swarm_config_proto",
+        ":communication_config_proto",
     ],
 )
 

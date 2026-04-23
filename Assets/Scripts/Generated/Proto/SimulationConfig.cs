@@ -25,17 +25,19 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Ch9Db25maWdzL3NpbXVsYXRpb25fY29uZmlnLnByb3RvEgdjb25maWdzGhpD",
-            "b25maWdzL2FnZW50X2NvbmZpZy5wcm90bxoaQ29uZmlncy9zd2FybV9jb25m",
-            "aWcucHJvdG8i0gEKEFNpbXVsYXRpb25Db25maWcSEAoIZW5kX3RpbWUYASAB",
-            "KAISEgoKdGltZV9zY2FsZRgCIAEoAhIrCg1hc3NldF9jb25maWdzGAMgAygL",
-            "MhQuY29uZmlncy5BZ2VudENvbmZpZxI3ChlpbnRlcmNlcHRvcl9zd2FybV9j",
-            "b25maWdzGAQgAygLMhQuY29uZmlncy5Td2FybUNvbmZpZxIyChR0aHJlYXRf",
-            "c3dhcm1fY29uZmlncxgFIAMoCzIULmNvbmZpZ3MuU3dhcm1Db25maWdiBnBy",
-            "b3RvMw=="));
+            "b25maWdzL2FnZW50X2NvbmZpZy5wcm90bxoiQ29uZmlncy9jb21tdW5pY2F0",
+            "aW9uX2NvbmZpZy5wcm90bxoaQ29uZmlncy9zd2FybV9jb25maWcucHJvdG8i",
+            "jgIKEFNpbXVsYXRpb25Db25maWcSEAoIZW5kX3RpbWUYASABKAISEgoKdGlt",
+            "ZV9zY2FsZRgCIAEoAhIrCg1hc3NldF9jb25maWdzGAMgAygLMhQuY29uZmln",
+            "cy5BZ2VudENvbmZpZxI3ChlpbnRlcmNlcHRvcl9zd2FybV9jb25maWdzGAQg",
+            "AygLMhQuY29uZmlncy5Td2FybUNvbmZpZxIyChR0aHJlYXRfc3dhcm1fY29u",
+            "ZmlncxgFIAMoCzIULmNvbmZpZ3MuU3dhcm1Db25maWcSOgoUY29tbXVuaWNh",
+            "dGlvbl9jb25maWcYBiABKAsyHC5jb25maWdzLkNvbW11bmljYXRpb25Db25m",
+            "aWdiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::Configs.AgentConfigReflection.Descriptor, global::Configs.SwarmConfigReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::Configs.AgentConfigReflection.Descriptor, global::Configs.CommunicationConfigReflection.Descriptor, global::Configs.SwarmConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SimulationConfig), global::Configs.SimulationConfig.Parser, new[]{ "EndTime", "TimeScale", "AssetConfigs", "InterceptorSwarmConfigs", "ThreatSwarmConfigs" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.SimulationConfig), global::Configs.SimulationConfig.Parser, new[]{ "EndTime", "TimeScale", "AssetConfigs", "InterceptorSwarmConfigs", "ThreatSwarmConfigs", "CommunicationConfig" }, null, null, null, null)
           }));
     }
     #endregion
@@ -85,6 +87,7 @@ namespace Configs {
       assetConfigs_ = other.assetConfigs_.Clone();
       interceptorSwarmConfigs_ = other.interceptorSwarmConfigs_.Clone();
       threatSwarmConfigs_ = other.threatSwarmConfigs_.Clone();
+      communicationConfig_ = other.communicationConfig_ != null ? other.communicationConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -166,6 +169,21 @@ namespace Configs {
       get { return threatSwarmConfigs_; }
     }
 
+    /// <summary>Field number for the "communication_config" field.</summary>
+    public const int CommunicationConfigFieldNumber = 6;
+    private global::Configs.CommunicationConfig communicationConfig_;
+    /// <summary>
+    /// Communication configuration.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Configs.CommunicationConfig CommunicationConfig {
+      get { return communicationConfig_; }
+      set {
+        communicationConfig_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -186,6 +204,7 @@ namespace Configs {
       if(!assetConfigs_.Equals(other.assetConfigs_)) return false;
       if(!interceptorSwarmConfigs_.Equals(other.interceptorSwarmConfigs_)) return false;
       if(!threatSwarmConfigs_.Equals(other.threatSwarmConfigs_)) return false;
+      if (!object.Equals(CommunicationConfig, other.CommunicationConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -198,6 +217,7 @@ namespace Configs {
       hash ^= assetConfigs_.GetHashCode();
       hash ^= interceptorSwarmConfigs_.GetHashCode();
       hash ^= threatSwarmConfigs_.GetHashCode();
+      if (communicationConfig_ != null) hash ^= CommunicationConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -227,6 +247,10 @@ namespace Configs {
       assetConfigs_.WriteTo(output, _repeated_assetConfigs_codec);
       interceptorSwarmConfigs_.WriteTo(output, _repeated_interceptorSwarmConfigs_codec);
       threatSwarmConfigs_.WriteTo(output, _repeated_threatSwarmConfigs_codec);
+      if (communicationConfig_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(CommunicationConfig);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -248,6 +272,10 @@ namespace Configs {
       assetConfigs_.WriteTo(ref output, _repeated_assetConfigs_codec);
       interceptorSwarmConfigs_.WriteTo(ref output, _repeated_interceptorSwarmConfigs_codec);
       threatSwarmConfigs_.WriteTo(ref output, _repeated_threatSwarmConfigs_codec);
+      if (communicationConfig_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(CommunicationConfig);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -267,6 +295,9 @@ namespace Configs {
       size += assetConfigs_.CalculateSize(_repeated_assetConfigs_codec);
       size += interceptorSwarmConfigs_.CalculateSize(_repeated_interceptorSwarmConfigs_codec);
       size += threatSwarmConfigs_.CalculateSize(_repeated_threatSwarmConfigs_codec);
+      if (communicationConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CommunicationConfig);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -288,6 +319,12 @@ namespace Configs {
       assetConfigs_.Add(other.assetConfigs_);
       interceptorSwarmConfigs_.Add(other.interceptorSwarmConfigs_);
       threatSwarmConfigs_.Add(other.threatSwarmConfigs_);
+      if (other.communicationConfig_ != null) {
+        if (communicationConfig_ == null) {
+          CommunicationConfig = new global::Configs.CommunicationConfig();
+        }
+        CommunicationConfig.MergeFrom(other.CommunicationConfig);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -327,6 +364,13 @@ namespace Configs {
             threatSwarmConfigs_.AddEntriesFrom(input, _repeated_threatSwarmConfigs_codec);
             break;
           }
+          case 50: {
+            if (communicationConfig_ == null) {
+              CommunicationConfig = new global::Configs.CommunicationConfig();
+            }
+            input.ReadMessage(CommunicationConfig);
+            break;
+          }
         }
       }
     #endif
@@ -364,6 +408,13 @@ namespace Configs {
           }
           case 42: {
             threatSwarmConfigs_.AddEntriesFrom(ref input, _repeated_threatSwarmConfigs_codec);
+            break;
+          }
+          case 50: {
+            if (communicationConfig_ == null) {
+              CommunicationConfig = new global::Configs.CommunicationConfig();
+            }
+            input.ReadMessage(CommunicationConfig);
             break;
           }
         }
