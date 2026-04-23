@@ -17,7 +17,7 @@ message LinkConfig {
 
 // Latency per link is one-way only.
 message LinkOverride {
-  // Sending agent type.
+  // Sender agent type.
   AgentType from = 1;
 
   // Recipient agent type.
