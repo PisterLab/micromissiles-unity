@@ -19,10 +19,10 @@ message LinkConfig {
 message LinkOverride {
   // Sending agent type.
   AgentType from = 1;
-  
+
   // Recipient agent type.
   AgentType to = 2;
-  
+
   // Latency settings for this specific Agent-to-Agent pair.
   LinkConfig link_config = 3;
 }
