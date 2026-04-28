@@ -4,6 +4,11 @@ using UnityEngine;
 //
 // See the agent interface for property and method documentation.
 public class AgentBase : MonoBehaviour, IAgent {
+  // Make sure the same agent does not subscribe to the mailbox event more than once (keeping
+  // track).
+  private bool _mailboxRegistered = false;
+  private Mailbox _mailboxInstance;
+
   public event AgentTerminatedEventHandler OnTerminated;
 
   private const float _epsilon = 1e-12f;
@@ -188,10 +193,13 @@ public class AgentBase : MonoBehaviour, IAgent {
     if (EarlyFixedUpdateManager.Instance != null) {
       EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate += UpdateTransformData;
     }
+    TryRegisterMailbox();
   }
 
   // Start is called before the first frame update.
-  protected virtual void Start() {}
+  protected virtual void Start() {
+    TryRegisterMailbox();
+  }
 
   // FixedUpdate is called multiple times per frame. All physics calculations and updates occur
   // immediately after FixedUpdate, and all movement values are multiplied by Time.deltaTime.
@@ -210,6 +218,11 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // OnDestroy is called when the object is being destroyed.
   protected virtual void OnDestroy() {
+    if (_mailboxRegistered && _mailboxInstance != null) {
+      _mailboxInstance.OnMessageDelivered -= HandleMailboxDelivery;
+    }
+    _mailboxRegistered = false;
+    _mailboxInstance = null;
     if (EarlyFixedUpdateManager.Instance != null) {
       EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
     }
@@ -329,5 +342,29 @@ public class AgentBase : MonoBehaviour, IAgent {
       Velocity = velocityTransformation,
       Acceleration = accelerationTransformation,
     };
+  }
+
+  protected virtual void OnMessage(Message message) {}
+
+  // Event Subscription to Mailbox.
+  protected void TryRegisterMailbox() {
+    if (_mailboxRegistered) {
+      return;
+    }
+    _mailboxInstance = Mailbox.GetOrCreateInstance();
+    if (_mailboxInstance == null) {
+      return;
+    }
+    _mailboxInstance.OnMessageDelivered += HandleMailboxDelivery;
+    _mailboxRegistered = true;
+  }
+
+  // Delivers a message to the right receiver. Check if self is the right receiver, if so then
+  // handle the message.
+  private void HandleMailboxDelivery(IAgent receiver, Message message) {
+    if (!ReferenceEquals(receiver, this)) {
+      return;
+    }
+    OnMessage(message);
   }
 }
