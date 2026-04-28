@@ -5,11 +5,10 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-
   // Sets Mailbox NodeType to "Interceptor"
   public override CommsNode NodeType => CommsNode.Interceptor;
 
-  //CommsParent establishes Parent – Child relationship. Provides quick parent lookup.
+  // CommsParent establishes Parent – Child relationship. Provides quick parent lookup.
   public IAgent CommsParent { get; set; }
 
   public event InterceptorEventHandler OnHit;
@@ -108,7 +107,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor == null || subInterceptor.Capacity <= 0) { return; }
+    if (subInterceptor == null || subInterceptor.Capacity <= 0) {
+      return;
+    }
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
@@ -284,7 +285,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     RequestTargetReassignment(interceptor);
 
     // Request a new target from the parent interceptor.
-    SendAssignRequestToParent(interceptor);;
+    SendAssignRequestToParent(interceptor);
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -310,7 +311,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private void RequestReassignment(IInterceptor interceptor) {
     if (interceptor.IsReassignable) {
       // Request a new target from the parent interceptor.
-      SendAssignRequestToParent(interceptor);;
+      SendAssignRequestToParent(interceptor);
     }
   }
 
@@ -371,32 +372,42 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // AssignSubInterceptorRequest to parent.
   private void SendAssignRequestToParent(IInterceptor subInterceptor) {
     IAgent parent = CommsParent;
-    if (parent == null || subInterceptor == null) { return; }
+    if (parent == null || subInterceptor == null) {
+      return;
+    }
     SendMessage(new AssignSubInterceptorRequestMessage(this, parent, subInterceptor));
   }
 
   // ReassignTargetRequest to parent.
   private void SendReassignRequestToParent(IHierarchical target) {
     IAgent parent = CommsParent;
-    if (parent == null || target == null) { return; }
+    if (parent == null || target == null) {
+      return;
+    }
     SendMessage(new ReassignTargetRequestMessage(this, parent, target));
   }
 
   // SendAssignTarget to child.
   private void SendAssignTargetToSub(IInterceptor subInterceptor, IHierarchical target) {
-    if (subInterceptor == null || target == null) { return; }
+    if (subInterceptor == null || target == null) {
+      return;
+    }
     SendMessage(new AssignTargetMessage(this, subInterceptor, target));
   }
 
   // Send into Mailbox.
   private void SendMessage(Message message) {
-    if (message == null) { return; }
+    if (message == null) {
+      return;
+    }
     Mailbox mailbox = Mailbox.GetOrCreateInstance();
-    if (mailbox == null) { return; }
+    if (mailbox == null) {
+      return;
+    }
     mailbox.Send(message);
   }
 
-  // Execution happens here after recieving and reading message. PayloadData is read and handled.
+  // Execution happens here after receiving and reading message. PayloadData is read and handled.
   protected override void OnMessage(Message message) {
     if (message == null) {
       return;
@@ -409,12 +420,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         ReassignTarget(reassignRequest.PayloadData.Target);
         break;
       case AssignTargetMessage assignTarget:
-        EvaluateReassignedTarget(assignTarget.PayloadData.Target);
-        // EvaluateReassignedTarget. If it is false then bounce back: send a RequestReassignment upwards.
-        if (!EvaluateReassignedTarget(assignTarget.PayloadData.Target)) {
+        bool accepted = EvaluateReassignedTarget(assignTarget.PayloadData.Target);
+        // EvaluateReassignedTarget. If it is false then bounce back: send a RequestReassignment
+        // upwards.
+        if (!accepted) {
           RequestReassignment(this);
         }
         break;
     }
-  }        
+  }
 }
