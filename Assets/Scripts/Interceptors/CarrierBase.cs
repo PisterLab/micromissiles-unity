@@ -7,9 +7,6 @@ using UnityEngine;
 //
 // A carrier carries other interceptors, such as a launcher or a carrier interceptor.
 public abstract class CarrierBase : InterceptorBase {
-  // Set CommsNode to Carrier. Enable easy access to LatencyTable for Mailbox.
-  public override CommsNode NodeType => CommsNode.Carrier;
-
   // Time between checking whether to release sub-interceptors.
   private const float _releasePeriod = 0.2f;
 
