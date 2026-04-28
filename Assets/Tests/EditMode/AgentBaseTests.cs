@@ -253,12 +253,15 @@ public class AgentBaseTests : TestBase {
     InvokePrivateMethod(_mailbox, "Update");
     Assert.AreEqual(1, _agent.ReceivedMessageCount);
 
+    SetMailboxInstance(null);
     _agent.InvokeOnDestroyForTest();
     _mailbox.Send(secondMessage);
     InvokePrivateMethod(_mailbox, "Update");
 
     Assert.AreEqual(1, _agent.ReceivedMessageCount);
     Assert.AreSame(firstMessage, _agent.LastReceivedMessage);
+    Assert.IsFalse(GetPrivateField<bool>(_agent, "_mailboxRegistered"));
+    Assert.IsNull(GetPrivateField<Mailbox>(_agent, "_mailboxInstance"));
   }
 
   private static SimManager CreateSimManagerStub() {
