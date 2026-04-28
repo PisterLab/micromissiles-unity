@@ -60,7 +60,6 @@ public class IadsCommsAgent : MonoBehaviour, IAgent {
       throw new InvalidOperationException(
           $"{nameof(IadsCommsAgent)} requires {nameof(SimManager)} to provide deterministic simulation time.");
   public bool IsTerminated { get; private set; } = false;
-  public CommsNode NodeType => CommsNode.IADS;
 
   public Transform Transform => transform;
   public Vector3 Up => transform.up;
