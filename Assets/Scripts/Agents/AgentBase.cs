@@ -7,6 +7,7 @@ public class AgentBase : MonoBehaviour, IAgent {
   // Make sure the same agent does not subscribe to the mailbox event more than once (keeping
   // track).
   private bool _mailboxRegistered = false;
+  private Mailbox _mailboxInstance;
 
   public event AgentTerminatedEventHandler OnTerminated;
 
@@ -217,10 +218,11 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // OnDestroy is called when the object is being destroyed.
   protected virtual void OnDestroy() {
-    if (_mailboxRegistered && Mailbox.Instance != null) {
-      Mailbox.Instance.OnMessageDelivered -= HandleMailboxDelivery;
-      _mailboxRegistered = false;
+    if (_mailboxRegistered && _mailboxInstance != null) {
+      _mailboxInstance.OnMessageDelivered -= HandleMailboxDelivery;
     }
+    _mailboxRegistered = false;
+    _mailboxInstance = null;
     if (EarlyFixedUpdateManager.Instance != null) {
       EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
     }
@@ -349,11 +351,11 @@ public class AgentBase : MonoBehaviour, IAgent {
     if (_mailboxRegistered) {
       return;
     }
-    Mailbox mailbox = Mailbox.GetOrCreateInstance();
-    if (mailbox == null) {
+    _mailboxInstance = Mailbox.GetOrCreateInstance();
+    if (_mailboxInstance == null) {
       return;
     }
-    mailbox.OnMessageDelivered += HandleMailboxDelivery;
+    _mailboxInstance.OnMessageDelivered += HandleMailboxDelivery;
     _mailboxRegistered = true;
   }
 
