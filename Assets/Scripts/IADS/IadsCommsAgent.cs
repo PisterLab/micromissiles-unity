@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-/* IADS Proxy for supporting mailbox message sending and recieving. */
+// IADS Proxy for supporting mailbox message sending and receiving.
 
 public class IadsCommsAgent : MonoBehaviour, IAgent {
   public event AgentTerminatedEventHandler OnTerminated;
@@ -53,7 +53,12 @@ public class IadsCommsAgent : MonoBehaviour, IAgent {
   }
 
   public bool IsPursuer => false;
-  public float ElapsedTime => SimManager.Instance != null ? SimManager.Instance.ElapsedTime : Time.time;
+
+  // Setting ElpasedTime has to be dependent on SimManager to have uniform clock time.
+  public float ElapsedTime =>
+      SimManager.Instance?.ElapsedTime ??
+      throw new InvalidOperationException(
+          $"{nameof(IadsCommsAgent)} requires {nameof(SimManager)} to provide deterministic simulation time.");
   public bool IsTerminated { get; private set; } = false;
   public CommsNode NodeType => CommsNode.IADS;
 
@@ -84,7 +89,9 @@ public class IadsCommsAgent : MonoBehaviour, IAgent {
   }
 
   public void Terminate() {
-    if (IsTerminated) { return; }
+    if (IsTerminated) {
+      return;
+    }
     IsTerminated = true;
     OnTerminated?.Invoke(this);
   }
@@ -103,8 +110,9 @@ public class IadsCommsAgent : MonoBehaviour, IAgent {
 
   private NotSupportedException CreateUnsupportedException(string memberName) {
     string targetModelState =
-        TargetModel == null ? " TargetModel is null on this proxy." :
-                              " TargetModel is set on this proxy, which indicates the mailbox-only IADS proxy is being used as a physical agent.";
+        TargetModel == null
+            ? " TargetModel is null on this proxy."
+            : " TargetModel is set on this proxy, which indicates the mailbox-only IADS proxy is being used as a physical agent.";
     return new NotSupportedException(
         $"{nameof(IadsCommsAgent)}.{memberName} is unsupported because {nameof(IadsCommsAgent)} is a comms-only mailbox proxy, not a physical/sensing agent.{targetModelState}");
   }
