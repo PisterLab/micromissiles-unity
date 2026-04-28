@@ -4,10 +4,8 @@ using UnityEngine;
 //
 // See the agent interface for property and method documentation.
 public class AgentBase : MonoBehaviour, IAgent {
-
-  public virtual CommsNode NodeType => CommsNode.Interceptor;
-
-  // Make sure the same agent does not subscribe to the mailbox event more than once (keeping track).
+  // Make sure the same agent does not subscribe to the mailbox event more than once (keeping
+  // track).
   private bool _mailboxRegistered = false;
 
   public event AgentTerminatedEventHandler OnTerminated;
@@ -348,17 +346,23 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // Event Subscription to Mailbox.
   protected void TryRegisterMailbox() {
-    if (_mailboxRegistered) { return; }
+    if (_mailboxRegistered) {
+      return;
+    }
     Mailbox mailbox = Mailbox.GetOrCreateInstance();
-    if (mailbox == null) { return; }
+    if (mailbox == null) {
+      return;
+    }
     mailbox.OnMessageDelivered += HandleMailboxDelivery;
     _mailboxRegistered = true;
   }
 
-  // Delivers a message to the right receiver. Check if self is the right receiver, if so then handle the message.
+  // Delivers a message to the right receiver. Check if self is the right receiver, if so then
+  // handle the message.
   private void HandleMailboxDelivery(IAgent receiver, Message message) {
-    if (!ReferenceEquals(receiver, this)) { return; }
+    if (!ReferenceEquals(receiver, this)) {
+      return;
+    }
     OnMessage(message);
   }
-
 }
