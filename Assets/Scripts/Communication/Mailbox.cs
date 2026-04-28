@@ -45,6 +45,9 @@ public class Mailbox : MonoBehaviour {
   }
 
   private PriorityQueue<PendingMessage> _messageQueue;
+  // _dueMessages is a reusable temporary buffer; due messages are added, processed, then cleared
+  // every delivery frame.
+  private readonly List<PendingMessage> _dueMessages = new();
   private readonly Dictionary<LinkKey, LinkRuntimeConfig> _linkOverrides = new();
 
   // If no communication config exists, messages fall back to 0 latency, 0 jitter, and with PDR = 1
@@ -113,6 +116,7 @@ public class Mailbox : MonoBehaviour {
       return;
     }
 
+    InitializeMessageQueueIfNeeded();
     LinkRuntimeConfig linkConfig = GetEffectiveLinkConfig(message.Sender, message.Receiver);
     // Applies packet delivery ratio (PDR). This is done before sending into PQ.
     if (UnityEngine.Random.value > linkConfig.PacketDeliveryRatio) {
@@ -134,16 +138,16 @@ public class Mailbox : MonoBehaviour {
     }
 
     float currentTime = GetCurrentTime();
-    var dueMessages = new List<PendingMessage>();
     while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
-      dueMessages.Add(_messageQueue.Dequeue());
+      _dueMessages.Add(_messageQueue.Dequeue());
     }
-    foreach (PendingMessage pending in dueMessages) {
+    foreach (PendingMessage pending in _dueMessages) {
       if (!IsReceiverValid(pending.Receiver)) {
         continue;
       }
       OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
     }
+    _dueMessages.Clear();
   }
 
   // Samples zero-mean Gaussian noise for latency jitter.
@@ -159,6 +163,11 @@ public class Mailbox : MonoBehaviour {
     return SimManager.Instance?.ElapsedTime ??
            throw new InvalidOperationException(
                $"{nameof(Mailbox)} requires {nameof(SimManager)} to provide deterministic simulation time.");
+  }
+
+  // Creates the queue so Send() remains safe even if Configure() has not run yet (Backup).
+  private void InitializeMessageQueueIfNeeded() {
+    _messageQueue ??= new PriorityQueue<PendingMessage>();
   }
 
   // Get information on effective runtime link config for a sender->receiver LinkRuntimeConfig pair.
