@@ -5,10 +5,8 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  // Sets Mailbox NodeType to "Interceptor"
-  public override CommsNode NodeType => CommsNode.Interceptor;
-
-  // CommsParent establishes Parent – Child relationship. Provides quick parent lookup.
+  // Optional mailbox receiver used to route requests to the logical parent interceptor or IADS
+  // proxy.
   public IAgent CommsParent { get; set; }
 
   public event InterceptorEventHandler OnHit;
@@ -302,7 +300,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      OnReassignTarget?.Invoke(targetHierarchical);
+      SendReassignRequestToParent(targetHierarchical);
     }
 
     RequestReassignment(interceptor);
@@ -372,19 +370,27 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // AssignSubInterceptorRequest to parent.
   private void SendAssignRequestToParent(IInterceptor subInterceptor) {
     IAgent parent = CommsParent;
-    if (parent == null || subInterceptor == null) {
+    if (subInterceptor == null) {
       return;
     }
-    SendMessage(new AssignSubInterceptorRequestMessage(this, parent, subInterceptor));
+    if (parent == null) {
+      OnAssignSubInterceptor?.Invoke(subInterceptor);
+      return;
+    }
+    SendMailboxMessage(new AssignSubInterceptorRequestMessage(this, parent, subInterceptor));
   }
 
   // ReassignTargetRequest to parent.
   private void SendReassignRequestToParent(IHierarchical target) {
     IAgent parent = CommsParent;
-    if (parent == null || target == null) {
+    if (target == null) {
       return;
     }
-    SendMessage(new ReassignTargetRequestMessage(this, parent, target));
+    if (parent == null) {
+      OnReassignTarget?.Invoke(target);
+      return;
+    }
+    SendMailboxMessage(new ReassignTargetRequestMessage(this, parent, target));
   }
 
   // SendAssignTarget to child.
@@ -392,11 +398,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     if (subInterceptor == null || target == null) {
       return;
     }
-    SendMessage(new AssignTargetMessage(this, subInterceptor, target));
+    SendMailboxMessage(new AssignTargetMessage(this, subInterceptor, target));
   }
 
   // Send into Mailbox.
-  private void SendMessage(Message message) {
+  private void SendMailboxMessage(Message message) {
     if (message == null) {
       return;
     }
@@ -420,11 +426,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         ReassignTarget(reassignRequest.PayloadData.Target);
         break;
       case AssignTargetMessage assignTarget:
-        bool accepted = EvaluateReassignedTarget(assignTarget.PayloadData.Target);
-        // EvaluateReassignedTarget. If it is false then bounce back: send a RequestReassignment
-        // upwards.
-        if (!accepted) {
-          RequestReassignment(this);
+        IHierarchical assignedTarget = assignTarget.PayloadData.Target;
+        if (assignedTarget != null) {
+          HierarchicalAgent.Target = assignedTarget;
         }
         break;
     }
