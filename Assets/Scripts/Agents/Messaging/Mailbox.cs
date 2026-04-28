@@ -1,160 +1,198 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // The centralized mailbox is what all agents use to send and receive delayed messages.
 
 public class Mailbox : MonoBehaviour {
-    public static Mailbox Instance { get; private set; }
-    public event Action<IAgent, Message> OnMessageDelivered;
-    private PriorityQueue<PendingMessage> _messageQueue;
-    private LatencyTable _latencyTable;
+  public static Mailbox Instance { get; private set; }
+  public event Action<IAgent, Message> OnMessageDelivered;
 
-    // 3 modes for constructing the latency table.
-    private enum LatencyMode {
-        NoLatency, // Ideal communication with zero latency.
-        UniformLatency, // Set all latency entries to one value.
-        IndividualLatency, // Configure each from->to pair independently.
+  // Dictionary key for a one-way directed communication link between two agent types.
+  private readonly struct LinkKey : IEquatable<LinkKey> {
+    public readonly Configs.AgentType From;
+    public readonly Configs.AgentType To;
+
+    // Identifies a directed sender->receiver link in the communication config.
+    public LinkKey(Configs.AgentType from, Configs.AgentType to) {
+      From = from;
+      To = to;
     }
 
-    private struct LatencyOverride {
-        public CommsNode From;
-        public CommsNode To;
-        public float Seconds;
+    // Compares two link keys for dictionary lookup.
+    public bool Equals(LinkKey other) => From == other.From && To == other.To;
+    // Produces a stable hash for use in the per-link override dictionary.
+    public override int GetHashCode() => ((int)From * 397) ^ (int)To;
+  }
+
+  // Runtime communication settings for one link, taken directly from proto files.
+  private readonly struct LinkRuntimeConfig {
+    // Standard LinkRuntimeConfig that guarantees a 0 latency, 0 jitter, and with PDR = 1.
+    public static readonly LinkRuntimeConfig ZeroLatencyGuaranteedDelivery =
+        new LinkRuntimeConfig(0f, 0f, 1f);
+
+    public readonly float LatencySeconds;
+    public readonly float LatencyStdSeconds;
+    public readonly float PacketDeliveryRatio;
+
+    // Insert proto values into runtime values.
+    public LinkRuntimeConfig(float latencySeconds, float latencyStdSeconds,
+                             float packetDeliveryRatio) {
+      LatencySeconds = Mathf.Max(0f, latencySeconds);
+      LatencyStdSeconds = Mathf.Max(0f, latencyStdSeconds);
+      PacketDeliveryRatio = Mathf.Clamp01(packetDeliveryRatio);
+    }
+  }
+
+  private PriorityQueue<PendingMessage> _messageQueue;
+  private readonly Dictionary<LinkKey, LinkRuntimeConfig> _linkOverrides = new();
+
+  // If no communication config exists, messages fall back to 0 latency, 0 jitter, and with PDR = 1
+  // delivery.
+  private LinkRuntimeConfig _defaultLinkConfig = LinkRuntimeConfig.ZeroLatencyGuaranteedDelivery;
+
+  public static Mailbox GetOrCreateInstance() {
+    if (Instance != null) {
+      return Instance;
+    }
+    Instance = UnityEngine.Object.FindFirstObjectByType<Mailbox>();
+    if (Instance != null) {
+      return Instance;
+    }
+    var mailboxObject = new GameObject(nameof(Mailbox));
+    DontDestroyOnLoad(mailboxObject);
+    Instance = mailboxObject.AddComponent<Mailbox>();
+    return Instance;
+  }
+
+  // Initializes the mailbox from the current simulation config.
+  private void Awake() {
+    if (Instance != null && Instance != this) {
+      Destroy(gameObject);
+      return;
+    }
+    Instance = this;
+    Configure(SimManager.Instance?.SimulationConfig?.CommunicationConfig);
+  }
+
+  // Advances message delivery once per frame using simulation time.
+  private void Update() {
+    DeliverDueMessages();
+  }
+
+  // Rebuilds runtime link settings from the protobuf communication config.
+  public void Configure(Configs.CommunicationConfig communicationConfig) {
+    ClearPendingMessages();
+    _linkOverrides.Clear();
+
+    // If ToRuntimeConfig(null) it uses ZeroLatencyGuaranteedDelivery, else set to standard
+    // link_config.
+    _defaultLinkConfig = ToRuntimeConfig(communicationConfig?.LinkConfig);
+
+    // If no communication config links exists, the mailbox uses ZeroLatencyGuaranteedDelivery
+    // default.
+    if (communicationConfig == null) {
+      return;
     }
 
-    // Latency jitter standard deviation in seconds.
-    [SerializeField]
-    private float _latencyJitterStdSeconds = 0f;
+    // Iterate through every link pair from config to create LinkKey.
+    foreach (Configs.LinkOverride linkOverride in communicationConfig.LinkOverrides) {
+      _linkOverrides[new LinkKey(linkOverride.From, linkOverride.To)] =
+          ToRuntimeConfig(linkOverride.LinkConfig);
+    }
+  }
 
-    // Latency mode for setting latencyTable
-    [SerializeField]
-    private LatencyMode _latencyMode = LatencyMode.UniformLatency;
+  // Drops all queued messages.
+  public void ClearPendingMessages() {
+    _messageQueue = new PriorityQueue<PendingMessage>();
+  }
 
-    // Used for to set all latency to _uniformLatency value. Only works when _latencyMode = LatencyMode.UniformLatency.
-    [SerializeField]
-    private float _uniformLatency = 0.2f;
-
-    // TODO (Joseph): make this table serializable or put in protobuf.
-    // Can set individual latency based on node-to-node types
-    private static readonly LatencyOverride[] DefaultLatencyOverrides = {
-        new LatencyOverride { From = CommsNode.IADS, To = CommsNode.IADS, Seconds = 0.2f },
-        new LatencyOverride { From = CommsNode.IADS, To = CommsNode.Carrier, Seconds = 0.2f },
-        new LatencyOverride { From = CommsNode.Carrier, To = CommsNode.IADS, Seconds = 0.2f },
-        new LatencyOverride { From = CommsNode.Carrier, To = CommsNode.Carrier, Seconds = 0.2f },
-        new LatencyOverride { From = CommsNode.Carrier, To = CommsNode.Interceptor, Seconds = 0.2f },
-        new LatencyOverride { From = CommsNode.Interceptor, To = CommsNode.Carrier, Seconds = 0.2f },
-        new LatencyOverride { From = CommsNode.Interceptor, To = CommsNode.Interceptor, Seconds = 0.2f },
-    };
-
-    // instantiate Mailbox Component
-    public static Mailbox GetOrCreateInstance() {
-        if (Instance != null) {
-            return Instance;
-        }
-        Instance = UnityEngine.Object.FindFirstObjectByType<Mailbox>();
-        if (Instance != null) {
-            return Instance;
-        }
-        var mailboxObject = new GameObject(nameof(Mailbox));
-        DontDestroyOnLoad(mailboxObject);
-        Instance = mailboxObject.AddComponent<Mailbox>();
-        return Instance;
+  // Applies link loss/latency then queues a message into PQ for future delivery.
+  public void Send(Message message) {
+    if (message == null || message.Sender == null || message.Receiver == null) {
+      return;
     }
 
-    private void Awake() {
-        if (Instance != null && Instance != this) {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        ApplyLatencyOverrides();
+    LinkRuntimeConfig linkConfig = GetEffectiveLinkConfig(message.Sender, message.Receiver);
+    // Applies packet delivery ratio (PDR). This is done before sending into PQ.
+    if (UnityEngine.Random.value > linkConfig.PacketDeliveryRatio) {
+      return;
     }
 
-    private void Update() {
-        DeliverDueMessages();
+    float jitter = linkConfig.LatencyStdSeconds > 0f
+                       ? SampleGaussian(mean: 0f, stdDev: linkConfig.LatencyStdSeconds)
+                       : 0f;
+    float totalLatency = Mathf.Max(0f, linkConfig.LatencySeconds + jitter);
+    float deliverAt = GetCurrentTime() + totalLatency;
+    _messageQueue.Enqueue(new PendingMessage(deliverAt, message), deliverAt);
+  }
+
+  // Releases all queued messages in PQ whose scheduled delivery time has arrived.
+  private void DeliverDueMessages() {
+    if (_messageQueue == null) {
+      return;
     }
 
-    private void OnValidate() {
-        _latencyJitterStdSeconds = Mathf.Max(0f, _latencyJitterStdSeconds);
-        _uniformLatency = Mathf.Max(0f, _uniformLatency);
+    float currentTime = GetCurrentTime();
+    var dueMessages = new List<PendingMessage>();
+    while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
+      dueMessages.Add(_messageQueue.Dequeue());
     }
+    foreach (PendingMessage pending in dueMessages) {
+      if (!IsReceiverValid(pending.Receiver)) {
+        continue;
+      }
+      OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
+    }
+  }
 
-    public void ClearPendingMessages() {
-        _messageQueue = new PriorityQueue<PendingMessage>();
-    }
+  // Samples zero-mean Gaussian noise for latency jitter.
+  private static float SampleGaussian(float mean, float stdDev) {
+    float u1 = Mathf.Max(float.Epsilon, UnityEngine.Random.value);
+    float u2 = UnityEngine.Random.value;
+    float standardNormal = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2f * Mathf.PI * u2);
+    return mean + stdDev * standardNormal;
+  }
 
-    // Enqueue a message for delayed delivery. Message will be released when DeliverTime has reached.
-    public void Send(Message message) {
-        if (message == null || message.Sender == null || message.Receiver == null) { return; }
-        float baseLatency = _latencyTable.Get(message.Sender.NodeType, message.Receiver.NodeType);
-        float jitter = _latencyJitterStdSeconds > 0f ? SampleGaussian(mean: 0f, stdDev: _latencyJitterStdSeconds) : 0f;
-        float totalLatency = Mathf.Max(0f, baseLatency + jitter);
-        float deliverAt = GetCurrentTime() + totalLatency;
-        _messageQueue.Enqueue(new PendingMessage(deliverAt, message), deliverAt);
-    }
+  // Returns deterministic simulation time for scheduling message delivery.
+  private static float GetCurrentTime() {
+    return SimManager.Instance?.ElapsedTime ??
+           throw new InvalidOperationException(
+               $"{nameof(Mailbox)} requires {nameof(SimManager)} to provide deterministic simulation time.");
+  }
 
-    // Override latency values into LatencyTable.
-    private void ApplyLatencyOverrides() {
-        ClearPendingMessages();
-        switch (_latencyMode) {
-            case LatencyMode.NoLatency: {
-                _latencyTable = new LatencyTable();
-                break;
-            }
-            case LatencyMode.UniformLatency: {
-                _latencyTable = new LatencyTable(_uniformLatency);
-                break;
-            }
-            case LatencyMode.IndividualLatency: {
-                _latencyTable = new LatencyTable();
-                foreach (var latencyEntry in DefaultLatencyOverrides) {
-                    _latencyTable.Set(latencyEntry.From, latencyEntry.To, latencyEntry.Seconds);
-                }
-                break;
-            }
-            default: {
-                _latencyTable = new LatencyTable();
-                break;
-            }
-        }
-    }
+  // Get information on effective runtime link config for a sender->receiver LinkRuntimeConfig pair.
+  private LinkRuntimeConfig GetEffectiveLinkConfig(IAgent sender, IAgent receiver) {
+    Configs.AgentType from = GetAgentType(sender);
+    Configs.AgentType to = GetAgentType(receiver);
+    return _linkOverrides.TryGetValue(new LinkKey(from, to), out LinkRuntimeConfig linkConfig)
+               ? linkConfig
+               : _defaultLinkConfig;
+  }
 
-    // Repeadly pop due messages off the queue. Apply PDR so only certain amount of messages pass through.
-    private void DeliverDueMessages() {
-        if (_messageQueue == null) {
-            return;
-        }
-        float currentTime = GetCurrentTime();
-        var dueMessages = new System.Collections.Generic.List<PendingMessage>();
-        while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
-            dueMessages.Add(_messageQueue.Dequeue());
-        }
-        foreach (PendingMessage pending in dueMessages) {
-            if (!IsReceiverValid(pending.Receiver)) { continue; }
-            OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
-        }
-    }
+  // Agents without a StaticConfig.AgentType becomes an InvalidType and use the default link config
+  // unless that pair is explicitly overridden.
+  private static Configs.AgentType GetAgentType(IAgent agent) {
+    return agent?.StaticConfig?.AgentType ?? Configs.AgentType.InvalidType;
+  }
 
-    // Helper function for jitter calculation.
-    private static float SampleGaussian(float mean, float stdDev) {
-        float u1 = Mathf.Max(float.Epsilon, UnityEngine.Random.value);
-        float u2 = UnityEngine.Random.value;
-        float standardNormal = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2f * Mathf.PI * u2);
-        return mean + stdDev * standardNormal;
+  // Converts a protobuf link config into runtime values.
+  private static LinkRuntimeConfig ToRuntimeConfig(Configs.LinkConfig linkConfig) {
+    if (linkConfig == null) {
+      return LinkRuntimeConfig.ZeroLatencyGuaranteedDelivery;
     }
+    return new LinkRuntimeConfig(linkConfig.LatencySeconds, linkConfig.LatencyStdSeconds,
+                                 linkConfig.PacketDeliveryRatio);
+  }
 
-    private static float GetCurrentTime() {
-        return SimManager.Instance != null ? SimManager.Instance.ElapsedTime : Time.time;
+  // Rejects deliveries to destroyed or terminated receivers.
+  private static bool IsReceiverValid(IAgent receiver) {
+    if (receiver == null) {
+      return false;
     }
-
-    // Check if receiver still exists.
-    private static bool IsReceiverValid(IAgent receiver) {
-        if (receiver == null) {
-            return false;
-        }
-        if (receiver is UnityEngine.Object unityObject && unityObject == null) {
-            return false;
-        }
-        return !receiver.IsTerminated;
+    if (receiver is UnityEngine.Object unityObject && unityObject == null) {
+      return false;
     }
+    return !receiver.IsTerminated;
+  }
 }
