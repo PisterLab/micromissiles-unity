@@ -84,6 +84,7 @@ public class IADS : MonoBehaviour {
   }
 
   private void OnDestroy() {
+    UnregisterLaunchers();
     if (_mailboxSubscribed && _mailboxInstance != null) {
       _mailboxInstance.OnMessageDelivered -= HandleMailboxDelivery;
     }
@@ -114,7 +115,7 @@ public class IADS : MonoBehaviour {
       _hierarchyCoroutine = null;
     }
     _assets.Clear();
-    _launchers.Clear();
+    UnregisterLaunchers();
     _newThreats.Clear();
   }
 
@@ -126,16 +127,22 @@ public class IADS : MonoBehaviour {
 
   public void RegisterNewLauncher(IInterceptor launcher) {
     RegisterNewAsset(launcher);
-    if (launcher?.HierarchicalAgent == null || _launchers.Contains(launcher.HierarchicalAgent)) {
+    if (launcher?.HierarchicalAgent == null) {
       return;
     }
+
+    launcher.OnAssignSubInterceptor -= AssignSubInterceptor;
+    launcher.OnReassignTarget -= ReassignTarget;
     launcher.OnAssignSubInterceptor += AssignSubInterceptor;
     launcher.OnReassignTarget += ReassignTarget;
-    _launchers.Add(launcher.HierarchicalAgent);
+    if (!_launchers.Contains(launcher.HierarchicalAgent)) {
+      _launchers.Add(launcher.HierarchicalAgent);
+    }
   }
 
   public void RegisterNewThreat(IThreat threat) {
-    if (threat.HierarchicalAgent != null && !_newThreats.Contains(threat.HierarchicalAgent)) {
+    if (threat != null && threat.HierarchicalAgent != null &&
+        !_newThreats.Contains(threat.HierarchicalAgent)) {
       _newThreats.Add(threat.HierarchicalAgent);
     }
   }
@@ -203,7 +210,9 @@ public class IADS : MonoBehaviour {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (_commsAgent == null || subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
+    HierarchicalAgent subInterceptorHierarchical = subInterceptor?.HierarchicalAgent;
+    if (_commsAgent == null || subInterceptor == null || subInterceptorHierarchical == null ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
     // Pass the sub-interceptor through all the launchers in order of increasing distance between
@@ -214,12 +223,24 @@ public class IADS : MonoBehaviour {
                          Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
     foreach (var launcher in sortedLaunchers) {
       IHierarchical target =
-          launcher.FindNewTarget(subInterceptor.HierarchicalAgent, subInterceptor.Capacity);
+          launcher.FindNewTarget(subInterceptorHierarchical, subInterceptor.Capacity);
       if (target != null) {
         SendMailboxMessage(new AssignTargetMessage(_commsAgent, subInterceptor, target));
         break;
       }
     }
+  }
+
+  private void UnregisterLaunchers() {
+    foreach (IHierarchical launcher in _launchers) {
+      IInterceptor interceptor = (launcher as HierarchicalAgent)?.Agent as IInterceptor;
+      if (interceptor == null) {
+        continue;
+      }
+      interceptor.OnAssignSubInterceptor -= AssignSubInterceptor;
+      interceptor.OnReassignTarget -= ReassignTarget;
+    }
+    _launchers.Clear();
   }
 
   private void ReassignTarget(IHierarchical target) {
