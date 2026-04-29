@@ -42,19 +42,20 @@ public abstract class CarrierBase : InterceptorBase {
       // Determine whether to release the sub-interceptors.
       if (ReleaseStrategy != null) {
         List<IAgent> releasedAgents = ReleaseStrategy.Release();
+        List<IAgent> unexpectedAgents =
+            releasedAgents.Where(agent => agent is not InterceptorBase).ToList();
         List<InterceptorBase> releasedInterceptors =
-            releasedAgents.OfType<InterceptorBase>().ToList();
-        if (releasedAgents.Count != releasedInterceptors.Count) {
+            releasedAgents.OfType<InterceptorBase>().Distinct().ToList();
+        if (unexpectedAgents.Count > 0) {
           string unexpectedTypes =
-              string.Join(", ", releasedAgents.Where(agent => agent is not InterceptorBase)
-                                    .Select(agent => agent?.GetType().Name ?? "null"));
-          Debug.LogError(
-              $"Carrier release expected only {nameof(InterceptorBase)} entries but " +
-              $"received {releasedAgents.Count - releasedInterceptors.Count} unexpected " +
-              $"agent(s) [{unexpectedTypes}] out of {releasedAgents.Count} released " +
-              $"agent(s).");
+              string.Join(", ", unexpectedAgents.Select(agent => agent?.GetType().Name ?? "null"));
+          Debug.LogError($"Carrier release expected only {nameof(InterceptorBase)} entries but " +
+                         $"received {unexpectedAgents.Count} unexpected " +
+                         $"agent(s) [{unexpectedTypes}] out of {releasedAgents.Count} released " +
+                         $"agent(s).");
         }
-        NumSubInterceptorsRemaining -= releasedInterceptors.Count;
+        NumSubInterceptorsRemaining =
+            Mathf.Max(0, NumSubInterceptorsRemaining - releasedInterceptors.Count);
 
         foreach (InterceptorBase subInterceptor in releasedInterceptors) {
           // Register parent (carrier) that releases interceptor to interceptor.
