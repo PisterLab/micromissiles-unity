@@ -42,22 +42,29 @@ public abstract class CarrierBase : InterceptorBase {
       // Determine whether to release the sub-interceptors.
       if (ReleaseStrategy != null) {
         List<IAgent> releasedAgents = ReleaseStrategy.Release();
-        NumSubInterceptorsRemaining -= releasedAgents.Count;
+        List<IAgent> unexpectedAgents =
+            releasedAgents.Where(agent => agent is not InterceptorBase).ToList();
+        List<InterceptorBase> releasedInterceptors =
+            releasedAgents.OfType<InterceptorBase>().Distinct().ToList();
+        if (unexpectedAgents.Count > 0) {
+          string unexpectedTypes =
+              string.Join(", ", unexpectedAgents.Select(agent => agent?.GetType().Name ?? "null"));
+          Debug.LogError($"Carrier release expected only {nameof(InterceptorBase)} entries but " +
+                         $"received {unexpectedAgents.Count} unexpected " +
+                         $"agent(s) [{unexpectedTypes}] out of {releasedAgents.Count} released " +
+                         $"agent(s).");
+        }
+        NumSubInterceptorsRemaining =
+            Mathf.Max(0, NumSubInterceptorsRemaining - releasedInterceptors.Count);
 
-        foreach (var agent in releasedAgents) {
-          if (agent is IInterceptor subInterceptor) {
-            subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
-            subInterceptor.OnReassignTarget += ReassignTarget;
-            if (subInterceptor is InterceptorBase interceptorBase) {
-              interceptorBase.CommsParent = this;
-            }
-            if (subInterceptor.Movement is MissileMovement movement) {
-              movement.FlightPhase = Simulation.FlightPhase.Boost;
-            }
+        foreach (InterceptorBase subInterceptor in releasedInterceptors) {
+          // Register parent (carrier) that releases interceptor to interceptor.
+          subInterceptor.CommsParent = this;
+          if (subInterceptor.Movement is MissileMovement movement) {
+            movement.FlightPhase = Simulation.FlightPhase.Boost;
           }
         }
       }
-
       yield return new WaitForSeconds(period);
     }
     _releaseCoroutine = null;
