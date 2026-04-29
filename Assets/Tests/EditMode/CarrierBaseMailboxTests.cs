@@ -107,6 +107,23 @@ public class CarrierBaseMailboxTests : TestBase {
     Assert.AreSame(expectedLeafTarget, assignedTargets[0]);
   }
 
+  // Verifies that duplicate interceptor entries in a release batch do not double-count remaining
+  // sub-interceptors.
+  [Test]
+  public void ReleaseManager_DuplicateReleasedInterceptor_DoesNotDoubleCountRemaining() {
+    SetPrivateField(_carrier, "_numSubInterceptorsRemaining", 2);
+
+    TestReleasedInterceptor releasedInterceptor =
+        CreateReleasedInterceptor("ReleasedInterceptor", Configs.AgentType.MissileInterceptor);
+    _carrier.ReleaseStrategy = new FixedReleaseStrategy(
+        _carrier, new List<IAgent> { releasedInterceptor, releasedInterceptor });
+
+    RunReleaseManagerStep(_carrier, period: 0.2f);
+
+    Assert.AreSame(_carrier, releasedInterceptor.CommsParent);
+    Assert.AreEqual(1, _carrier.NumSubInterceptorsRemaining);
+  }
+
   private TestCarrier CreateCarrier(string name, Configs.AgentType agentType) {
     GameObject carrierObject = new GameObject(name);
     _spawnedObjects.Add(carrierObject);
