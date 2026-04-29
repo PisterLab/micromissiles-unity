@@ -48,6 +48,9 @@ public abstract class CarrierBase : InterceptorBase {
           if (agent is IInterceptor subInterceptor) {
             subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
             subInterceptor.OnReassignTarget += ReassignTarget;
+            if (subInterceptor is InterceptorBase interceptorBase) {
+              interceptorBase.CommsParent = this;
+            }
             if (subInterceptor.Movement is MissileMovement movement) {
               movement.FlightPhase = Simulation.FlightPhase.Boost;
             }

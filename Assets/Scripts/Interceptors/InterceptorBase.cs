@@ -5,6 +5,10 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
+  // Optional mailbox receiver used to route requests to the logical parent interceptor or IADS
+  // proxy.
+  public IAgent CommsParent { get; set; }
+
   public event InterceptorEventHandler OnHit;
   public event InterceptorEventHandler OnMiss;
   public event InterceptorEventHandler OnDestroyed;
@@ -101,17 +105,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.Capacity <= 0) {
       return;
     }
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
-    // Evaluate the new target and decide whether to continue searching for other targets.
-    if (!subInterceptor.EvaluateReassignedTarget(target)) {
-      // Propagate the sub-interceptor target assignment to the parent interceptor above.
-      OnAssignSubInterceptor?.Invoke(subInterceptor);
+    if (target != null) {
+      SendAssignTargetToSub(subInterceptor, target);
+    } else {
+      SendAssignRequestToParent(subInterceptor);
     }
   }
 
@@ -123,7 +127,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
-      OnReassignTarget?.Invoke(target);
+      SendReassignRequestToParent(target);
       return;
     }
 
@@ -155,7 +159,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       List<IHierarchical> escapingTargets =
           targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
       foreach (var target in escapingTargets) {
-        OnReassignTarget?.Invoke(target);
+        SendReassignRequestToParent(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
         RequestReassignment(this);
@@ -279,7 +283,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     RequestTargetReassignment(interceptor);
 
     // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
+    SendAssignRequestToParent(interceptor);
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -296,7 +300,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      OnReassignTarget?.Invoke(targetHierarchical);
+      SendReassignRequestToParent(targetHierarchical);
     }
 
     RequestReassignment(interceptor);
@@ -305,7 +309,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private void RequestReassignment(IInterceptor interceptor) {
     if (interceptor.IsReassignable) {
       // Request a new target from the parent interceptor.
-      OnAssignSubInterceptor?.Invoke(interceptor);
+      SendAssignRequestToParent(interceptor);
     }
   }
 
@@ -335,7 +339,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
         var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
-          OnReassignTarget?.Invoke(target);
+          SendReassignRequestToParent(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       } else {
@@ -360,6 +364,73 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);
+    }
+  }
+
+  // AssignSubInterceptorRequest to parent.
+  private void SendAssignRequestToParent(IInterceptor subInterceptor) {
+    IAgent parent = CommsParent;
+    if (subInterceptor == null) {
+      return;
+    }
+    if (parent == null) {
+      OnAssignSubInterceptor?.Invoke(subInterceptor);
+      return;
+    }
+    SendMailboxMessage(new AssignSubInterceptorRequestMessage(this, parent, subInterceptor));
+  }
+
+  // ReassignTargetRequest to parent.
+  private void SendReassignRequestToParent(IHierarchical target) {
+    IAgent parent = CommsParent;
+    if (target == null) {
+      return;
+    }
+    if (parent == null) {
+      OnReassignTarget?.Invoke(target);
+      return;
+    }
+    SendMailboxMessage(new ReassignTargetRequestMessage(this, parent, target));
+  }
+
+  // SendAssignTarget to child.
+  private void SendAssignTargetToSub(IInterceptor subInterceptor, IHierarchical target) {
+    if (subInterceptor == null || target == null) {
+      return;
+    }
+    SendMailboxMessage(new AssignTargetMessage(this, subInterceptor, target));
+  }
+
+  // Send into Mailbox.
+  private void SendMailboxMessage(Message message) {
+    if (message == null) {
+      return;
+    }
+    Mailbox mailbox = Mailbox.GetOrCreateInstance();
+    if (mailbox == null) {
+      return;
+    }
+    mailbox.Send(message);
+  }
+
+  // Execution happens here after receiving and reading message. PayloadData is read and handled.
+  protected override void OnMessage(Message message) {
+    if (message == null) {
+      return;
+    }
+    switch (message) {
+      case AssignSubInterceptorRequestMessage assignRequest:
+        AssignSubInterceptor(assignRequest.PayloadData.SubInterceptor);
+        break;
+      case ReassignTargetRequestMessage reassignRequest:
+        ReassignTarget(reassignRequest.PayloadData.Target);
+        break;
+      case AssignTargetMessage assignTarget:
+        IHierarchical assignedTarget = assignTarget.PayloadData.Target;
+        if (assignedTarget != null) {
+          HierarchicalAgent.Target = assignedTarget;
+        }
+        break;
     }
   }
 }

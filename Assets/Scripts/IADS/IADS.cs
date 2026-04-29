@@ -120,6 +120,9 @@ public class IADS : MonoBehaviour {
   }
 
   public void RegisterNewAsset(IInterceptor asset) {
+    if (asset is InterceptorBase interceptorBase) {
+      interceptorBase.CommsParent = _commsAgent;
+    }
     if (asset?.HierarchicalAgent != null && !_assets.Contains(asset.HierarchicalAgent)) {
       _assets.Add(asset.HierarchicalAgent);
     }
