@@ -44,6 +44,16 @@ public abstract class CarrierBase : InterceptorBase {
         List<IAgent> releasedAgents = ReleaseStrategy.Release();
         List<InterceptorBase> releasedInterceptors =
             releasedAgents.OfType<InterceptorBase>().ToList();
+        if (releasedAgents.Count != releasedInterceptors.Count) {
+          string unexpectedTypes =
+              string.Join(", ", releasedAgents.Where(agent => agent is not InterceptorBase)
+                                    .Select(agent => agent?.GetType().Name ?? "null"));
+          Debug.LogError(
+              $"Carrier release expected only {nameof(InterceptorBase)} entries but " +
+              $"received {releasedAgents.Count - releasedInterceptors.Count} unexpected " +
+              $"agent(s) [{unexpectedTypes}] out of {releasedAgents.Count} released " +
+              $"agent(s).");
+        }
         NumSubInterceptorsRemaining -= releasedInterceptors.Count;
 
         foreach (InterceptorBase subInterceptor in releasedInterceptors) {
