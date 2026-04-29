@@ -50,7 +50,7 @@ public class CarrierBaseMailboxTests : TestBase {
         CreateReleasedInterceptor("ReleasedInterceptor", Configs.AgentType.MissileInterceptor);
     IAgent releasedNonInterceptor = new StubAgent(Configs.AgentType.Vessel);
     _carrier.ReleaseStrategy = new FixedReleaseStrategy(
-        new List<IAgent> { releasedInterceptor, releasedNonInterceptor }) { Agent = _carrier };
+        _carrier, new List<IAgent> { releasedInterceptor, releasedNonInterceptor });
 
     RunReleaseManagerStep(_carrier, period: 0.2f);
 
@@ -67,7 +67,7 @@ public class CarrierBaseMailboxTests : TestBase {
     TestReleasedInterceptor releasedInterceptor =
         CreateReleasedInterceptor("ReleasedInterceptor", Configs.AgentType.MissileInterceptor);
     _carrier.ReleaseStrategy =
-        new FixedReleaseStrategy(new List<IAgent> { releasedInterceptor }) { Agent = _carrier };
+        new FixedReleaseStrategy(_carrier, new List<IAgent> { releasedInterceptor });
 
     FixedHierarchical expectedLeafTarget =
         new FixedHierarchical(position: new Vector3(25f, 0f, 0f));
@@ -207,16 +207,14 @@ public class CarrierBaseMailboxTests : TestBase {
     void IAgent.UpdateTargetModel() {}
   }
 
-  private sealed class FixedReleaseStrategy : IReleaseStrategy {
+  private sealed class FixedReleaseStrategy : ReleaseStrategyBase {
     private readonly List<IAgent> _releasedAgents;
 
-    public IAgent Agent { get; init; }
-
-    public FixedReleaseStrategy(List<IAgent> releasedAgents) {
+    public FixedReleaseStrategy(IAgent agent, List<IAgent> releasedAgents) : base(agent) {
       _releasedAgents = releasedAgents;
     }
 
-    public List<IAgent> Release() {
+    protected override List<IAgent> Release(IEnumerable<IHierarchical> _) {
       List<IAgent> releasedAgents = new List<IAgent>(_releasedAgents);
       _releasedAgents.Clear();
       return releasedAgents;
