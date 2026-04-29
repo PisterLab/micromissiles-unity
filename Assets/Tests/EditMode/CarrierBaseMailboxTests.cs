@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 public class CarrierBaseMailboxTests : TestBase {
   private Mailbox _mailbox;
@@ -40,8 +41,8 @@ public class CarrierBaseMailboxTests : TestBase {
     SetSimManagerInstance(null);
   }
 
-  // Verifies that release bookkeeping only counts released interceptor children and wires those
-  // children back to the carrier as their mailbox parent.
+  // Verifies that release bookkeeping only counts released interceptor children, surfaces an
+  // error for unexpected payloads, and wires released interceptors back to the carrier.
   [Test]
   public void ReleaseManager_MixedReleasedAgents_CountsOnlyInterceptorsAndAssignsCommsParent() {
     SetPrivateField(_carrier, "_numSubInterceptorsRemaining", 3);
@@ -51,6 +52,9 @@ public class CarrierBaseMailboxTests : TestBase {
     IAgent releasedNonInterceptor = new StubAgent(Configs.AgentType.Vessel);
     _carrier.ReleaseStrategy = new FixedReleaseStrategy(
         _carrier, new List<IAgent> { releasedInterceptor, releasedNonInterceptor });
+    LogAssert.Expect(LogType.Error,
+                     "Carrier release expected only InterceptorBase entries but received 1 " +
+                         "unexpected agent(s) [StubAgent] out of 2 released agent(s).");
 
     RunReleaseManagerStep(_carrier, period: 0.2f);
 
