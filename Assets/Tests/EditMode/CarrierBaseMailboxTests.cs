@@ -5,12 +5,6 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using UnityEngine;
 
-#if !NET5_0_OR_GREATER
-namespace System.Runtime.CompilerServices {
-  internal static class IsExternalInit {}
-}
-#endif
-
 public class CarrierBaseMailboxTests : TestBase {
   private Mailbox _mailbox;
   private SimManager _simManager;
@@ -166,6 +160,9 @@ public class CarrierBaseMailboxTests : TestBase {
   private static void SetMailboxInstance(Mailbox mailbox) {
     FieldInfo instanceField = typeof(Mailbox).GetField(
         "<Instance>k__BackingField", BindingFlags.NonPublic | BindingFlags.Static);
+    Assert.NotNull(instanceField,
+                   $"{nameof(Mailbox)} instance backing field was not found. " +
+                       $"The {nameof(Mailbox.Instance)} property shape may have changed.");
     instanceField.SetValue(null, mailbox);
   }
 
@@ -173,6 +170,9 @@ public class CarrierBaseMailboxTests : TestBase {
     FieldInfo instanceField =
         typeof(SimManager)
             .GetField("<Instance>k__BackingField", BindingFlags.NonPublic | BindingFlags.Static);
+    Assert.NotNull(instanceField,
+                   $"{nameof(SimManager)} instance backing field was not found. " +
+                       $"The {nameof(SimManager.Instance)} property shape may have changed.");
     instanceField.SetValue(null, simManager);
   }
 
@@ -217,7 +217,9 @@ public class CarrierBaseMailboxTests : TestBase {
     }
 
     public List<IAgent> Release() {
-      return _releasedAgents;
+      List<IAgent> releasedAgents = new List<IAgent>(_releasedAgents);
+      _releasedAgents.Clear();
+      return releasedAgents;
     }
   }
 
