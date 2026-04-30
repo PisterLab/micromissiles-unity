@@ -29,8 +29,8 @@ public class KMeansClusterer : ClustererBase {
       return new List<Cluster>();
     }
     if (_k <= 0) {
-      Debug.LogError($"Number of clusters must be positive, but was {_k}.");
-      return new List<Cluster>();
+      throw new ArgumentOutOfRangeException(
+          paramName: "k", actualValue: _k, message: "Number of clusters must be positive.");
     }
 
     // Initialize the clusters with centroids located at the positions of k random hierarchical

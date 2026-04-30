@@ -95,11 +95,7 @@ public class IADS : MonoBehaviour {
   }
 
   private void BuildHierarchy() {
-    if (_newThreats.Count == 0) {
-      return;
-    }
-    if (_launchers.Count == 0) {
-      _newThreats.Clear();
+    if (_newThreats.Count == 0 || _launchers.Count == 0) {
       return;
     }
 

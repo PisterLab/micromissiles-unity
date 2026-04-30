@@ -101,6 +101,9 @@ public class TacticalPanel : MonoBehaviour {
       SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
       SimManager.Instance.OnNewThreat -= RegisterNewAgent;
     }
+    foreach (var agent in _symbols.Keys) {
+      agent.OnTerminated -= DestroySymbol;
+    }
     if (_symbolsCoroutine != null) {
       StopCoroutine(_symbolsCoroutine);
       _symbolsCoroutine = null;
@@ -113,11 +116,9 @@ public class TacticalPanel : MonoBehaviour {
   }
 
   public void RegisterNewAgent(IAgent agent) {
-    if (_symbols.ContainsKey(agent)) {
-      CreateSymbol(agent);
-      return;
+    if (!_symbols.ContainsKey(agent)) {
+      agent.OnTerminated += DestroySymbol;
     }
-    agent.OnTerminated += DestroySymbol;
     CreateSymbol(agent);
   }
 
