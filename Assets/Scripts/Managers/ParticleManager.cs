@@ -131,13 +131,11 @@ public class ParticleManager : MonoBehaviour {
     }
     GameObject hitMarkerObject = SpawnHitMarker(interceptor.Position);
     hitMarkerObject.GetComponent<UIEventMarker>().SetEventHit();
-    _hitMarkerList.Add(hitMarkerObject);
   }
 
   private void RegisterInterceptorMiss(IInterceptor interceptor) {
     GameObject hitMarkerObject = SpawnHitMarker(interceptor.Position);
     hitMarkerObject.GetComponent<UIEventMarker>().SetEventMiss();
-    _hitMarkerList.Add(hitMarkerObject);
   }
 
   private void RegisterNewThreat(IThreat threat) {
