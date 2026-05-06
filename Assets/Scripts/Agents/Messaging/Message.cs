@@ -29,33 +29,33 @@ public abstract class Message {
   }
 }
 
-public sealed class AssignSubInterceptorRequestMessage : Message {
-  public AssignSubInterceptorRequestPayload PayloadData { get; }
-  public override IMessagePayload Payload => PayloadData;
+// Generic message class (envelope) that stores a payload while exposing the common IMessagePayload
+// interface through the base Message API.
+public abstract class Message<TPayload> : Message
+    where TPayload : class, IMessagePayload {
+  public TPayload PayloadData { get; }
+  public sealed override IMessagePayload Payload => PayloadData;
+  protected Message(IAgent sender, IAgent receiver, MessageType type, TPayload payload)
+      : base(sender, receiver, type) {
+    PayloadData = payload ?? throw new ArgumentNullException(nameof(payload));
+  }
+}
 
+public sealed class AssignSubInterceptorRequestMessage
+    : Message<AssignSubInterceptorRequestPayload> {
   public AssignSubInterceptorRequestMessage(IAgent sender, IAgent receiver,
                                             IInterceptor subInterceptor)
-      : base(sender, receiver, MessageType.AssignSubInterceptorRequest) {
-    PayloadData = new AssignSubInterceptorRequestPayload(subInterceptor);
-  }
+      : base(sender, receiver, MessageType.AssignSubInterceptorRequest,
+             new AssignSubInterceptorRequestPayload(subInterceptor)) {}
 }
 
-public sealed class AssignTargetMessage : Message {
-  public AssignTargetPayload PayloadData { get; }
-  public override IMessagePayload Payload => PayloadData;
-
+public sealed class AssignTargetMessage : Message<AssignTargetPayload> {
   public AssignTargetMessage(IAgent sender, IAgent receiver, IHierarchical target)
-      : base(sender, receiver, MessageType.AssignTarget) {
-    PayloadData = new AssignTargetPayload(target);
-  }
+      : base(sender, receiver, MessageType.AssignTarget, new AssignTargetPayload(target)) {}
 }
 
-public sealed class ReassignTargetRequestMessage : Message {
-  public ReassignTargetRequestPayload PayloadData { get; }
-  public override IMessagePayload Payload => PayloadData;
-
+public sealed class ReassignTargetRequestMessage : Message<ReassignTargetRequestPayload> {
   public ReassignTargetRequestMessage(IAgent sender, IAgent receiver, IHierarchical target)
-      : base(sender, receiver, MessageType.ReassignTargetRequest) {
-    PayloadData = new ReassignTargetRequestPayload(target);
-  }
+      : base(sender, receiver, MessageType.ReassignTargetRequest,
+             new ReassignTargetRequestPayload(target)) {}
 }
