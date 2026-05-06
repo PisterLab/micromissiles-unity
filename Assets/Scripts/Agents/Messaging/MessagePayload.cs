@@ -1,8 +1,11 @@
 using System;
 
 // MessagePayload defines different types of new payload objects. Payload is carried by
-// Message envelopes. Concrete payload content lives in here and are only read explicitly
+// Message envelopes. Concrete payload content lives here and is only read explicitly
 // by receivers.
+
+// Interface for MessagePayload.
+public interface IMessagePayload {}
 
 public sealed class AssignSubInterceptorRequestPayload : IMessagePayload {
   public IInterceptor SubInterceptor { get; }
