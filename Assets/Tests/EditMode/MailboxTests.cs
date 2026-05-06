@@ -161,6 +161,70 @@ public class MailboxTests : TestBase {
     Assert.AreSame(secondMessage, deliveredMessages[1]);
   }
 
+  // Verifies end-to-end mailbox delivery timing across a small agent network using proto-backed
+  // default links plus per-link overrides.
+  [Test]
+  public void Send_WithNetworkCommunicationConfig_AppliesDefaultAndOverrideTimings() {
+    var vessel = new TestAgent(Configs.AgentType.Vessel);
+    var carrierInterceptor = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var missileInterceptor = new TestAgent(Configs.AgentType.MissileInterceptor);
+    var threat = new TestAgent(Configs.AgentType.FixedWingThreat);
+
+    var vesselToCarrier = new TestMessage(vessel, carrierInterceptor);
+    var carrierToMissile = new TestMessage(carrierInterceptor, missileInterceptor);
+    var missileToThreat = new TestMessage(missileInterceptor, threat);
+    var deliveredMessages = new List<Message>();
+
+    _mailbox.OnMessageDelivered += (_, delivered) => deliveredMessages.Add(delivered);
+
+    var communicationConfig =
+        new Configs.CommunicationConfig { LinkConfig = new Configs.LinkConfig {
+          LatencySeconds = 0.10f,
+          LatencyStdSeconds = 0f,
+          PacketDeliveryRatio = 1f,
+        } };
+    communicationConfig.LinkOverrides.Add(
+        new Configs.LinkOverride { From = Configs.AgentType.Vessel,
+                                   To = Configs.AgentType.CarrierInterceptor,
+                                   LinkConfig = new Configs.LinkConfig {
+                                     LatencySeconds = 0.20f,
+                                     LatencyStdSeconds = 0f,
+                                     PacketDeliveryRatio = 1f,
+                                   } });
+    communicationConfig.LinkOverrides.Add(
+        new Configs.LinkOverride { From = Configs.AgentType.CarrierInterceptor,
+                                   To = Configs.AgentType.MissileInterceptor,
+                                   LinkConfig = new Configs.LinkConfig {
+                                     LatencySeconds = 0.03f,
+                                     LatencyStdSeconds = 0f,
+                                     PacketDeliveryRatio = 1f,
+                                   } });
+
+    _mailbox.Configure(communicationConfig);
+    SetElapsedTime(0f);
+    _mailbox.Send(vesselToCarrier);
+    _mailbox.Send(carrierToMissile);
+    _mailbox.Send(missileToThreat);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(0, deliveredMessages.Count);
+
+    SetElapsedTime(0.03f);
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(1, deliveredMessages.Count);
+    Assert.AreSame(carrierToMissile, deliveredMessages[0]);
+
+    SetElapsedTime(0.10f);
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(2, deliveredMessages.Count);
+    Assert.AreSame(missileToThreat, deliveredMessages[1]);
+
+    SetElapsedTime(0.20f);
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(3, deliveredMessages.Count);
+    Assert.AreSame(vesselToCarrier, deliveredMessages[2]);
+  }
+
   private static SimManager CreateSimManagerStub() {
     return (SimManager)FormatterServices.GetUninitializedObject(typeof(SimManager));
   }

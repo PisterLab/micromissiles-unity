@@ -283,3 +283,50 @@ threat_swarm_configs {
     }
   }
 }
+communication_config {
+  link_config {
+    latency_seconds: 0.10
+    latency_std_seconds: 0.01
+    packet_delivery_ratio: 1.0
+  }
+
+  link_overrides {
+    from: VESSEL
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.20
+      latency_std_seconds: 0.02
+      packet_delivery_ratio: 0.99
+    }
+  }
+
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: VESSEL
+    link_config {
+      latency_seconds: 0.20
+      latency_std_seconds: 0.02
+      packet_delivery_ratio: 0.99
+    }
+  }
+
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: MISSILE_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.03
+      latency_std_seconds: 0.005
+      packet_delivery_ratio: 0.995
+    }
+  }
+
+  link_overrides {
+    from: MISSILE_INTERCEPTOR
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.03
+      latency_std_seconds: 0.005
+      packet_delivery_ratio: 0.995
+    }
+  }
+}

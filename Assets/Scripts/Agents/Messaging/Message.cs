@@ -3,14 +3,14 @@ using System;
 // Message is a base envolope for message sending. It always carries Sender, Receiver, Type, and
 // Payload.
 
-// Types of Message types based on inter-agent communication contents.
+// Message types based on inter-agent communication contents.
 public enum MessageType {
   AssignSubInterceptorRequest,
   AssignTarget,
   ReassignTargetRequest,
 }
 
-// Message is a base envelope for message sending. It always carries Sender, Receiver, Type, and
+// Message is a base class for message sending. It always carries Sender, Receiver, Type, and
 // Payload. This file wraps the payload data with transport metadata. It intentionally layers and
 // splits the payload and the transportation data. Mailbox only focuses on transportation (enqueue,
 // latency, and delivery timing).
