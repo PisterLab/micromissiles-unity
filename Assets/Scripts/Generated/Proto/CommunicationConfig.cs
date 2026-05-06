@@ -381,7 +381,7 @@ namespace Configs {
     public const int FromFieldNumber = 1;
     private global::Configs.AgentType from_ = global::Configs.AgentType.InvalidType;
     /// <summary>
-    /// Sending agent type.
+    /// Sender agent type.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -411,7 +411,7 @@ namespace Configs {
     public const int LinkConfigFieldNumber = 3;
     private global::Configs.LinkConfig linkConfig_;
     /// <summary>
-    /// Latency settings for this specific Agent-to-Agent pair.
+    /// Latency settings for this specific agent-to-agent pair.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
