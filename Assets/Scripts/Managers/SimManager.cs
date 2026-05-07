@@ -85,7 +85,7 @@ public class SimManager : MonoBehaviour {
     IsRunning = true;
     OnSimulationStarted?.Invoke();
     Debug.Log("Simulation started.");
-    UIManager.Instance.LogActionMessage("[SIM] Simulation started.");
+    UIManager.Instance?.LogActionMessage("[SIM] Simulation started.");
 
     InitializeAssets();
     InitializeLaunchers();
@@ -96,7 +96,7 @@ public class SimManager : MonoBehaviour {
     IsRunning = false;
     OnSimulationEnded?.Invoke();
     Debug.Log("Simulation ended.");
-    UIManager.Instance.LogActionMessage("[SIM] Simulation ended.");
+    UIManager.Instance?.LogActionMessage("[SIM] Simulation ended.");
 
     // Clear existing interceptors and threats.
     foreach (var interceptor in _interceptors) {
@@ -267,15 +267,17 @@ public class SimManager : MonoBehaviour {
     }
 
     GameObject agentObject =
-        Instantiate(prefab, Coordinates3.FromProto(initialState.Position), Quaternion.identity);
+        Instantiate(prefab, Coordinates3.FromProto(initialState.Position), prefab.transform.rotation);
     IAgent agent = agentObject.GetComponent<IAgent>();
     agent.AgentConfig = config;
     Vector3 velocity = Coordinates3.FromProto(initialState.Velocity);
     agent.Velocity = velocity;
 
     // Set the rotation to face the initial velocity.
-    Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
-    agentObject.transform.rotation = targetRotation;
+    if (velocity.sqrMagnitude > Mathf.Epsilon) {
+      Quaternion targetRotation = Quaternion.LookRotation(velocity, Vector3.up);
+      agentObject.transform.rotation = targetRotation;
+    }
     return agentObject;
   }
 
@@ -305,9 +307,12 @@ public class SimManager : MonoBehaviour {
     Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
   }
 
-  private void Start() {
+  private System.Collections.IEnumerator Start() {
     IsPaused = false;
-    if (!RunManager.Instance.HasRunConfig()) {
+    // Wait one frame so every manager has finished Start() and subscribed to simulation events.
+    yield return null;
+
+    if (!HasRunConfig()) {
       StartSimulation();
       ResumeSimulation();
     }
@@ -367,7 +372,7 @@ public class SimManager : MonoBehaviour {
   private void LoadSimConfigs(string simulationConfigFile) {
     SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfigFile);
     // If a run configuration is provided, enable telemetry logging and event logging.
-    if (RunManager.Instance.HasRunConfig()) {
+    if (HasRunConfig()) {
       SimulatorConfig.EnableTelemetryLogging = true;
       SimulatorConfig.EnableEventLogging = true;
     }
@@ -409,10 +414,14 @@ public class SimManager : MonoBehaviour {
     }
     // The simulation can be ended before the actual end time if there is a run configuration and
     // all spawned threats have been terminated.
-    if (RunManager.Instance.HasRunConfig() && _numThreatsSpawned > 0 &&
+    if (HasRunConfig() && _numThreatsSpawned > 0 &&
         _numThreatsTerminated >= _numThreatsSpawned) {
       return true;
     }
     return false;
+  }
+
+  private static bool HasRunConfig() {
+    return RunManager.Instance != null && RunManager.Instance.HasRunConfig();
   }
 }

@@ -95,6 +95,10 @@ public class IADS : MonoBehaviour {
   }
 
   private void BuildHierarchy() {
+    if (_newThreats.Count == 0 || _launchers.Count == 0) {
+      return;
+    }
+
     // TODO(titan): The clustering algorithm should be aware of the capacity of the launcher.
     var swarmClusterer = new KMeansClusterer(Mathf.RoundToInt(_launchers.Count / _coverageFactor));
     List<Cluster> swarms = swarmClusterer.Cluster(_newThreats);

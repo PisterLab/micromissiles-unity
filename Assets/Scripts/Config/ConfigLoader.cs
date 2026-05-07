@@ -57,7 +57,7 @@ public static class ConfigLoader {
         Protobuf.Protobuf_SimulationConfig_GetSerializedLength,
         Protobuf.Protobuf_SimulationConfig_LoadToBinary);
     if (config != null) {
-      UIManager.Instance.LogActionMessage($"[SIM] Loaded simulation configuration: {configFile}.");
+      UIManager.Instance?.LogActionMessage($"[SIM] Loaded simulation configuration: {configFile}.");
     }
     return config;
   }

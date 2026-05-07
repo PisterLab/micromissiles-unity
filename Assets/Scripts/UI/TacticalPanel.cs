@@ -74,10 +74,6 @@ public class TacticalPanel : MonoBehaviour {
     _radarUIGroupRectTransform.localScale = Vector3.one;
     _radarUIGroupRectTransform.localPosition = Vector3.zero;
 
-    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
-    SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
-    SimManager.Instance.OnNewThreat += RegisterNewAgent;
-
     InitializeOrigin();
   }
 
@@ -90,6 +86,9 @@ public class TacticalPanel : MonoBehaviour {
 
   private void OnEnable() {
     if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+      SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
+      SimManager.Instance.OnNewThreat += RegisterNewAgent;
       InitializeAgents(SimManager.Instance.Interceptors);
       InitializeAgents(SimManager.Instance.Threats);
     }
@@ -97,6 +96,14 @@ public class TacticalPanel : MonoBehaviour {
   }
 
   private void OnDisable() {
+    if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationEnded -= RegisterSimulationEnded;
+      SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
+      SimManager.Instance.OnNewThreat -= RegisterNewAgent;
+    }
+    foreach (var agent in _symbols.Keys) {
+      agent.OnTerminated -= DestroySymbol;
+    }
     if (_symbolsCoroutine != null) {
       StopCoroutine(_symbolsCoroutine);
       _symbolsCoroutine = null;
@@ -109,7 +116,9 @@ public class TacticalPanel : MonoBehaviour {
   }
 
   public void RegisterNewAgent(IAgent agent) {
-    agent.OnTerminated += DestroySymbol;
+    if (!_symbols.ContainsKey(agent)) {
+      agent.OnTerminated += DestroySymbol;
+    }
     CreateSymbol(agent);
   }
 
@@ -140,6 +149,11 @@ public class TacticalPanel : MonoBehaviour {
   }
 
   private void CreateSymbol(IAgent agent) {
+    if (_symbols.TryGetValue(agent, out GameObject existingSymbol)) {
+      UpdateAgentSymbol(existingSymbol, agent);
+      return;
+    }
+
     GameObject symbol = CreateSymbolPrefab();
     TacticalSymbol tacticalSymbol = symbol.GetComponent<TacticalSymbol>();
 

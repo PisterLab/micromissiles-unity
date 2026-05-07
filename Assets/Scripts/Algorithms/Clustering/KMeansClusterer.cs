@@ -28,6 +28,10 @@ public class KMeansClusterer : ClustererBase {
     if (hierarchicals == null || !hierarchicals.Any()) {
       return new List<Cluster>();
     }
+    if (_k <= 0) {
+      throw new ArgumentOutOfRangeException(
+          paramName: "k", actualValue: _k, message: "Number of clusters must be positive.");
+    }
 
     // Initialize the clusters with centroids located at the positions of k random hierarchical
     // objects. Perform Fisher-Yates shuffling to find k random hierarchical objects.
