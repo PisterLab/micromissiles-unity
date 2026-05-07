@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 04/23/2026 - 23:00:14 |
+| Generated on: | 05/07/2026 - 18:56:45 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 100 |
 | Files: | 96 |
-| Covered lines: | 1025 |
-| Uncovered lines: | 2719 |
-| Coverable lines: | 3744 |
-| Total lines: | 6669 |
-| Line coverage: | 27.3% (1025 of 3744) |
+| Covered lines: | 1026 |
+| Uncovered lines: | 2739 |
+| Coverable lines: | 3765 |
+| Total lines: | 6698 |
+| Line coverage: | 27.2% (1026 of 3765) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 301 |
-| Total methods: | 736 |
-| Method coverage: | 40.8% (301 of 736) |
+| Total methods: | 737 |
+| Method coverage: | 40.8% (301 of 737) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1025**|**2719**|**3744**|**6841**|**27.3%**|**0**|**0**|****|**301**|**736**|**40.8%**|
+|**bamlab.micromissiles**|**1026**|**2739**|**3765**|**6870**|**27.2%**|**0**|**0**|****|**301**|**737**|**40.8%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|79|175|333|54.8%|0|0||39|61|63.9%|
@@ -53,7 +53,7 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|4|45|49|74|8.1%|0|0||3|9|33.3%|
 |HierarchicalBase|48|91|139|236|34.5%|0|0||18|26|69.2%|
-|IADS|0|102|102|165|0%|0|0||0|17|0%|
+|IADS|0|104|104|169|0%|0|0||0|17|0%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
 |InputManager|0|167|167|213|0%|0|0||0|19|0%|
@@ -63,7 +63,7 @@
 |IterativeLaunchPlanner|29|0|29|84|100%|0|0||2|2|100%|
 |KDNode[T]|3|0|3|97|100%|0|0||6|6|100%|
 |KDTree[T]|51|0|51|97|100%|0|0||4|4|100%|
-|KMeansClusterer|54|2|56|98|96.4%|0|0||4|4|100%|
+|KMeansClusterer|55|3|58|102|94.8%|0|0||4|4|100%|
 |LaunchAngleCsvInterpolator|15|4|19|49|78.9%|0|0||2|3|66.6%|
 |LaunchAngleDataInterpolatorBase|9|0|9|25|100%|0|0||2|2|100%|
 |LaunchAngleDataPoint|2|0|2|8|100%|0|0||4|4|100%|
@@ -85,7 +85,7 @@
 |NoEvasion|7|0|7|16|100%|0|0||3|3|100%|
 |NoMovement|4|0|4|12|100%|0|0||2|2|100%|
 |OrthogonalEvasion|27|8|35|78|77.1%|0|0||3|3|100%|
-|ParticleManager|0|156|156|224|0%|0|0||0|24|0%|
+|ParticleManager|0|154|154|222|0%|0|0||0|24|0%|
 |PlannerReleaseStrategy|0|8|8|14|0%|0|0||0|4|0%|
 |PnController|27|1|28|67|96.4%|0|0||4|4|100%|
 |PositionTransformation|4|0|4|25|100%|0|0||8|8|100%|
@@ -100,13 +100,13 @@
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|0|4|4|10|0%|0|0||0|1|0%|
-|SimManager|0|269|269|418|0%|0|0||0|53|0%|
+|SimManager|0|275|275|427|0%|0|0||0|54|0%|
 |SimMonitor|0|179|179|285|0%|0|0||0|27|0%|
 |SingleReleaseStrategyBase|0|31|31|62|0%|0|0||0|3|0%|
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
 |SpeedEscapeDetector|11|0|11|24|100%|0|0||3|3|100%|
 |SpriteManager|0|8|8|14|0%|0|0||0|1|0%|
-|TacticalPanel|0|167|167|266|0%|0|0||0|28|0%|
+|TacticalPanel|0|180|180|280|0%|0|0||0|28|0%|
 |TacticalPolarGridGraphic|0|142|142|230|0%|0|0||0|15|0%|
 |TacticalSymbol|0|55|55|84|0%|0|0||0|11|0%|
 |ThreatBase|0|107|107|164|0%|0|0||0|12|0%|
