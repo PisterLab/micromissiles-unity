@@ -3,6 +3,8 @@
 // by receivers.
 using System;
 
+// The payload carries the interceptor that is asking a parent interceptor or IADS for a target
+// assignment.
 public sealed class AssignSubInterceptorRequestPayload : IMessagePayload {
   public IInterceptor SubInterceptor { get; }
 
@@ -11,6 +13,8 @@ public sealed class AssignSubInterceptorRequestPayload : IMessagePayload {
   }
 }
 
+// The payload carries the target that a parent interceptor or IADS has selected for a receiver
+// interceptor.
 public sealed class AssignTargetPayload : IMessagePayload {
   public IHierarchical Target { get; }
 
@@ -19,6 +23,8 @@ public sealed class AssignTargetPayload : IMessagePayload {
   }
 }
 
+// The payload carries the target that an interceptor wants its parent interceptor or IADS to
+// reassign.
 public sealed class ReassignTargetRequestPayload : IMessagePayload {
   public IHierarchical Target { get; }
 

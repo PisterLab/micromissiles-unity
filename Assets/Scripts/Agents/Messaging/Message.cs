@@ -41,6 +41,8 @@ public abstract class Message<TPayload> : Message
   }
 }
 
+// This message is sent upward to parent interceptor or IADS when sub-interceptor has no target
+// locally.
 public sealed class AssignSubInterceptorRequestMessage
     : Message<AssignSubInterceptorRequestPayload> {
   public AssignSubInterceptorRequestMessage(IAgent sender, IAgent receiver,
@@ -49,11 +51,15 @@ public sealed class AssignSubInterceptorRequestMessage
              new AssignSubInterceptorRequestPayload(subInterceptor)) {}
 }
 
+// This message is sent downwards from IADS or parent interceptor when it has a target to assign to
+// the correspondig sub-interceptor.
 public sealed class AssignTargetMessage : Message<AssignTargetPayload> {
   public AssignTargetMessage(IAgent sender, IAgent receiver, IHierarchical target)
       : base(sender, receiver, MessageType.AssignTarget, new AssignTargetPayload(target)) {}
 }
 
+// This message is sent upward when an interceptor can no longer keep or cover a target and requires
+// the parent interceptor or IADS to reassign that target elsewhere.
 public sealed class ReassignTargetRequestMessage : Message<ReassignTargetRequestPayload> {
   public ReassignTargetRequestMessage(IAgent sender, IAgent receiver, IHierarchical target)
       : base(sender, receiver, MessageType.ReassignTargetRequest,
