@@ -1,7 +1,7 @@
-using System;
-
 // Message is a base class for message sending. It always carries Sender, Receiver, Type, and
 // Payload.
+
+using System;
 
 // Message types based on inter-agent communication contents.
 public enum MessageType {
