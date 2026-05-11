@@ -22,5 +22,6 @@ public readonly struct PendingMessage : IComparable<PendingMessage> {
     DeliverAt = deliverAt;
   }
 
+  // Pending messages are sorted based on the deliver at time.
   public int CompareTo(PendingMessage other) => DeliverAt.CompareTo(other.DeliverAt);
 }

@@ -1,9 +1,9 @@
-// Message is a base class for the different types of messages being sent and received among the
+// The message is a base class for the different types of messages being sent and received among the
 // agents. It always carries a sender, a receiver, a message type, and a payload.
 
 using System;
 
-// Message types based on inter-agent communication contents.
+// Message type enumeration that defines the message payload.
 public enum MessageType {
   AssignTargetRequest,
   AssignTargetResponse,
@@ -24,7 +24,7 @@ public abstract class Message {
   }
 }
 
-// Generic message that stores a payload. The generic type refers to the payload.
+// Generic message that stores a payload. The generic type refers to the payloa type.
 public abstract class Message<TPayload> : Message
     where TPayload : class, IMessagePayload {
   public TPayload PayloadData { get; }
