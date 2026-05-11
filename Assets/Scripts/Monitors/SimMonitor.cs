@@ -136,11 +136,8 @@ public class SimMonitor : MonoBehaviour {
   }
 
   private void InitializeSessionDirectory() {
-    if (RunManager.Instance.HasRunConfig()) {
-      _sessionDirectory =
-          Path.Combine(Application.persistentDataPath, "Logs",
-                       $"{RunManager.Instance.RunConfig.Name}_{SimManager.Instance.Timestamp}",
-                       $"run_{RunManager.Instance.RunIndex + 1}_seed_{RunManager.Instance.Seed}");
+    if (RunWorker.IsWorkerMode) {
+      _sessionDirectory = RunWorker.OutputDirectory;
     } else {
       _sessionDirectory = Path.Combine(Application.persistentDataPath, "Logs",
                                        $"run_{SimManager.Instance.Timestamp}");

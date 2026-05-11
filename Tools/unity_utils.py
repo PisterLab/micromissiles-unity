@@ -115,7 +115,11 @@ def _find_unity_executables() -> list[Path]:
 
 
 def find_unity_path(unity_path: str) -> Path:
-    """Returns the path to a Unity executable."""
+    """Returns the path to a Unity executable.
+
+    Args:
+        unity_path: Optional path to the Unity executable.
+    """
     if unity_path:
         unity_path = Path(unity_path).expanduser()
         if not unity_path.exists():

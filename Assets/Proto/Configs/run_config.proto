@@ -18,4 +18,7 @@ message RunConfig {
 
   // Seed stride between each run.
   int32 seed_stride = 5;
+
+  // Maximum number of runs to execute in parallel.
+  uint32 max_parallel = 6;
 }

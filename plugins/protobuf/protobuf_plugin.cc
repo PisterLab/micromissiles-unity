@@ -7,7 +7,6 @@
 #include <cstring>
 
 #include "Configs/attack_behavior_config.pb.h"
-#include "Configs/run_config.pb.h"
 #include "Configs/simulation_config.pb.h"
 #include "Configs/simulator_config.pb.h"
 #include "Configs/static_config.pb.h"
@@ -49,7 +48,6 @@
 
 extern "C" {
 DEFINE_PROTOBUF_LOADER(AttackBehaviorConfig);
-DEFINE_PROTOBUF_LOADER(RunConfig);
 DEFINE_PROTOBUF_LOADER(SimulationConfig);
 DEFINE_PROTOBUF_LOADER(SimulatorConfig);
 DEFINE_PROTOBUF_LOADER(StaticConfig);

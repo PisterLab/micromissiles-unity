@@ -9,10 +9,12 @@ repos:
     hooks:
       - id: yapf
         args: [-i]
+        exclude: ^(Tools/pb)
   - repo: https://github.com/pycqa/isort
     rev: 7.0.0
     hooks:
       - id: isort
+        exclude: ^(Tools/pb)
   - repo: https://github.com/keith/pre-commit-buildifier
     rev: 8.2.1.1
     hooks:
