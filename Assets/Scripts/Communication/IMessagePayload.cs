@@ -1,3 +1,3 @@
-// Interface for MessagePayload.
+// Interface for a message payload.
 
 public interface IMessagePayload {}

@@ -1,12 +1,14 @@
-// The pending message is the mailbox's internal queue item. It stores the Message object and the
-// scheduled delivery time in simulation seconds. The mailbox dequeues this item once simulation
-// time reaches DeliverAt.
+// The pending message is the mailbox's internal queue item. It stores the message object and the
+// scheduled delivery time in simulation seconds. The mailbox dequeues this item once the simulation
+// time reaches the deliver at time.
+
 using System;
 
 public readonly struct PendingMessage : IComparable<PendingMessage> {
+  public Message Message { get; }
+
   // Absolute simulation time in seconds when the mailbox should deliver this message.
   public float DeliverAt { get; }
-  public Message Message { get; }
 
   public IAgent Sender => Message?.Sender;
   public IAgent Receiver => Message?.Receiver;
