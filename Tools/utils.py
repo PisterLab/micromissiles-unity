@@ -7,7 +7,7 @@ import pandas as pd
 from absl import logging
 from constants import EVENT_LOG_FILE_PREFIX, TELEMETRY_FILE_PREFIX
 
-_RUN_DIRECTORY_PATTERN = re.compile(r"run_(\d+)_seed_")
+_RUN_DIRECTORY_PATTERN = re.compile(r"run_(\d+)_seed_\d+")
 
 
 def find_all_files(directory: str, file_pattern: str) -> list[Path]:
@@ -25,7 +25,7 @@ def find_all_files(directory: str, file_pattern: str) -> list[Path]:
         logging.warning(
             "No files found matching the pattern %s in the directory: %s.",
             file_pattern, directory)
-    return sorted(files, key=str)
+    return files
 
 
 def find_all_telemetry_files(log_dir: str) -> list[Path]:

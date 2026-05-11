@@ -8,10 +8,10 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
-import google.protobuf
+import google.protobuf.text_format
 import unity_utils
 from absl import app, flags, logging
-from proto.run_config_pb2 import run_config_pb2
+from pb import run_config_pb2
 
 # Path to the repository root.
 REPO_ROOT = Path(__file__).resolve().parents[1]
