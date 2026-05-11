@@ -1,31 +1,35 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/07/2026 - 18:59:35 |
+| Generated on: | 05/11/2026 - 04:23:58 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
-| Classes: | 100 |
-| Files: | 96 |
+| Classes: | 109 |
+| Files: | 99 |
 | Covered lines: | 1456 |
-| Uncovered lines: | 2309 |
-| Coverable lines: | 3765 |
-| Total lines: | 6698 |
-| Line coverage: | 38.6% (1456 of 3765) |
+| Uncovered lines: | 2351 |
+| Coverable lines: | 3807 |
+| Total lines: | 6819 |
+| Line coverage: | 38.2% (1456 of 3807) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 404 |
-| Total methods: | 737 |
-| Method coverage: | 54.8% (404 of 737) |
+| Total methods: | 759 |
+| Method coverage: | 53.2% (404 of 759) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1456**|**2309**|**3765**|**6870**|**38.6%**|**0**|**0**|****|**404**|**737**|**54.8%**|
+|**bamlab.micromissiles**|**1456**|**2351**|**3807**|**7301**|**38.2%**|**0**|**0**|****|**404**|**759**|**53.2%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|158|17|175|333|90.2%|0|0||59|61|96.7%|
 |AgglomerativeClusterer|0|59|59|97|0%|0|0||0|2|0%|
 |ApnController|0|7|7|17|0%|0|0||0|2|0%|
 |AssignmentItem|0|2|2|5|0%|0|0||0|4|0%|
+|AssignTargetRequestMessage|0|2|2|61|0%|0|0||0|1|0%|
+|AssignTargetRequestPayload|0|4|4|33|0%|0|0||0|2|0%|
+|AssignTargetResponseMessage|0|2|2|61|0%|0|0||0|1|0%|
+|AssignTargetResponsePayload|0|4|4|33|0%|0|0||0|2|0%|
 |AttackBehaviorBase|13|0|13|37|100%|0|0||6|6|100%|
 |CameraController|91|155|246|429|36.9%|0|0||15|35|42.8%|
 |CarrierBase|26|9|35|62|74.2%|0|0||6|6|100%|
@@ -77,6 +81,8 @@
 |LinearExtrapolator|1|6|7|22|14.2%|0|0||1|2|50%|
 |MassReleaseStrategyBase|0|46|46|86|0%|0|0||0|4|0%|
 |MaxSpeedAssignment|0|8|8|22|0%|0|0||0|2|0%|
+|Message|0|8|8|61|0%|0|0||0|4|0%|
+|Message[TPayload]|0|5|5|61|0%|0|0||0|3|0%|
 |MinDistanceAssignment|0|4|4|12|0%|0|0||0|2|0%|
 |MissileInterceptor|0|7|7|14|0%|0|0||0|3|0%|
 |MissileMovement|0|72|72|139|0%|0|0||0|11|0%|
@@ -86,6 +92,7 @@
 |NoMovement|4|0|4|12|100%|0|0||2|2|100%|
 |OrthogonalEvasion|1|34|35|78|2.8%|0|0||1|3|33.3%|
 |ParticleManager|49|105|154|222|31.8%|0|0||11|24|45.8%|
+|PendingMessage|0|11|11|27|0%|0|0||0|6|0%|
 |PlannerReleaseStrategy|4|4|8|14|50%|0|0||3|4|75%|
 |PnController|25|3|28|67|89.2%|0|0||4|4|100%|
 |PositionTransformation|4|0|4|25|100%|0|0||8|8|100%|
@@ -93,6 +100,8 @@
 |PredictorState|0|3|3|13|0%|0|0||0|6|0%|
 |PriorityQueue[T]|0|36|36|57|0%|0|0||0|7|0%|
 |ProximityReleaseStrategy|0|17|17|43|0%|0|0||0|2|0%|
+|ReassignTargetRequestMessage|0|2|2|61|0%|0|0||0|1|0%|
+|ReassignTargetRequestPayload|0|4|4|33|0%|0|0||0|2|0%|
 |ReleaseStrategyBase|9|1|10|24|90%|0|0||4|4|100%|
 |RotaryWingThreat|5|0|5|11|100%|0|0||1|1|100%|
 |RoundRobinAssignment|0|12|12|23|0%|0|0||0|1|0%|

@@ -1,30 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CoverageReport scope="Summary">
   <Summary>
-    <Generatedon>05/07/2026 - 18:59:35</Generatedon>
+    <Generatedon>05/11/2026 - 04:23:58</Generatedon>
     <Parser>MultiReportParser (2x OpenCoverParser)</Parser>
     <Assemblies>1</Assemblies>
-    <Classes>100</Classes>
-    <Files>96</Files>
+    <Classes>109</Classes>
+    <Files>99</Files>
     <Coveredlines>1456</Coveredlines>
-    <Uncoveredlines>2309</Uncoveredlines>
-    <Coverablelines>3765</Coverablelines>
-    <Totallines>6698</Totallines>
-    <Linecoverage>38.6</Linecoverage>
+    <Uncoveredlines>2351</Uncoveredlines>
+    <Coverablelines>3807</Coverablelines>
+    <Totallines>6819</Totallines>
+    <Linecoverage>38.2</Linecoverage>
     <Coveredbranches>0</Coveredbranches>
     <Totalbranches>0</Totalbranches>
     <Coveredmethods>404</Coveredmethods>
-    <Totalmethods>737</Totalmethods>
-    <Methodcoverage>54.8</Methodcoverage>
+    <Totalmethods>759</Totalmethods>
+    <Methodcoverage>53.2</Methodcoverage>
   </Summary>
   <Coverage>
-    <Assembly name="bamlab.micromissiles" classes="100" coverage="38.6" coveredlines="1456" coverablelines="3765" totallines="6870" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="404" totalmethods="737" methodcoverage="54.8">
+    <Assembly name="bamlab.micromissiles" classes="109" coverage="38.2" coveredlines="1456" coverablelines="3807" totallines="7301" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="404" totalmethods="759" methodcoverage="53.2">
       <Class name="AccelerationTransformation" coverage="100" coveredlines="1" coverablelines="1" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="AerialMovement" coverage="4.7" coveredlines="1" coverablelines="21" totallines="36" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="4" methodcoverage="25" />
       <Class name="AgentBase" coverage="90.2" coveredlines="158" coverablelines="175" totallines="333" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="59" totalmethods="61" methodcoverage="96.7" />
       <Class name="AgglomerativeClusterer" coverage="0" coveredlines="0" coverablelines="59" totallines="97" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="ApnController" coverage="0" coveredlines="0" coverablelines="7" totallines="17" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="AssignmentItem" coverage="0" coveredlines="0" coverablelines="2" totallines="5" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
+      <Class name="AssignTargetRequestMessage" coverage="0" coveredlines="0" coverablelines="2" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="AssignTargetRequestPayload" coverage="0" coveredlines="0" coverablelines="4" totallines="33" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="AssignTargetResponseMessage" coverage="0" coveredlines="0" coverablelines="2" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="AssignTargetResponsePayload" coverage="0" coveredlines="0" coverablelines="4" totallines="33" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="AttackBehaviorBase" coverage="100" coveredlines="13" coverablelines="13" totallines="37" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
       <Class name="CameraController" coverage="36.9" coveredlines="91" coverablelines="246" totallines="429" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="15" totalmethods="35" methodcoverage="42.8" />
       <Class name="CarrierBase" coverage="74.2" coveredlines="26" coverablelines="35" totallines="62" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="6" totalmethods="6" methodcoverage="100" />
@@ -76,6 +80,8 @@
       <Class name="LinearExtrapolator" coverage="14.2" coveredlines="1" coverablelines="7" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="2" methodcoverage="50" />
       <Class name="MassReleaseStrategyBase" coverage="0" coveredlines="0" coverablelines="46" totallines="86" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
       <Class name="MaxSpeedAssignment" coverage="0" coveredlines="0" coverablelines="8" totallines="22" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="Message" coverage="0" coveredlines="0" coverablelines="8" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="4" methodcoverage="0" />
+      <Class name="Message[TPayload]" coverage="0" coveredlines="0" coverablelines="5" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="MinDistanceAssignment" coverage="0" coveredlines="0" coverablelines="4" totallines="12" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="MissileInterceptor" coverage="0" coveredlines="0" coverablelines="7" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="3" methodcoverage="0" />
       <Class name="MissileMovement" coverage="0" coveredlines="0" coverablelines="72" totallines="139" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="11" methodcoverage="0" />
@@ -85,6 +91,7 @@
       <Class name="NoMovement" coverage="100" coveredlines="4" coverablelines="4" totallines="12" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="2" totalmethods="2" methodcoverage="100" />
       <Class name="OrthogonalEvasion" coverage="2.8" coveredlines="1" coverablelines="35" totallines="78" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="3" methodcoverage="33.3" />
       <Class name="ParticleManager" coverage="31.8" coveredlines="49" coverablelines="154" totallines="222" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="11" totalmethods="24" methodcoverage="45.8" />
+      <Class name="PendingMessage" coverage="0" coveredlines="0" coverablelines="11" totallines="27" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
       <Class name="PlannerReleaseStrategy" coverage="50" coveredlines="4" coverablelines="8" totallines="14" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="3" totalmethods="4" methodcoverage="75" />
       <Class name="PnController" coverage="89.2" coveredlines="25" coverablelines="28" totallines="67" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="PositionTransformation" coverage="100" coveredlines="4" coverablelines="4" totallines="25" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="8" totalmethods="8" methodcoverage="100" />
@@ -92,6 +99,8 @@
       <Class name="PredictorState" coverage="0" coveredlines="0" coverablelines="3" totallines="13" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="6" methodcoverage="0" />
       <Class name="PriorityQueue[T]" coverage="0" coveredlines="0" coverablelines="36" totallines="57" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="7" methodcoverage="0" />
       <Class name="ProximityReleaseStrategy" coverage="0" coveredlines="0" coverablelines="17" totallines="43" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
+      <Class name="ReassignTargetRequestMessage" coverage="0" coveredlines="0" coverablelines="2" totallines="61" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
+      <Class name="ReassignTargetRequestPayload" coverage="0" coveredlines="0" coverablelines="4" totallines="33" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="2" methodcoverage="0" />
       <Class name="ReleaseStrategyBase" coverage="90" coveredlines="9" coverablelines="10" totallines="24" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="4" totalmethods="4" methodcoverage="100" />
       <Class name="RotaryWingThreat" coverage="100" coveredlines="5" coverablelines="5" totallines="11" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="1" totalmethods="1" methodcoverage="100" />
       <Class name="RoundRobinAssignment" coverage="0" coveredlines="0" coverablelines="12" totallines="23" branchcoverage="" coveredbranches="0" totalbranches="0" coveredmethods="0" totalmethods="1" methodcoverage="0" />
