@@ -3,3 +3,4 @@ simulation_config_file: "5_swarms_1000_ucav.pbtxt"
 num_runs: 50
 seed: 100
 seed_stride: 1
+max_parallel: 16
