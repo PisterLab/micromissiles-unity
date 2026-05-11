@@ -60,7 +60,7 @@ The run configuration includes:
 
 #### Flags
 
-- **`--unity_path <path>`**: Path to the standalone Unity executable.
+- **`--binary_path <path>`**: Path to the standalone Unity executable.
 - **`--run-config <config_file>`**: Path to the run configuration file, or its filename relative to `Assets/StreamingAssets/Configs/Runs`.
 - **`--log_root_dir <directory>`** (optional): Root directory in which to create the batch output directory. Defaults to the Unity persistent data path.
 - **`--unity-log-dir <directory>`** (optional): Directory in which to store the per-run Unity logs.

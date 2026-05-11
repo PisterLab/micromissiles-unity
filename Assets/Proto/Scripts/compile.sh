@@ -35,7 +35,7 @@ rm -f "$PYTHON_OUTPUT_DIR/run_config_pb2.py"
 echo "Compiling Unity .proto files from $INPUT_DIR to $OUTPUT_DIR."
 find "$INPUT_DIR/" -name '*.proto' ! -name 'run_config.proto' -exec protoc --proto_path="$WORKSPACE/Assets/Proto" --csharp_out="$OUTPUT_DIR" {} +
 
-# Compile the Python run config module used by the batch launcher.
+# Compile the Python run config module used by the batch run launcher.
 echo "Compiling Python run_config.proto to $PYTHON_OUTPUT_DIR."
 protoc \
   --proto_path="$WORKSPACE/Assets/Proto/Configs" \
