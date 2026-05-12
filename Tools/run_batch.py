@@ -141,8 +141,9 @@ def _compute_max_parallel(run_config: run_config_pb2.RunConfig) -> int:
     Returns:
         The maximum number of concurrent worker processes.
     """
-    requested_parallelism = max(1, run_config.max_parallel)
-    return min(requested_parallelism, run_config.num_runs)
+    # If max_parallel is unset, it will read 0. In that case, default to 16.
+    requested_parallel = run_config.max_parallel if run_config.max_parallel > 0 else 16
+    return min(requested_parallel, run_config.num_runs)
 
 
 def _build_worker_command(

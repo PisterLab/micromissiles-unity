@@ -29,6 +29,7 @@ if [ -d "$OUTPUT_DIR" ]; then
 fi
 
 # Remove the existing Python run config module, so the generated file always matches the current proto schema.
+mkdir -p "$PYTHON_OUTPUT_DIR"
 rm -f "$PYTHON_OUTPUT_DIR/run_config_pb2.py"
 
 # Compile all .proto files needed by Unity from the input directory.
