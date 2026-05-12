@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -43,12 +42,6 @@ public static class ConfigLoader {
         Path.Combine("Configs/Attacks", configFile),
         Protobuf.Protobuf_AttackBehaviorConfig_GetSerializedLength,
         Protobuf.Protobuf_AttackBehaviorConfig_LoadToBinary);
-  }
-
-  public static Configs.RunConfig LoadRunConfig(string configFile) {
-    return LoadProtobufConfig<Configs.RunConfig>(Path.Combine("Configs/Runs", configFile),
-                                                 Protobuf.Protobuf_RunConfig_GetSerializedLength,
-                                                 Protobuf.Protobuf_RunConfig_LoadToBinary);
   }
 
   public static Configs.SimulationConfig LoadSimulationConfig(string configFile) {

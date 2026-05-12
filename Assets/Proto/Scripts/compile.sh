@@ -9,6 +9,7 @@ WORKSPACE=$(git rev-parse --show-toplevel)
 # Default directories.
 INPUT_DIR="${1:-$WORKSPACE/Assets/Proto}"
 OUTPUT_DIR="${2:-$WORKSPACE/Assets/Scripts/Generated/Proto}"
+PYTHON_OUTPUT_DIR="$WORKSPACE/Tools/pb"
 
 # Check if protoc is installed.
 if ! command -v protoc &> /dev/null; then
@@ -27,8 +28,19 @@ if [ -d "$OUTPUT_DIR" ]; then
   rm -f "$OUTPUT_DIR"/*.cs
 fi
 
-# Compile all .proto files in the input directory.
-echo "Compiling .proto files from $INPUT_DIR to $OUTPUT_DIR."
-find "$INPUT_DIR/" -name '*.proto' -exec protoc --proto_path="$WORKSPACE/Assets/Proto" --csharp_out="$OUTPUT_DIR" {} +
+# Remove the existing Python run config module, so the generated file always matches the current proto schema.
+mkdir -p "$PYTHON_OUTPUT_DIR"
+rm -f "$PYTHON_OUTPUT_DIR/run_config_pb2.py"
+
+# Compile all .proto files needed by Unity from the input directory.
+echo "Compiling Unity .proto files from $INPUT_DIR to $OUTPUT_DIR."
+find "$INPUT_DIR/" -name '*.proto' ! -name 'run_config.proto' -exec protoc --proto_path="$WORKSPACE/Assets/Proto" --csharp_out="$OUTPUT_DIR" {} +
+
+# Compile the Python run config module used by the batch run launcher.
+echo "Compiling Python run_config.proto to $PYTHON_OUTPUT_DIR."
+protoc \
+  --proto_path="$WORKSPACE/Assets/Proto/Configs" \
+  --python_out="$PYTHON_OUTPUT_DIR" \
+  "$WORKSPACE/Assets/Proto/Configs/run_config.proto"
 
 echo "Protobuf compilation completed."

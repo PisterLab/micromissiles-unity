@@ -1,10 +1,13 @@
 """Implements various utility functions."""
 
+import re
 from pathlib import Path
 
 import pandas as pd
 from absl import logging
 from constants import EVENT_LOG_FILE_PREFIX, TELEMETRY_FILE_PREFIX
+
+_RUN_DIRECTORY_PATTERN = re.compile(r"run_(\d+)_seed_\d+")
 
 
 def find_all_files(directory: str, file_pattern: str) -> list[Path]:
@@ -31,7 +34,8 @@ def find_all_telemetry_files(log_dir: str) -> list[Path]:
     Args:
         log_dir: Log directory.
     """
-    return find_all_files(log_dir, f"{TELEMETRY_FILE_PREFIX}_*.csv")
+    return sorted(find_all_files(log_dir, f"{TELEMETRY_FILE_PREFIX}_*.csv"),
+                  key=_run_log_sort_key)
 
 
 def find_all_event_logs(log_dir: str) -> list[Path]:
@@ -40,7 +44,17 @@ def find_all_event_logs(log_dir: str) -> list[Path]:
     Args:
         log_dir: Log directory.
     """
-    return find_all_files(log_dir, f"{EVENT_LOG_FILE_PREFIX}_*.csv")
+    return sorted(find_all_files(log_dir, f"{EVENT_LOG_FILE_PREFIX}_*.csv"),
+                  key=_run_log_sort_key)
+
+
+def _run_log_sort_key(path: Path) -> tuple[int, int, str]:
+    """Returns a stable numeric sort key for batch run log files."""
+    for parent in path.parents:
+        match = _RUN_DIRECTORY_PATTERN.fullmatch(parent.name)
+        if match is not None:
+            return (0, int(match.group(1)), str(path))
+    return (1, 0, str(path))
 
 
 def find_latest_file(directory: str, file_pattern: str) -> Path | None:

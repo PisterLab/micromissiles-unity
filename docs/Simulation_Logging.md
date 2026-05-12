@@ -2,7 +2,7 @@
 
 This guide provides instructions on how to access and interpret the simulation logs.
 The `SimMonitor` class outputs a telemetry file and an event log, which can be visualized using the provided `visualize_log.py` script or replayed using the provided `replay_log.py` script.
-To aggregate logs from multiple runs kicked off using a run configuration, we have provided a `process_run.py` script.
+To aggregate logs from multiple runs kicked off using the Python batch run launcher, we have provided a `process_run.py` script.
 
 ## Overview
 
@@ -31,8 +31,9 @@ Each simulation run generates a new subdirectory with the timestamp of the run, 
 - **Telemetry file (`sim_telemetry_*.csv`)**: Contains detailed state information for each agent at each time step. The telemetry CSV file is converted from an accompanying `sim_telemetry_*.bin` binary file.
 - **Event log (`sim_events_*.csv`)**: Records significant events such as hits, misses, agent creation, and termination.
 
-If the simulation run was executed interactively through the Unity Editor or through the command line without a run configuration provided, the logs will be stored in a directory called `run_<timestamp>`.
+If the simulation run was executed interactively through the Unity Editor, the logs will be stored in a directory called `run_<timestamp>`.
 Each engagement scenario will produce one telemetry file and one event log, so loading a new simulation configuration or restarting the simulation configuration generates additional CSV files.
+
 ```
 Logs/
   ├── run_20251117_095849/
@@ -52,9 +53,11 @@ Logs/
   └── ...
 ```
 
-If the simulation run was executed through the command line with a run configuration provided, the logs will be stored in a parent directory called `<run_config_name>_<timestamp>`.
+If the simulation run was executed through `Tools/run_batch.py`, the logs will be stored in a parent directory called `<run_config_name>_<timestamp>`.
 The logs of each simulation run are then stored in subdirectories within this parent directory, called `run_<run_index>_seed_<seed>`.
-Since a run configuration is provided, the simulation does not automatically restart on conclusion, so there are only two CSV files per subdirectory.
+Invoking the single-run CLI directly will cause the logs to be written to the explicit absolute directory passed via `--output_dir`.
+Since each Unity worker executes exactly one simulation run, there are only two CSV files per subdirectory.
+
 ```
 Logs/
   ├── batch_7_quadcopters_20251117_095849/
@@ -128,6 +131,7 @@ If either the telemetry file or the event log is not provided, the script will a
 If `--log_search_dir` is not provided, it defaults to the persistent data path.
 
 The script then outputs a summary of the events, including the total number of interceptor hits and misses.
+
 ```
 Total number of events: 490.
 Event counts:
@@ -159,6 +163,7 @@ To run `replay_log.py`, ensure that you have Python 3 installed on your system a
 ### Replaying the Log
 
 Run the script as follows:
+
 ```bash
 python3 Tools/replay_log.py \
     --telemetry_file path/to/sim_telemetry_file.csv \
@@ -175,7 +180,7 @@ The HTML file can be opened in any web browser to view the animation.
 
 ## Run Processor
 
-If the simulation run was kicked off using a run configuration, you can use the provided `process_run.py` script to aggregate metrics across multiple simulation runs and analyze and visualize them.
+If the simulation run was kicked off using `Tools/run_batch.py`, you can use the provided `process_run.py` script to aggregate metrics across multiple simulation runs and analyze and visualize them.
 `process_run.py` is included in the `Tools` directory of the release.
 
 ### Requirements
@@ -189,6 +194,7 @@ To run `process_run.py`, ensure that you have Python 3 installed on your system 
 ### Processing a Run
 
 Run the script as follows:
+
 ```bash
 python3 Tools/process_run.py --run_log_dir path/to/run_log_directory_20251117_095849
 ```

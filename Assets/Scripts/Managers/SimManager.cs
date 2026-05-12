@@ -266,8 +266,8 @@ public class SimManager : MonoBehaviour {
       return null;
     }
 
-    GameObject agentObject =
-        Instantiate(prefab, Coordinates3.FromProto(initialState.Position), prefab.transform.rotation);
+    GameObject agentObject = Instantiate(prefab, Coordinates3.FromProto(initialState.Position),
+                                         prefab.transform.rotation);
     IAgent agent = agentObject.GetComponent<IAgent>();
     agent.AgentConfig = config;
     Vector3 velocity = Coordinates3.FromProto(initialState.Velocity);
@@ -303,7 +303,9 @@ public class SimManager : MonoBehaviour {
     Instance = this;
     DontDestroyOnLoad(gameObject);
 
-    LoadSimConfigs(_defaultSimulationConfigFile);
+    if (!RunWorker.IsWorkerMode) {
+      LoadSimConfigs(_defaultSimulationConfigFile);
+    }
     Timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
   }
 
@@ -312,7 +314,7 @@ public class SimManager : MonoBehaviour {
     // Wait one frame so every manager has finished Start() and subscribed to simulation events.
     yield return null;
 
-    if (!HasRunConfig()) {
+    if (!RunWorker.IsWorkerMode) {
       StartSimulation();
       ResumeSimulation();
     }
@@ -371,8 +373,8 @@ public class SimManager : MonoBehaviour {
 
   private void LoadSimConfigs(string simulationConfigFile) {
     SimulatorConfig = ConfigLoader.LoadSimulatorConfig(_defaultSimulatorConfigFile);
-    // If a run configuration is provided, enable telemetry logging and event logging.
-    if (HasRunConfig()) {
+    // If a worker run is provided, enable telemetry logging and event logging.
+    if (RunWorker.IsWorkerMode) {
       SimulatorConfig.EnableTelemetryLogging = true;
       SimulatorConfig.EnableEventLogging = true;
     }
@@ -412,16 +414,11 @@ public class SimManager : MonoBehaviour {
     if (IsRunning && ElapsedTime >= SimulationConfig.EndTime) {
       return true;
     }
-    // The simulation can be ended before the actual end time if there is a run configuration and
-    // all spawned threats have been terminated.
-    if (HasRunConfig() && _numThreatsSpawned > 0 &&
+    // A worker run can end early once all spawned threats have been terminated.
+    if (RunWorker.IsWorkerMode && _numThreatsSpawned > 0 &&
         _numThreatsTerminated >= _numThreatsSpawned) {
       return true;
     }
     return false;
-  }
-
-  private static bool HasRunConfig() {
-    return RunManager.Instance != null && RunManager.Instance.HasRunConfig();
   }
 }

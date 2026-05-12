@@ -54,6 +54,7 @@ TEST(ProtobufTest, LoadProtobufTextFileRunConfig) {
   EXPECT_EQ(run_config.num_runs(), 100);
   EXPECT_EQ(run_config.seed(), 200);
   EXPECT_EQ(run_config.seed_stride(), 1);
+  EXPECT_EQ(run_config.max_parallel(), 16);
 }
 
 TEST(ProtobufTest, LoadProtobufTextFileStaticConfig) {
