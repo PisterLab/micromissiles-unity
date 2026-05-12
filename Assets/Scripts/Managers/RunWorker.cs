@@ -3,6 +3,10 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 
+// The run worker executes exactly one seeded simulation run launched externally, e.g., through the
+// Python batch run launcher. It applies the seed, starts the requested simulation configuration,
+// writes logs to the assigned output directory, and quits after the simulation finishes.
+
 public class RunWorker : MonoBehaviour {
   private const string _simulationConfigFlag = "--simulation_config";
   private const string _seedFlag = "--seed";
@@ -10,12 +14,17 @@ public class RunWorker : MonoBehaviour {
 
   public static RunWorker Instance { get; private set; }
 
+  // True if the run worker was launched from the CLI, e.g., as part of a batch run, rather than
+  // from normal interactive mode.
   public static bool IsWorkerMode { get; private set; } = false;
 
+  // Simulation configuration to execute.
   public static string SimulationConfigFile { get; private set; }
 
+  // Simulation run seed.
   public static int Seed { get; private set; } = 0;
 
+  // Output directory of the simulation run.
   public static string OutputDirectory { get; private set; }
 
   private bool _hasStartedRun = false;
