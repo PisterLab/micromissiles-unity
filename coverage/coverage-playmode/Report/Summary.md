@@ -1,28 +1,28 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/11/2026 - 04:23:58 |
+| Generated on: | 05/12/2026 - 07:08:29 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 109 |
 | Files: | 99 |
-| Covered lines: | 1456 |
-| Uncovered lines: | 2351 |
-| Coverable lines: | 3807 |
-| Total lines: | 6819 |
-| Line coverage: | 38.2% (1456 of 3807) |
+| Covered lines: | 1361 |
+| Uncovered lines: | 2458 |
+| Coverable lines: | 3819 |
+| Total lines: | 6833 |
+| Line coverage: | 35.6% (1361 of 3819) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 404 |
-| Total methods: | 759 |
-| Method coverage: | 53.2% (404 of 759) |
+| Covered methods: | 378 |
+| Total methods: | 757 |
+| Method coverage: | 49.9% (378 of 757) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1456**|**2351**|**3807**|**7301**|**38.2%**|**0**|**0**|****|**404**|**759**|**53.2%**|
+|**bamlab.micromissiles**|**1361**|**2458**|**3819**|**7315**|**35.6%**|**0**|**0**|****|**378**|**757**|**49.9%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
-|AgentBase|158|17|175|333|90.2%|0|0||59|61|96.7%|
+|AgentBase|142|33|175|333|81.1%|0|0||56|61|91.8%|
 |AgglomerativeClusterer|0|59|59|97|0%|0|0||0|2|0%|
 |ApnController|0|7|7|17|0%|0|0||0|2|0%|
 |AssignmentItem|0|2|2|5|0%|0|0||0|4|0%|
@@ -35,7 +35,7 @@
 |CarrierBase|26|9|35|62|74.2%|0|0||6|6|100%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|0|18|18|36|0%|0|0||0|7|0%|
-|ConfigLoader|28|20|48|102|58.3%|0|0||6|8|75%|
+|ConfigLoader|28|17|45|95|62.2%|0|0||6|7|85.7%|
 |Constants|1|6|7|18|14.2%|0|0||1|3|33.3%|
 |ConstrainedKMeansClusterer|0|24|24|44|0%|0|0||0|2|0%|
 |ControllerBase|8|6|14|30|57.1%|0|0||4|5|80%|
@@ -55,8 +55,8 @@
 |GenerateCone|0|100|100|144|0%|0|0||0|9|0%|
 |GeometricEscapeDetector|1|9|10|35|10%|0|0||1|2|50%|
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
-|HierarchicalAgent|28|21|49|74|57.1%|0|0||9|9|100%|
-|HierarchicalBase|26|113|139|236|18.7%|0|0||10|26|38.4%|
+|HierarchicalAgent|18|31|49|74|36.7%|0|0||9|9|100%|
+|HierarchicalBase|20|119|139|236|14.3%|0|0||8|26|30.7%|
 |IADS|51|53|104|169|49%|0|0||12|17|70.5%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
@@ -91,7 +91,7 @@
 |NoEvasion|0|7|7|16|0%|0|0||0|3|0%|
 |NoMovement|4|0|4|12|100%|0|0||2|2|100%|
 |OrthogonalEvasion|1|34|35|78|2.8%|0|0||1|3|33.3%|
-|ParticleManager|49|105|154|222|31.8%|0|0||11|24|45.8%|
+|ParticleManager|34|120|154|222|22%|0|0||9|24|37.5%|
 |PendingMessage|0|11|11|27|0%|0|0||0|6|0%|
 |PlannerReleaseStrategy|4|4|8|14|50%|0|0||3|4|75%|
 |PnController|25|3|28|67|89.2%|0|0||4|4|100%|
@@ -105,12 +105,12 @@
 |ReleaseStrategyBase|9|1|10|24|90%|0|0||4|4|100%|
 |RotaryWingThreat|5|0|5|11|100%|0|0||1|1|100%|
 |RoundRobinAssignment|0|12|12|23|0%|0|0||0|1|0%|
-|RunManager|16|71|87|139|18.3%|0|0||14|22|63.6%|
+|RunWorker|1|102|103|166|0.9%|0|0||2|22|9%|
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|4|0|4|10|100%|0|0||1|1|100%|
-|SimManager|238|37|275|427|86.5%|0|0||48|54|88.8%|
-|SimMonitor|78|101|179|285|43.5%|0|0||17|27|62.9%|
+|SimManager|227|47|274|424|82.8%|0|0||44|53|83%|
+|SimMonitor|75|104|179|282|41.8%|0|0||16|27|59.2%|
 |SingleReleaseStrategyBase|7|24|31|62|22.5%|0|0||2|3|66.6%|
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
 |SpeedEscapeDetector|0|11|11|24|0%|0|0||0|3|0%|
@@ -118,13 +118,13 @@
 |TacticalPanel|37|143|180|280|20.5%|0|0||9|28|32.1%|
 |TacticalPolarGridGraphic|44|98|142|230|30.9%|0|0||5|15|33.3%|
 |TacticalSymbol|0|55|55|84|0%|0|0||0|11|0%|
-|ThreatBase|75|32|107|164|70%|0|0||11|12|91.6%|
+|ThreatBase|65|42|107|164|60.7%|0|0||10|12|83.3%|
 |TimeEscapeDetector|0|17|17|42|0%|0|0||0|2|0%|
 |Transformation|3|0|3|25|100%|0|0||6|6|100%|
 |UIElementDragger|0|3|3|9|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|18|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
-|UIManager|129|33|162|234|79.6%|0|0||20|27|74%|
+|UIManager|120|42|162|234|74%|0|0||19|27|70.3%|
 |Utilities|14|6|20|33|70%|0|0||3|5|60%|
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|4|0|4|11|100%|0|0||1|1|100%|

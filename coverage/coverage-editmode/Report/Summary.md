@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/11/2026 - 04:22:52 |
+| Generated on: | 05/12/2026 - 07:05:36 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 109 |
 | Files: | 99 |
-| Covered lines: | 1026 |
-| Uncovered lines: | 2781 |
-| Coverable lines: | 3807 |
-| Total lines: | 6819 |
-| Line coverage: | 26.9% (1026 of 3807) |
+| Covered lines: | 1046 |
+| Uncovered lines: | 2773 |
+| Coverable lines: | 3819 |
+| Total lines: | 6833 |
+| Line coverage: | 27.3% (1046 of 3819) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 301 |
-| Total methods: | 759 |
-| Method coverage: | 39.6% (301 of 759) |
+| Covered methods: | 303 |
+| Total methods: | 757 |
+| Method coverage: | 40% (303 of 757) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1026**|**2781**|**3807**|**7301**|**26.9%**|**0**|**0**|****|**301**|**759**|**39.6%**|
+|**bamlab.micromissiles**|**1046**|**2773**|**3819**|**7315**|**27.3%**|**0**|**0**|****|**303**|**757**|**40%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|79|175|333|54.8%|0|0||39|61|63.9%|
@@ -35,7 +35,7 @@
 |CarrierBase|0|35|35|62|0%|0|0||0|6|0%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|18|0|18|36|100%|0|0||7|7|100%|
-|ConfigLoader|14|34|48|102|29.1%|0|0||2|8|25%|
+|ConfigLoader|14|31|45|95|31.1%|0|0||2|7|28.5%|
 |Constants|4|3|7|18|57.1%|0|0||2|3|66.6%|
 |ConstrainedKMeansClusterer|22|2|24|44|91.6%|0|0||2|2|100%|
 |ControllerBase|10|4|14|30|71.4%|0|0||4|5|80%|
@@ -105,12 +105,12 @@
 |ReleaseStrategyBase|0|10|10|24|0%|0|0||0|4|0%|
 |RotaryWingThreat|0|5|5|11|0%|0|0||0|1|0%|
 |RoundRobinAssignment|12|0|12|23|100%|0|0||1|1|100%|
-|RunManager|0|87|87|139|0%|0|0||0|22|0%|
+|RunWorker|20|83|103|166|19.4%|0|0||2|22|9%|
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|0|4|4|10|0%|0|0||0|1|0%|
-|SimManager|0|275|275|427|0%|0|0||0|54|0%|
-|SimMonitor|0|179|179|285|0%|0|0||0|27|0%|
+|SimManager|0|274|274|424|0%|0|0||0|53|0%|
+|SimMonitor|0|179|179|282|0%|0|0||0|27|0%|
 |SingleReleaseStrategyBase|0|31|31|62|0%|0|0||0|3|0%|
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
 |SpeedEscapeDetector|11|0|11|24|100%|0|0||3|3|100%|
