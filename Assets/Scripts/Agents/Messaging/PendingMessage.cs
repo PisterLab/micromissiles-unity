@@ -13,8 +13,12 @@ public readonly struct PendingMessage : IComparable<PendingMessage> {
   public IAgent Receiver => Message?.Receiver;
 
   public PendingMessage(float deliverAt, Message message) {
-    DeliverAt = deliverAt;
+    if (float.IsNaN(deliverAt) || float.IsInfinity(deliverAt) || deliverAt < 0f) {
+      throw new ArgumentOutOfRangeException(nameof(deliverAt), deliverAt,
+                                            "DeliverAt must be finite and non-negative.");
+    }
     Message = message ?? throw new ArgumentNullException(nameof(message));
+    DeliverAt = deliverAt;
   }
 
   public int CompareTo(PendingMessage other) => DeliverAt.CompareTo(other.DeliverAt);

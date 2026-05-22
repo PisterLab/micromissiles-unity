@@ -7,19 +7,21 @@ public class IadsCommsAgentTests {
   private const float _epsilon = 1e-6f;
 
   private IadsCommsAgent _agent;
+  private SimManager _previousSimManager;
 
   [SetUp]
   public void SetUp() {
+    _previousSimManager = SimManager.Instance;
     _agent = new GameObject("IadsCommsAgent").AddComponent<IadsCommsAgent>();
     SetSimManagerInstance(null);
   }
 
   [TearDown]
   public void TearDown() {
-    SetSimManagerInstance(null);
     if (_agent != null) {
       UnityEngine.Object.DestroyImmediate(_agent.gameObject);
     }
+    SetSimManagerInstance(_previousSimManager);
   }
 
   [Test]
@@ -68,10 +70,39 @@ public class IadsCommsAgentTests {
     StringAssert.Contains("comms-only mailbox proxy", exception.Message);
   }
 
+  [TestCase(float.NaN)]
+  [TestCase(float.PositiveInfinity)]
+  [TestCase(float.NegativeInfinity)]
+  [TestCase(-1f)]
+  public void PendingMessage_InvalidDeliverAt_ThrowsArgumentOutOfRangeException(float deliverAt) {
+    GameObject senderObject = new GameObject("Sender");
+    GameObject receiverObject = new GameObject("Receiver");
+
+    try {
+      Message message = new TestMessage(senderObject.AddComponent<IadsCommsAgent>(),
+                                        receiverObject.AddComponent<IadsCommsAgent>());
+
+      ArgumentOutOfRangeException exception =
+          Assert.Throws<ArgumentOutOfRangeException>(() => new PendingMessage(deliverAt, message));
+
+      Assert.AreEqual("deliverAt", exception.ParamName);
+    } finally {
+      UnityEngine.Object.DestroyImmediate(senderObject);
+      UnityEngine.Object.DestroyImmediate(receiverObject);
+    }
+  }
+
   private static void SetSimManagerInstance(SimManager simManager) {
     FieldInfo instanceField =
         typeof(SimManager)
             .GetField("<Instance>k__BackingField", BindingFlags.NonPublic | BindingFlags.Static);
     instanceField.SetValue(null, simManager);
+  }
+
+  private sealed class TestMessage : Message {
+    public override IMessagePayload Payload => null;
+
+    public TestMessage(IAgent sender, IAgent receiver)
+        : base(sender, receiver, MessageType.AssignTarget) {}
   }
 }
