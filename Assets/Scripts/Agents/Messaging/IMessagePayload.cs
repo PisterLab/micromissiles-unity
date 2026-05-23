@@ -1,3 +1,5 @@
 // Interface for MessagePayload.
 
-public interface IMessagePayload {}
+namespace Agents.Messaging {
+  public interface IMessagePayload {}
+}

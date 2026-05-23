@@ -2,6 +2,10 @@ using NUnit.Framework;
 using System;
 using System.Reflection;
 using UnityEngine;
+using AgentMessage = Agents.Messaging.Message;
+using AgentMessagePayload = Agents.Messaging.IMessagePayload;
+using AgentMessageType = Agents.Messaging.MessageType;
+using AgentPendingMessage = Agents.Messaging.PendingMessage;
 
 public class IadsCommsAgentTests {
   private const float _epsilon = 1e-6f;
@@ -79,11 +83,11 @@ public class IadsCommsAgentTests {
     GameObject receiverObject = new GameObject("Receiver");
 
     try {
-      Message message = new TestMessage(senderObject.AddComponent<IadsCommsAgent>(),
-                                        receiverObject.AddComponent<IadsCommsAgent>());
+      AgentMessage message = new TestMessage(senderObject.AddComponent<IadsCommsAgent>(),
+                                             receiverObject.AddComponent<IadsCommsAgent>());
 
-      ArgumentOutOfRangeException exception =
-          Assert.Throws<ArgumentOutOfRangeException>(() => new PendingMessage(deliverAt, message));
+      ArgumentOutOfRangeException exception = Assert.Throws<ArgumentOutOfRangeException>(
+          () => new AgentPendingMessage(deliverAt, message));
 
       Assert.AreEqual("deliverAt", exception.ParamName);
     } finally {
@@ -99,10 +103,10 @@ public class IadsCommsAgentTests {
     instanceField.SetValue(null, simManager);
   }
 
-  private sealed class TestMessage : Message {
-    public override IMessagePayload Payload => null;
+  private sealed class TestMessage : AgentMessage {
+    public override AgentMessagePayload Payload => null;
 
     public TestMessage(IAgent sender, IAgent receiver)
-        : base(sender, receiver, MessageType.AssignTarget) {}
+        : base(sender, receiver, AgentMessageType.AssignTarget) {}
   }
 }
