@@ -1,20 +1,24 @@
 using System;
 using UnityEngine;
 
-// IADS Proxy for supporting mailbox message sending and receiving.
+// IADS proxy for supporting mailbox message sending and receiving.
 
 public class IadsCommsAgent : MonoBehaviour, IAgent {
   public event AgentTerminatedEventHandler OnTerminated;
 
+  // Hierarchical node linked to the IADS mailbox endpoint.
   [SerializeReference]
   private HierarchicalAgent _hierarchicalAgent;
 
+  // Placeholder velocity set to zero for IADS.
   [SerializeField]
   private Vector3 _velocity = Vector3.zero;
 
+  // Placeholder acceleration set to zero for IADS.
   [SerializeField]
   private Vector3 _acceleration = Vector3.zero;
 
+  // Placeholder accelerationInput set to zero for IADS.
   [SerializeField]
   private Vector3 _accelerationInput = Vector3.zero;
 
