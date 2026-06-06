@@ -189,7 +189,9 @@ public class MailboxTests : TestBase {
     SetElapsedTime(0f);
     _mailbox.Send(message);
 
-    Assert.Throws<InvalidOperationException>(() => InvokePrivateMethod(_mailbox, "Update"));
+    TargetInvocationException exception =
+        Assert.Throws<TargetInvocationException>(() => InvokePrivateMethod(_mailbox, "Update"));
+    Assert.That(exception.InnerException, Is.TypeOf<InvalidOperationException>());
     Assert.AreEqual(1, deliveredCount);
     Assert.AreEqual(0, GetPrivateField<List<PendingMessage>>(_mailbox, "_dueMessages").Count);
 
