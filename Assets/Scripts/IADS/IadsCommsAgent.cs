@@ -1,11 +1,7 @@
 using System;
 using UnityEngine;
 
-<<<<<<< HEAD
 // IADS proxy for supporting mailbox message sending and receiving.
-=======
-// IADS Proxy for supporting mailbox message sending and receiving.
->>>>>>> a45b09b94 ([Communication] Updated CodeRabbit Comments)
 
 public class IadsCommsAgent : MonoBehaviour, IAgent {
   public event AgentTerminatedEventHandler OnTerminated;

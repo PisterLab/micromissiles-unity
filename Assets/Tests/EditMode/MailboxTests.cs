@@ -8,6 +8,7 @@ using UnityEngine;
 public class MailboxTests : TestBase {
   private Mailbox _mailbox;
   private SimManager _simManager;
+  private readonly List<GameObject> _ownedGameObjects = new List<GameObject>();
 
   [SetUp]
   public void SetUp() {
@@ -24,6 +25,12 @@ public class MailboxTests : TestBase {
     if (_mailbox != null) {
       UnityEngine.Object.DestroyImmediate(_mailbox.gameObject);
     }
+    foreach (GameObject ownedGameObject in _ownedGameObjects) {
+      if (ownedGameObject != null) {
+        UnityEngine.Object.DestroyImmediate(ownedGameObject);
+      }
+    }
+    _ownedGameObjects.Clear();
   }
 
   // Verifies that the mailbox delivers zero-latency messages on the next delivery update.
@@ -161,6 +168,38 @@ public class MailboxTests : TestBase {
     Assert.AreSame(secondMessage, deliveredMessages[1]);
   }
 
+  // Verifies that the IADS proxy falls back to the default protobuf link config when it has no
+  // StaticConfig.AgentType mapping.
+  [Test]
+  public void Send_WithIadsProxy_UsesDefaultLinkConfig() {
+    var senderObject = new GameObject("IadsMailboxSender");
+    var receiverObject = new GameObject("IadsMailboxReceiver");
+    _ownedGameObjects.Add(senderObject);
+    _ownedGameObjects.Add(receiverObject);
+
+    var sender = senderObject.AddComponent<IadsCommsAgent>();
+    var receiver = receiverObject.AddComponent<IadsCommsAgent>();
+    var message = new TestMessage(sender, receiver);
+    int deliveredCount = 0;
+
+    _mailbox.OnMessageDelivered += (_, _) => ++deliveredCount;
+    _mailbox.Configure(new Configs.CommunicationConfig { LinkConfig = new Configs.LinkConfig {
+      LatencySeconds = 2f,
+      LatencyStdSeconds = 0f,
+      PacketDeliveryRatio = 1f,
+    } });
+
+    SetElapsedTime(0f);
+    _mailbox.Send(message);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(0, deliveredCount);
+
+    SetElapsedTime(2f);
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(1, deliveredCount);
+  }
+
   private static SimManager CreateSimManagerStub() {
     return (SimManager)FormatterServices.GetUninitializedObject(typeof(SimManager));
   }
@@ -193,7 +232,7 @@ public class MailboxTests : TestBase {
     public override IMessagePayload Payload => _payload;
 
     public TestMessage(IAgent sender, IAgent receiver)
-        : base(sender, receiver, MessageType.AssignTarget) {}
+        : base(sender, receiver, MessageType.AssignTargetRequest) {}
   }
 
   private sealed class TestAgent : IAgent {

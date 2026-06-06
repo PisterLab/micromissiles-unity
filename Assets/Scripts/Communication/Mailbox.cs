@@ -119,7 +119,10 @@ public class Mailbox : MonoBehaviour {
     InitializeMessageQueueIfNeeded();
     LinkRuntimeConfig linkConfig = GetEffectiveLinkConfig(message.Sender, message.Receiver);
     // Applies packet delivery ratio (PDR). This is done before sending into PQ.
-    if (UnityEngine.Random.value > linkConfig.PacketDeliveryRatio) {
+    // THIS PDR LOGIC IS INCORRECT, WILL BE FIXED IN NEXT ISSUE (This is just a placeholder)
+    // THIS PDR LOGIC IS INCORRECT, WILL BE FIXED IN NEXT ISSUE
+    // THIS PDR LOGIC IS INCORRECT, WILL BE FIXED IN NEXT ISSUE
+    if (UnityEngine.Random.value >= linkConfig.PacketDeliveryRatio) {
       return;
     }
 
@@ -128,7 +131,7 @@ public class Mailbox : MonoBehaviour {
                        : 0f;
     float totalLatency = Mathf.Max(0f, linkConfig.LatencySeconds + jitter);
     float deliverAt = GetCurrentTime() + totalLatency;
-    _messageQueue.Enqueue(new PendingMessage(deliverAt, message), deliverAt);
+    _messageQueue.Enqueue(new PendingMessage(message, deliverAt), deliverAt);
   }
 
   // Releases all queued messages in PQ whose scheduled delivery time has arrived.
@@ -179,8 +182,8 @@ public class Mailbox : MonoBehaviour {
                : _defaultLinkConfig;
   }
 
-  // Agents without a StaticConfig.AgentType becomes an InvalidType and use the default link config
-  // unless that pair is explicitly overridden.
+  // Agents without a StaticConfig.AgentType, such as the IADS comms proxy, become InvalidType and
+  // use the default link config unless that pair is explicitly overridden.
   private static Configs.AgentType GetAgentType(IAgent agent) {
     return agent?.StaticConfig?.AgentType ?? Configs.AgentType.InvalidType;
   }
