@@ -318,7 +318,7 @@ public class AgentBaseTests : TestBase {
     public override IMessagePayload Payload => _payload;
 
     public TestMessage(IAgent sender, IAgent receiver)
-        : base(sender, receiver, MessageType.AssignTarget) {}
+        : base(sender, receiver, MessageType.AssignTargetRequest) {}
   }
 
   private sealed class StubAgent : IAgent {
