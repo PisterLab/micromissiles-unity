@@ -168,6 +168,35 @@ public class MailboxTests : TestBase {
     Assert.AreSame(secondMessage, deliveredMessages[1]);
   }
 
+  // Verifies that _dueMessages is cleared even if a delivery subscriber throws.
+  [Test]
+  public void Update_WhenDeliveryThrows_ClearsDueMessages() {
+    var sender = new TestAgent(Configs.AgentType.Vessel);
+    var receiver = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var message = new TestMessage(sender, receiver);
+    int deliveredCount = 0;
+    bool shouldThrow = true;
+
+    _mailbox.OnMessageDelivered += (_, _) => {
+      ++deliveredCount;
+      if (shouldThrow) {
+        shouldThrow = false;
+        throw new InvalidOperationException("Delivery failed.");
+      }
+    };
+
+    _mailbox.Configure(null);
+    SetElapsedTime(0f);
+    _mailbox.Send(message);
+
+    Assert.Throws<InvalidOperationException>(() => InvokePrivateMethod(_mailbox, "Update"));
+    Assert.AreEqual(1, deliveredCount);
+    Assert.AreEqual(0, GetPrivateField<List<PendingMessage>>(_mailbox, "_dueMessages").Count);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.AreEqual(1, deliveredCount);
+  }
+
   // Verifies that the IADS proxy falls back to the default protobuf link config when it has no
   // StaticConfig.AgentType mapping.
   [Test]

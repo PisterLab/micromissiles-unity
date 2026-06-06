@@ -144,13 +144,16 @@ public class Mailbox : MonoBehaviour {
     while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
       _dueMessages.Add(_messageQueue.Dequeue());
     }
-    foreach (PendingMessage pending in _dueMessages) {
-      if (!IsReceiverValid(pending.Receiver)) {
-        continue;
+    try {
+      foreach (PendingMessage pending in _dueMessages) {
+        if (!IsReceiverValid(pending.Receiver)) {
+          continue;
+        }
+        OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
       }
-      OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
+    } finally {
+      _dueMessages.Clear();
     }
-    _dueMessages.Clear();
   }
 
   // Samples zero-mean Gaussian noise for latency jitter.
