@@ -26,6 +26,21 @@ public class MailboxTests : TestBase {
     }
   }
 
+  // Verifies that edit-mode mailbox creation does not call DontDestroyOnLoad.
+  [Test]
+  public void GetOrCreateInstance_InEditMode_CreatesMailbox() {
+    UnityEngine.Object.DestroyImmediate(_mailbox.gameObject);
+    _mailbox = null;
+    SetMailboxInstance(null);
+
+    Mailbox mailbox = null;
+    Assert.DoesNotThrow(() => mailbox = Mailbox.GetOrCreateInstance());
+
+    _mailbox = mailbox;
+    Assert.NotNull(_mailbox);
+    Assert.AreSame(_mailbox, Mailbox.Instance);
+  }
+
   // Verifies that the mailbox delivers zero-latency messages on the next delivery update.
   [Test]
   public void Send_WithNoCommunicationConfig_DeliversOnUpdate() {
