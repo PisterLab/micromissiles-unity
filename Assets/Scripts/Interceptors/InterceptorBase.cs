@@ -105,7 +105,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor == null || subInterceptor.Capacity <= 0) {
+    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
@@ -367,7 +367,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
   }
 
-  // AssignSubInterceptorRequest to parent.
+  // Send an AssignTargetRequest message to the parent mailbox receiver.
   private void SendAssignRequestToParent(IInterceptor subInterceptor) {
     IAgent parent = CommsParent;
     if (subInterceptor == null) {
@@ -377,10 +377,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       OnAssignSubInterceptor?.Invoke(subInterceptor);
       return;
     }
-    SendMailboxMessage(new AssignSubInterceptorRequestMessage(this, parent, subInterceptor));
+    SendMailboxMessage(new AssignTargetRequestMessage(this, parent, subInterceptor));
   }
 
-  // ReassignTargetRequest to parent.
+  // Send a ReassignTargetRequest message to the parent mailbox receiver.
   private void SendReassignRequestToParent(IHierarchical target) {
     IAgent parent = CommsParent;
     if (target == null) {
@@ -393,15 +393,15 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     SendMailboxMessage(new ReassignTargetRequestMessage(this, parent, target));
   }
 
-  // SendAssignTarget to child.
+  // Send an AssignTargetResponse message to the child mailbox receiver.
   private void SendAssignTargetToSub(IInterceptor subInterceptor, IHierarchical target) {
     if (subInterceptor == null || target == null) {
       return;
     }
-    SendMailboxMessage(new AssignTargetMessage(this, subInterceptor, target));
+    SendMailboxMessage(new AssignTargetResponseMessage(this, subInterceptor, target));
   }
 
-  // Send into Mailbox.
+  // Send a message through the mailbox.
   private void SendMailboxMessage(Message message) {
     if (message == null) {
       return;
@@ -419,13 +419,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return;
     }
     switch (message) {
-      case AssignSubInterceptorRequestMessage assignRequest:
+      case AssignTargetRequestMessage assignRequest:
         AssignSubInterceptor(assignRequest.PayloadData.SubInterceptor);
         break;
       case ReassignTargetRequestMessage reassignRequest:
         ReassignTarget(reassignRequest.PayloadData.Target);
         break;
-      case AssignTargetMessage assignTarget:
+      case AssignTargetResponseMessage assignTarget:
         IHierarchical assignedTarget = assignTarget.PayloadData.Target;
         if (assignedTarget != null) {
           HierarchicalAgent.Target = assignedTarget;

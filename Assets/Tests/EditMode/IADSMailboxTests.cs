@@ -174,6 +174,24 @@ public class IADSMailboxTests : TestBase {
     Assert.IsNull(deliveredResponse);
   }
 
+  // Verifies that top-level launchers route mailbox requests to the IADS proxy.
+  [Test]
+  public void RegisterNewLauncher_SetsCommsParentToIadsProxy() {
+    var launcherObject = new GameObject("Launcher");
+    try {
+      var launcher = launcherObject.AddComponent<TestLauncherInterceptor>();
+      launcherObject.AddComponent<Rigidbody>();
+      launcher.HierarchicalAgent = new HierarchicalAgent(launcher);
+      launcher.InvokeAwakeForTest();
+
+      _iads.RegisterNewLauncher(launcher);
+
+      Assert.AreSame(_commsAgent, launcher.CommsParent);
+    } finally {
+      Object.DestroyImmediate(launcherObject);
+    }
+  }
+
   private static SimManager CreateSimManagerStub() {
     return (SimManager)FormatterServices.GetUninitializedObject(typeof(SimManager));
   }
@@ -332,5 +350,17 @@ public class IADSMailboxTests : TestBase {
     public Transformation GetRelativeTransformation(IAgent target) => default;
     public Transformation GetRelativeTransformation(IHierarchical target) => default;
     public Transformation GetRelativeTransformation(in Vector3 waypoint) => default;
+  }
+
+  private sealed class TestLauncherInterceptor : InterceptorBase, IAgent {
+    public void InvokeAwakeForTest() {
+      base.Awake();
+    }
+
+    void IAgent.CreateTargetModel(IHierarchical target) {}
+
+    void IAgent.DestroyTargetModel() {}
+
+    void IAgent.UpdateTargetModel() {}
   }
 }

@@ -43,12 +43,12 @@ public class InterceptorBaseMailboxTests : TestBase {
     SetSimManagerInstance(null);
   }
 
-  // Verifies that a mailbox-delivered AssignTarget message updates the interceptor target.
+  // Verifies that a mailbox-delivered AssignTargetResponse message updates the interceptor target.
   [Test]
-  public void MailboxDelivery_AssignTargetMessage_AssignsHierarchicalTarget() {
+  public void MailboxDelivery_AssignTargetResponseMessage_AssignsHierarchicalTarget() {
     var target = new FixedHierarchical(position: new Vector3(10f, 0f, 0f));
-    var message =
-        new AssignTargetMessage(new StubAgent(Configs.AgentType.Vessel), _interceptor, target);
+    var message = new AssignTargetResponseMessage(new StubAgent(Configs.AgentType.Vessel),
+                                                  _interceptor, target);
 
     _mailbox.Configure(null);
     _mailbox.Send(message);
@@ -77,19 +77,51 @@ public class InterceptorBaseMailboxTests : TestBase {
     Assert.True(queuedTargets.Contains(target));
   }
 
+  // Verifies that a mailbox-delivered AssignTargetRequest message to a parent interceptor produces
+  // an AssignTargetResponse message for the requesting sub-interceptor.
+  [Test]
+  public void MailboxDelivery_AssignTargetRequest_SendsAssignTargetResponseToSubInterceptor() {
+    var expectedTarget = new FixedHierarchical(position: new Vector3(12f, 0f, 0f));
+    _interceptor.HierarchicalAgent.Target = CreateCluster(expectedTarget);
+
+    var subInterceptor = new StubInterceptor(Configs.AgentType.MissileInterceptor, capacity: 1);
+    subInterceptor.HierarchicalAgent = new HierarchicalAgent(subInterceptor);
+
+    AssignTargetResponseMessage deliveredMessage = null;
+    _mailbox.OnMessageDelivered += (_, message) => {
+      if (message is AssignTargetResponseMessage assignTargetResponse &&
+          ReferenceEquals(assignTargetResponse.Receiver, subInterceptor)) {
+        deliveredMessage = assignTargetResponse;
+      }
+    };
+
+    _mailbox.Configure(null);
+    _mailbox.Send(new AssignTargetRequestMessage(new StubAgent(Configs.AgentType.Vessel),
+                                                 _interceptor, subInterceptor));
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.IsNull(deliveredMessage);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.NotNull(deliveredMessage);
+    Assert.AreSame(_interceptor, deliveredMessage.Sender);
+    Assert.AreSame(subInterceptor, deliveredMessage.Receiver);
+    Assert.AreSame(expectedTarget, deliveredMessage.PayloadData.Target);
+  }
+
   // Verifies that a sub-interceptor assignment request is sent through the mailbox to the parent
   // receiver when no target is currently available.
   [Test]
-  public void AssignSubInterceptor_WithoutTarget_SendsAssignRequestToParentMailboxReceiver() {
+  public void AssignSubInterceptor_WithoutTarget_SendsAssignTargetRequestToParentMailboxReceiver() {
     var parent = new StubAgent(Configs.AgentType.Vessel);
     _interceptor.CommsParent = parent;
 
     var subInterceptor = new StubInterceptor(Configs.AgentType.MissileInterceptor, capacity: 1);
     subInterceptor.HierarchicalAgent = new HierarchicalAgent(subInterceptor);
 
-    AssignSubInterceptorRequestMessage deliveredMessage = null;
+    AssignTargetRequestMessage deliveredMessage = null;
     _mailbox.OnMessageDelivered += (_, message) => {
-      if (message is AssignSubInterceptorRequestMessage assignRequest &&
+      if (message is AssignTargetRequestMessage assignRequest &&
           ReferenceEquals(assignRequest.Receiver, parent)) {
         deliveredMessage = assignRequest;
       }
@@ -144,6 +176,14 @@ public class InterceptorBaseMailboxTests : TestBase {
       BodyConfig = new Configs.BodyConfig { Mass = 1f, CrossSectionalArea = 1f },
       LiftDragConfig = new Configs.LiftDragConfig { DragCoefficient = 1f, LiftDragRatio = 1f },
     };
+  }
+
+  private static HierarchicalBase CreateCluster(params IHierarchical[] targets) {
+    var cluster = new HierarchicalBase();
+    foreach (IHierarchical target in targets) {
+      cluster.AddSubHierarchical(target);
+    }
+    return cluster;
   }
 
   private static void SetMailboxInstance(Mailbox mailbox) {
