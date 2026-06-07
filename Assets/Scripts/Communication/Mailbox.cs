@@ -63,7 +63,11 @@ public class Mailbox : MonoBehaviour {
       return Instance;
     }
     var mailboxObject = new GameObject(nameof(Mailbox));
-    DontDestroyOnLoad(mailboxObject);
+    // Edit-mode tests can create a mailbox without entering play mode, where DontDestroyOnLoad is
+    // invalid.
+    if (Application.isPlaying) {
+      DontDestroyOnLoad(mailboxObject);
+    }
     Instance = mailboxObject.AddComponent<Mailbox>();
     return Instance;
   }
