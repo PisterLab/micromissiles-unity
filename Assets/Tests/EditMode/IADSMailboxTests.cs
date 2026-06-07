@@ -43,10 +43,10 @@ public class IADSMailboxTests : TestBase {
     SetIadsInstance(null);
   }
 
-  // Verifies that an AssignSubInterceptor mailbox request to the IADS proxy produces an outgoing
-  // AssignTarget mailbox message for the requested sub-interceptor.
+  // Verifies that an AssignTargetRequest mailbox request to the IADS proxy produces an outgoing
+  // AssignTargetResponse mailbox message for the requested sub-interceptor.
   [Test]
-  public void MailboxDelivery_AssignSubInterceptorRequest_SendsAssignTargetMessage() {
+  public void MailboxDelivery_AssignTargetRequest_SendsAssignTargetResponseMessage() {
     var launcher =
         new StubInterceptor(agentType: Configs.AgentType.Vessel, position: Vector3.zero,
                             capacity: 1, capacityPerSubInterceptor: 1, capacityPlannedRemaining: 1,
@@ -62,17 +62,17 @@ public class IADSMailboxTests : TestBase {
         capacityRemaining: 1, isPursuer: true);
     subInterceptor.HierarchicalAgent = new HierarchicalAgent(subInterceptor);
 
-    AssignTargetMessage deliveredMessage = null;
+    AssignTargetResponseMessage deliveredMessage = null;
     _mailbox.OnMessageDelivered += (_, message) => {
-      if (message is AssignTargetMessage assignTargetMessage &&
+      if (message is AssignTargetResponseMessage assignTargetMessage &&
           ReferenceEquals(assignTargetMessage.Receiver, subInterceptor)) {
         deliveredMessage = assignTargetMessage;
       }
     };
 
     _mailbox.Configure(null);
-    _mailbox.Send(new AssignSubInterceptorRequestMessage(new StubAgent(Configs.AgentType.Vessel),
-                                                         _commsAgent, subInterceptor));
+    _mailbox.Send(new AssignTargetRequestMessage(new StubAgent(Configs.AgentType.Vessel),
+                                                 _commsAgent, subInterceptor));
 
     InvokePrivateMethod(_mailbox, "Update");
     Assert.IsNull(deliveredMessage);
@@ -81,7 +81,7 @@ public class IADSMailboxTests : TestBase {
     Assert.NotNull(deliveredMessage);
     Assert.AreSame(_commsAgent, deliveredMessage.Sender);
     Assert.AreSame(subInterceptor, deliveredMessage.Receiver);
-    Assert.AreEqual(MessageType.AssignTarget, deliveredMessage.Type);
+    Assert.AreEqual(MessageType.AssignTargetResponse, deliveredMessage.Type);
 
     List<IHierarchical> assignedTargets = deliveredMessage.PayloadData.Target.LeafHierarchicals(
         activeOnly: true, withTargetOnly: false);
@@ -156,17 +156,17 @@ public class IADSMailboxTests : TestBase {
                             capacityRemaining: 1, isPursuer: true);
     subInterceptor.HierarchicalAgent = new HierarchicalAgent(subInterceptor);
 
-    AssignTargetMessage deliveredResponse = null;
+    AssignTargetResponseMessage deliveredResponse = null;
     _mailbox.OnMessageDelivered += (_, message) => {
-      if (message is AssignTargetMessage assignTargetMessage &&
+      if (message is AssignTargetResponseMessage assignTargetMessage &&
           ReferenceEquals(assignTargetMessage.Receiver, subInterceptor)) {
         deliveredResponse = assignTargetMessage;
       }
     };
 
     _mailbox.Configure(null);
-    _mailbox.Send(new AssignSubInterceptorRequestMessage(new StubAgent(Configs.AgentType.Vessel),
-                                                         unrelatedReceiver, subInterceptor));
+    _mailbox.Send(new AssignTargetRequestMessage(new StubAgent(Configs.AgentType.Vessel),
+                                                 unrelatedReceiver, subInterceptor));
 
     InvokePrivateMethod(_mailbox, "Update");
     InvokePrivateMethod(_mailbox, "Update");
