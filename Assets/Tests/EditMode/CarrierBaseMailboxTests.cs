@@ -63,9 +63,10 @@ public class CarrierBaseMailboxTests : TestBase {
   }
 
   // Verifies that a released interceptor can use its assigned carrier mailbox parent to request a
-  // target and receive an AssignTarget response back through the mailbox on the next update.
+  // target and receive an AssignTargetResponse message back through the mailbox on the next
+  // update.
   [Test]
-  public void ReleasedInterceptor_RequestViaMailbox_ProducesCarrierAssignTargetResponse() {
+  public void ReleasedInterceptor_RequestViaMailbox_ProducesCarrierAssignTargetResponseMessage() {
     SetPrivateField(_carrier, "_numSubInterceptorsRemaining", 1);
 
     TestReleasedInterceptor releasedInterceptor =
@@ -82,9 +83,9 @@ public class CarrierBaseMailboxTests : TestBase {
         new StubInterceptor(Configs.AgentType.MissileInterceptor, capacity: 1);
     requestedSubInterceptor.HierarchicalAgent = new HierarchicalAgent(requestedSubInterceptor);
 
-    AssignTargetMessage deliveredMessage = null;
+    AssignTargetResponseMessage deliveredMessage = null;
     _mailbox.OnMessageDelivered += (_, message) => {
-      if (message is AssignTargetMessage assignTarget &&
+      if (message is AssignTargetResponseMessage assignTarget &&
           ReferenceEquals(assignTarget.Receiver, requestedSubInterceptor)) {
         deliveredMessage = assignTarget;
       }
