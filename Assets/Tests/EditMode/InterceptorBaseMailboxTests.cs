@@ -81,6 +81,7 @@ public class InterceptorBaseMailboxTests : TestBase {
   // an AssignTargetResponse message for the requesting sub-interceptor.
   [Test]
   public void MailboxDelivery_AssignTargetRequest_SendsAssignTargetResponseToSubInterceptor() {
+    SetPrivateField(_interceptor, "_capacityPerSubInterceptor", 1);
     var expectedTarget = new FixedHierarchical(position: new Vector3(12f, 0f, 0f));
     _interceptor.HierarchicalAgent.Target = CreateCluster(expectedTarget);
 
