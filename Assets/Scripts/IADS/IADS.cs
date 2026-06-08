@@ -57,9 +57,10 @@ public class IADS : MonoBehaviour {
       // Just in case the simulation started before IADS subscribed to events.
       foreach (var agent in SimManager.Instance.Interceptors) {
         if (agent is IInterceptor interceptor) {
-          RegisterNewAsset(interceptor);
-          if (interceptor is LauncherBase) {
-            RegisterNewLauncher(interceptor);
+          if (interceptor is LauncherBase launcher) {
+            RegisterNewLauncher(launcher);
+          } else {
+            RegisterNewAsset(interceptor);
           }
         }
       }
@@ -216,7 +217,8 @@ public class IADS : MonoBehaviour {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.HierarchicalAgent == null ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
@@ -258,7 +260,8 @@ public class IADS : MonoBehaviour {
   }
 
   private void HandleMailboxAssignTargetRequest(IInterceptor subInterceptor) {
-    if (_commsAgent == null || subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
+    if (_commsAgent == null || subInterceptor == null || subInterceptor.HierarchicalAgent == null ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
