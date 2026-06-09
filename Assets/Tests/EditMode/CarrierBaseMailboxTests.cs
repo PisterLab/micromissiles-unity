@@ -126,14 +126,17 @@ public class CarrierBaseMailboxTests : TestBase {
   // carrier to IADS, and that the requesting interceptor receives the launcher-selected target.
   [Test]
   public void ReleasedInterceptor_RequestViaMailbox_PropagatesThroughCarrierAndIads() {
-    SetPrivateField(_carrier, "_numSubInterceptorsRemaining", 1);
+    TestLauncherCarrier launcherCarrier =
+        CreateLauncherCarrier("LauncherCarrier", Configs.AgentType.Vessel);
+    SetPrivateField(launcherCarrier, "_capacityPerSubInterceptor", 1);
+    SetPrivateField(launcherCarrier, "_numSubInterceptorsRemaining", 1);
 
     TestReleasedInterceptor releasedInterceptor =
         CreateReleasedInterceptor("ReleasedInterceptor", Configs.AgentType.MissileInterceptor);
-    _carrier.ReleaseStrategy =
-        new FixedReleaseStrategy(_carrier, new List<IAgent> { releasedInterceptor });
-    RunReleaseManagerStep(_carrier, period: 0.2f);
-    _iads.RegisterNewAsset(_carrier);
+    launcherCarrier.ReleaseStrategy =
+        new FixedReleaseStrategy(launcherCarrier, new List<IAgent> { releasedInterceptor });
+    RunReleaseManagerStep(launcherCarrier, period: 0.2f);
+    _iads.RegisterNewLauncher(launcherCarrier);
 
     var launcher =
         new StubInterceptor(Configs.AgentType.Vessel, capacity: 1) { Position = Vector3.zero };
@@ -165,8 +168,8 @@ public class CarrierBaseMailboxTests : TestBase {
                                                                          withTargetOnly: false);
     Assert.AreEqual(1, assignedTargets.Count);
     Assert.AreSame(expectedLeafTarget, assignedTargets[0]);
-    Assert.AreSame(_carrier, releasedInterceptor.CommsParent);
-    Assert.AreSame(_commsAgent, _carrier.CommsParent);
+    Assert.AreSame(launcherCarrier, releasedInterceptor.CommsParent);
+    Assert.AreSame(_commsAgent, launcherCarrier.CommsParent);
   }
 
   // Verifies that duplicate interceptor entries in a release batch do not double-count remaining
@@ -209,6 +212,18 @@ public class CarrierBaseMailboxTests : TestBase {
     interceptor.InvokeAwakeForTest();
     interceptor.StaticConfig = CreateStaticConfig(agentType);
     return interceptor;
+  }
+
+  private TestLauncherCarrier CreateLauncherCarrier(string name, Configs.AgentType agentType) {
+    GameObject launcherObject = new GameObject(name);
+    _spawnedObjects.Add(launcherObject);
+    launcherObject.AddComponent<Rigidbody>();
+
+    TestLauncherCarrier launcher = launcherObject.AddComponent<TestLauncherCarrier>();
+    launcher.HierarchicalAgent = new HierarchicalAgent(launcher);
+    launcher.InvokeAwakeForTest();
+    launcher.StaticConfig = CreateStaticConfig(agentType);
+    return launcher;
   }
 
   private static void RunReleaseManagerStep(CarrierBase carrier, float period) {
@@ -276,6 +291,18 @@ public class CarrierBaseMailboxTests : TestBase {
   }
 
   private sealed class TestCarrier : CarrierBase, IAgent {
+    public void InvokeAwakeForTest() {
+      base.Awake();
+    }
+
+    void IAgent.CreateTargetModel(IHierarchical target) {}
+
+    void IAgent.DestroyTargetModel() {}
+
+    void IAgent.UpdateTargetModel() {}
+  }
+
+  private sealed class TestLauncherCarrier : LauncherBase, IAgent {
     public void InvokeAwakeForTest() {
       base.Awake();
     }
