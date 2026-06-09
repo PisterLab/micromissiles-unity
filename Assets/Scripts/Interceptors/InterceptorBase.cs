@@ -428,7 +428,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       case AssignTargetResponseMessage assignTarget:
         IHierarchical assignedTarget = assignTarget.PayloadData.Target;
         if (assignedTarget != null) {
-          HierarchicalAgent.Target = assignedTarget;
+          EvaluateReassignedTarget(assignedTarget);
         }
         break;
     }
