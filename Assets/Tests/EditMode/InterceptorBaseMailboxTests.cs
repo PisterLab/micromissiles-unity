@@ -107,7 +107,11 @@ public class InterceptorBaseMailboxTests : TestBase {
     Assert.NotNull(deliveredMessage);
     Assert.AreSame(_interceptor, deliveredMessage.Sender);
     Assert.AreSame(subInterceptor, deliveredMessage.Receiver);
-    Assert.AreSame(expectedTarget, deliveredMessage.PayloadData.Target);
+
+    List<IHierarchical> assignedTargets = deliveredMessage.PayloadData.Target.LeafHierarchicals(
+        activeOnly: true, withTargetOnly: false);
+    Assert.AreEqual(1, assignedTargets.Count);
+    Assert.AreSame(expectedTarget, assignedTargets[0]);
   }
 
   // Verifies that a sub-interceptor assignment request is sent through the mailbox to the parent
