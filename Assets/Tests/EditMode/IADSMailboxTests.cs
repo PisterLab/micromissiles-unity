@@ -353,6 +353,8 @@ public class IADSMailboxTests : TestBase {
   }
 
   private sealed class TestLauncherInterceptor : InterceptorBase, IAgent {
+    public override bool IsPursuer => false;
+
     public void InvokeAwakeForTest() {
       base.Awake();
     }
