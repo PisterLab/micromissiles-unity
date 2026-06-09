@@ -117,7 +117,6 @@ communication_config {
     latency_std_seconds: 0.02
     packet_delivery_ratio: 1.0
   }
-
   link_overrides {
     from: VESSEL
     to: CARRIER_INTERCEPTOR
@@ -127,7 +126,6 @@ communication_config {
       packet_delivery_ratio: 1.0
     }
   }
-
   link_overrides {
     from: CARRIER_INTERCEPTOR
     to: MISSILE_INTERCEPTOR
