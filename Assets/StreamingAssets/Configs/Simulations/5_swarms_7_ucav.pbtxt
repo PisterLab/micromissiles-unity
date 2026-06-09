@@ -296,7 +296,7 @@ communication_config {
     link_config {
       latency_seconds: 0.20
       latency_std_seconds: 0.02
-      packet_delivery_ratio: 0.99
+      packet_delivery_ratio: 1.0
     }
   }
 
@@ -306,7 +306,7 @@ communication_config {
     link_config {
       latency_seconds: 0.20
       latency_std_seconds: 0.02
-      packet_delivery_ratio: 0.99
+      packet_delivery_ratio: 1.0
     }
   }
 
@@ -316,7 +316,7 @@ communication_config {
     link_config {
       latency_seconds: 0.03
       latency_std_seconds: 0.005
-      packet_delivery_ratio: 0.995
+      packet_delivery_ratio: 1.0
     }
   }
 
@@ -326,7 +326,7 @@ communication_config {
     link_config {
       latency_seconds: 0.03
       latency_std_seconds: 0.005
-      packet_delivery_ratio: 0.995
+      packet_delivery_ratio: 1.0
     }
   }
 }

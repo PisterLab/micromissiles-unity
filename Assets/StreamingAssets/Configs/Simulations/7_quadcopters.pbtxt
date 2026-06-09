@@ -124,7 +124,7 @@ communication_config {
     link_config {
       latency_seconds: 0.25
       latency_std_seconds: 0.02
-      packet_delivery_ratio: 0.98
+      packet_delivery_ratio: 1.0
     }
   }
 
@@ -134,7 +134,7 @@ communication_config {
     link_config {
       latency_seconds: 0.05
       latency_std_seconds: 0.01
-      packet_delivery_ratio: 0.99
+      packet_delivery_ratio: 1.0
     }
   }
 }

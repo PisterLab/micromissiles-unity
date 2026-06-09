@@ -9,6 +9,8 @@ using UnityEngine.TestTools;
 public class CarrierBaseMailboxTests : TestBase {
   private Mailbox _mailbox;
   private SimManager _simManager;
+  private IADS _iads;
+  private IadsCommsAgent _commsAgent;
   private TestCarrier _carrier;
   private readonly List<GameObject> _spawnedObjects = new List<GameObject>();
 
@@ -16,14 +18,25 @@ public class CarrierBaseMailboxTests : TestBase {
   public void SetUp() {
     SetMailboxInstance(null);
     SetSimManagerInstance(null);
+    SetIadsInstance(null);
 
     _simManager = CreateSimManagerStub();
     SetPrivateField(_simManager, "_dummyAgents", new List<IAgent>());
+    SetPrivateField(_simManager, "_interceptors", new List<IAgent>());
+    SetPrivateField(_simManager, "_threats", new List<IAgent>());
     SetSimManagerInstance(_simManager);
     SetElapsedTime(0f);
 
     _mailbox = new GameObject("Mailbox").AddComponent<Mailbox>();
     _spawnedObjects.Add(_mailbox.gameObject);
+    SetMailboxInstance(_mailbox);
+
+    GameObject iadsObject = new GameObject("IADS");
+    _spawnedObjects.Add(iadsObject);
+    _iads = iadsObject.AddComponent<IADS>();
+    InvokePrivateMethod(_iads, "Awake");
+    _commsAgent = _iads.GetComponent<IadsCommsAgent>();
+    InvokePrivateMethod(_iads, "Start");
 
     _carrier = CreateCarrier("Carrier", Configs.AgentType.CarrierInterceptor);
     SetPrivateField(_carrier, "_capacityPerSubInterceptor", 1);
@@ -39,6 +52,7 @@ public class CarrierBaseMailboxTests : TestBase {
     _spawnedObjects.Clear();
     SetMailboxInstance(null);
     SetSimManagerInstance(null);
+    SetIadsInstance(null);
   }
 
   // Verifies that release bookkeeping only counts released interceptor children, surfaces an
@@ -106,6 +120,53 @@ public class CarrierBaseMailboxTests : TestBase {
         activeOnly: true, withTargetOnly: false);
     Assert.AreEqual(1, assignedTargets.Count);
     Assert.AreSame(expectedLeafTarget, assignedTargets[0]);
+  }
+
+  // Verifies that a released interceptor can propagate a mailbox target request through its
+  // carrier to IADS, and that the requesting interceptor receives the launcher-selected target.
+  [Test]
+  public void ReleasedInterceptor_RequestViaMailbox_PropagatesThroughCarrierAndIads() {
+    SetPrivateField(_carrier, "_numSubInterceptorsRemaining", 1);
+
+    TestReleasedInterceptor releasedInterceptor =
+        CreateReleasedInterceptor("ReleasedInterceptor", Configs.AgentType.MissileInterceptor);
+    _carrier.ReleaseStrategy =
+        new FixedReleaseStrategy(_carrier, new List<IAgent> { releasedInterceptor });
+    RunReleaseManagerStep(_carrier, period: 0.2f);
+    _iads.RegisterNewAsset(_carrier);
+
+    var launcher =
+        new StubInterceptor(Configs.AgentType.Vessel, capacity: 1) { Position = Vector3.zero };
+    launcher.HierarchicalAgent = new HierarchicalAgent(launcher);
+    FixedHierarchical expectedLeafTarget =
+        new FixedHierarchical(position: new Vector3(35f, 0f, 0f));
+    launcher.HierarchicalAgent.Target = CreateCluster(expectedLeafTarget);
+    _iads.RegisterNewLauncher(launcher);
+
+    TestReleasedInterceptor requestingInterceptor =
+        CreateReleasedInterceptor("RequestingInterceptor", Configs.AgentType.MissileInterceptor);
+    SetPrivateField(requestingInterceptor, "_capacityPerSubInterceptor", 1);
+    SetPrivateField(requestingInterceptor, "_numSubInterceptorsRemaining", 1);
+
+    _mailbox.Configure(null);
+    releasedInterceptor.AssignSubInterceptor(requestingInterceptor);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.IsNull(requestingInterceptor.HierarchicalAgent.Target);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.IsNull(requestingInterceptor.HierarchicalAgent.Target);
+
+    InvokePrivateMethod(_mailbox, "Update");
+    Assert.NotNull(requestingInterceptor.HierarchicalAgent.Target);
+
+    List<IHierarchical> assignedTargets =
+        requestingInterceptor.HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true,
+                                                                         withTargetOnly: false);
+    Assert.AreEqual(1, assignedTargets.Count);
+    Assert.AreSame(expectedLeafTarget, assignedTargets[0]);
+    Assert.AreSame(_carrier, releasedInterceptor.CommsParent);
+    Assert.AreSame(_commsAgent, _carrier.CommsParent);
   }
 
   // Verifies that duplicate interceptor entries in a release batch do not double-count remaining
@@ -196,6 +257,15 @@ public class CarrierBaseMailboxTests : TestBase {
                    $"{nameof(SimManager)} instance backing field was not found. " +
                        $"The {nameof(SimManager.Instance)} property shape may have changed.");
     instanceField.SetValue(null, simManager);
+  }
+
+  private static void SetIadsInstance(IADS iads) {
+    FieldInfo instanceField = typeof(IADS).GetField("<Instance>k__BackingField",
+                                                    BindingFlags.NonPublic | BindingFlags.Static);
+    Assert.NotNull(instanceField,
+                   $"{nameof(IADS)} instance backing field was not found. " +
+                       $"The {nameof(IADS.Instance)} property shape may have changed.");
+    instanceField.SetValue(null, iads);
   }
 
   private void SetElapsedTime(float elapsedTime) {
