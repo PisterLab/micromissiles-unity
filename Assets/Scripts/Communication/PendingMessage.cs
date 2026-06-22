@@ -10,8 +10,8 @@ public readonly struct PendingMessage : IComparable<PendingMessage> {
   // Absolute simulation time in seconds when the mailbox should deliver this message.
   public float DeliverAt { get; }
 
-  public IAgent Sender => Message?.Sender;
-  public IAgent Receiver => Message?.Receiver;
+  public CommsNode Sender => Message?.Sender;
+  public CommsNode Receiver => Message?.Receiver;
 
   public PendingMessage(Message message, float deliverAt) {
     if (float.IsNaN(deliverAt) || float.IsInfinity(deliverAt) || deliverAt < 0f) {

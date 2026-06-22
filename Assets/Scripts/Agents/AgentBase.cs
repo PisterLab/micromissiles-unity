@@ -3,7 +3,7 @@ using UnityEngine;
 // Base implementation of an agent.
 //
 // See the agent interface for property and method documentation.
-public class AgentBase : MonoBehaviour, IAgent {
+public class AgentBase : MonoBehaviour, IAgent, ICommsNodeOwner {
   public event AgentTerminatedEventHandler OnTerminated;
 
   private const float _epsilon = 1e-12f;
@@ -109,6 +109,8 @@ public class AgentBase : MonoBehaviour, IAgent {
   // The inverse rotation is cached and updated before every fixed update.
   public Quaternion InverseRotation { get; private set; }
 
+  public CommsNode CommsNode { get; private set; }
+
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
   }
@@ -181,6 +183,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // Awake is called before Start and right after a prefab is instantiated.
   protected virtual void Awake() {
+    CommsNode = new CommsNode(this);
     Transform = transform;
     _rigidbody = GetComponent<Rigidbody>();
 
@@ -210,6 +213,7 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // OnDestroy is called when the object is being destroyed.
   protected virtual void OnDestroy() {
+    CommsNode?.Terminate();
     if (EarlyFixedUpdateManager.Instance != null) {
       EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
     }
