@@ -43,7 +43,7 @@ public class Mailbox : MonoBehaviour {
     }
   }
 
-  private PriorityQueue<PendingMessage> _messageQueue;
+  private PriorityQueue<PendingMessage> _messageQueue = new PriorityQueue<PendingMessage>();
   // _messageBuffer is a reusable temporary buffer; due messages are added, processed, then
   // cleared every delivery frame.
   private readonly List<PendingMessage> _messageBuffer = new();
@@ -115,7 +115,6 @@ public class Mailbox : MonoBehaviour {
       return;
     }
 
-    InitializeMessageQueueIfNeeded();
     LinkRuntimeConfig linkConfig = GetEffectiveLinkConfig(message.Sender, message.Receiver);
     // Applies packet delivery ratio (PDR). This is done before sending into PQ.
     if (UnityEngine.Random.value > linkConfig.PacketDeliveryRatio) {
@@ -123,20 +122,16 @@ public class Mailbox : MonoBehaviour {
     }
 
     float jitter = linkConfig.LatencyStdSeconds > 0f
-                       ? SampleGaussian(mean: 0f, stdDev: linkConfig.LatencyStdSeconds)
+                       ? Utilities.SampleStandardNormal() * linkConfig.LatencyStdSeconds
                        : 0f;
     float totalLatency = Mathf.Max(0f, linkConfig.LatencySeconds + jitter);
-    float deliverAt = GetCurrentTime() + totalLatency;
+    float deliverAt = SimManager.Instance.ElapsedTime + totalLatency;
     _messageQueue.Enqueue(new PendingMessage(message, deliverAt), deliverAt);
   }
 
   // Releases all queued messages in PQ whose scheduled delivery time has arrived.
   private void DeliverMessages() {
-    if (_messageQueue == null) {
-      return;
-    }
-
-    float currentTime = GetCurrentTime();
+    float currentTime = SimManager.Instance.ElapsedTime;
     while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
       _messageBuffer.Add(_messageQueue.Dequeue());
     }
@@ -150,39 +145,12 @@ public class Mailbox : MonoBehaviour {
     _messageBuffer.Clear();
   }
 
-  // Samples zero-mean Gaussian noise for latency jitter.
-  private static float SampleGaussian(float mean, float stdDev) {
-    float u1 = Mathf.Max(float.Epsilon, UnityEngine.Random.value);
-    float u2 = UnityEngine.Random.value;
-    float standardNormal = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Cos(2f * Mathf.PI * u2);
-    return mean + stdDev * standardNormal;
-  }
-
-  // Returns deterministic simulation time for scheduling message delivery.
-  private static float GetCurrentTime() {
-    return SimManager.Instance?.ElapsedTime ??
-           throw new InvalidOperationException(
-               $"{nameof(Mailbox)} requires {nameof(SimManager)} to provide deterministic simulation time.");
-  }
-
-  // Creates the queue so Send() remains safe even if Configure() has not run yet (Backup).
-  private void InitializeMessageQueueIfNeeded() {
-    _messageQueue ??= new PriorityQueue<PendingMessage>();
-  }
-
   // Get information on effective runtime link config for a sender->receiver LinkRuntimeConfig pair.
   private LinkRuntimeConfig GetEffectiveLinkConfig(CommsNode sender, CommsNode receiver) {
-    Configs.AgentType from = GetAgentType(sender);
-    Configs.AgentType to = GetAgentType(receiver);
-    return _linkOverrides.TryGetValue(new LinkKey(from, to), out LinkRuntimeConfig linkConfig)
+    return _linkOverrides.TryGetValue(new LinkKey(sender.AgentType, receiver.AgentType),
+                                      out LinkRuntimeConfig linkConfig)
                ? linkConfig
                : _defaultLinkConfig;
-  }
-
-  // Agents without a StaticConfig.AgentType becomes an InvalidType and use the default link config
-  // unless that pair is explicitly overridden.
-  private static Configs.AgentType GetAgentType(CommsNode node) {
-    return node?.AgentType ?? Configs.AgentType.InvalidType;
   }
 
   // Converts a protobuf link config into runtime values.
