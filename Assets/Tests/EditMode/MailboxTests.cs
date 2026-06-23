@@ -29,8 +29,8 @@ public class MailboxTests : TestBase {
   // Verifies that the mailbox delivers zero-latency messages on the next delivery update.
   [Test]
   public void Send_WithNoCommunicationConfig_DeliversOnUpdate() {
-    var sender = new TestAgent(Configs.AgentType.Vessel);
-    var receiver = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var message = new TestMessage(sender, receiver);
     int deliveredCount = 0;
     Message deliveredMessage = null;
@@ -53,8 +53,8 @@ public class MailboxTests : TestBase {
   // Verifies that Send() recreates the internal queue when it has become null.
   [Test]
   public void Send_WithNullQueue_ReinitializesQueueAndDeliversMessage() {
-    var sender = new TestAgent(Configs.AgentType.Vessel);
-    var receiver = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var message = new TestMessage(sender, receiver);
     int deliveredCount = 0;
 
@@ -73,8 +73,8 @@ public class MailboxTests : TestBase {
   // Verifies that packet delivery ratio can drop a message before it is queued for delivery.
   [Test]
   public void Send_WithZeroPacketDeliveryRatio_DropsMessage() {
-    var sender = new TestAgent(Configs.AgentType.Vessel);
-    var receiver = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var message = new TestMessage(sender, receiver);
     int deliveredCount = 0;
 
@@ -94,8 +94,8 @@ public class MailboxTests : TestBase {
   // Verifies that a per-link override latency is used instead of the default link latency.
   [Test]
   public void Send_WithLinkOverride_UsesOverrideLatency() {
-    var sender = new TestAgent(Configs.AgentType.Vessel);
-    var receiver = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var message = new TestMessage(sender, receiver);
     int deliveredCount = 0;
 
@@ -135,8 +135,8 @@ public class MailboxTests : TestBase {
   // Verifies that messages sent during delivery are deferred until the next update batch.
   [Test]
   public void Update_BatchesCurrentFrameMessages() {
-    var sender = new TestAgent(Configs.AgentType.Vessel);
-    var receiver = new TestAgent(Configs.AgentType.CarrierInterceptor);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var firstMessage = new TestMessage(sender, receiver);
     var secondMessage = new TestMessage(sender, receiver);
     var deliveredMessages = new List<Message>();
@@ -159,6 +159,28 @@ public class MailboxTests : TestBase {
     InvokePrivateMethod(_mailbox, "Update");
     Assert.AreEqual(2, deliveredMessages.Count);
     Assert.AreSame(secondMessage, deliveredMessages[1]);
+  }
+
+  [Test]
+  public void Update_WithTerminatedReceiver_SkipsDelivery() {
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    var message = new TestMessage(sender, receiver);
+    int deliveredCount = 0;
+    int receivedCount = 0;
+
+    _mailbox.OnMessageDelivered += (_, _) => ++deliveredCount;
+    receiver.OnMessageReceived +=
+        _ => ++receivedCount;
+
+    _mailbox.Configure(null);
+    _mailbox.Send(message);
+    receiver.Terminate();
+
+    InvokePrivateMethod(_mailbox, "Update");
+
+    Assert.AreEqual(0, deliveredCount);
+    Assert.AreEqual(0, receivedCount);
   }
 
   private static SimManager CreateSimManagerStub() {
@@ -192,52 +214,7 @@ public class MailboxTests : TestBase {
 
     public override IMessagePayload Payload => _payload;
 
-    public TestMessage(IAgent sender, IAgent receiver)
-        : base(sender, receiver, MessageType.AssignTarget) {}
-  }
-
-  private sealed class TestAgent : IAgent {
-    public event AgentTerminatedEventHandler OnTerminated;
-
-    public HierarchicalAgent HierarchicalAgent { get; set; }
-    public Configs.StaticConfig StaticConfig { get; set; }
-    public Configs.AgentConfig AgentConfig { get; set; }
-    public IMovement Movement { get; set; }
-    public IController Controller { get; set; }
-    public ISensor Sensor { get; set; }
-    public IAgent TargetModel { get; set; }
-    public Vector3 Position { get; set; }
-    public Vector3 Velocity { get; set; }
-    public float Speed => Velocity.magnitude;
-    public Vector3 Acceleration { get; set; }
-    public Vector3 AccelerationInput { get; set; }
-    public bool IsPursuer => false;
-    public float ElapsedTime => 0f;
-    public bool IsTerminated { get; private set; }
-    public GameObject gameObject => null;
-    public Transform Transform => null;
-    public Vector3 Up => Vector3.up;
-    public Vector3 Forward => Vector3.forward;
-    public Vector3 Right => Vector3.right;
-    public Quaternion InverseRotation => Quaternion.identity;
-
-    public TestAgent(Configs.AgentType agentType) {
-      StaticConfig = new Configs.StaticConfig { AgentType = agentType };
-    }
-
-    public float MaxForwardAcceleration() => 0f;
-    public float MaxNormalAcceleration() => 0f;
-    public void CreateTargetModel(IHierarchical target) {}
-    public void DestroyTargetModel() {}
-    public void UpdateTargetModel() {}
-
-    public void Terminate() {
-      IsTerminated = true;
-      OnTerminated?.Invoke(this);
-    }
-
-    public Transformation GetRelativeTransformation(IAgent target) => default;
-    public Transformation GetRelativeTransformation(IHierarchical target) => default;
-    public Transformation GetRelativeTransformation(in Vector3 waypoint) => default;
+    public TestMessage(CommsNode sender, CommsNode receiver)
+        : base(sender, receiver, MessageType.AssignTargetRequest) {}
   }
 }
