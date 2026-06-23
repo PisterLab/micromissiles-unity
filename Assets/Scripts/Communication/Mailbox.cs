@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Mailbox : MonoBehaviour {
   public static Mailbox Instance { get; private set; }
-  public event Action<IAgent, Message> OnMessageDelivered;
+  public event Action<CommsNode, Message> OnMessageDelivered;
 
   // Dictionary key for a one-way directed communication link between two agent types.
   private readonly struct LinkKey : IEquatable<LinkKey> {
@@ -127,7 +127,7 @@ public class Mailbox : MonoBehaviour {
                        : 0f;
     float totalLatency = Mathf.Max(0f, linkConfig.LatencySeconds + jitter);
     float deliverAt = GetCurrentTime() + totalLatency;
-    _messageQueue.Enqueue(new PendingMessage(deliverAt, message), deliverAt);
+    _messageQueue.Enqueue(new PendingMessage(message, deliverAt), deliverAt);
   }
 
   // Releases all queued messages in PQ whose scheduled delivery time has arrived.
@@ -144,6 +144,7 @@ public class Mailbox : MonoBehaviour {
       if (!IsReceiverValid(pending.Receiver)) {
         continue;
       }
+      pending.Receiver.Receive(pending.Message);
       OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
     }
     _messageBuffer.Clear();
@@ -170,7 +171,7 @@ public class Mailbox : MonoBehaviour {
   }
 
   // Get information on effective runtime link config for a sender->receiver LinkRuntimeConfig pair.
-  private LinkRuntimeConfig GetEffectiveLinkConfig(IAgent sender, IAgent receiver) {
+  private LinkRuntimeConfig GetEffectiveLinkConfig(CommsNode sender, CommsNode receiver) {
     Configs.AgentType from = GetAgentType(sender);
     Configs.AgentType to = GetAgentType(receiver);
     return _linkOverrides.TryGetValue(new LinkKey(from, to), out LinkRuntimeConfig linkConfig)
@@ -180,8 +181,8 @@ public class Mailbox : MonoBehaviour {
 
   // Agents without a StaticConfig.AgentType becomes an InvalidType and use the default link config
   // unless that pair is explicitly overridden.
-  private static Configs.AgentType GetAgentType(IAgent agent) {
-    return agent?.StaticConfig?.AgentType ?? Configs.AgentType.InvalidType;
+  private static Configs.AgentType GetAgentType(CommsNode node) {
+    return node?.AgentType ?? Configs.AgentType.InvalidType;
   }
 
   // Converts a protobuf link config into runtime values.
@@ -194,13 +195,6 @@ public class Mailbox : MonoBehaviour {
   }
 
   // Rejects deliveries to destroyed or terminated receivers.
-  private static bool IsReceiverValid(IAgent receiver) {
-    if (receiver == null) {
-      return false;
-    }
-    if (receiver is UnityEngine.Object unityObject && unityObject == null) {
-      return false;
-    }
-    return !receiver.IsTerminated;
-  }
+  private static bool IsReceiverValid(CommsNode receiver) => receiver != null &&
+                                                             !receiver.IsTerminated;
 }
