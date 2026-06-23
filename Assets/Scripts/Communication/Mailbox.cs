@@ -27,9 +27,8 @@ public class Mailbox : MonoBehaviour {
 
   // Runtime communication settings for one link, taken directly from proto files.
   private readonly struct LinkRuntimeConfig {
-    // Standard LinkRuntimeConfig that guarantees a 0 latency, 0 jitter, and with PDR = 1.
-    public static readonly LinkRuntimeConfig ZeroLatencyGuaranteedDelivery =
-        new LinkRuntimeConfig(0f, 0f, 1f);
+    // Default link config with 0 latency, 0 jitter, and no drops.
+    public static readonly LinkRuntimeConfig ZeroLatencyNoDrops = new LinkRuntimeConfig(0f, 0f, 1f);
 
     public readonly float LatencySeconds;
     public readonly float LatencyStdSeconds;
@@ -45,14 +44,14 @@ public class Mailbox : MonoBehaviour {
   }
 
   private PriorityQueue<PendingMessage> _messageQueue;
-  // _dueMessages is a reusable temporary buffer; due messages are added, processed, then cleared
-  // every delivery frame.
-  private readonly List<PendingMessage> _dueMessages = new();
+  // _messageBuffer is a reusable temporary buffer; due messages are added, processed, then
+  // cleared every delivery frame.
+  private readonly List<PendingMessage> _messageBuffer = new();
   private readonly Dictionary<LinkKey, LinkRuntimeConfig> _linkOverrides = new();
 
   // If no communication config exists, messages fall back to 0 latency, 0 jitter, and with PDR = 1
   // delivery.
-  private LinkRuntimeConfig _defaultLinkConfig = LinkRuntimeConfig.ZeroLatencyGuaranteedDelivery;
+  private LinkRuntimeConfig _defaultLinkConfig = LinkRuntimeConfig.ZeroLatencyNoDrops;
 
   public static Mailbox GetOrCreateInstance() {
     if (Instance != null) {
@@ -80,7 +79,7 @@ public class Mailbox : MonoBehaviour {
 
   // Advances message delivery once per frame using simulation time.
   private void Update() {
-    DeliverDueMessages();
+    DeliverMessages();
   }
 
   // Rebuilds runtime link settings from the protobuf communication config.
@@ -88,11 +87,11 @@ public class Mailbox : MonoBehaviour {
     ClearPendingMessages();
     _linkOverrides.Clear();
 
-    // If ToRuntimeConfig(null) it uses ZeroLatencyGuaranteedDelivery, else set to standard
+    // If ToRuntimeConfig(null) it uses ZeroLatencyNoDrops, else set to standard
     // link_config.
     _defaultLinkConfig = ToRuntimeConfig(communicationConfig?.LinkConfig);
 
-    // If no communication config links exists, the mailbox uses ZeroLatencyGuaranteedDelivery
+    // If no communication config links exists, the mailbox uses ZeroLatencyNoDrops
     // default.
     if (communicationConfig == null) {
       return;
@@ -132,22 +131,22 @@ public class Mailbox : MonoBehaviour {
   }
 
   // Releases all queued messages in PQ whose scheduled delivery time has arrived.
-  private void DeliverDueMessages() {
+  private void DeliverMessages() {
     if (_messageQueue == null) {
       return;
     }
 
     float currentTime = GetCurrentTime();
     while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
-      _dueMessages.Add(_messageQueue.Dequeue());
+      _messageBuffer.Add(_messageQueue.Dequeue());
     }
-    foreach (PendingMessage pending in _dueMessages) {
+    foreach (PendingMessage pending in _messageBuffer) {
       if (!IsReceiverValid(pending.Receiver)) {
         continue;
       }
       OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
     }
-    _dueMessages.Clear();
+    _messageBuffer.Clear();
   }
 
   // Samples zero-mean Gaussian noise for latency jitter.
@@ -188,7 +187,7 @@ public class Mailbox : MonoBehaviour {
   // Converts a protobuf link config into runtime values.
   private static LinkRuntimeConfig ToRuntimeConfig(Configs.LinkConfig linkConfig) {
     if (linkConfig == null) {
-      return LinkRuntimeConfig.ZeroLatencyGuaranteedDelivery;
+      return LinkRuntimeConfig.ZeroLatencyNoDrops;
     }
     return new LinkRuntimeConfig(linkConfig.LatencySeconds, linkConfig.LatencyStdSeconds,
                                  linkConfig.PacketDeliveryRatio);
