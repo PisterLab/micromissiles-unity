@@ -8,6 +8,8 @@ public interface ICommsNodeOwner {
 // CommsNode is the mailbox-facing endpoint owned by an agent or system such as the IADS.
 public sealed class CommsNode {
   private readonly IAgent _agentOwner;
+  private readonly UnityEngine.Object _unityOwner;
+  private readonly bool _tracksUnityOwner;
   private readonly Configs.AgentType _agentType;
   private bool _isTerminated;
 
@@ -20,6 +22,9 @@ public sealed class CommsNode {
       if (_isTerminated) {
         return true;
       }
+      if (_tracksUnityOwner && _unityOwner == null) {
+        return true;
+      }
       if (_agentOwner is UnityEngine.Object unityObject && unityObject == null) {
         return true;
       }
@@ -29,7 +34,16 @@ public sealed class CommsNode {
 
   public CommsNode(IAgent agentOwner) {
     _agentOwner = agentOwner ?? throw new ArgumentNullException(nameof(agentOwner));
+    _unityOwner = agentOwner as UnityEngine.Object;
+    _tracksUnityOwner = _unityOwner != null;
     _agentType = Configs.AgentType.InvalidType;
+  }
+
+  public CommsNode(UnityEngine.Object unityOwner,
+                   Configs.AgentType agentType = Configs.AgentType.InvalidType) {
+    _unityOwner = unityOwner ? unityOwner : throw new ArgumentNullException(nameof(unityOwner));
+    _tracksUnityOwner = true;
+    _agentType = agentType;
   }
 
   public CommsNode(Configs.AgentType agentType = Configs.AgentType.InvalidType) {
