@@ -4,11 +4,7 @@ using UnityEngine;
 // than forcing the IADS through the physical-agent interface.
 
 public class IadsCommsAgent : MonoBehaviour, ICommsNodeOwner {
-  public CommsNode CommsNode { get; private set; }
-
-  private void Awake() {
-    CommsNode = new CommsNode();
-  }
+  public CommsNode CommsNode { get; } = new CommsNode();
 
   private void OnDestroy() {
     CommsNode?.Terminate();
