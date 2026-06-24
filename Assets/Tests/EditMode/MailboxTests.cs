@@ -50,9 +50,9 @@ public class MailboxTests : TestBase {
     Assert.AreSame(message, deliveredMessage);
   }
 
-  // Verifies that Send() recreates the internal queue when it has become null.
+  // Verifies that the mailbox initializes its queue up front and can deliver immediately.
   [Test]
-  public void Send_WithNullQueue_ReinitializesQueueAndDeliversMessage() {
+  public void Send_WithInitializedQueue_DeliversMessage() {
     var sender = new CommsNode(Configs.AgentType.Vessel);
     var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var message = new TestMessage(sender, receiver);
@@ -61,13 +61,12 @@ public class MailboxTests : TestBase {
     _mailbox.OnMessageDelivered += (_, _) => ++deliveredCount;
 
     _mailbox.Configure(null);
-    SetPrivateField<PriorityQueue<PendingMessage>>(_mailbox, "_messageQueue", null);
+    Assert.NotNull(GetPrivateField<PriorityQueue<PendingMessage>>(_mailbox, "_messageQueue"));
     _mailbox.Send(message);
 
     InvokePrivateMethod(_mailbox, "Update");
 
     Assert.AreEqual(1, deliveredCount);
-    Assert.NotNull(GetPrivateField<PriorityQueue<PendingMessage>>(_mailbox, "_messageQueue"));
   }
 
   // Verifies that packet delivery ratio can drop a message before it is queued for delivery.
