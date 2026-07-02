@@ -5,8 +5,8 @@ public class CommsNodeTests {
   // Verifies that an active comms node forwards an incoming message to its subscribers.
   [Test]
   public void Receive_WhenNodeIsActive_InvokesSubscribers() {
-    var sender = new CommsNode(Configs.AgentType.Vessel);
-    var receiver = new CommsNode(Configs.AgentType.InvalidType);
+    var sender = new CommsNode(CommsEndpointType.Vessel);
+    var receiver = new CommsNode(CommsEndpointType.Invalid);
     var message = new TestMessage(sender, receiver);
     int receivedCount = 0;
     Message deliveredMessage = null;
@@ -22,11 +22,12 @@ public class CommsNodeTests {
     Assert.AreSame(message, deliveredMessage);
   }
 
-  // Verifies that a terminated comms node drops incoming messages and does not notify subscribers.
+  // Verifies that termination does not suppress delivery; subscribers are responsible for
+  // unsubscribing when the owning endpoint dies.
   [Test]
-  public void Receive_WhenNodeIsTerminated_DoesNotInvokeSubscribers() {
-    var sender = new CommsNode(Configs.AgentType.Vessel);
-    var receiver = new CommsNode(Configs.AgentType.InvalidType);
+  public void Receive_WhenNodeIsTerminated_StillInvokesSubscribers() {
+    var sender = new CommsNode(CommsEndpointType.Vessel);
+    var receiver = new CommsNode(CommsEndpointType.Invalid);
     var message = new TestMessage(sender, receiver);
     int receivedCount = 0;
 
@@ -37,7 +38,7 @@ public class CommsNodeTests {
     receiver.Receive(message);
 
     Assert.IsTrue(receiver.IsTerminated);
-    Assert.AreEqual(0, receivedCount);
+    Assert.AreEqual(1, receivedCount);
   }
 
   private sealed class TestPayload : IMessagePayload {}

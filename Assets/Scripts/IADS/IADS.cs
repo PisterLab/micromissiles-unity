@@ -28,7 +28,7 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
 
-  public CommsNode CommsNode { get; } = new CommsNode(Configs.AgentType.InvalidType);
+  public CommsNode CommsNode { get; } = new CommsNode(CommsEndpointType.Iads);
 
   private void Awake() {
     if (Instance != null && Instance != this) {

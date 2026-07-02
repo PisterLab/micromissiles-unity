@@ -74,7 +74,7 @@ public class CommsManager : MonoBehaviour {
       return;
     }
 
-    var commsNode = new CommsNode(interceptor);
+    var commsNode = new CommsNode(GetEndpointType(interceptor));
     agentBase.AttachCommsNode(commsNode);
     interceptor.OnTerminated += RegisterAgentTerminated;
     _nodesByAgent.Add(interceptor, commsNode);
@@ -98,5 +98,15 @@ public class CommsManager : MonoBehaviour {
       agentNodePair.Value.Terminate();
     }
     _nodesByAgent.Clear();
+  }
+
+  private static CommsEndpointType GetEndpointType(IInterceptor interceptor) {
+    return interceptor.StaticConfig?.AgentType switch {
+      Configs.AgentType.Vessel => CommsEndpointType.Vessel,
+      Configs.AgentType.ShoreBattery => CommsEndpointType.ShoreBattery,
+      Configs.AgentType.CarrierInterceptor => CommsEndpointType.CarrierInterceptor,
+      Configs.AgentType.MissileInterceptor => CommsEndpointType.MissileInterceptor,
+      _ => CommsEndpointType.Invalid,
+    };
   }
 }
