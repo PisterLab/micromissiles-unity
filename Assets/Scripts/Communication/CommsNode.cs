@@ -4,6 +4,8 @@ public interface ICommsEndpoint {
   CommsNode CommsNode { get; }
 }
 
+// Threat endpoint types are defined for future expansion, but threats do not currently participate
+// in the communication flow. Threats can later be used on the defense side.
 public enum CommsEndpointType {
   Invalid,
   Iads,
