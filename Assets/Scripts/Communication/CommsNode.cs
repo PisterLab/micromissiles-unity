@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public interface ICommsNodeOwner {
+public interface ICommsEndpoint {
   CommsNode CommsNode { get; }
 }
 
@@ -48,5 +48,6 @@ public sealed class CommsNode {
 
   public void Terminate() {
     _isTerminated = true;
+    OnMessageReceived = null;
   }
 }

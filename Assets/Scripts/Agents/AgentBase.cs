@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 // Base implementation of an agent.
 //
 // See the agent interface for property and method documentation.
-public class AgentBase : MonoBehaviour, IAgent, ICommsNodeOwner {
+public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
   public event AgentTerminatedEventHandler OnTerminated;
 
   private const float _epsilon = 1e-12f;
@@ -111,6 +112,16 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsNodeOwner {
 
   public CommsNode CommsNode { get; private set; }
 
+  public void AttachCommsNode(CommsNode commsNode) {
+    if (commsNode == null) {
+      throw new ArgumentNullException(nameof(commsNode));
+    }
+    if (CommsNode != null && !ReferenceEquals(CommsNode, commsNode)) {
+      throw new InvalidOperationException($"{name} already has a comms node.");
+    }
+    CommsNode = commsNode;
+  }
+
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;
   }
@@ -183,7 +194,6 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsNodeOwner {
 
   // Awake is called before Start and right after a prefab is instantiated.
   protected virtual void Awake() {
-    CommsNode = new CommsNode(this);
     Transform = transform;
     _rigidbody = GetComponent<Rigidbody>();
 
@@ -213,7 +223,6 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsNodeOwner {
 
   // OnDestroy is called when the object is being destroyed.
   protected virtual void OnDestroy() {
-    CommsNode?.Terminate();
     if (EarlyFixedUpdateManager.Instance != null) {
       EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
     }

@@ -2,6 +2,7 @@ using NUnit.Framework;
 using UnityEngine;
 
 public class CommsNodeTests {
+  // Verifies that an active comms node forwards an incoming message to its subscribers.
   [Test]
   public void Receive_WhenNodeIsActive_InvokesSubscribers() {
     var sender = new CommsNode(Configs.AgentType.Vessel);
@@ -21,25 +22,22 @@ public class CommsNodeTests {
     Assert.AreSame(message, deliveredMessage);
   }
 
+  // Verifies that a terminated comms node drops incoming messages and does not notify subscribers.
   [Test]
-  public void IadsCommsAgent_Destroyed_TerminatesItsCommsNode() {
-    var endpointObject = new GameObject("IadsCommsAgentTest");
+  public void Receive_WhenNodeIsTerminated_DoesNotInvokeSubscribers() {
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.InvalidType);
+    var message = new TestMessage(sender, receiver);
+    int receivedCount = 0;
 
-    try {
-      var endpoint = endpointObject.AddComponent<IadsCommsAgent>();
-      Assert.NotNull(endpoint.CommsNode);
+    receiver.OnMessageReceived +=
+        _ => { ++receivedCount; };
+    receiver.Terminate();
 
-      CommsNode node = endpoint.CommsNode;
-      Assert.IsFalse(node.IsTerminated);
+    receiver.Receive(message);
 
-      Object.DestroyImmediate(endpointObject);
-
-      Assert.IsTrue(node.IsTerminated);
-    } finally {
-      if (endpointObject != null) {
-        Object.DestroyImmediate(endpointObject);
-      }
-    }
+    Assert.IsTrue(receiver.IsTerminated);
+    Assert.AreEqual(0, receivedCount);
   }
 
   private sealed class TestPayload : IMessagePayload {}
