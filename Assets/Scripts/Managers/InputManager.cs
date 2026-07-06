@@ -161,10 +161,10 @@ public class InputManager : MonoBehaviour {
       keyboardPanDirection.x += -1;
     }
 
-    if (keyboard.qKey.isPressed) {
+    if (keyboard.qKey.wasPressedThisFrame) {
       TacticalPanel.Instance.CycleRangeUp();
     }
-    if (keyboard.eKey.isPressed) {
+    if (keyboard.eKey.wasPressedThisFrame) {
       TacticalPanel.Instance.CycleRangeDown();
     }
 
