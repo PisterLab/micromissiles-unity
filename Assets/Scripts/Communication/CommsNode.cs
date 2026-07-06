@@ -1,44 +1,18 @@
 using System;
 
-public interface ICommsEndpoint {
-  CommsNode CommsNode { get; }
-}
-
-// Threat endpoint types are defined for future expansion, but threats do not currently participate
-// in the communication flow. Threats can later be used on the defense side.
-public enum CommsEndpointType {
-  Invalid,
-  Iads,
-  Vessel,
-  ShoreBattery,
-  CarrierInterceptor,
-  MissileInterceptor,
-  FixedWingThreat,
-  RotaryWingThreat,
-}
-
-// CommsNode is the mailbox-facing endpoint owned by an agent or system such as the IADS.
+// The communication node is an endpoint encapsulated by an agent or system like the IADS to
+// interface with the mailbox.
 public sealed class CommsNode {
-  public CommsEndpointType EndpointType { get; }
+  public Configs.AgentType EndpointType { get; init; }
 
-  private bool _isTerminated;
+  // The OnReceived event handler is called when the communication node receives a message.
+  public event Action<Message> OnReceived;
 
-  public event Action<Message> OnMessageReceived;
-
-  public bool IsTerminated => _isTerminated;
-
-  public CommsNode(CommsEndpointType endpointType = CommsEndpointType.Invalid) {
+  public CommsNode(Configs.AgentType endpointType) {
     EndpointType = endpointType;
   }
 
   public void Receive(Message message) {
-    if (message == null) {
-      throw new ArgumentNullException(nameof(message));
-    }
-    OnMessageReceived?.Invoke(message);
-  }
-
-  public void Terminate() {
-    _isTerminated = true;
+    OnReceived?.Invoke(message);
   }
 }

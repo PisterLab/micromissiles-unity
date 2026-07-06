@@ -7,21 +7,16 @@ using UnityEngine;
 // It implements the singleton pattern to ensure that only one instance exists.
 public class SimManager : MonoBehaviour {
   // Simulation events.
-  public delegate void SimulationEventHandler();
-  public event SimulationEventHandler OnSimulationStarted;
-  public event SimulationEventHandler OnSimulationEnded;
+  public event Action OnSimulationStarted;
+  public event Action OnSimulationEnded;
 
   // Interceptor events.
-  public delegate void NewInterceptorEventHandler(IInterceptor interceptor);
-  public event NewInterceptorEventHandler OnNewInterceptor;
-  public delegate void NewAssetEventHandler(IInterceptor asset);
-  public event NewAssetEventHandler OnNewAsset;
-  public delegate void NewLauncherEventHandler(IInterceptor launcher);
-  public event NewLauncherEventHandler OnNewLauncher;
+  public event Action<IInterceptor> OnNewInterceptor;
+  public event Action<IInterceptor> OnNewAsset;
+  public event Action<IInterceptor> OnNewLauncher;
 
   // Threat events.
-  public delegate void NewThreatEventHandler(IThreat threat);
-  public event NewThreatEventHandler OnNewThreat;
+  public event Action<IThreat> OnNewThreat;
 
   // Default simulation configuration file.
   private const string _defaultSimulationConfigFile = "7_quadcopters.pbtxt";

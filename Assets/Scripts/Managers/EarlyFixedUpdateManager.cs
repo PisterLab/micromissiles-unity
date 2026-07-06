@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // The early fixed update manager allows actions to be executed before the main fixed update call
@@ -5,8 +6,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-50)]
 public class EarlyFixedUpdateManager : MonoBehaviour {
   // Simulation events.
-  public delegate void UpdateHandler();
-  public event UpdateHandler OnEarlyFixedUpdate;
+  public event Action OnEarlyFixedUpdate;
 
   public static EarlyFixedUpdateManager Instance { get; private set; }
 

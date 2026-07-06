@@ -49,12 +49,13 @@ namespace Configs {
             "cy5IaXRDb25maWcSNAoRY29udHJvbGxlcl9jb25maWcYCSABKAsyGS5jb25m",
             "aWdzLkNvbnRyb2xsZXJDb25maWcSLQoLcG93ZXJfdGFibGUYCiADKAsyGC5j",
             "b25maWdzLlBvd2VyVGFibGVFbnRyeRI6ChR2aXN1YWxpemF0aW9uX2NvbmZp",
-            "ZxgLIAEoCzIcLmNvbmZpZ3MuVmlzdWFsaXphdGlvbkNvbmZpZyqdAQoJQWdl",
-            "bnRUeXBlEhAKDElOVkFMSURfVFlQRRAAEgoKBlZFU1NFTBABEhEKDVNIT1JF",
-            "X0JBVFRFUlkQAhIXChNDQVJSSUVSX0lOVEVSQ0VQVE9SEAMSFwoTTUlTU0lM",
-            "RV9JTlRFUkNFUFRPUhAEEhUKEUZJWEVEX1dJTkdfVEhSRUFUEAUSFgoSUk9U",
-            "QVJZX1dJTkdfVEhSRUFUEAYqOAoFUG93ZXISCAoESURMRRAAEgcKA0xPVxAB",
-            "EgoKBkNSVUlTRRACEgcKA01JTBADEgcKA01BWBAEYgZwcm90bzM="));
+            "ZxgLIAEoCzIcLmNvbmZpZ3MuVmlzdWFsaXphdGlvbkNvbmZpZyqnAQoJQWdl",
+            "bnRUeXBlEhAKDElOVkFMSURfVFlQRRAAEggKBElBRFMQARIKCgZWRVNTRUwQ",
+            "AhIRCg1TSE9SRV9CQVRURVJZEAMSFwoTQ0FSUklFUl9JTlRFUkNFUFRPUhAE",
+            "EhcKE01JU1NJTEVfSU5URVJDRVBUT1IQBRIVChFGSVhFRF9XSU5HX1RIUkVB",
+            "VBAGEhYKElJPVEFSWV9XSU5HX1RIUkVBVBAHKjgKBVBvd2VyEggKBElETEUQ",
+            "ABIHCgNMT1cQARIKCgZDUlVJU0UQAhIHCgNNSUwQAxIHCgNNQVgQBGIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.AgentType), typeof(global::Configs.Power), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -78,18 +79,19 @@ namespace Configs {
   /// </summary>
   public enum AgentType {
     [pbr::OriginalName("INVALID_TYPE")] InvalidType = 0,
+    [pbr::OriginalName("IADS")] Iads = 1,
     /// <summary>
     /// Interceptor types.
     /// </summary>
-    [pbr::OriginalName("VESSEL")] Vessel = 1,
-    [pbr::OriginalName("SHORE_BATTERY")] ShoreBattery = 2,
-    [pbr::OriginalName("CARRIER_INTERCEPTOR")] CarrierInterceptor = 3,
-    [pbr::OriginalName("MISSILE_INTERCEPTOR")] MissileInterceptor = 4,
+    [pbr::OriginalName("VESSEL")] Vessel = 2,
+    [pbr::OriginalName("SHORE_BATTERY")] ShoreBattery = 3,
+    [pbr::OriginalName("CARRIER_INTERCEPTOR")] CarrierInterceptor = 4,
+    [pbr::OriginalName("MISSILE_INTERCEPTOR")] MissileInterceptor = 5,
     /// <summary>
     /// Threat types.
     /// </summary>
-    [pbr::OriginalName("FIXED_WING_THREAT")] FixedWingThreat = 5,
-    [pbr::OriginalName("ROTARY_WING_THREAT")] RotaryWingThreat = 6,
+    [pbr::OriginalName("FIXED_WING_THREAT")] FixedWingThreat = 6,
+    [pbr::OriginalName("ROTARY_WING_THREAT")] RotaryWingThreat = 7,
   }
 
   /// <summary>

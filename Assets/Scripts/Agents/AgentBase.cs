@@ -5,7 +5,7 @@ using UnityEngine;
 //
 // See the agent interface for property and method documentation.
 public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
-  public event AgentTerminatedEventHandler OnTerminated;
+  public event Action<IAgent> OnTerminated;
 
   private const float _epsilon = 1e-12f;
 
@@ -110,17 +110,8 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
   // The inverse rotation is cached and updated before every fixed update.
   public Quaternion InverseRotation { get; private set; }
 
-  public CommsNode CommsNode { get; private set; }
-
-  public void AttachCommsNode(CommsNode commsNode) {
-    if (commsNode == null) {
-      throw new ArgumentNullException(nameof(commsNode));
-    }
-    if (CommsNode != null && !ReferenceEquals(CommsNode, commsNode)) {
-      throw new InvalidOperationException($"{name} already has a comms node.");
-    }
-    CommsNode = commsNode;
-  }
+  // Communication node managed by the communication manager.
+  public CommsNode CommsNode { get; set; }
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;

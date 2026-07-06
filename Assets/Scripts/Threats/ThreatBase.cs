@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 // Base implementation of a threat.
 public abstract class ThreatBase : AgentBase, IThreat {
-  public event ThreatEventHandler OnHit;
-  public event ThreatEventHandler OnDestroyed;
+  public event Action<IThreat> OnHit;
+  public event Action<IThreat> OnDestroyed;
 
   // Speed difference threshold for applying forward acceleration.
   private const float _speedErrorThreshold = 1f;

@@ -7,6 +7,7 @@ public static class ConfigLoader {
   // message as an output argument.
   private delegate Plugin.StatusCode SerializedProtobufLengthDelegate(string file,
                                                                       out int serializedLength);
+
   // Delegate for loading from a Protobuf text file to binary format and returning the length of the
   // serialized message as an output argument.
   private delegate Plugin.StatusCode LoadProtobufDelegate(string file, byte[] buffer,

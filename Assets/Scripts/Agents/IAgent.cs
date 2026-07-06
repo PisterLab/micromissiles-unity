@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // Interface for an agent.
@@ -5,10 +6,8 @@ using UnityEngine;
 // An agent represents a physical entity, such as a ship, an interceptor, or a threat subject to the
 // laws of physics.
 
-public delegate void AgentTerminatedEventHandler(IAgent agent);
-
 public interface IAgent {
-  event AgentTerminatedEventHandler OnTerminated;
+  event Action<IAgent> OnTerminated;
 
   HierarchicalAgent HierarchicalAgent { get; set; }
 
@@ -45,6 +44,7 @@ public interface IAgent {
   Vector3 Forward { get; }
   Vector3 Right { get; }
   Quaternion InverseRotation { get; }
+  CommsNode CommsNode { get; set; }
 
   float MaxForwardAcceleration();
   float MaxNormalAcceleration();

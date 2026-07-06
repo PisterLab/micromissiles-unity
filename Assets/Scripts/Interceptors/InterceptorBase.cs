@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,11 +6,11 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  public event InterceptorEventHandler OnHit;
-  public event InterceptorEventHandler OnMiss;
-  public event InterceptorEventHandler OnDestroyed;
-  public event InterceptorEventHandler OnAssignSubInterceptor;
-  public event TargetReassignEventHandler OnReassignTarget;
+  public event Action<IInterceptor> OnHit;
+  public event Action<IInterceptor> OnMiss;
+  public event Action<IInterceptor> OnDestroyed;
+  public event Action<IInterceptor> OnAssignSubInterceptor;
+  public event Action<IHierarchical> OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
@@ -264,7 +265,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     if (otherAgent is IThreat threat) {
       // Check the kill probability.
       float killProbability = threat.StaticConfig.HitConfig?.KillProbability ?? 1;
-      bool isHit = Random.value <= killProbability;
+      bool isHit = UnityEngine.Random.value <= killProbability;
       if (isHit) {
         threat.HandleIntercept();
         OnHit?.Invoke(this);

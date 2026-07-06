@@ -28,14 +28,14 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
 
-  public CommsNode CommsNode { get; } = new CommsNode(CommsEndpointType.Iads);
+  public CommsNode CommsNode { get; private set; }
 
   private void Awake() {
     if (Instance != null && Instance != this) {
       Destroy(gameObject);
-    } else {
-      Instance = this;
+      return;
     }
+    Instance = this;
   }
 
   private void Start() {
@@ -44,10 +44,13 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
     SimManager.Instance.OnNewAsset += RegisterNewAsset;
     SimManager.Instance.OnNewLauncher += RegisterNewLauncher;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
+
+    // Create a communication node for the IADS.
+    CommsNode = new CommsNode(Configs.AgentType.Iads);
+    CommsManager.Instance.AddNode(CommsNode);
   }
 
   private void OnDestroy() {
-    CommsNode.Terminate();
     if (_hierarchyCoroutine != null) {
       StopCoroutine(_hierarchyCoroutine);
       _hierarchyCoroutine = null;
