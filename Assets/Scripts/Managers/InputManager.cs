@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour {
   public static InputManager Instance { get; private set; }
@@ -64,67 +65,72 @@ public class InputManager : MonoBehaviour {
       }
     }
 
-    if (Input.GetKeyDown(KeyCode.Tab)) {
+    if (Keyboard.current.tabKey.wasPressedThisFrame) {
       UIManager.Instance.ToggleUIMode();
     }
   }
 
   private void Handle3DModeMouseInput() {
-    if (Input.GetMouseButton(0)) {
-      CameraController.Instance.OrbitCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-    } else if (Input.GetMouseButton(1)) {
-      CameraController.Instance.RotateCamera(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+    var mouse = Mouse.current;
+    Vector2 delta = mouse.delta.ReadValue();
+    if (mouse.leftButton.isPressed) {
+      CameraController.Instance.OrbitCamera(delta.x, delta.y);
+    } else if (mouse.rightButton.isPressed) {
+      CameraController.Instance.RotateCamera(delta.x, delta.y);
     }
   }
 
   private void Handle3DModeScrollWheelInput() {
-    if (Input.GetAxis("Mouse ScrollWheel") != 0) {
-      CameraController.Instance.ZoomCamera(Input.GetAxis("Mouse ScrollWheel") * 500);
+    var mouse = Mouse.current;
+    if (mouse.scroll.ReadValue().y != 0) {
+      CameraController.Instance.ZoomCamera(mouse.scroll.ReadValue().y * 5);
     }
   }
 
   private void Handle3DModeLockableInput() {
-    if (Input.GetKey(KeyCode.LeftShift)) {
+    var keyboard = Keyboard.current;
+    if (keyboard.leftShiftKey.isPressed) {
       CameraController.Instance.CameraSpeed = CameraController.Instance.CameraSpeedMax;
     } else {
       CameraController.Instance.CameraSpeed = CameraController.Instance.CameraSpeedNormal;
     }
 
     // Translational movement.
-    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
+    if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Forward);
     }
-    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+    if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Left);
     }
-    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+    if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Back);
     }
-    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+    if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Right);
     }
-    if (Input.GetKey(KeyCode.Q)) {
+    if (keyboard.qKey.isPressed) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Up);
     }
-    if (Input.GetKey(KeyCode.E)) {
+    if (keyboard.eKey.isPressed) {
       CameraController.Instance.TranslateCamera(CameraController.TranslationInput.Down);
     }
   }
 
   private void HandleTacticalModeMouseInput() {
+    var mouse = Mouse.current;
     // Start drag on right mouse button.
-    if (Input.GetMouseButtonDown(1)) {
+    if (mouse.rightButton.wasPressedThisFrame) {
       _isDragging = true;
-      _lastMousePosition = Input.mousePosition;
+      _lastMousePosition = mouse.position.ReadValue();
     }
     // End drag when button released.
-    else if (Input.GetMouseButtonUp(1)) {
+    else if (mouse.rightButton.wasReleasedThisFrame) {
       _isDragging = false;
     }
 
     // Handle dragging.
     if (_isDragging) {
-      Vector2 currentMousePos = Input.mousePosition;
+      Vector2 currentMousePos = mouse.position.ReadValue();
       Vector2 delta = currentMousePos - _lastMousePosition;
       TacticalPanel.Instance.Pan(delta);
       _lastMousePosition = currentMousePos;
@@ -132,31 +138,33 @@ public class InputManager : MonoBehaviour {
   }
 
   private void HandleTacticalModeScrollWheelInput() {
-    if (Input.GetAxis("Mouse ScrollWheel") != 0) {
-      TacticalPanel.Instance.ZoomIn(Input.GetAxis("Mouse ScrollWheel") * 0.1f);
+    var mouse = Mouse.current;
+    if (mouse.scroll.ReadValue().y != 0) {
+      TacticalPanel.Instance.ZoomIn(mouse.scroll.ReadValue().y * 0.001f);
     }
   }
 
   private void HandleTacticalModeLockableInput() {
     // Handle keyboard input for panning.
+    var keyboard = Keyboard.current;
     Vector2 keyboardPanDirection = Vector2.zero;
-    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
+    if (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed) {
       keyboardPanDirection.y += -1;
     }
-    if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+    if (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed) {
       keyboardPanDirection.x += 1;
     }
-    if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+    if (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed) {
       keyboardPanDirection.y += 1;
     }
-    if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+    if (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed) {
       keyboardPanDirection.x += -1;
     }
 
-    if (Input.GetKeyDown(KeyCode.Q)) {
+    if (keyboard.qKey.wasPressedThisFrame) {
       TacticalPanel.Instance.CycleRangeUp();
     }
-    if (Input.GetKeyDown(KeyCode.E)) {
+    if (keyboard.eKey.wasPressedThisFrame) {
       TacticalPanel.Instance.CycleRangeDown();
     }
 
@@ -166,28 +174,29 @@ public class InputManager : MonoBehaviour {
   }
 
   private void HandleNonLockableInput() {
-    if (Input.GetKeyDown(KeyCode.Escape)) {
+    var keyboard = Keyboard.current;
+    if (keyboard.escapeKey.wasPressedThisFrame) {
       SimManager.Instance.QuitSimulation();
     }
 
-    if (Input.GetKeyDown(KeyCode.R)) {
+    if (keyboard.rKey.wasPressedThisFrame) {
       SimManager.Instance.EndSimulation();
       SimManager.Instance.ResetAndStartSimulation();
     }
 
-    if (Input.GetKeyDown(KeyCode.L)) {
+    if (keyboard.lKey.wasPressedThisFrame) {
       UIManager.Instance.ToggleConfigSelectorPanel();
     }
 
-    if (Input.GetKeyDown(KeyCode.C)) {
+    if (keyboard.cKey.wasPressedThisFrame) {
       ParticleManager.Instance.ClearHitMarkers();
     }
 
-    if (Input.GetKeyDown(KeyCode.P)) {
+    if (keyboard.pKey.wasPressedThisFrame) {
       CameraController.Instance.AutoRotate = !CameraController.Instance.AutoRotate;
     }
 
-    if (Input.GetKeyDown(KeyCode.Space)) {
+    if (keyboard.spaceKey.wasPressedThisFrame) {
       // Pause the time.
       if (!SimManager.Instance.IsPaused) {
         SimManager.Instance.PauseSimulation();
@@ -196,14 +205,15 @@ public class InputManager : MonoBehaviour {
       }
     }
 
-    HandleCameraFollowInput(KeyCode.Alpha1, CameraFollowType.ALL_AGENTS);
-    HandleCameraFollowInput(KeyCode.Alpha2, CameraFollowType.ALL_INTERCEPTORS);
-    HandleCameraFollowInput(KeyCode.Alpha3, CameraFollowType.ALL_THREATS);
+    HandleCameraFollowInput(Key.Digit1, CameraFollowType.ALL_AGENTS);
+    HandleCameraFollowInput(Key.Digit2, CameraFollowType.ALL_INTERCEPTORS);
+    HandleCameraFollowInput(Key.Digit3, CameraFollowType.ALL_THREATS);
   }
 
-  private void HandleCameraFollowInput(KeyCode key, CameraFollowType followType) {
-    if (Input.GetKeyDown(key)) {
-      if (Input.GetKey(KeyCode.LeftControl)) {
+  private void HandleCameraFollowInput(Key key, CameraFollowType followType) {
+    var keyboard = Keyboard.current;
+    if (keyboard[key].wasPressedThisFrame) {
+      if (keyboard.leftCtrlKey.isPressed) {
         CameraController.Instance.Follow(followType);
       } else {
         CameraController.Instance.Snap(followType);
