@@ -87,6 +87,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           path: Assets/Plugins
+          pattern: plugins-*
           merge-multiple: true
 
       - name: Extract plugins
