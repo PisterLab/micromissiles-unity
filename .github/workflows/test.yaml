@@ -25,6 +25,8 @@ jobs:
           - windows-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Bazel
         uses: bazel-contrib/setup-bazel@0.19.0
@@ -33,10 +35,7 @@ jobs:
           bazelisk-cache: true
           disk-cache: micromissiles-plugins-${{ runner.os }}
           external-cache: true
-          repository-cache: |
-            - plugins/**
-            - Assets/Proto/**
-            - Assets/StreamingAssets/**
+          repository-cache: true
 
       - name: Test plugins
         working-directory: plugins
@@ -54,6 +53,8 @@ jobs:
           - playmode
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - uses: actions/cache@v6
         with:
