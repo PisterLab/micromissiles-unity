@@ -1,16 +1,16 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/29/2026 - 04:35:50 |
+| Generated on: | 07/07/2026 - 18:49:01 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 109 |
 | Files: | 99 |
 | Covered lines: | 1046 |
-| Uncovered lines: | 2773 |
-| Coverable lines: | 3819 |
-| Total lines: | 6833 |
-| Line coverage: | 27.3% (1046 of 3819) |
+| Uncovered lines: | 2782 |
+| Coverable lines: | 3828 |
+| Total lines: | 6843 |
+| Line coverage: | 27.3% (1046 of 3828) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 303 |
@@ -19,7 +19,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1046**|**2773**|**3819**|**7315**|**27.3%**|**0**|**0**|****|**303**|**757**|**40%**|
+|**bamlab.micromissiles**|**1046**|**2782**|**3828**|**7325**|**27.3%**|**0**|**0**|****|**303**|**757**|**40%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|79|175|333|54.8%|0|0||39|61|63.9%|
@@ -60,7 +60,7 @@
 |IADS|0|104|104|169|0%|0|0||0|17|0%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
-|InputManager|0|167|167|213|0%|0|0||0|19|0%|
+|InputManager|0|176|176|223|0%|0|0||0|19|0%|
 |InterceptorBase|0|195|195|365|0%|0|0||0|30|0%|
 |Interpolator2DBase|18|3|21|42|85.7%|0|0||4|5|80%|
 |Interpolator2DDataPoint|11|0|11|23|100%|0|0||5|5|100%|

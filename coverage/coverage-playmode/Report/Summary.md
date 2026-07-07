@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/29/2026 - 04:38:05 |
+| Generated on: | 07/07/2026 - 18:53:14 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 109 |
 | Files: | 99 |
-| Covered lines: | 1361 |
-| Uncovered lines: | 2458 |
-| Coverable lines: | 3819 |
-| Total lines: | 6833 |
-| Line coverage: | 35.6% (1361 of 3819) |
+| Covered lines: | 1302 |
+| Uncovered lines: | 2526 |
+| Coverable lines: | 3828 |
+| Total lines: | 6843 |
+| Line coverage: | 34% (1302 of 3828) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 378 |
+| Covered methods: | 369 |
 | Total methods: | 757 |
-| Method coverage: | 49.9% (378 of 757) |
+| Method coverage: | 48.7% (369 of 757) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1361**|**2458**|**3819**|**7315**|**35.6%**|**0**|**0**|****|**378**|**757**|**49.9%**|
+|**bamlab.micromissiles**|**1302**|**2526**|**3828**|**7325**|**34%**|**0**|**0**|****|**369**|**757**|**48.7%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|142|33|175|333|81.1%|0|0||56|61|91.8%|
@@ -31,7 +31,7 @@
 |AssignTargetResponseMessage|0|2|2|61|0%|0|0||0|1|0%|
 |AssignTargetResponsePayload|0|4|4|33|0%|0|0||0|2|0%|
 |AttackBehaviorBase|13|0|13|37|100%|0|0||6|6|100%|
-|CameraController|91|155|246|429|36.9%|0|0||15|35|42.8%|
+|CameraController|62|184|246|429|25.2%|0|0||14|35|40%|
 |CarrierBase|26|9|35|62|74.2%|0|0||6|6|100%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|0|18|18|36|0%|0|0||0|7|0%|
@@ -57,10 +57,10 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|18|31|49|74|36.7%|0|0||9|9|100%|
 |HierarchicalBase|20|119|139|236|14.3%|0|0||8|26|30.7%|
-|IADS|51|53|104|169|49%|0|0||12|17|70.5%|
+|IADS|48|56|104|169|46.1%|0|0||11|17|64.7%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
-|InputManager|65|102|167|213|38.9%|0|0||16|19|84.2%|
+|InputManager|70|106|176|223|39.7%|0|0||16|19|84.2%|
 |InterceptorBase|65|130|195|365|33.3%|0|0||17|30|56.6%|
 |Interpolator2DBase|0|21|21|42|0%|0|0||0|5|0%|
 |Interpolator2DDataPoint|0|11|11|23|0%|0|0||0|5|0%|
@@ -91,7 +91,7 @@
 |NoEvasion|0|7|7|16|0%|0|0||0|3|0%|
 |NoMovement|4|0|4|12|100%|0|0||2|2|100%|
 |OrthogonalEvasion|1|34|35|78|2.8%|0|0||1|3|33.3%|
-|ParticleManager|34|120|154|222|22%|0|0||9|24|37.5%|
+|ParticleManager|32|122|154|222|20.7%|0|0||8|24|33.3%|
 |PendingMessage|0|11|11|27|0%|0|0||0|6|0%|
 |PlannerReleaseStrategy|4|4|8|14|50%|0|0||3|4|75%|
 |PnController|25|3|28|67|89.2%|0|0||4|4|100%|
@@ -109,14 +109,14 @@
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|4|0|4|10|100%|0|0||1|1|100%|
-|SimManager|227|47|274|424|82.8%|0|0||44|53|83%|
-|SimMonitor|75|104|179|282|41.8%|0|0||16|27|59.2%|
+|SimManager|218|56|274|424|79.5%|0|0||41|53|77.3%|
+|SimMonitor|74|105|179|282|41.3%|0|0||16|27|59.2%|
 |SingleReleaseStrategyBase|7|24|31|62|22.5%|0|0||2|3|66.6%|
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
 |SpeedEscapeDetector|0|11|11|24|0%|0|0||0|3|0%|
 |SpriteManager|0|8|8|14|0%|0|0||0|1|0%|
-|TacticalPanel|37|143|180|280|20.5%|0|0||9|28|32.1%|
-|TacticalPolarGridGraphic|44|98|142|230|30.9%|0|0||5|15|33.3%|
+|TacticalPanel|35|145|180|280|19.4%|0|0||8|28|28.5%|
+|TacticalPolarGridGraphic|34|108|142|230|23.9%|0|0||4|15|26.6%|
 |TacticalSymbol|0|55|55|84|0%|0|0||0|11|0%|
 |ThreatBase|65|42|107|164|60.7%|0|0||10|12|83.3%|
 |TimeEscapeDetector|0|17|17|42|0%|0|0||0|2|0%|
@@ -124,7 +124,7 @@
 |UIElementDragger|0|3|3|9|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|18|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
-|UIManager|120|42|162|234|74%|0|0||19|27|70.3%|
+|UIManager|112|50|162|234|69.1%|0|0||18|27|66.6%|
 |Utilities|14|6|20|33|70%|0|0||3|5|60%|
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|4|0|4|11|100%|0|0||1|1|100%|
