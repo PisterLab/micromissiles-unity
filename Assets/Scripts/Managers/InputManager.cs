@@ -175,28 +175,28 @@ public class InputManager : MonoBehaviour {
 
   private void HandleNonLockableInput() {
     var keyboard = Keyboard.current;
-    if (keyboard.escapeKey.isPressed) {
+    if (keyboard.escapeKey.wasPressedThisFrame) {
       SimManager.Instance.QuitSimulation();
     }
 
-    if (keyboard.rKey.isPressed) {
+    if (keyboard.rKey.wasPressedThisFrame) {
       SimManager.Instance.EndSimulation();
       SimManager.Instance.ResetAndStartSimulation();
     }
 
-    if (keyboard.lKey.isPressed) {
+    if (keyboard.lKey.wasPressedThisFrame) {
       UIManager.Instance.ToggleConfigSelectorPanel();
     }
 
-    if (keyboard.cKey.isPressed) {
+    if (keyboard.cKey.wasPressedThisFrame) {
       ParticleManager.Instance.ClearHitMarkers();
     }
 
-    if (keyboard.pKey.isPressed) {
+    if (keyboard.pKey.wasPressedThisFrame) {
       CameraController.Instance.AutoRotate = !CameraController.Instance.AutoRotate;
     }
 
-    if (keyboard.spaceKey.isPressed) {
+    if (keyboard.spaceKey.wasPressedThisFrame) {
       // Pause the time.
       if (!SimManager.Instance.IsPaused) {
         SimManager.Instance.PauseSimulation();
