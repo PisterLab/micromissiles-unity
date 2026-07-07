@@ -10,13 +10,13 @@ public class OrthogonalEvasion : EvasionBase {
 
   // Determine whether to perform any evasive maneuvers.
   public override bool ShouldEvade(IAgent pursuer) {
-    if (!(Agent.AgentConfig?.DynamicConfig?.FlightConfig?.EvasionConfig?.Enabled ?? false)) {
+    if (!(Agent.AgentConfig?.DynamicConfig?.GuidanceConfig?.EvasionConfig?.Enabled ?? false)) {
       return false;
     }
 
     SensorOutput sensorOutput = Agent.Sensor.Sense(pursuer);
     float evasionRangeThreshold =
-        Agent.AgentConfig.DynamicConfig.FlightConfig.EvasionConfig.RangeThreshold;
+        Agent.AgentConfig.DynamicConfig.GuidanceConfig.EvasionConfig.RangeThreshold;
     return sensorOutput.Position.Range <= evasionRangeThreshold && sensorOutput.Velocity.Range < 0;
   }
 

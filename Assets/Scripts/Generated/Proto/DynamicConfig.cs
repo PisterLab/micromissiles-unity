@@ -26,20 +26,21 @@ namespace Configs {
           string.Concat(
             "ChxDb25maWdzL2R5bmFtaWNfY29uZmlnLnByb3RvEgdjb25maWdzGhdTaW11",
             "bGF0aW9uL3NlbnNvci5wcm90byI5Cg1FdmFzaW9uQ29uZmlnEg8KB2VuYWJs",
-            "ZWQYASABKAgSFwoPcmFuZ2VfdGhyZXNob2xkGAIgASgCInAKDEZsaWdodENv",
-            "bmZpZxIwCg9jb250cm9sbGVyX3R5cGUYASABKA4yFy5jb25maWdzLkNvbnRy",
-            "b2xsZXJUeXBlEi4KDmV2YXNpb25fY29uZmlnGAIgASgLMhYuY29uZmlncy5F",
-            "dmFzaW9uQ29uZmlnIm4KDUR5bmFtaWNDb25maWcSLAoNZmxpZ2h0X2NvbmZp",
-            "ZxgBIAEoCzIVLmNvbmZpZ3MuRmxpZ2h0Q29uZmlnEi8KDXNlbnNvcl9jb25m",
-            "aWcYAiABKAsyGC5zaW11bGF0aW9uLlNlbnNvckNvbmZpZypUCg5Db250cm9s",
-            "bGVyVHlwZRIbChdQUk9QT1JUSU9OQUxfTkFWSUdBVElPThAAEiUKIUFVR01F",
-            "TlRFRF9QUk9QT1JUSU9OQUxfTkFWSUdBVElPThABYgZwcm90bzM="));
+            "ZWQYASABKAgSFwoPcmFuZ2VfdGhyZXNob2xkGAIgASgCInIKDkd1aWRhbmNl",
+            "Q29uZmlnEjAKD2NvbnRyb2xsZXJfdHlwZRgBIAEoDjIXLmNvbmZpZ3MuQ29u",
+            "dHJvbGxlclR5cGUSLgoOZXZhc2lvbl9jb25maWcYAiABKAsyFi5jb25maWdz",
+            "LkV2YXNpb25Db25maWcicgoNRHluYW1pY0NvbmZpZxIwCg9ndWlkYW5jZV9j",
+            "b25maWcYASABKAsyFy5jb25maWdzLkd1aWRhbmNlQ29uZmlnEi8KDXNlbnNv",
+            "cl9jb25maWcYAiABKAsyGC5zaW11bGF0aW9uLlNlbnNvckNvbmZpZypiCg5D",
+            "b250cm9sbGVyVHlwZRIbChdQUk9QT1JUSU9OQUxfTkFWSUdBVElPThAAEiUK",
+            "IUFVR01FTlRFRF9QUk9QT1JUSU9OQUxfTkFWSUdBVElPThABEgwKCFdBWVBP",
+            "SU5UEAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Simulation.SensorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.ControllerType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.EvasionConfig), global::Configs.EvasionConfig.Parser, new[]{ "Enabled", "RangeThreshold" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.FlightConfig), global::Configs.FlightConfig.Parser, new[]{ "ControllerType", "EvasionConfig" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.DynamicConfig), global::Configs.DynamicConfig.Parser, new[]{ "FlightConfig", "SensorConfig" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.GuidanceConfig), global::Configs.GuidanceConfig.Parser, new[]{ "ControllerType", "EvasionConfig" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.DynamicConfig), global::Configs.DynamicConfig.Parser, new[]{ "GuidanceConfig", "SensorConfig" }, null, null, null, null)
           }));
     }
     #endregion
@@ -52,6 +53,7 @@ namespace Configs {
   public enum ControllerType {
     [pbr::OriginalName("PROPORTIONAL_NAVIGATION")] ProportionalNavigation = 0,
     [pbr::OriginalName("AUGMENTED_PROPORTIONAL_NAVIGATION")] AugmentedProportionalNavigation = 1,
+    [pbr::OriginalName("WAYPOINT")] Waypoint = 2,
   }
 
   #endregion
@@ -303,19 +305,19 @@ namespace Configs {
   }
 
   /// <summary>
-  /// Flight configuration.
+  /// Guidance configuration.
   /// </summary>
   [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
-  public sealed partial class FlightConfig : pb::IMessage<FlightConfig>
+  public sealed partial class GuidanceConfig : pb::IMessage<GuidanceConfig>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<FlightConfig> _parser = new pb::MessageParser<FlightConfig>(() => new FlightConfig());
+    private static readonly pb::MessageParser<GuidanceConfig> _parser = new pb::MessageParser<GuidanceConfig>(() => new GuidanceConfig());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<FlightConfig> Parser { get { return _parser; } }
+    public static pb::MessageParser<GuidanceConfig> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -331,7 +333,7 @@ namespace Configs {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FlightConfig() {
+    public GuidanceConfig() {
       OnConstruction();
     }
 
@@ -339,7 +341,7 @@ namespace Configs {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FlightConfig(FlightConfig other) : this() {
+    public GuidanceConfig(GuidanceConfig other) : this() {
       controllerType_ = other.controllerType_;
       evasionConfig_ = other.evasionConfig_ != null ? other.evasionConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -347,8 +349,8 @@ namespace Configs {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public FlightConfig Clone() {
-      return new FlightConfig(this);
+    public GuidanceConfig Clone() {
+      return new GuidanceConfig(this);
     }
 
     /// <summary>Field number for the "controller_type" field.</summary>
@@ -384,12 +386,12 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as FlightConfig);
+      return Equals(other as GuidanceConfig);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(FlightConfig other) {
+    public bool Equals(GuidanceConfig other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -475,7 +477,7 @@ namespace Configs {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(FlightConfig other) {
+    public void MergeFrom(GuidanceConfig other) {
       if (other == null) {
         return;
       }
@@ -593,7 +595,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DynamicConfig(DynamicConfig other) : this() {
-      flightConfig_ = other.flightConfig_ != null ? other.flightConfig_.Clone() : null;
+      guidanceConfig_ = other.guidanceConfig_ != null ? other.guidanceConfig_.Clone() : null;
       sensorConfig_ = other.sensorConfig_ != null ? other.sensorConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -604,18 +606,18 @@ namespace Configs {
       return new DynamicConfig(this);
     }
 
-    /// <summary>Field number for the "flight_config" field.</summary>
-    public const int FlightConfigFieldNumber = 1;
-    private global::Configs.FlightConfig flightConfig_;
+    /// <summary>Field number for the "guidance_config" field.</summary>
+    public const int GuidanceConfigFieldNumber = 1;
+    private global::Configs.GuidanceConfig guidanceConfig_;
     /// <summary>
-    /// Flight configuration.
+    /// Guidance configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Configs.FlightConfig FlightConfig {
-      get { return flightConfig_; }
+    public global::Configs.GuidanceConfig GuidanceConfig {
+      get { return guidanceConfig_; }
       set {
-        flightConfig_ = value;
+        guidanceConfig_ = value;
       }
     }
 
@@ -649,7 +651,7 @@ namespace Configs {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(FlightConfig, other.FlightConfig)) return false;
+      if (!object.Equals(GuidanceConfig, other.GuidanceConfig)) return false;
       if (!object.Equals(SensorConfig, other.SensorConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -658,7 +660,7 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (flightConfig_ != null) hash ^= FlightConfig.GetHashCode();
+      if (guidanceConfig_ != null) hash ^= GuidanceConfig.GetHashCode();
       if (sensorConfig_ != null) hash ^= SensorConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -678,9 +680,9 @@ namespace Configs {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (flightConfig_ != null) {
+      if (guidanceConfig_ != null) {
         output.WriteRawTag(10);
-        output.WriteMessage(FlightConfig);
+        output.WriteMessage(GuidanceConfig);
       }
       if (sensorConfig_ != null) {
         output.WriteRawTag(18);
@@ -696,9 +698,9 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (flightConfig_ != null) {
+      if (guidanceConfig_ != null) {
         output.WriteRawTag(10);
-        output.WriteMessage(FlightConfig);
+        output.WriteMessage(GuidanceConfig);
       }
       if (sensorConfig_ != null) {
         output.WriteRawTag(18);
@@ -714,8 +716,8 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (flightConfig_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(FlightConfig);
+      if (guidanceConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(GuidanceConfig);
       }
       if (sensorConfig_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(SensorConfig);
@@ -732,11 +734,11 @@ namespace Configs {
       if (other == null) {
         return;
       }
-      if (other.flightConfig_ != null) {
-        if (flightConfig_ == null) {
-          FlightConfig = new global::Configs.FlightConfig();
+      if (other.guidanceConfig_ != null) {
+        if (guidanceConfig_ == null) {
+          GuidanceConfig = new global::Configs.GuidanceConfig();
         }
-        FlightConfig.MergeFrom(other.FlightConfig);
+        GuidanceConfig.MergeFrom(other.GuidanceConfig);
       }
       if (other.sensorConfig_ != null) {
         if (sensorConfig_ == null) {
@@ -764,10 +766,10 @@ namespace Configs {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            if (flightConfig_ == null) {
-              FlightConfig = new global::Configs.FlightConfig();
+            if (guidanceConfig_ == null) {
+              GuidanceConfig = new global::Configs.GuidanceConfig();
             }
-            input.ReadMessage(FlightConfig);
+            input.ReadMessage(GuidanceConfig);
             break;
           }
           case 18: {
@@ -797,10 +799,10 @@ namespace Configs {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            if (flightConfig_ == null) {
-              FlightConfig = new global::Configs.FlightConfig();
+            if (guidanceConfig_ == null) {
+              GuidanceConfig = new global::Configs.GuidanceConfig();
             }
-            input.ReadMessage(FlightConfig);
+            input.ReadMessage(GuidanceConfig);
             break;
           }
           case 18: {

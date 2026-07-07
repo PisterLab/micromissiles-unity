@@ -110,7 +110,7 @@ Each swarm configuration includes:
   - **`attack_behavior_config_file`** (for threats): Reference to an attack behavior configuration file.
   - **`initial_state`** (for threats): Starting position, rotation, and velocity.
   - **`standard_deviation`** (for threats): Variability in initial states.
-  - **`dynamic_config`**: Time-dependent settings (sensor configurations, flight configurations).
+  - **`dynamic_config`**: Time-dependent settings (guidance configurations, sensor configurations).
   - **`sub_agent_config`** (for interceptors): Configuration for any submunitions deployed.
     - **`num_sub_agents`**: Number of submunitions that each interceptor in the swarm will release.
     - **`agent_config`**: Submunition agent configuration.
@@ -152,6 +152,9 @@ interceptor_swarm_configs {
       }
     }
     dynamic_config {
+      guidance_config {
+        controller_type: WAYPOINT
+      }
       sensor_config {
         type: IDEAL
         frequency: 1000
@@ -162,7 +165,7 @@ interceptor_swarm_configs {
       agent_config {
         config_file: "hydra70.pbtxt"
         dynamic_config {
-          flight_config {
+          guidance_config {
             controller_type: PROPORTIONAL_NAVIGATION
           }
           sensor_config {
@@ -175,7 +178,7 @@ interceptor_swarm_configs {
           agent_config {
             config_file: "micromissile.pbtxt"
             dynamic_config {
-              flight_config {
+              guidance_config {
                 controller_type: PROPORTIONAL_NAVIGATION
               }
               sensor_config {
@@ -219,7 +222,7 @@ threat_swarm_configs {
       }
     }
     dynamic_config {
-      flight_config {
+      guidance_config {
         evasion_config {
           enabled: true
           range_threshold: 1000
@@ -275,6 +278,9 @@ interceptor_swarm_configs {
       }
     }
     dynamic_config {
+      guidance_config {
+        controller_type: WAYPOINT
+      }
       sensor_config {
         type: IDEAL
         frequency: 1000
@@ -285,7 +291,7 @@ interceptor_swarm_configs {
       agent_config {
         config_file: "hydra70.pbtxt"
         dynamic_config {
-          flight_config {
+          guidance_config {
             controller_type: PROPORTIONAL_NAVIGATION
           }
           sensor_config {
@@ -298,7 +304,7 @@ interceptor_swarm_configs {
           agent_config {
             config_file: "micromissile.pbtxt"
             dynamic_config {
-              flight_config {
+              guidance_config {
                 controller_type: PROPORTIONAL_NAVIGATION
               }
               sensor_config {
@@ -342,7 +348,7 @@ threat_swarm_configs {
       }
     }
     dynamic_config {
-      flight_config {
+      guidance_config {
         evasion_config {
           enabled: true
           range_threshold: 2000
@@ -385,7 +391,7 @@ threat_swarm_configs {
       }
     }
     dynamic_config {
-      flight_config {
+      guidance_config {
         evasion_config {
           enabled: true
           range_threshold: 2000
@@ -428,7 +434,7 @@ threat_swarm_configs {
       }
     }
     dynamic_config {
-      flight_config {
+      guidance_config {
         evasion_config {
           enabled: true
           range_threshold: 2000
@@ -471,7 +477,7 @@ threat_swarm_configs {
       }
     }
     dynamic_config {
-      flight_config {
+      guidance_config {
         evasion_config {
           enabled: true
           range_threshold: 2000
@@ -514,7 +520,7 @@ threat_swarm_configs {
       }
     }
     dynamic_config {
-      flight_config {
+      guidance_config {
         evasion_config {
           enabled: true
           range_threshold: 2000

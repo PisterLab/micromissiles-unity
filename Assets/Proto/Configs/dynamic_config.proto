@@ -8,6 +8,7 @@ import "Simulation/sensor.proto";
 enum ControllerType {
   PROPORTIONAL_NAVIGATION = 0;
   AUGMENTED_PROPORTIONAL_NAVIGATION = 1;
+  WAYPOINT = 2;
 }
 
 // Evasion configuration.
@@ -20,8 +21,8 @@ message EvasionConfig {
   float range_threshold = 2;
 }
 
-// Flight configuration.
-message FlightConfig {
+// Guidance configuration.
+message GuidanceConfig {
   // Controller type.
   ControllerType controller_type = 1;
 
@@ -31,8 +32,8 @@ message FlightConfig {
 
 // Dynamic configuration.
 message DynamicConfig {
-  // Flight configuration.
-  FlightConfig flight_config = 1;
+  // Guidance configuration.
+  GuidanceConfig guidance_config = 1;
 
   // Sensor configuration.
   simulation.SensorConfig sensor_config = 2;

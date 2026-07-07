@@ -25,8 +25,8 @@ public class OrthogonalEvasionTests : TestBase {
     _agent.AgentConfig = new Configs.AgentConfig() {
       DynamicConfig =
           new Configs.DynamicConfig() {
-            FlightConfig =
-                new Configs.FlightConfig() {
+            GuidanceConfig =
+                new Configs.GuidanceConfig() {
                   EvasionConfig =
                       new Configs.EvasionConfig() {
                         Enabled = true,
@@ -53,7 +53,7 @@ public class OrthogonalEvasionTests : TestBase {
     _agent.Velocity = new Vector3(0, 0, 2);
     _pursuer.Position = new Vector3(0, 0, 100);
     _pursuer.Velocity = new Vector3(0, 0, -1);
-    _agent.AgentConfig.DynamicConfig.FlightConfig.EvasionConfig.Enabled = false;
+    _agent.AgentConfig.DynamicConfig.GuidanceConfig.EvasionConfig.Enabled = false;
     Assert.IsFalse(_evasion.ShouldEvade(_pursuer));
   }
 
