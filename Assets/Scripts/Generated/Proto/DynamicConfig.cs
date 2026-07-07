@@ -31,10 +31,10 @@ namespace Configs {
             "dHJvbGxlclR5cGUSLgoOZXZhc2lvbl9jb25maWcYAiABKAsyFi5jb25maWdz",
             "LkV2YXNpb25Db25maWcicgoNRHluYW1pY0NvbmZpZxIwCg9ndWlkYW5jZV9j",
             "b25maWcYASABKAsyFy5jb25maWdzLkd1aWRhbmNlQ29uZmlnEi8KDXNlbnNv",
-            "cl9jb25maWcYAiABKAsyGC5zaW11bGF0aW9uLlNlbnNvckNvbmZpZypiCg5D",
-            "b250cm9sbGVyVHlwZRIbChdQUk9QT1JUSU9OQUxfTkFWSUdBVElPThAAEiUK",
-            "IUFVR01FTlRFRF9QUk9QT1JUSU9OQUxfTkFWSUdBVElPThABEgwKCFdBWVBP",
-            "SU5UEAJiBnByb3RvMw=="));
+            "cl9jb25maWcYAiABKAsyGC5zaW11bGF0aW9uLlNlbnNvckNvbmZpZypuCg5D",
+            "b250cm9sbGVyVHlwZRIKCgZTVEFUSUMQABIbChdQUk9QT1JUSU9OQUxfTkFW",
+            "SUdBVElPThABEiUKIUFVR01FTlRFRF9QUk9QT1JUSU9OQUxfTkFWSUdBVElP",
+            "ThACEgwKCFdBWVBPSU5UEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Simulation.SensorReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Configs.ControllerType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -51,9 +51,10 @@ namespace Configs {
   /// Controller type enumeration.
   /// </summary>
   public enum ControllerType {
-    [pbr::OriginalName("PROPORTIONAL_NAVIGATION")] ProportionalNavigation = 0,
-    [pbr::OriginalName("AUGMENTED_PROPORTIONAL_NAVIGATION")] AugmentedProportionalNavigation = 1,
-    [pbr::OriginalName("WAYPOINT")] Waypoint = 2,
+    [pbr::OriginalName("STATIC")] Static = 0,
+    [pbr::OriginalName("PROPORTIONAL_NAVIGATION")] ProportionalNavigation = 1,
+    [pbr::OriginalName("AUGMENTED_PROPORTIONAL_NAVIGATION")] AugmentedProportionalNavigation = 2,
+    [pbr::OriginalName("WAYPOINT")] Waypoint = 3,
   }
 
   #endregion
@@ -355,7 +356,7 @@ namespace Configs {
 
     /// <summary>Field number for the "controller_type" field.</summary>
     public const int ControllerTypeFieldNumber = 1;
-    private global::Configs.ControllerType controllerType_ = global::Configs.ControllerType.ProportionalNavigation;
+    private global::Configs.ControllerType controllerType_ = global::Configs.ControllerType.Static;
     /// <summary>
     /// Controller type.
     /// </summary>
@@ -407,7 +408,7 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) hash ^= ControllerType.GetHashCode();
+      if (ControllerType != global::Configs.ControllerType.Static) hash ^= ControllerType.GetHashCode();
       if (evasionConfig_ != null) hash ^= EvasionConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -427,7 +428,7 @@ namespace Configs {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
+      if (ControllerType != global::Configs.ControllerType.Static) {
         output.WriteRawTag(8);
         output.WriteEnum((int) ControllerType);
       }
@@ -445,7 +446,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
+      if (ControllerType != global::Configs.ControllerType.Static) {
         output.WriteRawTag(8);
         output.WriteEnum((int) ControllerType);
       }
@@ -463,7 +464,7 @@ namespace Configs {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
+      if (ControllerType != global::Configs.ControllerType.Static) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ControllerType);
       }
       if (evasionConfig_ != null) {
@@ -481,7 +482,7 @@ namespace Configs {
       if (other == null) {
         return;
       }
-      if (other.ControllerType != global::Configs.ControllerType.ProportionalNavigation) {
+      if (other.ControllerType != global::Configs.ControllerType.Static) {
         ControllerType = other.ControllerType;
       }
       if (other.evasionConfig_ != null) {

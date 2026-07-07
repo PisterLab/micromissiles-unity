@@ -6,9 +6,10 @@ import "Simulation/sensor.proto";
 
 // Controller type enumeration.
 enum ControllerType {
-  PROPORTIONAL_NAVIGATION = 0;
-  AUGMENTED_PROPORTIONAL_NAVIGATION = 1;
-  WAYPOINT = 2;
+  STATIC = 0;
+  PROPORTIONAL_NAVIGATION = 1;
+  AUGMENTED_PROPORTIONAL_NAVIGATION = 2;
+  WAYPOINT = 3;
 }
 
 // Evasion configuration.

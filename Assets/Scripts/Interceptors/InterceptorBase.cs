@@ -203,6 +203,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // Set the controller.
     switch (AgentConfig.DynamicConfig?.GuidanceConfig?.ControllerType) {
+      case Configs.ControllerType.Static: {
+        Controller = new StaticController(this);
+        break;
+      }
       case Configs.ControllerType.ProportionalNavigation: {
         Controller = new PnController(this, _proportionalNavigationGain);
         break;

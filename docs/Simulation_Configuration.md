@@ -153,7 +153,7 @@ interceptor_swarm_configs {
     }
     dynamic_config {
       guidance_config {
-        controller_type: WAYPOINT
+        controller_type: STATIC
       }
       sensor_config {
         type: IDEAL
@@ -279,7 +279,7 @@ interceptor_swarm_configs {
     }
     dynamic_config {
       guidance_config {
-        controller_type: WAYPOINT
+        controller_type: STATIC
       }
       sensor_config {
         type: IDEAL
