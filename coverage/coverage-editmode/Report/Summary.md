@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/07/2026 - 18:49:01 |
+| Generated on: | 07/11/2026 - 03:09:31 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
-| Classes: | 109 |
-| Files: | 99 |
-| Covered lines: | 1046 |
-| Uncovered lines: | 2782 |
-| Coverable lines: | 3828 |
-| Total lines: | 6843 |
-| Line coverage: | 27.3% (1046 of 3828) |
+| Classes: | 110 |
+| Files: | 100 |
+| Covered lines: | 1050 |
+| Uncovered lines: | 2788 |
+| Coverable lines: | 3838 |
+| Total lines: | 6862 |
+| Line coverage: | 27.3% (1050 of 3838) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 303 |
-| Total methods: | 757 |
-| Method coverage: | 40% (303 of 757) |
+| Covered methods: | 305 |
+| Total methods: | 759 |
+| Method coverage: | 40.1% (305 of 759) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1046**|**2782**|**3828**|**7325**|**27.3%**|**0**|**0**|****|**303**|**757**|**40%**|
+|**bamlab.micromissiles**|**1050**|**2788**|**3838**|**7344**|**27.3%**|**0**|**0**|****|**305**|**759**|**40.1%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|79|175|333|54.8%|0|0||39|61|63.9%|
@@ -61,7 +61,7 @@
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
 |InputManager|0|176|176|223|0%|0|0||0|19|0%|
-|InterceptorBase|0|195|195|365|0%|0|0||0|30|0%|
+|InterceptorBase|0|201|201|373|0%|0|0||0|30|0%|
 |Interpolator2DBase|18|3|21|42|85.7%|0|0||4|5|80%|
 |Interpolator2DDataPoint|11|0|11|23|100%|0|0||5|5|100%|
 |IterativeLaunchPlanner|29|0|29|84|100%|0|0||2|2|100%|
@@ -115,6 +115,7 @@
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
 |SpeedEscapeDetector|11|0|11|24|100%|0|0||3|3|100%|
 |SpriteManager|0|8|8|14|0%|0|0||0|1|0%|
+|StaticController|4|0|4|11|100%|0|0||2|2|100%|
 |TacticalPanel|0|180|180|280|0%|0|0||0|28|0%|
 |TacticalPolarGridGraphic|0|142|142|230|0%|0|0||0|15|0%|
 |TacticalSymbol|0|55|55|84|0%|0|0||0|11|0%|

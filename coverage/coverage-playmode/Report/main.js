@@ -226,7 +226,7 @@ var assemblies = [
     "classes": [
       { "name": "AccelerationTransformation", "rp": "bamlab.micromissiles_AccelerationTransformation.html", "cl": 1, "ucl": 0, "cal": 1, "tl": 25, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "AerialMovement", "rp": "bamlab.micromissiles_AerialMovement.html", "cl": 1, "ucl": 20, "cal": 21, "tl": 36, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "AgentBase", "rp": "bamlab.micromissiles_AgentBase.html", "cl": 142, "ucl": 33, "cal": 175, "tl": 333, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "AgentBase", "rp": "bamlab.micromissiles_AgentBase.html", "cl": 139, "ucl": 36, "cal": 175, "tl": 333, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "AgglomerativeClusterer", "rp": "bamlab.micromissiles_AgglomerativeClusterer.html", "cl": 0, "ucl": 59, "cal": 59, "tl": 97, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ApnController", "rp": "bamlab.micromissiles_ApnController.html", "cl": 0, "ucl": 7, "cal": 7, "tl": 17, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "AssignmentItem", "rp": "bamlab.micromissiles_AssignmentItem.html", "cl": 0, "ucl": 2, "cal": 2, "tl": 5, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -242,7 +242,7 @@ var assemblies = [
       { "name": "ConfigLoader", "rp": "bamlab.micromissiles_ConfigLoader.html", "cl": 28, "ucl": 17, "cal": 45, "tl": 95, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Constants", "rp": "bamlab.micromissiles_Constants.html", "cl": 1, "ucl": 6, "cal": 7, "tl": 18, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "ConstrainedKMeansClusterer", "rp": "bamlab.micromissiles_ConstrainedKMeansClusterer.html", "cl": 0, "ucl": 24, "cal": 24, "tl": 44, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "ControllerBase", "rp": "bamlab.micromissiles_ControllerBase.html", "cl": 8, "ucl": 6, "cal": 14, "tl": 30, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "ControllerBase", "rp": "bamlab.micromissiles_ControllerBase.html", "cl": 12, "ucl": 2, "cal": 14, "tl": 30, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Coordinates2", "rp": "bamlab.micromissiles_Coordinates2.html", "cl": 0, "ucl": 16, "cal": 16, "tl": 26, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Coordinates3", "rp": "bamlab.micromissiles_Coordinates3.html", "cl": 6, "ucl": 36, "cal": 42, "tl": 71, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "CostBasedAssignment", "rp": "bamlab.micromissiles_CostBasedAssignment.html", "cl": 0, "ucl": 34, "cal": 34, "tl": 72, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -265,7 +265,7 @@ var assemblies = [
       { "name": "IdealMovement", "rp": "bamlab.micromissiles_IdealMovement.html", "cl": 4, "ucl": 0, "cal": 4, "tl": 15, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IdealSensor", "rp": "bamlab.micromissiles_IdealSensor.html", "cl": 8, "ucl": 8, "cal": 16, "tl": 37, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "InputManager", "rp": "bamlab.micromissiles_InputManager.html", "cl": 70, "ucl": 106, "cal": 176, "tl": 223, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
-      { "name": "InterceptorBase", "rp": "bamlab.micromissiles_InterceptorBase.html", "cl": 65, "ucl": 130, "cal": 195, "tl": 365, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "InterceptorBase", "rp": "bamlab.micromissiles_InterceptorBase.html", "cl": 64, "ucl": 137, "cal": 201, "tl": 373, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Interpolator2DBase", "rp": "bamlab.micromissiles_Interpolator2DBase.html", "cl": 0, "ucl": 21, "cal": 21, "tl": 42, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Interpolator2DDataPoint", "rp": "bamlab.micromissiles_Interpolator2DDataPoint.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 23, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "IterativeLaunchPlanner", "rp": "bamlab.micromissiles_IterativeLaunchPlanner.html", "cl": 1, "ucl": 28, "cal": 29, "tl": 84, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -319,6 +319,7 @@ var assemblies = [
       { "name": "SizeAndRadiusConstrainedClustererBase", "rp": "bamlab.micromissiles_SizeAndRadiusConstrainedClustererBase.html", "cl": 0, "ucl": 10, "cal": 10, "tl": 26, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SpeedEscapeDetector", "rp": "bamlab.micromissiles_SpeedEscapeDetector.html", "cl": 0, "ucl": 11, "cal": 11, "tl": 24, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "SpriteManager", "rp": "bamlab.micromissiles_SpriteManager.html", "cl": 0, "ucl": 8, "cal": 8, "tl": 14, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
+      { "name": "StaticController", "rp": "bamlab.micromissiles_StaticController.html", "cl": 1, "ucl": 3, "cal": 4, "tl": 11, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TacticalPanel", "rp": "bamlab.micromissiles_TacticalPanel.html", "cl": 35, "ucl": 145, "cal": 180, "tl": 280, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TacticalPolarGridGraphic", "rp": "bamlab.micromissiles_TacticalPolarGridGraphic.html", "cl": 34, "ucl": 108, "cal": 142, "tl": 230, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "TacticalSymbol", "rp": "bamlab.micromissiles_TacticalSymbol.html", "cl": 0, "ucl": 55, "cal": 55, "tl": 84, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
@@ -381,7 +382,7 @@ var riskHotspots = [
       { "value": 156, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "InterceptorBase", "reportPath": "bamlab.micromissiles_InterceptorBase.html", "methodName": "UnassignedTargetsManager()", "methodShortName": "UnassignedTargetsManager()", "fileIndex": 0, "line": 312,
+    "assembly": "bamlab.micromissiles", "class": "InterceptorBase", "reportPath": "bamlab.micromissiles_InterceptorBase.html", "methodName": "UnassignedTargetsManager()", "methodShortName": "UnassignedTargetsManager()", "fileIndex": 0, "line": 320,
     "metrics": [
       { "value": 13, "exceeded": false },
       { "value": 0, "exceeded": false },
@@ -463,6 +464,13 @@ var riskHotspots = [
       { "value": 8, "exceeded": false },
       { "value": 0, "exceeded": false },
       { "value": 72, "exceeded": true },
+    ]},
+  {
+    "assembly": "bamlab.micromissiles", "class": "InterceptorBase", "reportPath": "bamlab.micromissiles_InterceptorBase.html", "methodName": "System.Void InterceptorBase::UpdateAgentConfig()", "methodShortName": "UpdateAgentConfig()", "fileIndex": 0, "line": 188,
+    "metrics": [
+      { "value": 19, "exceeded": true },
+      { "value": 0, "exceeded": false },
+      { "value": 69.76, "exceeded": true },
     ]},
   {
     "assembly": "bamlab.micromissiles", "class": "ThreatBase", "reportPath": "bamlab.micromissiles_ThreatBase.html", "methodName": "IAgent ThreatBase::FindClosestPursuer()", "methodShortName": "FindClosestPursuer()", "fileIndex": 0, "line": 122,
@@ -556,18 +564,11 @@ var riskHotspots = [
       { "value": 42, "exceeded": true },
     ]},
   {
-    "assembly": "bamlab.micromissiles", "class": "InterceptorBase", "reportPath": "bamlab.micromissiles_InterceptorBase.html", "methodName": "System.Void InterceptorBase::OnTriggerEnter(UnityEngine.Collider)", "methodShortName": "OnTriggerEnter(...)", "fileIndex": 0, "line": 253,
+    "assembly": "bamlab.micromissiles", "class": "InterceptorBase", "reportPath": "bamlab.micromissiles_InterceptorBase.html", "methodName": "System.Void InterceptorBase::OnTriggerEnter(UnityEngine.Collider)", "methodShortName": "OnTriggerEnter(...)", "fileIndex": 0, "line": 261,
     "metrics": [
       { "value": 10, "exceeded": false },
       { "value": 0, "exceeded": false },
       { "value": 41.44, "exceeded": true },
-    ]},
-  {
-    "assembly": "bamlab.micromissiles", "class": "InterceptorBase", "reportPath": "bamlab.micromissiles_InterceptorBase.html", "methodName": "System.Void InterceptorBase::UpdateAgentConfig()", "methodShortName": "UpdateAgentConfig()", "fileIndex": 0, "line": 188,
-    "metrics": [
-      { "value": 16, "exceeded": true },
-      { "value": 0, "exceeded": false },
-      { "value": 24.06, "exceeded": false },
     ]},
 ];
 

@@ -1,28 +1,28 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/07/2026 - 18:53:14 |
+| Generated on: | 07/11/2026 - 03:11:52 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
-| Classes: | 109 |
-| Files: | 99 |
-| Covered lines: | 1302 |
-| Uncovered lines: | 2526 |
-| Coverable lines: | 3828 |
-| Total lines: | 6843 |
-| Line coverage: | 34% (1302 of 3828) |
+| Classes: | 110 |
+| Files: | 100 |
+| Covered lines: | 1303 |
+| Uncovered lines: | 2535 |
+| Coverable lines: | 3838 |
+| Total lines: | 6862 |
+| Line coverage: | 33.9% (1303 of 3838) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 369 |
-| Total methods: | 757 |
-| Method coverage: | 48.7% (369 of 757) |
+| Covered methods: | 371 |
+| Total methods: | 759 |
+| Method coverage: | 48.8% (371 of 759) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1302**|**2526**|**3828**|**7325**|**34%**|**0**|**0**|****|**369**|**757**|**48.7%**|
+|**bamlab.micromissiles**|**1303**|**2535**|**3838**|**7344**|**33.9%**|**0**|**0**|****|**371**|**759**|**48.8%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
-|AgentBase|142|33|175|333|81.1%|0|0||56|61|91.8%|
+|AgentBase|139|36|175|333|79.4%|0|0||56|61|91.8%|
 |AgglomerativeClusterer|0|59|59|97|0%|0|0||0|2|0%|
 |ApnController|0|7|7|17|0%|0|0||0|2|0%|
 |AssignmentItem|0|2|2|5|0%|0|0||0|4|0%|
@@ -38,7 +38,7 @@
 |ConfigLoader|28|17|45|95|62.2%|0|0||6|7|85.7%|
 |Constants|1|6|7|18|14.2%|0|0||1|3|33.3%|
 |ConstrainedKMeansClusterer|0|24|24|44|0%|0|0||0|2|0%|
-|ControllerBase|8|6|14|30|57.1%|0|0||4|5|80%|
+|ControllerBase|12|2|14|30|85.7%|0|0||5|5|100%|
 |Coordinates2|0|16|16|26|0%|0|0||0|4|0%|
 |Coordinates3|6|36|42|71|14.2%|0|0||2|10|20%|
 |CostBasedAssignment|0|34|34|72|0%|0|0||0|2|0%|
@@ -61,7 +61,7 @@
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
 |InputManager|70|106|176|223|39.7%|0|0||16|19|84.2%|
-|InterceptorBase|65|130|195|365|33.3%|0|0||17|30|56.6%|
+|InterceptorBase|64|137|201|373|31.8%|0|0||17|30|56.6%|
 |Interpolator2DBase|0|21|21|42|0%|0|0||0|5|0%|
 |Interpolator2DDataPoint|0|11|11|23|0%|0|0||0|5|0%|
 |IterativeLaunchPlanner|1|28|29|84|3.4%|0|0||1|2|50%|
@@ -115,6 +115,7 @@
 |SizeAndRadiusConstrainedClustererBase|0|10|10|26|0%|0|0||0|1|0%|
 |SpeedEscapeDetector|0|11|11|24|0%|0|0||0|3|0%|
 |SpriteManager|0|8|8|14|0%|0|0||0|1|0%|
+|StaticController|1|3|4|11|25%|0|0||1|2|50%|
 |TacticalPanel|35|145|180|280|19.4%|0|0||8|28|28.5%|
 |TacticalPolarGridGraphic|34|108|142|230|23.9%|0|0||4|15|26.6%|
 |TacticalSymbol|0|55|55|84|0%|0|0||0|11|0%|
