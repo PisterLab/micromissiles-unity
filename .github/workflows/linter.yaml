@@ -10,10 +10,12 @@ jobs:
     name: Run clang-format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Run clang-format
-        uses: jidicula/clang-format-action@v4.15.0
+        uses: jidicula/clang-format-action@v4.18.0
         with:
           clang-format-version: 20
           check-path: '.'
@@ -24,7 +26,9 @@ jobs:
     name: Run buildifier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Install buildifier
         run: |
@@ -33,5 +37,5 @@ jobs:
 
       - name: Run buildifier
         run: |
-          find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -mode=check
-          find plugins -type f -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" | xargs buildifier -lint=warn -mode=check
+          find plugins -type f \( -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" \) | xargs buildifier -mode=check
+          find plugins -type f \( -name "*.bazel" -o -name "*.bzl" -o -name "BUILD" \) | xargs buildifier -lint=warn -mode=check

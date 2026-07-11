@@ -20,17 +20,21 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - ubuntu-22.04 # Plugins should only be built on Ubuntu 22.04.
+          - ubuntu-latest
           - macos-latest
           - windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Bazel
-        uses: bazel-contrib/setup-bazel@0.15.0
+        uses: bazel-contrib/setup-bazel@0.19.0
         with:
+          module-root: plugins
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
+          disk-cache: micromissiles-plugins-${{ runner.os }}
+          external-cache: true
           repository-cache: true
 
       - name: Build plugins
@@ -39,7 +43,7 @@ jobs:
 
       - run: cp plugins/bazel-bin/plugins.tar.gz plugins/bazel-bin/plugins-${{ matrix.platform }}.tar.gz
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: plugins-${{ matrix.platform }}
           path: plugins/bazel-bin/plugins-${{ matrix.platform }}.tar.gz
@@ -56,7 +60,9 @@ jobs:
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
           - StandaloneLinux64 # Build a Linux 64-bit standalone.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Free disk space
         uses: jlumbroso/free-disk-space@v1.3.1
@@ -69,16 +75,19 @@ jobs:
           docker-images: false # Unity Builder uses Docker.
           swap-storage: false
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: Library
-          key: Library-${{ matrix.targetPlatform }}
-          restore-keys: Library-
+          key: unity-library-build-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            unity-library-build-${{ matrix.targetPlatform }}-
+            unity-library-build-
 
       - name: Download plugins
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: Assets/Plugins
+          pattern: plugins-*
           merge-multiple: true
 
       - name: Extract plugins
@@ -87,7 +96,7 @@ jobs:
           find *.tar.gz -exec tar -xvzf {} \;
           rm plugins-*.tar.gz
 
-      - uses: game-ci/unity-builder@v4
+      - uses: game-ci/unity-builder@v5
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -106,7 +115,7 @@ jobs:
         run: cd build/${{ matrix.targetPlatform }} && sudo zip -r ../build-${{ matrix.targetPlatform }}.zip * && cd -
 
       - if: matrix.targetPlatform == 'StandaloneWindows64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/build-${{ matrix.targetPlatform }}.zip
@@ -115,7 +124,7 @@ jobs:
         run: sudo tar -czvf build/build-${{ matrix.targetPlatform }}.tar.gz -C build/${{ matrix.targetPlatform }} .
 
       - if: matrix.targetPlatform == 'StandaloneOSX'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/build-${{ matrix.targetPlatform }}.tar.gz
@@ -124,7 +133,7 @@ jobs:
         run: sudo tar -czvf build/build-${{ matrix.targetPlatform }}.tar.gz -C build/${{ matrix.targetPlatform }} .
 
       - if: matrix.targetPlatform == 'StandaloneLinux64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Build-${{ matrix.targetPlatform }}
           path: build/build-${{ matrix.targetPlatform }}.tar.gz

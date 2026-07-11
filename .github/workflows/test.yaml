@@ -24,13 +24,17 @@ jobs:
           - macos-latest
           - windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Bazel
-        uses: bazel-contrib/setup-bazel@0.15.0
+        uses: bazel-contrib/setup-bazel@0.19.0
         with:
+          module-root: plugins
           bazelisk-cache: true
-          disk-cache: ${{ github.workflow }}
+          disk-cache: micromissiles-plugins-${{ runner.os }}
+          external-cache: true
           repository-cache: true
 
       - name: Test plugins
@@ -48,14 +52,17 @@ jobs:
           - editmode
           - playmode
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/cache@v4
+      - uses: actions/checkout@v7
         with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
+          persist-credentials: false
+
+      - uses: actions/cache@v6
+        with:
+          path: Library
+          key: unity-library-test-${{ matrix.testMode }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-
+            unity-library-test-${{ matrix.testMode }}-
+            unity-library-test-
 
       - uses: game-ci/unity-test-runner@v4
         id: tests
@@ -64,7 +71,6 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          projectPath: ${{ matrix.projectPath }}
           customParameters: -ci
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
@@ -73,14 +79,14 @@ jobs:
           coverageOptions: "generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+bamlab.micromissiles"
 
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: test-${{ matrix.testMode }}
           path: ${{ steps.tests.outputs.artifactsPath }}
 
       - name: Upload coverage results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-${{ matrix.testMode }}
