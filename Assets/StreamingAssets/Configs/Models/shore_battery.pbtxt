@@ -1,6 +1,11 @@
 name: "Shore Battery"
 agent_type: SHORE_BATTERY
 cost: 0
+acceleration_config {
+  max_forward_acceleration: 0
+  max_reference_normal_acceleration: 0
+  reference_speed: 1
+}
 body_config {
   mass: 1
 }

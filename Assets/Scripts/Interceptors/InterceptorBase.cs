@@ -203,7 +203,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     NumSubInterceptorsRemaining = NumSubInterceptors;
 
     // Set the controller.
-    switch (AgentConfig.DynamicConfig?.FlightConfig?.ControllerType) {
+    switch (AgentConfig.DynamicConfig?.GuidanceConfig?.ControllerType) {
+      case Configs.ControllerType.Static: {
+        Controller = new StaticController(this);
+        break;
+      }
       case Configs.ControllerType.ProportionalNavigation: {
         Controller = new PnController(this, _proportionalNavigationGain);
         break;
@@ -212,9 +216,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         Controller = new ApnController(this, _proportionalNavigationGain);
         break;
       }
+      case Configs.ControllerType.Waypoint: {
+        Controller = new WaypointController(this);
+        break;
+      }
       default: {
         Debug.LogWarning(
-            $"Controller type {AgentConfig.DynamicConfig?.FlightConfig?.ControllerType} not found.");
+            $"Controller type {AgentConfig.DynamicConfig?.GuidanceConfig?.ControllerType} not found.");
         Controller = null;
         break;
       }
