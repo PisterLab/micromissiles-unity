@@ -91,19 +91,6 @@ public class RunWorker : MonoBehaviour {
     StartCoroutine(RunWhenReady());
   }
 
-  private void OnDestroy() {
-    if (SimManager.Instance != null) {
-      SimManager.Instance.OnSimulationEnded -= RegisterSimulationEnded;
-    }
-    if (Instance == this) {
-      Instance = null;
-      IsWorkerMode = false;
-      SimulationConfigFile = null;
-      Seed = 0;
-      OutputDirectory = null;
-    }
-  }
-
   private void Initialize(string simulationConfigFile, int seed, string outputDirectory) {
     IsWorkerMode = true;
     SimulationConfigFile = simulationConfigFile;

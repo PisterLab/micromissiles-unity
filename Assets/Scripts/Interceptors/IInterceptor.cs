@@ -1,26 +1,24 @@
+using System;
+
 // Interface for an interceptor.
 //
 // Interceptors defend the asset against incoming threats.
-
-public delegate void InterceptorEventHandler(IInterceptor interceptor);
-public delegate void TargetReassignEventHandler(IHierarchical target);
-
 public interface IInterceptor : IAgent {
   // The OnHit event handler is called when the interceptor successfully intercepts a threat.
-  event InterceptorEventHandler OnHit;
+  event Action<IInterceptor> OnHit;
   // The OnMiss event handler is called when the interceptor misses its target but is not destroyed.
-  event InterceptorEventHandler OnMiss;
+  event Action<IInterceptor> OnMiss;
   // The OnDestroyed event handler is called when the interceptor is destroyed prior to intercepting
   // a threat, e.g., through a ground collision.
-  event InterceptorEventHandler OnDestroyed;
+  event Action<IInterceptor> OnDestroyed;
 
   // The OnAssignSubInterceptor event handler is called when a sub-interceptor has no assigned
   // target and should be assigned one.
-  event InterceptorEventHandler OnAssignSubInterceptor;
+  event Action<IInterceptor> OnAssignSubInterceptor;
 
   // The OnReassignTarget event handler is called when a target needs to be re-assigned to another
   // interceptor.
-  event TargetReassignEventHandler OnReassignTarget;
+  event Action<IHierarchical> OnReassignTarget;
 
   IEscapeDetector EscapeDetector { get; set; }
 

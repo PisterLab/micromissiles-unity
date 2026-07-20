@@ -11,13 +11,13 @@ public enum MessageType {
 }
 
 public abstract class Message {
-  public IAgent Sender { get; }
-  public IAgent Receiver { get; }
+  public CommsNode Sender { get; }
+  public CommsNode Receiver { get; }
   public MessageType Type { get; }
 
   public abstract IMessagePayload Payload { get; }
 
-  protected Message(IAgent sender, IAgent receiver, MessageType type) {
+  protected Message(CommsNode sender, CommsNode receiver, MessageType type) {
     Sender = sender ?? throw new ArgumentNullException(nameof(sender));
     Receiver = receiver ?? throw new ArgumentNullException(nameof(receiver));
     Type = type;
@@ -29,7 +29,7 @@ public abstract class Message<TPayload> : Message
     where TPayload : class, IMessagePayload {
   public TPayload PayloadData { get; }
   public sealed override IMessagePayload Payload => PayloadData;
-  protected Message(IAgent sender, IAgent receiver, MessageType type, TPayload payload)
+  protected Message(CommsNode sender, CommsNode receiver, MessageType type, TPayload payload)
       : base(sender, receiver, type) {
     PayloadData = payload ?? throw new ArgumentNullException(nameof(payload));
   }
@@ -38,7 +38,8 @@ public abstract class Message<TPayload> : Message
 // This message is sent upwards to a parent interceptor or IADS when a sub-interceptor has no target
 // and is requesting a new target.
 public sealed class AssignTargetRequestMessage : Message<AssignTargetRequestPayload> {
-  public AssignTargetRequestMessage(IAgent sender, IAgent receiver, IInterceptor subInterceptor)
+  public AssignTargetRequestMessage(CommsNode sender, CommsNode receiver,
+                                    IInterceptor subInterceptor)
       : base(sender, receiver, MessageType.AssignTargetRequest,
              new AssignTargetRequestPayload(subInterceptor)) {}
 }
@@ -46,7 +47,7 @@ public sealed class AssignTargetRequestMessage : Message<AssignTargetRequestPayl
 // This message is sent downwards from the IADS or a parent interceptor to inform the
 // sub-interceptor of a new target.
 public sealed class AssignTargetResponseMessage : Message<AssignTargetResponsePayload> {
-  public AssignTargetResponseMessage(IAgent sender, IAgent receiver, IHierarchical target)
+  public AssignTargetResponseMessage(CommsNode sender, CommsNode receiver, IHierarchical target)
       : base(sender, receiver, MessageType.AssignTargetResponse,
              new AssignTargetResponsePayload(target)) {}
 }
@@ -55,7 +56,7 @@ public sealed class AssignTargetResponseMessage : Message<AssignTargetResponsePa
 // pursue the current target and is requesting the parent interceptor or IADS to reassign that
 // target elsewhere.
 public sealed class ReassignTargetRequestMessage : Message<ReassignTargetRequestPayload> {
-  public ReassignTargetRequestMessage(IAgent sender, IAgent receiver, IHierarchical target)
+  public ReassignTargetRequestMessage(CommsNode sender, CommsNode receiver, IHierarchical target)
       : base(sender, receiver, MessageType.ReassignTargetRequest,
              new ReassignTargetRequestPayload(target)) {}
 }

@@ -1,10 +1,11 @@
+using System;
 using UnityEngine;
 
 // Base implementation of an agent.
 //
 // See the agent interface for property and method documentation.
-public class AgentBase : MonoBehaviour, IAgent {
-  public event AgentTerminatedEventHandler OnTerminated;
+public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
+  public event Action<IAgent> OnTerminated;
 
   private const float _epsilon = 1e-12f;
 
@@ -108,6 +109,9 @@ public class AgentBase : MonoBehaviour, IAgent {
 
   // The inverse rotation is cached and updated before every fixed update.
   public Quaternion InverseRotation { get; private set; }
+
+  // Communication node managed by the communication manager.
+  public CommsNode CommsNode { get; set; }
 
   public float MaxForwardAcceleration() {
     return StaticConfig.AccelerationConfig?.MaxForwardAcceleration ?? 0;

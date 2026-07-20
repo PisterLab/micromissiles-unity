@@ -5,16 +5,17 @@ package configs;
 // Agent type enumeration.
 enum AgentType {
   INVALID_TYPE = 0;
+  IADS = 1;
 
   // Interceptor types.
-  VESSEL = 1;
-  SHORE_BATTERY = 2;
-  CARRIER_INTERCEPTOR = 3;
-  MISSILE_INTERCEPTOR = 4;
+  VESSEL = 2;
+  SHORE_BATTERY = 3;
+  CARRIER_INTERCEPTOR = 4;
+  MISSILE_INTERCEPTOR = 5;
 
   // Threat types.
-  FIXED_WING_THREAT = 5;
-  ROTARY_WING_THREAT = 6;
+  FIXED_WING_THREAT = 6;
+  ROTARY_WING_THREAT = 7;
 }
 
 // Power enumeration.

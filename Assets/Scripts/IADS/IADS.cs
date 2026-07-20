@@ -5,7 +5,7 @@ using UnityEngine;
 
 // The Integrated Air Defense System (IADS) manages the air defense strategy.
 // It implements the singleton pattern to ensure that only one instance exists.
-public class IADS : MonoBehaviour {
+public class IADS : MonoBehaviour, ICommsEndpoint {
   // Hierarchy parameters.
   private const float _hierarchyUpdatePeriod = 5f;
   private const float _coverageFactor = 1f;
@@ -28,12 +28,14 @@ public class IADS : MonoBehaviour {
 
   public IReadOnlyList<IHierarchical> Launchers => _launchers.AsReadOnly();
 
+  public CommsNode CommsNode { get; private set; }
+
   private void Awake() {
     if (Instance != null && Instance != this) {
       Destroy(gameObject);
-    } else {
-      Instance = this;
+      return;
     }
+    Instance = this;
   }
 
   private void Start() {
@@ -42,6 +44,10 @@ public class IADS : MonoBehaviour {
     SimManager.Instance.OnNewAsset += RegisterNewAsset;
     SimManager.Instance.OnNewLauncher += RegisterNewLauncher;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
+
+    // Create a communication node for the IADS.
+    CommsNode = new CommsNode(Configs.AgentType.Iads);
+    CommsManager.Instance.AddNode(CommsNode);
   }
 
   private void OnDestroy() {
