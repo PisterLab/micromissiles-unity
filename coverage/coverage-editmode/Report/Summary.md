@@ -1,41 +1,43 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/11/2026 - 06:40:00 |
+| Generated on: | 07/20/2026 - 06:05:25 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
-| Classes: | 110 |
-| Files: | 100 |
+| Classes: | 112 |
+| Files: | 102 |
 | Covered lines: | 1050 |
-| Uncovered lines: | 2788 |
-| Coverable lines: | 3838 |
-| Total lines: | 6862 |
-| Line coverage: | 27.3% (1050 of 3838) |
+| Uncovered lines: | 2807 |
+| Coverable lines: | 3857 |
+| Total lines: | 6913 |
+| Line coverage: | 27.2% (1050 of 3857) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 305 |
-| Total methods: | 759 |
-| Method coverage: | 40.1% (305 of 759) |
+| Total methods: | 773 |
+| Method coverage: | 39.4% (305 of 773) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1050**|**2788**|**3838**|**7344**|**27.3%**|**0**|**0**|****|**305**|**759**|**40.1%**|
+|**bamlab.micromissiles**|**1050**|**2807**|**3857**|**7399**|**27.2%**|**0**|**0**|****|**305**|**773**|**39.4%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
-|AgentBase|96|79|175|333|54.8%|0|0||39|61|63.9%|
+|AgentBase|96|80|176|337|54.5%|0|0||39|63|61.9%|
 |AgglomerativeClusterer|59|0|59|97|100%|0|0||2|2|100%|
 |ApnController|7|0|7|17|100%|0|0||2|2|100%|
 |AssignmentItem|2|0|2|5|100%|0|0||4|4|100%|
-|AssignTargetRequestMessage|0|2|2|61|0%|0|0||0|1|0%|
+|AssignTargetRequestMessage|0|2|2|62|0%|0|0||0|1|0%|
 |AssignTargetRequestPayload|0|4|4|33|0%|0|0||0|2|0%|
-|AssignTargetResponseMessage|0|2|2|61|0%|0|0||0|1|0%|
+|AssignTargetResponseMessage|0|2|2|62|0%|0|0||0|1|0%|
 |AssignTargetResponsePayload|0|4|4|33|0%|0|0||0|2|0%|
 |AttackBehaviorBase|13|0|13|37|100%|0|0||6|6|100%|
 |CameraController|0|246|246|429|0%|0|0||0|35|0%|
 |CarrierBase|0|35|35|62|0%|0|0||0|6|0%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|18|0|18|36|100%|0|0||7|7|100%|
-|ConfigLoader|14|31|45|95|31.1%|0|0||2|7|28.5%|
+|CommsManager|0|22|22|37|0%|0|0||0|7|0%|
+|CommsNode|0|7|7|18|0%|0|0||0|4|0%|
+|ConfigLoader|14|31|45|96|31.1%|0|0||2|7|28.5%|
 |Constants|4|3|7|18|57.1%|0|0||2|3|66.6%|
 |ConstrainedKMeansClusterer|22|2|24|44|91.6%|0|0||2|2|100%|
 |ControllerBase|10|4|14|30|71.4%|0|0||4|5|80%|
@@ -57,11 +59,11 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|4|45|49|74|8.1%|0|0||3|9|33.3%|
 |HierarchicalBase|48|91|139|236|34.5%|0|0||18|26|69.2%|
-|IADS|0|104|104|169|0%|0|0||0|17|0%|
+|IADS|0|106|106|175|0%|0|0||0|19|0%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
 |InputManager|0|176|176|223|0%|0|0||0|19|0%|
-|InterceptorBase|0|201|201|373|0%|0|0||0|30|0%|
+|InterceptorBase|0|201|201|374|0%|0|0||0|30|0%|
 |Interpolator2DBase|18|3|21|42|85.7%|0|0||4|5|80%|
 |Interpolator2DDataPoint|11|0|11|23|100%|0|0||5|5|100%|
 |IterativeLaunchPlanner|29|0|29|84|100%|0|0||2|2|100%|
@@ -81,8 +83,8 @@
 |LinearExtrapolator|6|1|7|22|85.7%|0|0||2|2|100%|
 |MassReleaseStrategyBase|0|46|46|86|0%|0|0||0|4|0%|
 |MaxSpeedAssignment|7|1|8|22|87.5%|0|0||2|2|100%|
-|Message|0|8|8|61|0%|0|0||0|4|0%|
-|Message[TPayload]|0|5|5|61|0%|0|0||0|3|0%|
+|Message|0|8|8|62|0%|0|0||0|4|0%|
+|Message[TPayload]|0|5|5|62|0%|0|0||0|3|0%|
 |MinDistanceAssignment|4|0|4|12|100%|0|0||2|2|100%|
 |MissileInterceptor|0|7|7|14|0%|0|0||0|3|0%|
 |MissileMovement|58|14|72|139|80.5%|0|0||9|11|81.8%|
@@ -100,16 +102,16 @@
 |PredictorState|3|0|3|13|100%|0|0||6|6|100%|
 |PriorityQueue[T]|33|3|36|57|91.6%|0|0||6|7|85.7%|
 |ProximityReleaseStrategy|0|17|17|43|0%|0|0||0|2|0%|
-|ReassignTargetRequestMessage|0|2|2|61|0%|0|0||0|1|0%|
+|ReassignTargetRequestMessage|0|2|2|62|0%|0|0||0|1|0%|
 |ReassignTargetRequestPayload|0|4|4|33|0%|0|0||0|2|0%|
 |ReleaseStrategyBase|0|10|10|24|0%|0|0||0|4|0%|
 |RotaryWingThreat|0|5|5|11|0%|0|0||0|1|0%|
 |RoundRobinAssignment|12|0|12|23|100%|0|0||1|1|100%|
-|RunWorker|20|83|103|166|19.4%|0|0||2|22|9%|
+|RunWorker|20|71|91|153|21.9%|0|0||2|21|9.5%|
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|0|4|4|10|0%|0|0||0|1|0%|
-|SimManager|0|274|274|424|0%|0|0||0|53|0%|
+|SimManager|0|274|274|419|0%|0|0||0|53|0%|
 |SimMonitor|0|179|179|282|0%|0|0||0|27|0%|
 |SingleReleaseStrategyBase|0|31|31|62|0%|0|0||0|3|0%|
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
@@ -119,13 +121,13 @@
 |TacticalPanel|0|180|180|280|0%|0|0||0|28|0%|
 |TacticalPolarGridGraphic|0|142|142|230|0%|0|0||0|15|0%|
 |TacticalSymbol|0|55|55|84|0%|0|0||0|11|0%|
-|ThreatBase|0|107|107|164|0%|0|0||0|12|0%|
+|ThreatBase|0|107|107|165|0%|0|0||0|12|0%|
 |TimeEscapeDetector|16|1|17|42|94.1%|0|0||2|2|100%|
 |Transformation|3|0|3|25|100%|0|0||6|6|100%|
 |UIElementDragger|0|3|3|9|0%|0|0||0|1|0%|
 |UIElementMouseCapturer|0|11|11|18|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
-|UIManager|0|162|162|234|0%|0|0||0|27|0%|
+|UIManager|0|161|161|234|0%|0|0||0|27|0%|
 |Utilities|0|20|20|33|0%|0|0||0|5|0%|
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|0|4|4|11|0%|0|0||0|1|0%|
