@@ -39,7 +39,7 @@ jobs:
 
       - name: Test plugins
         working-directory: plugins
-        run: bazel test --test_output=errors //...
+        run: bazel test -c opt --test_output=errors //...
 
   test-all-modes:
     name: Test in ${{ matrix.testMode }}
