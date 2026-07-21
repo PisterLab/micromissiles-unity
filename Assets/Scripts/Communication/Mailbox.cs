@@ -111,6 +111,9 @@ public class Mailbox : MonoBehaviour {
 
   // Applies link loss/latency then queues a message into PQ for future delivery.
   public void Send(Message message) {
+    if (SimManager.Instance == null) {
+      return;
+    }
     if (message == null || !IsNodeActive(message.Sender) || !IsNodeActive(message.Receiver)) {
       return;
     }
@@ -131,6 +134,9 @@ public class Mailbox : MonoBehaviour {
 
   // Releases all queued messages in PQ whose scheduled delivery time has arrived.
   private void DeliverMessages() {
+    if (SimManager.Instance == null) {
+      return;
+    }
     float currentTime = SimManager.Instance.ElapsedTime;
     while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
       _messageBuffer.Add(_messageQueue.Dequeue());
