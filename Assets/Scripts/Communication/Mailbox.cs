@@ -136,7 +136,7 @@ public class Mailbox : MonoBehaviour {
       _messageBuffer.Add(_messageQueue.Dequeue());
     }
     foreach (PendingMessage pending in _messageBuffer) {
-      if (!IsReceiverValid(pending.Receiver)) {
+      if (pending.Receiver == null) {
         continue;
       }
       pending.Receiver.Receive(pending.Message);
@@ -161,8 +161,4 @@ public class Mailbox : MonoBehaviour {
     return new LinkRuntimeConfig(linkConfig.LatencySeconds, linkConfig.LatencyStdSeconds,
                                  linkConfig.PacketDeliveryRatio);
   }
-
-  // Rejects deliveries to destroyed or terminated receivers.
-  private static bool IsReceiverValid(CommsNode receiver) => receiver != null &&
-                                                             !receiver.IsTerminated;
 }
