@@ -111,7 +111,7 @@ public class Mailbox : MonoBehaviour {
 
   // Applies link loss/latency then queues a message into PQ for future delivery.
   public void Send(Message message) {
-    if (message == null || message.Sender == null || message.Receiver == null) {
+    if (message == null || !IsNodeActive(message.Sender) || !IsNodeActive(message.Receiver)) {
       return;
     }
 
@@ -136,7 +136,7 @@ public class Mailbox : MonoBehaviour {
       _messageBuffer.Add(_messageQueue.Dequeue());
     }
     foreach (PendingMessage pending in _messageBuffer) {
-      if (!IsReceiverValid(pending.Receiver)) {
+      if (!IsNodeActive(pending.Receiver)) {
         continue;
       }
       pending.Receiver.Receive(pending.Message);
@@ -162,7 +162,10 @@ public class Mailbox : MonoBehaviour {
                                  linkConfig.PacketDeliveryRatio);
   }
 
-  // Rejects deliveries to destroyed or terminated receivers.
-  private static bool IsReceiverValid(CommsNode receiver) => receiver != null &&
-                                                             !receiver.IsTerminated;
+  private static bool IsNodeActive(CommsNode node) {
+    if (node == null) {
+      return false;
+    }
+    return CommsManager.Instance == null || CommsManager.Instance.ContainsNode(node);
+  }
 }
