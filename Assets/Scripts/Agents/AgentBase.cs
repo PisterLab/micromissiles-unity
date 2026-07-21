@@ -217,6 +217,10 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
     if (EarlyFixedUpdateManager.Instance != null) {
       EarlyFixedUpdateManager.Instance.OnEarlyFixedUpdate -= UpdateTransformData;
     }
+    CommsManager commsManager = CommsManager.Instance;
+    if (commsManager != null) {
+      commsManager.RemoveNode(CommsNode);
+    }
   }
 
   // UpdateAgentConfig is called whenever the agent configuration is changed.

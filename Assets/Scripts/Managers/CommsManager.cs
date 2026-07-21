@@ -1,16 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// The comunication manager manages the communication nodes and handles communication between
-// agents.
+// The communication manager manages and owns the set of currently active communication nodes.
 public class CommsManager : MonoBehaviour {
   public static CommsManager Instance { get; private set; }
 
-  // Map from agent to the communication node.
   private readonly HashSet<CommsNode> _nodes = new HashSet<CommsNode>();
 
-  // Add a communication node. This function should only be used by the IADS.
-  public void AddNode(CommsNode node) => _nodes.Add(node);
+  public void AddNode(CommsNode node) {
+    if (node != null) {
+      _nodes.Add(node);
+    }
+  }
+
+  public void RemoveNode(CommsNode node) {
+    if (node != null) {
+      _nodes.Remove(node);
+    }
+  }
+
+  public bool ContainsNode(CommsNode node) => node != null && _nodes.Contains(node);
 
   private void Awake() {
     if (Instance != null && Instance != this) {
@@ -21,7 +30,6 @@ public class CommsManager : MonoBehaviour {
   }
 
   private void Start() {
-    SimManager.Instance.OnSimulationStarted += () => _nodes.Clear();
     SimManager.Instance.OnSimulationEnded += () => _nodes.Clear();
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
@@ -31,7 +39,7 @@ public class CommsManager : MonoBehaviour {
     var commsNode = new CommsNode(agent.StaticConfig.AgentType);
     agent.CommsNode = commsNode;
     agent.OnTerminated +=
-        _ => _nodes.Remove(commsNode);
-    _nodes.Add(commsNode);
+        _ => RemoveNode(commsNode);
+    AddNode(commsNode);
   }
 }

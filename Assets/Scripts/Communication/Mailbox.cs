@@ -111,7 +111,7 @@ public class Mailbox : MonoBehaviour {
 
   // Applies link loss/latency then queues a message into PQ for future delivery.
   public void Send(Message message) {
-    if (message == null || message.Sender == null || message.Receiver == null) {
+    if (message == null || !IsNodeActive(message.Sender) || !IsNodeActive(message.Receiver)) {
       return;
     }
 
@@ -136,7 +136,7 @@ public class Mailbox : MonoBehaviour {
       _messageBuffer.Add(_messageQueue.Dequeue());
     }
     foreach (PendingMessage pending in _messageBuffer) {
-      if (pending.Receiver == null) {
+      if (!IsNodeActive(pending.Receiver)) {
         continue;
       }
       pending.Receiver.Receive(pending.Message);
@@ -160,5 +160,12 @@ public class Mailbox : MonoBehaviour {
     }
     return new LinkRuntimeConfig(linkConfig.LatencySeconds, linkConfig.LatencyStdSeconds,
                                  linkConfig.PacketDeliveryRatio);
+  }
+
+  private static bool IsNodeActive(CommsNode node) {
+    if (node == null) {
+      return false;
+    }
+    return CommsManager.Instance == null || CommsManager.Instance.ContainsNode(node);
   }
 }
