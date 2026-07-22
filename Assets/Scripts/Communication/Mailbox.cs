@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Mailbox : MonoBehaviour {
   public static Mailbox Instance { get; private set; }
-  public event Action<Message> OnMessageDelivered;
 
   // Dictionary key for a one-way directed communication link between two agent types.
   private readonly struct LinkKey : IEquatable<LinkKey> {
@@ -96,7 +95,6 @@ public class Mailbox : MonoBehaviour {
         continue;
       }
       pending.Receiver.Receive(pending.Message);
-      OnMessageDelivered?.Invoke(pending.Message);
     }
     _messageBuffer.Clear();
   }

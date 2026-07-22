@@ -9,8 +9,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
-  public event Action<IInterceptor> OnAssignSubInterceptor;
-  public event Action<IHierarchical> OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
@@ -119,8 +117,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendAssignTargetRequest(IInterceptor subInterceptor) {
-    if (_assignTargetRequestReceiver == null || subInterceptor == null ||
-        subInterceptor.IsTerminated || CommsNode == null) {
+    if (subInterceptor == null || subInterceptor.IsTerminated) {
+      return;
+    }
+    if (_assignTargetRequestReceiver == null) {
+      // TODO(Joseph): Add failure visibility when an interceptor tries to route an assign-target
+      // request without a configured parent receiver, since this likely indicates comms miswiring.
+      return;
+    }
+    if (CommsNode == null) {
+      // TODO(Joseph): Add failure visibility when an interceptor cannot send an assign-target
+      // request because its CommsNode is missing.
       return;
     }
     Mailbox.GetOrCreateInstance().Send(
@@ -228,7 +235,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendReassignTargetRequest(IHierarchical target) {
-    if (_assignTargetRequestReceiver == null || target == null || CommsNode == null) {
+    if (target == null) {
+      return;
+    }
+    if (_assignTargetRequestReceiver == null) {
+      // TODO(Joseph): Add failure visibility when interceptor tries to propagate reassign-target
+      // request without a configured parent receiver, indicating error.
+      return;
+    }
+    if (CommsNode == null) {
+      // TODO(Joseph): Add failure visibility when interceptor cannot send reassign-target
+      // request because its CommsNode is missing.
       return;
     }
     Mailbox.GetOrCreateInstance().Send(

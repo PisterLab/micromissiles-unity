@@ -12,14 +12,6 @@ public interface IInterceptor : IAgent {
   // a threat, e.g., through a ground collision.
   event Action<IInterceptor> OnDestroyed;
 
-  // The OnAssignSubInterceptor event handler is called when a sub-interceptor has no assigned
-  // target and should be assigned one.
-  event Action<IInterceptor> OnAssignSubInterceptor;
-
-  // The OnReassignTarget event handler is called when a target needs to be re-assigned to another
-  // interceptor.
-  event Action<IHierarchical> OnReassignTarget;
-
   IEscapeDetector EscapeDetector { get; set; }
 
   // Maximum number of threats that this interceptor can target.

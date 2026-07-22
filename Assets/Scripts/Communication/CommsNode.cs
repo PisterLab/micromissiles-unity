@@ -16,6 +16,11 @@ public sealed class CommsNode {
     if (message == null) {
       throw new ArgumentNullException(nameof(message));
     }
-    OnMessageReceived?.Invoke(message);
+    if (OnMessageReceived == null) {
+      // TODO(Joseph): Add failure visibility when a CommsNode receives a message without any
+      // subscribers, indicating fault.
+      return;
+    }
+    OnMessageReceived.Invoke(message);
   }
 }
