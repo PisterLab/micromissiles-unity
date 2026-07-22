@@ -55,10 +55,6 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
       StopCoroutine(_hierarchyCoroutine);
       _hierarchyCoroutine = null;
     }
-    CommsManager commsManager = CommsManager.Instance;
-    if (commsManager != null) {
-      commsManager.RemoveNode(CommsNode);
-    }
   }
 
   private void RegisterSimulationStarted() {
