@@ -1,3 +1,5 @@
+# Demo With Latency Config.
+
 end_time: 300
 time_scale: 1
 asset_configs {
@@ -292,6 +294,53 @@ threat_swarm_configs {
         type: IDEAL
         frequency: 100
       }
+    }
+  }
+}
+communication_config {
+  link_config {
+    latency_seconds: 0.5
+    latency_std_seconds: 0.0
+    packet_delivery_ratio: 1.0
+  }
+
+  link_overrides {
+    from: VESSEL
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.3
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: VESSEL
+    link_config {
+      latency_seconds: 0.3
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: MISSILE_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.1
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+
+  link_overrides {
+    from: MISSILE_INTERCEPTOR
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.1
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
     }
   }
 }
