@@ -111,8 +111,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
-    // Evaluate the new target and decide whether to continue searching for other targets.
-    if (target != null && subInterceptor.EvaluateReassignedTarget(target)) {
+    if (target != null) {
+      SendAssignTargetResponse(subInterceptor, target);
       return;
     }
     SendAssignTargetRequest(subInterceptor);
@@ -125,6 +125,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
     Mailbox.GetOrCreateInstance().Send(
         new AssignTargetRequestMessage(CommsNode, _assignTargetRequestReceiver, subInterceptor));
+  }
+
+  private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
+    if (subInterceptor?.CommsNode == null || target == null || CommsNode == null) {
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new AssignTargetResponseMessage(CommsNode, subInterceptor.CommsNode, target));
   }
 
   public void SetAssignTargetRequestReceiver(CommsNode receiver) {
@@ -158,8 +166,15 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void HandleMessageReceived(Message message) {
-    if (message is AssignTargetRequestMessage assignTargetRequestMessage) {
-      AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+    switch (message) {
+      case AssignTargetRequestMessage assignTargetRequestMessage: {
+        AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+        break;
+      }
+      case AssignTargetResponseMessage assignTargetResponseMessage: {
+        EvaluateReassignedTarget(assignTargetResponseMessage.PayloadData.Target);
+        break;
+      }
     }
   }
 

@@ -71,10 +71,19 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
     foreach (var launcher in sortedLaunchers) {
       IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                     subInterceptor.CapacityRemaining);
-      if (subInterceptor.EvaluateReassignedTarget(target)) {
-        break;
+      if (target != null) {
+        SendAssignTargetResponse(subInterceptor, target);
+        return;
       }
     }
+  }
+
+  private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
+    if (subInterceptor?.CommsNode == null || target == null || CommsNode == null) {
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new AssignTargetResponseMessage(CommsNode, subInterceptor.CommsNode, target));
   }
 
   private void OnDestroy() {
