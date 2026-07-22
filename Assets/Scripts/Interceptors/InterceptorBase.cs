@@ -9,8 +9,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
-  public event Action<IInterceptor> OnAssignSubInterceptor;
-  public event Action<IHierarchical> OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
@@ -77,6 +75,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
+  private CommsNode _assignTargetRequestReceiver;
 
   public bool EvaluateReassignedTarget(IHierarchical target) {
     // Continue searching for targets if no target was found.
@@ -102,18 +101,49 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.IsTerminated ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
-    // Evaluate the new target and decide whether to continue searching for other targets.
-    if (!subInterceptor.EvaluateReassignedTarget(target)) {
-      // Propagate the sub-interceptor target assignment to the parent interceptor above.
-      OnAssignSubInterceptor?.Invoke(subInterceptor);
+    if (target != null) {
+      SendAssignTargetResponse(subInterceptor, target);
+      return;
     }
+    SendAssignTargetRequest(subInterceptor);
+  }
+
+  private void SendAssignTargetRequest(IInterceptor subInterceptor) {
+    if (subInterceptor == null || subInterceptor.IsTerminated) {
+      return;
+    }
+    if (_assignTargetRequestReceiver == null) {
+      // TODO(Joseph): Add failure visibility when an interceptor tries to route an assign-target
+      // request without a configured parent receiver, since this likely indicates comms miswiring.
+      return;
+    }
+    if (CommsNode == null) {
+      // TODO(Joseph): Add failure visibility when an interceptor cannot send an assign-target
+      // request because its CommsNode is missing.
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new AssignTargetRequestMessage(CommsNode, _assignTargetRequestReceiver, subInterceptor));
+  }
+
+  private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
+    if (subInterceptor?.CommsNode == null || target == null || CommsNode == null) {
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new AssignTargetResponseMessage(CommsNode, subInterceptor.CommsNode, target));
+  }
+
+  public void SetAssignTargetRequestReceiver(CommsNode receiver) {
+    _assignTargetRequestReceiver = receiver;
   }
 
   public void ReassignTarget(IHierarchical target) {
@@ -124,7 +154,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
-      OnReassignTarget?.Invoke(target);
+      SendReassignTargetRequest(target);
       return;
     }
 
@@ -133,10 +163,30 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void Start() {
     base.Start();
+    if (CommsNode != null) {
+      CommsNode.OnMessageReceived += HandleMessageReceived;
+    }
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
     OnDestroyed += RegisterDestroyed;
+  }
+
+  private void HandleMessageReceived(Message message) {
+    switch (message) {
+      case AssignTargetRequestMessage assignTargetRequestMessage: {
+        AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+        break;
+      }
+      case AssignTargetResponseMessage assignTargetResponseMessage: {
+        EvaluateReassignedTarget(assignTargetResponseMessage.PayloadData.Target);
+        break;
+      }
+      case ReassignTargetRequestMessage reassignTargetRequestMessage: {
+        ReassignTarget(reassignTargetRequestMessage.PayloadData.Target);
+        break;
+      }
+    }
   }
 
   protected override void FixedUpdate() {
@@ -156,7 +206,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       List<IHierarchical> escapingTargets =
           targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
       foreach (var target in escapingTargets) {
-        OnReassignTarget?.Invoke(target);
+        SendReassignTargetRequest(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
         RequestReassignment(this);
@@ -177,7 +227,35 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _rigidbody.AddForce(Acceleration, ForceMode.Acceleration);
   }
 
+  private void RequestReassignment(IInterceptor interceptor) {
+    if (interceptor.IsReassignable) {
+      // Request a new target from the parent interceptor.
+      SendAssignTargetRequest(interceptor);
+    }
+  }
+
+  private void SendReassignTargetRequest(IHierarchical target) {
+    if (target == null) {
+      return;
+    }
+    if (_assignTargetRequestReceiver == null) {
+      // TODO(Joseph): Add failure visibility when interceptor tries to propagate reassign-target
+      // request without a configured parent receiver, indicating error.
+      return;
+    }
+    if (CommsNode == null) {
+      // TODO(Joseph): Add failure visibility when interceptor cannot send reassign-target
+      // request because its CommsNode is missing.
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new ReassignTargetRequestMessage(CommsNode, _assignTargetRequestReceiver, target));
+  }
+
   protected override void OnDestroy() {
+    if (CommsNode != null) {
+      CommsNode.OnMessageReceived -= HandleMessageReceived;
+    }
     base.OnDestroy();
 
     if (_unassignedTargetsCoroutine != null) {
@@ -288,7 +366,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     RequestTargetReassignment(interceptor);
 
     // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
+    SendAssignTargetRequest(interceptor);
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -305,17 +383,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      OnReassignTarget?.Invoke(targetHierarchical);
+      SendReassignTargetRequest(targetHierarchical);
     }
 
     RequestReassignment(interceptor);
-  }
-
-  private void RequestReassignment(IInterceptor interceptor) {
-    if (interceptor.IsReassignable) {
-      // Request a new target from the parent interceptor.
-      OnAssignSubInterceptor?.Invoke(interceptor);
-    }
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {
@@ -344,7 +415,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
         var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
-          OnReassignTarget?.Invoke(target);
+          SendReassignTargetRequest(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       } else {
