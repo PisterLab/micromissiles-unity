@@ -12,11 +12,11 @@ public class MailboxTests : TestBase {
   public void SetUp() {
     _simManagerObject = new GameObject("SimManager");
     _simManager = _simManagerObject.AddComponent<SimManager>();
-    InvokePrivateMethod(_simManager, "Awake");
+    SetStaticInstance(_simManager);
 
     _mailboxObject = new GameObject("Mailbox");
     _mailbox = _mailboxObject.AddComponent<Mailbox>();
-    InvokePrivateMethod(_mailbox, "Awake");
+    SetStaticInstance(_mailbox);
   }
 
   [TearDown]
