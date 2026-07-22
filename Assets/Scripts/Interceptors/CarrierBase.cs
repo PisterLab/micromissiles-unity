@@ -28,15 +28,6 @@ public abstract class CarrierBase : InterceptorBase {
     _releaseCoroutine = StartCoroutine(ReleaseManager(_releasePeriod));
   }
 
-  protected override void OnDestroy() {
-    base.OnDestroy();
-
-    if (_releaseCoroutine != null) {
-      StopCoroutine(_releaseCoroutine);
-      _releaseCoroutine = null;
-    }
-  }
-
   private IEnumerator ReleaseManager(float period) {
     while (NumSubInterceptorsRemaining > 0) {
       // Determine whether to release the sub-interceptors.
@@ -46,8 +37,10 @@ public abstract class CarrierBase : InterceptorBase {
 
         foreach (var agent in releasedAgents) {
           if (agent is IInterceptor subInterceptor) {
-            subInterceptor.OnAssignSubInterceptor += AssignSubInterceptor;
             subInterceptor.OnReassignTarget += ReassignTarget;
+            if (subInterceptor is InterceptorBase interceptorBase) {
+              interceptorBase.SetAssignTargetRequestReceiver(CommsNode);
+            }
             if (subInterceptor.Movement is MissileMovement movement) {
               movement.FlightPhase = Simulation.FlightPhase.Boost;
             }
@@ -58,5 +51,14 @@ public abstract class CarrierBase : InterceptorBase {
       yield return new WaitForSeconds(period);
     }
     _releaseCoroutine = null;
+  }
+
+  protected override void OnDestroy() {
+    base.OnDestroy();
+
+    if (_releaseCoroutine != null) {
+      StopCoroutine(_releaseCoroutine);
+      _releaseCoroutine = null;
+    }
   }
 }

@@ -77,6 +77,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
+  private CommsNode _assignTargetRequestReceiver;
 
   public bool EvaluateReassignedTarget(IHierarchical target) {
     // Continue searching for targets if no target was found.
@@ -102,7 +103,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.IsTerminated ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
@@ -110,10 +112,23 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
     // Evaluate the new target and decide whether to continue searching for other targets.
-    if (!subInterceptor.EvaluateReassignedTarget(target)) {
-      // Propagate the sub-interceptor target assignment to the parent interceptor above.
-      OnAssignSubInterceptor?.Invoke(subInterceptor);
+    if (target != null && subInterceptor.EvaluateReassignedTarget(target)) {
+      return;
     }
+    SendAssignTargetRequest(subInterceptor);
+  }
+
+  private void SendAssignTargetRequest(IInterceptor subInterceptor) {
+    if (_assignTargetRequestReceiver == null || subInterceptor == null ||
+        subInterceptor.IsTerminated || CommsNode == null) {
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new AssignTargetRequestMessage(CommsNode, _assignTargetRequestReceiver, subInterceptor));
+  }
+
+  public void SetAssignTargetRequestReceiver(CommsNode receiver) {
+    _assignTargetRequestReceiver = receiver;
   }
 
   public void ReassignTarget(IHierarchical target) {
@@ -133,10 +148,19 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void Start() {
     base.Start();
+    if (CommsNode != null) {
+      CommsNode.OnMessageReceived += HandleMessageReceived;
+    }
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
     OnDestroyed += RegisterDestroyed;
+  }
+
+  private void HandleMessageReceived(Message message) {
+    if (message is AssignTargetRequestMessage assignTargetRequestMessage) {
+      AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+    }
   }
 
   protected override void FixedUpdate() {
@@ -177,7 +201,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     _rigidbody.AddForce(Acceleration, ForceMode.Acceleration);
   }
 
+  private void RequestReassignment(IInterceptor interceptor) {
+    if (interceptor.IsReassignable) {
+      // Request a new target from the parent interceptor.
+      SendAssignTargetRequest(interceptor);
+    }
+  }
+
   protected override void OnDestroy() {
+    if (CommsNode != null) {
+      CommsNode.OnMessageReceived -= HandleMessageReceived;
+    }
     base.OnDestroy();
 
     if (_unassignedTargetsCoroutine != null) {
@@ -288,7 +322,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     RequestTargetReassignment(interceptor);
 
     // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
+    SendAssignTargetRequest(interceptor);
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -309,13 +343,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
 
     RequestReassignment(interceptor);
-  }
-
-  private void RequestReassignment(IInterceptor interceptor) {
-    if (interceptor.IsReassignable) {
-      // Request a new target from the parent interceptor.
-      OnAssignSubInterceptor?.Invoke(interceptor);
-    }
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {

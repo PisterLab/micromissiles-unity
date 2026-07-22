@@ -47,7 +47,34 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
     // Create a communication node for the IADS.
     CommsNode = new CommsNode(Configs.AgentType.Iads);
+    CommsNode.OnMessageReceived += HandleMessageReceived;
     CommsManager.Instance.AddNode(CommsNode);
+  }
+
+  private void HandleMessageReceived(Message message) {
+    if (message is AssignTargetRequestMessage assignTargetRequestMessage) {
+      AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+    }
+  }
+
+  private void AssignSubInterceptor(IInterceptor subInterceptor) {
+    if (subInterceptor.CapacityRemaining <= 0) {
+      return;
+    }
+
+    // Pass the sub-interceptor through all the launchers in order of increasing distance between
+    // the sub-interceptor and the launcher's target.
+    var sortedLaunchers =
+        Launchers.Where(launcher => launcher.Target != null && !launcher.Target.IsTerminated)
+            .OrderBy(launcher =>
+                         Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
+    foreach (var launcher in sortedLaunchers) {
+      IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
+                                                    subInterceptor.CapacityRemaining);
+      if (subInterceptor.EvaluateReassignedTarget(target)) {
+        break;
+      }
+    }
   }
 
   private void OnDestroy() {
@@ -59,6 +86,9 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
     if (commsManager != null) {
       commsManager.RemoveNode(CommsNode);
     }
+    if (CommsNode != null) {
+      CommsNode.OnMessageReceived -= HandleMessageReceived;
+    }
   }
 
   private void RegisterSimulationStarted() {
@@ -67,36 +97,6 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
       commsManager.AddNode(CommsNode);
     }
     _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
-  }
-
-  private void RegisterSimulationEnded() {
-    if (_hierarchyCoroutine != null) {
-      StopCoroutine(_hierarchyCoroutine);
-      _hierarchyCoroutine = null;
-    }
-    _assets.Clear();
-    _launchers.Clear();
-    _newThreats.Clear();
-  }
-
-  public void RegisterNewAsset(IInterceptor asset) {
-    if (asset.HierarchicalAgent != null) {
-      _assets.Add(asset.HierarchicalAgent);
-    }
-  }
-
-  public void RegisterNewLauncher(IInterceptor launcher) {
-    if (launcher.HierarchicalAgent != null) {
-      launcher.OnAssignSubInterceptor += AssignSubInterceptor;
-      launcher.OnReassignTarget += ReassignTarget;
-      _launchers.Add(launcher.HierarchicalAgent);
-    }
-  }
-
-  public void RegisterNewThreat(IThreat threat) {
-    if (threat.HierarchicalAgent != null) {
-      _newThreats.Add(threat.HierarchicalAgent);
-    }
   }
 
   private IEnumerator HierarchyManager(float period) {
@@ -144,23 +144,29 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
     }
   }
 
-  private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
-      return;
+  private void RegisterSimulationEnded() {
+    if (_hierarchyCoroutine != null) {
+      StopCoroutine(_hierarchyCoroutine);
+      _hierarchyCoroutine = null;
     }
+    _assets.Clear();
+    _launchers.Clear();
+    _newThreats.Clear();
+  }
 
-    // Pass the sub-interceptor through all the launchers in order of increasing distance between
-    // the sub-interceptor and the launcher's target.
-    var sortedLaunchers =
-        Launchers.Where(launcher => launcher.Target != null && !launcher.Target.IsTerminated)
-            .OrderBy(launcher =>
-                         Vector3.Distance(subInterceptor.Position, launcher.Target.Position));
-    foreach (var launcher in sortedLaunchers) {
-      IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
-                                                    subInterceptor.CapacityRemaining);
-      if (subInterceptor.EvaluateReassignedTarget(target)) {
-        break;
+  public void RegisterNewAsset(IInterceptor asset) {
+    if (asset.HierarchicalAgent != null) {
+      _assets.Add(asset.HierarchicalAgent);
+    }
+  }
+
+  public void RegisterNewLauncher(IInterceptor launcher) {
+    if (launcher.HierarchicalAgent != null) {
+      launcher.OnReassignTarget += ReassignTarget;
+      if (launcher is InterceptorBase interceptorBase) {
+        interceptorBase.SetAssignTargetRequestReceiver(CommsNode);
       }
+      _launchers.Add(launcher.HierarchicalAgent);
     }
   }
 
@@ -179,5 +185,11 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
       return;
     }
     closestLauncher.Interceptor.ReassignTarget(target);
+  }
+
+  public void RegisterNewThreat(IThreat threat) {
+    if (threat.HierarchicalAgent != null) {
+      _newThreats.Add(threat.HierarchicalAgent);
+    }
   }
 }

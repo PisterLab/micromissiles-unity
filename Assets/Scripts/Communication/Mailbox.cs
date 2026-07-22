@@ -82,6 +82,25 @@ public class Mailbox : MonoBehaviour {
     DeliverMessages();
   }
 
+  // Releases all queued messages in PQ whose scheduled delivery time has arrived.
+  private void DeliverMessages() {
+    if (SimManager.Instance == null) {
+      return;
+    }
+    float currentTime = SimManager.Instance.ElapsedTime;
+    while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
+      _messageBuffer.Add(_messageQueue.Dequeue());
+    }
+    foreach (PendingMessage pending in _messageBuffer) {
+      if (!IsNodeActive(pending.Receiver)) {
+        continue;
+      }
+      pending.Receiver.Receive(pending.Message);
+      OnMessageDelivered?.Invoke(pending.Message);
+    }
+    _messageBuffer.Clear();
+  }
+
   // Rebuilds runtime link settings from the protobuf communication config.
   public void Configure(Configs.CommunicationConfig communicationConfig) {
     ClearPendingMessages();
@@ -119,6 +138,7 @@ public class Mailbox : MonoBehaviour {
     }
 
     LinkRuntimeConfig linkConfig = GetEffectiveLinkConfig(message.Sender, message.Receiver);
+    // TODO (Joseph): This logic is currently INCORRECT if PDR != 1.0.
     // Applies packet delivery ratio (PDR). This is done before sending into PQ.
     if (UnityEngine.Random.value > linkConfig.PacketDeliveryRatio) {
       return;
@@ -130,25 +150,6 @@ public class Mailbox : MonoBehaviour {
     float totalLatency = Mathf.Max(0f, linkConfig.LatencySeconds + jitter);
     float deliverAt = SimManager.Instance.ElapsedTime + totalLatency;
     _messageQueue.Enqueue(new PendingMessage(message, deliverAt), deliverAt);
-  }
-
-  // Releases all queued messages in PQ whose scheduled delivery time has arrived.
-  private void DeliverMessages() {
-    if (SimManager.Instance == null) {
-      return;
-    }
-    float currentTime = SimManager.Instance.ElapsedTime;
-    while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
-      _messageBuffer.Add(_messageQueue.Dequeue());
-    }
-    foreach (PendingMessage pending in _messageBuffer) {
-      if (!IsNodeActive(pending.Receiver)) {
-        continue;
-      }
-      pending.Receiver.Receive(pending.Message);
-      OnMessageDelivered?.Invoke(pending.Message);
-    }
-    _messageBuffer.Clear();
   }
 
   // Get information on effective runtime link config for a sender->receiver LinkRuntimeConfig pair.
