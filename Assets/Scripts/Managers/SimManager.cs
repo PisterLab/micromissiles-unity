@@ -77,8 +77,6 @@ public class SimManager : MonoBehaviour {
   private int _numThreatsTerminated = 0;
 
   public void StartSimulation() {
-    // Each simulation run reconfigures the mailbox and clears old queued messages.
-    Mailbox.GetOrCreateInstance().Configure(SimulationConfig?.CommunicationConfig);
     IsRunning = true;
     OnSimulationStarted?.Invoke();
     Debug.Log("Simulation started.");
