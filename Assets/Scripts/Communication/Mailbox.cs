@@ -169,7 +169,7 @@ public class Mailbox : MonoBehaviour {
   }
 
   private static bool IsNodeActive(CommsNode node) {
-    if (node == null) {
+    if (node == null || node.IsTerminated) {
       return false;
     }
     return CommsManager.Instance == null || CommsManager.Instance.ContainsNode(node);
