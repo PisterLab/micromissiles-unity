@@ -52,8 +52,15 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void HandleMessageReceived(Message message) {
-    if (message is AssignTargetRequestMessage assignTargetRequestMessage) {
-      AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+    switch (message) {
+      case AssignTargetRequestMessage assignTargetRequestMessage: {
+        AssignSubInterceptor(assignTargetRequestMessage.PayloadData.SubInterceptor);
+        break;
+      }
+      case ReassignTargetRequestMessage reassignTargetRequestMessage: {
+        ReassignTarget(reassignTargetRequestMessage.PayloadData.Target);
+        break;
+      }
     }
   }
 
@@ -171,7 +178,6 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
   public void RegisterNewLauncher(IInterceptor launcher) {
     if (launcher.HierarchicalAgent != null) {
-      launcher.OnReassignTarget += ReassignTarget;
       if (launcher is InterceptorBase interceptorBase) {
         interceptorBase.SetAssignTargetRequestReceiver(CommsNode);
       }

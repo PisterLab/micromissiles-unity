@@ -147,7 +147,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
-      OnReassignTarget?.Invoke(target);
+      SendReassignTargetRequest(target);
       return;
     }
 
@@ -175,6 +175,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         EvaluateReassignedTarget(assignTargetResponseMessage.PayloadData.Target);
         break;
       }
+      case ReassignTargetRequestMessage reassignTargetRequestMessage: {
+        ReassignTarget(reassignTargetRequestMessage.PayloadData.Target);
+        break;
+      }
     }
   }
 
@@ -195,7 +199,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       List<IHierarchical> escapingTargets =
           targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
       foreach (var target in escapingTargets) {
-        OnReassignTarget?.Invoke(target);
+        SendReassignTargetRequest(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
         RequestReassignment(this);
@@ -221,6 +225,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       // Request a new target from the parent interceptor.
       SendAssignTargetRequest(interceptor);
     }
+  }
+
+  private void SendReassignTargetRequest(IHierarchical target) {
+    if (_assignTargetRequestReceiver == null || target == null || CommsNode == null) {
+      return;
+    }
+    Mailbox.GetOrCreateInstance().Send(
+        new ReassignTargetRequestMessage(CommsNode, _assignTargetRequestReceiver, target));
   }
 
   protected override void OnDestroy() {
@@ -354,7 +366,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      OnReassignTarget?.Invoke(targetHierarchical);
+      SendReassignTargetRequest(targetHierarchical);
     }
 
     RequestReassignment(interceptor);
@@ -386,7 +398,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
         var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
-          OnReassignTarget?.Invoke(target);
+          SendReassignTargetRequest(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       } else {

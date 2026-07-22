@@ -37,7 +37,6 @@ public abstract class CarrierBase : InterceptorBase {
 
         foreach (var agent in releasedAgents) {
           if (agent is IInterceptor subInterceptor) {
-            subInterceptor.OnReassignTarget += ReassignTarget;
             if (subInterceptor is InterceptorBase interceptorBase) {
               interceptorBase.SetAssignTargetRequestReceiver(CommsNode);
             }
