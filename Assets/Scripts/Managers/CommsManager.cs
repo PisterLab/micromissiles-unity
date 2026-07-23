@@ -31,16 +31,19 @@ public class CommsManager : MonoBehaviour {
 
   private void Start() {
     SimManager.Instance.OnSimulationStarted += RegisterSimulationStarted;
-    SimManager.Instance.OnSimulationEnded += () => _nodes.Clear();
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
   }
 
   private void RegisterSimulationStarted() {
-    // Each simulation run reconfigures the mailbox and clears old queued messages.
-    _nodes.Clear();
+    // Each simulation run reconfigures the mailbox and drops queued messages from prior runs.
     Mailbox.GetOrCreateInstance().Configure(
         SimManager.Instance?.SimulationConfig?.CommunicationConfig);
+  }
+
+  private void RegisterSimulationEnded() {
+    _nodes.Clear();
   }
 
   private void RegisterNewAgent(IAgent agent) {
