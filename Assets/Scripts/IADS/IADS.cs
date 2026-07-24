@@ -47,7 +47,10 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
     // Create a communication node for the IADS.
     CommsNode = new CommsNode(Configs.AgentType.Iads);
-    CommsManager.Instance.AddNode(CommsNode);
+    CommsManager commsManager = CommsManager.Instance;
+    if (commsManager != null) {
+      commsManager.AddNode(CommsNode);
+    }
   }
 
   private void OnDestroy() {
