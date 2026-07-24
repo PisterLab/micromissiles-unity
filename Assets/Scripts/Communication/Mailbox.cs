@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Mailbox : MonoBehaviour {
   public static Mailbox Instance { get; private set; }
-  public event Action<CommsNode, Message> OnMessageDelivered;
+  public event Action<Message> OnMessageDelivered;
 
   // Dictionary key for a one-way directed communication link between two agent types.
   private readonly struct LinkKey : IEquatable<LinkKey> {
@@ -111,7 +111,10 @@ public class Mailbox : MonoBehaviour {
 
   // Applies link loss/latency then queues a message into PQ for future delivery.
   public void Send(Message message) {
-    if (message == null || message.Sender == null || message.Receiver == null) {
+    if (SimManager.Instance == null) {
+      return;
+    }
+    if (message == null || !IsNodeActive(message.Sender) || !IsNodeActive(message.Receiver)) {
       return;
     }
 
@@ -131,16 +134,19 @@ public class Mailbox : MonoBehaviour {
 
   // Releases all queued messages in PQ whose scheduled delivery time has arrived.
   private void DeliverMessages() {
+    if (SimManager.Instance == null) {
+      return;
+    }
     float currentTime = SimManager.Instance.ElapsedTime;
     while (!_messageQueue.IsEmpty() && currentTime >= _messageQueue.Peek().DeliverAt) {
       _messageBuffer.Add(_messageQueue.Dequeue());
     }
     foreach (PendingMessage pending in _messageBuffer) {
-      if (!IsReceiverValid(pending.Receiver)) {
+      if (!IsNodeActive(pending.Receiver)) {
         continue;
       }
       pending.Receiver.Receive(pending.Message);
-      OnMessageDelivered?.Invoke(pending.Receiver, pending.Message);
+      OnMessageDelivered?.Invoke(pending.Message);
     }
     _messageBuffer.Clear();
   }
@@ -162,7 +168,10 @@ public class Mailbox : MonoBehaviour {
                                  linkConfig.PacketDeliveryRatio);
   }
 
-  // Rejects deliveries to destroyed or terminated receivers.
-  private static bool IsReceiverValid(CommsNode receiver) => receiver != null &&
-                                                             !receiver.IsTerminated;
+  private static bool IsNodeActive(CommsNode node) {
+    if (node == null || node.IsTerminated) {
+      return false;
+    }
+    return CommsManager.Instance == null || CommsManager.Instance.ContainsNode(node);
+  }
 }
