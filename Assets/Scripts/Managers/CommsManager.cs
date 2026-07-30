@@ -26,7 +26,7 @@ public class CommsManager : MonoBehaviour {
   }
 
   private void Start() {
-    SimManager.Instance.OnSimulationEnded += () => _nodes.Clear();
+    SimManager.Instance.OnSimulationEnded += ClearNodes;
     SimManager.Instance.OnSimulationStarted += _mailbox.ClearPendingMessageQueue;
     SimManager.Instance.OnSimulationEnded += _mailbox.ClearPendingMessageQueue;
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
@@ -37,12 +37,19 @@ public class CommsManager : MonoBehaviour {
     if (SimManager.Instance == null || _mailbox == null) {
       return;
     }
+    SimManager.Instance.OnSimulationEnded -= ClearNodes;
     SimManager.Instance.OnSimulationStarted -= _mailbox.ClearPendingMessageQueue;
     SimManager.Instance.OnSimulationEnded -= _mailbox.ClearPendingMessageQueue;
+    SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
+    SimManager.Instance.OnNewLauncher -= RegisterNewAgent;
   }
 
   private void FixedUpdate() {
-    Mailbox.Instance.UpdateMailbox();
+    _mailbox.UpdateMailbox();
+  }
+
+  private void ClearNodes() {
+    _nodes.Clear();
   }
 
   private void RegisterNewAgent(IAgent agent) {

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 public class Mailbox {
-  public static Mailbox Instance { get; private set; }
   // OnMessageReceived is for logging purposes.
   public event Action<Message> OnMessageReceived;
 
@@ -12,10 +11,6 @@ public class Mailbox {
 
   private readonly PriorityQueue<PendingMessage> _messageQueue =
       new PriorityQueue<PendingMessage>();
-
-  public Mailbox() {
-    Instance = this;
-  }
 
   public void SendMessage(Message message) {
     if (message == null) {
@@ -35,18 +30,18 @@ public class Mailbox {
 
     // TODO (Joseph): This packet delivery ratio is a temporary solution. Fundamental
     // firing/communication logic needs to change.
-    float packetDeliveryRatio = ToValidDeliveryRatio(config.PacketDeliveryRatio);
+    float packetDeliveryRatio = config.PacketDeliveryRatio;
     if (packetDeliveryRatio <= 0f ||
         (packetDeliveryRatio < 1f && UnityEngine.Random.value >= packetDeliveryRatio)) {
       return;
     }
 
-    float latencySeconds = ValidVal(config.LatencySeconds);
-    float latencyStdSeconds = ValidVal(config.LatencyStdSeconds);
+    float latencySeconds = config.LatencySeconds;
+    float latencyStdSeconds = config.LatencyStdSeconds;
     float jitter =
         latencyStdSeconds > 0f ? Utilities.SampleStandardNormal() * latencyStdSeconds : 0f;
     float totalLatency = Math.Max(0f, latencySeconds + jitter);
-    float deliverAt = (SimManager.Instance?.ElapsedTime ?? 0f) + totalLatency;
+    float deliverAt = SimManager.Instance.ElapsedTime + totalLatency;
 
     // pendingMessage is a wrapper that includes the message and deliverAt.
     var pendingMessage = new PendingMessage(message, deliverAt);
@@ -55,7 +50,7 @@ public class Mailbox {
 
   private Configs.LinkConfig GetLinkConfig(Message message) {
     Configs.CommunicationConfig communicationConfig =
-        SimManager.Instance?.SimulationConfig?.CommunicationConfig;
+        SimManager.Instance.SimulationConfig?.CommunicationConfig;
     if (communicationConfig == null) {
       return _fallbackLinkConfig;
     }
@@ -92,13 +87,5 @@ public class Mailbox {
 
   public void ClearPendingMessageQueue() {
     _messageQueue.Clear();
-  }
-
-  private static float ToValidDeliveryRatio(float value) {
-    return float.IsNaN(value) ? 1f : Mathf.Clamp01(value);
-  }
-
-  private static float ValidVal(float value) {
-    return float.IsNaN(value) || float.IsInfinity(value) ? 0f : Math.Max(0f, value);
   }
 }
