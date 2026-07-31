@@ -52,8 +52,18 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void OnDestroy() {
+    if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationStarted -= RegisterSimulationStarted;
+      SimManager.Instance.OnSimulationEnded -= RegisterSimulationEnded;
+      SimManager.Instance.OnNewAsset -= RegisterNewAsset;
+      SimManager.Instance.OnNewLauncher -= RegisterNewLauncher;
+      SimManager.Instance.OnNewThreat -= RegisterNewThreat;
+    }
     if (CommsNode != null) {
       CommsNode.OnReceived -= HandleMessage;
+      if (CommsManager.Instance != null) {
+        CommsManager.Instance.RemoveNode(CommsNode);
+      }
     }
     if (_hierarchyCoroutine != null) {
       StopCoroutine(_hierarchyCoroutine);

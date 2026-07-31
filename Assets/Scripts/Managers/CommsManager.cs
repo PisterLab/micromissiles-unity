@@ -15,6 +15,8 @@ public class CommsManager : MonoBehaviour {
   // Add a communication node. This function should only be used by the IADS.
   public void AddNode(CommsNode node) => _nodes.Add(node);
 
+  public void RemoveNode(CommsNode node) => _nodes.Remove(node);
+
   public bool ContainsNode(CommsNode node) => _nodes.Contains(node);
 
   private void Awake() {
@@ -44,10 +46,15 @@ public class CommsManager : MonoBehaviour {
   }
 
   private void RegisterNewAgent(IAgent agent) {
+    if (agent.CommsNode != null) {
+      _nodes.Add(agent.CommsNode);
+      return;
+    }
+
     var commsNode = new CommsNode(agent.StaticConfig.AgentType);
     agent.CommsNode = commsNode;
     agent.OnTerminated +=
-        _ => _nodes.Remove(commsNode);
+        _ => RemoveNode(commsNode);
     _nodes.Add(commsNode);
   }
 }
