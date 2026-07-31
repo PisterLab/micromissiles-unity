@@ -12,6 +12,9 @@ public class CommsManager : MonoBehaviour {
   // Map from agent to the communication node.
   private readonly HashSet<CommsNode> _nodes = new HashSet<CommsNode>();
 
+  // Keep track of received messages for logging purposes.
+  private readonly HashSet<Message> _receivedMessages = new HashSet<Message>();
+
   // Add a communication node. This function should only be used by the IADS.
   public void AddNode(CommsNode node) => _nodes.Add(node);
 
@@ -35,8 +38,35 @@ public class CommsManager : MonoBehaviour {
     };
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
+    Mailbox.OnMessageReceived += RegisterMessageReceived;
   }
 
+<<<<<<< HEAD
+=======
+  private void OnDestroy() {
+    if (SimManager.Instance == null || _mailbox == null) {
+      return;
+    }
+    SimManager.Instance.OnSimulationEnded -= ClearNodes;
+    SimManager.Instance.OnSimulationStarted -= _mailbox.ClearPendingMessageQueue;
+    SimManager.Instance.OnSimulationEnded -= _mailbox.ClearPendingMessageQueue;
+    SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
+    SimManager.Instance.OnNewLauncher -= RegisterNewAgent;
+    Mailbox.OnMessageReceived -= RegisterMessageReceived;
+  }
+
+  private void RegisterMessageReceived(Message message) {
+    if (message == null) {
+      return;
+    }
+    _receivedMessages.Add(message);
+    // TODO (Joseph): Need to find a way to identify which agent sent/received the message for
+    // logging purposes. Currently it just shows EndpointType.
+    Debug.Log(
+        $"{message.Sender.EndpointType} sent {message.Type} to {message.Receiver.EndpointType}.");
+  }
+
+>>>>>>> 6d8f8cecf (Added Logging and TODOs)
   private void FixedUpdate() {
     _mailbox.Deliver();
   }

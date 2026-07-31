@@ -202,6 +202,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
+    // TODO (Joseph): In the next PR, add "private bool _isAssignTargetRequestPending;" to prevent
+    // duplicate assignment requests while waiting for a mailbox response. (May overflow mailbox)
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       RequestReassignment(this);
     }
