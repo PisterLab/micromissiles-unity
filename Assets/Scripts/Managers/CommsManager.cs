@@ -39,6 +39,10 @@ public class CommsManager : MonoBehaviour {
     _mailbox.Deliver();
   }
 
+  public void SendMessage(Message message) {
+    _mailbox.SendMessage(message);
+  }
+
   private void RegisterNewAgent(IAgent agent) {
     var commsNode = new CommsNode(agent.StaticConfig.AgentType);
     agent.CommsNode = commsNode;

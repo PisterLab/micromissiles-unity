@@ -9,8 +9,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
-  public event Action<IInterceptor> OnAssignSubInterceptor;
-  public event Action<IHierarchical> OnReassignTarget;
 
   // Default proportional navigation controller gain.
   private const float _proportionalNavigationGain = 5f;
@@ -78,7 +76,41 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Coroutine for handling unassigned targets.
   private Coroutine _unassignedTargetsCoroutine;
 
-  public bool EvaluateReassignedTarget(IHierarchical target) {
+  // Record the parent communication node for communication.
+  private CommsNode _parentCommsNode;
+
+  public void SetParentCommsNode(CommsNode parentCommsNode) {
+    _parentCommsNode = parentCommsNode;
+  }
+
+  private void SendAssignTargetRequest(IInterceptor subInterceptor) {
+    if (CommsNode == null || _parentCommsNode == null || subInterceptor?.CommsNode == null) {
+      return;
+    }
+    CommsManager.Instance.SendMessage(
+        new AssignTargetRequestMessage(CommsNode, _parentCommsNode, subInterceptor));
+  }
+
+  private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
+    if (CommsNode == null || subInterceptor?.CommsNode == null || target == null ||
+        target.IsTerminated) {
+      return;
+    }
+    CommsManager.Instance.SendMessage(
+        new AssignTargetResponseMessage(CommsNode, subInterceptor.CommsNode, target));
+  }
+
+  private void SendReassignTargetRequest(IHierarchical target) {
+    if (CommsNode == null || _parentCommsNode == null || target == null || target.IsTerminated) {
+      return;
+    }
+    CommsManager.Instance.SendMessage(
+        new ReassignTargetRequestMessage(CommsNode, _parentCommsNode, target));
+  }
+
+  // ShouldAcceptReassignedTarget only decides whether the interceptor should accept the new target.
+  // It does NOT assign the new target to the interceptor.
+  public bool ShouldAcceptReassignedTarget(IHierarchical target) {
     // Continue searching for targets if no target was found.
     if (target == null) {
       return false;
@@ -86,7 +118,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
-      HierarchicalAgent.Target = target;
       return true;
     }
 
@@ -94,26 +125,35 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     float currentFractionalSpeed =
         FractionalSpeed.Calculate(this, HierarchicalAgent.Target.Position);
     float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
-    if (newFractionalSpeed > currentFractionalSpeed) {
-      HierarchicalAgent.Target = target;
-      return true;
+    return newFractionalSpeed > currentFractionalSpeed;
+  }
+
+  // EvaluateReassignedTarget assigns the new target to the interceptor only after received from
+  // mailbox.
+  public bool EvaluateReassignedTarget(IHierarchical target) {
+    if (!ShouldAcceptReassignedTarget(target)) {
+      return false;
     }
-    return false;
+    HierarchicalAgent.Target = target;
+    return true;
   }
 
   public void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
-    // Evaluate the new target and decide whether to continue searching for other targets.
-    if (!subInterceptor.EvaluateReassignedTarget(target)) {
-      // Propagate the sub-interceptor target assignment to the parent interceptor above.
-      OnAssignSubInterceptor?.Invoke(subInterceptor);
+    if (target != null && !target.IsTerminated &&
+        subInterceptor.ShouldAcceptReassignedTarget(target)) {
+      SendAssignTargetResponse(subInterceptor, target);
+      return;
     }
+
+    // Propagate the sub-interceptor target assignment to the parent interceptor above.
+    SendAssignTargetRequest(subInterceptor);
   }
 
   public void ReassignTarget(IHierarchical target) {
@@ -124,7 +164,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
-      OnReassignTarget?.Invoke(target);
+      SendReassignTargetRequest(target);
       return;
     }
 
@@ -137,6 +177,24 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
     OnDestroyed += RegisterDestroyed;
+    CommsNode.OnReceived += HandleMessage;
+  }
+
+  private void HandleMessage(Message message) {
+    switch (message) {
+      case AssignTargetRequestMessage request:
+        AssignSubInterceptor(request.PayloadData.SubInterceptor);
+        break;
+      case AssignTargetResponseMessage response:
+        EvaluateReassignedTarget(response.PayloadData.Target);
+        break;
+      case ReassignTargetRequestMessage request:
+        ReassignTarget(request.PayloadData.Target);
+        break;
+      default:
+        Debug.LogWarning($"Message type {message.Type} is not valid.");
+        break;
+    }
   }
 
   protected override void FixedUpdate() {
@@ -156,7 +214,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       List<IHierarchical> escapingTargets =
           targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
       foreach (var target in escapingTargets) {
-        OnReassignTarget?.Invoke(target);
+        SendReassignTargetRequest(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
         RequestReassignment(this);
@@ -179,6 +237,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void OnDestroy() {
     base.OnDestroy();
+
+    if (CommsNode != null) {
+      CommsNode.OnReceived -= HandleMessage;
+    }
 
     if (_unassignedTargetsCoroutine != null) {
       StopCoroutine(_unassignedTargetsCoroutine);
@@ -288,7 +350,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     RequestTargetReassignment(interceptor);
 
     // Request a new target from the parent interceptor.
-    OnAssignSubInterceptor?.Invoke(interceptor);
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -305,7 +366,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     List<IHierarchical> targetHierarchicals =
         target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
     foreach (var targetHierarchical in targetHierarchicals) {
-      OnReassignTarget?.Invoke(targetHierarchical);
+      SendReassignTargetRequest(targetHierarchical);
     }
 
     RequestReassignment(interceptor);
@@ -314,7 +375,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private void RequestReassignment(IInterceptor interceptor) {
     if (interceptor.IsReassignable) {
       // Request a new target from the parent interceptor.
-      OnAssignSubInterceptor?.Invoke(interceptor);
+      SendAssignTargetRequest(interceptor);
     }
   }
 
@@ -344,7 +405,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
         var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
-          OnReassignTarget?.Invoke(target);
+          SendReassignTargetRequest(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       } else {

@@ -47,10 +47,14 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
     // Create a communication node for the IADS.
     CommsNode = new CommsNode(Configs.AgentType.Iads);
+    CommsNode.OnReceived += HandleMessage;
     CommsManager.Instance.AddNode(CommsNode);
   }
 
   private void OnDestroy() {
+    if (CommsNode != null) {
+      CommsNode.OnReceived -= HandleMessage;
+    }
     if (_hierarchyCoroutine != null) {
       StopCoroutine(_hierarchyCoroutine);
       _hierarchyCoroutine = null;
@@ -58,6 +62,7 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void RegisterSimulationStarted() {
+    CommsManager.Instance.AddNode(CommsNode);
     _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
   }
 
@@ -79,8 +84,7 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
 
   public void RegisterNewLauncher(IInterceptor launcher) {
     if (launcher.HierarchicalAgent != null) {
-      launcher.OnAssignSubInterceptor += AssignSubInterceptor;
-      launcher.OnReassignTarget += ReassignTarget;
+      launcher.SetParentCommsNode(CommsNode);
       _launchers.Add(launcher.HierarchicalAgent);
     }
   }
@@ -88,6 +92,20 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   public void RegisterNewThreat(IThreat threat) {
     if (threat.HierarchicalAgent != null) {
       _newThreats.Add(threat.HierarchicalAgent);
+    }
+  }
+
+  private void HandleMessage(Message message) {
+    switch (message) {
+      case AssignTargetRequestMessage request:
+        AssignSubInterceptor(request.PayloadData.SubInterceptor);
+        break;
+      case ReassignTargetRequestMessage request:
+        ReassignTarget(request.PayloadData.Target);
+        break;
+      default:
+        Debug.LogWarning($"IADS received unexpected message type {message.Type}.");
+        break;
     }
   }
 
@@ -137,7 +155,8 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0 ||
+        subInterceptor.CommsNode == null) {
       return;
     }
 
@@ -150,7 +169,9 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
     foreach (var launcher in sortedLaunchers) {
       IHierarchical target = launcher.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                     subInterceptor.CapacityRemaining);
-      if (subInterceptor.EvaluateReassignedTarget(target)) {
+      if (subInterceptor.ShouldAcceptReassignedTarget(target)) {
+        CommsManager.Instance.SendMessage(
+            new AssignTargetResponseMessage(CommsNode, subInterceptor.CommsNode, target));
         break;
       }
     }
