@@ -38,7 +38,7 @@ public class CommsManager : MonoBehaviour {
     };
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
-    Mailbox.OnMessageReceived += RegisterMessageReceived;
+    _mailbox.OnMessageReceived += RegisterMessageReceived;
   }
 
 <<<<<<< HEAD
@@ -52,7 +52,7 @@ public class CommsManager : MonoBehaviour {
     SimManager.Instance.OnSimulationEnded -= _mailbox.ClearPendingMessageQueue;
     SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
     SimManager.Instance.OnNewLauncher -= RegisterNewAgent;
-    Mailbox.OnMessageReceived -= RegisterMessageReceived;
+    _mailbox.OnMessageReceived -= RegisterMessageReceived;
   }
 
   private void RegisterMessageReceived(Message message) {
