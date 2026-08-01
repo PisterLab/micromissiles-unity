@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-// The mailbox handles the communication latencies for agent-to-agent communication. The mailbox.cs
+// The mailbox handles the communication latencies for agent-to-agent communication. The mailbox
 // owns the message queue and releases messages to be delivered after a set latency.
 public class Mailbox {
   private static readonly Configs.LinkConfig _defaultLinkConfig = new Configs.LinkConfig {
@@ -17,6 +17,7 @@ public class Mailbox {
     if (message == null) {
       return;
     }
+
     if (CommsManager.Instance.ContainsNode(message.Receiver)) {
       Configs.LinkConfig config = GetLinkConfig(message);
 
