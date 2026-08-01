@@ -77,18 +77,18 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private Coroutine _unassignedTargetsCoroutine;
 
   // Record the parent communication node for communication.
-  private CommsNode _parentCommsNode;
+  public CommsNode ParentCommsNode { get; set; }
 
   public void SetParentCommsNode(CommsNode parentCommsNode) {
-    _parentCommsNode = parentCommsNode;
+    ParentCommsNode = parentCommsNode;
   }
 
   private void SendAssignTargetRequest(IInterceptor subInterceptor) {
-    if (CommsNode == null || _parentCommsNode == null || subInterceptor?.CommsNode == null) {
+    if (CommsNode == null || ParentCommsNode == null || subInterceptor?.CommsNode == null) {
       return;
     }
     CommsManager.Instance.SendMessage(
-        new AssignTargetRequestMessage(CommsNode, _parentCommsNode, subInterceptor));
+        new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor));
   }
 
   private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
@@ -101,11 +101,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendReassignTargetRequest(IHierarchical target) {
-    if (CommsNode == null || _parentCommsNode == null || target == null || target.IsTerminated) {
+    if (CommsNode == null || ParentCommsNode == null || target == null || target.IsTerminated) {
       return;
     }
     CommsManager.Instance.SendMessage(
-        new ReassignTargetRequestMessage(CommsNode, _parentCommsNode, target));
+        new ReassignTargetRequestMessage(CommsNode, ParentCommsNode, target));
   }
 
   // ShouldAcceptReassignedTarget only decides whether the interceptor should accept the new target.

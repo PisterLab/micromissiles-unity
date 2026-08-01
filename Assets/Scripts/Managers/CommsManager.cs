@@ -12,9 +12,6 @@ public class CommsManager : MonoBehaviour {
   // Map from agent to the communication node.
   private readonly HashSet<CommsNode> _nodes = new HashSet<CommsNode>();
 
-  // Keep track of received messages for logging purposes.
-  private readonly HashSet<Message> _receivedMessages = new HashSet<Message>();
-
   // Add a communication node. This function should only be used by the IADS.
   public void AddNode(CommsNode node) => _nodes.Add(node);
 
@@ -55,6 +52,7 @@ public class CommsManager : MonoBehaviour {
     _mailbox.OnMessageReceived -= RegisterMessageReceived;
   }
 
+<<<<<<< HEAD
   private void RegisterMessageReceived(Message message) {
     if (message == null) {
       return;
@@ -67,6 +65,8 @@ public class CommsManager : MonoBehaviour {
   }
 
 >>>>>>> 6d8f8cecf (Added Logging and TODOs)
+=======
+>>>>>>> e450f4d3c (Fixed Titan Comments)
   private void FixedUpdate() {
     _mailbox.Deliver();
   }

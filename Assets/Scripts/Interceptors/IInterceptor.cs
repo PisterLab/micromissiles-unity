@@ -45,10 +45,6 @@ public interface IInterceptor : IAgent {
   // Return whether the interceptor should accept the new target.
   bool ShouldAcceptReassignedTarget(IHierarchical target);
 
-  // Evaluate whether the interceptor should be reassigned to the new target. Return whether the new
-  // target was accepted.
-  bool EvaluateReassignedTarget(IHierarchical target);
-
   // Assign a new target to the sub-interceptor.
   void AssignSubInterceptor(IInterceptor subInterceptor);
 

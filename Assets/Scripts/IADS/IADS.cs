@@ -52,19 +52,6 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void OnDestroy() {
-    if (SimManager.Instance != null) {
-      SimManager.Instance.OnSimulationStarted -= RegisterSimulationStarted;
-      SimManager.Instance.OnSimulationEnded -= RegisterSimulationEnded;
-      SimManager.Instance.OnNewAsset -= RegisterNewAsset;
-      SimManager.Instance.OnNewLauncher -= RegisterNewLauncher;
-      SimManager.Instance.OnNewThreat -= RegisterNewThreat;
-    }
-    if (CommsNode != null) {
-      CommsNode.OnReceived -= HandleMessage;
-      if (CommsManager.Instance != null) {
-        CommsManager.Instance.RemoveNode(CommsNode);
-      }
-    }
     if (_hierarchyCoroutine != null) {
       StopCoroutine(_hierarchyCoroutine);
       _hierarchyCoroutine = null;
@@ -72,7 +59,6 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void RegisterSimulationStarted() {
-    CommsManager.Instance.AddNode(CommsNode);
     _hierarchyCoroutine = StartCoroutine(HierarchyManager(_hierarchyUpdatePeriod));
   }
 
@@ -165,8 +151,7 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0 ||
-        subInterceptor.CommsNode == null) {
+    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 
