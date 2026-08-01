@@ -1,24 +1,24 @@
 {
   "summary": {
-    "generatedon": "2026-07-20T06:05:25Z",
+    "generatedon": "2026-08-01T22:16:57Z",
     "parser": "MultiReportParser (2x OpenCoverParser)",
     "assemblies": 1,
-    "classes": 112,
-    "files": 102,
+    "classes": 113,
+    "files": 103,
     "coveredlines": 1050,
-    "uncoveredlines": 2807,
-    "coverablelines": 3857,
-    "totallines": 6913,
-    "linecoverage": 27.2,
+    "uncoveredlines": 2860,
+    "coverablelines": 3910,
+    "totallines": 7003,
+    "linecoverage": 26.8,
     "coveredbranches": 0,
     "totalbranches": 0,
     "coveredmethods": 305,
-    "totalmethods": 773,
-    "methodcoverage": 39.4
+    "totalmethods": 782,
+    "methodcoverage": 39
  },
   "coverage": {
     "assemblies": [
-      { "name": "bamlab.micromissiles", "classes": 112, "coverage": 27.2, "coveredlines": 1050, "coverablelines": 3857, "totallines": 7399, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 39.4, "coveredmethods": 305, "totalmethods": 773, "classesinassembly": [
+      { "name": "bamlab.micromissiles", "classes": 113, "coverage": 26.8, "coveredlines": 1050, "coverablelines": 3910, "totallines": 7489, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 39, "coveredmethods": 305, "totalmethods": 782, "classesinassembly": [
         { "name": "AccelerationTransformation", "coverage": 100, "coveredlines": 1, "coverablelines": 1, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "AerialMovement", "coverage": 100, "coveredlines": 21, "coverablelines": 21, "totallines": 36, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 4, "totalmethods": 4 },
         { "name": "AgentBase", "coverage": 54.5, "coveredlines": 96, "coverablelines": 176, "totallines": 337, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 61.9, "coveredmethods": 39, "totalmethods": 63 },
@@ -34,7 +34,7 @@
         { "name": "CarrierBase", "coverage": 0, "coveredlines": 0, "coverablelines": 35, "totallines": 62, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "CarrierInterceptor", "coverage": 0, "coveredlines": 0, "coverablelines": 11, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "Cluster", "coverage": 100, "coveredlines": 18, "coverablelines": 18, "totallines": 36, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 7, "totalmethods": 7 },
-        { "name": "CommsManager", "coverage": 0, "coveredlines": 0, "coverablelines": 22, "totallines": 37, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 7 },
+        { "name": "CommsManager", "coverage": 0, "coveredlines": 0, "coverablelines": 30, "totallines": 49, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 9 },
         { "name": "CommsNode", "coverage": 0, "coveredlines": 0, "coverablelines": 7, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "ConfigLoader", "coverage": 31.1, "coveredlines": 14, "coverablelines": 45, "totallines": 96, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 28.5, "coveredmethods": 2, "totalmethods": 7 },
         { "name": "Constants", "coverage": 57.1, "coveredlines": 4, "coverablelines": 7, "totallines": 18, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 66.6, "coveredmethods": 2, "totalmethods": 3 },
@@ -80,6 +80,7 @@
         { "name": "LaunchPlan", "coverage": 100, "coveredlines": 11, "coverablelines": 11, "totallines": 27, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 },
         { "name": "LaunchPlannerBase", "coverage": 100, "coveredlines": 6, "coverablelines": 6, "totallines": 14, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 5, "totalmethods": 5 },
         { "name": "LinearExtrapolator", "coverage": 85.7, "coveredlines": 6, "coverablelines": 7, "totallines": 22, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
+        { "name": "Mailbox", "coverage": 0, "coveredlines": 0, "coverablelines": 42, "totallines": 73, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 6 },
         { "name": "MassReleaseStrategyBase", "coverage": 0, "coveredlines": 0, "coverablelines": 46, "totallines": 86, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
         { "name": "MaxSpeedAssignment", "coverage": 87.5, "coveredlines": 7, "coverablelines": 8, "totallines": 22, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 2, "totalmethods": 2 },
         { "name": "Message", "coverage": 0, "coveredlines": 0, "coverablelines": 8, "totallines": 62, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 4 },
@@ -99,7 +100,7 @@
         { "name": "PositionTransformation", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 25, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 8, "totalmethods": 8 },
         { "name": "PredictorBase", "coverage": 100, "coveredlines": 4, "coverablelines": 4, "totallines": 11, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 3, "totalmethods": 3 },
         { "name": "PredictorState", "coverage": 100, "coveredlines": 3, "coverablelines": 3, "totallines": 13, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 100, "coveredmethods": 6, "totalmethods": 6 },
-        { "name": "PriorityQueue[T]", "coverage": 91.6, "coveredlines": 33, "coverablelines": 36, "totallines": 57, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 85.7, "coveredmethods": 6, "totalmethods": 7 },
+        { "name": "PriorityQueue[T]", "coverage": 84.6, "coveredlines": 33, "coverablelines": 39, "totallines": 62, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 75, "coveredmethods": 6, "totalmethods": 8 },
         { "name": "ProximityReleaseStrategy", "coverage": 0, "coveredlines": 0, "coverablelines": 17, "totallines": 43, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },
         { "name": "ReassignTargetRequestMessage", "coverage": 0, "coveredlines": 0, "coverablelines": 2, "totallines": 62, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 1 },
         { "name": "ReassignTargetRequestPayload", "coverage": 0, "coveredlines": 0, "coverablelines": 4, "totallines": 33, "branchcoverage": null, "coveredbranches": 0, "totalbranches": 0, "methodcoverage": 0, "coveredmethods": 0, "totalmethods": 2 },

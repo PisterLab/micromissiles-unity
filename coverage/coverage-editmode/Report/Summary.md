@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/20/2026 - 06:05:25 |
+| Generated on: | 08/01/2026 - 22:16:57 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
-| Classes: | 112 |
-| Files: | 102 |
+| Classes: | 113 |
+| Files: | 103 |
 | Covered lines: | 1050 |
-| Uncovered lines: | 2807 |
-| Coverable lines: | 3857 |
-| Total lines: | 6913 |
-| Line coverage: | 27.2% (1050 of 3857) |
+| Uncovered lines: | 2860 |
+| Coverable lines: | 3910 |
+| Total lines: | 7003 |
+| Line coverage: | 26.8% (1050 of 3910) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
 | Covered methods: | 305 |
-| Total methods: | 773 |
-| Method coverage: | 39.4% (305 of 773) |
+| Total methods: | 782 |
+| Method coverage: | 39% (305 of 782) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1050**|**2807**|**3857**|**7399**|**27.2%**|**0**|**0**|****|**305**|**773**|**39.4%**|
+|**bamlab.micromissiles**|**1050**|**2860**|**3910**|**7489**|**26.8%**|**0**|**0**|****|**305**|**782**|**39%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|80|176|337|54.5%|0|0||39|63|61.9%|
@@ -35,7 +35,7 @@
 |CarrierBase|0|35|35|62|0%|0|0||0|6|0%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|18|0|18|36|100%|0|0||7|7|100%|
-|CommsManager|0|22|22|37|0%|0|0||0|7|0%|
+|CommsManager|0|30|30|49|0%|0|0||0|9|0%|
 |CommsNode|0|7|7|18|0%|0|0||0|4|0%|
 |ConfigLoader|14|31|45|96|31.1%|0|0||2|7|28.5%|
 |Constants|4|3|7|18|57.1%|0|0||2|3|66.6%|
@@ -81,6 +81,7 @@
 |LaunchPlan|11|0|11|27|100%|0|0||8|8|100%|
 |LaunchPlannerBase|6|0|6|14|100%|0|0||5|5|100%|
 |LinearExtrapolator|6|1|7|22|85.7%|0|0||2|2|100%|
+|Mailbox|0|42|42|73|0%|0|0||0|6|0%|
 |MassReleaseStrategyBase|0|46|46|86|0%|0|0||0|4|0%|
 |MaxSpeedAssignment|7|1|8|22|87.5%|0|0||2|2|100%|
 |Message|0|8|8|62|0%|0|0||0|4|0%|
@@ -100,7 +101,7 @@
 |PositionTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |PredictorBase|4|0|4|11|100%|0|0||3|3|100%|
 |PredictorState|3|0|3|13|100%|0|0||6|6|100%|
-|PriorityQueue[T]|33|3|36|57|91.6%|0|0||6|7|85.7%|
+|PriorityQueue[T]|33|6|39|62|84.6%|0|0||6|8|75%|
 |ProximityReleaseStrategy|0|17|17|43|0%|0|0||0|2|0%|
 |ReassignTargetRequestMessage|0|2|2|62|0%|0|0||0|1|0%|
 |ReassignTargetRequestPayload|0|4|4|33|0%|0|0||0|2|0%|
