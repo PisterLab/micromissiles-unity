@@ -6,11 +6,16 @@ using UnityEngine;
 public class CommsManager : MonoBehaviour {
   public static CommsManager Instance { get; private set; }
 
+  // Mailbox for queued messages.
+  private readonly Mailbox _mailbox = new Mailbox();
+
   // Map from agent to the communication node.
   private readonly HashSet<CommsNode> _nodes = new HashSet<CommsNode>();
 
   // Add a communication node. This function should only be used by the IADS.
   public void AddNode(CommsNode node) => _nodes.Add(node);
+
+  public bool ContainsNode(CommsNode node) => _nodes.Contains(node);
 
   private void Awake() {
     if (Instance != null && Instance != this) {
@@ -21,10 +26,17 @@ public class CommsManager : MonoBehaviour {
   }
 
   private void Start() {
-    SimManager.Instance.OnSimulationStarted += () => _nodes.Clear();
-    SimManager.Instance.OnSimulationEnded += () => _nodes.Clear();
+    SimManager.Instance.OnSimulationStarted += _mailbox.Clear;
+    SimManager.Instance.OnSimulationEnded += () => {
+      _nodes.Clear();
+      _mailbox.Clear();
+    };
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
+  }
+
+  private void FixedUpdate() {
+    _mailbox.Deliver();
   }
 
   private void RegisterNewAgent(IAgent agent) {

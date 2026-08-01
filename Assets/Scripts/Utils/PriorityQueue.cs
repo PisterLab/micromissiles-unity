@@ -12,6 +12,11 @@ public class PriorityQueue<T> : IEnumerable<T> {
     return _buffer.Count == 0;
   }
 
+  // Remove all queued items.
+  public void Clear() {
+    _buffer.Clear();
+  }
+
   // Enqueue an item.
   public void Enqueue(T item, float priority) {
     if (!_buffer.ContainsKey(priority)) {
