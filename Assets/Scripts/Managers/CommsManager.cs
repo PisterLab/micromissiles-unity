@@ -6,7 +6,8 @@ using UnityEngine;
 public class CommsManager : MonoBehaviour {
   public static CommsManager Instance { get; private set; }
 
-  private Mailbox _mailbox;
+  // Mailbox for queued messages.
+  private readonly Mailbox _mailbox = new Mailbox();
 
   // Map from agent to the communication node.
   private readonly HashSet<CommsNode> _nodes = new HashSet<CommsNode>();
@@ -22,34 +23,20 @@ public class CommsManager : MonoBehaviour {
       return;
     }
     Instance = this;
-    _mailbox = new Mailbox();
   }
 
   private void Start() {
-    SimManager.Instance.OnSimulationEnded += ClearNodes;
-    SimManager.Instance.OnSimulationStarted += _mailbox.ClearPendingMessageQueue;
-    SimManager.Instance.OnSimulationEnded += _mailbox.ClearPendingMessageQueue;
+    SimManager.Instance.OnSimulationStarted += _mailbox.Clear;
+    SimManager.Instance.OnSimulationEnded += () => {
+      _nodes.Clear();
+      _mailbox.Clear();
+    };
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
   }
 
-  private void OnDestroy() {
-    if (SimManager.Instance == null || _mailbox == null) {
-      return;
-    }
-    SimManager.Instance.OnSimulationEnded -= ClearNodes;
-    SimManager.Instance.OnSimulationStarted -= _mailbox.ClearPendingMessageQueue;
-    SimManager.Instance.OnSimulationEnded -= _mailbox.ClearPendingMessageQueue;
-    SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
-    SimManager.Instance.OnNewLauncher -= RegisterNewAgent;
-  }
-
   private void FixedUpdate() {
-    _mailbox.UpdateMailbox();
-  }
-
-  private void ClearNodes() {
-    _nodes.Clear();
+    _mailbox.Deliver();
   }
 
   private void RegisterNewAgent(IAgent agent) {
