@@ -1,6 +1,10 @@
 using System;
 using UnityEngine;
 
+// The mailbox handles the communication latencies between agent to agent communication.
+//
+// Mailbox.cs owns the message queue and releases messages to deliver after the set latency in
+// communication_config.
 public class Mailbox {
   // OnMessageReceived is for logging purposes.
   public event Action<Message> OnMessageReceived;
@@ -12,27 +16,30 @@ public class Mailbox {
   private readonly PriorityQueue<PendingMessage> _messageQueue =
       new PriorityQueue<PendingMessage>();
 
+  // SendMessage checks and enqueues a message to be sent to the receiver. The message will be
+  // delivered after the latency has been applied.
   public void SendMessage(Message message) {
     if (message == null) {
       return;
     }
     CommsManager commsManager = CommsManager.Instance;
     // Guard, Sender and Receiver must be valid.
-    if (commsManager == null || !commsManager.ContainsNode(message.Sender) ||
-        !commsManager.ContainsNode(message.Receiver)) {
+    if (commsManager == null || !commsManager.ContainsNode(message.Receiver)) {
       return;
     }
     EnqueueMessage(message);
   }
 
+  // EnqueueMessage adds a message to the message queue with the appropriate latency applied.
   private void EnqueueMessage(Message message) {
     Configs.LinkConfig config = GetLinkConfig(message);
 
-    // TODO (Joseph): This packet delivery ratio is a temporary solution. Fundamental
-    // firing/communication logic needs to change.
-    float packetDeliveryRatio = config.PacketDeliveryRatio;
-    if (packetDeliveryRatio <= 0f ||
-        (packetDeliveryRatio < 1f && UnityEngine.Random.value >= packetDeliveryRatio)) {
+    // TODO (Joseph): This packet delivery ratio is temporary set to 1 until the fundamental
+    // firing/communication logic is changed.
+    // float packetDeliveryRatio = config.PacketDeliveryRatio;
+    float packetDeliveryRatio = 1f;  // Delete this when firing logic is changed.
+    float packetDeliveryRatio = Mathf.Clamp01(packetDeliveryRatio);
+    if (UnityEngine.Random.value >= packetDeliveryRatio) {
       return;
     }
 
@@ -65,27 +72,22 @@ public class Mailbox {
     return communicationConfig.LinkConfig ?? _fallbackLinkConfig;
   }
 
+  // UpdateMailbox is called at every FixedUpdate to check for due messages. Due messages are then
+  // delivered to the receiver's CommsNode.
   public void UpdateMailbox() {
     CommsManager commsManager = CommsManager.Instance;
     SimManager simManager = SimManager.Instance;
-    if (commsManager == null || simManager == null || !simManager.IsRunning) {
+    if (commsManager == null || simManager == null) {
       return;
     }
 
     while (!_messageQueue.IsEmpty() && _messageQueue.Peek().DeliverAt <= simManager.ElapsedTime) {
       var pendingMessage = _messageQueue.Dequeue();
       // Guard, Sender and Receiver must be valid.
-      if (!commsManager.ContainsNode(pendingMessage.Sender) ||
-          !commsManager.ContainsNode(pendingMessage.Receiver)) {
+      if (!commsManager.ContainsNode(pendingMessage.Receiver)) {
         continue;
       }
       pendingMessage.Receiver.Receive(pendingMessage.Message);
-      // TODO (Joseph): OnMessageReceived for logging.
-      OnMessageReceived?.Invoke(pendingMessage.Message);
     }
-  }
-
-  public void ClearPendingMessageQueue() {
-    _messageQueue.Clear();
   }
 }
