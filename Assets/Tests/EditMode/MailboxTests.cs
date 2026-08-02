@@ -54,6 +54,40 @@ public class MailboxTests : TestBase {
     Assert.AreSame(sentMessage, receivedMessage);
   }
 
+  [Test]
+  public void SendMessage_DoesNotDeliverToUnregisteredReceiver() {
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+
+    Message receivedMessage = null;
+    receiver.OnReceived += message => receivedMessage = message;
+
+    _commsManager.SendMessage(new TestMessage(sender, receiver));
+    SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+
+    Assert.IsNull(receivedMessage);
+  }
+
+  [Test]
+  public void SendMessage_DoesNotDeliverToRemovedReceiver() {
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Message receivedMessage = null;
+    receiver.OnReceived += message => receivedMessage = message;
+
+    _commsManager.SendMessage(new TestMessage(sender, receiver));
+    _commsManager.RemoveNode(receiver);
+    SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+
+    Assert.IsNull(receivedMessage);
+  }
+
   private sealed class TestPayload : IMessagePayload {}
 
   private sealed class TestMessage : Message<TestPayload> {

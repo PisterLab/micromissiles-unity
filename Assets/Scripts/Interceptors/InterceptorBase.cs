@@ -130,7 +130,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   // EvaluateReassignedTarget assigns the new target to the interceptor only after received from
   // mailbox.
-  public bool EvaluateReassignedTarget(IHierarchical target) {
+  private bool EvaluateReassignedTarget(IHierarchical target) {
     if (!ShouldAcceptReassignedTarget(target)) {
       return false;
     }
