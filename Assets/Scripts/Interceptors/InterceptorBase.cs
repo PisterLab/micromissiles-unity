@@ -84,7 +84,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendAssignTargetRequest(IInterceptor subInterceptor) {
-    if (CommsNode == null || ParentCommsNode == null || subInterceptor?.CommsNode == null) {
+    if (CommsManager.Instance == null || CommsNode == null || ParentCommsNode == null ||
+        subInterceptor?.CommsNode == null) {
       return;
     }
     CommsManager.Instance.SendMessage(
@@ -92,8 +93,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
-    if (CommsNode == null || subInterceptor?.CommsNode == null || target == null ||
-        target.IsTerminated) {
+    if (CommsManager.Instance == null || CommsNode == null || subInterceptor?.CommsNode == null ||
+        target == null || target.IsTerminated) {
       return;
     }
     CommsManager.Instance.SendMessage(
@@ -101,7 +102,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendReassignTargetRequest(IHierarchical target) {
-    if (CommsNode == null || ParentCommsNode == null || target == null || target.IsTerminated) {
+    if (CommsManager.Instance == null || CommsNode == null || ParentCommsNode == null ||
+        target == null || target.IsTerminated) {
       return;
     }
     CommsManager.Instance.SendMessage(
@@ -111,8 +113,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // ShouldAcceptReassignedTarget only decides whether the interceptor should accept the new target.
   // It does NOT assign the new target to the interceptor.
   public bool ShouldAcceptReassignedTarget(IHierarchical target) {
-    // Continue searching for targets if no target was found.
-    if (target == null) {
+    // Continue searching if no valid target was found.
+    if (target == null || target.IsTerminated) {
       return false;
     }
 
@@ -146,8 +148,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // Find a new target for the sub-interceptor within the parent interceptor's assigned targets.
     IHierarchical target = HierarchicalAgent.FindNewTarget(subInterceptor.HierarchicalAgent,
                                                            subInterceptor.CapacityRemaining);
-    if (target != null && !target.IsTerminated &&
-        subInterceptor.ShouldAcceptReassignedTarget(target)) {
+    if (subInterceptor.ShouldAcceptReassignedTarget(target)) {
       SendAssignTargetResponse(subInterceptor, target);
       return;
     }
