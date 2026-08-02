@@ -263,7 +263,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor == null || subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.IsTerminated ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 

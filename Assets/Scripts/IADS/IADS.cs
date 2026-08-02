@@ -150,7 +150,8 @@ public class IADS : MonoBehaviour, ICommsEndpoint {
   }
 
   private void AssignSubInterceptor(IInterceptor subInterceptor) {
-    if (subInterceptor.CapacityRemaining <= 0) {
+    if (subInterceptor == null || subInterceptor.IsTerminated ||
+        subInterceptor.CapacityRemaining <= 0) {
       return;
     }
 

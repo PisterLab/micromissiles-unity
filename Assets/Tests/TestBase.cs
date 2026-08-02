@@ -5,9 +5,12 @@ using UnityEngine;
 
 public abstract class TestBase {
   protected void SetSingleton<T>(T instance) {
-    typeof(T)
-        .GetProperty("Instance", BindingFlags.Public | BindingFlags.Static)
-        .SetValue(null, instance);
+    PropertyInfo property =
+        typeof(T).GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
+    if (property == null) {
+      throw new Exception($"Property 'Instance' not found in type '{typeof(T).FullName}'.");
+    }
+    property.SetValue(null, instance);
   }
 
   protected void SetPrivateField<T>(object obj, string fieldName, T value) {
