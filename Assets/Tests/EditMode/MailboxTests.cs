@@ -24,7 +24,6 @@ public class MailboxTests : TestBase {
 
     _commsManager = new GameObject("CommsManager").AddComponent<CommsManager>();
     SetSingleton(_commsManager);
-    SetPrivateField(_commsManager, "_mailbox", new Mailbox());
   }
 
   [TearDown]

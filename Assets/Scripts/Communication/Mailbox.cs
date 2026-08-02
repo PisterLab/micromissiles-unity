@@ -70,8 +70,4 @@ public class Mailbox {
     }
     return communicationConfig.LinkConfig ?? _defaultLinkConfig;
   }
-
-  public void ClearPendingMessageQueue() {
-    _messageQueue.Clear();
-  }
 }

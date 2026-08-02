@@ -29,50 +29,32 @@ public class CommsManager : MonoBehaviour {
 
   private void Start() {
     SimManager.Instance.OnSimulationStarted += _mailbox.Clear;
-    SimManager.Instance.OnSimulationEnded += () => {
-      _nodes.Clear();
-      _mailbox.Clear();
-    };
+    SimManager.Instance.OnSimulationEnded += HandleSimulationEnded;
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
-    _mailbox.OnMessageReceived += RegisterMessageReceived;
   }
 
-<<<<<<< HEAD
-=======
   private void OnDestroy() {
     if (SimManager.Instance == null || _mailbox == null) {
       return;
     }
-    SimManager.Instance.OnSimulationEnded -= ClearNodes;
-    SimManager.Instance.OnSimulationStarted -= _mailbox.ClearPendingMessageQueue;
-    SimManager.Instance.OnSimulationEnded -= _mailbox.ClearPendingMessageQueue;
+    SimManager.Instance.OnSimulationStarted -= _mailbox.Clear;
+    SimManager.Instance.OnSimulationEnded -= HandleSimulationEnded;
     SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
     SimManager.Instance.OnNewLauncher -= RegisterNewAgent;
-    _mailbox.OnMessageReceived -= RegisterMessageReceived;
   }
 
-<<<<<<< HEAD
-  private void RegisterMessageReceived(Message message) {
-    if (message == null) {
-      return;
-    }
-    _receivedMessages.Add(message);
-    // TODO (Joseph): Need to find a way to identify which agent sent/received the message for
-    // logging purposes. Currently it just shows EndpointType.
-    Debug.Log(
-        $"{message.Sender.EndpointType} sent {message.Type} to {message.Receiver.EndpointType}.");
-  }
-
->>>>>>> 6d8f8cecf (Added Logging and TODOs)
-=======
->>>>>>> e450f4d3c (Fixed Titan Comments)
   private void FixedUpdate() {
     _mailbox.Deliver();
   }
 
   public void SendMessage(Message message) {
-    _mailbox.SendMessage(message);
+    _mailbox.Send(message);
+  }
+
+  private void HandleSimulationEnded() {
+    _nodes.Clear();
+    _mailbox.Clear();
   }
 
   private void RegisterNewAgent(IAgent agent) {
