@@ -32,8 +32,15 @@ public class Mailbox {
       float totalLatency = Math.Max(0f, latency + jitter);
       float deliverAt = SimManager.Instance.ElapsedTime + totalLatency;
 
-      var pendingMessage = new PendingMessage(message, deliverAt);
-      _messageQueue.Enqueue(pendingMessage, pendingMessage.DeliverAt);
+      // Deliver the message immediately if it is already due.
+      if (deliverAt <= SimManager.Instance.ElapsedTime) {
+        if (CommsManager.Instance.ContainsNode(message.Receiver)) {
+          message.Receiver.Receive(message);
+        }
+      } else {
+        var pendingMessage = new PendingMessage(message, deliverAt);
+        _messageQueue.Enqueue(pendingMessage, pendingMessage.DeliverAt);
+      }
     }
   }
 
@@ -42,10 +49,9 @@ public class Mailbox {
     while (!_messageQueue.IsEmpty() &&
            _messageQueue.Peek().DeliverAt <= SimManager.Instance.ElapsedTime) {
       PendingMessage pendingMessage = _messageQueue.Dequeue();
-      if (!CommsManager.Instance.ContainsNode(pendingMessage.Receiver)) {
-        continue;
+      if (CommsManager.Instance.ContainsNode(pendingMessage.Receiver)) {
+        pendingMessage.Receiver.Receive(pendingMessage.Message);
       }
-      pendingMessage.Receiver.Receive(pendingMessage.Message);
     }
   }
 

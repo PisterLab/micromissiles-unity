@@ -12,10 +12,8 @@ public class CommsManager : MonoBehaviour {
   // Map from agent to the communication node.
   private readonly HashSet<CommsNode> _nodes = new HashSet<CommsNode>();
 
-  // Add a communication node. This function should only be used by the IADS.
+  // Add a communication node. This function should only be used by the IADS and in tests.
   public void AddNode(CommsNode node) => _nodes.Add(node);
-
-  public void RemoveNode(CommsNode node) => _nodes.Remove(node);
 
   public bool ContainsNode(CommsNode node) => _nodes.Contains(node);
 
@@ -29,19 +27,9 @@ public class CommsManager : MonoBehaviour {
 
   private void Start() {
     SimManager.Instance.OnSimulationStarted += _mailbox.Clear;
-    SimManager.Instance.OnSimulationEnded += HandleSimulationEnded;
+    SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
     SimManager.Instance.OnNewInterceptor += RegisterNewAgent;
     SimManager.Instance.OnNewLauncher += RegisterNewAgent;
-  }
-
-  private void OnDestroy() {
-    if (SimManager.Instance == null || _mailbox == null) {
-      return;
-    }
-    SimManager.Instance.OnSimulationStarted -= _mailbox.Clear;
-    SimManager.Instance.OnSimulationEnded -= HandleSimulationEnded;
-    SimManager.Instance.OnNewInterceptor -= RegisterNewAgent;
-    SimManager.Instance.OnNewLauncher -= RegisterNewAgent;
   }
 
   private void FixedUpdate() {
@@ -52,7 +40,7 @@ public class CommsManager : MonoBehaviour {
     _mailbox.Send(message);
   }
 
-  private void HandleSimulationEnded() {
+  private void RegisterSimulationEnded() {
     _nodes.Clear();
     _mailbox.Clear();
   }
@@ -66,7 +54,7 @@ public class CommsManager : MonoBehaviour {
     var commsNode = new CommsNode(agent.StaticConfig.AgentType);
     agent.CommsNode = commsNode;
     agent.OnTerminated +=
-        _ => RemoveNode(commsNode);
+        _ => _nodes.Remove(commsNode);
     _nodes.Add(commsNode);
   }
 }

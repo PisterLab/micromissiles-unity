@@ -4,6 +4,12 @@ using System.Reflection;
 using UnityEngine;
 
 public abstract class TestBase {
+  protected void SetSingleton<T>(T instance) {
+    typeof(T)
+        .GetProperty("Instance", BindingFlags.Public | BindingFlags.Static)
+        .SetValue(null, instance);
+  }
+
   protected void SetPrivateField<T>(object obj, string fieldName, T value) {
     FieldInfo field = GetFieldInfo(obj, fieldName);
     field.SetValue(obj, value);

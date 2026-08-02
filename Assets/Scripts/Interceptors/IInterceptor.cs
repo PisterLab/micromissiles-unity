@@ -14,6 +14,8 @@ public interface IInterceptor : IAgent {
 
   IEscapeDetector EscapeDetector { get; set; }
 
+  CommsNode ParentCommsNode { get; set; }
+
   // Maximum number of threats that this interceptor can target.
   int Capacity { get; }
 
@@ -38,16 +40,4 @@ public interface IInterceptor : IAgent {
 
   // If true, the interceptor can be reassigned to other targets.
   bool IsReassignable { get; }
-
-  // Set the parent communication node for the interceptor.
-  void SetParentCommsNode(CommsNode parentCommsNode);
-
-  // Return whether the interceptor should accept the new target.
-  bool ShouldAcceptReassignedTarget(IHierarchical target);
-
-  // Assign a new target to the sub-interceptor.
-  void AssignSubInterceptor(IInterceptor subInterceptor);
-
-  // Re-assign the target to another sub-interceptor.
-  void ReassignTarget(IHierarchical target);
 }
