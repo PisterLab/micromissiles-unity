@@ -12,15 +12,9 @@ public interface IInterceptor : IAgent {
   // a threat, e.g., through a ground collision.
   event Action<IInterceptor> OnDestroyed;
 
-  // The OnAssignSubInterceptor event handler is called when a sub-interceptor has no assigned
-  // target and should be assigned one.
-  event Action<IInterceptor> OnAssignSubInterceptor;
-
-  // The OnReassignTarget event handler is called when a target needs to be re-assigned to another
-  // interceptor.
-  event Action<IHierarchical> OnReassignTarget;
-
   IEscapeDetector EscapeDetector { get; set; }
+
+  CommsNode ParentCommsNode { get; set; }
 
   // Maximum number of threats that this interceptor can target.
   int Capacity { get; }
@@ -46,14 +40,4 @@ public interface IInterceptor : IAgent {
 
   // If true, the interceptor can be reassigned to other targets.
   bool IsReassignable { get; }
-
-  // Evaluate whether the interceptor should be reassigned to the new target. Return whether the new
-  // target was accepted.
-  bool EvaluateReassignedTarget(IHierarchical target);
-
-  // Assign a new target to the sub-interceptor.
-  void AssignSubInterceptor(IInterceptor subInterceptor);
-
-  // Re-assign the target to another sub-interceptor.
-  void ReassignTarget(IHierarchical target);
 }
