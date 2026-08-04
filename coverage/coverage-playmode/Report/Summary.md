@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 08/01/2026 - 22:17:58 |
+| Generated on: | 08/04/2026 - 05:58:39 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 113 |
 | Files: | 103 |
-| Covered lines: | 1343 |
-| Uncovered lines: | 2567 |
-| Coverable lines: | 3910 |
-| Total lines: | 7003 |
-| Line coverage: | 34.3% (1343 of 3910) |
+| Covered lines: | 1349 |
+| Uncovered lines: | 2605 |
+| Coverable lines: | 3954 |
+| Total lines: | 7072 |
+| Line coverage: | 34.1% (1349 of 3954) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 389 |
-| Total methods: | 782 |
-| Method coverage: | 49.7% (389 of 782) |
+| Covered methods: | 392 |
+| Total methods: | 791 |
+| Method coverage: | 49.5% (392 of 791) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1343**|**2567**|**3910**|**7489**|**34.3%**|**0**|**0**|****|**389**|**782**|**49.7%**|
+|**bamlab.micromissiles**|**1349**|**2605**|**3954**|**7558**|**34.1%**|**0**|**0**|****|**392**|**791**|**49.5%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|1|20|21|36|4.7%|0|0||1|4|25%|
 |AgentBase|140|36|176|337|79.5%|0|0||58|63|92%|
@@ -32,10 +32,10 @@
 |AssignTargetResponsePayload|0|4|4|33|0%|0|0||0|2|0%|
 |AttackBehaviorBase|13|0|13|37|100%|0|0||6|6|100%|
 |CameraController|62|184|246|429|25.2%|0|0||14|35|40%|
-|CarrierBase|26|9|35|62|74.2%|0|0||6|6|100%|
+|CarrierBase|26|8|34|61|76.4%|0|0||6|6|100%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|0|18|18|36|0%|0|0||0|7|0%|
-|CommsManager|24|6|30|49|80%|0|0||7|9|77.7%|
+|CommsManager|28|9|37|60|75.6%|0|0||8|11|72.7%|
 |CommsNode|4|3|7|18|57.1%|0|0||3|4|75%|
 |ConfigLoader|28|17|45|96|62.2%|0|0||6|7|85.7%|
 |Constants|1|6|7|18|14.2%|0|0||1|3|33.3%|
@@ -59,11 +59,11 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|18|31|49|74|36.7%|0|0||9|9|100%|
 |HierarchicalBase|20|119|139|236|14.3%|0|0||8|26|30.7%|
-|IADS|49|57|106|175|46.2%|0|0||13|19|68.4%|
+|IADS|49|67|116|192|42.2%|0|0||13|20|65%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|8|8|16|37|50%|0|0||3|5|60%|
 |InputManager|70|106|176|223|39.7%|0|0||16|19|84.2%|
-|InterceptorBase|64|137|201|374|31.8%|0|0||17|30|56.6%|
+|InterceptorBase|66|157|223|410|29.5%|0|0||19|36|52.7%|
 |Interpolator2DBase|0|21|21|42|0%|0|0||0|5|0%|
 |Interpolator2DDataPoint|0|11|11|23|0%|0|0||0|5|0%|
 |IterativeLaunchPlanner|1|28|29|84|3.4%|0|0||1|2|50%|
@@ -81,7 +81,7 @@
 |LaunchPlan|0|11|11|27|0%|0|0||0|8|0%|
 |LaunchPlannerBase|6|0|6|14|100%|0|0||5|5|100%|
 |LinearExtrapolator|1|6|7|22|14.2%|0|0||1|2|50%|
-|Mailbox|6|36|42|73|14.2%|0|0||2|6|33.3%|
+|Mailbox|6|42|48|79|12.5%|0|0||2|6|33.3%|
 |MassReleaseStrategyBase|0|46|46|86|0%|0|0||0|4|0%|
 |MaxSpeedAssignment|0|8|8|22|0%|0|0||0|2|0%|
 |Message|0|8|8|62|0%|0|0||0|4|0%|

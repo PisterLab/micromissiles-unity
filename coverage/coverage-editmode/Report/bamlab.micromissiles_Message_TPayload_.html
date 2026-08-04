@@ -17,23 +17,23 @@
 <tr><th>Class:</th><td>Message[TPayload]</td></tr>
 <tr><th>Assembly:</th><td>bamlab.micromissiles</td></tr>
 <tr><th>File(s):</th><td><a href="#githubworkspaceAssetsScriptsCommunicationMessagecs" class="navigatetohash">/github/workspace/Assets/Scripts/Communication/Message.cs</a></td></tr>
-<tr><th>Covered lines:</th><td>0</td></tr>
-<tr><th>Uncovered lines:</th><td>5</td></tr>
+<tr><th>Covered lines:</th><td>3</td></tr>
+<tr><th>Uncovered lines:</th><td>2</td></tr>
 <tr><th>Coverable lines:</th><td>5</td></tr>
 <tr><th>Total lines:</th><td>62</td></tr>
-<tr><th>Line coverage:</th><td>0% (0 of 5)</td></tr>
+<tr><th>Line coverage:</th><td>60% (3 of 5)</td></tr>
 <tr><th>Covered branches:</th><td>0</td></tr>
 <tr><th>Total branches:</th><td>0</td></tr>
-<tr><th>Covered methods:</th><td>0</td></tr>
+<tr><th>Covered methods:</th><td>1</td></tr>
 <tr><th>Total methods:</th><td>3</td></tr>
-<tr><th>Method coverage:</th><td>0% (0 of 3)</td></tr>
+<tr><th>Method coverage:</th><td>33.3% (1 of 3)</td></tr>
 </tbody>
 </table>
 <h1>Metrics</h1>
 <table class="overview table-fixed">
 <thead><tr><th>Method</th><th>Branch coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th><th>Crap Score <a href="https://googletesting.blogspot.de/2011/02/this-code-is-crap.html"><i class="icon-info-circled"></i></a></th><th>Cyclomatic complexity <a href="https://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon-info-circled"></i></a></th><th>NPath complexity <a href="https://modess.io/npath-complexity-cyclomatic-complexity-explained"><i class="icon-info-circled"></i></a></th><th>Sequence coverage <a href="https://en.wikipedia.org/wiki/Code_coverage"><i class="icon-info-circled"></i></a></th></tr></thead>
 <tbody>
-<tr><td title="Message[TPayload]::Message(CommsNode, CommsNode, MessageType, TPayload)"><a href="#file0_line33" class="navigatetohash">Message(...)</a></td><td>0%</td><td>6</td><td>2</td><td>0</td><td>0%</td></tr>
+<tr><td title="Message[TPayload]::Message(CommsNode, CommsNode, MessageType, TPayload)"><a href="#file0_line33" class="navigatetohash">Message(...)</a></td><td>0%</td><td>2</td><td>2</td><td>0</td><td>100%</td></tr>
 </tbody>
 </table>
 <h1>File(s)</h1>
@@ -73,9 +73,9 @@
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line30"></a><code>30</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;public&nbsp;TPayload&nbsp;PayloadData&nbsp;{&nbsp;get;&nbsp;}</code></td></tr>
 <tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line31"></a><code>31</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;public&nbsp;sealed&nbsp;override&nbsp;IMessagePayload&nbsp;Payload&nbsp;=&gt;&nbsp;PayloadData;</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line32"></a><code>32</code></td><td></td><td class="lightgray"><code>&nbsp;&nbsp;protected&nbsp;Message(CommsNode&nbsp;sender,&nbsp;CommsNode&nbsp;receiver,&nbsp;MessageType&nbsp;type,&nbsp;TPayload&nbsp;payload)</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line33"></a><code>33</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;base(sender,&nbsp;receiver,&nbsp;type)&nbsp;{</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line34"></a><code>34</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;&nbsp;&nbsp;PayloadData&nbsp;=&nbsp;payload&nbsp;??&nbsp;throw&nbsp;new&nbsp;ArgumentNullException(nameof(payload));</code></td></tr>
-<tr class="coverableline" title="Not covered (0 visits)" data-coverage="{'AllTestMethods': {'VC': '0', 'LVS': 'red'}}"><td class="red">&nbsp;</td><td class="leftmargin rightmargin right">0</td><td class="rightmargin right"><a id="file0_line35"></a><code>35</code></td><td></td><td class="lightred"><code>&nbsp;&nbsp;}</code></td></tr>
+<tr class="coverableline" title="Covered (4 visits)" data-coverage="{'AllTestMethods': {'VC': '4', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">4</td><td class="rightmargin right"><a id="file0_line33"></a><code>33</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;base(sender,&nbsp;receiver,&nbsp;type)&nbsp;{</code></td></tr>
+<tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line34"></a><code>34</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;&nbsp;&nbsp;PayloadData&nbsp;=&nbsp;payload&nbsp;??&nbsp;throw&nbsp;new&nbsp;ArgumentNullException(nameof(payload));</code></td></tr>
+<tr class="coverableline" title="Covered (2 visits)" data-coverage="{'AllTestMethods': {'VC': '2', 'LVS': 'green'}}"><td class="green">&nbsp;</td><td class="leftmargin rightmargin right">2</td><td class="rightmargin right"><a id="file0_line35"></a><code>35</code></td><td></td><td class="lightgreen"><code>&nbsp;&nbsp;}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line36"></a><code>36</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line37"></a><code>37</code></td><td></td><td class="lightgray"><code></code></td></tr>
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line38"></a><code>38</code></td><td></td><td class="lightgray"><code>//&nbsp;This&nbsp;message&nbsp;is&nbsp;sent&nbsp;upwards&nbsp;to&nbsp;a&nbsp;parent&nbsp;interceptor&nbsp;or&nbsp;IADS&nbsp;when&nbsp;a&nbsp;sub-interceptor&nbsp;has&nbsp;no&nbsp;target</code></td></tr>
@@ -105,13 +105,13 @@
 <tr class="" title="Not coverable" data-coverage="{'AllTestMethods': {'VC': '', 'LVS': 'gray'}}"><td class="gray">&nbsp;</td><td class="leftmargin rightmargin right"></td><td class="rightmargin right"><a id="file0_line62"></a><code>62</code></td><td></td><td class="lightgray"><code>}</code></td></tr>
 </tbody>
 </table>
-<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />08/01/2026 - 22:16:57<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
+<div class="footer">Generated by: ReportGenerator 5.0.4.0<br />08/04/2026 - 05:56:56<br /><a href="https://github.com/danielpalme/ReportGenerator">GitHub</a> | <a href="http://www.palmmedia.de">www.palmmedia.de</a></div></div>
 <div class="containerright">
 <div class="containerrightfixed">
 <h1>Methods/Properties</h1>
 <a href="#file0_line30" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - PayloadData()"><i class="icon-wrench"></i>PayloadData()</a><br />
 <a href="#file0_line31" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - Payload()"><i class="icon-wrench"></i>Payload()</a><br />
-<a href="#file0_line33" class="navigatetohash percentagebar percentagebar0" title="Line coverage: 0% - Message(CommsNode, CommsNode, MessageType, TPayload)"><i class="icon-cube"></i>Message(CommsNode, CommsNode, MessageType, TPayload)</a><br />
+<a href="#file0_line33" class="navigatetohash percentagebar percentagebar100" title="Line coverage: 100% - Message(CommsNode, CommsNode, MessageType, TPayload)"><i class="icon-cube"></i>Message(CommsNode, CommsNode, MessageType, TPayload)</a><br />
 <br/></div>
 </div></div>
 <script type="text/javascript">

@@ -1,25 +1,25 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 08/01/2026 - 22:16:57 |
+| Generated on: | 08/04/2026 - 05:56:57 |
 | Parser: | MultiReportParser (2x OpenCoverParser) |
 | Assemblies: | 1 |
 | Classes: | 113 |
 | Files: | 103 |
-| Covered lines: | 1050 |
-| Uncovered lines: | 2860 |
-| Coverable lines: | 3910 |
-| Total lines: | 7003 |
-| Line coverage: | 26.8% (1050 of 3910) |
+| Covered lines: | 1147 |
+| Uncovered lines: | 2807 |
+| Coverable lines: | 3954 |
+| Total lines: | 7072 |
+| Line coverage: | 29% (1147 of 3954) |
 | Covered branches: | 0 |
 | Total branches: | 0 |
-| Covered methods: | 305 |
-| Total methods: | 782 |
-| Method coverage: | 39% (305 of 782) |
+| Covered methods: | 350 |
+| Total methods: | 791 |
+| Method coverage: | 44.2% (350 of 791) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**bamlab.micromissiles**|**1050**|**2860**|**3910**|**7489**|**26.8%**|**0**|**0**|****|**305**|**782**|**39%**|
+|**bamlab.micromissiles**|**1147**|**2807**|**3954**|**7558**|**29%**|**0**|**0**|****|**350**|**791**|**44.2%**|
 |AccelerationTransformation|1|0|1|25|100%|0|0||2|2|100%|
 |AerialMovement|21|0|21|36|100%|0|0||4|4|100%|
 |AgentBase|96|80|176|337|54.5%|0|0||39|63|61.9%|
@@ -32,11 +32,11 @@
 |AssignTargetResponsePayload|0|4|4|33|0%|0|0||0|2|0%|
 |AttackBehaviorBase|13|0|13|37|100%|0|0||6|6|100%|
 |CameraController|0|246|246|429|0%|0|0||0|35|0%|
-|CarrierBase|0|35|35|62|0%|0|0||0|6|0%|
+|CarrierBase|0|34|34|61|0%|0|0||0|6|0%|
 |CarrierInterceptor|0|11|11|18|0%|0|0||0|2|0%|
 |Cluster|18|0|18|36|100%|0|0||7|7|100%|
-|CommsManager|0|30|30|49|0%|0|0||0|9|0%|
-|CommsNode|0|7|7|18|0%|0|0||0|4|0%|
+|CommsManager|11|26|37|60|29.7%|0|0||7|11|63.6%|
+|CommsNode|7|0|7|18|100%|0|0||4|4|100%|
 |ConfigLoader|14|31|45|96|31.1%|0|0||2|7|28.5%|
 |Constants|4|3|7|18|57.1%|0|0||2|3|66.6%|
 |ConstrainedKMeansClusterer|22|2|24|44|91.6%|0|0||2|2|100%|
@@ -59,11 +59,11 @@
 |GroundMovement|6|0|6|18|100%|0|0||2|2|100%|
 |HierarchicalAgent|4|45|49|74|8.1%|0|0||3|9|33.3%|
 |HierarchicalBase|48|91|139|236|34.5%|0|0||18|26|69.2%|
-|IADS|0|106|106|175|0%|0|0||0|19|0%|
+|IADS|0|116|116|192|0%|0|0||0|20|0%|
 |IdealMovement|4|0|4|15|100%|0|0||2|2|100%|
 |IdealSensor|16|0|16|37|100%|0|0||5|5|100%|
 |InputManager|0|176|176|223|0%|0|0||0|19|0%|
-|InterceptorBase|0|201|201|374|0%|0|0||0|30|0%|
+|InterceptorBase|0|223|223|410|0%|0|0||0|36|0%|
 |Interpolator2DBase|18|3|21|42|85.7%|0|0||4|5|80%|
 |Interpolator2DDataPoint|11|0|11|23|100%|0|0||5|5|100%|
 |IterativeLaunchPlanner|29|0|29|84|100%|0|0||2|2|100%|
@@ -81,11 +81,11 @@
 |LaunchPlan|11|0|11|27|100%|0|0||8|8|100%|
 |LaunchPlannerBase|6|0|6|14|100%|0|0||5|5|100%|
 |LinearExtrapolator|6|1|7|22|85.7%|0|0||2|2|100%|
-|Mailbox|0|42|42|73|0%|0|0||0|6|0%|
+|Mailbox|36|12|48|79|75%|0|0||5|6|83.3%|
 |MassReleaseStrategyBase|0|46|46|86|0%|0|0||0|4|0%|
 |MaxSpeedAssignment|7|1|8|22|87.5%|0|0||2|2|100%|
-|Message|0|8|8|62|0%|0|0||0|4|0%|
-|Message[TPayload]|0|5|5|62|0%|0|0||0|3|0%|
+|Message|7|1|8|62|87.5%|0|0||3|4|75%|
+|Message[TPayload]|3|2|5|62|60%|0|0||1|3|33.3%|
 |MinDistanceAssignment|4|0|4|12|100%|0|0||2|2|100%|
 |MissileInterceptor|0|7|7|14|0%|0|0||0|3|0%|
 |MissileMovement|58|14|72|139|80.5%|0|0||9|11|81.8%|
@@ -95,7 +95,7 @@
 |NoMovement|4|0|4|12|100%|0|0||2|2|100%|
 |OrthogonalEvasion|27|8|35|78|77.1%|0|0||3|3|100%|
 |ParticleManager|0|154|154|222|0%|0|0||0|24|0%|
-|PendingMessage|0|11|11|27|0%|0|0||0|6|0%|
+|PendingMessage|8|3|11|27|72.7%|0|0||4|6|66.6%|
 |PlannerReleaseStrategy|0|8|8|14|0%|0|0||0|4|0%|
 |PnController|27|1|28|67|96.4%|0|0||4|4|100%|
 |PositionTransformation|4|0|4|25|100%|0|0||8|8|100%|
@@ -112,7 +112,7 @@
 |SensorBase|4|0|4|20|100%|0|0||3|3|100%|
 |SensorOutput|3|0|3|12|100%|0|0||6|6|100%|
 |ShoreBattery|0|4|4|10|0%|0|0||0|1|0%|
-|SimManager|0|274|274|419|0%|0|0||0|53|0%|
+|SimManager|17|257|274|419|6.2%|0|0||20|53|37.7%|
 |SimMonitor|0|179|179|282|0%|0|0||0|27|0%|
 |SingleReleaseStrategyBase|0|31|31|62|0%|0|0||0|3|0%|
 |SizeAndRadiusConstrainedClustererBase|8|2|10|26|80%|0|0||1|1|100%|
@@ -129,7 +129,7 @@
 |UIElementMouseCapturer|0|11|11|18|0%|0|0||0|3|0%|
 |UIEventMarker|0|17|17|27|0%|0|0||0|4|0%|
 |UIManager|0|161|161|234|0%|0|0||0|27|0%|
-|Utilities|0|20|20|33|0%|0|0||0|5|0%|
+|Utilities|8|12|20|33|40%|0|0||1|5|20%|
 |VelocityTransformation|4|0|4|25|100%|0|0||8|8|100%|
 |Vessel|0|4|4|11|0%|0|0||0|1|0%|
 |WaypointController|14|0|14|30|100%|0|0||2|2|100%|
