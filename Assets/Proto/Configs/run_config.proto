@@ -2,6 +2,17 @@ syntax = "proto3";
 
 package configs;
 
+import "Configs/communication_config.proto";
+
+// Named communication configuration used for an experimental scenario.
+message CommunicationScenario {
+  // Unique filesystem-safe name used in output directories.
+  string name = 1;
+
+  // Complete replacement for the simulation's communication configuration.
+  CommunicationConfig communication_config = 2;
+}
+
 // Run configuration.
 message RunConfig {
   // Run name.
@@ -21,4 +32,9 @@ message RunConfig {
 
   // Maximum number of runs to execute in parallel.
   uint32 max_parallel = 6;
+
+  // Communication scenarios to execute for every seed. If empty, the
+  // communication configuration embedded in the simulation configuration is
+  // used.
+  repeated CommunicationScenario communication_scenarios = 7;
 }

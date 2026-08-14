@@ -54,7 +54,41 @@ The run configuration includes:
 - **num_runs**: Number of times to run the simulation configuration.
 - **seed**: Random number generator seed.
 - **seed_stride**: The seed increment for subsequent runs.
-- **max_parallel**: Maximum number of Unity worker processes to run concurrently. If omitted or set to `0`, the launcher runs one worker at a time.
+- **max_parallel**: Maximum number of Unity worker processes to run concurrently. If omitted or set to `0`, the launcher defaults to 16 workers.
+- **communication_scenarios**: Optional named communication configurations. Every scenario runs
+  with every configured seed and completely replaces the communication configuration embedded in
+  the simulation configuration. If omitted, the embedded configuration is used.
+
+For example:
+
+```protobuf
+communication_scenarios {
+  name: "delayed_carrier_link"
+  communication_config {
+    link_config {
+      latency_seconds: 0.1
+      latency_std_seconds: 0.02
+      packet_delivery_ratio: 1.0
+    }
+    link_overrides {
+      from: VESSEL
+      to: CARRIER_INTERCEPTOR
+      link_config {
+        latency_seconds: 0.25
+        latency_std_seconds: 0.02
+        packet_delivery_ratio: 1.0
+      }
+    }
+  }
+}
+```
+
+Scenario names may contain letters, numbers, `.`, `_`, and `-`. The launcher writes each scenario's
+exact binary and text communication configuration to `_communication_scenarios` in the batch output
+directory. Results and Unity logs are grouped by scenario name.
+
+The scenario schema preserves `packet_delivery_ratio`, but the runtime currently forces delivery to
+`1.0`; packet loss remains a future implementation.
 
 ## Running from Command Line
 
@@ -70,7 +104,7 @@ The run configuration includes:
 ```powershell
 cd .\Build\<timestamp>
 python3 Tools/run_batch.py `
-    --unity_path .\micromissiles.exe `
+    --binary_path .\micromissiles.exe `
     --run_config batch_7_quadcopters.pbtxt
 ```
 
@@ -79,7 +113,7 @@ python3 Tools/run_batch.py `
 ```bash
 cd Build/<timestamp>
 python3 ../../Tools/run_batch.py \
-    --unity_path ./micromissiles.app \
+    --binary_path ./micromissiles.app \
     --run_config batch_7_quadcopters.pbtxt
 ```
 
@@ -88,7 +122,7 @@ python3 ../../Tools/run_batch.py \
 ```bash
 cd Build/<timestamp>
 python3 ../../Tools/run_batch.py \
-    --unity_path ./micromissiles \
+    --binary_path ./micromissiles \
     --run_config batch_7_quadcopters.pbtxt
 ```
 
@@ -103,5 +137,7 @@ This is the interface used by `Tools/run_batch.py` for each worker process.
 - `--simulation_config <file>`: Simulation configuration filename from `Assets/StreamingAssets/Configs/Simulations`.
 - `--seed <int>`: Explicit deterministic seed for the run.
 - `--output_dir <directory>`: Absolute directory in which to store the run's telemetry and event logs.
+- `--communication_config_override <file>`: Optional absolute path to a serialized
+  `CommunicationConfig` that replaces the configuration embedded in the simulation file.
 
 For more details on logging and log processing, consult the [Simulation Logging](./Simulation_Logging.md) guide.

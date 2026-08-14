@@ -57,6 +57,30 @@ TEST(ProtobufTest, LoadProtobufTextFileRunConfig) {
   EXPECT_EQ(run_config.max_parallel(), 16);
 }
 
+TEST(ProtobufTest, LoadProtobufTextFileRunConfigCommunicationScenarios) {
+  const auto kRunConfigFile = GetRunfilesPath(
+      "micromissiles-configs-data/Runs/batch_5_swarms_100_ucav.pbtxt");
+  configs::RunConfig run_config;
+  EXPECT_EQ(
+      LoadProtobufTextFile<configs::RunConfig>(kRunConfigFile, &run_config),
+      plugin::STATUS_OK);
+  const configs::CommunicationScenario* scenario = nullptr;
+  for (const auto& candidate : run_config.communication_scenarios()) {
+    if (candidate.communication_config().link_overrides_size() == 2) {
+      scenario = &candidate;
+      break;
+    }
+  }
+  ASSERT_NE(scenario, nullptr);
+  EXPECT_FLOAT_EQ(
+      scenario->communication_config().link_config().latency_seconds(), 0.10f);
+  ASSERT_EQ(scenario->communication_config().link_overrides_size(), 2);
+  EXPECT_EQ(scenario->communication_config().link_overrides(0).from(),
+            configs::MISSILE_INTERCEPTOR);
+  EXPECT_EQ(scenario->communication_config().link_overrides(0).to(),
+            configs::CARRIER_INTERCEPTOR);
+}
+
 TEST(ProtobufTest, LoadProtobufTextFileStaticConfig) {
   const auto kStaticConfigFile =
       GetRunfilesPath("micromissiles-configs-data/Models/micromissile.pbtxt");

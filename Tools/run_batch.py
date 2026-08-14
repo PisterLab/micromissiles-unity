@@ -1,9 +1,12 @@
 """Launches a batch of deterministic Unity simulation runs in parallel."""
 
 import datetime
+import math
 import os
 import platform
+import re
 import subprocess
+import sys
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -11,13 +14,22 @@ from pathlib import Path
 import google.protobuf.text_format
 import unity_utils
 from absl import app, flags, logging
-from pb import run_config_pb2
+
+# Generated Python protobuf modules import their dependencies from this directory.
+PB_DIR = Path(__file__).resolve().parent / "pb"
+if str(PB_DIR) not in sys.path:
+    sys.path.insert(0, str(PB_DIR))
+
+from Configs import run_config_pb2
 
 # Path to the repository root.
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # Directory with the run configurations.
 RUN_CONFIG_DIR = REPO_ROOT / "Assets/StreamingAssets/Configs/Runs"
+
+# Communication scenario names are also used as output directory names.
+SCENARIO_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 
 FLAGS = flags.FLAGS
 
@@ -31,12 +43,16 @@ class RunDescriptor:
         seed: Seed.
         simulation_config_file: Simulation configuration file.
         output_dir: Output directory.
+        communication_scenario_name: Optional communication scenario name.
+        communication_config_path: Optional serialized communication configuration override.
     """
 
     run_index: int
     seed: int
     simulation_config_file: str
     output_dir: Path
+    communication_scenario_name: str | None
+    communication_config_path: Path | None
 
 
 def _resolve_binary_path(path: str) -> Path:
@@ -106,11 +122,120 @@ def _parse_run_config(path: Path) -> run_config_pb2.RunConfig:
     return google.protobuf.text_format.Parse(path.read_text(), run_config)
 
 
+def _validate_link_config(link_config, label: str) -> None:
+    """Rejects invalid link values before any worker processes are launched."""
+    if (not math.isfinite(link_config.latency_seconds) or
+            link_config.latency_seconds < 0):
+        raise ValueError(f"{label} latency_seconds must be non-negative.")
+    if (not math.isfinite(link_config.latency_std_seconds) or
+            link_config.latency_std_seconds < 0):
+        raise ValueError(f"{label} latency_std_seconds must be non-negative.")
+    if (not math.isfinite(link_config.packet_delivery_ratio) or
+            not 0 <= link_config.packet_delivery_ratio <= 1):
+        raise ValueError(f"{label} packet_delivery_ratio must be in [0, 1].")
+
+
+def _validate_run_config(run_config: run_config_pb2.RunConfig) -> None:
+    """Validates batch fields and scenarios before creating output directories.
+
+    Scenario names become directory names, and link pairs use first-match routing in
+    Unity, so names must be safe and each directional pair must be unique.
+    """
+    if not run_config.name:
+        raise ValueError("Run configuration name must not be empty.")
+    if not run_config.simulation_config_file:
+        raise ValueError("Simulation configuration file must not be empty.")
+    if run_config.num_runs == 0:
+        raise ValueError("num_runs must be greater than zero.")
+
+    scenario_names = set()
+    for scenario in run_config.communication_scenarios:
+        if not SCENARIO_NAME_PATTERN.fullmatch(scenario.name):
+            raise ValueError(
+                "Communication scenario names must contain only letters, "
+                f"numbers, '.', '_' or '-': {scenario.name!r}.")
+        if scenario.name in scenario_names:
+            raise ValueError(
+                f"Duplicate communication scenario name: {scenario.name}.")
+        scenario_names.add(scenario.name)
+
+        if not scenario.HasField("communication_config"):
+            raise ValueError(
+                f"Communication scenario {scenario.name} has no configuration.")
+        communication_config = scenario.communication_config
+        if not communication_config.HasField("link_config"):
+            raise ValueError(
+                f"Communication scenario {scenario.name} has no default link_config."
+            )
+        _validate_link_config(
+            communication_config.link_config,
+            f"Communication scenario {scenario.name} default link",
+        )
+
+        link_pairs = set()
+        for link_override in communication_config.link_overrides:
+            sender_type = getattr(link_override, "from")
+            receiver_type = link_override.to
+            if sender_type == 0 or receiver_type == 0:
+                raise ValueError(
+                    f"Communication scenario {scenario.name} contains an invalid link pair."
+                )
+            link_pair = (sender_type, receiver_type)
+            if link_pair in link_pairs:
+                raise ValueError(
+                    f"Communication scenario {scenario.name} contains a duplicate link pair."
+                )
+            link_pairs.add(link_pair)
+            if not link_override.HasField("link_config"):
+                raise ValueError(
+                    f"Communication scenario {scenario.name} contains a link override "
+                    "without link_config.")
+            _validate_link_config(
+                link_override.link_config,
+                f"Communication scenario {scenario.name} link override",
+            )
+
+
+def _communication_config_path(batch_output_dir: Path,
+                               scenario_name: str) -> Path:
+    """Returns the shared binary override path used by every run in a scenario."""
+    return batch_output_dir / "_communication_scenarios" / f"{scenario_name}.pb"
+
+
+def _write_communication_scenarios(
+    run_config: run_config_pb2.RunConfig,
+    batch_output_dir: Path,
+) -> None:
+    """Writes binary worker inputs and matching text files for reproducibility.
+
+    Each scenario is serialized once and shared read-only by all of its workers.
+    """
+    if not run_config.communication_scenarios:
+        return
+
+    scenario_dir = batch_output_dir / "_communication_scenarios"
+    scenario_dir.mkdir()
+    for scenario in run_config.communication_scenarios:
+        binary_path = _communication_config_path(batch_output_dir,
+                                                 scenario.name)
+        binary_path.write_bytes(
+            scenario.communication_config.SerializeToString())
+        text_path = binary_path.with_suffix(".pbtxt")
+        text_path.write_text(
+            google.protobuf.text_format.MessageToString(
+                scenario.communication_config),
+            encoding="utf-8",
+        )
+
+
 def _plan_run_descriptors(
     run_config: run_config_pb2.RunConfig,
     batch_output_dir: Path,
 ) -> list[RunDescriptor]:
-    """Returns the deterministic plan of runs to execute.
+    """Expands the Cartesian product of communication scenarios and seeded runs.
+
+    When no scenarios are configured, one implicit scenario preserves the original
+    output layout and uses the communication settings embedded in the simulation.
 
     Args:
         run_config: Run configuration.
@@ -120,15 +245,25 @@ def _plan_run_descriptors(
         The list of run descriptors.
     """
     descriptors = []
-    for run_index in range(1, run_config.num_runs + 1):
-        seed = run_config.seed + ((run_index - 1) * run_config.seed_stride)
-        descriptors.append(
-            RunDescriptor(
-                run_index=run_index,
-                seed=seed,
-                simulation_config_file=(run_config.simulation_config_file),
-                output_dir=batch_output_dir / (f"run_{run_index}_seed_{seed}"),
-            ))
+    scenarios = list(run_config.communication_scenarios) or [None]
+    for scenario in scenarios:
+        scenario_name = scenario.name if scenario is not None else None
+        communication_config_path = (_communication_config_path(
+            batch_output_dir, scenario_name)
+                                     if scenario_name is not None else None)
+        output_root = (batch_output_dir / scenario_name
+                       if scenario_name is not None else batch_output_dir)
+        for run_index in range(1, run_config.num_runs + 1):
+            seed = run_config.seed + ((run_index - 1) * run_config.seed_stride)
+            descriptors.append(
+                RunDescriptor(
+                    run_index=run_index,
+                    seed=seed,
+                    simulation_config_file=(run_config.simulation_config_file),
+                    output_dir=(output_root / f"run_{run_index}_seed_{seed}"),
+                    communication_scenario_name=scenario_name,
+                    communication_config_path=communication_config_path,
+                ))
     return descriptors
 
 
@@ -141,9 +276,11 @@ def _compute_max_parallel(run_config: run_config_pb2.RunConfig) -> int:
     Returns:
         The maximum number of concurrent worker processes.
     """
+    # Apply one global process cap across the fully expanded scenario-by-seed plan.
     # If max_parallel is unset, it will read 0. In that case, default to 16.
     requested_parallel = run_config.max_parallel if run_config.max_parallel > 0 else 16
-    return min(requested_parallel, run_config.num_runs)
+    num_scenarios = max(1, len(run_config.communication_scenarios))
+    return min(requested_parallel, run_config.num_runs * num_scenarios)
 
 
 def _build_worker_command(
@@ -151,7 +288,7 @@ def _build_worker_command(
     descriptor: RunDescriptor,
     unity_log_dir: Path,
 ) -> list[str]:
-    """Builds the standalone Unity command for a single run.
+    """Builds one worker command with its optional communication override.
 
     Args:
         binary_path: Path to the Unity executable.
@@ -161,9 +298,13 @@ def _build_worker_command(
     Returns:
         The command-line argument vector for subprocess.Popen().
     """
-    unity_log_path = (unity_log_dir /
+    unity_log_root = (unity_log_dir / descriptor.communication_scenario_name
+                      if descriptor.communication_scenario_name is not None else
+                      unity_log_dir)
+    unity_log_root.mkdir(parents=True, exist_ok=True)
+    unity_log_path = (unity_log_root /
                       f"run_{descriptor.run_index}_seed_{descriptor.seed}.log")
-    return [
+    command = [
         str(binary_path),
         "--simulation_config",
         descriptor.simulation_config_file,
@@ -176,6 +317,12 @@ def _build_worker_command(
         "-logFile",
         str(unity_log_path),
     ]
+    if descriptor.communication_config_path is not None:
+        command.extend([
+            "--communication_config_override",
+            str(descriptor.communication_config_path),
+        ])
+    return command
 
 
 def _terminate_processes(processes: list[subprocess.Popen[bytes]]) -> None:
@@ -234,6 +381,7 @@ def run_batch(
         while next_descriptor_index < len(descriptors) or running_workers:
             while (next_descriptor_index < len(descriptors) and
                    len(running_workers) < max_parallel):
+                worker_id = next_descriptor_index
                 descriptor = descriptors[next_descriptor_index]
                 next_descriptor_index += 1
 
@@ -248,41 +396,48 @@ def run_batch(
                     unity_log_dir,
                 )
 
-                logging.info("Launching run %d/%d with seed %d.",
-                             descriptor.run_index, len(descriptors),
-                             descriptor.seed)
+                logging.info(
+                    "Launching worker %d/%d for scenario %s, run %d, seed %d.",
+                    worker_id + 1,
+                    len(descriptors),
+                    descriptor.communication_scenario_name or "embedded",
+                    descriptor.run_index,
+                    descriptor.seed,
+                )
 
-                running_workers[descriptor.run_index] = (
+                running_workers[worker_id] = (
                     descriptor,
                     subprocess.Popen(command),
                 )
 
-            finished_run_index = None
-            for run_index, (descriptor, process) in running_workers.items():
+            finished_worker_id = None
+            for worker_id, (descriptor, process) in running_workers.items():
                 exit_code = process.poll()
                 if exit_code is None:
                     continue
 
                 if exit_code != 0:
                     raise RuntimeError(
-                        f"Run {run_index} exited with code {exit_code}.")
+                        f"Worker {worker_id + 1} exited with code {exit_code}.")
                 if not descriptor.output_dir.is_dir():
                     raise RuntimeError(
-                        f"Run {run_index} did not create an output directory.")
+                        f"Worker {worker_id + 1} did not create an output directory."
+                    )
                 logging.info(
-                    "Completed run %d with seed %d.",
+                    "Completed scenario %s, run %d with seed %d.",
+                    descriptor.communication_scenario_name or "embedded",
                     descriptor.run_index,
                     descriptor.seed,
                 )
 
-                finished_run_index = run_index
+                finished_worker_id = worker_id
                 break
 
-            if finished_run_index is None:
+            if finished_worker_id is None:
                 time.sleep(0.1)
                 continue
 
-            del running_workers[finished_run_index]
+            del running_workers[finished_worker_id]
     except BaseException:
         _terminate_processes(
             [process for _, process in running_workers.values()])
@@ -295,6 +450,7 @@ def main(argv):
     binary_path = _resolve_binary_path(FLAGS.binary_path)
     run_config_path = _resolve_run_config_path(FLAGS.run_config)
     run_config = _parse_run_config(run_config_path)
+    _validate_run_config(run_config)
 
     # Initialize the log directories.
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -305,6 +461,9 @@ def main(argv):
                      (log_root_dir / f"{batch_output_dir.name}_unity_logs"))
     batch_output_dir.mkdir(parents=True, exist_ok=False)
     unity_log_dir.mkdir(parents=True, exist_ok=False)
+
+    # Persist the exact communication inputs passed to the standalone workers.
+    _write_communication_scenarios(run_config, batch_output_dir)
 
     # Plan all of the runs to execute.
     descriptors = _plan_run_descriptors(

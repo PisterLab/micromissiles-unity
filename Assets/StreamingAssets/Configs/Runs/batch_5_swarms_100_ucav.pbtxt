@@ -3,4 +3,57 @@ simulation_config_file: "5_swarms_100_ucav.pbtxt"
 num_runs: 50
 seed: 100
 seed_stride: 1
-max_parallel: 16
+max_parallel: 18
+
+communication_scenarios {
+  name: "ideal"
+  communication_config {
+    link_config {
+      latency_seconds: 0.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+}
+
+communication_scenarios {
+  name: "Scenario_1"
+  communication_config {
+    link_config {
+      latency_seconds: 0.1
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+}
+
+communication_scenarios {
+  name: "Scenario_2"
+  communication_config {
+    link_config {
+      latency_seconds: 0.10
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+
+    link_overrides {
+      from: MISSILE_INTERCEPTOR
+      to: CARRIER_INTERCEPTOR
+      link_config {
+        latency_seconds: 0.25
+        latency_std_seconds: 0.00
+        packet_delivery_ratio: 1.0
+      }
+    }
+
+    link_overrides {
+      from: CARRIER_INTERCEPTOR
+      to: MISSILE_INTERCEPTOR
+      link_config {
+        latency_seconds: 0.25
+        latency_std_seconds: 0.00
+        packet_delivery_ratio: 1.0
+      }
+    }
+  }
+}

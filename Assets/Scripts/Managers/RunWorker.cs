@@ -11,6 +11,7 @@ public class RunWorker : MonoBehaviour {
   private const string _simulationConfigFlag = "--simulation_config";
   private const string _seedFlag = "--seed";
   private const string _outputDirFlag = "--output_dir";
+  private const string _communicationConfigOverrideFlag = "--communication_config_override";
 
   public static RunWorker Instance { get; private set; }
 
@@ -27,32 +28,40 @@ public class RunWorker : MonoBehaviour {
   // Output directory of the simulation run.
   public static string OutputDirectory { get; private set; }
 
+  // Optional serialized communication configuration that replaces the simulation configuration.
+  public static string CommunicationConfigOverridePath { get; private set; }
+
   private bool _hasStartedRun = false;
   private bool _hasScheduledQuit = false;
 
   [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
   private static void OnBeforeSceneLoad() {
-    if (!TryGetWorkerModeArguments(Environment.GetCommandLineArgs(),
-                                   out string simulationConfigFile, out int seed,
-                                   out string outputDirectory)) {
+    if (!TryGetWorkerModeArguments(
+            Environment.GetCommandLineArgs(), out string simulationConfigFile, out int seed,
+            out string outputDirectory, out string communicationConfigOverridePath)) {
       return;
     }
 
     var gameObject = new GameObject("RunWorker");
     DontDestroyOnLoad(gameObject);
     var runWorker = gameObject.AddComponent<RunWorker>();
-    runWorker.Initialize(simulationConfigFile, seed, outputDirectory);
+    runWorker.Initialize(simulationConfigFile, seed, outputDirectory,
+                         communicationConfigOverridePath);
   }
 
   public static bool TryGetWorkerModeArguments(string[] args, out string simulationConfigFile,
-                                               out int seed, out string outputDirectory) {
+                                               out int seed, out string outputDirectory,
+                                               out string communicationConfigOverridePath) {
     simulationConfigFile = GetArgValue(args, _simulationConfigFlag);
     string seedValue = GetArgValue(args, _seedFlag);
     string rawOutputDirectory = GetArgValue(args, _outputDirFlag);
+    string rawCommunicationConfigOverride = GetArgValue(args, _communicationConfigOverrideFlag);
     seed = 0;
     outputDirectory = null;
+    communicationConfigOverridePath = null;
 
-    if (simulationConfigFile == null && seedValue == null && rawOutputDirectory == null) {
+    if (simulationConfigFile == null && seedValue == null && rawOutputDirectory == null &&
+        rawCommunicationConfigOverride == null) {
       return false;
     }
 
@@ -69,6 +78,14 @@ public class RunWorker : MonoBehaviour {
     }
 
     outputDirectory = Path.GetFullPath(rawOutputDirectory);
+    if (rawCommunicationConfigOverride != null) {
+      if (string.IsNullOrWhiteSpace(rawCommunicationConfigOverride) ||
+          !Path.IsPathRooted(rawCommunicationConfigOverride)) {
+        throw new ArgumentException(
+            "Worker communication configuration override path must be absolute.");
+      }
+      communicationConfigOverridePath = Path.GetFullPath(rawCommunicationConfigOverride);
+    }
     return true;
   }
 
@@ -91,11 +108,13 @@ public class RunWorker : MonoBehaviour {
     StartCoroutine(RunWhenReady());
   }
 
-  private void Initialize(string simulationConfigFile, int seed, string outputDirectory) {
+  private void Initialize(string simulationConfigFile, int seed, string outputDirectory,
+                          string communicationConfigOverridePath) {
     IsWorkerMode = true;
     SimulationConfigFile = simulationConfigFile;
     Seed = seed;
     OutputDirectory = outputDirectory;
+    CommunicationConfigOverridePath = communicationConfigOverridePath;
   }
 
   private IEnumerator RunWhenReady() {
@@ -113,7 +132,19 @@ public class RunWorker : MonoBehaviour {
     UnityEngine.Random.InitState(Seed);
     _hasStartedRun = true;
     Debug.Log($"Starting run with simulation config {SimulationConfigFile} and seed {Seed}.");
-    SimManager.Instance.LoadNewSimulationConfig(SimulationConfigFile);
+    SimManager.Instance.LoadNewSimulationConfig(
+        SimulationConfigFile, LoadCommunicationConfigOverride(CommunicationConfigOverridePath));
+  }
+
+  // Deserializes the exact scenario configuration written by the Python batch runner. Returning
+  // null preserves the communication configuration embedded in the simulation file.
+  private static Configs.CommunicationConfig LoadCommunicationConfigOverride(string path) {
+    if (path == null) {
+      return null;
+    }
+
+    byte[] serializedConfig = File.ReadAllBytes(path);
+    return Configs.CommunicationConfig.Parser.ParseFrom(serializedConfig);
   }
 
   private void PrepareOutputDirectory() {

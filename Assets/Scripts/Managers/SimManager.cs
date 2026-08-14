@@ -147,14 +147,20 @@ public class SimManager : MonoBehaviour {
     StartSimulation();
   }
 
-  public void LoadNewSimulationConfig(string simulationConfigFile) {
+  // Loads a simulation and applies an optional communication override before any agents are
+  // initialized, ensuring every message in a worker run uses the selected scenario.
+  public void LoadNewSimulationConfig(
+      string simulationConfigFile, Configs.CommunicationConfig communicationConfigOverride = null) {
     if (IsRunning) {
       EndSimulation();
     }
     LoadSimConfigs(simulationConfigFile);
-    SetGameSpeed();
 
     if (SimulationConfig != null) {
+      if (communicationConfigOverride != null) {
+        SimulationConfig.CommunicationConfig = communicationConfigOverride.Clone();
+      }
+      SetGameSpeed();
       Debug.Log($"Loaded new simulation configuration: {simulationConfigFile}.");
       ResetAndStartSimulation();
     } else {

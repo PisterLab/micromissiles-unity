@@ -28,19 +28,25 @@ if [ -d "$OUTPUT_DIR" ]; then
   rm -f "$OUTPUT_DIR"/*.cs
 fi
 
-# Remove the existing Python run config module, so the generated file always matches the current proto schema.
+# Remove the existing Python config modules, so the generated files always match the current proto
+# schema.
 mkdir -p "$PYTHON_OUTPUT_DIR"
 rm -f "$PYTHON_OUTPUT_DIR/run_config_pb2.py"
+rm -f "$PYTHON_OUTPUT_DIR/Configs/run_config_pb2.py"
+rm -f "$PYTHON_OUTPUT_DIR/Configs/communication_config_pb2.py"
+rm -f "$PYTHON_OUTPUT_DIR/Configs/static_config_pb2.py"
 
 # Compile all .proto files needed by Unity from the input directory.
 echo "Compiling Unity .proto files from $INPUT_DIR to $OUTPUT_DIR."
 find "$INPUT_DIR/" -name '*.proto' ! -name 'run_config.proto' -exec protoc --proto_path="$WORKSPACE/Assets/Proto" --csharp_out="$OUTPUT_DIR" {} +
 
-# Compile the Python run config module used by the batch run launcher.
-echo "Compiling Python run_config.proto to $PYTHON_OUTPUT_DIR."
+# Compile the Python run config module and its dependencies used by the batch run launcher.
+echo "Compiling Python run configuration protos to $PYTHON_OUTPUT_DIR."
 protoc \
-  --proto_path="$WORKSPACE/Assets/Proto/Configs" \
+  --proto_path="$WORKSPACE/Assets/Proto" \
   --python_out="$PYTHON_OUTPUT_DIR" \
+  "$WORKSPACE/Assets/Proto/Configs/static_config.proto" \
+  "$WORKSPACE/Assets/Proto/Configs/communication_config.proto" \
   "$WORKSPACE/Assets/Proto/Configs/run_config.proto"
 
 echo "Protobuf compilation completed."
