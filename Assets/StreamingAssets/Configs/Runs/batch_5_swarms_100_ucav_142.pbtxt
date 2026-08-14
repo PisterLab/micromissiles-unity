@@ -1,0 +1,7 @@
+# Batch: 50 seeded runs for Case 2 isolates 0-second bidirectional latency on the Carrier <-> Missile tier.
+name: "batch_5_swarms_100_ucav_142"
+simulation_config_file: "5_swarms_100_ucav_142.pbtxt"
+num_runs: 50
+seed: 100
+seed_stride: 1
+max_parallel: 17

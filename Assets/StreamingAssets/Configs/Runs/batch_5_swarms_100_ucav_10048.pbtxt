@@ -1,0 +1,7 @@
+# Batch: 50 seeded runs for Case 4 uses a fixed 0.02-second latency budget with middle-heavy 10/80/10 distribution.
+name: "batch_5_swarms_100_ucav_10048"
+simulation_config_file: "5_swarms_100_ucav_10048.pbtxt"
+num_runs: 50
+seed: 100
+seed_stride: 1
+max_parallel: 17

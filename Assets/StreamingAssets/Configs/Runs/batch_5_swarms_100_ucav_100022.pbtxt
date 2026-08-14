@@ -1,0 +1,7 @@
+# Batch: 50 seeded runs for Case 6 uses global mean latency 0.002 seconds and jitter standard deviation 0.0002 seconds (0.1x mean).
+name: "batch_5_swarms_100_ucav_100022"
+simulation_config_file: "5_swarms_100_ucav_100022.pbtxt"
+num_runs: 50
+seed: 100
+seed_stride: 1
+max_parallel: 17

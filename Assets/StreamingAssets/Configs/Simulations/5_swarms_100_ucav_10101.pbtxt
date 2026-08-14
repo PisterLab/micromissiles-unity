@@ -1,0 +1,377 @@
+# Case 4 uses a fixed 4-second latency budget with top-tier-only distribution.
+end_time: 300
+time_scale: 1
+asset_configs {
+  config_file: "cvn.pbtxt"
+  initial_state {
+    position {
+      x: 0
+      y: 0
+      z: 0
+    }
+    velocity {
+      x: 0
+      y: 0
+      z: 0
+    }
+  }
+  dynamic_config {
+    guidance_config {
+      controller_type: STATIC
+    }
+    sensor_config {
+      type: IDEAL
+      frequency: 1000
+    }
+  }
+}
+interceptor_swarm_configs {
+  agent_config {
+    config_file: "ddg.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 5
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        controller_type: STATIC
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 1000
+      }
+    }
+    sub_agent_config {
+      num_sub_agents: 126
+      agent_config {
+        config_file: "hydra70.pbtxt"
+        dynamic_config {
+          guidance_config {
+            controller_type: PROPORTIONAL_NAVIGATION
+          }
+          sensor_config {
+            type: IDEAL
+            frequency: 100
+          }
+        }
+        sub_agent_config {
+          num_sub_agents: 7
+          agent_config {
+            config_file: "micromissile.pbtxt"
+            dynamic_config {
+              guidance_config {
+                controller_type: PROPORTIONAL_NAVIGATION
+              }
+              sensor_config {
+                type: IDEAL
+                frequency: 100
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 20
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 10000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -100
+      }
+    }
+    standard_deviation {
+      position {
+        x: 300
+        y: 60
+        z: 30
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 5
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 20
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 900
+        z: 11000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -100
+      }
+    }
+    standard_deviation {
+      position {
+        x: 300
+        y: 60
+        z: 30
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 5
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 20
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1000
+        z: 12000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -100
+      }
+    }
+    standard_deviation {
+      position {
+        x: 300
+        y: 60
+        z: 30
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 5
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 20
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1100
+        z: 13000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -100
+      }
+    }
+    standard_deviation {
+      position {
+        x: 300
+        y: 60
+        z: 30
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 5
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 20
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 1200
+        z: 14000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -100
+      }
+    }
+    standard_deviation {
+      position {
+        x: 300
+        y: 60
+        z: 30
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 5
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+communication_config {
+  link_config {
+    latency_seconds: 0.0
+    latency_std_seconds: 0.0
+    packet_delivery_ratio: 1.0
+  }
+  link_overrides {
+    from: IADS
+    to: VESSEL
+    link_config {
+      latency_seconds: 4.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: VESSEL
+    to: IADS
+    link_config {
+      latency_seconds: 4.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: VESSEL
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: VESSEL
+    link_config {
+      latency_seconds: 0.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: CARRIER_INTERCEPTOR
+    to: MISSILE_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: MISSILE_INTERCEPTOR
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 0.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: IADS
+    to: CARRIER_INTERCEPTOR
+    link_config {
+      latency_seconds: 4.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+  link_overrides {
+    from: IADS
+    to: MISSILE_INTERCEPTOR
+    link_config {
+      latency_seconds: 4.0
+      latency_std_seconds: 0.0
+      packet_delivery_ratio: 1.0
+    }
+  }
+}

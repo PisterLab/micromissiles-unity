@@ -1,0 +1,7 @@
+# Batch: 50 seeded runs for Case 3 applies 6-second latency to middle-tier upward links.
+name: "batch_5_swarms_100_ucav_1102"
+simulation_config_file: "5_swarms_100_ucav_1102.pbtxt"
+num_runs: 50
+seed: 100
+seed_stride: 1
+max_parallel: 17
