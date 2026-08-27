@@ -1,0 +1,7 @@
+# Batch: 50 seeded runs for Case 5 with global latency 0.006 seconds and UCAV kill probability 0.3.
+name: "batch_5_swarms_100_ucav_50108"
+simulation_config_file: "5_swarms_100_ucav_50108.pbtxt"
+num_runs: 50
+seed: 100
+seed_stride: 1
+max_parallel: 17
