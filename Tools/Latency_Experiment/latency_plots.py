@@ -528,6 +528,7 @@ def plot_category_position_maps(
     category_label: str,
     experiment_label: str,
     category_colors: dict[object, str] | None = None,
+    legend_outside: bool = False,
     output_dir: Path | None = None,
     filename_prefix: str = "positions",
 ) -> None:
@@ -599,7 +600,16 @@ def plot_category_position_maps(
             ("Each circle is an INTERCEPTOR_HIT position in the X-Z plane; "
              f"color identifies the {category_label.lower()}."),
         )
-        ax.legend(handles=category_handles(), title=category_label)
+        legend_kwargs = ({
+            "loc": "upper left",
+            "bbox_to_anchor": (1.02, 1.0),
+            "borderaxespad": 0,
+        } if legend_outside else {})
+        ax.legend(
+            handles=category_handles(),
+            title=category_label,
+            **legend_kwargs,
+        )
         fig.tight_layout()
         output_path = (output_dir / f"{filename_prefix}_hit_positions.png"
                        if output_dir is not None else None)
@@ -616,7 +626,16 @@ def plot_category_position_maps(
              f"in the X-Z plane; color identifies the "
              f"{category_label.lower()}."),
         )
-        ax.legend(handles=category_handles(marker="^"), title=category_label)
+        legend_kwargs = ({
+            "loc": "upper left",
+            "bbox_to_anchor": (1.02, 1.0),
+            "borderaxespad": 0,
+        } if legend_outside else {})
+        ax.legend(
+            handles=category_handles(marker="^"),
+            title=category_label,
+            **legend_kwargs,
+        )
         fig.tight_layout()
         output_path = (output_dir / f"{filename_prefix}_launch_positions.png"
                        if output_dir is not None else None)
@@ -632,6 +651,13 @@ def plot_category_position_maps(
         ("Triangles mark launches and circles mark hits in the X-Z plane; "
          f"color identifies the {category_label.lower()}."),
     )
+    category_legend_kwargs = ({
+        "loc": "upper left",
+        "bbox_to_anchor": (1.02, 1.0),
+        "borderaxespad": 0,
+    } if legend_outside else {
+        "loc": "upper right",
+    })
     category_legend = ax.legend(
         handles=[
             Line2D([], [],
@@ -640,9 +666,16 @@ def plot_category_position_maps(
                    label=str(category)) for category in categories
         ],
         title=category_label,
-        loc="upper right",
+        **category_legend_kwargs,
     )
     ax.add_artist(category_legend)
+    event_legend_kwargs = ({
+        "loc": "lower left",
+        "bbox_to_anchor": (1.02, 0.0),
+        "borderaxespad": 0,
+    } if legend_outside else {
+        "loc": "lower right",
+    })
     ax.legend(
         handles=[
             Line2D([], [],
@@ -659,7 +692,7 @@ def plot_category_position_maps(
                    label="Carrier Release / Missile Interceptor Launch"),
         ],
         title="Event Type",
-        loc="lower right",
+        **event_legend_kwargs,
     )
     fig.tight_layout()
     output_path = (output_dir / f"{filename_prefix}_launches_and_hits.png"

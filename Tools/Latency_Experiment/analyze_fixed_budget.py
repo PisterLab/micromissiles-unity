@@ -8,7 +8,7 @@ from latency_dataset import (FIXED_BUDGET, REPO_ROOT, add_common_cli_arguments,
                              build_run_dataset, configure_logging)
 from latency_metrics import (DEFAULT_ANALYSIS_METRICS, DEFAULT_PLOT_METRICS,
                              METRIC_LABELS)
-from latency_plots import plot_latency_position_maps, plot_metric_curves
+from latency_plots import plot_category_position_maps, plot_metric_curves
 from latency_statistics import (available_metrics, paired_differences,
                                 print_mean_std_summary, summarize_conditions)
 
@@ -20,6 +20,19 @@ ALLOCATION_LABELS = {
     "top-tier-only": "Top Tier Only (100% / 0% / 0%)",
     "middle-tier-only": "Middle Tier Only (0% / 100% / 0%)",
     "bottom-tier-only": "Bottom Tier Only (0% / 0% / 100%)",
+}
+
+# Keep allocation colors stable across the response curves and spatial plots.
+# The seven colors are deliberately distinct because marker shape is reserved
+# for distinguishing launches (triangles) from hits (circles).
+ALLOCATION_COLORS = {
+    ALLOCATION_LABELS["equal"]: "#000000",
+    ALLOCATION_LABELS["top-heavy"]: "#0072B2",
+    ALLOCATION_LABELS["middle-heavy"]: "#E69F00",
+    ALLOCATION_LABELS["bottom-heavy"]: "#009E73",
+    ALLOCATION_LABELS["top-tier-only"]: "#56B4E9",
+    ALLOCATION_LABELS["middle-tier-only"]: "#D55E00",
+    ALLOCATION_LABELS["bottom-tier-only"]: "#CC79A7",
 }
 
 DEFAULT_OUTPUT_DIR = REPO_ROOT / "Logs/Analysis/Fixed_Budget"
@@ -70,17 +83,20 @@ def analyze(
             "latency_budget_s",
             metric,
             series_column="allocation_label",
+            series_colors=ALLOCATION_COLORS,
             x_label="End-to-End Latency Budget [s]",
             title=f"Fixed Budget: {METRIC_LABELS[metric]}",
             legend_title="Allocation (Top / Middle / Bottom)",
             output_path=(output_dir /
                          f"{metric}.png" if output_dir is not None else None),
         )
-    plot_latency_position_maps(
+    plot_category_position_maps(
         family_data,
-        "latency_budget_s",
-        "End-to-End Latency Budget [s]",
+        "allocation_label",
+        "Allocation (Top / Middle / Bottom)",
         "Fixed Budget Latency",
+        category_colors=ALLOCATION_COLORS,
+        legend_outside=True,
         output_dir=output_dir,
         filename_prefix="fixed_budget",
     )
