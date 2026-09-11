@@ -179,6 +179,7 @@ public class CameraController : MonoBehaviour {
         case CameraMode.FOLLOW_AGENT: {
           StopCentroidUpdateCoroutine();
           ClearFollowedAgent();
+          UIManager.Instance?.ClearAgentLogFilter();
           break;
         }
         default: {
@@ -186,6 +187,9 @@ public class CameraController : MonoBehaviour {
         }
       }
       _cameraMode = value;
+      if (_cameraMode != CameraMode.FOLLOW_AGENT) {
+        UIManager.Instance?.ClearAgentLogFilter();
+      }
     }
   }
 
@@ -214,7 +218,9 @@ public class CameraController : MonoBehaviour {
     _followedAgent = agent;
     _followedAgent.OnTerminated += RegisterFollowedAgentTerminated;
     SetCameraTargetPosition(_followedAgent.Position);
-    UIManager.Instance?.LogActionMessage($"[CAM] Following {_followedAgent.gameObject.name}.");
+    UIManager.Instance?.SetAgentLogFilter(_followedAgent);
+    UIManager.Instance?.LogActionMessage($"[CAM] Following {_followedAgent.AgentId}.",
+                                         _followedAgent);
   }
 
   public void StopFollowingAgent() {

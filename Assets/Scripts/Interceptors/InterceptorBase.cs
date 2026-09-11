@@ -386,7 +386,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       HierarchicalAgent.AddSubHierarchical(newSubHierarchical);
       Debug.Log($"Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.");
       UIManager.Instance.LogActionMessage(
-          $"[IADS] Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.");
+          $"[IADS] Reclustered {numUnassignedTargets} target(s) into a new cluster for {this}.",
+          this);
 
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);

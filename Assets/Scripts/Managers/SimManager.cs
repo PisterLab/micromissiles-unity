@@ -46,6 +46,9 @@ public class SimManager : MonoBehaviour {
   // Simulator configuration.
   public Configs.SimulatorConfig SimulatorConfig { get; set; }
 
+  // Filename of the simulation configuration currently loaded for this run.
+  public string SimulationConfigFile { get; private set; } = "";
+
   // Simulation time.
   public float ElapsedTime { get; private set; } = 0f;
   public bool IsPaused { get; private set; } = false;
@@ -164,7 +167,8 @@ public class SimManager : MonoBehaviour {
 
   // Create an interceptor based on the provided configuration.
   public IInterceptor CreateInterceptor(Configs.AgentConfig config, Simulation.State initialState,
-                                        bool ignoreMetrics = false) {
+                                        bool ignoreMetrics = false, string agentId = null,
+                                        IAgent parentAgent = null, int childIndex = 0) {
     if (config == null) {
       return null;
     }
@@ -186,12 +190,17 @@ public class SimManager : MonoBehaviour {
     IInterceptor interceptor = interceptorObject.GetComponent<IInterceptor>();
     interceptor.HierarchicalAgent = new HierarchicalAgent(interceptor);
     interceptor.StaticConfig = staticConfig;
+    interceptor.AgentId =
+        !string.IsNullOrWhiteSpace(agentId) ? agentId
+        : parentAgent != null
+            ? AgentIdentity.ChildId(parentAgent.AgentId, staticConfig.AgentType, childIndex)
+            : AgentIdentity.FallbackInterceptorId(_numInterceptorsSpawned + 1);
     interceptor.OnTerminated += RegisterInterceptorTerminated;
     _interceptors.Add(interceptor);
     ++_numInterceptorsSpawned;
 
-    // Assign a unique and simple ID.
-    interceptorObject.name = $"{staticConfig.Name}_Interceptor_{_numInterceptorsSpawned}";
+    interceptorObject.name = $"{staticConfig.Name}_{interceptor.AgentId}";
+    Debug.Log($"Created {staticConfig.AgentType} {interceptor.AgentId}.");
 
     if (!ignoreMetrics) {
       // Add the interceptor's unit cost to the total cost.
@@ -204,7 +213,7 @@ public class SimManager : MonoBehaviour {
 
   // Create a threat based on the provided configuration.
   // Returns the created threat instance, or null if creation failed.
-  public IThreat CreateThreat(Configs.AgentConfig config) {
+  public IThreat CreateThreat(Configs.AgentConfig config, string agentId = null) {
     if (config == null) {
       return null;
     }
@@ -226,13 +235,17 @@ public class SimManager : MonoBehaviour {
     IThreat threat = threatObject.GetComponent<IThreat>();
     threat.HierarchicalAgent = new HierarchicalAgent(threat);
     threat.StaticConfig = staticConfig;
+    threat.AgentId =
+        !string.IsNullOrWhiteSpace(agentId)
+            ? agentId
+            : AgentIdentity.ThreatId(swarmConfigIndex: 1, agentIndex: _numThreatsSpawned + 1);
     threat.OnDestroyed += RegisterThreatDestroyed;
     threat.OnTerminated += RegisterThreatTerminated;
     _threats.Add(threat);
     ++_numThreatsSpawned;
 
-    // Assign a unique name.
-    threatObject.name = $"{staticConfig.Name}_Threat_{_numThreatsSpawned}";
+    threatObject.name = $"{staticConfig.Name}_{threat.AgentId}";
+    Debug.Log($"Created {staticConfig.AgentType} {threat.AgentId}.");
 
     OnNewThreat?.Invoke(threat);
     return threat;
@@ -329,9 +342,11 @@ public class SimManager : MonoBehaviour {
   }
 
   private void InitializeAssets() {
-    foreach (var assetConfig in SimulationConfig.AssetConfigs) {
+    for (int i = 0; i < SimulationConfig.AssetConfigs.Count; ++i) {
+      Configs.AgentConfig assetConfig = SimulationConfig.AssetConfigs[i];
       IInterceptor asset =
-          CreateInterceptor(assetConfig, assetConfig.InitialState, ignoreMetrics: true);
+          CreateInterceptor(assetConfig, assetConfig.InitialState, ignoreMetrics: true,
+                            agentId: AgentIdentity.AssetId(i + 1));
       if (asset != null) {
         // Change the color of the asset to be orange.
         Renderer[] renderers = asset.gameObject.GetComponentsInChildren<Renderer>();
@@ -347,9 +362,11 @@ public class SimManager : MonoBehaviour {
   }
 
   private void InitializeLaunchers() {
-    foreach (var swarmConfig in SimulationConfig.InterceptorSwarmConfigs) {
-      IInterceptor launcher = CreateInterceptor(
-          swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState, ignoreMetrics: true);
+    for (int i = 0; i < SimulationConfig.InterceptorSwarmConfigs.Count; ++i) {
+      Configs.SwarmConfig swarmConfig = SimulationConfig.InterceptorSwarmConfigs[i];
+      IInterceptor launcher =
+          CreateInterceptor(swarmConfig.AgentConfig, swarmConfig.AgentConfig.InitialState,
+                            ignoreMetrics: true, agentId: AgentIdentity.LauncherId(i + 1));
       if (launcher != null) {
         OnNewLauncher?.Invoke(launcher);
         // All launchers are assets.
@@ -359,9 +376,11 @@ public class SimManager : MonoBehaviour {
   }
 
   private void InitializeThreats() {
-    foreach (var swarmConfig in SimulationConfig.ThreatSwarmConfigs) {
-      for (int i = 0; i < swarmConfig.NumAgents; ++i) {
-        CreateThreat(swarmConfig.AgentConfig);
+    for (int swarmIndex = 0; swarmIndex < SimulationConfig.ThreatSwarmConfigs.Count; ++swarmIndex) {
+      Configs.SwarmConfig swarmConfig = SimulationConfig.ThreatSwarmConfigs[swarmIndex];
+      for (int agentIndex = 0; agentIndex < swarmConfig.NumAgents; ++agentIndex) {
+        CreateThreat(swarmConfig.AgentConfig,
+                     AgentIdentity.ThreatId(swarmIndex + 1, agentIndex + 1));
       }
     }
   }
@@ -374,6 +393,9 @@ public class SimManager : MonoBehaviour {
       SimulatorConfig.EnableEventLogging = true;
     }
     SimulationConfig = ConfigLoader.LoadSimulationConfig(simulationConfigFile);
+    if (SimulationConfig != null) {
+      SimulationConfigFile = simulationConfigFile;
+    }
   }
 
   private void SetGameSpeed() {

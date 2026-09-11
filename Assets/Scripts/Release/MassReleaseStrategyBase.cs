@@ -47,6 +47,7 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
     }
 
     var releasedAgents = new List<IAgent>();
+    int firstChildIndex = carrier.NumSubInterceptors - carrier.NumSubInterceptorsRemaining + 1;
     for (int i = 0; i < subAgentConfig.NumSubAgents; ++i) {
       // Fan the submunitions radially outwards from the carrier's velocity vector.
       Vector3 lateralDirection =
@@ -60,8 +61,9 @@ public abstract class MassReleaseStrategyBase : ReleaseStrategyBase {
         Position = positionCoordinates,
         Velocity = velocityCoordinates,
       };
-      IAgent subInterceptor =
-          SimManager.Instance.CreateInterceptor(subAgentConfig.AgentConfig, initialState);
+      IAgent subInterceptor = SimManager.Instance.CreateInterceptor(
+          subAgentConfig.AgentConfig, initialState, parentAgent: Agent,
+          childIndex: firstChildIndex + i);
       if (subInterceptor is IInterceptor) {
         releasedAgents.Add(subInterceptor);
       }

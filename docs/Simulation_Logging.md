@@ -13,7 +13,8 @@ These logs are essential for debugging, performance analysis, and understanding 
 The [`SimMonitor` class](https://github.com/PisterLab/micromissiles-unity/blob/master/Assets/Scripts/Monitors/SimMonitor.cs) is responsible for:
 - Collecting agent state data at some logging frequency.
 - Writing telemetry data to `sim_telemetry_*.bin` and converting the binary file to `sim_telemetry_*.csv`.
-- Recording significant events to `sim_events_*.csv`.
+- Recording significant events to `sim_events_*.csv` and target-enriched events to `sim_target_events_*.csv`.
+- Writing the run seed and communication latency configuration to `run_metadata_*.json`.
 - Organizing logs into timestamped directories for each simulation run.
 
 Logs are exported to the `Logs` directory in your operating system's [persistent data path](https://docs.unity3d.com/ScriptReference/Application-persistentDataPath.html).
@@ -27,12 +28,13 @@ Linux                | `~/.config/unity3d/BAMLAB/micromissiles/Logs`
 ### Log Directory
 
 Simulation logs are organized into timestamped directories within the `Logs` directory.
-Each simulation run generates a new subdirectory with the timestamp of the run, and each simulation configuration produces two CSV files:
+Each simulation run generates a new subdirectory with the timestamp of the run, and each simulation configuration produces three CSV files:
 - **Telemetry file (`sim_telemetry_*.csv`)**: Contains detailed state information for each agent at each time step. The telemetry CSV file is converted from an accompanying `sim_telemetry_*.bin` binary file.
-- **Event log (`sim_events_*.csv`)**: Records significant events such as hits, misses, agent creation, and termination.
+- **Event log (`sim_events_*.csv`)**: Preserves the original event schema and records hits, misses, agent creation, and termination.
+- **Target-enriched event log (`sim_target_events_*.csv`)**: Contains every original event plus authoritative target snapshots and `TARGET_CHANGED` events.
 
 If the simulation run was executed interactively through the Unity Editor, the logs will be stored in a directory called `run_<timestamp>`.
-Each engagement scenario will produce one telemetry file and one event log, so loading a new simulation configuration or restarting the simulation configuration generates additional CSV files.
+Each engagement scenario produces telemetry, original and target-enriched event logs, and run metadata, so loading a new simulation configuration or restarting the simulation configuration generates additional files.
 
 ```
 Logs/
@@ -40,6 +42,8 @@ Logs/
   │   ├── sim_telemetry_20251117_095849.bin
   │   ├── sim_telemetry_20251117_095849.csv
   │   ├── sim_events_20251117_095849.csv
+  │   ├── sim_target_events_20251117_095849.csv
+  │   ├── run_metadata_20251117_095849.json
   │   │
   │   │   # Corresponds to a different simulation configuration in the same simulation run.
   │   ├── sim_telemetry_20251117_095912.bin
@@ -56,7 +60,7 @@ Logs/
 If the simulation run was executed through `Tools/run_batch.py`, the logs will be stored in a parent directory called `<run_config_name>_<timestamp>`.
 The logs of each simulation run are then stored in subdirectories within this parent directory, called `run_<run_index>_seed_<seed>`.
 Invoking the single-run CLI directly will cause the logs to be written to the explicit absolute directory passed via `--output_dir`.
-Since each Unity worker executes exactly one simulation run, there are only two CSV files per subdirectory.
+Since each Unity worker executes exactly one simulation run, each subdirectory contains one set of telemetry, event, and metadata files.
 
 ```
 Logs/
@@ -91,19 +95,41 @@ The telemetry file provides a snapshot of the simulation at each time step for e
 Key columns include:
 - **`Time`**: Simulation time at the snapshot.
 - **`AgentType`**: Type of the agent, e.g., `CarrierInterceptor`, `MissileInterceptor`, `FixedWingThreat`, or `RotaryWingThreat`.
-- **`AgentID`**: Unique identifier for each agent, e.g., `Micromissile_Interceptor_6` or `Quadcopter_Threat_2`.
+- **`AgentID`**: Deterministic identifier for the agent, e.g., `LCH-001-C001-M003` or `THR-S001-A0002`.
+- **`TargetID`**: Target agent ID when the authoritative assignment contains exactly one target.
+- **`TargetIDs`**: Pipe-separated IDs of every leaf agent in the authoritative target assignment.
 - **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position of the agent.
 - **`VelocityX`**, **`VelocityY`**, **`VelocityZ`**: Velocity of the agent.
 
-## Event Log
+## Event Logs
 
-The event log records significant events within the simulation.
+The original `sim_events_*.csv` remains compatible with existing analysis tools and contains `Time`, `Event`, `AgentType`, `AgentID`, and position columns. It does not include `TARGET_CHANGED` rows.
+
+The additional `sim_target_events_*.csv` contains all rows from the original event log plus target-assignment changes.
 Key columns include:
 - **`Time`**: Simulation time when the event occurred.
-- **`Event`**: Type of event, e.g., `NEW_INTERCEPTOR`, `NEW_THREAT`, `INTERCEPTOR_HIT`, `INTERCEPTOR_MISS`, `INTERCEPTOR_DESTROYED`, `THREAT_HIT`, or `THREAT_DESTROYED`.
+- **`Event`**: Type of event, e.g., `NEW_INTERCEPTOR`, `NEW_THREAT`, `TARGET_CHANGED`, `INTERCEPTOR_HIT`, `INTERCEPTOR_MISS`, `INTERCEPTOR_DESTROYED`, `THREAT_HIT`, or `THREAT_DESTROYED`.
 - **`AgentType`**: Type of the agent, e.g., `CarrierInterceptor`, `MissileInterceptor`, `FixedWingThreat`, or `RotaryWingThreat`.
-- **`AgentID`**: Unique identifier for each agent, e.g., `Micromissile_Interceptor_6`.
+- **`AgentID`**: Deterministic agent identifier.
+- **`TargetID`** and **`TargetIDs`**: New authoritative target assignment for the event.
+- **`PreviousTargetID`** and **`PreviousTargetIDs`**: Previous assignment for a `TARGET_CHANGED` event.
 - **`PositionX`**, **`PositionY`**, **`PositionZ`**: Position where the event occurred.
+
+## Run Metadata
+
+The `run_metadata_*.json` file records the simulation configuration filename, worker seed, default one-way communication latency and jitter, and every per-link latency override. Agent IDs deliberately exclude seed and latency; use the run metadata together with `AgentID` when comparing equivalent agents across runs.
+
+Top-level IDs are based on configuration positions. Dynamically released interceptor IDs extend their parent's ID with a deterministic child slot:
+
+```text
+AST-001                  asset configuration 1
+LCH-001                  launcher configuration 1
+LCH-001-C001             carrier slot 1 from launcher 1
+LCH-001-C001-M003        missile slot 3 from that carrier
+THR-S002-A0007           threat 7 from threat swarm configuration 2
+```
+
+When multiple children are released simultaneously, their IDs are assigned synchronously in release-loop order before targets are assigned. The first child receives `C001` or `M001`, the second receives `C002` or `M002`, and so on.
 
 ## Log Visualizer
 

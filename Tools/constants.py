@@ -23,6 +23,7 @@ class EventType(StrEnum):
     INTERCEPTOR_DESTROYED = "INTERCEPTOR_DESTROYED"
     THREAT_HIT = "THREAT_HIT"
     THREAT_DESTROYED = "THREAT_DESTROYED"
+    TARGET_CHANGED = "TARGET_CHANGED"
 
 
 class Column(StrEnum):
@@ -30,6 +31,10 @@ class Column(StrEnum):
     TIME = "Time"
     AGENT_TYPE = "AgentType"
     AGENT_ID = "AgentID"
+    TARGET_ID = "TargetID"
+    TARGET_IDS = "TargetIDs"
+    PREVIOUS_TARGET_ID = "PreviousTargetID"
+    PREVIOUS_TARGET_IDS = "PreviousTargetIDs"
     EVENT = "Event"
     POSITION_X = "PositionX"
     POSITION_Y = "PositionY"
@@ -44,6 +49,12 @@ TELEMETRY_FILE_PREFIX = "sim_telemetry"
 
 # Event log prefix.
 EVENT_LOG_FILE_PREFIX = "sim_events"
+
+# Event log with authoritative target assignment snapshots and changes.
+TARGET_EVENT_LOG_FILE_PREFIX = "sim_target_events"
+
+# Run metadata file prefix.
+RUN_METADATA_FILE_PREFIX = "run_metadata"
 
 
 def is_interceptor(agent_type: str) -> bool:
