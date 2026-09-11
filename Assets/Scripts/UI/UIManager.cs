@@ -6,6 +6,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
+  private sealed class ActionLogEntry {
+    public string Message { get; }
+    public Color Color { get; }
+    public string AgentId { get; }
+
+    public ActionLogEntry(string message, Color color, string agentId) {
+      Message = message;
+      Color = color;
+      AgentId = agentId;
+    }
+  }
+
+  private const int _maxActionLogHistory = 500;
+
   public static UIManager Instance { get; private set; }
 
   [SerializeField]
@@ -40,6 +54,11 @@ public class UIManager : MonoBehaviour {
   private int _numInterceptorMisses = 0;
   private int _numInterceptorsRemaining = 0;
   private int _numThreatsRemaining = 0;
+  private readonly List<ActionLogEntry> _actionLogHistory = new List<ActionLogEntry>();
+  private readonly HashSet<string> _agentLogFilterIds = new HashSet<string>();
+  private string _followedAgentDescription = "";
+  private IAgent _followedAgent = null;
+  private bool _isAgentLogFilterActive = false;
 
   private UIMode _uiMode = UIMode.THREE_DIMENSIONAL;
 
@@ -63,36 +82,97 @@ public class UIManager : MonoBehaviour {
     _configSelectorPanel.SetActive(!_configSelectorPanel.activeSelf);
   }
 
-  public void LogAction(string message, Color color) {
-    // Shift existing messages to older slots with faded colors.
-    pppppActionMessageTextHandle.text = ppppActionMessageTextHandle.text;
-    pppppActionMessageTextHandle.color =
-        ppppActionMessageTextHandle.color * 0.8f;  // Fade color by 20%.
-
-    ppppActionMessageTextHandle.text = ppActionMessageTextHandle.text;
-    ppppActionMessageTextHandle.color = ppActionMessageTextHandle.color * 0.85f;
-
-    ppActionMessageTextHandle.text = pActionMessageTextHandle.text;
-    ppActionMessageTextHandle.color = pActionMessageTextHandle.color * 0.85f;
-
-    pActionMessageTextHandle.text = actionMessageTextHandle.text;
-    pActionMessageTextHandle.color = actionMessageTextHandle.color * 0.9f;
-
-    // Set new message.
-    actionMessageTextHandle.text = message;
-    actionMessageTextHandle.color = color;
+  public void LogAction(string message, Color color, IAgent agent = null) {
+    _actionLogHistory.Add(new ActionLogEntry(message, color, agent?.AgentId));
+    if (_actionLogHistory.Count > _maxActionLogHistory) {
+      _actionLogHistory.RemoveAt(0);
+    }
+    RenderActionLog();
   }
 
-  public void LogActionMessage(string message) {
-    LogAction(message, Color.white);
+  public void LogActionMessage(string message, IAgent agent = null) {
+    LogAction(message, Color.white, agent);
   }
 
-  public void LogActionWarning(string message) {
-    LogAction(message, Color.yellow);
+  public void LogActionWarning(string message, IAgent agent = null) {
+    LogAction(message, Color.yellow, agent);
   }
 
-  public void LogActionError(string message) {
-    LogAction(message, Color.red);
+  public void LogActionError(string message, IAgent agent = null) {
+    LogAction(message, Color.red, agent);
+  }
+
+  // Show only updates associated with the followed agent. The newest HUD line is reserved for the
+  // persistent camera focus indicator.
+  public void SetAgentLogFilter(IAgent followedAgent) {
+    if (followedAgent == null) {
+      ClearAgentLogFilter();
+      return;
+    }
+
+    ClearFollowedAgentTargetSubscription();
+    _followedAgent = followedAgent;
+    if (_followedAgent.HierarchicalAgent != null) {
+      _followedAgent.HierarchicalAgent.OnTargetChanged += RegisterFollowedAgentTargetChanged;
+    }
+
+    _agentLogFilterIds.Clear();
+    string agentId = followedAgent.AgentId;
+    if (!string.IsNullOrWhiteSpace(agentId)) {
+      _agentLogFilterIds.Add(agentId);
+    }
+
+    string agentType = followedAgent.StaticConfig?.AgentType.ToString();
+    string agentDescription =
+        !string.IsNullOrWhiteSpace(agentId) ? agentId : followedAgent.gameObject.name;
+    _followedAgentDescription = string.IsNullOrWhiteSpace(agentType)
+                                    ? agentDescription
+                                    : $"{agentDescription} ({agentType})";
+    _isAgentLogFilterActive = true;
+    RenderActionLog();
+  }
+
+  public void ClearAgentLogFilter() {
+    ClearFollowedAgentTargetSubscription();
+    _isAgentLogFilterActive = false;
+    _followedAgentDescription = "";
+    _agentLogFilterIds.Clear();
+    RenderActionLog();
+  }
+
+  private void RenderActionLog() {
+    TextMeshProUGUI[] handles = {
+      actionMessageTextHandle,     pActionMessageTextHandle,     ppActionMessageTextHandle,
+      ppppActionMessageTextHandle, pppppActionMessageTextHandle,
+    };
+    foreach (TextMeshProUGUI handle in handles) {
+      if (handle == null) {
+        continue;
+      }
+      handle.text = "";
+      handle.color = Color.white;
+    }
+
+    int handleIndex = 0;
+    if (_isAgentLogFilterActive && handles[handleIndex] != null) {
+      handles[handleIndex].text =
+          $"[CAM] CENTERED ON {_followedAgentDescription} | {FormatFollowedAgentTargets()}";
+      handles[handleIndex].color = Color.cyan;
+      ++handleIndex;
+    }
+
+    for (int i = _actionLogHistory.Count - 1; i >= 0 && handleIndex < handles.Length; --i) {
+      ActionLogEntry entry = _actionLogHistory[i];
+      if (_isAgentLogFilterActive && (string.IsNullOrWhiteSpace(entry.AgentId) ||
+                                      !_agentLogFilterIds.Contains(entry.AgentId))) {
+        continue;
+      }
+      if (handles[handleIndex] != null) {
+        handles[handleIndex].text = entry.Message;
+        handles[handleIndex].color = entry.Color * Mathf.Pow(0.85f, handleIndex);
+      }
+      ++handleIndex;
+    }
   }
 
   private void Awake() {
@@ -110,11 +190,7 @@ public class UIManager : MonoBehaviour {
     SimManager.Instance.OnNewInterceptor += RegisterNewInterceptor;
     SimManager.Instance.OnNewThreat += RegisterNewThreat;
     SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
-    actionMessageTextHandle.text = "";
-    pActionMessageTextHandle.text = "";
-    ppActionMessageTextHandle.text = "";
-    ppppActionMessageTextHandle.text = "";
-    pppppActionMessageTextHandle.text = "";
+    RenderActionLog();
   }
 
   private void Update() {
@@ -193,6 +269,7 @@ public class UIManager : MonoBehaviour {
 
   private void RegisterNewInterceptor(IInterceptor interceptor) {
     ++_numInterceptorsRemaining;
+    interceptor.HierarchicalAgent.OnTargetChanged += RegisterTargetChanged;
     interceptor.OnHit += RegisterInterceptorHit;
     interceptor.OnMiss += RegisterInterceptorMiss;
     interceptor.OnTerminated += RegisterAgentTerminated;
@@ -218,6 +295,7 @@ public class UIManager : MonoBehaviour {
   private void RegisterAgentTerminated(IAgent agent) {
     if (agent is IInterceptor) {
       --_numInterceptorsRemaining;
+      agent.HierarchicalAgent.OnTargetChanged -= RegisterTargetChanged;
     } else if (agent is IThreat) {
       --_numThreatsRemaining;
     }
@@ -225,10 +303,52 @@ public class UIManager : MonoBehaviour {
   }
 
   private void RegisterSimulationEnded() {
+    ClearAgentLogFilter();
     _numInterceptorsRemaining = 0;
     _numThreatsRemaining = 0;
     _numInterceptorHits = 0;
     _numInterceptorMisses = 0;
     UpdateSummaryText();
+  }
+
+  private void RegisterTargetChanged(IAgent agent, IReadOnlyList<string> previousTargetIds,
+                                     IReadOnlyList<string> targetIds) {
+    string previousTargets = FormatTargetIds(previousTargetIds);
+    string targets = FormatTargetIds(targetIds);
+    LogActionMessage($"[TARGET] {agent.AgentId}: [{previousTargets}] -> [{targets}].", agent);
+  }
+
+  private void RegisterFollowedAgentTargetChanged(IAgent agent,
+                                                  IReadOnlyList<string> previousTargetIds,
+                                                  IReadOnlyList<string> targetIds) {
+    if (ReferenceEquals(agent, _followedAgent)) {
+      RenderActionLog();
+    }
+  }
+
+  private void ClearFollowedAgentTargetSubscription() {
+    if (_followedAgent?.HierarchicalAgent != null) {
+      _followedAgent.HierarchicalAgent.OnTargetChanged -= RegisterFollowedAgentTargetChanged;
+    }
+    _followedAgent = null;
+  }
+
+  private string FormatFollowedAgentTargets() {
+    IReadOnlyList<string> targetIds = _followedAgent?.TargetIds;
+    if (targetIds == null || targetIds.Count == 0) {
+      return "TARGET: none";
+    }
+    if (targetIds.Count == 1) {
+      return $"TARGET: {targetIds[0]}";
+    }
+    if (targetIds.Count <= 3) {
+      return $"TARGETS: {string.Join(", ", targetIds)}";
+    }
+    return $"TARGETS: {targetIds[0]} ... {targetIds[targetIds.Count - 1]} " +
+           $"({targetIds.Count} agents)";
+  }
+
+  private static string FormatTargetIds(IReadOnlyList<string> targetIds) {
+    return targetIds == null || targetIds.Count == 0 ? "none" : string.Join(", ", targetIds);
   }
 }

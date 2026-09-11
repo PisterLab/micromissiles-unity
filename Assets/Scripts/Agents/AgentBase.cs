@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Base implementation of an agent.
@@ -8,6 +9,11 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
   public event Action<IAgent> OnTerminated;
 
   private const float _epsilon = 1e-12f;
+  private static readonly IReadOnlyList<string> _emptyTargetIds = Array.Empty<string>();
+
+  // Stable ID assigned by the simulation manager before the agent is announced to other systems.
+  [SerializeField]
+  private string _agentId = "";
 
   // Rigid body component.
   protected Rigidbody _rigidbody;
@@ -40,6 +46,20 @@ public class AgentBase : MonoBehaviour, IAgent, ICommsEndpoint {
   // Last sensing time.
   [SerializeField]
   private float _lastSensingTime = Mathf.NegativeInfinity;
+
+  public string AgentId {
+    get => _agentId;
+    set {
+      string newAgentId = value ?? "";
+      if (!string.IsNullOrEmpty(_agentId) && _agentId != newAgentId) {
+        throw new InvalidOperationException(
+            $"Agent ID {_agentId} cannot be changed to {newAgentId} after assignment.");
+      }
+      _agentId = newAgentId;
+    }
+  }
+  public string TargetId => HierarchicalAgent?.TargetId ?? "";
+  public IReadOnlyList<string> TargetIds => HierarchicalAgent?.TargetIds ?? _emptyTargetIds;
 
   public HierarchicalAgent HierarchicalAgent {
     get => _hierarchicalAgent;
