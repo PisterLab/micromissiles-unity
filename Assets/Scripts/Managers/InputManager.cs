@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour {
+  private enum IndividualFollowType {
+    INTERCEPTORS,
+    THREATS,
+  }
+
   public static InputManager Instance { get; private set; }
 
   public bool MouseActive { get; set; } = true;
@@ -9,6 +15,7 @@ public class InputManager : MonoBehaviour {
 
   private Vector2 _lastMousePosition;
   private bool _isDragging = false;
+  private IndividualFollowType _individualFollowType = IndividualFollowType.INTERCEPTORS;
 
   private void Awake() {
     if (Instance != null && Instance != this) {
@@ -208,6 +215,23 @@ public class InputManager : MonoBehaviour {
     HandleCameraFollowInput(Key.Digit1, CameraFollowType.ALL_AGENTS);
     HandleCameraFollowInput(Key.Digit2, CameraFollowType.ALL_INTERCEPTORS);
     HandleCameraFollowInput(Key.Digit3, CameraFollowType.ALL_THREATS);
+
+    if (keyboard.backslashKey.wasPressedThisFrame) {
+      ToggleIndividualFollowType();
+    } else if (keyboard.leftBracketKey.wasPressedThisFrame) {
+      FollowAdjacentIndividualAgent(direction: -1);
+    } else if (keyboard.rightBracketKey.wasPressedThisFrame) {
+      FollowAdjacentIndividualAgent(direction: 1);
+    } else if (keyboard.equalsKey.wasPressedThisFrame &&
+               _individualFollowType == IndividualFollowType.INTERCEPTORS) {
+      // The main keyboard '+' character shares the physical '=' key.
+      FollowChildInterceptor();
+    } else if (keyboard.minusKey.wasPressedThisFrame &&
+               _individualFollowType == IndividualFollowType.INTERCEPTORS) {
+      FollowParentInterceptor();
+    } else if (keyboard.digit0Key.wasPressedThisFrame) {
+      CameraController.Instance.StopFollowingAgent();
+    }
   }
 
   private void HandleCameraFollowInput(Key key, CameraFollowType followType) {
@@ -219,5 +243,162 @@ public class InputManager : MonoBehaviour {
         CameraController.Instance.Snap(followType);
       }
     }
+  }
+
+  private void ToggleIndividualFollowType() {
+    if (_individualFollowType == IndividualFollowType.INTERCEPTORS) {
+      _individualFollowType = IndividualFollowType.THREATS;
+      FollowAdjacentThreat(direction: 1);
+    } else {
+      _individualFollowType = IndividualFollowType.INTERCEPTORS;
+      FollowAdjacentSiblingInterceptor(direction: 1);
+    }
+  }
+
+  private void FollowAdjacentIndividualAgent(int direction) {
+    if (_individualFollowType == IndividualFollowType.THREATS) {
+      FollowAdjacentThreat(direction);
+    } else {
+      FollowAdjacentSiblingInterceptor(direction);
+    }
+  }
+
+  private void FollowAdjacentThreat(int direction) {
+    var activeThreats = new List<IAgent>();
+    foreach (IAgent agent in SimManager.Instance.Threats) {
+      if (agent is IThreat threat && !threat.IsTerminated) {
+        activeThreats.Add(threat);
+      }
+    }
+
+    if (activeThreats.Count == 0) {
+      UIManager.Instance?.LogActionWarning("[CAM] No active threats are available to follow.");
+      return;
+    }
+
+    IAgent followedAgent = CameraController.Instance.FollowedAgent;
+    int currentIndex = -1;
+    for (int i = 0; i < activeThreats.Count; ++i) {
+      if (ReferenceEquals(activeThreats[i], followedAgent)) {
+        currentIndex = i;
+        break;
+      }
+    }
+
+    int startIndex = currentIndex;
+    if (startIndex < 0) {
+      startIndex = direction > 0 ? -1 : 0;
+    }
+
+    int nextIndex = (startIndex + direction) % activeThreats.Count;
+    if (nextIndex < 0) {
+      nextIndex += activeThreats.Count;
+    }
+    CameraController.Instance.FollowAgent(activeThreats[nextIndex]);
+  }
+
+  private void FollowAdjacentSiblingInterceptor(int direction) {
+    var interceptors = SimManager.Instance.Interceptors;
+    if (interceptors.Count == 0) {
+      UIManager.Instance?.LogActionWarning("[CAM] No interceptors are available to follow.");
+      return;
+    }
+
+    IAgent followedAgent = CameraController.Instance.FollowedAgent;
+    var followedInterceptor = followedAgent as IInterceptor;
+    bool selectTopLevelLauncher =
+        followedInterceptor == null || followedInterceptor.ParentCommsNode == null;
+    CommsNode iadsCommsNode = selectTopLevelLauncher ? IADS.Instance?.CommsNode : null;
+    var siblingInterceptors = new List<IAgent>();
+    foreach (IAgent agent in interceptors) {
+      if (agent is not IInterceptor interceptor || interceptor.IsTerminated) {
+        continue;
+      }
+      if (selectTopLevelLauncher) {
+        if (iadsCommsNode == null || !ReferenceEquals(interceptor.ParentCommsNode, iadsCommsNode)) {
+          continue;
+        }
+      } else {
+        if (interceptor.StaticConfig.AgentType != followedInterceptor.StaticConfig.AgentType ||
+            !ReferenceEquals(interceptor.ParentCommsNode, followedInterceptor.ParentCommsNode)) {
+          continue;
+        }
+      }
+      siblingInterceptors.Add(interceptor);
+    }
+    if (siblingInterceptors.Count == 0) {
+      string warning = selectTopLevelLauncher
+                           ? "[CAM] No active interceptor launchers are available to follow."
+                           : "[CAM] No active sibling interceptors are available to follow.";
+      UIManager.Instance?.LogActionWarning(warning);
+      return;
+    }
+    if (!selectTopLevelLauncher && siblingInterceptors.Count == 1) {
+      UIManager.Instance?.LogActionWarning(
+          $"[CAM] {followedInterceptor.gameObject.name} has no other active sibling interceptor.");
+      return;
+    }
+
+    int currentIndex = -1;
+    for (int i = 0; i < siblingInterceptors.Count; ++i) {
+      if (ReferenceEquals(siblingInterceptors[i], followedAgent)) {
+        currentIndex = i;
+        break;
+      }
+    }
+
+    int startIndex = currentIndex;
+    if (startIndex < 0) {
+      startIndex = direction > 0 ? -1 : 0;
+    }
+
+    int nextIndex = (startIndex + direction) % siblingInterceptors.Count;
+    if (nextIndex < 0) {
+      nextIndex += siblingInterceptors.Count;
+    }
+    CameraController.Instance.FollowAgent(siblingInterceptors[nextIndex]);
+  }
+
+  private void FollowChildInterceptor() {
+    if (CameraController.Instance.FollowedAgent is not IInterceptor followedInterceptor) {
+      UIManager.Instance?.LogActionWarning(
+          "[CAM] Select an interceptor before moving down the hierarchy.");
+      return;
+    }
+    if (followedInterceptor.ParentCommsNode == null) {
+      // Defended assets also implement IInterceptor, but they sit outside the launcher hierarchy.
+      FollowAdjacentSiblingInterceptor(direction: 1);
+      return;
+    }
+
+    foreach (IAgent agent in SimManager.Instance.Interceptors) {
+      if (agent is IInterceptor childInterceptor && !childInterceptor.IsTerminated &&
+          ReferenceEquals(childInterceptor.ParentCommsNode, followedInterceptor.CommsNode)) {
+        CameraController.Instance.FollowAgent(childInterceptor);
+        return;
+      }
+    }
+
+    UIManager.Instance?.LogActionWarning(
+        $"[CAM] {followedInterceptor.gameObject.name} has no active child interceptor.");
+  }
+
+  private void FollowParentInterceptor() {
+    if (CameraController.Instance.FollowedAgent is not IInterceptor followedInterceptor) {
+      UIManager.Instance?.LogActionWarning(
+          "[CAM] Select an interceptor before moving up the hierarchy.");
+      return;
+    }
+
+    foreach (IAgent agent in SimManager.Instance.Interceptors) {
+      if (agent is IInterceptor parentInterceptor && !parentInterceptor.IsTerminated &&
+          ReferenceEquals(parentInterceptor.CommsNode, followedInterceptor.ParentCommsNode)) {
+        CameraController.Instance.FollowAgent(parentInterceptor);
+        return;
+      }
+    }
+
+    UIManager.Instance?.LogActionWarning(
+        $"[CAM] {followedInterceptor.gameObject.name} has no active parent interceptor.");
   }
 }

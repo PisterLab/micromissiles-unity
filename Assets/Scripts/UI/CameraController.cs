@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
@@ -119,6 +118,9 @@ public class CameraController : MonoBehaviour {
   [SerializeField]
   private CameraFollowType _cameraFollowType = CameraFollowType.ALL_AGENTS;
 
+  // Individual agent currently being followed.
+  private IAgent _followedAgent;
+
   private Vector3 _lastCentroid;
   private Vector3 _currentCentroid;
   private Vector3 _targetCentroid;
@@ -141,6 +143,8 @@ public class CameraController : MonoBehaviour {
 
   public float CameraSpeedNormal => _cameraSpeedNormal;
 
+  public IAgent FollowedAgent => _followedAgent;
+
   public bool AutoRotate {
     get => _autoRotate;
     set {
@@ -162,15 +166,19 @@ public class CameraController : MonoBehaviour {
     set {
       switch (value) {
         case CameraMode.FREE: {
-          if (_centroidUpdateCoroutine != null) {
-            StopCoroutine(_centroidUpdateCoroutine);
-            _centroidUpdateCoroutine = null;
-          }
+          StopCentroidUpdateCoroutine();
+          ClearFollowedAgent();
           break;
         }
         case CameraMode.FOLLOW: {
+          ClearFollowedAgent();
           _currentCentroid = _target.position;
           _targetCentroid = _target.position;
+          break;
+        }
+        case CameraMode.FOLLOW_AGENT: {
+          StopCentroidUpdateCoroutine();
+          ClearFollowedAgent();
           break;
         }
         default: {
@@ -196,7 +204,29 @@ public class CameraController : MonoBehaviour {
     UIManager.Instance.LogActionMessage($"[CAM] Follow center of {description}.");
   }
 
+  public void FollowAgent(IAgent agent) {
+    if (agent == null || agent.IsTerminated) {
+      UIManager.Instance?.LogActionWarning("[CAM] Cannot follow an inactive agent.");
+      return;
+    }
+
+    CameraMode = CameraMode.FOLLOW_AGENT;
+    _followedAgent = agent;
+    _followedAgent.OnTerminated += RegisterFollowedAgentTerminated;
+    SetCameraTargetPosition(_followedAgent.Position);
+    UIManager.Instance?.LogActionMessage($"[CAM] Following {_followedAgent.gameObject.name}.");
+  }
+
+  public void StopFollowingAgent() {
+    string followedAgentName = _followedAgent?.gameObject.name;
+    CameraMode = CameraMode.FREE;
+    if (!string.IsNullOrEmpty(followedAgentName)) {
+      UIManager.Instance?.LogActionMessage($"[CAM] Stopped following {followedAgentName}.");
+    }
+  }
+
   public void Snap(CameraFollowType type) {
+    CameraMode = CameraMode.FREE;
     var (agents, description) = GetAgentGroupInfo(type);
     Vector3 centroid = FindCentroid(agents);
     SetCameraTargetPosition(centroid);
@@ -259,15 +289,33 @@ public class CameraController : MonoBehaviour {
       { TranslationInput.Up, Vector3.up },    { TranslationInput.Down, Vector3.down }
     };
     CameraMode = CameraMode.FREE;
+    if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationEnded += RegisterSimulationEnded;
+    }
   }
 
   private void Update() {
-    if (CameraMode != CameraMode.FREE) {
+    if (CameraMode == CameraMode.FOLLOW) {
       // Use MoveTowards for smoother and more predictable movement.
       _currentCentroid = Vector3.MoveTowards(_currentCentroid, _targetCentroid,
                                              _currentInterpolationSpeed * Time.unscaledDeltaTime);
       SetCameraTargetPosition(_currentCentroid);
     }
+  }
+
+  private void LateUpdate() {
+    if (CameraMode == CameraMode.FOLLOW_AGENT && _followedAgent != null &&
+        !_followedAgent.IsTerminated) {
+      SetCameraTargetPosition(_followedAgent.Position);
+    }
+  }
+
+  private void OnDestroy() {
+    if (SimManager.Instance != null) {
+      SimManager.Instance.OnSimulationEnded -= RegisterSimulationEnded;
+    }
+    StopCentroidUpdateCoroutine();
+    ClearFollowedAgent();
   }
 
   private void SetCameraRotation(in Quaternion rotation) {
@@ -333,6 +381,35 @@ public class CameraController : MonoBehaviour {
 
   private void StartCentroidUpdateCoroutine() {
     _centroidUpdateCoroutine ??= StartCoroutine(UpdateCentroidCoroutine());
+  }
+
+  private void StopCentroidUpdateCoroutine() {
+    if (_centroidUpdateCoroutine != null) {
+      StopCoroutine(_centroidUpdateCoroutine);
+      _centroidUpdateCoroutine = null;
+    }
+  }
+
+  private void ClearFollowedAgent() {
+    if (_followedAgent != null) {
+      _followedAgent.OnTerminated -= RegisterFollowedAgentTerminated;
+      _followedAgent = null;
+    }
+  }
+
+  private void RegisterFollowedAgentTerminated(IAgent agent) {
+    if (!ReferenceEquals(agent, _followedAgent)) {
+      return;
+    }
+
+    string followedAgentName = agent.gameObject.name;
+    SetCameraTargetPosition(agent.Position);
+    CameraMode = CameraMode.FREE;
+    UIManager.Instance?.LogActionMessage($"[CAM] {followedAgentName} terminated; follow stopped.");
+  }
+
+  private void RegisterSimulationEnded() {
+    CameraMode = CameraMode.FREE;
   }
 
   private IEnumerator UpdateCentroidCoroutine() {
@@ -420,6 +497,7 @@ public class CameraController : MonoBehaviour {
 public enum CameraMode {
   FREE,
   FOLLOW,
+  FOLLOW_AGENT,
 }
 
 public enum CameraFollowType {
