@@ -168,6 +168,53 @@ public class MailboxTests : TestBase {
     Assert.AreEqual(2, receivedCount);
   }
 
+  [Test]
+  public void Clear_RemovesCooldownHistory() {
+    ConfigureImmediateDelivery(1f);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    var target = new HierarchicalBase();
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+    int receivedCount = 0;
+    receiver.OnReceived +=
+        _ => ++receivedCount;
+
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, target));
+    GetPrivateField<Mailbox>(_commsManager, "_mailbox").Clear();
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, target));
+
+    Assert.AreEqual(2, receivedCount);
+  }
+
+  [Test]
+  public void ForgetNode_RemovesOnlyRelatedCooldownHistory() {
+    ConfigureImmediateDelivery(1f);
+    var departingSender = new CommsNode(Configs.AgentType.Vessel);
+    var otherSender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    var target = new HierarchicalBase();
+    _commsManager.AddNode(departingSender);
+    _commsManager.AddNode(otherSender);
+    _commsManager.AddNode(receiver);
+    int receivedCount = 0;
+    receiver.OnReceived +=
+        _ => ++receivedCount;
+
+    _commsManager.SendMessage(new AssignTargetResponseMessage(departingSender, receiver, target));
+    _commsManager.SendMessage(new AssignTargetResponseMessage(otherSender, receiver, target));
+
+    Mailbox mailbox = GetPrivateField<Mailbox>(_commsManager, "_mailbox");
+    mailbox.ForgetNode(departingSender);
+    _commsManager.SendMessage(new AssignTargetResponseMessage(departingSender, receiver, target));
+    _commsManager.SendMessage(new AssignTargetResponseMessage(otherSender, receiver, target));
+    Assert.AreEqual(3, receivedCount);
+
+    mailbox.ForgetNode(receiver);
+    _commsManager.SendMessage(new AssignTargetResponseMessage(otherSender, receiver, target));
+    Assert.AreEqual(4, receivedCount);
+  }
+
   private void ConfigureImmediateDelivery(float cooldownSeconds) {
     Configs.CommunicationConfig config = _simManager.SimulationConfig.CommunicationConfig;
     config.CooldownSeconds = cooldownSeconds;

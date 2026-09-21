@@ -85,6 +85,23 @@ public class Mailbox {
     _cooldownState.Clear();
   }
 
+  // Remove cooldown history involving an endpoint that has left the simulation.
+  public void ForgetNode(CommsNode node) {
+    if (node == null) {
+      return;
+    }
+
+    var staleKeys = new List<(CommsNode Sender, CommsNode Receiver, MessageType Type)>();
+    foreach (var key in _cooldownState.Keys) {
+      if (ReferenceEquals(key.Sender, node) || ReferenceEquals(key.Receiver, node)) {
+        staleKeys.Add(key);
+      }
+    }
+    foreach (var key in staleKeys) {
+      _cooldownState.Remove(key);
+    }
+  }
+
   // Compare the message envelope and its payload. If the message is repeated/redaundant, return
   // true.
   private static bool IsSameMessage(Message previous, Message candidate) {
