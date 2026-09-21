@@ -33,4 +33,9 @@ message CommunicationConfig {
 
   // Per-pair overrides. Omitted pairs fall back to link_config.
   repeated LinkOverride link_overrides = 2;
+
+  // Minimum time between identical messages from the same sender to the same
+  // receiver. Changed messages bypass the cooldown. Must be non-negative; zero
+  // disables it.
+  float cooldown_seconds = 3;
 }
