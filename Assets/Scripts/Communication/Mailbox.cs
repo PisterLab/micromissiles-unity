@@ -13,7 +13,9 @@ public class Mailbox {
   private readonly PriorityQueue<PendingMessage> _messageQueue =
       new PriorityQueue<PendingMessage>();
 
-  // Last accepted message and simulation time for each sender, receiver, and message type.
+  // This keeps track of the last accepted message and simulation time for each sender, receiver,
+  // and message type for the cooldown logic. Cooldown logic checks with this dictionary for
+  // repeated/redaundant message sent.
   private readonly Dictionary<(CommsNode Sender, CommsNode Receiver, MessageType Type),
                               (Message Message, float AcceptedAt)> _cooldownState =
       new Dictionary<(CommsNode, CommsNode, MessageType), (Message, float)>();
@@ -25,6 +27,22 @@ public class Mailbox {
     }
 
     if (CommsManager.Instance.ContainsNode(message.Receiver)) {
+      float cooldownSeconds =
+          SimManager.Instance.SimulationConfig?.CommunicationConfig?.CooldownSeconds ?? 0f;
+      if (cooldownSeconds > 0f) {
+        var key = (message.Sender, message.Receiver, message.Type);
+        float now = SimManager.Instance.ElapsedTime;
+        if (_cooldownState.TryGetValue(key, out var lastAccepted) &&
+            now - lastAccepted.AcceptedAt < cooldownSeconds &&
+            IsSameMessage(lastAccepted.Message, message)) {
+          return;
+        }
+
+        // Only allowed successful send attempts reset the cooldown dictionary, before packet loss
+        // or delivery latency.
+        _cooldownState[key] = (message, now);
+      }
+
       Configs.LinkConfig config = GetLinkConfig(message);
 
       // TODO(Joseph0120): Set the packet delivery ratio to config.PacketDeliveryRatio.
