@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // The mailbox handles the communication latencies for agent-to-agent communication. The mailbox
@@ -11,6 +12,11 @@ public class Mailbox {
   // Message queue.
   private readonly PriorityQueue<PendingMessage> _messageQueue =
       new PriorityQueue<PendingMessage>();
+
+  // Last accepted message and simulation time for each sender, receiver, and message type.
+  private readonly Dictionary<(CommsNode Sender, CommsNode Receiver, MessageType Type),
+                              (Message Message, float AcceptedAt)> _cooldownState =
+      new Dictionary<(CommsNode, CommsNode, MessageType), (Message, float)>();
 
   // Enqueue a message to be delivered after a set latency.
   public void Send(Message message) {
@@ -55,9 +61,10 @@ public class Mailbox {
     }
   }
 
-  // Clear all pending messages.
+  // Clear pending messages and cooldown history.
   public void Clear() {
     _messageQueue.Clear();
+    _cooldownState.Clear();
   }
 
   // Compare the message envelope and its payload. If the message is repeated/redaundant, return
