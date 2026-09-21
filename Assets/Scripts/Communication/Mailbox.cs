@@ -60,6 +60,33 @@ public class Mailbox {
     _messageQueue.Clear();
   }
 
+  // Compare the message envelope and its payload. If the message is repeated/redaundant, return
+  // true.
+  private static bool IsSameMessage(Message previous, Message candidate) {
+    if (previous == null || candidate == null ||
+        !ReferenceEquals(previous.Sender, candidate.Sender) ||
+        !ReferenceEquals(previous.Receiver, candidate.Receiver) ||
+        previous.Type != candidate.Type) {
+      return false;
+    }
+
+    switch (previous) {
+      case AssignTargetRequestMessage assignRequest when candidate is AssignTargetRequestMessage
+          otherAssignRequest:
+        return ReferenceEquals(assignRequest.PayloadData.SubInterceptor,
+                               otherAssignRequest.PayloadData.SubInterceptor);
+      case AssignTargetResponseMessage response when candidate is AssignTargetResponseMessage
+          otherResponse:
+        return ReferenceEquals(response.PayloadData.Target, otherResponse.PayloadData.Target);
+      case ReassignTargetRequestMessage reassignRequest when candidate is
+          ReassignTargetRequestMessage otherReassignRequest:
+        return ReferenceEquals(reassignRequest.PayloadData.Target,
+                               otherReassignRequest.PayloadData.Target);
+      default:
+        return false;
+    }
+  }
+
   private Configs.LinkConfig GetLinkConfig(Message message) {
     Configs.CommunicationConfig communicationConfig =
         SimManager.Instance.SimulationConfig?.CommunicationConfig;
