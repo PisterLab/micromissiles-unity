@@ -30,16 +30,16 @@ namespace Configs {
             "cxgCIAEoAhIdChVwYWNrZXRfZGVsaXZlcnlfcmF0aW8YAyABKAIiegoMTGlu",
             "a092ZXJyaWRlEiAKBGZyb20YASABKA4yEi5jb25maWdzLkFnZW50VHlwZRIe",
             "CgJ0bxgCIAEoDjISLmNvbmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtfY29uZmln",
-            "GAMgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnIm4KE0NvbW11bmljYXRpb25D",
-            "b25maWcSKAoLbGlua19jb25maWcYASABKAsyEy5jb25maWdzLkxpbmtDb25m",
-            "aWcSLQoObGlua19vdmVycmlkZXMYAiADKAsyFS5jb25maWdzLkxpbmtPdmVy",
-            "cmlkZWIGcHJvdG8z"));
+            "GAMgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnIo4BChNDb21tdW5pY2F0aW9u",
+            "Q29uZmlnEigKC2xpbmtfY29uZmlnGAEgASgLMhMuY29uZmlncy5MaW5rQ29u",
+            "ZmlnEi0KDmxpbmtfb3ZlcnJpZGVzGAIgAygLMhUuY29uZmlncy5MaW5rT3Zl",
+            "cnJpZGUSHgoWcmVzcG9uc2VfcmV0cnlfc2Vjb25kcxgDIAEoAmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkConfig), global::Configs.LinkConfig.Parser, new[]{ "LatencySeconds", "LatencyStdSeconds", "PacketDeliveryRatio" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkOverride), global::Configs.LinkOverride.Parser, new[]{ "From", "To", "LinkConfig" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides", "ResponseRetrySeconds" }, null, null, null, null)
           }));
     }
     #endregion
@@ -657,6 +657,7 @@ namespace Configs {
     public CommunicationConfig(CommunicationConfig other) : this() {
       linkConfig_ = other.linkConfig_ != null ? other.linkConfig_.Clone() : null;
       linkOverrides_ = other.linkOverrides_.Clone();
+      responseRetrySeconds_ = other.responseRetrySeconds_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -695,6 +696,22 @@ namespace Configs {
       get { return linkOverrides_; }
     }
 
+    /// <summary>Field number for the "response_retry_seconds" field.</summary>
+    public const int ResponseRetrySecondsFieldNumber = 3;
+    private float responseRetrySeconds_;
+    /// <summary>
+    /// Time to wait for a target-assignment response before retrying the request.
+    /// Must be non-negative.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float ResponseRetrySeconds {
+      get { return responseRetrySeconds_; }
+      set {
+        responseRetrySeconds_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -712,6 +729,7 @@ namespace Configs {
       }
       if (!object.Equals(LinkConfig, other.LinkConfig)) return false;
       if(!linkOverrides_.Equals(other.linkOverrides_)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(ResponseRetrySeconds, other.ResponseRetrySeconds)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -721,6 +739,7 @@ namespace Configs {
       int hash = 1;
       if (linkConfig_ != null) hash ^= LinkConfig.GetHashCode();
       hash ^= linkOverrides_.GetHashCode();
+      if (ResponseRetrySeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(ResponseRetrySeconds);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -744,6 +763,10 @@ namespace Configs {
         output.WriteMessage(LinkConfig);
       }
       linkOverrides_.WriteTo(output, _repeated_linkOverrides_codec);
+      if (ResponseRetrySeconds != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(ResponseRetrySeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -759,6 +782,10 @@ namespace Configs {
         output.WriteMessage(LinkConfig);
       }
       linkOverrides_.WriteTo(ref output, _repeated_linkOverrides_codec);
+      if (ResponseRetrySeconds != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(ResponseRetrySeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -773,6 +800,9 @@ namespace Configs {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(LinkConfig);
       }
       size += linkOverrides_.CalculateSize(_repeated_linkOverrides_codec);
+      if (ResponseRetrySeconds != 0F) {
+        size += 1 + 4;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -792,6 +822,9 @@ namespace Configs {
         LinkConfig.MergeFrom(other.LinkConfig);
       }
       linkOverrides_.Add(other.linkOverrides_);
+      if (other.ResponseRetrySeconds != 0F) {
+        ResponseRetrySeconds = other.ResponseRetrySeconds;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -822,6 +855,10 @@ namespace Configs {
             linkOverrides_.AddEntriesFrom(input, _repeated_linkOverrides_codec);
             break;
           }
+          case 29: {
+            ResponseRetrySeconds = input.ReadFloat();
+            break;
+          }
         }
       }
     #endif
@@ -850,6 +887,10 @@ namespace Configs {
           }
           case 18: {
             linkOverrides_.AddEntriesFrom(ref input, _repeated_linkOverrides_codec);
+            break;
+          }
+          case 29: {
+            ResponseRetrySeconds = input.ReadFloat();
             break;
           }
         }
