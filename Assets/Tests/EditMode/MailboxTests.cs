@@ -54,6 +54,46 @@ public class MailboxTests : TestBase {
   }
 
   [Test]
+  public void SendMessage_ZeroPacketDeliveryRatioDropsMessage() {
+    _simManager.SimulationConfig.CommunicationConfig.LinkConfig.PacketDeliveryRatio = 0f;
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Message receivedMessage = null;
+    receiver.OnReceived += message => receivedMessage = message;
+
+    _commsManager.SendMessage(new TestMessage(sender, receiver));
+    SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+
+    Assert.IsNull(receivedMessage);
+  }
+
+  [Test]
+  public void SendMessage_LinkOverridePacketDeliveryRatioDropsMatchingMessage() {
+    _simManager.SimulationConfig.CommunicationConfig.LinkOverrides.Add(new Configs.LinkOverride {
+      From = Configs.AgentType.Vessel,
+      To = Configs.AgentType.Iads,
+      LinkConfig = new Configs.LinkConfig { PacketDeliveryRatio = 0f },
+    });
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Message receivedMessage = null;
+    receiver.OnReceived += message => receivedMessage = message;
+
+    _commsManager.SendMessage(new TestMessage(sender, receiver));
+    SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+
+    Assert.IsNull(receivedMessage);
+  }
+
+  [Test]
   public void SendMessage_DoesNotDeliverToUnregisteredReceiver() {
     var sender = new CommsNode(Configs.AgentType.Vessel);
     var receiver = new CommsNode(Configs.AgentType.Iads);

@@ -45,8 +45,8 @@ public class Mailbox {
 
       Configs.LinkConfig config = GetLinkConfig(message);
 
-      // TODO(Joseph0120): Set the packet delivery ratio to config.PacketDeliveryRatio.
-      float packetDeliveryRatio = Mathf.Clamp01(1);
+      // Packet loss is applied before the message is enqueued to the mailbox.
+      float packetDeliveryRatio = Mathf.Clamp01(config.PacketDeliveryRatio);
       if (UnityEngine.Random.value >= packetDeliveryRatio) {
         return;
       }
