@@ -27,6 +27,15 @@ public class Mailbox {
     }
 
     if (CommsManager.Instance.ContainsNode(message.Receiver)) {
+      Configs.LinkConfig config = GetLinkConfig(message);
+      float packetDeliveryRatio = config.PacketDeliveryRatio;
+      if (float.IsNaN(packetDeliveryRatio) || packetDeliveryRatio < 0f ||
+          packetDeliveryRatio > 1f) {
+        throw new ArgumentOutOfRangeException(nameof(config.PacketDeliveryRatio),
+                                              packetDeliveryRatio,
+                                              "Packet delivery ratio must be between 0 and 1.");
+      }
+
       float cooldownSeconds =
           SimManager.Instance.SimulationConfig?.CommunicationConfig?.CooldownSeconds ?? 0f;
       if (cooldownSeconds > 0f) {
@@ -43,10 +52,7 @@ public class Mailbox {
         _cooldownState[key] = (message, now);
       }
 
-      Configs.LinkConfig config = GetLinkConfig(message);
-
       // Packet loss is applied before the message is enqueued to the mailbox.
-      float packetDeliveryRatio = Mathf.Clamp01(config.PacketDeliveryRatio);
       if (UnityEngine.Random.value >= packetDeliveryRatio) {
         return;
       }

@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -91,6 +92,38 @@ public class MailboxTests : TestBase {
     InvokePrivateMethod(_commsManager, "FixedUpdate");
 
     Assert.IsNull(receivedMessage);
+  }
+
+  [TestCase(-0.01f)]
+  [TestCase(1.01f)]
+  [TestCase(float.NaN)]
+  [TestCase(float.PositiveInfinity)]
+  public void SendMessage_InvalidPacketDeliveryRatioThrows(float packetDeliveryRatio) {
+    _simManager.SimulationConfig.CommunicationConfig.LinkConfig.PacketDeliveryRatio =
+        packetDeliveryRatio;
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Assert.Throws<ArgumentOutOfRangeException>(
+        () => _commsManager.SendMessage(new TestMessage(sender, receiver)));
+  }
+
+  [Test]
+  public void SendMessage_InvalidLinkOverridePacketDeliveryRatioThrows() {
+    _simManager.SimulationConfig.CommunicationConfig.LinkOverrides.Add(new Configs.LinkOverride {
+      From = Configs.AgentType.Vessel,
+      To = Configs.AgentType.Iads,
+      LinkConfig = new Configs.LinkConfig { PacketDeliveryRatio = 1.01f },
+    });
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Assert.Throws<ArgumentOutOfRangeException>(
+        () => _commsManager.SendMessage(new TestMessage(sender, receiver)));
   }
 
   [Test]
