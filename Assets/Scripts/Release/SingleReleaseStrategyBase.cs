@@ -15,11 +15,12 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
   protected override List<IAgent> Release(IEnumerable<IHierarchical> hierarchicals) {
     var carrier = Agent as CarrierBase;
     var releasedAgents = new List<IAgent>();
+    int firstChildIndex = carrier.NumSubInterceptors - carrier.NumSubInterceptorsRemaining + 1;
     foreach (var hierarchical in hierarchicals) {
       if (carrier.NumSubInterceptorsRemaining - releasedAgents.Count <= 0) {
         break;
       }
-      IAgent releasedAgent = ReleaseSingle(hierarchical);
+      IAgent releasedAgent = ReleaseSingle(hierarchical, firstChildIndex + releasedAgents.Count);
       if (releasedAgent != null) {
         releasedAgents.Add(releasedAgent);
       }
@@ -30,7 +31,7 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
   // Plan the release for the given target.
   protected abstract LaunchPlan PlanRelease(IHierarchical target);
 
-  private IAgent ReleaseSingle(IHierarchical hierarchical) {
+  private IAgent ReleaseSingle(IHierarchical hierarchical, int childIndex) {
     IHierarchical target = hierarchical.Target;
     if (target == null || hierarchical.LaunchedHierarchicals.Count != 0) {
       return null;
@@ -46,17 +47,19 @@ public abstract class SingleReleaseStrategyBase : ReleaseStrategyBase {
           Coordinates3.ToProto(launchPlan.NormalizedLaunchVector(Agent.Position) * _initialSpeed),
     };
     IAgent subInterceptor = SimManager.Instance.CreateInterceptor(
-        Agent.AgentConfig.SubAgentConfig.AgentConfig, initialState);
+        Agent.AgentConfig.SubAgentConfig.AgentConfig, initialState, parentAgent: Agent,
+        childIndex: childIndex);
     if (subInterceptor is not IInterceptor subInterceptorInterceptor) {
       return null;
     }
     subInterceptor.HierarchicalAgent.Target = target;
     hierarchical.AddLaunchedHierarchical(subInterceptor.HierarchicalAgent);
 
-    Debug.Log(
-        $"Launching a {subInterceptor.StaticConfig.AgentType} from {Agent} at an elevation of {launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.");
-    UIManager.Instance.LogActionMessage(
-        $"[IADS] Launching a {subInterceptor.StaticConfig.AgentType} from {Agent} at an elevation of {launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.");
+    string launchMessage =
+        $"Launching {subInterceptor.AgentId} from {Agent.AgentId} at an elevation of " +
+        $"{launchPlan.LaunchAngle} degrees to position {launchPlan.InterceptPosition}.";
+    Debug.Log(launchMessage);
+    UIManager.Instance.LogActionMessage($"[IADS] {launchMessage}", subInterceptor);
     return subInterceptor;
   }
 }

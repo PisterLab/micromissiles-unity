@@ -272,9 +272,12 @@ public class InputManager : MonoBehaviour {
     }
 
     if (activeThreats.Count == 0) {
-      UIManager.Instance?.LogActionWarning("[CAM] No active threats are available to follow.");
+      UIManager.Instance?.LogActionWarning("[CAM] No active threats are available to follow.",
+                                           CameraController.Instance.FollowedAgent);
       return;
     }
+
+    activeThreats.Sort((left, right) => AgentIdentity.CompareIds(left.AgentId, right.AgentId));
 
     IAgent followedAgent = CameraController.Instance.FollowedAgent;
     int currentIndex = -1;
@@ -300,7 +303,8 @@ public class InputManager : MonoBehaviour {
   private void FollowAdjacentSiblingInterceptor(int direction) {
     var interceptors = SimManager.Instance.Interceptors;
     if (interceptors.Count == 0) {
-      UIManager.Instance?.LogActionWarning("[CAM] No interceptors are available to follow.");
+      UIManager.Instance?.LogActionWarning("[CAM] No interceptors are available to follow.",
+                                           CameraController.Instance.FollowedAgent);
       return;
     }
 
@@ -326,16 +330,19 @@ public class InputManager : MonoBehaviour {
       }
       siblingInterceptors.Add(interceptor);
     }
+    siblingInterceptors.Sort((left, right) =>
+                                 AgentIdentity.CompareIds(left.AgentId, right.AgentId));
     if (siblingInterceptors.Count == 0) {
       string warning = selectTopLevelLauncher
                            ? "[CAM] No active interceptor launchers are available to follow."
                            : "[CAM] No active sibling interceptors are available to follow.";
-      UIManager.Instance?.LogActionWarning(warning);
+      UIManager.Instance?.LogActionWarning(warning, followedAgent);
       return;
     }
     if (!selectTopLevelLauncher && siblingInterceptors.Count == 1) {
       UIManager.Instance?.LogActionWarning(
-          $"[CAM] {followedInterceptor.gameObject.name} has no other active sibling interceptor.");
+          $"[CAM] {followedInterceptor.gameObject.name} has no other active sibling interceptor.",
+          followedInterceptor);
       return;
     }
 
@@ -362,7 +369,8 @@ public class InputManager : MonoBehaviour {
   private void FollowChildInterceptor() {
     if (CameraController.Instance.FollowedAgent is not IInterceptor followedInterceptor) {
       UIManager.Instance?.LogActionWarning(
-          "[CAM] Select an interceptor before moving down the hierarchy.");
+          "[CAM] Select an interceptor before moving down the hierarchy.",
+          CameraController.Instance.FollowedAgent);
       return;
     }
     if (followedInterceptor.ParentCommsNode == null) {
@@ -380,13 +388,15 @@ public class InputManager : MonoBehaviour {
     }
 
     UIManager.Instance?.LogActionWarning(
-        $"[CAM] {followedInterceptor.gameObject.name} has no active child interceptor.");
+        $"[CAM] {followedInterceptor.gameObject.name} has no active child interceptor.",
+        followedInterceptor);
   }
 
   private void FollowParentInterceptor() {
     if (CameraController.Instance.FollowedAgent is not IInterceptor followedInterceptor) {
       UIManager.Instance?.LogActionWarning(
-          "[CAM] Select an interceptor before moving up the hierarchy.");
+          "[CAM] Select an interceptor before moving up the hierarchy.",
+          CameraController.Instance.FollowedAgent);
       return;
     }
 
@@ -399,6 +409,7 @@ public class InputManager : MonoBehaviour {
     }
 
     UIManager.Instance?.LogActionWarning(
-        $"[CAM] {followedInterceptor.gameObject.name} has no active parent interceptor.");
+        $"[CAM] {followedInterceptor.gameObject.name} has no active parent interceptor.",
+        followedInterceptor);
   }
 }

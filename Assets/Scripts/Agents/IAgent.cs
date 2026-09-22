@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Interface for an agent.
@@ -8,6 +9,15 @@ using UnityEngine;
 
 public interface IAgent {
   event Action<IAgent> OnTerminated;
+
+  // Stable ID used to compare the same deterministic agent slot across simulation runs.
+  string AgentId { get; set; }
+
+  // The singular target ID is populated only when exactly one agent is targeted.
+  string TargetId { get; }
+
+  // IDs of all leaf agents in the authoritative hierarchical target assignment.
+  IReadOnlyList<string> TargetIds { get; }
 
   HierarchicalAgent HierarchicalAgent { get; set; }
 

@@ -1,0 +1,6 @@
+name: "single_4_swarms_4_ucav_global_latency_0s_seed_100"
+simulation_config_file: "4_swarms_4_ucav_global_latency_0s.pbtxt"
+num_runs: 1
+seed: 100
+seed_stride: 0
+max_parallel: 1
