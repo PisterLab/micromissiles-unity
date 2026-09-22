@@ -123,6 +123,49 @@ public class MailboxTests : TestBase {
   }
 
   [Test]
+  public void SendMessage_ChangingBackToPreviousTargetBypassesCooldown() {
+    ConfigureImmediateDelivery(1f);
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    var firstTarget = new HierarchicalBase();
+    var secondTarget = new HierarchicalBase();
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+    int receivedCount = 0;
+    receiver.OnReceived +=
+        _ => ++receivedCount;
+
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, firstTarget));
+    SetPrivateProperty(_simManager, "ElapsedTime", 0.125f);
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, secondTarget));
+    SetPrivateProperty(_simManager, "ElapsedTime", 0.25f);
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, firstTarget));
+
+    Assert.AreEqual(3, receivedCount);
+  }
+
+  [Test]
+  public void SendMessage_DuplicateDoesNotEnterDeliveryQueue() {
+    _simManager.SimulationConfig.CommunicationConfig.CooldownSeconds = 2f;
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    var target = new HierarchicalBase();
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+    int receivedCount = 0;
+    receiver.OnReceived +=
+        _ => ++receivedCount;
+
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, target));
+    SetPrivateProperty(_simManager, "ElapsedTime", 0.125f);
+    _commsManager.SendMessage(new AssignTargetResponseMessage(sender, receiver, target));
+    SetPrivateProperty(_simManager, "ElapsedTime", 1.125f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+
+    Assert.AreEqual(1, receivedCount);
+  }
+
+  [Test]
   public void SendMessage_CooldownIsIndependentPerSenderReceiverAndType() {
     ConfigureImmediateDelivery(0.25f);
     var firstSender = new CommsNode(Configs.AgentType.Vessel);
