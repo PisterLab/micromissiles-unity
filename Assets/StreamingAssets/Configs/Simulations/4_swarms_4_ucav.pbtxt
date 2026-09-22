@@ -81,7 +81,94 @@ interceptor_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 20
+  num_agents: 1
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 7000
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+
+threat_swarm_configs {
+  num_agents: 1
+  agent_config {
+    config_file: "ucav.pbtxt"
+    attack_behavior_config_file: "default_direct_attack.pbtxt"
+    initial_state {
+      position {
+        x: 0
+        y: 800
+        z: 8500
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: -50
+      }
+    }
+    standard_deviation {
+      position {
+        x: 0
+        y: 0
+        z: 0
+      }
+      velocity {
+        x: 0
+        y: 0
+        z: 0
+      }
+    }
+    dynamic_config {
+      guidance_config {
+        evasion_config {
+          enabled: true
+          range_threshold: 1000
+        }
+      }
+      sensor_config {
+        type: IDEAL
+        frequency: 100
+      }
+    }
+  }
+}
+threat_swarm_configs {
+  num_agents: 1
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
@@ -94,19 +181,19 @@ threat_swarm_configs {
       velocity {
         x: 0
         y: 0
-        z: -100
+        z: -50
       }
     }
     standard_deviation {
       position {
-        x: 300
-        y: 60
-        z: 30
+        x: 0
+        y: 0
+        z: 0
       }
       velocity {
         x: 0
         y: 0
-        z: 5
+        z: 0
       }
     }
     dynamic_config {
@@ -124,161 +211,32 @@ threat_swarm_configs {
   }
 }
 threat_swarm_configs {
-  num_agents: 20
+  num_agents: 1
   agent_config {
     config_file: "ucav.pbtxt"
     attack_behavior_config_file: "default_direct_attack.pbtxt"
     initial_state {
       position {
         x: 0
-        y: 900
-        z: 11000
+        y: 800
+        z: 11500
       }
       velocity {
         x: 0
         y: 0
-        z: -100
+        z: -50
       }
     }
     standard_deviation {
       position {
-        x: 300
-        y: 60
-        z: 30
+        x: 0
+        y: 0
+        z: 0
       }
       velocity {
         x: 0
         y: 0
-        z: 5
-      }
-    }
-    dynamic_config {
-      guidance_config {
-        evasion_config {
-          enabled: true
-          range_threshold: 1000
-        }
-      }
-      sensor_config {
-        type: IDEAL
-        frequency: 100
-      }
-    }
-  }
-}
-threat_swarm_configs {
-  num_agents: 20
-  agent_config {
-    config_file: "ucav.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.pbtxt"
-    initial_state {
-      position {
-        x: 0
-        y: 1000
-        z: 12000
-      }
-      velocity {
-        x: 0
-        y: 0
-        z: -100
-      }
-    }
-    standard_deviation {
-      position {
-        x: 300
-        y: 60
-        z: 30
-      }
-      velocity {
-        x: 0
-        y: 0
-        z: 5
-      }
-    }
-    dynamic_config {
-      guidance_config {
-        evasion_config {
-          enabled: true
-          range_threshold: 1000
-        }
-      }
-      sensor_config {
-        type: IDEAL
-        frequency: 100
-      }
-    }
-  }
-}
-threat_swarm_configs {
-  num_agents: 20
-  agent_config {
-    config_file: "ucav.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.pbtxt"
-    initial_state {
-      position {
-        x: 0
-        y: 1100
-        z: 13000
-      }
-      velocity {
-        x: 0
-        y: 0
-        z: -100
-      }
-    }
-    standard_deviation {
-      position {
-        x: 300
-        y: 60
-        z: 30
-      }
-      velocity {
-        x: 0
-        y: 0
-        z: 5
-      }
-    }
-    dynamic_config {
-      guidance_config {
-        evasion_config {
-          enabled: true
-          range_threshold: 1000
-        }
-      }
-      sensor_config {
-        type: IDEAL
-        frequency: 100
-      }
-    }
-  }
-}
-threat_swarm_configs {
-  num_agents: 20
-  agent_config {
-    config_file: "ucav.pbtxt"
-    attack_behavior_config_file: "default_direct_attack.pbtxt"
-    initial_state {
-      position {
-        x: 0
-        y: 1200
-        z: 14000
-      }
-      velocity {
-        x: 0
-        y: 0
-        z: -100
-      }
-    }
-    standard_deviation {
-      position {
-        x: 300
-        y: 60
-        z: 30
-      }
-      velocity {
-        x: 0
-        y: 0
-        z: 5
+        z: 0
       }
     }
     dynamic_config {
@@ -297,21 +255,11 @@ threat_swarm_configs {
 }
 communication_config {
   
-  cooldown_seconds: 2.0
+  cooldown_seconds: 0.2
 
   link_config {
-    latency_seconds: 0.0
+    latency_seconds: 0.5
     latency_std_seconds: 0.0
-    packet_delivery_ratio: 0.1
-  }
-
-  link_overrides {
-    from: VESSEL
-    to: CARRIER_INTERCEPTOR
-    link_config {
-      latency_seconds: 0
-      latency_std_seconds: 0.0
-      packet_delivery_ratio: 0.0
-    }
+    packet_delivery_ratio: 1.0
   }
 }

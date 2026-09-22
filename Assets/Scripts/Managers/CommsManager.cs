@@ -46,15 +46,18 @@ public class CommsManager : MonoBehaviour {
   }
 
   private void RegisterNewAgent(IAgent agent) {
-    if (agent.CommsNode != null) {
-      _nodes.Add(agent.CommsNode);
-      return;
+    CommsNode commsNode = agent.CommsNode;
+    if (commsNode == null) {
+      commsNode = new CommsNode(agent.StaticConfig.AgentType);
+      agent.CommsNode = commsNode;
     }
 
-    var commsNode = new CommsNode(agent.StaticConfig.AgentType);
-    agent.CommsNode = commsNode;
-    agent.OnTerminated +=
-        _ => _nodes.Remove(commsNode);
-    _nodes.Add(commsNode);
+    if (_nodes.Add(commsNode)) {
+      agent.OnTerminated +=
+          _ => {
+            _nodes.Remove(commsNode);
+            _mailbox.ForgetNode(commsNode);
+          };
+    }
   }
 }
