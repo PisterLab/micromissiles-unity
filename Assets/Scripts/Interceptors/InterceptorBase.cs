@@ -96,6 +96,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void Start() {
     base.Start();
+    InitializeTargetStatus();
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
@@ -444,9 +445,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
            ReferenceEquals(first.PayloadData.SubInterceptor, second.PayloadData.SubInterceptor);
   }
 
+  private void InitializeTargetStatus() {
+    _targetStatus = HasActiveTarget() ? TargetStatus.TargetAcquired : TargetStatus.NoTarget;
+    _pendingTargetRequest = null;
+    _lastTargetRequestTime = Mathf.NegativeInfinity;
+  }
+
   private void UpdateTargetStatus() {
-    bool hasTarget = HierarchicalAgent.Target != null && !HierarchicalAgent.Target.IsTerminated;
-    if (hasTarget) {
+    if (HasActiveTarget()) {
       _targetStatus = TargetStatus.TargetAcquired;
       _pendingTargetRequest = null;
       return;
@@ -455,6 +461,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     if (_targetStatus == TargetStatus.TargetAcquired) {
       _targetStatus = TargetStatus.NoTarget;
     }
+  }
+
+  private bool HasActiveTarget() {
+    IHierarchical target = HierarchicalAgent?.Target;
+    return target != null && !target.IsTerminated;
   }
 
   private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {

@@ -38,6 +38,30 @@ public class TargetRequestTests : TestBase {
   }
 
   [Test]
+  public void InitializeTargetStatus_WithNoTarget_InitializesNoTarget() {
+    _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
+    SetTargetStatus("TargetRequested");
+    SetPrivateField(_interceptor, "_lastTargetRequestTime", 5f);
+
+    InitializeTargetStatus();
+
+    Assert.AreEqual("NoTarget", GetTargetStatus());
+    Assert.AreEqual(Mathf.NegativeInfinity,
+                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+  }
+
+  [Test]
+  public void InitializeTargetStatus_WithExistingTarget_InitializesTargetAcquired() {
+    var hierarchicalAgent = new HierarchicalAgent(_interceptor);
+    SetPrivateField<IHierarchical>(hierarchicalAgent, "_target", new FixedHierarchical());
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    InitializeTargetStatus();
+
+    Assert.AreEqual("TargetAcquired", GetTargetStatus());
+  }
+
+  [Test]
   public void SendAssignTargetRequest_ChangedRequestBypassesRetryDelay() {
     var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
     var firstReceiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
@@ -71,6 +95,30 @@ public class TargetRequestTests : TestBase {
     SendAssignTargetRequest();
     Assert.AreEqual(2, secondReceiverMessageCount,
                     "The same request should be sent again after the retry delay.");
+  }
+
+  private void InitializeTargetStatus() {
+    MethodInfo method =
+        typeof(InterceptorBase)
+            .GetMethod("InitializeTargetStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(method);
+    method.Invoke(_interceptor, null);
+  }
+
+  private string GetTargetStatus() {
+    FieldInfo field =
+        typeof(InterceptorBase)
+            .GetField("_targetStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(field);
+    return field.GetValue(_interceptor).ToString();
+  }
+
+  private void SetTargetStatus(string status) {
+    FieldInfo field =
+        typeof(InterceptorBase)
+            .GetField("_targetStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(field);
+    field.SetValue(_interceptor, System.Enum.Parse(field.FieldType, status));
   }
 
   private void SendAssignTargetRequest() {
