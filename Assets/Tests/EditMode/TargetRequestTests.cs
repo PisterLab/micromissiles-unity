@@ -91,7 +91,7 @@ public class TargetRequestTests : TestBase {
       }
     };
 
-    SendAssignTargetRequest();
+    SendOwnAssignTargetRequest();
     FixedUpdate();
 
     Assert.AreEqual("TargetRequested", GetTargetStatus());
@@ -106,7 +106,35 @@ public class TargetRequestTests : TestBase {
   }
 
   [Test]
-  public void SendAssignTargetRequest_ChangedRequestBypassesRetryDelay() {
+  public void ForwardAssignTargetRequest_DoesNotChangeOwnTargetStatus() {
+    var sender = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.Vessel);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+    SetTargetStatus("TargetAcquired");
+
+    var subInterceptorObject = new GameObject("SubInterceptor");
+    subInterceptorObject.AddComponent<Rigidbody>();
+    var subInterceptor = subInterceptorObject.AddComponent<MissileInterceptor>();
+    try {
+      AssignTargetRequestMessage receivedRequest = null;
+      receiver.OnReceived += message => receivedRequest = message as AssignTargetRequestMessage;
+
+      ForwardAssignTargetRequest(subInterceptor);
+
+      Assert.IsNotNull(receivedRequest);
+      Assert.AreSame(subInterceptor, receivedRequest.PayloadData.SubInterceptor);
+      Assert.AreEqual("TargetAcquired", GetTargetStatus());
+      Assert.IsNull(
+          GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+    } finally {
+      Object.DestroyImmediate(subInterceptorObject);
+    }
+  }
+
+  [Test]
+  public void SendOwnAssignTargetRequest_ChangedRequestBypassesRetryDelay() {
     var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
     var firstReceiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var secondReceiver = new CommsNode(Configs.AgentType.Vessel);
@@ -122,21 +150,21 @@ public class TargetRequestTests : TestBase {
     secondReceiver.OnReceived +=
         _ => ++secondReceiverMessageCount;
 
-    SendAssignTargetRequest();
-    SendAssignTargetRequest();
+    SendOwnAssignTargetRequest();
+    SendOwnAssignTargetRequest();
     Assert.AreEqual(1, firstReceiverMessageCount,
                     "The same request should wait for the retry delay.");
 
     _interceptor.ParentCommsNode = secondReceiver;
-    SendAssignTargetRequest();
+    SendOwnAssignTargetRequest();
     Assert.AreEqual(1, secondReceiverMessageCount, "A changed request should be sent immediately.");
 
-    SendAssignTargetRequest();
+    SendOwnAssignTargetRequest();
     Assert.AreEqual(1, secondReceiverMessageCount,
                     "The changed request should then become the pending request.");
 
     SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 1f);
-    SendAssignTargetRequest();
+    SendOwnAssignTargetRequest();
     Assert.AreEqual(2, secondReceiverMessageCount,
                     "The same request should be sent again after the retry delay.");
   }
@@ -181,11 +209,19 @@ public class TargetRequestTests : TestBase {
     field.SetValue(_interceptor, System.Enum.Parse(field.FieldType, status));
   }
 
-  private void SendAssignTargetRequest() {
-    MethodInfo method =
-        typeof(InterceptorBase)
-            .GetMethod("SendAssignTargetRequest", BindingFlags.NonPublic | BindingFlags.Instance);
+  private void ForwardAssignTargetRequest(IInterceptor subInterceptor) {
+    MethodInfo method = typeof(InterceptorBase)
+                            .GetMethod("ForwardAssignTargetRequest",
+                                       BindingFlags.NonPublic | BindingFlags.Instance);
     Assert.IsNotNull(method);
-    method.Invoke(_interceptor, new object[] { _interceptor });
+    method.Invoke(_interceptor, new object[] { subInterceptor });
+  }
+
+  private void SendOwnAssignTargetRequest() {
+    MethodInfo method = typeof(InterceptorBase)
+                            .GetMethod("SendOwnAssignTargetRequest",
+                                       BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(method);
+    method.Invoke(_interceptor, null);
   }
 }

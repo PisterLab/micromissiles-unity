@@ -111,7 +111,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // Request a target when none is assigned, or retry while waiting for a response.
     if (_targetStatus != TargetStatus.TargetAcquired) {
-      RequestReassignment(this);
+      RequestReassignment();
     }
 
     // Check whether any targets are escaping from the interceptor.
@@ -125,7 +125,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         SendReassignTargetRequest(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
-        RequestReassignment(this);
+        RequestReassignment();
       }
     }
 
@@ -296,7 +296,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
 
     // Propagate the sub-interceptor target assignment to the parent interceptor above.
-    SendAssignTargetRequest(subInterceptor);
+    ForwardAssignTargetRequest(subInterceptor);
   }
 
   // Evaluate whether the interceptor should be reassigned to the new target.
@@ -350,13 +350,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       SendReassignTargetRequest(targetHierarchical);
     }
 
-    RequestReassignment(interceptor);
+    RequestReassignment();
   }
 
-  private void RequestReassignment(IInterceptor interceptor) {
-    if (interceptor.IsReassignable) {
-      // Request a new target from the parent interceptor.
-      SendAssignTargetRequest(interceptor);
+  private void RequestReassignment() {
+    if (IsReassignable) {
+      SendOwnAssignTargetRequest();
     }
   }
 
@@ -414,19 +413,21 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
   }
 
-  private void SendAssignTargetRequest(IInterceptor subInterceptor) {
-    var request = new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor);
-    bool isOwnRequest = ReferenceEquals(subInterceptor, this);
-    if (isOwnRequest && !ShouldSendTargetRequest(request)) {
+  private void SendOwnAssignTargetRequest() {
+    var request = new AssignTargetRequestMessage(CommsNode, ParentCommsNode, this);
+    if (!ShouldSendTargetRequest(request)) {
       return;
     }
 
     CommsManager.Instance.SendMessage(request);
-    if (isOwnRequest) {
-      _pendingTargetRequest = request;
-      _lastTargetRequestTime = ElapsedTime;
-      _targetStatus = TargetStatus.TargetRequested;
-    }
+    _pendingTargetRequest = request;
+    _lastTargetRequestTime = ElapsedTime;
+    _targetStatus = TargetStatus.TargetRequested;
+  }
+
+  private void ForwardAssignTargetRequest(IInterceptor subInterceptor) {
+    CommsManager.Instance.SendMessage(
+        new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor));
   }
 
   private bool ShouldSendTargetRequest(AssignTargetRequestMessage request) {
