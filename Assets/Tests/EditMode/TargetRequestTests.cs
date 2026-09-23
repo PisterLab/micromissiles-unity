@@ -311,6 +311,52 @@ public class TargetRequestTests : TestBase {
   }
 
   [Test]
+  public void RegisterMessageReceived_RejectedResponseWithLiveTarget_CompletesTargetRequest() {
+    _interceptor.Velocity = Vector3.forward;
+    _interceptor.StaticConfig = new Configs.StaticConfig {
+      AccelerationConfig =
+          new Configs.AccelerationConfig {
+            MaxReferenceNormalAcceleration = 1f,
+            ReferenceSpeed = 1f,
+          },
+      LiftDragConfig =
+          new Configs.LiftDragConfig {
+            DragCoefficient = 0.7f,
+            LiftDragRatio = 5f,
+          },
+      BodyConfig =
+          new Configs.BodyConfig {
+            CrossSectionalArea = 1f,
+            Mass = 1f,
+          },
+    };
+
+    var currentTarget = new FixedHierarchical(new Vector3(0f, 0f, 10f));
+    var offeredTarget = new FixedHierarchical(new Vector3(0f, 0f, 100f));
+    var hierarchicalAgent = new TestHierarchicalAgent(_interceptor) { Target = currentTarget };
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 0.5f);
+    SendOwnAssignTargetRequest();
+
+    RegisterMessageReceived(new AssignTargetResponseMessage(receiver, sender, offeredTarget));
+
+    Assert.AreSame(currentTarget, hierarchicalAgent.Target,
+                   "The lower-speed offered target should be rejected.");
+    Assert.AreEqual("TargetAcquired", GetTargetStatus());
+    Assert.IsNull(
+        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+    Assert.AreEqual(Mathf.NegativeInfinity,
+                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+  }
+
+  [Test]
   public void RegisterMessageReceived_TerminatedTarget_KeepsTargetRequestPending() {
     var hierarchicalAgent = new TestHierarchicalAgent(_interceptor);
     _interceptor.HierarchicalAgent = hierarchicalAgent;

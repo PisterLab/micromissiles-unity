@@ -265,9 +265,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         AssignSubInterceptor(request.PayloadData.SubInterceptor);
         break;
       case AssignTargetResponseMessage response:
-        // If the re-assigned target was not accepted, the fixed update loop will request another
-        // target.
-        if (EvaluateReassignedTarget(response.PayloadData.Target)) {
+        bool targetAccepted = EvaluateReassignedTarget(response.PayloadData.Target);
+        // The response completes the request if the offered target was accepted or the interceptor
+        // can continue pursuing its current target.
+        if (targetAccepted || HasActiveTarget()) {
           MarkTargetAcquired();
         }
         break;
