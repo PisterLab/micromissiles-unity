@@ -24,8 +24,9 @@ public class TargetRequestTests : TestBase {
     SetSingleton(_commsManager);
 
     _interceptorObject = new GameObject("Interceptor");
-    _interceptorObject.AddComponent<Rigidbody>();
+    var rigidbody = _interceptorObject.AddComponent<Rigidbody>();
     _interceptor = _interceptorObject.AddComponent<MissileInterceptor>();
+    SetPrivateField(_interceptor, "_rigidbody", rigidbody);
   }
 
   [TearDown]
@@ -59,6 +60,49 @@ public class TargetRequestTests : TestBase {
     InitializeTargetStatus();
 
     Assert.AreEqual("TargetAcquired", GetTargetStatus());
+  }
+
+  [Test]
+  public void UpdateTargetStatus_TargetAcquiredWithoutTarget_TransitionsToNoTarget() {
+    _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
+    SetTargetStatus("TargetAcquired");
+
+    UpdateTargetStatus();
+
+    Assert.AreEqual("NoTarget", GetTargetStatus());
+  }
+
+  [Test]
+  public void FixedUpdate_TargetRequestedWithActiveTarget_RetriesAfterDelay() {
+    var hierarchicalAgent = new HierarchicalAgent(_interceptor);
+    SetPrivateField<IHierarchical>(hierarchicalAgent, "_target", new FixedHierarchical());
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    int requestCount = 0;
+    receiver.OnReceived += message => {
+      if (message is AssignTargetRequestMessage) {
+        ++requestCount;
+      }
+    };
+
+    SendAssignTargetRequest();
+    FixedUpdate();
+
+    Assert.AreEqual("TargetRequested", GetTargetStatus());
+    Assert.AreEqual(1, requestCount,
+                    "The pending request should not repeat before the retry delay.");
+
+    SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 1f);
+    FixedUpdate();
+
+    Assert.AreEqual(2, requestCount,
+                    "The pending request should retry after the configured delay.");
   }
 
   [Test]
@@ -101,6 +145,22 @@ public class TargetRequestTests : TestBase {
     MethodInfo method =
         typeof(InterceptorBase)
             .GetMethod("InitializeTargetStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(method);
+    method.Invoke(_interceptor, null);
+  }
+
+  private void UpdateTargetStatus() {
+    MethodInfo method =
+        typeof(InterceptorBase)
+            .GetMethod("UpdateTargetStatus", BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(method);
+    method.Invoke(_interceptor, null);
+  }
+
+  private void FixedUpdate() {
+    MethodInfo method =
+        typeof(InterceptorBase)
+            .GetMethod("FixedUpdate", BindingFlags.NonPublic | BindingFlags.Instance);
     Assert.IsNotNull(method);
     method.Invoke(_interceptor, null);
   }
