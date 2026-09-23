@@ -1,0 +1,9 @@
+﻿<Solution>
+  <Project Path="bamlab.micromissiles.csproj" />
+  <Project Path="bamlab.test.editmode.csproj" />
+  <Project Path="bamlab.generated.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="bamlab.test.playmode.csproj" />
+  <Project Path="bamlab.test.csproj" />
+</Solution>

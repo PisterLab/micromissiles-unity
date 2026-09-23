@@ -63,6 +63,59 @@ public class TargetRequestTests : TestBase {
   }
 
   [Test]
+  public void FixedUpdate_NoTarget_SendsInitialRequest() {
+    _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    AssignTargetRequestMessage receivedRequest = null;
+    receiver.OnReceived += message => receivedRequest = message as AssignTargetRequestMessage;
+
+    InitializeTargetStatus();
+    FixedUpdate();
+
+    Assert.AreEqual("TargetRequested", GetTargetStatus());
+    Assert.IsNotNull(receivedRequest);
+    Assert.AreSame(_interceptor, receivedRequest.PayloadData.SubInterceptor);
+    Assert.AreSame(receivedRequest, GetPrivateField<AssignTargetRequestMessage>(
+                                        _interceptor, "_pendingTargetRequest"));
+    Assert.AreEqual(_interceptor.ElapsedTime,
+                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+  }
+
+  [Test]
+  public void FixedUpdate_TargetAcquired_DoesNotSendRequest() {
+    var hierarchicalAgent = new HierarchicalAgent(_interceptor);
+    SetPrivateField<IHierarchical>(hierarchicalAgent, "_target", new FixedHierarchical());
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    int requestCount = 0;
+    receiver.OnReceived += message => {
+      if (message is AssignTargetRequestMessage) {
+        ++requestCount;
+      }
+    };
+
+    InitializeTargetStatus();
+    FixedUpdate();
+
+    Assert.AreEqual("TargetAcquired", GetTargetStatus());
+    Assert.AreEqual(0, requestCount);
+    Assert.IsNull(
+        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+  }
+
+  [Test]
   public void UpdateTargetStatus_TargetAcquiredWithoutTarget_TransitionsToNoTarget() {
     _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
     SetTargetStatus("TargetAcquired");
@@ -154,6 +207,43 @@ public class TargetRequestTests : TestBase {
       Assert.AreEqual("TargetAcquired", GetTargetStatus());
       Assert.IsNull(
           GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+    } finally {
+      Object.DestroyImmediate(subInterceptorObject);
+    }
+  }
+
+  [Test]
+  public void ForwardAssignTargetRequest_RepeatedRequestDoesNotUseOwnFsm() {
+    var sender = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.Vessel);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+    SetTargetStatus("TargetAcquired");
+    SetPrivateField(_interceptor, "_lastTargetRequestTime", 0.5f);
+
+    var subInterceptorObject = new GameObject("SubInterceptor");
+    subInterceptorObject.AddComponent<Rigidbody>();
+    var subInterceptor = subInterceptorObject.AddComponent<MissileInterceptor>();
+    try {
+      int forwardedRequestCount = 0;
+      receiver.OnReceived += message => {
+        if (message is AssignTargetRequestMessage request) {
+          Assert.AreSame(subInterceptor, request.PayloadData.SubInterceptor);
+          ++forwardedRequestCount;
+        }
+      };
+
+      ForwardAssignTargetRequest(subInterceptor);
+      ForwardAssignTargetRequest(subInterceptor);
+
+      Assert.AreEqual(
+          2, forwardedRequestCount,
+          "Forwarded requests should not be suppressed by the carrier's own response timer.");
+      Assert.AreEqual("TargetAcquired", GetTargetStatus());
+      Assert.IsNull(
+          GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+      Assert.AreEqual(0.5f, GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
     } finally {
       Object.DestroyImmediate(subInterceptorObject);
     }

@@ -11,7 +11,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     TargetRequested,
     TargetAcquired,
   }
-  g public event Action<IInterceptor> OnHit;
+  public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
 
