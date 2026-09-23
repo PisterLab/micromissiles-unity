@@ -33,4 +33,8 @@ message CommunicationConfig {
 
   // Per-pair overrides. Omitted pairs fall back to link_config.
   repeated LinkOverride link_overrides = 2;
+
+  // Time to wait for a target-assignment response before retrying the request.
+  // Must be non-negative.
+  float response_retry_seconds = 3;
 }
