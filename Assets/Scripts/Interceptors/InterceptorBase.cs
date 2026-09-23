@@ -6,6 +6,12 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
+  private enum TargetStatus {
+    NoTarget,
+    TargetRequested,
+    TargetAcquired,
+  }
+
   public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
@@ -19,6 +25,16 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public IEscapeDetector EscapeDetector { get; set; }
 
   public CommsNode ParentCommsNode { get; set; }
+
+  // State of this interceptor's target assignment lifecycle.
+  [SerializeField]
+  private TargetStatus _targetStatus = TargetStatus.NoTarget;
+
+  // Most recent target request awaiting a response.
+  private AssignTargetRequestMessage _pendingTargetRequest;
+
+  // Time at which the pending target request was last sent.
+  private float _lastTargetRequestTime = Mathf.NegativeInfinity;
 
   // Maximum number of threats that this interceptor can target.
   [SerializeField]
@@ -90,9 +106,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
+    UpdateTargetStatus();
+
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
-    // TODO(Joseph0120): Prevent duplicate re-assignment requests while waiting for a response.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       RequestReassignment(this);
     }
@@ -252,6 +269,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         // If the re-assigned target was not accepted, the fixed update loop will request another
         // target.
         EvaluateReassignedTarget(response.PayloadData.Target);
+        UpdateTargetStatus();
         break;
       case ReassignTargetRequestMessage request:
         ReassignTarget(request.PayloadData.Target);
@@ -394,8 +412,49 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendAssignTargetRequest(IInterceptor subInterceptor) {
-    CommsManager.Instance.SendMessage(
-        new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor));
+    var request = new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor);
+    bool isOwnRequest = ReferenceEquals(subInterceptor, this);
+    if (isOwnRequest && !ShouldSendTargetRequest(request)) {
+      return;
+    }
+
+    CommsManager.Instance.SendMessage(request);
+    if (isOwnRequest) {
+      _pendingTargetRequest = request;
+      _lastTargetRequestTime = ElapsedTime;
+      _targetStatus = TargetStatus.TargetRequested;
+    }
+  }
+
+  private bool ShouldSendTargetRequest(AssignTargetRequestMessage request) {
+    if (_targetStatus != TargetStatus.TargetRequested ||
+        !IsSameTargetRequest(request, _pendingTargetRequest)) {
+      return true;
+    }
+
+    float responseRetrySeconds =
+        SimManager.Instance?.SimulationConfig?.CommunicationConfig?.ResponseRetrySeconds ?? 0f;
+    return ElapsedTime - _lastTargetRequestTime >= Mathf.Max(0f, responseRetrySeconds);
+  }
+
+  private static bool IsSameTargetRequest(AssignTargetRequestMessage first,
+                                          AssignTargetRequestMessage second) {
+    return first != null && second != null && ReferenceEquals(first.Sender, second.Sender) &&
+           ReferenceEquals(first.Receiver, second.Receiver) &&
+           ReferenceEquals(first.PayloadData.SubInterceptor, second.PayloadData.SubInterceptor);
+  }
+
+  private void UpdateTargetStatus() {
+    bool hasTarget = HierarchicalAgent.Target != null && !HierarchicalAgent.Target.IsTerminated;
+    if (hasTarget) {
+      _targetStatus = TargetStatus.TargetAcquired;
+      _pendingTargetRequest = null;
+      return;
+    }
+
+    if (_targetStatus == TargetStatus.TargetAcquired) {
+      _targetStatus = TargetStatus.NoTarget;
+    }
   }
 
   private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {
