@@ -11,8 +11,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     TargetRequested,
     TargetAcquired,
   }
-
-  public event Action<IInterceptor> OnHit;
+  g public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
 
@@ -467,7 +466,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         break;
       case TargetStatus.TargetAcquired:
         if (!HasActiveTarget()) {
-          _targetStatus = TargetStatus.NoTarget;
+          MarkTargetLost();
         }
         break;
     }
@@ -476,6 +475,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private void MarkTargetAcquired() {
     _targetStatus = TargetStatus.TargetAcquired;
     _pendingTargetRequest = null;
+    _lastTargetRequestTime = Mathf.NegativeInfinity;
+  }
+
+  private void MarkTargetLost() {
+    _targetStatus = TargetStatus.NoTarget;
+    _pendingTargetRequest = null;
+    _lastTargetRequestTime = Mathf.NegativeInfinity;
   }
 
   private bool HasActiveTarget() {

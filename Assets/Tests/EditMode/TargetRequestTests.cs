@@ -73,6 +73,32 @@ public class TargetRequestTests : TestBase {
   }
 
   [Test]
+  public void FixedUpdate_TargetAcquiredThenTerminated_RequestsReplacementImmediately() {
+    var target = new TestTarget();
+    var hierarchicalAgent = new TestHierarchicalAgent(_interceptor) { Target = target };
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    AssignTargetRequestMessage receivedRequest = null;
+    receiver.OnReceived += message => receivedRequest = message as AssignTargetRequestMessage;
+
+    InitializeTargetStatus();
+    target.Terminated = true;
+    FixedUpdate();
+
+    Assert.AreEqual("TargetRequested", GetTargetStatus());
+    Assert.IsNotNull(receivedRequest);
+    Assert.AreSame(_interceptor, receivedRequest.PayloadData.SubInterceptor);
+    Assert.AreSame(receivedRequest, GetPrivateField<AssignTargetRequestMessage>(
+                                        _interceptor, "_pendingTargetRequest"));
+  }
+
+  [Test]
   public void FixedUpdate_TargetRequestedWithActiveTarget_RetriesAfterDelay() {
     var hierarchicalAgent = new HierarchicalAgent(_interceptor);
     SetPrivateField<IHierarchical>(hierarchicalAgent, "_target", new FixedHierarchical());
@@ -169,6 +195,57 @@ public class TargetRequestTests : TestBase {
                     "The same request should be sent again after the retry delay.");
   }
 
+  [Test]
+  public void RegisterMessageReceived_AcceptedResponse_CompletesTargetRequest() {
+    var hierarchicalAgent = new TestHierarchicalAgent(_interceptor);
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 0.5f);
+    SendOwnAssignTargetRequest();
+    var target = new FixedHierarchical();
+
+    RegisterMessageReceived(new AssignTargetResponseMessage(receiver, sender, target));
+
+    Assert.AreSame(target, hierarchicalAgent.Target);
+    Assert.AreEqual("TargetAcquired", GetTargetStatus());
+    Assert.IsNull(
+        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+    Assert.AreEqual(Mathf.NegativeInfinity,
+                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+  }
+
+  [Test]
+  public void RegisterMessageReceived_TerminatedTarget_KeepsTargetRequestPending() {
+    var hierarchicalAgent = new TestHierarchicalAgent(_interceptor);
+    _interceptor.HierarchicalAgent = hierarchicalAgent;
+
+    var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
+    var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
+    _interceptor.CommsNode = sender;
+    _interceptor.ParentCommsNode = receiver;
+    _commsManager.AddNode(receiver);
+
+    SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 0.5f);
+    SendOwnAssignTargetRequest();
+    var pendingRequest =
+        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest");
+
+    RegisterMessageReceived(
+        new AssignTargetResponseMessage(receiver, sender, new HierarchicalBase()));
+
+    Assert.IsNull(hierarchicalAgent.Target);
+    Assert.AreEqual("TargetRequested", GetTargetStatus());
+    Assert.AreSame(pendingRequest, GetPrivateField<AssignTargetRequestMessage>(
+                                       _interceptor, "_pendingTargetRequest"));
+    Assert.AreEqual(0.5f, GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+  }
+
   private void InitializeTargetStatus() {
     MethodInfo method =
         typeof(InterceptorBase)
@@ -223,5 +300,30 @@ public class TargetRequestTests : TestBase {
                                        BindingFlags.NonPublic | BindingFlags.Instance);
     Assert.IsNotNull(method);
     method.Invoke(_interceptor, null);
+  }
+
+  private void RegisterMessageReceived(Message message) {
+    MethodInfo method =
+        typeof(InterceptorBase)
+            .GetMethod("RegisterMessageReceived", BindingFlags.NonPublic | BindingFlags.Instance);
+    Assert.IsNotNull(method);
+    method.Invoke(_interceptor, new object[] { message });
+  }
+
+  private sealed class TestTarget : HierarchicalBase {
+    public bool Terminated { get; set; }
+
+    public override bool IsTerminated => Terminated;
+  }
+
+  private sealed class TestHierarchicalAgent : HierarchicalAgent {
+    private IHierarchical _target;
+
+    public override IHierarchical Target {
+      get => _target;
+      set => _target = value;
+    }
+
+    public TestHierarchicalAgent(IAgent agent) : base(agent) {}
   }
 }
