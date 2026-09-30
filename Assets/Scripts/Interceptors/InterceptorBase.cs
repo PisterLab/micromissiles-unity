@@ -6,11 +6,6 @@ using UnityEngine;
 
 // Base implementation of an interceptor.
 public abstract class InterceptorBase : AgentBase, IInterceptor {
-  private enum TargetStatus {
-    NoTarget,
-    TargetRequested,
-    TargetAcquired,
-  }
   public event Action<IInterceptor> OnHit;
   public event Action<IInterceptor> OnMiss;
   public event Action<IInterceptor> OnDestroyed;
@@ -24,10 +19,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   public IEscapeDetector EscapeDetector { get; set; }
 
   public CommsNode ParentCommsNode { get; set; }
-
-  // State of this interceptor's target assignment lifecycle.
-  [SerializeField]
-  private TargetStatus _targetStatus = TargetStatus.NoTarget;
 
   // Most recent target request awaiting a response.
   private AssignTargetRequestMessage _pendingTargetRequest;
@@ -109,7 +100,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     UpdateTargetStatus();
 
     // Request a target when none is assigned, or retry while waiting for a response.
-    if (_targetStatus != TargetStatus.TargetAcquired) {
+    if (HierarchicalAgent.TargetStatus != TargetStatus.TargetAcquired) {
       RequestReassignment();
     }
 
@@ -422,7 +413,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     CommsManager.Instance.SendMessage(request);
     _pendingTargetRequest = request;
     _lastTargetRequestTime = ElapsedTime;
-    _targetStatus = TargetStatus.TargetRequested;
+    HierarchicalAgent.TargetStatus = TargetStatus.TargetRequested;
   }
 
   private void ForwardAssignTargetRequest(IInterceptor subInterceptor) {
@@ -431,7 +422,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private bool ShouldSendTargetRequest(AssignTargetRequestMessage request) {
-    if (_targetStatus != TargetStatus.TargetRequested ||
+    if (HierarchicalAgent.TargetStatus != TargetStatus.TargetRequested ||
         !IsSameTargetRequest(request, _pendingTargetRequest)) {
       return true;
     }
@@ -449,13 +440,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void InitializeTargetStatus() {
-    _targetStatus = HasActiveTarget() ? TargetStatus.TargetAcquired : TargetStatus.NoTarget;
+    HierarchicalAgent.TargetStatus =
+        HasActiveTarget() ? TargetStatus.TargetAcquired : TargetStatus.NoTarget;
     _pendingTargetRequest = null;
     _lastTargetRequestTime = Mathf.NegativeInfinity;
   }
 
   private void UpdateTargetStatus() {
-    switch (_targetStatus) {
+    switch (HierarchicalAgent.TargetStatus) {
       case TargetStatus.NoTarget:
         if (HasActiveTarget()) {
           MarkTargetAcquired();
@@ -474,13 +466,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void MarkTargetAcquired() {
-    _targetStatus = TargetStatus.TargetAcquired;
+    HierarchicalAgent.TargetStatus = TargetStatus.TargetAcquired;
     _pendingTargetRequest = null;
     _lastTargetRequestTime = Mathf.NegativeInfinity;
   }
 
   private void MarkTargetLost() {
-    _targetStatus = TargetStatus.NoTarget;
+    HierarchicalAgent.TargetStatus = TargetStatus.NoTarget;
     _pendingTargetRequest = null;
     _lastTargetRequestTime = Mathf.NegativeInfinity;
   }
