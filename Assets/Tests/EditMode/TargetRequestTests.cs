@@ -40,30 +40,6 @@ public class TargetRequestTests : TestBase {
   }
 
   [Test]
-  public void InitializeTargetStatus_WithNoTarget_InitializesNoTarget() {
-    _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
-    SetTargetStatus(TargetStatus.TargetRequested);
-    SetPrivateField(_interceptor, "_lastTargetRequestTime", 5f);
-
-    InitializeTargetStatus();
-
-    Assert.AreEqual(TargetStatus.NoTarget, GetTargetStatus());
-    Assert.AreEqual(Mathf.NegativeInfinity,
-                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
-  }
-
-  [Test]
-  public void InitializeTargetStatus_WithExistingTarget_InitializesTargetAcquired() {
-    var hierarchicalAgent = new HierarchicalAgent(_interceptor);
-    SetPrivateField<IHierarchical>(hierarchicalAgent, "_target", new FixedHierarchical());
-    _interceptor.HierarchicalAgent = hierarchicalAgent;
-
-    InitializeTargetStatus();
-
-    Assert.AreEqual(TargetStatus.TargetAcquired, GetTargetStatus());
-  }
-
-  [Test]
   public void FixedUpdate_NoTarget_SendsInitialRequest() {
     _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
 
@@ -76,16 +52,12 @@ public class TargetRequestTests : TestBase {
     AssignTargetRequestMessage receivedRequest = null;
     receiver.OnReceived += message => receivedRequest = message as AssignTargetRequestMessage;
 
-    InitializeTargetStatus();
     FixedUpdate();
 
     Assert.AreEqual(TargetStatus.TargetRequested, GetTargetStatus());
     Assert.IsNotNull(receivedRequest);
     Assert.AreSame(_interceptor, receivedRequest.PayloadData.SubInterceptor);
-    Assert.AreSame(receivedRequest, GetPrivateField<AssignTargetRequestMessage>(
-                                        _interceptor, "_pendingTargetRequest"));
-    Assert.AreEqual(_interceptor.ElapsedTime,
-                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+    Assert.IsTrue(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   [Test]
@@ -93,6 +65,7 @@ public class TargetRequestTests : TestBase {
     var hierarchicalAgent = new HierarchicalAgent(_interceptor);
     SetPrivateField<IHierarchical>(hierarchicalAgent, "_target", new FixedHierarchical());
     _interceptor.HierarchicalAgent = hierarchicalAgent;
+    SetTargetStatus(TargetStatus.TargetAcquired);
 
     var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
     var receiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
@@ -107,23 +80,23 @@ public class TargetRequestTests : TestBase {
       }
     };
 
-    InitializeTargetStatus();
     FixedUpdate();
 
     Assert.AreEqual(TargetStatus.TargetAcquired, GetTargetStatus());
     Assert.AreEqual(0, requestCount);
-    Assert.IsNull(
-        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+    Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   [Test]
   public void UpdateTargetStatus_TargetAcquiredWithoutTarget_TransitionsToNoTarget() {
     _interceptor.HierarchicalAgent = new HierarchicalAgent(_interceptor);
     SetTargetStatus(TargetStatus.TargetAcquired);
+    GetTargetRequestRetryAlarm().Set(currentTime: 0f, delaySeconds: 1f);
 
     UpdateTargetStatus();
 
     Assert.AreEqual(TargetStatus.NoTarget, GetTargetStatus());
+    Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   [Test]
@@ -141,15 +114,13 @@ public class TargetRequestTests : TestBase {
     AssignTargetRequestMessage receivedRequest = null;
     receiver.OnReceived += message => receivedRequest = message as AssignTargetRequestMessage;
 
-    InitializeTargetStatus();
     target.Terminated = true;
     FixedUpdate();
 
     Assert.AreEqual(TargetStatus.TargetRequested, GetTargetStatus());
     Assert.IsNotNull(receivedRequest);
     Assert.AreSame(_interceptor, receivedRequest.PayloadData.SubInterceptor);
-    Assert.AreSame(receivedRequest, GetPrivateField<AssignTargetRequestMessage>(
-                                        _interceptor, "_pendingTargetRequest"));
+    Assert.IsTrue(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   [Test]
@@ -206,8 +177,7 @@ public class TargetRequestTests : TestBase {
       Assert.IsNotNull(receivedRequest);
       Assert.AreSame(subInterceptor, receivedRequest.PayloadData.SubInterceptor);
       Assert.AreEqual(TargetStatus.TargetAcquired, GetTargetStatus());
-      Assert.IsNull(
-          GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
+      Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
     } finally {
       Object.DestroyImmediate(subInterceptorObject);
     }
@@ -221,7 +191,6 @@ public class TargetRequestTests : TestBase {
     _interceptor.ParentCommsNode = receiver;
     _commsManager.AddNode(receiver);
     SetTargetStatus(TargetStatus.TargetAcquired);
-    SetPrivateField(_interceptor, "_lastTargetRequestTime", 0.5f);
 
     var subInterceptorObject = new GameObject("SubInterceptor");
     subInterceptorObject.AddComponent<Rigidbody>();
@@ -242,16 +211,14 @@ public class TargetRequestTests : TestBase {
           2, forwardedRequestCount,
           "Forwarded requests should not be suppressed by the carrier's own response timer.");
       Assert.AreEqual(TargetStatus.TargetAcquired, GetTargetStatus());
-      Assert.IsNull(
-          GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
-      Assert.AreEqual(0.5f, GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+      Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
     } finally {
       Object.DestroyImmediate(subInterceptorObject);
     }
   }
 
   [Test]
-  public void SendOwnAssignTargetRequest_ChangedRequestBypassesRetryDelay() {
+  public void ParentCommsNode_Changed_ClearsAlarmAndSendsImmediately() {
     var sender = new CommsNode(Configs.AgentType.MissileInterceptor);
     var firstReceiver = new CommsNode(Configs.AgentType.CarrierInterceptor);
     var secondReceiver = new CommsNode(Configs.AgentType.Vessel);
@@ -267,23 +234,24 @@ public class TargetRequestTests : TestBase {
     secondReceiver.OnReceived +=
         _ => ++secondReceiverMessageCount;
 
-    SendOwnAssignTargetRequest();
-    SendOwnAssignTargetRequest();
+    FixedUpdate();
+    FixedUpdate();
     Assert.AreEqual(1, firstReceiverMessageCount,
-                    "The same request should wait for the retry delay.");
+                    "The alarm should suppress a retry before the cooldown expires.");
 
     _interceptor.ParentCommsNode = secondReceiver;
-    SendOwnAssignTargetRequest();
-    Assert.AreEqual(1, secondReceiverMessageCount, "A changed request should be sent immediately.");
-
-    SendOwnAssignTargetRequest();
+    Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
+    FixedUpdate();
     Assert.AreEqual(1, secondReceiverMessageCount,
-                    "The changed request should then become the pending request.");
+                    "Changing the parent should allow an immediate request.");
 
-    SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 1f);
-    SendOwnAssignTargetRequest();
+    FixedUpdate();
+    Assert.AreEqual(1, secondReceiverMessageCount, "The new request should arm a fresh cooldown.");
+
+    SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 2f);
+    FixedUpdate();
     Assert.AreEqual(2, secondReceiverMessageCount,
-                    "The same request should be sent again after the retry delay.");
+                    "The request should retry when the new alarm fires.");
   }
 
   [Test]
@@ -305,10 +273,7 @@ public class TargetRequestTests : TestBase {
 
     Assert.AreSame(target, hierarchicalAgent.Target);
     Assert.AreEqual(TargetStatus.TargetAcquired, GetTargetStatus());
-    Assert.IsNull(
-        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
-    Assert.AreEqual(Mathf.NegativeInfinity,
-                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+    Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   [Test]
@@ -351,10 +316,7 @@ public class TargetRequestTests : TestBase {
     Assert.AreSame(currentTarget, hierarchicalAgent.Target,
                    "The lower-speed offered target should be rejected.");
     Assert.AreEqual(TargetStatus.TargetAcquired, GetTargetStatus());
-    Assert.IsNull(
-        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest"));
-    Assert.AreEqual(Mathf.NegativeInfinity,
-                    GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
+    Assert.IsFalse(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   [Test]
@@ -370,25 +332,13 @@ public class TargetRequestTests : TestBase {
 
     SetPrivateField(_interceptor, "<ElapsedTime>k__BackingField", 0.5f);
     SendOwnAssignTargetRequest();
-    var pendingRequest =
-        GetPrivateField<AssignTargetRequestMessage>(_interceptor, "_pendingTargetRequest");
 
     RegisterMessageReceived(
         new AssignTargetResponseMessage(receiver, sender, new HierarchicalBase()));
 
     Assert.IsNull(hierarchicalAgent.Target);
     Assert.AreEqual(TargetStatus.TargetRequested, GetTargetStatus());
-    Assert.AreSame(pendingRequest, GetPrivateField<AssignTargetRequestMessage>(
-                                       _interceptor, "_pendingTargetRequest"));
-    Assert.AreEqual(0.5f, GetPrivateField<float>(_interceptor, "_lastTargetRequestTime"));
-  }
-
-  private void InitializeTargetStatus() {
-    MethodInfo method =
-        typeof(InterceptorBase)
-            .GetMethod("InitializeTargetStatus", BindingFlags.NonPublic | BindingFlags.Instance);
-    Assert.IsNotNull(method);
-    method.Invoke(_interceptor, null);
+    Assert.IsTrue(GetTargetRequestRetryAlarm().IsArmed);
   }
 
   private void UpdateTargetStatus() {
@@ -408,6 +358,9 @@ public class TargetRequestTests : TestBase {
   }
 
   private TargetStatus GetTargetStatus() => _interceptor.HierarchicalAgent.TargetStatus;
+
+  private Alarm GetTargetRequestRetryAlarm() => GetPrivateField<Alarm>(_interceptor,
+                                                                       "_targetRequestRetryAlarm");
 
   private void SetTargetStatus(TargetStatus status) => _interceptor.HierarchicalAgent.TargetStatus =
       status;
@@ -447,7 +400,11 @@ public class TargetRequestTests : TestBase {
 
     public override IHierarchical Target {
       get => _target;
-      set => _target = value;
+      set {
+        _target = value;
+        TargetStatus = _target != null && !_target.IsTerminated ? TargetStatus.TargetAcquired
+                                                                : TargetStatus.NoTarget;
+      }
     }
 
     public TestHierarchicalAgent(IAgent agent) : base(agent) {}

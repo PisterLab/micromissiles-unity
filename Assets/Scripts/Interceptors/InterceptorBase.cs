@@ -16,15 +16,22 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Time to accumulate unassigned targets before launching additional sub-interceptors.
   private const float _unassignedTargetsLaunchPeriod = 2.5f;
 
+  // Controls when an unanswered target request may be retried.
+  private readonly Alarm _targetRequestRetryAlarm = new Alarm();
+
+  private CommsNode _parentCommsNode;
+
   public IEscapeDetector EscapeDetector { get; set; }
 
-  public CommsNode ParentCommsNode { get; set; }
-
-  // Most recent target request awaiting a response.
-  private AssignTargetRequestMessage _pendingTargetRequest;
-
-  // Time at which the pending target request was last sent.
-  private float _lastTargetRequestTime = Mathf.NegativeInfinity;
+  public CommsNode ParentCommsNode {
+    get => _parentCommsNode;
+    set {
+      if (!ReferenceEquals(_parentCommsNode, value)) {
+        _parentCommsNode = value;
+        _targetRequestRetryAlarm.Clear();
+      }
+    }
+  }
 
   // Maximum number of threats that this interceptor can target.
   [SerializeField]
@@ -86,7 +93,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   protected override void Start() {
     base.Start();
-    InitializeTargetStatus();
     _unassignedTargetsCoroutine =
         StartCoroutine(UnassignedTargetsManager(_unassignedTargetsLaunchPeriod));
     OnMiss += RegisterMiss;
@@ -345,9 +351,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RequestReassignment() {
-    if (IsReassignable) {
-      SendOwnAssignTargetRequest();
+    if (!IsReassignable) {
+      return;
     }
+    if (_targetRequestRetryAlarm.IsArmed && !_targetRequestRetryAlarm.TryFire(ElapsedTime)) {
+      return;
+    }
+    SendOwnAssignTargetRequest();
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {
@@ -405,15 +415,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void SendOwnAssignTargetRequest() {
-    var request = new AssignTargetRequestMessage(CommsNode, ParentCommsNode, this);
-    if (!ShouldSendTargetRequest(request)) {
-      return;
-    }
-
-    CommsManager.Instance.SendMessage(request);
-    _pendingTargetRequest = request;
-    _lastTargetRequestTime = ElapsedTime;
+    CommsManager.Instance.SendMessage(
+        new AssignTargetRequestMessage(CommsNode, ParentCommsNode, this));
     HierarchicalAgent.TargetStatus = TargetStatus.TargetRequested;
+
+    float retryCooldownSeconds =
+        SimManager.Instance?.SimulationConfig?.CommunicationConfig?.RetryCooldownSeconds ?? 0f;
+    _targetRequestRetryAlarm.Set(ElapsedTime, retryCooldownSeconds);
   }
 
   private void ForwardAssignTargetRequest(IInterceptor subInterceptor) {
@@ -421,34 +429,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor));
   }
 
-  private bool ShouldSendTargetRequest(AssignTargetRequestMessage request) {
-    if (HierarchicalAgent.TargetStatus != TargetStatus.TargetRequested ||
-        !IsSameTargetRequest(request, _pendingTargetRequest)) {
-      return true;
-    }
-
-    float retryCooldownSeconds =
-        SimManager.Instance?.SimulationConfig?.CommunicationConfig?.RetryCooldownSeconds ?? 0f;
-    return ElapsedTime - _lastTargetRequestTime >= Mathf.Max(0f, retryCooldownSeconds);
-  }
-
-  private static bool IsSameTargetRequest(AssignTargetRequestMessage first,
-                                          AssignTargetRequestMessage second) {
-    return first != null && second != null && ReferenceEquals(first.Sender, second.Sender) &&
-           ReferenceEquals(first.Receiver, second.Receiver) &&
-           ReferenceEquals(first.PayloadData.SubInterceptor, second.PayloadData.SubInterceptor);
-  }
-
-  private void InitializeTargetStatus() {
-    HierarchicalAgent.TargetStatus =
-        HasActiveTarget() ? TargetStatus.TargetAcquired : TargetStatus.NoTarget;
-    _pendingTargetRequest = null;
-    _lastTargetRequestTime = Mathf.NegativeInfinity;
-  }
-
   private void UpdateTargetStatus() {
     switch (HierarchicalAgent.TargetStatus) {
       case TargetStatus.NoTarget:
+        _targetRequestRetryAlarm.Clear();
         if (HasActiveTarget()) {
           MarkTargetAcquired();
         }
@@ -458,6 +442,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         // replacement. A valid response completes the request.
         break;
       case TargetStatus.TargetAcquired:
+        _targetRequestRetryAlarm.Clear();
         if (!HasActiveTarget()) {
           MarkTargetLost();
         }
@@ -467,14 +452,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   private void MarkTargetAcquired() {
     HierarchicalAgent.TargetStatus = TargetStatus.TargetAcquired;
-    _pendingTargetRequest = null;
-    _lastTargetRequestTime = Mathf.NegativeInfinity;
+    _targetRequestRetryAlarm.Clear();
   }
 
   private void MarkTargetLost() {
     HierarchicalAgent.TargetStatus = TargetStatus.NoTarget;
-    _pendingTargetRequest = null;
-    _lastTargetRequestTime = Mathf.NegativeInfinity;
+    _targetRequestRetryAlarm.Clear();
   }
 
   private bool HasActiveTarget() {
