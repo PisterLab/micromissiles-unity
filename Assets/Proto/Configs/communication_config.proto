@@ -36,5 +36,5 @@ message CommunicationConfig {
 
   // Time to wait for a target-assignment response before retrying the request.
   // Must be non-negative.
-  float response_retry_seconds = 3;
+  float retry_cooldown_seconds = 3;
 }

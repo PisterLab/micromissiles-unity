@@ -15,7 +15,7 @@ public class TargetRequestTests : TestBase {
     _simManager.SimulationConfig = new Configs.SimulationConfig {
       CommunicationConfig =
           new Configs.CommunicationConfig {
-            ResponseRetrySeconds = 1f,
+            RetryCooldownSeconds = 1f,
             LinkConfig = new Configs.LinkConfig { PacketDeliveryRatio = 1f },
           },
     };

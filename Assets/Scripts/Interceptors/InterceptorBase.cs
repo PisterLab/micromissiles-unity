@@ -436,9 +436,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return true;
     }
 
-    float responseRetrySeconds =
-        SimManager.Instance?.SimulationConfig?.CommunicationConfig?.ResponseRetrySeconds ?? 0f;
-    return ElapsedTime - _lastTargetRequestTime >= Mathf.Max(0f, responseRetrySeconds);
+    float retryCooldownSeconds =
+        SimManager.Instance?.SimulationConfig?.CommunicationConfig?.RetryCooldownSeconds ?? 0f;
+    return ElapsedTime - _lastTargetRequestTime >= Mathf.Max(0f, retryCooldownSeconds);
   }
 
   private static bool IsSameTargetRequest(AssignTargetRequestMessage first,
