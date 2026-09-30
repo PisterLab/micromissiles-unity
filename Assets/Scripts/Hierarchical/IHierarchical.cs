@@ -1,6 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TargetStatus {
+  NoTarget,
+  TargetRequested,
+  TargetAcquired,
+}
+
 // Interface for a hierarchical object.
 //
 // A hierarchical object can represent a single entity, such as an interceptor or a threat, or a
@@ -13,6 +19,7 @@ public interface IHierarchical {
   // Return a list of active sub-hierarchical objects.
   IEnumerable<IHierarchical> ActiveSubHierarchicals { get; }
   IHierarchical Target { get; set; }
+  TargetStatus TargetStatus { get; set; }
   IReadOnlyList<IHierarchical> Pursuers { get; }
   IEnumerable<IHierarchical> ActivePursuers { get; }
   IReadOnlyList<IHierarchical> LaunchedHierarchicals { get; }

@@ -27,6 +27,10 @@ public class HierarchicalBase : IHierarchical {
   [SerializeReference]
   private IHierarchical _target;
 
+  // State of the target assignment lifecycle.
+  [SerializeField]
+  private TargetStatus _targetStatus = TargetStatus.NoTarget;
+
   // List of launched hierarchical objects.
   [SerializeReference]
   private List<IHierarchical> _launchedHierarchicals = new List<IHierarchical>();
@@ -39,9 +43,17 @@ public class HierarchicalBase : IHierarchical {
 
   public virtual IHierarchical Target {
     get => _target;
-    set { _target = value; }
+    set {
+      _target = value;
+      TargetStatus = _target != null && !_target.IsTerminated ? TargetStatus.TargetAcquired
+                                                              : TargetStatus.NoTarget;
+    }
   }
 
+  public TargetStatus TargetStatus {
+    get => _targetStatus;
+    set => _targetStatus = value;
+  }
   public IReadOnlyList<IHierarchical> Pursuers => _pursuers.AsReadOnly();
   public IEnumerable<IHierarchical> ActivePursuers =>
       Pursuers.Where(pursuer => !pursuer.IsTerminated);
