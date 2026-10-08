@@ -60,15 +60,15 @@ public class MissileMovementTests : TestBase {
     float dynamicPressure = 0.5f * airDensity * 100f * 100f;
     float dragForce = 1f * dynamicPressure * 1f;
     float expectedDrag = dragForce / 1f;
-    Assert.AreEqual(-expectedDrag - Constants.kGravity, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-expectedDrag, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
-  public void Act_Ready_AddsLiftInducedDrag() {
+  public void Act_Ready_WithoutLift_HasNoLiftInducedDrag() {
     _movement.FlightPhase = Simulation.FlightPhase.Ready;
     Vector3 accelerationInput = Vector3.zero;
     Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(0f, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
@@ -93,17 +93,16 @@ public class MissileMovementTests : TestBase {
     float dynamicPressure = 0.5f * airDensity * 100f * 100f;
     float dragForce = 1f * dynamicPressure * 1f;
     float expectedDrag = dragForce / 1f;
-    Assert.AreEqual(-expectedDrag - Constants.kGravity + boostAcceleration,
-                    appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-expectedDrag + boostAcceleration, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
-  public void Act_Boost_AddsLiftInducedDragToBoostAcceleration() {
+  public void Act_Boost_WithoutLift_HasNoLiftInducedDrag() {
     _movement.FlightPhase = Simulation.FlightPhase.Boost;
     Vector3 accelerationInput = Vector3.zero;
     Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
     float boostAcceleration = 100f;
-    Assert.AreEqual(-Constants.kGravity + boostAcceleration, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(boostAcceleration, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
@@ -138,15 +137,15 @@ public class MissileMovementTests : TestBase {
     float dynamicPressure = 0.5f * airDensity * 100f * 100f;
     float dragForce = 1f * dynamicPressure * 1f;
     float expectedDrag = dragForce / 1f;
-    Assert.AreEqual(-expectedDrag - Constants.kGravity, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(-expectedDrag, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]
-  public void Act_Midcourse_AddsLiftInducedDrag() {
+  public void Act_Midcourse_WithoutLift_HasNoLiftInducedDrag() {
     _movement.FlightPhase = Simulation.FlightPhase.Midcourse;
     Vector3 accelerationInput = Vector3.zero;
     Vector3 appliedAccelerationInput = _movement.Act(accelerationInput);
-    Assert.AreEqual(-Constants.kGravity, appliedAccelerationInput.z, _epsilon);
+    Assert.AreEqual(0f, appliedAccelerationInput.z, _epsilon);
   }
 
   [Test]

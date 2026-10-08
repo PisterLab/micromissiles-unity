@@ -132,7 +132,7 @@ public class MissileMovement : AerialMovement {
   private Vector3 CalculateNetAccelerationInput(in Vector3 accelerationInput) {
     Vector3 gravity = Physics.gravity;
     float airDrag = CalculateDrag();
-    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput + gravity);
+    float liftInducedDrag = CalculateLiftInducedDrag(accelerationInput);
     float dragAcceleration = -(airDrag + liftInducedDrag);
     return accelerationInput + gravity + dragAcceleration * Agent.Forward;
   }
