@@ -16,9 +16,22 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // Time to accumulate unassigned targets before launching additional sub-interceptors.
   private const float _unassignedTargetsLaunchPeriod = 2.5f;
 
+  // Controls when an unanswered target request may be retried.
+  private readonly Alarm _targetRequestRetryAlarm = new Alarm();
+
+  private CommsNode _parentCommsNode;
+
   public IEscapeDetector EscapeDetector { get; set; }
 
-  public CommsNode ParentCommsNode { get; set; }
+  public CommsNode ParentCommsNode {
+    get => _parentCommsNode;
+    set {
+      if (!ReferenceEquals(_parentCommsNode, value)) {
+        _parentCommsNode = value;
+        _targetRequestRetryAlarm.Clear();
+      }
+    }
+  }
 
   // Maximum number of threats that this interceptor can target.
   [SerializeField]
@@ -90,11 +103,11 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   protected override void FixedUpdate() {
     base.FixedUpdate();
 
-    // Check whether the interceptor has a target. If not, request a new target from the parent
-    // interceptor.
-    // TODO(Joseph0120): Prevent duplicate re-assignment requests while waiting for a response.
-    if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
-      RequestReassignment(this);
+    UpdateTargetStatus();
+
+    // Request a target when none is assigned, or retry while waiting for a response.
+    if (HierarchicalAgent.TargetStatus != TargetStatus.TargetAcquired) {
+      RequestReassignment();
     }
 
     // Check whether any targets are escaping from the interceptor.
@@ -108,7 +121,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         SendReassignTargetRequest(target);
       }
       if (escapingTargets.Count == targetHierarchicals.Count) {
-        RequestReassignment(this);
+        RequestReassignment();
       }
     }
 
@@ -234,9 +247,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RegisterMiss(IInterceptor interceptor) {
+    // Ask the hierarchy to reassign the missed target and request a replacement target for this
+    // interceptor.
     RequestTargetReassignment(interceptor);
-
-    // Request a new target from the parent interceptor.
   }
 
   private void RegisterDestroyed(IInterceptor interceptor) {
@@ -249,9 +262,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
         AssignSubInterceptor(request.PayloadData.SubInterceptor);
         break;
       case AssignTargetResponseMessage response:
-        // If the re-assigned target was not accepted, the fixed update loop will request another
-        // target.
-        EvaluateReassignedTarget(response.PayloadData.Target);
+        bool targetAccepted = EvaluateReassignedTarget(response.PayloadData.Target);
+        // The response completes the request if the offered target was accepted or the interceptor
+        // can continue pursuing its current target.
+        if (targetAccepted || HasActiveTarget()) {
+          MarkTargetAcquired();
+        }
         break;
       case ReassignTargetRequestMessage request:
         ReassignTarget(request.PayloadData.Target);
@@ -277,19 +293,19 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
 
     // Propagate the sub-interceptor target assignment to the parent interceptor above.
-    SendAssignTargetRequest(subInterceptor);
+    ForwardAssignTargetRequest(subInterceptor);
   }
 
   // Evaluate whether the interceptor should be reassigned to the new target.
-  private void EvaluateReassignedTarget(IHierarchical target) {
+  private bool EvaluateReassignedTarget(IHierarchical target) {
     if (target == null || target.IsTerminated) {
-      return;
+      return false;
     }
 
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       HierarchicalAgent.Target = target;
-      return;
+      return true;
     }
 
     // Accept the new target if the intercept speed is higher.
@@ -298,7 +314,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
     if (newFractionalSpeed > currentFractionalSpeed) {
       HierarchicalAgent.Target = target;
+      return true;
     }
+    return false;
   }
 
   private void ReassignTarget(IHierarchical target) {
@@ -329,14 +347,17 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       SendReassignTargetRequest(targetHierarchical);
     }
 
-    RequestReassignment(interceptor);
+    RequestReassignment();
   }
 
-  private void RequestReassignment(IInterceptor interceptor) {
-    if (interceptor.IsReassignable) {
-      // Request a new target from the parent interceptor.
-      SendAssignTargetRequest(interceptor);
+  private void RequestReassignment() {
+    if (!IsReassignable) {
+      return;
     }
+    if (_targetRequestRetryAlarm.IsArmed && !_targetRequestRetryAlarm.TryFire(ElapsedTime)) {
+      return;
+    }
+    SendOwnAssignTargetRequest();
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {
@@ -393,9 +414,55 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
   }
 
-  private void SendAssignTargetRequest(IInterceptor subInterceptor) {
+  private void SendOwnAssignTargetRequest() {
+    CommsManager.Instance.SendMessage(
+        new AssignTargetRequestMessage(CommsNode, ParentCommsNode, this));
+    HierarchicalAgent.TargetStatus = TargetStatus.TargetRequested;
+
+    float retryCooldownSeconds =
+        SimManager.Instance?.SimulationConfig?.CommunicationConfig?.RetryCooldownSeconds ?? 0f;
+    _targetRequestRetryAlarm.Set(ElapsedTime, retryCooldownSeconds);
+  }
+
+  private void ForwardAssignTargetRequest(IInterceptor subInterceptor) {
     CommsManager.Instance.SendMessage(
         new AssignTargetRequestMessage(CommsNode, ParentCommsNode, subInterceptor));
+  }
+
+  private void UpdateTargetStatus() {
+    switch (HierarchicalAgent.TargetStatus) {
+      case TargetStatus.NoTarget:
+        _targetRequestRetryAlarm.Clear();
+        if (HasActiveTarget()) {
+          MarkTargetAcquired();
+        }
+        break;
+      case TargetStatus.TargetRequested:
+        // Keep waiting even if the interceptor retains its previous target while requesting a
+        // replacement. A valid response completes the request.
+        break;
+      case TargetStatus.TargetAcquired:
+        _targetRequestRetryAlarm.Clear();
+        if (!HasActiveTarget()) {
+          MarkTargetLost();
+        }
+        break;
+    }
+  }
+
+  private void MarkTargetAcquired() {
+    HierarchicalAgent.TargetStatus = TargetStatus.TargetAcquired;
+    _targetRequestRetryAlarm.Clear();
+  }
+
+  private void MarkTargetLost() {
+    HierarchicalAgent.TargetStatus = TargetStatus.NoTarget;
+    _targetRequestRetryAlarm.Clear();
+  }
+
+  private bool HasActiveTarget() {
+    IHierarchical target = HierarchicalAgent?.Target;
+    return target != null && !target.IsTerminated;
   }
 
   private void SendAssignTargetResponse(IInterceptor subInterceptor, IHierarchical target) {

@@ -9,9 +9,14 @@ public class HierarchicalBaseTests {
   [Test]
   public void Target_SetAndGet_WorksCorrectly() {
     var parent = new HierarchicalBase();
-    var target = new HierarchicalBase();
+    var target = new FixedHierarchical();
     parent.Target = target;
     Assert.AreSame(target, parent.Target);
+    Assert.AreEqual(TargetStatus.TargetAcquired, parent.TargetStatus);
+
+    parent.Target = null;
+    Assert.IsNull(parent.Target);
+    Assert.AreEqual(TargetStatus.NoTarget, parent.TargetStatus);
   }
 
   [Test]
