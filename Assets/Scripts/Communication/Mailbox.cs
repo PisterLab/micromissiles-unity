@@ -21,9 +21,8 @@ public class Mailbox {
     if (CommsManager.Instance.ContainsNode(message.Receiver)) {
       Configs.LinkConfig config = GetLinkConfig(message);
 
-      // TODO(Joseph0120): Set the packet delivery ratio to config.PacketDeliveryRatio.
-      float packetDeliveryRatio = Mathf.Clamp01(1);
-      if (UnityEngine.Random.value >= packetDeliveryRatio) {
+      float packetDeliveryRatio = Mathf.Clamp01(config.PacketDeliveryRatio);
+      if (packetDeliveryRatio < 1f && UnityEngine.Random.value >= packetDeliveryRatio) {
         return;
       }
 
