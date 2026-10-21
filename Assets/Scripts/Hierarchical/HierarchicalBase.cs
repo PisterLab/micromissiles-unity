@@ -15,6 +15,16 @@ public class HierarchicalBase : IHierarchical {
   // Maximum cluster radius in meters.
   private const float _clusterMaxRadius = 1000f;
 
+  private enum CommunicationStatus {
+    NoTarget,
+    TargetRequested,
+    TargetAssigned,
+  }
+
+  // Setup communication state FSM.
+  [SerializeField]
+  private CommunicationStatus _communicationStatus = CommunicationStatus.NoTarget;
+
   // List of hierarchical objects in the hierarchy level below.
   [SerializeReference]
   protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
@@ -139,6 +149,19 @@ public class HierarchicalBase : IHierarchical {
       AddSubHierarchical(subHierarchical);
       subHierarchical.RecursiveCluster(maxClusterSize);
     }
+  }
+
+  // Set the state of the communication FSM to NoTarget, TargetRequested, or TargetAssigned.
+  public void SetCommunicationNoTarget() {
+    _communicationStatus = CommunicationStatus.NoTarget;
+  }
+
+  public void SetCommunicationTargetRequested() {
+    _communicationStatus = CommunicationStatus.TargetRequested;
+  }
+
+  public void SetCommunicationTargetAssigned() {
+    _communicationStatus = CommunicationStatus.TargetAssigned;
   }
 
   public IHierarchical FindNewTarget(IHierarchical hierarchical, int capacity) {

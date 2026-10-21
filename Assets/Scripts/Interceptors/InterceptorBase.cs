@@ -336,6 +336,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private void RequestReassignment(IInterceptor interceptor) {
     if (interceptor.IsReassignable) {
       SendAssignTargetRequest(interceptor);
+      interceptor.HierarchicalBase.SetCommunicationTargetRequested();
     }
   }
 
