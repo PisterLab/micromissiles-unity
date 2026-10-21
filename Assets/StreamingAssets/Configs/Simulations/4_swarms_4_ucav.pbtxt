@@ -254,12 +254,11 @@ threat_swarm_configs {
   }
 }
 communication_config {
-  
-  cooldown_retry_seconds: 0.8
 
   link_config {
     latency_seconds: 0.3
     latency_std_seconds: 0.0
     packet_delivery_ratio: 0.5
+    cooldown_retry_seconds: 0.8
   }
 }

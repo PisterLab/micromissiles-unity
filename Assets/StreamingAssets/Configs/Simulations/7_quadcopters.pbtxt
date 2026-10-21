@@ -128,6 +128,7 @@ communication_config {
     latency_seconds: 0.10
     latency_std_seconds: 0.02
     packet_delivery_ratio: 1.0
+    cooldown_retry_seconds: 0.6
   }
 
   link_overrides {
@@ -137,6 +138,7 @@ communication_config {
       latency_seconds: 0.25
       latency_std_seconds: 0.02
       packet_delivery_ratio: 0.98
+      cooldown_retry_seconds: 0.6
     }
   }
 
@@ -147,6 +149,7 @@ communication_config {
       latency_seconds: 0.05
       latency_std_seconds: 0.01
       packet_delivery_ratio: 0.99
+      cooldown_retry_seconds: 0.6
     }
   }
 }
