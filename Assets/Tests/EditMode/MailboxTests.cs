@@ -87,4 +87,19 @@ public class MailboxTests : TestBase {
 
     Assert.IsNull(receivedMessage);
   }
+
+  [Test]
+  public void GetLinkConfig_ReturnsMatchingLinkOverride() {
+    var overrideConfig = new Configs.LinkConfig { CooldownRetrySeconds = 2f };
+    _simManager.SimulationConfig.CommunicationConfig.LinkOverrides.Add(new Configs.LinkOverride {
+      From = Configs.AgentType.Vessel,
+      To = Configs.AgentType.Iads,
+      LinkConfig = overrideConfig,
+    });
+
+    Configs.LinkConfig resolvedConfig = _commsManager.GetLinkConfig(
+        new CommsNode(Configs.AgentType.Vessel), new CommsNode(Configs.AgentType.Iads));
+
+    Assert.AreSame(overrideConfig, resolvedConfig);
+  }
 }

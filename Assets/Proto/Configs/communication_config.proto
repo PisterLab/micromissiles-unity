@@ -37,4 +37,8 @@ message CommunicationConfig {
 
   // Per-pair overrides. Omitted pairs fall back to link_config.
   repeated LinkOverride link_overrides = 2;
+
+  // Period in seconds for the interceptor to scan for escaping targets. Must be
+  // non-negative.
+  float escaping_target_scan_period_seconds = 3;
 }

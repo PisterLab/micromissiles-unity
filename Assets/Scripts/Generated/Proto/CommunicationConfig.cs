@@ -31,15 +31,17 @@ namespace Configs {
             "b2xkb3duX3JldHJ5X3NlY29uZHMYBCABKAIiegoMTGlua092ZXJyaWRlEiAK",
             "BGZyb20YASABKA4yEi5jb25maWdzLkFnZW50VHlwZRIeCgJ0bxgCIAEoDjIS",
             "LmNvbmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtfY29uZmlnGAMgASgLMhMuY29u",
-            "Zmlncy5MaW5rQ29uZmlnIm4KE0NvbW11bmljYXRpb25Db25maWcSKAoLbGlu",
-            "a19jb25maWcYASABKAsyEy5jb25maWdzLkxpbmtDb25maWcSLQoObGlua19v",
-            "dmVycmlkZXMYAiADKAsyFS5jb25maWdzLkxpbmtPdmVycmlkZWIGcHJvdG8z"));
+            "Zmlncy5MaW5rQ29uZmlnIpsBChNDb21tdW5pY2F0aW9uQ29uZmlnEigKC2xp",
+            "bmtfY29uZmlnGAEgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnEi0KDmxpbmtf",
+            "b3ZlcnJpZGVzGAIgAygLMhUuY29uZmlncy5MaW5rT3ZlcnJpZGUSKwojZXNj",
+            "YXBpbmdfdGFyZ2V0X3NjYW5fcGVyaW9kX3NlY29uZHMYAyABKAJiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkConfig), global::Configs.LinkConfig.Parser, new[]{ "LatencySeconds", "LatencyStdSeconds", "PacketDeliveryRatio", "CooldownRetrySeconds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkOverride), global::Configs.LinkOverride.Parser, new[]{ "From", "To", "LinkConfig" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides", "EscapingTargetScanPeriodSeconds" }, null, null, null, null)
           }));
     }
     #endregion
@@ -698,6 +700,7 @@ namespace Configs {
     public CommunicationConfig(CommunicationConfig other) : this() {
       linkConfig_ = other.linkConfig_ != null ? other.linkConfig_.Clone() : null;
       linkOverrides_ = other.linkOverrides_.Clone();
+      escapingTargetScanPeriodSeconds_ = other.escapingTargetScanPeriodSeconds_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -736,6 +739,22 @@ namespace Configs {
       get { return linkOverrides_; }
     }
 
+    /// <summary>Field number for the "escaping_target_scan_period_seconds" field.</summary>
+    public const int EscapingTargetScanPeriodSecondsFieldNumber = 3;
+    private float escapingTargetScanPeriodSeconds_;
+    /// <summary>
+    /// Period in seconds for the interceptor to scan for escaping targets. Must be
+    /// non-negative.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float EscapingTargetScanPeriodSeconds {
+      get { return escapingTargetScanPeriodSeconds_; }
+      set {
+        escapingTargetScanPeriodSeconds_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -753,6 +772,7 @@ namespace Configs {
       }
       if (!object.Equals(LinkConfig, other.LinkConfig)) return false;
       if(!linkOverrides_.Equals(other.linkOverrides_)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(EscapingTargetScanPeriodSeconds, other.EscapingTargetScanPeriodSeconds)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -762,6 +782,7 @@ namespace Configs {
       int hash = 1;
       if (linkConfig_ != null) hash ^= LinkConfig.GetHashCode();
       hash ^= linkOverrides_.GetHashCode();
+      if (EscapingTargetScanPeriodSeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(EscapingTargetScanPeriodSeconds);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -785,6 +806,10 @@ namespace Configs {
         output.WriteMessage(LinkConfig);
       }
       linkOverrides_.WriteTo(output, _repeated_linkOverrides_codec);
+      if (EscapingTargetScanPeriodSeconds != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(EscapingTargetScanPeriodSeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -800,6 +825,10 @@ namespace Configs {
         output.WriteMessage(LinkConfig);
       }
       linkOverrides_.WriteTo(ref output, _repeated_linkOverrides_codec);
+      if (EscapingTargetScanPeriodSeconds != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(EscapingTargetScanPeriodSeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -814,6 +843,9 @@ namespace Configs {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(LinkConfig);
       }
       size += linkOverrides_.CalculateSize(_repeated_linkOverrides_codec);
+      if (EscapingTargetScanPeriodSeconds != 0F) {
+        size += 1 + 4;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -833,6 +865,9 @@ namespace Configs {
         LinkConfig.MergeFrom(other.LinkConfig);
       }
       linkOverrides_.Add(other.linkOverrides_);
+      if (other.EscapingTargetScanPeriodSeconds != 0F) {
+        EscapingTargetScanPeriodSeconds = other.EscapingTargetScanPeriodSeconds;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -863,6 +898,10 @@ namespace Configs {
             linkOverrides_.AddEntriesFrom(input, _repeated_linkOverrides_codec);
             break;
           }
+          case 29: {
+            EscapingTargetScanPeriodSeconds = input.ReadFloat();
+            break;
+          }
         }
       }
     #endif
@@ -891,6 +930,10 @@ namespace Configs {
           }
           case 18: {
             linkOverrides_.AddEntriesFrom(ref input, _repeated_linkOverrides_codec);
+            break;
+          }
+          case 29: {
+            EscapingTargetScanPeriodSeconds = input.ReadFloat();
             break;
           }
         }
