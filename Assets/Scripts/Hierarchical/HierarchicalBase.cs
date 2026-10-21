@@ -15,16 +15,17 @@ public class HierarchicalBase : IHierarchical {
   // Maximum cluster radius in meters.
   private const float _clusterMaxRadius = 1000f;
 
+  // Communication states for SendAssignTargetRequest only.
   private enum CommunicationStatus {
     NoTarget,
     TargetRequested,
     TargetAssigned,
   }
 
-  // Absolute cooldown time when communication FSM TargetRequested state to expire.
+  // Absolute cooldown time when SendAssignTargetRequest FSM TargetRequested state to expire.
   private float _communicationAlarmTime;
 
-  // Setup communication state FSM.
+  // Setup communication SendAssignTargetRequest FSM.
   [SerializeField]
   private CommunicationStatus _communicationStatus = CommunicationStatus.NoTarget;
 
@@ -154,7 +155,8 @@ public class HierarchicalBase : IHierarchical {
     }
   }
 
-  // Set the state of the communication FSM to NoTarget, TargetRequested, or TargetAssigned.
+  // Set the state of the SendAssignTargetRequest FSM to NoTarget, TargetRequested, or
+  // TargetAssigned.
   public void SetCommunicationNoTarget() {
     _communicationStatus = CommunicationStatus.NoTarget;
   }
