@@ -276,7 +276,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return;
     }
 
-    // Propagate the sub-interceptor target assignment to the parent interceptor above.
+    // Propagate the sub-interceptor target assignment to the parent interceptor above. (This
+    // request BYPASSES the cooldown logic)
     SendAssignTargetRequest(subInterceptor);
   }
 
@@ -334,7 +335,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   private void RequestReassignment(IInterceptor interceptor) {
     if (interceptor.IsReassignable) {
-      // Request a new target from the parent interceptor.
       SendAssignTargetRequest(interceptor);
     }
   }

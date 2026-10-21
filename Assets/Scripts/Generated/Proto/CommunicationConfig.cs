@@ -25,19 +25,19 @@ namespace Configs {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CiJDb25maWdzL2NvbW11bmljYXRpb25fY29uZmlnLnByb3RvEgdjb25maWdz",
-            "GhtDb25maWdzL3N0YXRpY19jb25maWcucHJvdG8iYQoKTGlua0NvbmZpZxIX",
-            "Cg9sYXRlbmN5X3NlY29uZHMYASABKAISGwoTbGF0ZW5jeV9zdGRfc2Vjb25k",
-            "cxgCIAEoAhIdChVwYWNrZXRfZGVsaXZlcnlfcmF0aW8YAyABKAIiegoMTGlu",
-            "a092ZXJyaWRlEiAKBGZyb20YASABKA4yEi5jb25maWdzLkFnZW50VHlwZRIe",
-            "CgJ0bxgCIAEoDjISLmNvbmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtfY29uZmln",
-            "GAMgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnIm4KE0NvbW11bmljYXRpb25D",
-            "b25maWcSKAoLbGlua19jb25maWcYASABKAsyEy5jb25maWdzLkxpbmtDb25m",
-            "aWcSLQoObGlua19vdmVycmlkZXMYAiADKAsyFS5jb25maWdzLkxpbmtPdmVy",
-            "cmlkZWIGcHJvdG8z"));
+            "GhtDb25maWdzL3N0YXRpY19jb25maWcucHJvdG8igQEKCkxpbmtDb25maWcS",
+            "FwoPbGF0ZW5jeV9zZWNvbmRzGAEgASgCEhsKE2xhdGVuY3lfc3RkX3NlY29u",
+            "ZHMYAiABKAISHQoVcGFja2V0X2RlbGl2ZXJ5X3JhdGlvGAMgASgCEh4KFmNv",
+            "b2xkb3duX3JldHJ5X3NlY29uZHMYBCABKAIiegoMTGlua092ZXJyaWRlEiAK",
+            "BGZyb20YASABKA4yEi5jb25maWdzLkFnZW50VHlwZRIeCgJ0bxgCIAEoDjIS",
+            "LmNvbmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtfY29uZmlnGAMgASgLMhMuY29u",
+            "Zmlncy5MaW5rQ29uZmlnIm4KE0NvbW11bmljYXRpb25Db25maWcSKAoLbGlu",
+            "a19jb25maWcYASABKAsyEy5jb25maWdzLkxpbmtDb25maWcSLQoObGlua19v",
+            "dmVycmlkZXMYAiADKAsyFS5jb25maWdzLkxpbmtPdmVycmlkZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkConfig), global::Configs.LinkConfig.Parser, new[]{ "LatencySeconds", "LatencyStdSeconds", "PacketDeliveryRatio" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkConfig), global::Configs.LinkConfig.Parser, new[]{ "LatencySeconds", "LatencyStdSeconds", "PacketDeliveryRatio", "CooldownRetrySeconds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkOverride), global::Configs.LinkOverride.Parser, new[]{ "From", "To", "LinkConfig" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides" }, null, null, null, null)
           }));
@@ -84,6 +84,7 @@ namespace Configs {
       latencySeconds_ = other.latencySeconds_;
       latencyStdSeconds_ = other.latencyStdSeconds_;
       packetDeliveryRatio_ = other.packetDeliveryRatio_;
+      cooldownRetrySeconds_ = other.cooldownRetrySeconds_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -138,6 +139,22 @@ namespace Configs {
       }
     }
 
+    /// <summary>Field number for the "cooldown_retry_seconds" field.</summary>
+    public const int CooldownRetrySecondsFieldNumber = 4;
+    private float cooldownRetrySeconds_;
+    /// <summary>
+    /// Cooldown time in seconds before resending the same message. Different
+    /// message can bypass this cooldown. Must be non-negative.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float CooldownRetrySeconds {
+      get { return cooldownRetrySeconds_; }
+      set {
+        cooldownRetrySeconds_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -156,6 +173,7 @@ namespace Configs {
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(LatencySeconds, other.LatencySeconds)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(LatencyStdSeconds, other.LatencyStdSeconds)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(PacketDeliveryRatio, other.PacketDeliveryRatio)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(CooldownRetrySeconds, other.CooldownRetrySeconds)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -166,6 +184,7 @@ namespace Configs {
       if (LatencySeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(LatencySeconds);
       if (LatencyStdSeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(LatencyStdSeconds);
       if (PacketDeliveryRatio != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(PacketDeliveryRatio);
+      if (CooldownRetrySeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(CooldownRetrySeconds);
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -196,6 +215,10 @@ namespace Configs {
         output.WriteRawTag(29);
         output.WriteFloat(PacketDeliveryRatio);
       }
+      if (CooldownRetrySeconds != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(CooldownRetrySeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -218,6 +241,10 @@ namespace Configs {
         output.WriteRawTag(29);
         output.WriteFloat(PacketDeliveryRatio);
       }
+      if (CooldownRetrySeconds != 0F) {
+        output.WriteRawTag(37);
+        output.WriteFloat(CooldownRetrySeconds);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -235,6 +262,9 @@ namespace Configs {
         size += 1 + 4;
       }
       if (PacketDeliveryRatio != 0F) {
+        size += 1 + 4;
+      }
+      if (CooldownRetrySeconds != 0F) {
         size += 1 + 4;
       }
       if (_unknownFields != null) {
@@ -257,6 +287,9 @@ namespace Configs {
       }
       if (other.PacketDeliveryRatio != 0F) {
         PacketDeliveryRatio = other.PacketDeliveryRatio;
+      }
+      if (other.CooldownRetrySeconds != 0F) {
+        CooldownRetrySeconds = other.CooldownRetrySeconds;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -289,6 +322,10 @@ namespace Configs {
             PacketDeliveryRatio = input.ReadFloat();
             break;
           }
+          case 37: {
+            CooldownRetrySeconds = input.ReadFloat();
+            break;
+          }
         }
       }
     #endif
@@ -318,6 +355,10 @@ namespace Configs {
           }
           case 29: {
             PacketDeliveryRatio = input.ReadFloat();
+            break;
+          }
+          case 37: {
+            CooldownRetrySeconds = input.ReadFloat();
             break;
           }
         }

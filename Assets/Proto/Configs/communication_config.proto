@@ -13,6 +13,10 @@ message LinkConfig {
 
   // Probability of successful delivery in [0, 1].
   float packet_delivery_ratio = 3;
+
+  // Cooldown time in seconds before resending the same message. Different
+  // message can bypass this cooldown. Must be non-negative.
+  float cooldown_retry_seconds = 4;
 }
 
 // Latency per link is one-way only.
