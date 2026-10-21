@@ -21,6 +21,9 @@ public class HierarchicalBase : IHierarchical {
     TargetAssigned,
   }
 
+  // Absolute cooldown time when communication FSM TargetRequested state to expire.
+  private float _communicationAlarmTime;
+
   // Setup communication state FSM.
   [SerializeField]
   private CommunicationStatus _communicationStatus = CommunicationStatus.NoTarget;
@@ -156,12 +159,19 @@ public class HierarchicalBase : IHierarchical {
     _communicationStatus = CommunicationStatus.NoTarget;
   }
 
-  public void SetCommunicationTargetRequested() {
+  public void SetCommunicationTargetRequested(float cooldownSeconds) {
     _communicationStatus = CommunicationStatus.TargetRequested;
+    _communicationAlarmTime = SimManager.Instance.ElapsedTime + Mathf.Max(0f, cooldownSeconds);
   }
 
   public void SetCommunicationTargetAssigned() {
     _communicationStatus = CommunicationStatus.TargetAssigned;
+  }
+
+  // Check whether the current state allows the hierarchical to request a new target.
+  public bool CanRequestTarget() {
+    return _communicationStatus != CommunicationStatus.TargetRequested ||
+           SimManager.Instance.ElapsedTime >= _communicationAlarmTime;
   }
 
   public IHierarchical FindNewTarget(IHierarchical hierarchical, int capacity) {

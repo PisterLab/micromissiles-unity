@@ -92,7 +92,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
-    // TODO(Joseph0120): Prevent duplicate re-assignment requests while waiting for a response.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       RequestReassignment(this);
     }
@@ -290,6 +289,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       HierarchicalAgent.Target = target;
+      HierarchicalAgent.SetCommunicationTargetAssigned();
       return;
     }
 
@@ -299,6 +299,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
     if (newFractionalSpeed > currentFractionalSpeed) {
       HierarchicalAgent.Target = target;
+      HierarchicalAgent.SetCommunicationTargetAssigned();
     }
   }
 
@@ -334,10 +335,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RequestReassignment(IInterceptor interceptor) {
-    if (interceptor.IsReassignable) {
-      SendAssignTargetRequest(interceptor);
-      interceptor.HierarchicalBase.SetCommunicationTargetRequested();
+    if (!interceptor.IsReassignable || !interceptor.HierarchicalAgent.CanRequestTarget()) {
+      return;
     }
+
+    float cooldownSeconds = /* link cooldown */;
+    interceptor.HierarchicalAgent.SetCommunicationTargetRequested(cooldownSeconds);
+    SendAssignTargetRequest(interceptor);
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {
