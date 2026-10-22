@@ -68,4 +68,38 @@ public class MailboxTests : TestBase {
 
     Assert.IsNull(receivedMessage);
   }
+
+  [Test]
+  public void SendMessage_DropsMessageWhenPacketDeliveryRatioIsZero() {
+    _simManager.SimulationConfig.CommunicationConfig.LinkConfig.PacketDeliveryRatio = 0f;
+
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Message receivedMessage = null;
+    receiver.OnReceived += message => receivedMessage = message;
+
+    _commsManager.SendMessage(new TestMessage(sender, receiver));
+    SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+
+    Assert.IsNull(receivedMessage);
+  }
+
+  [Test]
+  public void GetLinkConfig_ReturnsMatchingLinkOverride() {
+    var overrideConfig = new Configs.LinkConfig { CooldownRetrySeconds = 2f };
+    _simManager.SimulationConfig.CommunicationConfig.LinkOverrides.Add(new Configs.LinkOverride {
+      From = Configs.AgentType.Vessel,
+      To = Configs.AgentType.Iads,
+      LinkConfig = overrideConfig,
+    });
+
+    Configs.LinkConfig resolvedConfig = _commsManager.GetLinkConfig(
+        new CommsNode(Configs.AgentType.Vessel), new CommsNode(Configs.AgentType.Iads));
+
+    Assert.AreSame(overrideConfig, resolvedConfig);
+  }
 }

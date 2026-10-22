@@ -15,6 +15,20 @@ public class HierarchicalBase : IHierarchical {
   // Maximum cluster radius in meters.
   private const float _clusterMaxRadius = 1000f;
 
+  // Communication states for SendAssignTargetRequest only.
+  private enum CommunicationStatus {
+    NoTarget,
+    TargetRequested,
+    TargetAssigned,
+  }
+
+  // Absolute cooldown time when SendAssignTargetRequest FSM TargetRequested state to expire.
+  private float _communicationAlarmTime;
+
+  // Setup communication SendAssignTargetRequest FSM.
+  [SerializeField]
+  private CommunicationStatus _communicationStatus = CommunicationStatus.NoTarget;
+
   // List of hierarchical objects in the hierarchy level below.
   [SerializeReference]
   protected List<IHierarchical> _subHierarchicals = new List<IHierarchical>();
@@ -139,6 +153,27 @@ public class HierarchicalBase : IHierarchical {
       AddSubHierarchical(subHierarchical);
       subHierarchical.RecursiveCluster(maxClusterSize);
     }
+  }
+
+  // Set the state of the SendAssignTargetRequest FSM to NoTarget, TargetRequested, or
+  // TargetAssigned.
+  public void SetCommunicationNoTarget() {
+    _communicationStatus = CommunicationStatus.NoTarget;
+  }
+
+  public void SetCommunicationTargetRequested(float cooldownSeconds) {
+    _communicationStatus = CommunicationStatus.TargetRequested;
+    _communicationAlarmTime = SimManager.Instance.ElapsedTime + Mathf.Max(0f, cooldownSeconds);
+  }
+
+  public void SetCommunicationTargetAssigned() {
+    _communicationStatus = CommunicationStatus.TargetAssigned;
+  }
+
+  // Check whether the current state allows the hierarchical to request a new target.
+  public bool CanRequestTarget() {
+    return _communicationStatus != CommunicationStatus.TargetRequested ||
+           SimManager.Instance.ElapsedTime >= _communicationAlarmTime;
   }
 
   public IHierarchical FindNewTarget(IHierarchical hierarchical, int capacity) {

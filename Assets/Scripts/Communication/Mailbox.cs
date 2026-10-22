@@ -19,11 +19,10 @@ public class Mailbox {
     }
 
     if (CommsManager.Instance.ContainsNode(message.Receiver)) {
-      Configs.LinkConfig config = GetLinkConfig(message);
+      Configs.LinkConfig config = GetLinkConfig(message.Sender, message.Receiver);
 
-      // TODO(Joseph0120): Set the packet delivery ratio to config.PacketDeliveryRatio.
-      float packetDeliveryRatio = Mathf.Clamp01(1);
-      if (UnityEngine.Random.value >= packetDeliveryRatio) {
+      float packetDeliveryRatio = Mathf.Clamp01(config.PacketDeliveryRatio);
+      if (packetDeliveryRatio < 1f && UnityEngine.Random.value >= packetDeliveryRatio) {
         return;
       }
 
@@ -60,15 +59,15 @@ public class Mailbox {
     _messageQueue.Clear();
   }
 
-  private Configs.LinkConfig GetLinkConfig(Message message) {
+  public Configs.LinkConfig GetLinkConfig(CommsNode sender, CommsNode receiver) {
     Configs.CommunicationConfig communicationConfig =
         SimManager.Instance.SimulationConfig?.CommunicationConfig;
     if (communicationConfig == null) {
       return _defaultLinkConfig;
     }
 
-    Configs.AgentType senderType = message.Sender.EndpointType;
-    Configs.AgentType receiverType = message.Receiver.EndpointType;
+    Configs.AgentType senderType = sender.EndpointType;
+    Configs.AgentType receiverType = receiver.EndpointType;
     foreach (Configs.LinkOverride linkOverride in communicationConfig.LinkOverrides) {
       if (linkOverride.From == senderType && linkOverride.To == receiverType) {
         return linkOverride.LinkConfig;
