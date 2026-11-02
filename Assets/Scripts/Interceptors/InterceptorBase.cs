@@ -296,7 +296,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       HierarchicalAgent.Target = target;
-      HierarchicalAgent.SetCommunicationTargetAssigned();
+      HierarchicalAgent.CommunicationStatus = CommunicationState.TargetAssigned;
       return;
     }
 
@@ -306,7 +306,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
     if (newFractionalSpeed > currentFractionalSpeed) {
       HierarchicalAgent.Target = target;
-      HierarchicalAgent.SetCommunicationTargetAssigned();
+      HierarchicalAgent.CommunicationStatus = CommunicationState.TargetAssigned;
     }
   }
 
@@ -318,7 +318,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
-      TrySendReassignTargetRequest(target);
+      // Forward a received request immediately. The child already rate-limited the original
+      // request, so propagation should not wait for this interceptor's scan or retry timer.
+      SendReassignTargetRequest(target);
       return;
     }
 
@@ -342,13 +344,13 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RequestReassignment(IInterceptor interceptor) {
-    if (!interceptor.IsReassignable || !interceptor.HierarchicalAgent.CanRequestTarget()) {
+    if (!interceptor.IsReassignable || !interceptor.HierarchicalAgent.CanRequestTarget) {
       return;
     }
 
     float cooldownSeconds =
         CommsManager.Instance.GetLinkConfig(CommsNode, ParentCommsNode).CooldownRetrySeconds;
-    interceptor.HierarchicalAgent.SetCommunicationTargetRequested(cooldownSeconds);
+    interceptor.HierarchicalAgent.StartTargetRequestCooldown(cooldownSeconds);
     SendAssignTargetRequest(interceptor);
   }
 
