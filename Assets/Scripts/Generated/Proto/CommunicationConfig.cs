@@ -743,8 +743,8 @@ namespace Configs {
     public const int EscapingTargetScanPeriodSecondsFieldNumber = 3;
     private float escapingTargetScanPeriodSeconds_;
     /// <summary>
-    /// Period in seconds for the interceptor to scan for escaping targets. Must be
-    /// non-negative.
+    /// Period in seconds for the interceptor to report for escaping targets. Must
+    /// be non-negative.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

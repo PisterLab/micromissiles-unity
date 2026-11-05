@@ -108,9 +108,8 @@ public class InterceptorCommunicationTests : TestBase {
     InvokeFixedUpdate(interceptor);
 
     Assert.AreEqual(0, receivedRequests);
-    Dictionary<IHierarchical, float> retryTimes =
-        GetPrivateField<Dictionary<IHierarchical, float>>(interceptor, "_reassignTargetRetryTimes");
-    Assert.AreEqual(_scanPeriodSeconds, retryTimes[target]);
+    float nextScanTime = GetPrivateField<float>(interceptor, "_nextReassignTargetScanTime");
+    Assert.AreEqual(_scanPeriodSeconds, nextScanTime);
 
     _defaultLinkConfig.PacketDeliveryRatio = 1f;
     SetSimulationTime(_scanPeriodSeconds - _beforeDeadlineSeconds);
@@ -187,7 +186,7 @@ public class InterceptorCommunicationTests : TestBase {
 
   [Test]
   // At 0 seconds, an intermediate interceptor receives a ReassignTargetRequest while its
-  // 2-second assignment cooldown and 3-second reassignment retry deadline are both active. The
+  // 2-second assignment cooldown and 3-second reassignment scan deadline are both active. The
   // request must be propagated to the next parent immediately instead of waiting for either timer.
   public void ReassignTargetRequest_PropagatedUpward_BypassesCooldownAndScanPeriod() {
     var childNode = new CommsNode(Configs.AgentType.MissileInterceptor);
@@ -200,9 +199,6 @@ public class InterceptorCommunicationTests : TestBase {
     var target = new FixedHierarchical();
     intermediate.HierarchicalAgent.StartTargetRequestCooldown(_cooldownSeconds);
     SetPrivateField(intermediate, "_nextReassignTargetScanTime", _scanPeriodSeconds);
-    Dictionary<IHierarchical, float> retryTimes = GetPrivateField<Dictionary<IHierarchical, float>>(
-        intermediate, "_reassignTargetRetryTimes");
-    retryTimes[target] = _scanPeriodSeconds;
 
     int propagatedRequests = 0;
     upperParentNode.OnReceived += message => {

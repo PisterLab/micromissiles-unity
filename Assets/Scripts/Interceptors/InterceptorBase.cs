@@ -24,9 +24,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   // similar to cooldown_retry_seconds but specifically for SendReassignTargetRequest.
   private float _nextReassignTargetScanTime;
 
-  // Next permitted ReassignTargetRequest time for each target.
-  private readonly Dictionary<IHierarchical, float> _reassignTargetRetryTimes = new();
-
   // Maximum number of threats that this interceptor can target.
   [SerializeField]
   private int _capacity;
@@ -296,7 +293,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       HierarchicalAgent.Target = target;
-      HierarchicalAgent.CommunicationStatus = TargetState.TargetAssigned;
+      HierarchicalAgent.TargetState = TargetState.TargetAssigned;
       return;
     }
 
@@ -306,7 +303,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
     if (newFractionalSpeed > currentFractionalSpeed) {
       HierarchicalAgent.Target = target;
-      HierarchicalAgent.CommunicationStatus = CommunicationState.TargetAssigned;
+      HierarchicalAgent.TargetState = TargetState.TargetAssigned;
     }
   }
 
@@ -334,10 +331,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     if (target == null || target.IsTerminated) {
       return;
     }
-    List<IHierarchical> targetHierarchicals =
-        target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
-    foreach (var targetHierarchical in targetHierarchicals) {
-      TrySendReassignTargetRequest(targetHierarchical);
+    IHierarchical targetHierarchical =
+        target.LeafHierarchicals(activeOnly: true, withTargetOnly: false).FirstOrDefault();
+    if (targetHierarchical != null) {
+      SendReassignTargetRequest(targetHierarchical);
     }
 
     RequestReassignment(interceptor);
@@ -380,7 +377,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
             filteredTargets.OrderBy(target => Vector3.Distance(Position, target.Position));
         var excessTargets = orderedTargets.Skip(CapacityPlannedRemaining);
         foreach (var target in excessTargets) {
-          TrySendReassignTargetRequest(target);
+          SendReassignTargetRequest(target);
         }
         unassignedTargets = orderedTargets.Take(CapacityPlannedRemaining);
       } else {
@@ -417,52 +414,15 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   private void ScanForEscapingTargets() {
     _nextReassignTargetScanTime = SimManager.Instance.ElapsedTime + EscapingTargetScanPeriodSeconds;
 
-    foreach (IHierarchical target in _reassignTargetRetryTimes.Keys
-                 .Where(target => target.IsTerminated)
-                 .ToList()) {
-      _reassignTargetRetryTimes.Remove(target);
-    }
-
-    List<IHierarchical> targetHierarchicals =
-        HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
-    int numEscapingTargets = 0;
-    foreach (IHierarchical target in targetHierarchicals) {
-      if (!EscapeDetector.IsEscaping(target)) {
-        _reassignTargetRetryTimes.Remove(target);
-        continue;
-      }
-
-      ++numEscapingTargets;
-      TrySendReassignTargetRequest(target);
-    }
-
-    if (targetHierarchicals.Count > 0 && numEscapingTargets == targetHierarchicals.Count) {
-      RequestReassignment(this);
-    }
-  }
-
-  // Applies once per target, and is used to avoid sending ReassignTargetRequest messages too
-  // frequently for the same target.
-  private bool CanRetryReassignTarget(IHierarchical target) {
-    return !_reassignTargetRetryTimes.TryGetValue(target, out float nextRetryTime) ||
-           SimManager.Instance.ElapsedTime >= nextRetryTime;
-  }
-
-  private void TrySendReassignTargetRequest(IHierarchical target) {
-    if (target == null) {
-      return;
-    }
-    if (target.IsTerminated) {
-      _reassignTargetRetryTimes.Remove(target);
-      return;
-    }
-    if (!CanRetryReassignTarget(target)) {
+    IHierarchical target =
+        HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false)
+            .FirstOrDefault();
+    if (target == null || !EscapeDetector.IsEscaping(target)) {
       return;
     }
 
-    _reassignTargetRetryTimes[target] =
-        SimManager.Instance.ElapsedTime + EscapingTargetScanPeriodSeconds;
     SendReassignTargetRequest(target);
+    RequestReassignment(this);
   }
 
   private void SendAssignTargetRequest(IInterceptor subInterceptor) {
