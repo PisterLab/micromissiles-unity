@@ -59,7 +59,7 @@ public class Mailbox {
     _messageQueue.Clear();
   }
 
-  public Configs.LinkConfig GetLinkConfig(CommsNode sender, CommsNode receiver) {
+  public static Configs.LinkConfig GetLinkConfig(CommsNode sender, CommsNode receiver) {
     Configs.CommunicationConfig communicationConfig =
         SimManager.Instance.SimulationConfig?.CommunicationConfig;
     if (communicationConfig == null) {

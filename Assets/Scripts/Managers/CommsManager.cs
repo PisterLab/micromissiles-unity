@@ -18,7 +18,7 @@ public class CommsManager : MonoBehaviour {
   public bool ContainsNode(CommsNode node) => _nodes.Contains(node);
 
   public Configs.LinkConfig GetLinkConfig(CommsNode sender, CommsNode receiver) {
-    return _mailbox.GetLinkConfig(sender, receiver);
+    return Mailbox.GetLinkConfig(sender, receiver);
   }
 
   private void Awake() {
