@@ -7,7 +7,7 @@ public sealed class InterceptorCommunicationTestInterceptor : InterceptorBase {}
 
 public class InterceptorCommunicationTests : TestBase {
   private const float _cooldownSeconds = 2f;
-  private const float _scanPeriodSeconds = 3f;
+  private const float _reportPeriodSeconds = 3f;
   private const float _beforeDeadlineSeconds = 0.001f;
 
   private readonly List<GameObject> _testObjects = new();
@@ -31,7 +31,7 @@ public class InterceptorCommunicationTests : TestBase {
       CommunicationConfig =
           new Configs.CommunicationConfig {
             LinkConfig = _defaultLinkConfig,
-            EscapingTargetScanPeriodSeconds = _scanPeriodSeconds,
+            EscapingTargetReportPeriodSeconds = _reportPeriodSeconds,
           },
     };
 
@@ -86,8 +86,8 @@ public class InterceptorCommunicationTests : TestBase {
 
   [Test]
   // Drops the initial ReassignTargetRequest at 0 seconds, verifies that it is not resent at
-  // 2.999 seconds, and verifies that it is resent when the 3-second target scan period expires.
-  public void ReassignTargetRequest_FirstAttemptDropped_RetriesAtScanPeriod() {
+  // 2.999 seconds, and verifies that it is resent when the 3-second target report period expires.
+  public void ReassignTargetRequest_FirstAttemptDropped_RetriesAtReportPeriod() {
     var parentNode = new CommsNode(Configs.AgentType.CarrierInterceptor);
     InterceptorCommunicationTestInterceptor interceptor =
         CreateInterceptor("Interceptor", Configs.AgentType.MissileInterceptor, parentNode);
@@ -108,15 +108,15 @@ public class InterceptorCommunicationTests : TestBase {
     InvokeFixedUpdate(interceptor);
 
     Assert.AreEqual(0, receivedRequests);
-    float nextScanTime = GetPrivateField<float>(interceptor, "_nextReassignTargetScanTime");
-    Assert.AreEqual(_scanPeriodSeconds, nextScanTime);
+    float nextReportTime = GetPrivateField<float>(interceptor, "_nextReassignTargetReportTime");
+    Assert.AreEqual(_reportPeriodSeconds, nextReportTime);
 
     _defaultLinkConfig.PacketDeliveryRatio = 1f;
-    SetSimulationTime(_scanPeriodSeconds - _beforeDeadlineSeconds);
+    SetSimulationTime(_reportPeriodSeconds - _beforeDeadlineSeconds);
     InvokeFixedUpdate(interceptor);
     Assert.AreEqual(0, receivedRequests);
 
-    SetSimulationTime(_scanPeriodSeconds);
+    SetSimulationTime(_reportPeriodSeconds);
     InvokeFixedUpdate(interceptor);
     Assert.AreEqual(1, receivedRequests);
   }
@@ -186,9 +186,9 @@ public class InterceptorCommunicationTests : TestBase {
 
   [Test]
   // At 0 seconds, an intermediate interceptor receives a ReassignTargetRequest while its
-  // 2-second assignment cooldown and 3-second reassignment scan deadline are both active. The
+  // 2-second assignment cooldown and 3-second target report deadline are both active. The
   // request must be propagated to the next parent immediately instead of waiting for either timer.
-  public void ReassignTargetRequest_PropagatedUpward_BypassesCooldownAndScanPeriod() {
+  public void ReassignTargetRequest_PropagatedUpward_BypassesCooldownAndReportPeriod() {
     var childNode = new CommsNode(Configs.AgentType.MissileInterceptor);
     var upperParentNode = new CommsNode(Configs.AgentType.Iads);
     InterceptorCommunicationTestInterceptor intermediate =
@@ -198,7 +198,7 @@ public class InterceptorCommunicationTests : TestBase {
 
     var target = new FixedHierarchical();
     intermediate.HierarchicalAgent.StartTargetRequestCooldown(_cooldownSeconds);
-    SetPrivateField(intermediate, "_nextReassignTargetScanTime", _scanPeriodSeconds);
+    SetPrivateField(intermediate, "_nextReassignTargetReportTime", _reportPeriodSeconds);
 
     int propagatedRequests = 0;
     upperParentNode.OnReceived += message => {

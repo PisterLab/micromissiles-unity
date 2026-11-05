@@ -20,9 +20,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   public CommsNode ParentCommsNode { get; set; }
 
-  // Absolute time when the next target reassignment scan should occur for this interceptor. This is
-  // similar to cooldown_retry_seconds but specifically for SendReassignTargetRequest.
-  private float _nextReassignTargetScanTime;
+  // Absolute time when this interceptor may next report an escaping target. This is similar to
+  // cooldown_retry_seconds but specifically for SendReassignTargetRequest.
+  private float _nextReassignTargetReportTime;
 
   // Maximum number of threats that this interceptor can target.
   [SerializeField]
@@ -73,12 +73,12 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     set { _numSubInterceptorsRemaining = value; }
   }
 
-  private float EscapingTargetScanPeriodSeconds {
+  private float EscapingTargetReportPeriodSeconds {
     get {
-      float scanPeriod = SimManager.Instance.SimulationConfig?.CommunicationConfig
-                             ?.EscapingTargetScanPeriodSeconds ??
-                         0f;
-      return Mathf.Max(0f, scanPeriod);
+      float reportPeriod = SimManager.Instance.SimulationConfig?.CommunicationConfig
+                               ?.EscapingTargetReportPeriodSeconds ??
+                           0f;
+      return Mathf.Max(0f, reportPeriod);
     }
   }
 
@@ -109,10 +109,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       RequestReassignment(this);
     }
 
-    // Check whether any targets are escaping from the interceptor when the next scan is due.
+    // Check whether the interceptor's target is escaping when the next report is due.
     if (EscapeDetector != null && HierarchicalAgent.Target != null &&
-        !HierarchicalAgent.Target.IsTerminated && CanScanForEscapingTargets()) {
-      ScanForEscapingTargets();
+        !HierarchicalAgent.Target.IsTerminated && CanReportEscapingTargets()) {
+      ReportEscapingTargets();
     }
 
     // Update the planned number of sub-interceptors remaining.
@@ -316,7 +316,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
       // Forward a received request immediately. The child already rate-limited the original
-      // request, so propagation should not wait for this interceptor's scan or retry timer.
+      // request, so propagation should not wait for this interceptor's target report timer.
       SendReassignTargetRequest(target);
       return;
     }
@@ -405,14 +405,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     }
   }
 
-  // Applies once per interceptor, and is used to avoid scanning for escaping targets too
-  // frequently.
-  private bool CanScanForEscapingTargets() {
-    return SimManager.Instance.ElapsedTime >= _nextReassignTargetScanTime;
+  // Applies once per interceptor to avoid reporting an escaping target too frequently.
+  private bool CanReportEscapingTargets() {
+    return SimManager.Instance.ElapsedTime >= _nextReassignTargetReportTime;
   }
 
-  private void ScanForEscapingTargets() {
-    _nextReassignTargetScanTime = SimManager.Instance.ElapsedTime + EscapingTargetScanPeriodSeconds;
+  private void ReportEscapingTargets() {
+    _nextReassignTargetReportTime =
+        SimManager.Instance.ElapsedTime + EscapingTargetReportPeriodSeconds;
 
     IHierarchical target =
         HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false)
