@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// Communication state enumeration.
+// Target state enumeration.
 //
 // This enumeration defines the possible communication states of an interceptor. No Target means
 // that the interceptor currently has no target. Target Requested means that the target request has

@@ -13,6 +13,7 @@ public interface IHierarchical {
   // Return a list of active sub-hierarchical objects.
   IEnumerable<IHierarchical> ActiveSubHierarchicals { get; }
   IHierarchical Target { get; set; }
+  TargetState TargetState { get; set; }
   IReadOnlyList<IHierarchical> Pursuers { get; }
   IEnumerable<IHierarchical> ActivePursuers { get; }
   IReadOnlyList<IHierarchical> LaunchedHierarchicals { get; }
