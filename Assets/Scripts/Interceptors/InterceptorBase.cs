@@ -296,7 +296,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       HierarchicalAgent.Target = target;
-      HierarchicalAgent.CommunicationStatus = CommunicationState.TargetAssigned;
+      HierarchicalAgent.CommunicationStatus = TargetState.TargetAssigned;
       return;
     }
 

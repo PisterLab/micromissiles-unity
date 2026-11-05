@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public enum CommunicationState {
+// Communication state enumeration.
+//
+// This enumeration defines the possible communication states of an interceptor. No Target means
+// that the interceptor currently has no target. Target Requested means that the target request has
+// been sent, and is currently waiting for the cooldown time to pass. Target Assigned means that the
+// target has been assigned to the interceptor.
+public enum TargetState {
   NoTarget,
   TargetRequested,
   TargetAssigned,
@@ -26,7 +32,7 @@ public class HierarchicalBase : IHierarchical {
 
   // Setup communication SendAssignTargetRequest FSM.
   [SerializeField]
-  private CommunicationState _communicationStatus = CommunicationState.NoTarget;
+  private TargetState _targetState = TargetState.NoTarget;
 
   // List of hierarchical objects in the hierarchy level below.
   [SerializeReference]
@@ -61,9 +67,9 @@ public class HierarchicalBase : IHierarchical {
 
   public IReadOnlyList<IHierarchical> LaunchedHierarchicals => _launchedHierarchicals.AsReadOnly();
 
-  public CommunicationState CommunicationStatus {
-    get { return _communicationStatus; }
-    set { _communicationStatus = value; }
+  public TargetState TargetState {
+    get { return _targetState; }
+    set { _targetState = value; }
   }
 
   public virtual Vector3 Position => GetMean(s => s.Position);
@@ -160,14 +166,14 @@ public class HierarchicalBase : IHierarchical {
   }
 
   public void StartTargetRequestCooldown(float cooldownSeconds) {
-    CommunicationStatus = CommunicationState.TargetRequested;
+    TargetState = TargetState.TargetRequested;
     _communicationAlarmTime = SimManager.Instance.ElapsedTime + Mathf.Max(0f, cooldownSeconds);
   }
 
   // Check whether the current state allows the hierarchical to request a new target.
   public bool CanRequestTarget {
     get {
-      return CommunicationStatus != CommunicationState.TargetRequested ||
+      return TargetState != TargetState.TargetRequested ||
              SimManager.Instance.ElapsedTime >= _communicationAlarmTime;
     }
   }
