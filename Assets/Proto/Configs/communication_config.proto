@@ -28,6 +28,10 @@ message TimingConfig {
   // up to the next slot boundary. A value of zero disables link16 feature and
   // slot alignment. Must be non-negative.
   float link16_slot_duration_seconds = 4;
+
+  // Maximum number of messages delivered during each Link16 time slot. A value
+  // of zero disables the bandwidth limit.
+  uint32 link16_max_bandwidth = 5;
 }
 
 // Latency per link is one-way only.

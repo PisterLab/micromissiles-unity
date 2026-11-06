@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
@@ -78,6 +79,41 @@ public class MailboxTests : TestBase {
     SetPrivateProperty(_simManager, "ElapsedTime", 3f);
     InvokePrivateMethod(_commsManager, "FixedUpdate");
     Assert.AreSame(sentMessage, receivedMessage);
+  }
+
+  [Test]
+  public void SendMessage_DeliversUpToBandwidthLimitPerSlotInFifoOrder() {
+    _simManager.SimulationConfig.CommunicationConfig.TimingConfig.Link16SlotDurationSeconds = 1f;
+    _simManager.SimulationConfig.CommunicationConfig.TimingConfig.Link16MaxBandwidth = 2;
+
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    var receivedMessages = new List<Message>();
+    receiver.OnReceived += message => receivedMessages.Add(message);
+    var firstMessage = new TestMessage(sender, receiver);
+    var secondMessage = new TestMessage(sender, receiver);
+    var thirdMessage = new TestMessage(sender, receiver);
+
+    _commsManager.SendMessage(firstMessage);
+    _commsManager.SendMessage(secondMessage);
+    _commsManager.SendMessage(thirdMessage);
+
+    SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+    CollectionAssert.AreEqual(new[] { firstMessage, secondMessage }, receivedMessages);
+
+    // Repeated delivery checks within the same slot must not reset its bandwidth allowance.
+    SetPrivateProperty(_simManager, "ElapsedTime", 1.5f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+    CollectionAssert.AreEqual(new[] { firstMessage, secondMessage }, receivedMessages);
+
+    SetPrivateProperty(_simManager, "ElapsedTime", 2f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+    CollectionAssert.AreEqual(new[] { firstMessage, secondMessage, thirdMessage },
+                              receivedMessages);
   }
 
   [Test]
