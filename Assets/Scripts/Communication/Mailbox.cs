@@ -1,14 +1,14 @@
 using System;
 using UnityEngine;
 
-// The mailbox handles the communication latencies for agent-to-agent communication. The mailbox
-// owns the message queue and releases messages to be delivered after a set latency.
+// The mailbox handles communication timing for agent-to-agent communication. The mailbox owns the
+// message queue and releases messages after their latency and Link16 slot delay.
 public class Mailbox {
   // Message queue.
   private readonly PriorityQueue<PendingMessage> _messageQueue =
       new PriorityQueue<PendingMessage>();
 
-  // Enqueue a message to be delivered after a set latency.
+  // Enqueue a message to be delivered after its latency at the next Link16 slot boundary.
   public void Send(Message message) {
     if (message == null) {
       return;
@@ -27,6 +27,15 @@ public class Mailbox {
       float jitter = Utilities.SampleStandardNormal() * config.LatencyStdSeconds;
       float totalLatency = Math.Max(0f, latency + jitter);
       float deliverAt = SimManager.Instance.ElapsedTime + totalLatency;
+
+      float slotDuration = Mathf.Max(
+          0f,
+          SimManager.Instance.SimulationConfig?.CommunicationConfig?.TimingConfig
+                  ?.Link16SlotDurationSeconds ??
+              0f);
+      if (slotDuration > 0f) {
+        deliverAt = Mathf.Ceil(deliverAt / slotDuration) * slotDuration;
+      }
 
       // Deliver the message immediately if it is already due.
       if (deliverAt <= SimManager.Instance.ElapsedTime) {

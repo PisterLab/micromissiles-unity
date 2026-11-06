@@ -25,6 +25,7 @@ public class MailboxTests : TestBase {
                   LatencySeconds = 1f,
                   PacketDeliveryRatio = 1f,
                 },
+            TimingConfig = new Configs.TimingConfig(),
           },
     };
     SetPrivateProperty(_simManager, "IsRunning", true);
@@ -49,6 +50,32 @@ public class MailboxTests : TestBase {
     Assert.IsNull(receivedMessage);
 
     SetPrivateProperty(_simManager, "ElapsedTime", 1f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+    Assert.AreSame(sentMessage, receivedMessage);
+  }
+
+  [Test]
+  public void SendMessage_RoundsLatencyAdjustedDeliveryUpToNextLink16Slot() {
+    _simManager.SimulationConfig.CommunicationConfig.LinkConfig.LatencySeconds = 0.4f;
+    _simManager.SimulationConfig.CommunicationConfig.TimingConfig.Link16SlotDurationSeconds = 1f;
+    SetPrivateProperty(_simManager, "ElapsedTime", 2.3f);
+
+    var sender = new CommsNode(Configs.AgentType.Vessel);
+    var receiver = new CommsNode(Configs.AgentType.Iads);
+    _commsManager.AddNode(sender);
+    _commsManager.AddNode(receiver);
+
+    Message receivedMessage = null;
+    receiver.OnReceived += message => receivedMessage = message;
+    var sentMessage = new TestMessage(sender, receiver);
+
+    _commsManager.SendMessage(sentMessage);
+
+    SetPrivateProperty(_simManager, "ElapsedTime", 2.999f);
+    InvokePrivateMethod(_commsManager, "FixedUpdate");
+    Assert.IsNull(receivedMessage);
+
+    SetPrivateProperty(_simManager, "ElapsedTime", 3f);
     InvokePrivateMethod(_commsManager, "FixedUpdate");
     Assert.AreSame(sentMessage, receivedMessage);
   }
