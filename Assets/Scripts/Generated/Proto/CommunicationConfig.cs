@@ -28,21 +28,21 @@ namespace Configs {
             "GhtDb25maWdzL3N0YXRpY19jb25maWcucHJvdG8igQEKCkxpbmtDb25maWcS",
             "FwoPbGF0ZW5jeV9zZWNvbmRzGAEgASgCEhsKE2xhdGVuY3lfc3RkX3NlY29u",
             "ZHMYAiABKAISHQoVcGFja2V0X2RlbGl2ZXJ5X3JhdGlvGAMgASgCEh4KFmNv",
-            "b2xkb3duX3JldHJ5X3NlY29uZHMYBCABKAIiYwoMVGltaW5nQ29uZmlnEi0K",
-            "JWVzY2FwaW5nX3RhcmdldF9yZXBvcnRfcGVyaW9kX3NlY29uZHMYAyABKAIS",
-            "JAocbGluazE2X3Nsb3RfZHVyYXRpb25fc2Vjb25kcxgEIAEoAiJ6CgxMaW5r",
-            "T3ZlcnJpZGUSIAoEZnJvbRgBIAEoDjISLmNvbmZpZ3MuQWdlbnRUeXBlEh4K",
-            "AnRvGAIgASgOMhIuY29uZmlncy5BZ2VudFR5cGUSKAoLbGlua19jb25maWcY",
-            "AyABKAsyEy5jb25maWdzLkxpbmtDb25maWcinAEKE0NvbW11bmljYXRpb25D",
-            "b25maWcSKAoLbGlua19jb25maWcYASABKAsyEy5jb25maWdzLkxpbmtDb25m",
-            "aWcSLQoObGlua19vdmVycmlkZXMYAiADKAsyFS5jb25maWdzLkxpbmtPdmVy",
-            "cmlkZRIsCg10aW1pbmdfY29uZmlnGAMgASgLMhUuY29uZmlncy5UaW1pbmdD",
-            "b25maWdiBnByb3RvMw=="));
+            "b2xkb3duX3JldHJ5X3NlY29uZHMYBCABKAIigQEKDFRpbWluZ0NvbmZpZxIt",
+            "CiVlc2NhcGluZ190YXJnZXRfcmVwb3J0X3BlcmlvZF9zZWNvbmRzGAMgASgC",
+            "EiQKHGxpbmsxNl9zbG90X2R1cmF0aW9uX3NlY29uZHMYBCABKAISHAoUbGlu",
+            "azE2X21heF9iYW5kd2lkdGgYBSABKA0iegoMTGlua092ZXJyaWRlEiAKBGZy",
+            "b20YASABKA4yEi5jb25maWdzLkFnZW50VHlwZRIeCgJ0bxgCIAEoDjISLmNv",
+            "bmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtfY29uZmlnGAMgASgLMhMuY29uZmln",
+            "cy5MaW5rQ29uZmlnIpwBChNDb21tdW5pY2F0aW9uQ29uZmlnEigKC2xpbmtf",
+            "Y29uZmlnGAEgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnEi0KDmxpbmtfb3Zl",
+            "cnJpZGVzGAIgAygLMhUuY29uZmlncy5MaW5rT3ZlcnJpZGUSLAoNdGltaW5n",
+            "X2NvbmZpZxgDIAEoCzIVLmNvbmZpZ3MuVGltaW5nQ29uZmlnYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkConfig), global::Configs.LinkConfig.Parser, new[]{ "LatencySeconds", "LatencyStdSeconds", "PacketDeliveryRatio", "CooldownRetrySeconds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.TimingConfig), global::Configs.TimingConfig.Parser, new[]{ "EscapingTargetReportPeriodSeconds", "Link16SlotDurationSeconds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.TimingConfig), global::Configs.TimingConfig.Parser, new[]{ "EscapingTargetReportPeriodSeconds", "Link16SlotDurationSeconds", "Link16MaxBandwidth" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkOverride), global::Configs.LinkOverride.Parser, new[]{ "From", "To", "LinkConfig" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides", "TimingConfig" }, null, null, null, null)
           }));
@@ -410,6 +410,7 @@ namespace Configs {
     public TimingConfig(TimingConfig other) : this() {
       escapingTargetReportPeriodSeconds_ = other.escapingTargetReportPeriodSeconds_;
       link16SlotDurationSeconds_ = other.link16SlotDurationSeconds_;
+      link16MaxBandwidth_ = other.link16MaxBandwidth_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -452,6 +453,22 @@ namespace Configs {
       }
     }
 
+    /// <summary>Field number for the "link16_max_bandwidth" field.</summary>
+    public const int Link16MaxBandwidthFieldNumber = 5;
+    private uint link16MaxBandwidth_;
+    /// <summary>
+    /// Maximum number of messages delivered during each Link16 time slot. A value
+    /// of zero disables the bandwidth limit.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public uint Link16MaxBandwidth {
+      get { return link16MaxBandwidth_; }
+      set {
+        link16MaxBandwidth_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -469,6 +486,7 @@ namespace Configs {
       }
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(EscapingTargetReportPeriodSeconds, other.EscapingTargetReportPeriodSeconds)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Link16SlotDurationSeconds, other.Link16SlotDurationSeconds)) return false;
+      if (Link16MaxBandwidth != other.Link16MaxBandwidth) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -478,6 +496,7 @@ namespace Configs {
       int hash = 1;
       if (EscapingTargetReportPeriodSeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(EscapingTargetReportPeriodSeconds);
       if (Link16SlotDurationSeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Link16SlotDurationSeconds);
+      if (Link16MaxBandwidth != 0) hash ^= Link16MaxBandwidth.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -504,6 +523,10 @@ namespace Configs {
         output.WriteRawTag(37);
         output.WriteFloat(Link16SlotDurationSeconds);
       }
+      if (Link16MaxBandwidth != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(Link16MaxBandwidth);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -522,6 +545,10 @@ namespace Configs {
         output.WriteRawTag(37);
         output.WriteFloat(Link16SlotDurationSeconds);
       }
+      if (Link16MaxBandwidth != 0) {
+        output.WriteRawTag(40);
+        output.WriteUInt32(Link16MaxBandwidth);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -537,6 +564,9 @@ namespace Configs {
       }
       if (Link16SlotDurationSeconds != 0F) {
         size += 1 + 4;
+      }
+      if (Link16MaxBandwidth != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeUInt32Size(Link16MaxBandwidth);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -555,6 +585,9 @@ namespace Configs {
       }
       if (other.Link16SlotDurationSeconds != 0F) {
         Link16SlotDurationSeconds = other.Link16SlotDurationSeconds;
+      }
+      if (other.Link16MaxBandwidth != 0) {
+        Link16MaxBandwidth = other.Link16MaxBandwidth;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -583,6 +616,10 @@ namespace Configs {
             Link16SlotDurationSeconds = input.ReadFloat();
             break;
           }
+          case 40: {
+            Link16MaxBandwidth = input.ReadUInt32();
+            break;
+          }
         }
       }
     #endif
@@ -608,6 +645,10 @@ namespace Configs {
           }
           case 37: {
             Link16SlotDurationSeconds = input.ReadFloat();
+            break;
+          }
+          case 40: {
+            Link16MaxBandwidth = input.ReadUInt32();
             break;
           }
         }
