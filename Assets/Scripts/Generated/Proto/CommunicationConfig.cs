@@ -457,8 +457,16 @@ namespace Configs {
     public const int Link16MaxBandwidthFieldNumber = 5;
     private uint link16MaxBandwidth_;
     /// <summary>
-    /// Maximum number of messages delivered during each Link16 time slot. A value
-    /// of zero disables the bandwidth limit.
+    /// Maximum number of messages delivered during each Link16 time slot.
+    /// Link16 slot configuration behaves as follows:
+    /// - Both values are zero: slot alignment and the bandwidth limit are
+    /// disabled.
+    /// - Only link16_max_bandwidth is positive: the bandwidth limit is disabled
+    ///   because link16_slot_duration_seconds is zero and there are no time slots.
+    /// - Only link16_slot_duration_seconds is positive: delivery is slot-aligned,
+    ///   but an unlimited number of messages may be delivered during each slot.
+    /// - Both values are positive: delivery is slot-aligned and limited to
+    ///   link16_max_bandwidth messages during each slot.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
