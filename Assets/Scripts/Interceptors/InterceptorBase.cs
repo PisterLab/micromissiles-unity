@@ -73,15 +73,6 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     set { _numSubInterceptorsRemaining = value; }
   }
 
-  private float EscapingTargetReportPeriodSeconds {
-    get {
-      float reportPeriod = SimManager.Instance.SimulationConfig?.CommunicationConfig
-                               ?.EscapingTargetReportPeriodSeconds ??
-                           0f;
-      return Mathf.Max(0f, reportPeriod);
-    }
-  }
-
   // If true, the interceptor can be reassigned to other targets.
   public virtual bool IsReassignable => true;
 
@@ -411,8 +402,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void ReportEscapingTargets() {
-    _nextReassignTargetReportTime =
-        SimManager.Instance.ElapsedTime + EscapingTargetReportPeriodSeconds;
+    float reportPeriod = SimManager.Instance.SimulationConfig?.CommunicationConfig?.TimingConfig
+                             ?.EscapingTargetReportPeriodSeconds ??
+                         0f;
+    _nextReassignTargetReportTime = SimManager.Instance.ElapsedTime + Mathf.Max(0f, reportPeriod);
 
     IHierarchical target =
         HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false)

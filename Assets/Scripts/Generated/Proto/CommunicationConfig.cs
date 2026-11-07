@@ -28,20 +28,22 @@ namespace Configs {
             "GhtDb25maWdzL3N0YXRpY19jb25maWcucHJvdG8igQEKCkxpbmtDb25maWcS",
             "FwoPbGF0ZW5jeV9zZWNvbmRzGAEgASgCEhsKE2xhdGVuY3lfc3RkX3NlY29u",
             "ZHMYAiABKAISHQoVcGFja2V0X2RlbGl2ZXJ5X3JhdGlvGAMgASgCEh4KFmNv",
-            "b2xkb3duX3JldHJ5X3NlY29uZHMYBCABKAIiegoMTGlua092ZXJyaWRlEiAK",
-            "BGZyb20YASABKA4yEi5jb25maWdzLkFnZW50VHlwZRIeCgJ0bxgCIAEoDjIS",
-            "LmNvbmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtfY29uZmlnGAMgASgLMhMuY29u",
-            "Zmlncy5MaW5rQ29uZmlnIp0BChNDb21tdW5pY2F0aW9uQ29uZmlnEigKC2xp",
-            "bmtfY29uZmlnGAEgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnEi0KDmxpbmtf",
-            "b3ZlcnJpZGVzGAIgAygLMhUuY29uZmlncy5MaW5rT3ZlcnJpZGUSLQolZXNj",
-            "YXBpbmdfdGFyZ2V0X3JlcG9ydF9wZXJpb2Rfc2Vjb25kcxgDIAEoAmIGcHJv",
-            "dG8z"));
+            "b2xkb3duX3JldHJ5X3NlY29uZHMYBCABKAIiPQoMVGltaW5nQ29uZmlnEi0K",
+            "JWVzY2FwaW5nX3RhcmdldF9yZXBvcnRfcGVyaW9kX3NlY29uZHMYAyABKAIi",
+            "egoMTGlua092ZXJyaWRlEiAKBGZyb20YASABKA4yEi5jb25maWdzLkFnZW50",
+            "VHlwZRIeCgJ0bxgCIAEoDjISLmNvbmZpZ3MuQWdlbnRUeXBlEigKC2xpbmtf",
+            "Y29uZmlnGAMgASgLMhMuY29uZmlncy5MaW5rQ29uZmlnIpwBChNDb21tdW5p",
+            "Y2F0aW9uQ29uZmlnEigKC2xpbmtfY29uZmlnGAEgASgLMhMuY29uZmlncy5M",
+            "aW5rQ29uZmlnEi0KDmxpbmtfb3ZlcnJpZGVzGAIgAygLMhUuY29uZmlncy5M",
+            "aW5rT3ZlcnJpZGUSLAoNdGltaW5nX2NvbmZpZxgDIAEoCzIVLmNvbmZpZ3Mu",
+            "VGltaW5nQ29uZmlnYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Configs.StaticConfigReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkConfig), global::Configs.LinkConfig.Parser, new[]{ "LatencySeconds", "LatencyStdSeconds", "PacketDeliveryRatio", "CooldownRetrySeconds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.TimingConfig), global::Configs.TimingConfig.Parser, new[]{ "EscapingTargetReportPeriodSeconds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Configs.LinkOverride), global::Configs.LinkOverride.Parser, new[]{ "From", "To", "LinkConfig" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides", "EscapingTargetReportPeriodSeconds" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Configs.CommunicationConfig), global::Configs.CommunicationConfig.Parser, new[]{ "LinkConfig", "LinkOverrides", "TimingConfig" }, null, null, null, null)
           }));
     }
     #endregion
@@ -370,6 +372,208 @@ namespace Configs {
 
   }
 
+  [global::System.Diagnostics.DebuggerDisplayAttribute("{ToString(),nq}")]
+  public sealed partial class TimingConfig : pb::IMessage<TimingConfig>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TimingConfig> _parser = new pb::MessageParser<TimingConfig>(() => new TimingConfig());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<TimingConfig> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Configs.CommunicationConfigReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TimingConfig() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TimingConfig(TimingConfig other) : this() {
+      escapingTargetReportPeriodSeconds_ = other.escapingTargetReportPeriodSeconds_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public TimingConfig Clone() {
+      return new TimingConfig(this);
+    }
+
+    /// <summary>Field number for the "escaping_target_report_period_seconds" field.</summary>
+    public const int EscapingTargetReportPeriodSecondsFieldNumber = 3;
+    private float escapingTargetReportPeriodSeconds_;
+    /// <summary>
+    /// Period in seconds at which the interceptor reports an escaping target. Must
+    /// be non-negative.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float EscapingTargetReportPeriodSeconds {
+      get { return escapingTargetReportPeriodSeconds_; }
+      set {
+        escapingTargetReportPeriodSeconds_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as TimingConfig);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(TimingConfig other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(EscapingTargetReportPeriodSeconds, other.EscapingTargetReportPeriodSeconds)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EscapingTargetReportPeriodSeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(EscapingTargetReportPeriodSeconds);
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (EscapingTargetReportPeriodSeconds != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(EscapingTargetReportPeriodSeconds);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (EscapingTargetReportPeriodSeconds != 0F) {
+        output.WriteRawTag(29);
+        output.WriteFloat(EscapingTargetReportPeriodSeconds);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (EscapingTargetReportPeriodSeconds != 0F) {
+        size += 1 + 4;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(TimingConfig other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EscapingTargetReportPeriodSeconds != 0F) {
+        EscapingTargetReportPeriodSeconds = other.EscapingTargetReportPeriodSeconds;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 29: {
+            EscapingTargetReportPeriodSeconds = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+      if ((tag & 7) == 4) {
+        // Abort on any end group tag.
+        return;
+      }
+      switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 29: {
+            EscapingTargetReportPeriodSeconds = input.ReadFloat();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   /// <summary>
   /// Latency per link is one-way only.
   /// </summary>
@@ -388,7 +592,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Configs.CommunicationConfigReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Configs.CommunicationConfigReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -678,7 +882,7 @@ namespace Configs {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Configs.CommunicationConfigReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Configs.CommunicationConfigReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -700,7 +904,7 @@ namespace Configs {
     public CommunicationConfig(CommunicationConfig other) : this() {
       linkConfig_ = other.linkConfig_ != null ? other.linkConfig_.Clone() : null;
       linkOverrides_ = other.linkOverrides_.Clone();
-      escapingTargetReportPeriodSeconds_ = other.escapingTargetReportPeriodSeconds_;
+      timingConfig_ = other.timingConfig_ != null ? other.timingConfig_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -739,19 +943,18 @@ namespace Configs {
       get { return linkOverrides_; }
     }
 
-    /// <summary>Field number for the "escaping_target_report_period_seconds" field.</summary>
-    public const int EscapingTargetReportPeriodSecondsFieldNumber = 3;
-    private float escapingTargetReportPeriodSeconds_;
+    /// <summary>Field number for the "timing_config" field.</summary>
+    public const int TimingConfigFieldNumber = 3;
+    private global::Configs.TimingConfig timingConfig_;
     /// <summary>
-    /// Period in seconds at which the interceptor reports an escaping target. Must
-    /// be non-negative.
+    /// Timing configuration.
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float EscapingTargetReportPeriodSeconds {
-      get { return escapingTargetReportPeriodSeconds_; }
+    public global::Configs.TimingConfig TimingConfig {
+      get { return timingConfig_; }
       set {
-        escapingTargetReportPeriodSeconds_ = value;
+        timingConfig_ = value;
       }
     }
 
@@ -772,7 +975,7 @@ namespace Configs {
       }
       if (!object.Equals(LinkConfig, other.LinkConfig)) return false;
       if(!linkOverrides_.Equals(other.linkOverrides_)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(EscapingTargetReportPeriodSeconds, other.EscapingTargetReportPeriodSeconds)) return false;
+      if (!object.Equals(TimingConfig, other.TimingConfig)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -782,7 +985,7 @@ namespace Configs {
       int hash = 1;
       if (linkConfig_ != null) hash ^= LinkConfig.GetHashCode();
       hash ^= linkOverrides_.GetHashCode();
-      if (EscapingTargetReportPeriodSeconds != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(EscapingTargetReportPeriodSeconds);
+      if (timingConfig_ != null) hash ^= TimingConfig.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -806,9 +1009,9 @@ namespace Configs {
         output.WriteMessage(LinkConfig);
       }
       linkOverrides_.WriteTo(output, _repeated_linkOverrides_codec);
-      if (EscapingTargetReportPeriodSeconds != 0F) {
-        output.WriteRawTag(29);
-        output.WriteFloat(EscapingTargetReportPeriodSeconds);
+      if (timingConfig_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(TimingConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -825,9 +1028,9 @@ namespace Configs {
         output.WriteMessage(LinkConfig);
       }
       linkOverrides_.WriteTo(ref output, _repeated_linkOverrides_codec);
-      if (EscapingTargetReportPeriodSeconds != 0F) {
-        output.WriteRawTag(29);
-        output.WriteFloat(EscapingTargetReportPeriodSeconds);
+      if (timingConfig_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(TimingConfig);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -843,8 +1046,8 @@ namespace Configs {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(LinkConfig);
       }
       size += linkOverrides_.CalculateSize(_repeated_linkOverrides_codec);
-      if (EscapingTargetReportPeriodSeconds != 0F) {
-        size += 1 + 4;
+      if (timingConfig_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(TimingConfig);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -865,8 +1068,11 @@ namespace Configs {
         LinkConfig.MergeFrom(other.LinkConfig);
       }
       linkOverrides_.Add(other.linkOverrides_);
-      if (other.EscapingTargetReportPeriodSeconds != 0F) {
-        EscapingTargetReportPeriodSeconds = other.EscapingTargetReportPeriodSeconds;
+      if (other.timingConfig_ != null) {
+        if (timingConfig_ == null) {
+          TimingConfig = new global::Configs.TimingConfig();
+        }
+        TimingConfig.MergeFrom(other.TimingConfig);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -898,8 +1104,11 @@ namespace Configs {
             linkOverrides_.AddEntriesFrom(input, _repeated_linkOverrides_codec);
             break;
           }
-          case 29: {
-            EscapingTargetReportPeriodSeconds = input.ReadFloat();
+          case 26: {
+            if (timingConfig_ == null) {
+              TimingConfig = new global::Configs.TimingConfig();
+            }
+            input.ReadMessage(TimingConfig);
             break;
           }
         }
@@ -932,8 +1141,11 @@ namespace Configs {
             linkOverrides_.AddEntriesFrom(ref input, _repeated_linkOverrides_codec);
             break;
           }
-          case 29: {
-            EscapingTargetReportPeriodSeconds = input.ReadFloat();
+          case 26: {
+            if (timingConfig_ == null) {
+              TimingConfig = new global::Configs.TimingConfig();
+            }
+            input.ReadMessage(TimingConfig);
             break;
           }
         }

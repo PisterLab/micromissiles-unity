@@ -4,10 +4,6 @@ using UnityEngine;
 // The mailbox handles the communication latencies for agent-to-agent communication. The mailbox
 // owns the message queue and releases messages to be delivered after a set latency.
 public class Mailbox {
-  private static readonly Configs.LinkConfig _defaultLinkConfig = new Configs.LinkConfig {
-    PacketDeliveryRatio = 1f,
-  };
-
   // Message queue.
   private readonly PriorityQueue<PendingMessage> _messageQueue =
       new PriorityQueue<PendingMessage>();
@@ -19,7 +15,8 @@ public class Mailbox {
     }
 
     if (CommsManager.Instance.ContainsNode(message.Receiver)) {
-      Configs.LinkConfig config = GetLinkConfig(message.Sender, message.Receiver);
+      Configs.LinkConfig config =
+          CommsManager.Instance.GetLinkConfig(message.Sender, message.Receiver);
 
       float packetDeliveryRatio = Mathf.Clamp01(config.PacketDeliveryRatio);
       if (packetDeliveryRatio < 1f && UnityEngine.Random.value >= packetDeliveryRatio) {
@@ -57,22 +54,5 @@ public class Mailbox {
   // Clear all pending messages.
   public void Clear() {
     _messageQueue.Clear();
-  }
-
-  public static Configs.LinkConfig GetLinkConfig(CommsNode sender, CommsNode receiver) {
-    Configs.CommunicationConfig communicationConfig =
-        SimManager.Instance.SimulationConfig?.CommunicationConfig;
-    if (communicationConfig == null) {
-      return _defaultLinkConfig;
-    }
-
-    Configs.AgentType senderType = sender.EndpointType;
-    Configs.AgentType receiverType = receiver.EndpointType;
-    foreach (Configs.LinkOverride linkOverride in communicationConfig.LinkOverrides) {
-      if (linkOverride.From == senderType && linkOverride.To == receiverType) {
-        return linkOverride.LinkConfig;
-      }
-    }
-    return communicationConfig.LinkConfig ?? _defaultLinkConfig;
   }
 }

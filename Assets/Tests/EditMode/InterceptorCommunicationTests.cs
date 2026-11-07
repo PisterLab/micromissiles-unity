@@ -31,7 +31,10 @@ public class InterceptorCommunicationTests : TestBase {
       CommunicationConfig =
           new Configs.CommunicationConfig {
             LinkConfig = _defaultLinkConfig,
-            EscapingTargetReportPeriodSeconds = _reportPeriodSeconds,
+            TimingConfig =
+                new Configs.TimingConfig {
+                  EscapingTargetReportPeriodSeconds = _reportPeriodSeconds,
+                },
           },
     };
 
