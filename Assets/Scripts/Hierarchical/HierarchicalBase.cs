@@ -3,6 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// Target state enumeration.
+//
+// This enumeration defines the possible communication states of an interceptor. No Target means
+// that the interceptor currently has no target. Target Requested means that the target request has
+// been sent, and is currently waiting for the cooldown time to pass. Target Assigned means that the
+// target has been assigned to the interceptor.
+public enum TargetState {
+  NoTarget,
+  TargetRequested,
+  TargetAssigned,
+}
+
 // Base implementation of a hierarchical object.
 //
 // The position and velocity of a hierarchical object is defined as the mean of the positions and
@@ -14,6 +26,13 @@ public class HierarchicalBase : IHierarchical {
 
   // Maximum cluster radius in meters.
   private const float _clusterMaxRadius = 1000f;
+
+  // Absolute cooldown time when SendAssignTargetRequest FSM TargetRequested state to expire.
+  private float _communicationAlarmTime;
+
+  // Setup communication SendAssignTargetRequest FSM.
+  [SerializeField]
+  private TargetState _targetState = TargetState.NoTarget;
 
   // List of hierarchical objects in the hierarchy level below.
   [SerializeReference]
@@ -47,6 +66,11 @@ public class HierarchicalBase : IHierarchical {
       Pursuers.Where(pursuer => !pursuer.IsTerminated);
 
   public IReadOnlyList<IHierarchical> LaunchedHierarchicals => _launchedHierarchicals.AsReadOnly();
+
+  public TargetState TargetState {
+    get { return _targetState; }
+    set { _targetState = value; }
+  }
 
   public virtual Vector3 Position => GetMean(s => s.Position);
   public virtual Vector3 Velocity => GetMean(s => s.Velocity);
@@ -138,6 +162,19 @@ public class HierarchicalBase : IHierarchical {
       var subHierarchical = new HierarchicalBase { Target = cluster };
       AddSubHierarchical(subHierarchical);
       subHierarchical.RecursiveCluster(maxClusterSize);
+    }
+  }
+
+  public void StartTargetRequestCooldown(float cooldownSeconds) {
+    TargetState = TargetState.TargetRequested;
+    _communicationAlarmTime = SimManager.Instance.ElapsedTime + Mathf.Max(0f, cooldownSeconds);
+  }
+
+  // Check whether the current state allows the hierarchical to request a new target.
+  public bool CanRequestTarget {
+    get {
+      return TargetState != TargetState.TargetRequested ||
+             SimManager.Instance.ElapsedTime >= _communicationAlarmTime;
     }
   }
 

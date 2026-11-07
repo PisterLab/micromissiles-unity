@@ -20,6 +20,10 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
   public CommsNode ParentCommsNode { get; set; }
 
+  // Absolute time when this interceptor may next report an escaping target. This is similar to
+  // cooldown_retry_seconds but specifically for SendReassignTargetRequest.
+  private float _nextReassignTargetReportTime;
+
   // Maximum number of threats that this interceptor can target.
   [SerializeField]
   private int _capacity;
@@ -92,24 +96,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
 
     // Check whether the interceptor has a target. If not, request a new target from the parent
     // interceptor.
-    // TODO(Joseph0120): Prevent duplicate re-assignment requests while waiting for a response.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       RequestReassignment(this);
     }
 
-    // Check whether any targets are escaping from the interceptor.
+    // Check whether the interceptor's target is escaping when the next report is due.
     if (EscapeDetector != null && HierarchicalAgent.Target != null &&
-        !HierarchicalAgent.Target.IsTerminated) {
-      List<IHierarchical> targetHierarchicals =
-          HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
-      List<IHierarchical> escapingTargets =
-          targetHierarchicals.Where(EscapeDetector.IsEscaping).ToList();
-      foreach (var target in escapingTargets) {
-        SendReassignTargetRequest(target);
-      }
-      if (escapingTargets.Count == targetHierarchicals.Count) {
-        RequestReassignment(this);
-      }
+        !HierarchicalAgent.Target.IsTerminated && CanReportEscapingTargets()) {
+      ReportEscapingTargets();
     }
 
     // Update the planned number of sub-interceptors remaining.
@@ -276,7 +270,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       return;
     }
 
-    // Propagate the sub-interceptor target assignment to the parent interceptor above.
+    // Propagate the sub-interceptor target assignment to the parent interceptor above. (This
+    // request BYPASSES the cooldown logic)
     SendAssignTargetRequest(subInterceptor);
   }
 
@@ -289,6 +284,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     // If the interceptor has no target, always accept the new target.
     if (HierarchicalAgent.Target == null || HierarchicalAgent.Target.IsTerminated) {
       HierarchicalAgent.Target = target;
+      HierarchicalAgent.TargetState = TargetState.TargetAssigned;
       return;
     }
 
@@ -298,6 +294,7 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     float newFractionalSpeed = FractionalSpeed.Calculate(this, target.Position);
     if (newFractionalSpeed > currentFractionalSpeed) {
       HierarchicalAgent.Target = target;
+      HierarchicalAgent.TargetState = TargetState.TargetAssigned;
     }
   }
 
@@ -309,6 +306,8 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     //  another sub-interceptor(s) to pursue the target(s).
     //  3. Propagate the target re-assignment to the parent interceptor above.
     if (CapacityPlannedRemaining <= 0) {
+      // Forward a received request immediately. The child already rate-limited the original
+      // request, so propagation should not wait for this interceptor's target report timer.
       SendReassignTargetRequest(target);
       return;
     }
@@ -323,9 +322,9 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
     if (target == null || target.IsTerminated) {
       return;
     }
-    List<IHierarchical> targetHierarchicals =
-        target.LeafHierarchicals(activeOnly: true, withTargetOnly: false);
-    foreach (var targetHierarchical in targetHierarchicals) {
+    IHierarchical targetHierarchical =
+        target.LeafHierarchicals(activeOnly: true, withTargetOnly: false).FirstOrDefault();
+    if (targetHierarchical != null) {
       SendReassignTargetRequest(targetHierarchical);
     }
 
@@ -333,10 +332,14 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
   }
 
   private void RequestReassignment(IInterceptor interceptor) {
-    if (interceptor.IsReassignable) {
-      // Request a new target from the parent interceptor.
-      SendAssignTargetRequest(interceptor);
+    if (!interceptor.IsReassignable || !interceptor.HierarchicalAgent.CanRequestTarget) {
+      return;
     }
+
+    float cooldownSeconds =
+        CommsManager.Instance.GetLinkConfig(CommsNode, ParentCommsNode).CooldownRetrySeconds;
+    interceptor.HierarchicalAgent.StartTargetRequestCooldown(cooldownSeconds);
+    SendAssignTargetRequest(interceptor);
   }
 
   private IEnumerator UnassignedTargetsManager(float period) {
@@ -391,6 +394,28 @@ public abstract class InterceptorBase : AgentBase, IInterceptor {
       // Recursively cluster the newly assigned targets.
       newSubHierarchical.RecursiveCluster(maxClusterSize: CapacityPerSubInterceptor);
     }
+  }
+
+  // Applies once per interceptor to avoid reporting an escaping target too frequently.
+  private bool CanReportEscapingTargets() {
+    return SimManager.Instance.ElapsedTime >= _nextReassignTargetReportTime;
+  }
+
+  private void ReportEscapingTargets() {
+    float reportPeriod = SimManager.Instance.SimulationConfig?.CommunicationConfig?.TimingConfig
+                             ?.EscapingTargetReportPeriodSeconds ??
+                         0f;
+    _nextReassignTargetReportTime = SimManager.Instance.ElapsedTime + Mathf.Max(0f, reportPeriod);
+
+    IHierarchical target =
+        HierarchicalAgent.Target.LeafHierarchicals(activeOnly: true, withTargetOnly: false)
+            .FirstOrDefault();
+    if (target == null || !EscapeDetector.IsEscaping(target)) {
+      return;
+    }
+
+    SendReassignTargetRequest(target);
+    RequestReassignment(this);
   }
 
   private void SendAssignTargetRequest(IInterceptor subInterceptor) {
