@@ -126,6 +126,8 @@ threat_swarm_configs {
 communication_config {
   timing_config {
     escaping_target_report_period_seconds: 1.0
+    link16_slot_duration_seconds: 0.1
+    link16_max_bandwidth: 10
   }
 
   link_config {
