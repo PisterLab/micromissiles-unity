@@ -6,6 +6,10 @@ using UnityEngine;
 public class CommsManager : MonoBehaviour {
   public static CommsManager Instance { get; private set; }
 
+  private static readonly Configs.LinkConfig _defaultLinkConfig = new Configs.LinkConfig {
+    PacketDeliveryRatio = 1f,
+  };
+
   // Mailbox for queued messages.
   private readonly Mailbox _mailbox = new Mailbox();
 
@@ -16,6 +20,23 @@ public class CommsManager : MonoBehaviour {
   public void AddNode(CommsNode node) => _nodes.Add(node);
 
   public bool ContainsNode(CommsNode node) => _nodes.Contains(node);
+
+  public Configs.LinkConfig GetLinkConfig(CommsNode sender, CommsNode receiver) {
+    Configs.CommunicationConfig communicationConfig =
+        SimManager.Instance.SimulationConfig?.CommunicationConfig;
+    if (communicationConfig == null) {
+      return _defaultLinkConfig;
+    }
+
+    Configs.AgentType senderType = sender.EndpointType;
+    Configs.AgentType receiverType = receiver.EndpointType;
+    foreach (Configs.LinkOverride linkOverride in communicationConfig.LinkOverrides) {
+      if (linkOverride.From == senderType && linkOverride.To == receiverType) {
+        return linkOverride.LinkConfig;
+      }
+    }
+    return communicationConfig.LinkConfig ?? _defaultLinkConfig;
+  }
 
   private void Awake() {
     if (Instance != null && Instance != this) {
